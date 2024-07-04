@@ -1,0 +1,86 @@
+name: Sync and Translate Documentation
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 时间午夜运行一次
+  workflow_dispatch:
+
+jobs:
+  sync-and-translate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout user's repo (main branch)
+      uses: actions/checkout@v2
+      with:
+        repository: fan-ziqi/IsaacLab
+        ref: main
+
+    - name: Configure Git user
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+
+    - name: Add upstream repository
+      run: git remote add upstream https://github.com/isaac-sim/IsaacLab.git
+
+    - name: Merge upstream changes while keeping local changes
+      run: |
+        git fetch upstream
+        git checkout main
+        git merge upstream/main -X ours --allow-unrelated-histories
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools polib==1.2.0 openai==v1.3.6 python-dotenv==1.0.0 pytest==8.2.2 sphinx-intl sphinx-book-theme==1.0.1 myst-parser sphinxcontrib-bibtex==2.5.0 autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium
+
+    - name: Generate gettext
+      run: |
+        pushd docs
+        make gettext
+        popd
+
+    - name: Update translations
+      run: |
+        pushd docs
+        sphinx-intl update -p _build/gettext -l zh_CN
+        popd
+
+    - name: Translate using custom script
+      run: |
+        pushd docs
+        python po_translator.py --folder ./locale --lang zh_CN --folder-language --bulk
+        popd
+
+    - name: Build HTML with translations
+      run: make -e SPHINXOPTS="-D language='zh_CN'" -C docs html
+
+    - name: Copy generated HTML files to user repo
+      run: |
+        mkdir -p temp_html
+        cp -r docs/_build/html/* temp_html/
+
+    - name: Commit and push gettext and po files to main branch
+      run: |
+        git add -f docs/_build/gettext/*
+        git add -f docs/_build/html/*
+        git add -f docs/locale/zh_CN/LC_MESSAGES/**/*.po
+        git commit -m "Update gettext and po files"
+        git push origin main
+
+    - name: Commit and push changes to gh-pages-zhcn branch
+      run: |
+        git checkout --orphan gh-pages-zhcn
+        git rm -rf .
+        cp -r temp_html/* .
+        rm -rf temp_html
+        rm -rf docs
+        git add .
+        git commit -m "Update translated documentation"
+        git push origin gh-pages-zhcn --force

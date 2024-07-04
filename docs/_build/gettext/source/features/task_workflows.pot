@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/features/task_workflows.rst:5
+msgid "Task Design Workflows"
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:9
+msgid "Environments define the interface between the agent and the simulation. In the simplest case, the environment provides the agent with the current observations and executes the actions provided by the agent. In a Markov Decision Process (MDP) formulation, the environment can also provide additional information such as the current reward, done flag, and information about the current episode."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:14
+msgid "While the environment interface is simple to understand, its implementation can vary significantly depending on the complexity of the task. In the context of reinforcement learning (RL), the environment implementation can be broken down into several components, such as the reward function, observation function, termination function, and reset function. Each of these components can be implemented in different ways depending on the complexity of the task and the desired level of modularity."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:20
+msgid "We provide two different workflows for designing environments with the framework:"
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:22
+msgid "**Manager-based**: The environment is decomposed into individual components (or managers) that handle different aspects of the environment (such as computing observations, applying actions, and applying randomization). The user defines configuration classes for each component and the environment is responsible for coordinating the managers and calling their functions."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:26
+msgid "**Direct**: The user defines a single class that implements the entire environment directly without the need for separate managers. This class is responsible for computing observations, applying actions, and computing rewards."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:29
+msgid "Both workflows have their own advantages and disadvantages. The manager-based workflow is more modular and allows different components of the environment to be swapped out easily. This is useful when prototyping the environment and experimenting with different configurations. On the other hand, the direct workflow is more efficient and allows for more fine-grained control over the environment logic. This is useful when optimizing the environment for performance or when implementing complex logic that is difficult to decompose into separate components."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:37
+msgid "Manager-Based Environments"
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:39
+msgid "A majority of environment implementations follow a similar structure. The environment processes the input actions, steps through the simulation, computes observations and reward signals, applies randomization, and resets the terminated environments. Motivated by this, the environment can be decomposed into individual components that handle each of these tasks. For example, the observation manager is responsible for computing the observations, the reward manager is responsible for computing the rewards, and the termination manager is responsible for computing the termination signal. This approach is known as the manager-based environment design in the framework."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:46
+msgid "Manager-based environments promote modular implementations of tasks by decomposing the task into individual components that are managed by separate classes. Each component of the task, such as rewards, observations, termination can all be specified as individual configuration classes that are then passed to the corresponding manager classes. The manager is then responsible for parsing the configurations and processing the contents specified in its configuration."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:52
+msgid "The coordination between the different managers is orchestrated by the class :class:`envs.ManagerBasedRLEnv`. It takes in a task configuration class instance (:class:`envs.ManagerBasedRLEnvCfg`) that contains the configurations for each of the components of the task. Based on the configurations, the scene is set up and the task is initialized. Afterwards, while stepping through the environment, all the managers are called sequentially to perform the necessary operations."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:58
+msgid "For their own tasks, we expect the user to mainly define the task configuration class and use the existing :class:`envs.ManagerBasedRLEnv` class for the task implementation. The task configuration class should inherit from the base class :class:`envs.ManagerBasedRLEnvCfg` and contain variables assigned to various configuration classes for each component (such as the ``ObservationCfg`` and ``RewardCfg``)."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:0
+msgid "Example for defining the reward function for the Cartpole task using the manager-style"
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:66
+msgid "The following class is a part of the Cartpole environment configuration class. The :class:`RewardsCfg` class defines individual terms that compose the reward function. Each reward term is defined by its function implementation, weight and additional parameters to be passed to the function. Users can define multiple reward terms and their weights to be used in the reward function."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:76
+msgid "Through this approach, it is possible to easily vary the implementations of the task by switching some components while leaving the remaining of the code intact. This flexibility is desirable when prototyping the environment and experimenting with different configurations. It also allows for easy collaborating with others on implementing an environment, since contributors may choose to use different combinations of configurations for their own task specifications."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:84
+msgid "We provide a more detailed tutorial for setting up an environment using the manager-based workflow at :ref:`tutorial-create-manager-rl-env`."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:89
+msgid "Direct Environments"
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:91
+msgid "The direct-style environment aligns more closely with traditional implementations of environments, where a single script directly implements the reward function, observation function, resets, and all the other components of the environment. This approach does not require the manager classes. Instead, users are provided the complete freedom to implement their task through the APIs from the base class :class:`envs.DirectRLEnv`. For users migrating from the `IsaacGymEnvs`_ and `OmniIsaacGymEnvs`_ framework, this workflow may be more familiar."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:97
+msgid "When defining an environment with the direct-style implementation, we expect the user define a single class that implements the entire environment. The task class should inherit from the base :class:`envs.DirectRLEnv` class and should have its corresponding configuration class that inherits from :class:`envs.DirectRLEnvCfg`. The task class is responsible for setting up the scene, processing the actions, computing the rewards, observations, resets, and termination signals."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:0
+msgid "Example for defining the reward function for the Cartpole task using the direct-style"
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:105
+msgid "The following function is a part of the Cartpole environment class and is responsible for computing the rewards."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:112
+msgid "It calls the :meth:`compute_rewards` function which is Torch JIT compiled for performance benefits."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:118
+msgid "This approach provides more transparency in the implementations of the environments, as logic is defined within the task class instead of abstracted with the use of managers. This may be beneficial when implementing complex logic that is difficult to decompose into separate components. Additionally, the direct-style implementation may bring more performance benefits for the environment, as it allows implementing large chunks of logic with optimized frameworks such as `PyTorch JIT`_ or `Warp`_. This may be valuable when scaling up training tremendously which requires optimizing individual operations in the environment."
+msgstr ""
+
+#: ../../source/features/task_workflows.rst:127
+msgid "We provide a more detailed tutorial for setting up a RL environment using the direct workflow at :ref:`tutorial-create-direct-rl-env`."
+msgstr ""

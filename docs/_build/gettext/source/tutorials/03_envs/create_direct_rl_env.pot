@@ -1,0 +1,181 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:5
+msgid "Creating a Direct Workflow RL Environment"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:9
+msgid "In addition to the :class:`envs.ManagerBasedRLEnv` class, which encourages the use of configuration classes for more modular environments, the :class:`~omni.isaac.lab.envs.DirectRLEnv` class allows for more direct control in the scripting of environment."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:13
+msgid "Instead of using Manager classes for defining rewards and observations, the direct workflow tasks implement the full reward and observation functions directly in the task script. This allows for more control in the implementation of the methods, such as using pytorch jit features, and provides a less abstracted framework that makes it easier to find the various pieces of code."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:19
+msgid "In this tutorial, we will configure the cartpole environment using the direct workflow implementation to create a task for balancing the pole upright. We will learn how to specify the task using by implementing functions for scene creation, actions, resets, rewards and observations."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:25
+msgid "The Code"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:27
+msgid "For this tutorial, we use the cartpole environment defined in ``omni.isaac.lab_tasks.direct.cartpole`` module."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:0
+msgid "Code for cartpole_env.py"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:38
+msgid "The Code Explained"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:40
+msgid "Similar to the manager-based environments, a configuration class is defined for the task to hold settings for the simulation parameters, the scene, the actors, and the task. With the direct workflow implementation, the :class:`envs.DirectRLEnvCfg` class is used as the base class for configurations. Since the direct workflow implementation does not use Action and Observation managers, the task config should define the number of actions and observations for the environment."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:55
+msgid "The config class can also be used to define task-specific attributes, such as scaling for reward terms and thresholds for reset conditions."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:74
+msgid "When creating a new environment, the code should define a new class that inherits from :class:`~omni.isaac.lab.envs.DirectRLEnv`."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:84
+msgid "The class can also hold class variables that are accessible by all functions in the class, including functions for applying actions, computing resets, rewards, and observations."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:88
+msgid "Scene Creation"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:90
+msgid "In contrast to manager-based environments where the scene creation is taken care of by the framework, the direct workflow implementation provides flexibility for users to implement their own scene creation function. This includes adding actors into the stage, cloning the environments, filtering collisions between the environments, adding the actors into the scene, and adding any additional props to the scene, such as ground plane and lights. These operations should be implemented in the ``_setup_scene(self)`` method."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:102
+msgid "Defining Rewards"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:104
+msgid "Reward function should be defined in the ``_get_rewards(self)`` API, which returns the reward buffer as a return value. Within this function, the task is free to implement the logic of the reward function. In this example, we implement a Pytorch JIT function that computes the various components of the reward function."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:149
+msgid "Defining Observations"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:151
+msgid "The observation buffer should be computed in the ``_get_observations(self)`` function, which constructs the observation buffer for the environment. At the end of this API, a dictionary should be returned that contains ``policy`` as the key, and the full observation buffer as the value. For asymmetric policies, the dictionary should also include the key ``critic`` and the states buffer as the value."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:162
+msgid "Computing Dones and Performing Resets"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:164
+msgid "Populating the ``dones`` buffer should be done in the ``_get_dones(self)`` method. This method is free to implement logic that computes which environments would need to be reset and which environments have reached the episode length limit. Both results should be returned by the ``_get_dones(self)`` function, in the form of a tuple of boolean tensors."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:173
+msgid "Once the indices for environments requiring reset have been computed, the ``_reset_idx(self, env_ids)`` function performs the reset operations on those environments. Within this function, new states for the environments requiring reset should be set directly into simulation."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:182
+msgid "Applying Actions"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:184
+msgid "There are two APIs that are designed for working with actions. The ``_pre_physics_step(self, actions)`` takes in actions from the policy as an argument and is called once per RL step, prior to taking any physics steps. This function can be used to process the actions buffer from the policy and cache the data in a class variable for the environment."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:192
+msgid "The ``_apply_action(self)`` API is called ``decimation`` number of times for each RL step, prior to taking each physics step. This provides more flexibility for environments where actions should be applied for each physics step."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:202
+msgid "The Code Execution"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:204
+msgid "To run training for the direct workflow Cartpole environment, we can use the following command:"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:210
+msgid "All direct workflow tasks have the suffix ``-Direct`` added to the task name to differentiate the implementation style."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:214
+msgid "Domain Randomization"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:216
+msgid "In the direct workflow, domain randomization configuration uses the :class:`~omni.isaac.lab.utils.configclass` module to specify a configuration class consisting of :class:`~managers.EventTermCfg` variables."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:219
+msgid "Below is an example of a configuration class for domain randomization:"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:259
+msgid "Each ``EventTerm`` object is of the :class:`~managers.EventTermCfg` class and takes in a ``func`` parameter for specifying the function to call during randomization, a ``mode`` parameter, which can be ``startup``, ``reset`` or ``interval``. THe ``params`` dictionary should provide the necessary arguments to the function that is specified in the ``func`` parameter. Functions specified as ``func`` for the ``EventTerm`` can be found in the :class:`~envs.mdp.events` module."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:265
+msgid "Note that as part of the ``\"asset_cfg\": SceneEntityCfg(\"robot\", body_names=\".*\")`` parameter, the name of the actor ``\"robot\"`` is provided, along with the body or joint names specified as a regex expression, which will be the actors and bodies/joints that will have randomization applied."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:269
+msgid "Once the ``configclass`` for the randomization terms have been set up, the class must be added to the base config class for the task and be assigned to the variable ``events``."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:280
+msgid "Action and Observation Noise"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:282
+msgid "Actions and observation noise can also be added using the :class:`~utils.configclass` module. Action and observation noise configs must be added to the main task config using the ``action_noise_model`` and ``observation_noise_model`` variables:"
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:304
+msgid ":class:`~.utils.noise.NoiseModelWithAdditiveBiasCfg` can be used to sample both uncorrelated noise per step as well as correlated noise that is re-sampled at reset time."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:307
+msgid "The ``noise_cfg`` term specifies the Gaussian distribution that will be sampled at each step for all environments. This noise will be added to the corresponding actions and observations buffers at every step."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:311
+msgid "The ``bias_noise_cfg`` term specifies the Gaussian distribution for the correlated noise that will be sampled at reset time for the environments being reset. The same noise will be applied each step for the remaining of the episode for the environments and resampled at the next reset."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:316
+msgid "If only per-step noise is desired, :class:`~utils.noise.GaussianNoiseCfg` can be used to specify an additive Gaussian distribution that adds the sampled noise to the input buffer."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:328
+msgid "In this tutorial, we learnt how to create a direct workflow task environment for reinforcement learning. We do this by extending the base environment to include the scene setup, actions, dones, reset, reward and observaion functions."
+msgstr ""
+
+#: ../../source/tutorials/03_envs/create_direct_rl_env.rst:331
+msgid "While it is possible to manually create an instance of :class:`~omni.isaac.lab.envs.DirectRLEnv` class for a desired task, this is not scalable as it requires specialized scripts for each task. Thus, we exploit the :meth:`gymnasium.make` function to create the environment with the gym interface. We will learn how to do this in the next tutorial."
+msgstr ""

@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.abspath("../source/extensions/omni.isaac.lab_tasks/om
 
 project = "Isaac Lab"
 copyright = "2022-2024, The Isaac Lab Project Developers."
-author = "The Isaac Lab Project Developers."
+author = "The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)"
 
 # Read version from the package
 with open(os.path.join(os.path.dirname(__file__), "..", "VERSION")) as f:
@@ -237,6 +237,7 @@ html_theme_options = {
         },
     ],
     "icon_links_label": "Quick Links",
+    "extra_footer": "<!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push([\"setDocumentTitle\",document.domain+\"/\"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u=\"//matomo.robotsfan.com/\";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->",
 }
 
 html_sidebars = {"**": ["navbar-logo.html", "icon-links.html", "search-field.html", "sbt-sidebar-nav.html"]}
@@ -255,3 +256,6 @@ def skip_member(app, what, name, obj, skip, options):
 
 def setup(app):
     app.connect("autodoc-skip-member", skip_member)
+
+locale_dirs = ['locale/']  # path is example but recommended.
+gettext_compact = False     # optional.

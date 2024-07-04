@@ -1,0 +1,169 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/tutorials/02_scene/create_scene.rst:4
+msgid "Using the Interactive Scene"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:8
+msgid "So far in the tutorials, we manually spawned assets into the simulation and created object instances to interact with them. However, as the complexity of the scene increases, it becomes tedious to perform these tasks manually. In this tutorial, we will introduce the :class:`scene.InteractiveScene` class, which provides a convenient interface for spawning prims and managing them in the simulation."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:14
+msgid "At a high-level, the interactive scene is a collection of scene entities. Each entity can be either a non-interactive prim (e.g. ground plane, light source), an interactive prim (e.g. articulation, rigid object), or a sensor (e.g. camera, lidar). The interactive scene provides a convenient interface for spawning these entities and managing them in the simulation."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:20
+msgid "Compared the manual approach, it provides the following benefits:"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:22
+msgid "Alleviates the user needing to spawn each asset separately as this is handled implicitly."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:23
+msgid "Enables user-friendly cloning of scene prims for multiple environments."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:24
+msgid "Collects all the scene entities into a single object, which makes them easier to manage."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:26
+msgid "In this tutorial, we take the cartpole example from the :ref:`tutorial-interact-articulation` tutorial and replace the ``design_scene`` function with an :class:`scene.InteractiveScene` object. While it may seem like overkill to use the interactive scene for this simple example, it will become more useful in the future as more assets and sensors are added to the scene."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:33
+msgid "The Code"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:35
+msgid "This tutorial corresponds to the ``create_scene.py`` script within ``source/standalone/tutorials/02_scene``."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:0
+msgid "Code for create_scene.py"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:48
+msgid "The Code Explained"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:50
+msgid "While the code is similar to the previous tutorial, there are a few key differences that we will go over in detail."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:54
+msgid "Scene configuration"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:56
+msgid "The scene is composed of a collection of entities, each with their own configuration. These are specified in a configuration class that inherits from :class:`scene.InteractiveSceneCfg`. The configuration class is then passed to the :class:`scene.InteractiveScene` constructor to create the scene."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:61
+msgid "For the cartpole example, we specify the same scene as in the previous tutorial, but list them now in the configuration class :class:`CartpoleSceneCfg` instead of manually spawning them."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:68
+msgid "The variable names in the configuration class are used as keys to access the corresponding entity from the :class:`scene.InteractiveScene` object. For example, the cartpole can be accessed via ``scene[\"cartpole\"]``. However, we will get to that later. First, let's look at how individual scene entities are configured."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:73
+msgid "Similar to how a rigid object and articulation were configured in the previous tutorials, the configurations are specified using a configuration class. However, there is a key difference between the configurations for the ground plane and light source and the configuration for the cartpole. The ground plane and light source are non-interactive prims, while the cartpole is an interactive prim. This distinction is reflected in the configuration classes used to specify them. The configurations for the ground plane and light source are specified using an instance of the :class:`assets.AssetBaseCfg` class while the cartpole is configured using an instance of the :class:`assets.ArticulationCfg`. Anything that is not an interactive prim (i.e., neither an asset nor a sensor) is not *handled* by the scene during simulation steps."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:84
+msgid "Another key difference to note is in the specification of the prim paths for the different prims:"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:87
+msgid "Ground plane: ``/World/defaultGroundPlane``"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:88
+msgid "Light source: ``/World/Light``"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:89
+msgid "Cartpole: ``{ENV_REGEX_NS}/Robot``"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:91
+msgid "As we learned earlier, Omniverse creates a graph of prims in the USD stage. The prim paths are used to specify the location of the prim in the graph. The ground plane and light source are specified using absolute paths, while the cartpole is specified using a relative path. The relative path is specified using the ``ENV_REGEX_NS`` variable, which is a special variable that is replaced with the environment name during scene creation. Any entity that has the ``ENV_REGEX_NS`` variable in its prim path will be  cloned for each environment. This path is replaced by the scene object with ``/World/envs/env_{i}`` where ``i`` is the environment index."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:101
+msgid "Scene instantiation"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:103
+msgid "Unlike before where we called the ``design_scene`` function to create the scene, we now create an instance of the :class:`scene.InteractiveScene` class and pass in the configuration object to its constructor. While creating the configuration instance of ``CartpoleSceneCfg`` we specify how many environment copies we want to create using the ``num_envs`` argument. This will be used to clone the scene for each environment."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:115
+msgid "Accessing scene elements"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:117
+msgid "Similar to how entities were accessed from a dictionary in the previous tutorials, the scene elements can be accessed from the :class:`InteractiveScene` object using the ``[]`` operator. The operator takes in a string key and returns the corresponding entity. The key is specified through the configuration class for each entity. For example, the cartpole is specified using the key ``\"cartpole\"`` in the configuration class."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:129
+msgid "Running the simulation loop"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:131
+msgid "The rest of the script looks similar to previous scripts that interfaced with :class:`assets.Articulation`, with a few small differences in the methods called:"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:134
+msgid ":meth:`assets.Articulation.reset` ⟶ :meth:`scene.InteractiveScene.reset`"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:135
+msgid ":meth:`assets.Articulation.write_data_to_sim` ⟶ :meth:`scene.InteractiveScene.write_data_to_sim`"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:136
+msgid ":meth:`assets.Articulation.update` ⟶ :meth:`scene.InteractiveScene.update`"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:138
+msgid "Under the hood, the methods of :class:`scene.InteractiveScene` call the corresponding methods of the entities in the scene."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:143
+msgid "The Code Execution"
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:145
+msgid "Let's run the script to simulate 32 cartpoles in the scene. We can do this by passing the ``--num_envs`` argument to the script."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:152
+msgid "This should open a stage with 32 cartpoles swinging around randomly. You can use the mouse to rotate the camera and the arrow keys to move around the scene."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:155
+msgid "In this tutorial, we saw how to use :class:`scene.InteractiveScene` to create a scene with multiple assets. We also saw how to use the ``num_envs`` argument to clone the scene for multiple environments."
+msgstr ""
+
+#: ../../source/tutorials/02_scene/create_scene.rst:159
+msgid "There are many more example usages of the :class:`scene.InteractiveSceneCfg` in the tasks found under the ``omni.isaac.lab_tasks`` extension. Please check out the source code to see how they are used for more complex scenes."
+msgstr ""

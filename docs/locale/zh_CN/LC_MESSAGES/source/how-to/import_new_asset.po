@@ -1,0 +1,321 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../source/how-to/import_new_asset.rst:2
+msgid "Importing a New Asset"
+msgstr "引入新资产"
+
+#: ../../source/how-to/import_new_asset.rst:6
+msgid ""
+"NVIDIA Omniverse relies on the Universal Scene Description (USD) file format"
+" to import and export assets. USD is an open source file format developed by"
+" Pixar Animation Studios. It is a scene description format optimized for "
+"large-scale, complex data sets. While this format is widely used in the film"
+" and animation industry, it is less common in the robotics community."
+msgstr ""
+"NVIDIA Omniverse依赖通用场景描述（USD）文件格式来导入和导出资产。 USD是由Pixar Animation "
+"Studios开发的开源文件格式。 它是一种针对大规模、复杂数据集进行了优化的场景描述格式。 "
+"虽然该格式在电影和动画行业广泛使用，但在机器人领域并不常见。"
+
+#: ../../source/how-to/import_new_asset.rst:12
+msgid ""
+"To this end, NVIDIA has developed various importers that allow you to import"
+" assets from other file formats into USD. These importers are available as "
+"extensions to Omniverse Kit:"
+msgstr "为此，NVIDIA开发了各种导入器，允许您将资产从其他文件格式导入USD。 这些导入器作为Omniverse Kit的扩展可用："
+
+#: ../../source/how-to/import_new_asset.rst:16
+msgid "**URDF Importer** - Import assets from URDF files."
+msgstr "**URDF导入器** - 从URDF文件导入资产。"
+
+#: ../../source/how-to/import_new_asset.rst:17
+msgid "**MJCF Importer** - Import assets from MJCF files."
+msgstr "**MJCF导入器** - 从MJCF文件导入资产。"
+
+#: ../../source/how-to/import_new_asset.rst:18
+msgid ""
+"**Asset Importer** - Import assets from various file formats, including OBJ,"
+" FBX, STL, and glTF."
+msgstr "**资产导入器** - 从各种文件格式（包括OBJ、FBX、STL和glTF）导入资产。"
+
+#: ../../source/how-to/import_new_asset.rst:21
+msgid ""
+"The recommended workflow from NVIDIA is to use the above importers to "
+"convert the asset into its USD representation. Once the asset is in USD "
+"format, you can use the Omniverse Kit to edit the asset and export it to "
+"other file formats."
+msgstr ""
+"NVIDIA推荐的工作流程是使用上述导入器将资产转换为其USD表示。 一旦资产以USD格式存在，就可以使用Omniverse "
+"Kit来编辑资产并将其导出到其他文件格式中。"
+
+#: ../../source/how-to/import_new_asset.rst:25
+msgid ""
+"An important note to use assets for large-scale simulation is to ensure that"
+" they are in `instanceable`_ format. This allows the asset to be efficiently"
+" loaded into memory and used multiple times in a scene. Otherwise, the asset"
+" will be loaded into memory multiple times, which can cause performance "
+"issues. For more details on instanceable assets, please check the Isaac Sim "
+"`documentation`_."
+msgstr ""
+"使用大规模模拟的重要提示是确保资产处于`实例化`_格式。这可以使资产有效地加载到内存中，并在场景中多次使用。否则，资产将多次加载到内存中，这可能会导致性能问题。有关实例化资产的更多详细信息，请查看Isaac"
+" Sim `文档`_。"
+
+#: ../../source/how-to/import_new_asset.rst:33
+msgid "Using URDF Importer"
+msgstr "使用URDF导入器"
+
+#: ../../source/how-to/import_new_asset.rst:35
+msgid ""
+"Isaac Sim includes the URDF and MJCF importers by default. These importers "
+"support the option to import assets as instanceable assets. By selecting "
+"this option, the importer will create two USD files: one for all the mesh "
+"data and one for all the non-mesh data (e.g. joints, rigid bodies, etc.). "
+"The prims in the mesh data file are referenced in the non-mesh data file. "
+"This allows the mesh data (which is often bulky) to be loaded into memory "
+"only once and used multiple times in a scene."
+msgstr ""
+"Isaac Sim默认包括URDF和MJCF导入器。 这些导入器支持将资产导入为实例化资产的选项。 "
+"通过选择此选项，导入器将创建两个USD文件：一个用于所有网格数据，一个用于所有非网格数据（例如关节、刚体等）。 "
+"网格数据文件中的prims将在非网格数据文件中引用。 这使得网格数据（通常是臃肿的）仅加载到内存中一次，并在场景中多次使用。"
+
+#: ../../source/how-to/import_new_asset.rst:42
+msgid ""
+"For using these importers from the GUI, please check the documentation for "
+"`MJCF importer`_ and `URDF importer`_ respectively."
+msgstr "要从GUI中使用这些导入器，请分别查看`MJCF导入器`_和`URDF导入器`_的文档。"
+
+#: ../../source/how-to/import_new_asset.rst:45
+msgid ""
+"For using the URDF importers from Python scripts, we include a utility tool "
+"called ``convert_urdf.py``. Internally, this script creates an instance of "
+":class:`~sim.converters.UrdfConverterCfg` which is then passed to the "
+":class:`~sim.converters.UrdfConverter` class. The configuration class "
+"specifies the default values for the importer. The important settings are:"
+msgstr ""
+"要从Python脚本中使用URDF导入器，我们包括了一个实用工具称为``convert_urdf.py``。在内部，此脚本创建了:class:`~sim.converters.UrdfConverterCfg`的实例，然后将其传递给:class:`~sim.converters.UrdfConverter`类。配置类指定了导入器的默认值。重要的设置是："
+
+#: ../../source/how-to/import_new_asset.rst:50
+msgid ""
+":attr:`~sim.converters.UrdfConverterCfg.fix_base` - Whether to fix the base "
+"of the robot. This depends on whether you have a floating-base or fixed-base"
+" robot."
+msgstr ""
+":attr:`~sim.converters.UrdfConverterCfg.fix_base` - "
+"是否固定机器人的基座。这取决于你是否有一个浮动基座或固定基座机器人。"
+
+#: ../../source/how-to/import_new_asset.rst:52
+msgid ""
+":attr:`~sim.converters.UrdfConverterCfg.make_instanceable` - Whether to "
+"create instanceable assets. Usually, this should be set to ``True``."
+msgstr ""
+":attr:`~sim.converters.UrdfConverterCfg.make_instanceable` - "
+"是否创建实例化资产。通常应将其设置为``True``。"
+
+#: ../../source/how-to/import_new_asset.rst:54
+msgid ""
+":attr:`~sim.converters.UrdfConverterCfg.merge_fixed_joints` - Whether to "
+"merge the fixed joints. Usually, this should be set to ``True`` to reduce "
+"the asset complexity."
+msgstr ""
+":attr:`~sim.converters.UrdfConverterCfg.merge_fixed_joints` - "
+"是否合并固定关节。通常，这应该设置为``True``以减少资产复杂性。"
+
+#: ../../source/how-to/import_new_asset.rst:56
+msgid ""
+":attr:`~sim.converters.UrdfConverterCfg.default_drive_type` - The drive-type"
+" for the joints. We recommend this to always be ``\"none\"``. This allows "
+"changing the drive configuration using the actuator models."
+msgstr ""
+":attr:`~sim.converters.UrdfConverterCfg.default_drive_type` - "
+"关节的驱动类型。我们建议始终设置为``\"none\"``。这允许使用执行器模型更改驱动器配置。"
+
+#: ../../source/how-to/import_new_asset.rst:59
+msgid ""
+":attr:`~sim.converters.UrdfConverterCfg.default_drive_stiffness` - The drive"
+" stiffness for the joints. We recommend this to always be ``0.0``. This "
+"allows changing the drive configuration using the actuator models."
+msgstr ""
+":attr:`~sim.converters.UrdfConverterCfg.default_drive_stiffness` - "
+"关节的驱动刚度。我们建议始终设置为``0.0``。这允许使用执行器模型更改驱动器配置。"
+
+#: ../../source/how-to/import_new_asset.rst:62
+msgid ""
+":attr:`~sim.converters.UrdfConverterCfg.default_drive_damping` - The drive "
+"damping for the joints. Similar to the stiffness, we recommend this to "
+"always be ``0.0``."
+msgstr ""
+":attr:`~sim.converters.UrdfConverterCfg.default_drive_damping` - "
+"关节的驱动阻尼。与刚度类似，我们建议始终将其设置为``0.0``。"
+
+#: ../../source/how-to/import_new_asset.rst:66
+#: ../../source/how-to/import_new_asset.rst:138
+msgid "Example Usage"
+msgstr "示例用法"
+
+#: ../../source/how-to/import_new_asset.rst:68
+msgid ""
+"In this example, we use the pre-processed URDF file of the ANYmal-D robot. "
+"To check the pre-process URDF, please check the file the `anymal.urdf`_. The"
+" main difference between the pre-processed URDF and the original URDF are:"
+msgstr ""
+"在此示例中，我们使用了任天堂-"
+"D机器人的预处理URDF文件。要检查预处理好的URDF，请查看文件``anymal.urdf``_。预处理URDF和原始URDF之间的主要区别是："
+
+#: ../../source/how-to/import_new_asset.rst:72
+msgid ""
+"We removed the ``<gazebo>`` tag from the URDF. This tag is not supported by "
+"the URDF importer."
+msgstr "我们从URDF中删除了``<gazebo>``标签。此标签不受URDF导入器支持。"
+
+#: ../../source/how-to/import_new_asset.rst:73
+msgid ""
+"We removed the ``<transmission>`` tag from the URDF. This tag is not "
+"supported by the URDF importer."
+msgstr "我们从URDF中删除了``<transmission>``标签。URDF导入器不支持此标签。"
+
+#: ../../source/how-to/import_new_asset.rst:74
+msgid ""
+"We removed various collision bodies from the URDF to reduce the complexity "
+"of the asset."
+msgstr "我们从URDF中删除了多个碰撞体，以减少资产的复杂性。"
+
+#: ../../source/how-to/import_new_asset.rst:75
+msgid ""
+"We changed all the joint's damping and friction parameters to ``0.0``. This "
+"ensures that we can perform effort-control on the joints without PhysX "
+"adding additional damping."
+msgstr "我们将所有关节的阻尼和摩擦参数更改为``0.0``。这确保我们可以在没有PhysX增加额外阻尼的情况下对关节进行努力控制。"
+
+#: ../../source/how-to/import_new_asset.rst:77
+msgid ""
+"We added the ``<dont_collapse>`` tag to fixed joints. This ensures that the "
+"importer does not merge these fixed joints."
+msgstr "我们向固定关节添加了``<dont_collapse>``标签。这确保导入器不会合并这些固定关节。"
+
+#: ../../source/how-to/import_new_asset.rst:80
+msgid ""
+"The following shows the steps to clone the repository and run the converter:"
+msgstr "以下是克隆存储库并运行转换器的步骤："
+
+#: ../../source/how-to/import_new_asset.rst:99
+msgid ""
+"Executing the above script will create two USD files inside the "
+"``source/extensions/omni.isaac.lab_assets/data/Robots/ANYbotics/`` "
+"directory:"
+msgstr ""
+"执行上述脚本将在``source/extensions/omni.isaac.lab_assets/data/Robots/ANYbotics/``目录内创建两个USD文件："
+
+#: ../../source/how-to/import_new_asset.rst:102
+msgid ""
+"``anymal_d.usd`` - This is the main asset file. It contains all the non-mesh"
+" data."
+msgstr "``anymal_d.usd`` - 这是主资产文件。 它包含所有非网格数据。"
+
+#: ../../source/how-to/import_new_asset.rst:103
+msgid "``Props/instanceable_assets.usd`` - This is the mesh data file."
+msgstr "``Props/instanceable_assets.usd`` - 这是网格数据文件。"
+
+#: ../../source/how-to/import_new_asset.rst:107
+msgid ""
+"Since Isaac Sim 2023.1.1, the URDF importer behavior has changed and it "
+"stores the mesh data inside the main asset file even if the ``--make-"
+"instanceable`` flag is set. This means that the "
+"``Props/instanceable_assets.usd`` file is created but not used anymore."
+msgstr ""
+"自Isaac Sim 2023.1.1以来，URDF导入器的行为发生了变化，它会将网格数据存储到主资产文件中，即使设置了``--make-"
+"instanceable``标志。这意味着``Props/instanceable_assets.usd``文件已创建，但不再被使用。"
+
+#: ../../source/how-to/import_new_asset.rst:111
+msgid ""
+"You can press play on the opened window to see the asset in the scene. The "
+"asset should \"collapse\" if everything is working correctly. If it blows "
+"up, then it might be that you have self-collisions present in the URDF."
+msgstr ""
+"您可以按下打开窗口的“播放”按钮，以在场景中看到资产。如果一切正常的话，资产应该会“坍塌”。 如果发生爆炸，那么可能是URDF中存在自我碰撞。"
+
+#: ../../source/how-to/import_new_asset.rst:115
+msgid ""
+"To run the script headless, you can add the ``--headless`` flag. This will "
+"not open the GUI and exit the script after the conversion is complete."
+msgstr "要无头运行脚本，您可以添加``--headless``标志。 这将不会打开GUI，并在转换完成后退出脚本。"
+
+#: ../../source/how-to/import_new_asset.rst:120
+msgid "Using Mesh Importer"
+msgstr "使用网格导入器"
+
+#: ../../source/how-to/import_new_asset.rst:122
+msgid ""
+"Omniverse Kit includes the mesh converter tool that uses the ASSIMP library "
+"to import assets from various mesh formats (e.g. OBJ, FBX, STL, glTF, etc.)."
+" The asset converter tool is available as an extension to Omniverse Kit. "
+"Please check the `asset converter`_ documentation for more details. However,"
+" unlike Isaac Sim's URDF and MJCF importers, the asset converter tool does "
+"not support creating instanceable assets. This means that the asset will be "
+"loaded into memory multiple times if it is used multiple times in a scene."
+msgstr ""
+"Omniverse "
+"Kit包括使用ASSIMP库的网格转换器工具，用于从各种网格格式（例如OBJ、FBX、STL、glTF等）导入资产。资产转换器工具作为Omniverse"
+" Kit的扩展可用。请查看`资产转换器`_文档以获取更多详细信息。 但是，与Isaac "
+"Sim的URDF和MJCF导入器不同，资产转换器工具不支持创建实例化资产。 这意味着如果在场景中多次使用资产，则资产将多次加载到内存中。"
+
+#: ../../source/how-to/import_new_asset.rst:129
+msgid ""
+"Thus, we include a utility tool called ``convert_mesh.py`` that uses the "
+"asset converter tool to import the asset and then converts it into an "
+"instanceable asset. Internally, this script creates an instance of "
+":class:`~sim.converters.MeshConverterCfg` which is then passed to the "
+":class:`~sim.converters.MeshConverter` class. Since the mesh file does not "
+"contain any physics information, the configuration class accepts different "
+"physics properties (such as mass, collision shape, etc.) as input. Please "
+"check the documentation for :class:`~sim.converters.MeshConverterCfg` for "
+"more details."
+msgstr ""
+"因此，我们包括了一个名为``convert_mesh.py``的实用工具，该工具使用资产转换器工具导入资产，然后将其转换为可实例化的资产。在内部，此脚本创建了:class:`~sim.converters.MeshConverterCfg`的实例，然后将其传递给:class:`~sim.converters.MeshConverter`类。由于网格文件不包含任何物理信息，配置类将接受不同的物理属性（例如质量、碰撞形状等）作为输入。请查看:class:`~sim.converters.MeshConverterCfg`的文档以获取更多详细信息。"
+
+#: ../../source/how-to/import_new_asset.rst:140
+msgid ""
+"We use an OBJ file of a cube to demonstrate the usage of the mesh converter."
+" The following shows the steps to clone the repository and run the "
+"converter:"
+msgstr "我们使用一个立方体的OBJ文件来演示网格转换器的用法。以下是克隆存储库并运行转换器的步骤："
+
+#: ../../source/how-to/import_new_asset.rst:160
+msgid ""
+"Similar to the URDF converter, executing the above script will create two "
+"USD files inside the "
+"``source/extensions/omni.isaac.lab_assets/data/Props/CubeMultiColor/`` "
+"directory. Additionally, if you press play on the opened window, you should "
+"see the asset fall down under the influence of gravity."
+msgstr ""
+"与URDF转换器类似，执行上述脚本将在``source/extensions/omni.isaac.lab_assets/data/Props/CubeMultiColor/``目录内创建两个USD文件。此外，如果您按下打开窗口的“播放”按钮，应该会看到资产在重力的影响下倒下。"
+
+#: ../../source/how-to/import_new_asset.rst:165
+msgid ""
+"If you do not set the ``--mass`` flag, then no rigid body properties will be"
+" added to the asset. It will be imported as a static asset."
+msgstr "如果不设置``--mass``标志，则不会向资产添加刚体属性。它将作为静态资产导入。"
+
+#: ../../source/how-to/import_new_asset.rst:167
+msgid ""
+"If you also do not set the ``--collision-approximation`` flag, then the "
+"asset will not have any collider properties as well and will be imported as "
+"a visual asset."
+msgstr "如果您还没有设置``--collision-approximation``标志，则该资产也不会具有任何碰撞器属性，并且将作为视觉资产导入。"

@@ -1,0 +1,342 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:5
+msgid "Creating a Manager-Based RL Environment"
+msgstr "创建基于Manager的RL环境"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:9
+msgid ""
+"Having learnt how to create a base environment in :ref:`tutorial-create-"
+"manager-base-env`, we will now look at how to create a manager-based task "
+"environment for reinforcement learning."
+msgstr ""
+"在:ref:`tutorial-create-manager-base-"
+"env`中学习了如何创建基本环境之后，我们现在将看看如何为强化学习创建基于manager的任务环境。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:12
+msgid ""
+"The base environment is designed as an sense-act environment where the agent"
+" can send commands to the environment and receive observations from the "
+"environment. This minimal interface is sufficient for many applications such"
+" as traditional motion planning and controls. However, many applications "
+"require a task-specification which often serves as the learning objective "
+"for the agent. For instance, in a navigation task, the agent may be required"
+" to reach a goal location. To this end, we use the "
+":class:`envs.ManagerBasedRLEnv` class which extends the base environment to "
+"include a task specification."
+msgstr ""
+"基本环境被设计为一种感知-"
+"行为环境，其中代理可以向环境发送命令，并从环境中接收观察。这种最小接口对于许多应用程序是足够的，例如传统的运动规划和控制。然而，许多应用程序需要任务规范，这通常用作代理的学习目标。例如，在导航任务中，代理可能需要到达目标位置。为此，我们使用:class:`envs.ManagerBasedRLEnv`类，该类将基本环境扩展为包括任务规范。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:19
+msgid ""
+"Similar to other components in Isaac Lab, instead of directly modifying the "
+"base class :class:`envs.ManagerBasedRLEnv`, we encourage users to simply "
+"implement a configuration :class:`envs.ManagerBasedRLEnvCfg` for their task "
+"environment. This practice allows us to separate the task specification from"
+" the environment implementation, making it easier to reuse components of the"
+" same environment for different tasks."
+msgstr ""
+"与Isaac "
+"Lab中的其他组件类似，我们鼓励用户不要直接修改基类:class:`envs.ManagerBasedRLEnv`，而是简单实现一个配置:class:`envs.ManagerBasedRLEnvCfg`供他们的任务环境使用。这种做法使我们能够将任务规范从环境实现中分离出来，使得为不同的任务重用相同环境的组件变得更容易。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:24
+msgid ""
+"In this tutorial, we will configure the cartpole environment using the "
+":class:`envs.ManagerBasedRLEnvCfg` to create a manager-based task for "
+"balancing the pole upright. We will learn how to specify the task using "
+"reward terms, termination criteria, curriculum and commands."
+msgstr ""
+"在本教程中，我们将使用:class:`envs.ManagerBasedRLEnvCfg`来配置cartpole环境，以创建一个基于manager的任务，即使杆保持垂直。我们将学习如何使用奖励项、终止条件、课程表和命令来指定任务。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:30
+msgid "The Code"
+msgstr "代码"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:32
+msgid ""
+"For this tutorial, we use the cartpole environment defined in "
+"``omni.isaac.lab_tasks.manager_based.classic.cartpole`` module."
+msgstr ""
+"对于本教程，我们使用``omni.isaac.lab_tasks.manager_based.classic.cartpole``模块中定义的cartpole环境。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst
+msgid "Code for cartpole_env_cfg.py"
+msgstr "用于cartpole_env_cfg.py的代码"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:42
+msgid ""
+"The script for running the environment ``run_cartpole_rl_env.py`` is present"
+" in the ``isaaclab/source/standalone/tutorials/03_envs`` directory. The "
+"script is similar to the ``cartpole_base_env.py`` script in the previous "
+"tutorial, except that it uses the :class:`envs.ManagerBasedRLEnv` instead of"
+" the :class:`envs.ManagerBasedEnv`."
+msgstr ""
+"用于运行环境的脚本``run_cartpole_rl_env.py``位于``isaaclab/source/standalone/tutorials/03_envs``目录中。该脚本与上一个教程中的``cartpole_base_env.py``脚本类似，不同之处仅在于它使用:class:`envs.ManagerBasedRLEnv`代替:class:`envs.ManagerBasedEnv`。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst
+msgid "Code for run_cartpole_rl_env.py"
+msgstr "用于run_cartpole_rl_env.py的代码"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:57
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:59
+msgid ""
+"We already went through parts of the above in the :ref:`tutorial-create-"
+"manager-base-env` tutorial to learn about how to specify the scene, "
+"observations, actions and events. Thus, in this tutorial, we will focus only"
+" on the RL components of the environment."
+msgstr ""
+"我们已经在:ref:`tutorial-create-manager-base-"
+"env`教程中部分讨论了上述内容，以了解如何指定场景、观察、动作和事件。因此，在本教程中，我们将只关注环境的RL组件。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:63
+msgid ""
+"In Isaac Lab, we provide various implementations of different terms in the "
+":mod:`envs.mdp` module. We will use some of these terms in this tutorial, "
+"but users are free to define their own terms as well. These are usually "
+"placed in their task-specific sub-package (for instance, in "
+":mod:`omni.isaac.lab_tasks.manager_based.classic.cartpole.mdp`)."
+msgstr ""
+"在Isaac "
+"Lab中，我们在:mod:`envs.mdp`模块中提供了不同术语的各种实现。在本教程中，我们将使用其中一些术语，但用户也可以自由定义自己的术语。这些通常放在其特定于任务的子包中（例如，在:mod:`omni.isaac.lab_tasks.manager_based.classic.cartpole.mdp`中）。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:70
+msgid "Defining rewards"
+msgstr "定义奖励"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:72
+msgid ""
+"The :class:`managers.RewardManager` is used to compute the reward terms for "
+"the agent. Similar to the other managers, its terms are configured using the"
+" :class:`managers.RewardTermCfg` class. The :class:`managers.RewardTermCfg` "
+"class specifies the function or callable class that computes the reward as "
+"well as the weighting associated with it. It also takes in dictionary of "
+"arguments, ``\"params\"`` that are passed to the reward function when it is "
+"called."
+msgstr ""
+":class:`managers.RewardManager`用于计算代理的奖励术语。与其他管理类似，它的术语是使用:class:`managers.RewardTermCfg`类配置的。:class:`managers.RewardTermCfg`类指定计算奖励的函数或可调用类，以及与之关联的加权。它还接受一个参数字典``\"params\"``，在调用奖励函数时传递给奖励函数。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:78
+msgid "For the cartpole task, we will use the following reward terms:"
+msgstr "对于cartpole任务，我们将使用以下奖励术语："
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:80
+msgid ""
+"**Alive Reward**: Encourage the agent to stay alive for as long as possible."
+msgstr "**存活奖励**：鼓励代理尽可能长时间地保持存活。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:81
+msgid "**Terminating Reward**: Similarly penalize the agent for terminating."
+msgstr "**终止奖励**：同样地，惩罚代理终止。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:82
+msgid ""
+"**Pole Angle Reward**: Encourage the agent to keep the pole at the desired "
+"upright position."
+msgstr "**杆角度奖励**：鼓励代理保持杆处于期望的直立位置。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:83
+msgid ""
+"**Cart Velocity Reward**: Encourage the agent to keep the cart velocity as "
+"small as possible."
+msgstr "**小车速度奖励**：鼓励代理尽可能小地保持小车速度。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:84
+msgid ""
+"**Pole Velocity Reward**: Encourage the agent to keep the pole velocity as "
+"small as possible."
+msgstr "**杆速度奖励**：鼓励代理尽可能小地保持杆速度。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:91
+msgid "Defining termination criteria"
+msgstr "定义终止条件"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:93
+msgid ""
+"Most learning tasks happen over a finite number of steps that we call an "
+"episode. For instance, in the cartpole task, we want the agent to balance "
+"the pole for as long as possible. However, if the agent reaches an unstable "
+"or unsafe state, we want to terminate the episode. On the other hand, if the"
+" agent is able to balance the pole for a long time, we want to terminate the"
+" episode and start a new one so that the agent can learn to balance the pole"
+" from a different starting configuration."
+msgstr ""
+"大多数学习任务发生在有限步骤中，我们称之为一个episode。例如，在cartpole任务中，我们希望代理尽可能长时间地保持平衡杆。然而，如果代理达到一个不稳定或不安全的状态，我们希望终止这一episode。另一方面，如果代理能够长时间地保持平衡杆，我们希望终止这一episode，并开始一个新的episode，以便代理可以学会在不同的起始配置下保持平衡杆。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:99
+msgid ""
+"The :class:`managers.TerminationsCfg` configures what constitutes for an "
+"episode to terminate. In this example, we want the task to terminate when "
+"either of the following conditions is met:"
+msgstr ""
+":class:`managers.TerminationsCfg`配置了何时终止一个episode。在本例中，我们希望在满足以下条件之一时终止任务："
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:102
+msgid ""
+"**Episode Length** The episode length is greater than the defined "
+"max_episode_length"
+msgstr "**episode长度**：episode长度大于定义的max_episode_length"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:103
+msgid "**Cart out of bounds** The cart goes outside of the bounds [-3, 3]"
+msgstr "**小车超出边界**：小车超出边界[-3, 3]"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:105
+msgid ""
+"The flag :attr:`managers.TerminationsCfg.time_out` specifies whether the "
+"term is a time-out (truncation) term or terminated term. These are used to "
+"indicate the two types of terminations as described in `Gymnasium's "
+"documentation "
+"<https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/>`_."
+msgstr ""
+"标志:attr:`managers.TerminationsCfg.time_out`指定该术语是超时（截断）术语还是终止术语。这些术语用于指示`Gymnasium文档中描述的两种终止类型"
+" "
+"<https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/>`_。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:114
+msgid "Defining commands"
+msgstr "定义命令"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:116
+msgid ""
+"For various goal-conditioned tasks, it is useful to specify the goals or "
+"commands for the agent. These are handled through the "
+":class:`managers.CommandManager`. The command manager handles resampling and"
+" updating the commands at each step. It can also be used to provide the "
+"commands as an observation to the agent."
+msgstr ""
+"对于各种目标驱动的任务，指定代理的目标或命令很有用。这些通过:class:`managers.CommandManager`处理。命令管理器处理在每一步中重新采样和更新命令。它还可以用作代理的观察作为命令提供。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:120
+msgid ""
+"For this simple task, we do not use any commands. This is specified by using"
+" a command term with the :class:`envs.mdp.NullCommandCfg` configuration. "
+"However, you can see an example of command definitions in the locomotion or "
+"manipulation tasks."
+msgstr ""
+"对于这个简单的任务，我们不使用任何命令。这是通过使用一个带有:class:`envs.mdp.NullCommandCfg`配置的命令术语来指定的。然而，您可以在运动或操作任务中看到命令定义的一个例子。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:129
+msgid "Defining curriculum"
+msgstr "定义课程表"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:131
+msgid ""
+"Often times when training a learning agent, it helps to start with a simple "
+"task and gradually increase the tasks's difficulty as the agent training "
+"progresses. This is the idea behind curriculum learning. In Isaac Lab, we "
+"provide a :class:`managers.CurriculumManager` class that can be used to "
+"define a curriculum for your environment."
+msgstr ""
+"在训练学习代理时，通常帮助从一个简单的任务开始，随着代理训练的进行逐渐增加任务的难度。这就是课程学习的理念。在Isaac "
+"Lab中，我们提供一个:class:`managers.CurriculumManager`类，可以用来为您的环境定义一个课程表。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:135
+msgid ""
+"In this tutorial we don't implement a curriculum for simplicity, but you can"
+" see an example of a curriculum definition in the other locomotion or "
+"manipulation tasks. We use a simple pass-through curriculum to define a "
+"curriculum manager that does not modify the environment."
+msgstr ""
+"在本教程中，为了简单起见，我们没有实施课程表，但您可以在其他运动或操作任务中看到对课程表定义的一个例子。我们使用一个简单的透传课程表来定义一个不修改环境的课程表管理器。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:144
+msgid "Tying it all together"
+msgstr "全部联系在一起"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:146
+msgid ""
+"With all the above components defined, we can now create the "
+":class:`ManagerBasedRLEnvCfg` configuration for the cartpole environment. "
+"This is similar to the :class:`ManagerBasedEnvCfg` defined in "
+":ref:`tutorial-create-manager-base-env`, only with the added RL components "
+"explained in the above sections."
+msgstr ""
+"有了以上定义的所有组件，我们现在可以为cartpole环境创建:class:`ManagerBasedRLEnvCfg`配置。这与在:ref:`tutorial-"
+"create-manager-base-env`中定义的:class:`ManagerBasedEnvCfg`类似，只是增加了上述部分中解释的RL组件。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:155
+msgid "Running the simulation loop"
+msgstr "运行仿真循环"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:157
+msgid ""
+"Coming back to the ``run_cartpole_rl_env.py`` script, the simulation loop is"
+" similar to the previous tutorial. The only difference is that we create an "
+"instance of :class:`envs.ManagerBasedRLEnv` instead of the "
+":class:`envs.ManagerBasedEnv`. Consequently, now the "
+":meth:`envs.ManagerBasedRLEnv.step` method returns additional signals such "
+"as the reward and termination status. The information dictionary also "
+"maintains logging of quantities such as the reward contribution from "
+"individual terms, the termination status of each term, the episode length "
+"etc."
+msgstr ""
+"回到``run_cartpole_rl_env.py``脚本，仿真循环与上一个教程类似。唯一的区别是我们现在创建:class:`envs.ManagerBasedRLEnv`的实例，而不是:class:`envs.ManagerBasedEnv`的实例。因此，现在，:meth:`envs.ManagerBasedRLEnv.step`方法返回额外的信号，如奖励和终止状态。信息字典还保持对诸如来自单个术语的奖励贡献、每个术语的终止状态、episode长度等数量的记录。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:169
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:171
+msgid ""
+"Similar to the previous tutorial, we can run the environment by executing "
+"the ``run_cartpole_rl_env.py`` script."
+msgstr "与以前的教程类似，我们可以通过执行``run_cartpole_rl_env.py``脚本来运行环境。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:178
+msgid ""
+"This should open a similar simulation as in the previous tutorial. However, "
+"this time, the environment returns more signals that specify the reward and "
+"termination status. Additionally, the individual environments reset "
+"themselves when they terminate based on the termination criteria specified "
+"in the configuration."
+msgstr ""
+"这将打开一个与上一个教程类似的仿真。然而，这一次，环境返回更多的信号，指定了奖励和终止状态。此外，当他们根据配置中指定的终止条件终止时，单独的环境会重置自己。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:183
+msgid ""
+"To stop the simulation, you can either close the window, or press ``Ctrl+C``"
+" in the terminal where you started the simulation."
+msgstr "要停止仿真，您可以在您启动仿真的终端中关闭窗口，或者按``Ctrl+C``。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:186
+msgid ""
+"In this tutorial, we learnt how to create a task environment for "
+"reinforcement learning. We do this by extending the base environment to "
+"include the rewards, terminations, commands and curriculum terms. We also "
+"learnt how to use the :class:`envs.ManagerBasedRLEnv` class to run the "
+"environment and receive various signals from it."
+msgstr ""
+"在本教程中，我们学习了如何创建一个用于强化学习的任务环境。我们通过扩展基本环境来包括奖励、终止、命令和课程表术语来实现这一点。我们还学习了如何使用:class:`envs.ManagerBasedRLEnv`类来运行环境并从中接收各种信号。"
+
+#: ../../source/tutorials/03_envs/create_manager_rl_env.rst:191
+msgid ""
+"While it is possible to manually create an instance of "
+":class:`envs.ManagerBasedRLEnv` class for a desired task, this is not "
+"scalable as it requires specialized scripts for each task. Thus, we exploit "
+"the :meth:`gymnasium.make` function to create the environment with the gym "
+"interface. We will learn how to do this in the next tutorial."
+msgstr ""
+"尽管可以手动为所需任务创建:class:`envs.ManagerBasedRLEnv`类的实例，但这并不具有可伸缩性，因为它需要为每个任务编写专门的脚本。因此，我们利用:meth:`gymnasium.make`函数来使用gym接口创建环境。我们将在下一个教程中学习如何做到这一点。"

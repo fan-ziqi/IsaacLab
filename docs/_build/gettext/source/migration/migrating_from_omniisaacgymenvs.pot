@@ -1,0 +1,406 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:4
+msgid "From OmniIsaacGymEnvs"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:9
+msgid "`OmniIsaacGymEnvs`_ was a reinforcement learning framework using the Isaac Sim platform. Features from OmniIsaacGymEnvs have been integrated into the Isaac Lab framework. We have updated OmniIsaacGymEnvs to Isaac Sim version 4.0.0 to support the migration process to Isaac Lab. Moving forward, OmniIsaacGymEnvs will be deprecated and future development will continue in Isaac Lab."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:17
+msgid "Task Config Setup"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:19
+msgid "In OmniIsaacGymEnvs, task config files were defined in ``.yaml`` format. With Isaac Lab, configs are now specified using a specialized Python class :class:`~omni.isaac.lab.utils.configclass`. The :class:`~omni.isaac.lab.utils.configclass` module provides a wrapper on top of Python's ``dataclasses`` module. Each environment should specify its own config class annotated by ``@configclass`` that inherits from the :class:`~envs.DirectRLEnvCfg` class, which can include simulation parameters, environment scene parameters, robot parameters, and task-specific parameters."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:26
+msgid "Below is an example skeleton of a task config class:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:52
+msgid "Simulation Config"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:54
+msgid "Simulation related parameters are defined as part of the :class:`~omni.isaac.lab.sim.SimulationCfg` class, which is a :class:`~omni.isaac.lab.utils.configclass` module that holds simulation parameters such as ``dt``, ``device``, and ``gravity``. Each task config must have a variable named ``sim`` defined that holds the type :class:`~omni.isaac.lab.sim.SimulationCfg`."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:59
+msgid "Simulation parameters for articulations and rigid bodies such as ``num_position_iterations``, ``num_velocity_iterations``, ``contact_offset``, ``rest_offset``, ``bounce_threshold_velocity``, ``max_depenetration_velocity`` can all be specified on a per-actor basis in the config class for each individual articulation and rigid body."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:63
+msgid "When running simulation on the GPU, buffers in PhysX require pre-allocation for computing and storing information such as contacts, collisions and aggregate pairs. These buffers may need to be adjusted depending on the complexity of the environment, the number of expected contacts and collisions, and the number of actors in the environment. The :class:`~omni.isaac.lab.sim.PhysxCfg` class provides access for setting the GPU buffer dimensions."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:116
+msgid "Parameters such as ``add_ground_plane`` and ``add_distant_light`` are now part of the task logic when creating the scene. ``enable_cameras`` is now a command line argument ``--enable_cameras`` that can be passed directly to the training script."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:121
+msgid "Scene Config"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:123
+msgid "The :class:`~omni.isaac.lab.scene.InteractiveSceneCfg` class can be used to specify parameters related to the scene, such as the number of environments and the spacing between environments. Each task config must have a variable named ``scene`` defined that holds the type :class:`~omni.isaac.lab.scene.InteractiveSceneCfg`."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:138
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:473
+msgid "Task Config"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:140
+msgid "Each environment should specify its own config class that holds task specific parameters, such as the dimensions of the observation and action buffers. Reward term scaling parameters can also be specified in the config class."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:143
+msgid "In Isaac Lab, the ``controlFrequencyInv`` parameter has been renamed to ``decimation``, which must be specified as a parameter in the config class."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:146
+msgid "In addition, the maximum episode length parameter (now ``episode_length_s``) is in seconds instead of steps as it was in OmniIsaacGymEnvs. To convert between step count to seconds, use the equation: ``episode_length_s = dt * decimation * num_steps``."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:150
+msgid "The following parameters must be set for each environment config:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:162
+msgid "RL Config Setup"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:164
+msgid "RL config files for the rl_games library can continue to be defined in ``.yaml`` files in Isaac Lab. Most of the content of the config file can be copied directly from OmniIsaacGymEnvs. Note that in Isaac Lab, we do not use hydra to resolve relative paths in config files. Please replace any relative paths such as ``${....device}`` with the actual values of the parameters."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:169
+msgid "Additionally, the observation and action clip ranges have been moved to the RL config file. For any ``clipObservations`` and ``clipActions`` parameters that were defined in the IsaacGymEnvs task config file, they should be moved to the RL config file in Isaac Lab."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:175
+msgid "IsaacGymEnvs Task Config"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:175
+msgid "Isaac Lab RL Config"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:187
+msgid "Environment Creation"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:189
+msgid "In OmniIsaacGymEnvs, environment creation generally happened in the ``set_up_scene()`` API, which involved creating the initial environment, cloning the environment, filtering collisions, adding the ground plane and lights, and creating the ``View`` classes for the actors."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:193
+msgid "Similar functionality is performed in Isaac Lab in the ``_setup_scene()`` API. The main difference is that the base class ``_setup_scene()`` no longer performs operations for cloning the environment and adding ground plane and lights. Instead, these operations should now be implemented in individual tasks' ``_setup_scene`` implementations to provide more flexibility around the scene setup process."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:199
+msgid "Also note that by defining an ``Articulation`` or ``RigidObject`` object, the actors will be added to the scene by parsing the ``spawn`` parameter in the actor config and a ``View`` class will automatically be created for the actor. This avoids the need to separately define an ``ArticulationView`` or ``RigidPrimView`` object for the actors."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:206
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:332
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:348
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:436
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:478
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:569
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:622
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:661
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:699
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:756
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:810
+msgid "OmniIsaacGymEnvs"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:206
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:332
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:348
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:436
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:478
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:569
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:622
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:699
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:756
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:810
+msgid "Isaac Lab"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:226
+msgid "Ground Plane"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:228
+msgid "In addition to the above example, more sophisticated ground planes can be defined using the :class:`~terrains.TerrainImporterCfg` class."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:247
+msgid "The terrain can then be added to the scene in ``_setup_scene(self)`` by referencing the ``TerrainImporterCfg`` object:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:259
+msgid "Actors"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:261
+msgid "In Isaac Lab, each Articulation and Rigid Body actor can have its own config class. The :class:`~omni.isaac.lab.assets.ArticulationCfg` class can be used to define parameters for articulation actors, including file path, simulation parameters, actuator properties, and initial states."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:305
+msgid "Within the :class:`~assets.ArticulationCfg`, the ``spawn`` attribute can be used to add the robot to the scene by specifying the path to the robot file. In addition, the :class:`~omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg` class can be used to specify simulation properties for the rigid bodies in the articulation. Similarly, the :class:`~omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg` class can be used to specify simulation properties for the articulation. The joint properties are now specified as part of the ``actuators`` dictionary using :class:`~actuators.ImplicitActuatorCfg`. Joints with the same properties can be grouped into regex expressions or provided as a list of names or expressions."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:313
+msgid "Actors are added to the scene by simply calling ``self.cartpole = Articulation(self.cfg.robot_cfg)``, where ``self.cfg.robot_cfg`` is an :class:`~assets.ArticulationCfg` object. Once initialized, they should also be added to the :class:`~scene.InteractiveScene` by calling ``self.scene.articulations[\"cartpole\"] = self.cartpole`` so that the :class:`~scene.InteractiveScene` can traverse through actors in the scene for writing values to the simulation and resetting."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:321
+msgid "Accessing States from Simulation"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:323
+msgid "APIs for accessing physics states in Isaac Lab require the creation of an :class:`~assets.Articulation` or :class:`~assets.RigidObject` object. Multiple objects can be initialized for different articulations or rigid bodies in the scene by defining corresponding :class:`~assets.ArticulationCfg` or :class:`~assets.RigidObjectCfg` config, as outlined in the section above. This replaces the previously used :class:`~omni.isaac.core.articulations.ArticulationView` and :class:`omni.isaac.core.prims.RigidPrimView` classes used in OmniIsaacGymEnvs."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:329
+msgid "However, functionality between the classes are similar:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:340
+msgid "In Isaac Lab, :class:`~assets.Articulation` and :class:`~assets.RigidObject` classes both have a ``data`` class. The data classes (:class:`~assets.ArticulationData` and :class:`~assets.RigidObjectData`) contain buffers that hold the states for the articulation and rigid objects and provide a more performant way of retrieving states from the actors."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:345
+msgid "Apart from some renamings of APIs, setting states for actors can also be performed similarly between OmniIsaacGymEnvs and Isaac Lab."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:357
+msgid "In Isaac Lab, ``root_pose`` and ``root_velocity`` have been combined into single buffers and no longer split between ``root_position``, ``root_orientation``, ``root_linear_velocity`` and ``root_angular_velocity``."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:367
+msgid "Creating a New Environment"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:369
+msgid "Each environment in Isaac Lab should be in its own directory following this structure:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:380
+msgid "``my_environment`` is the root directory of the task."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:381
+msgid "``my_environment/agents`` is the directory containing all RL config files for the task. Isaac Lab supports multiple RL libraries that can each have its own individual config file."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:383
+msgid "``my_environment/__init__.py`` is the main file that registers the environment with the Gymnasium interface. This allows the training and inferencing scripts to find the task by its name. The content of this file should be as follow:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:408
+msgid "``my_environment/my_env.py`` is the main python script that implements the task logic and task config class for the environment."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:413
+msgid "Task Logic"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:415
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:564
+msgid "The ``post_reset`` API in OmniIsaacGymEnvs is no longer required in Isaac Lab. Everything that was previously done in ``post_reset`` can be done in the ``__init__`` method after executing the base class's ``__init__``. At this point, simulation has already started."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:419
+msgid "In OmniIsaacGymEnvs, due to limitations of the GPU APIs, resets could not be performed based on states of the current step. Instead, resets have to be performed at the beginning of the next time step. This restriction has been eliminated in Isaac Lab, and thus, tasks follow the correct workflow of applying actions, stepping simulation, collecting states, computing dones, calculating rewards, performing resets, and finally computing observations. This workflow is done automatically by the framework such that a ``post_physics_step`` API is not required in the task. However, individual tasks can override the ``step()`` API to control the workflow."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:426
+msgid "In Isaac Lab, we also separate the ``pre_physics_step`` API for processing actions from the policy with the ``apply_action`` API, which sets the actions into the simulation. This provides more flexibility in controlling when actions should be written to simulation when ``decimation`` is used. The ``pre_physics_step`` method will be called once per step before stepping simulation. The ``apply_actions`` method will be called ``decimation`` number of times for each RL step, once before each simulation step call."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:433
+msgid "The ordering of the calls are as follow:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:451
+msgid "With this approach, resets are performed based on actions from the current step instead of the previous step. Observations will also be computed with the correct states after resets."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:454
+msgid "We have also performed some renamings of APIs:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:456
+msgid "``set_up_scene(self, scene)`` --> ``_setup_scene(self)``"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:457
+msgid "``post_reset(self)`` --> ``__init__(...)``"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:458
+msgid "``pre_physics_step(self, actions)`` --> ``_pre_physics_step(self, actions)`` and ``_apply_action(self)``"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:459
+msgid "``reset_idx(self, env_ids)`` --> ``_reset_idx(self, env_ids)``"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:460
+msgid "``get_observations(self)`` --> ``_get_observations(self)`` - ``_get_observations()`` should now return a dictionary ``{\"policy\": obs}``"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:461
+msgid "``calculate_metrics(self)`` --> ``_get_rewards(self)`` - ``_get_rewards()`` should now return the reward buffer"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:462
+msgid "``is_done(self)`` --> ``_get_dones(self)`` - ``_get_dones()`` should now return 2 buffers: ``reset`` and ``time_out`` buffers"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:467
+msgid "Putting It All Together"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:469
+msgid "The Cartpole environment is shown here in completion to fully show the comparison between the OmniIsaacGymEnvs implementation and the Isaac Lab implementation."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:475
+msgid "Task config in Isaac Lab can be split into the main task configuration class and individual config objects for the actors."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:562
+msgid "Task Setup"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:614
+msgid "Scene Setup"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:616
+msgid "The ``set_up_scene`` method in OmniIsaacGymEnvs has been replaced by the ``_setup_scene`` API in the task class in Isaac Lab. Additionally, scene cloning and collision filtering have been provided as APIs for the task class to call when necessary. Similarly, adding ground plane and lights should also be taken care of in the task class. Adding actors to the scene has been replaced by ``self.scene.articulations[\"cartpole\"] = self.cartpole``."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:654
+msgid "Pre-Physics Step"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:656
+msgid "Note that resets are no longer performed in the ``pre_physics_step`` API. In addition, the separation of the ``_pre_physics_step`` and ``_apply_action`` methods allow for more flexibility in processing the action buffer and setting actions into simulation."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:661
+msgid "IsaacLab"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:690
+msgid "Dones and Resets"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:692
+msgid "In Isaac Lab, the ``dones`` are computed in the ``_get_dones()`` method and should return two variables: ``resets`` and ``time_out``. The ``_reset_idx()`` method is also called after stepping simulation instead of before, as it was done in OmniIsaacGymEnvs. The ``progress_buf`` tensor has been renamed to ``episode_length_buf`` in Isaac Lab and the bookkeeping is now done automatically by the framework. Task implementations no longer need to increment or reset the ``episode_length_buf`` buffer."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:749
+msgid "Rewards"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:751
+msgid "In Isaac Lab, rewards are implemented in the ``_get_rewards`` API and should return the reward buffer instead of assigning it directly to ``self.rew_buf``. Computation in the reward function can also be performed using pytorch jit through defining functions with the ``@torch.jit.script`` annotation."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:803
+msgid "Observations"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:805
+msgid "In Isaac Lab, the ``_get_observations()`` API must return a dictionary with the key ``policy`` that has the observation buffer as the value. When working with asymmetric actor-critic states, the states for the critic should have the key ``critic`` and be returned with the observation buffer in the same dictionary."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:834
+msgid "Domain Randomization"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:836
+msgid "In OmniIsaacGymEnvs, domain randomization was specified through the task ``.yaml`` config file. In Isaac Lab, the domain randomization configuration uses the :class:`~omni.isaac.lab.utils.configclass` module to specify a configuration class consisting of :class:`~managers.EventTermCfg` variables."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:840
+msgid "Below is an example of a configuration class for domain randomization:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:880
+msgid "Each ``EventTerm`` object is of the :class:`~managers.EventTermCfg` class and takes in a ``func`` parameter for specifying the function to call during randomization, a ``mode`` parameter, which can be ``startup``, ``reset`` or ``interval``. THe ``params`` dictionary should provide the necessary arguments to the function that is specified in the ``func`` parameter. Functions specified as ``func`` for the ``EventTerm`` can be found in the :class:`~envs.mdp.events` module."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:886
+msgid "Note that as part of the ``\"asset_cfg\": SceneEntityCfg(\"robot\", body_names=\".*\")`` parameter, the name of the actor ``\"robot\"`` is provided, along with the body or joint names specified as a regex expression, which will be the actors and bodies/joints that will have randomization applied."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:890
+msgid "One difference with OmniIsaacGymEnvs is that ``interval`` randomization is now specified as seconds instead of steps. When ``mode=\"interval\"``, the ``interval_range_s`` parameter must also be provided, which specifies the range of seconds for which randomization should be applied. This range will then be randomized to determine a specific time in seconds when the next randomization will occur for the term. To convert between steps to seconds, use the equation ``time_s = num_steps * (decimation * dt)``."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:896
+msgid "Similar to OmniIsaacGymEnvs, randomization APIs are available for randomizing articulation properties, such as joint stiffness and damping, joint limits, rigid body materials, fixed tendon properties, as well as rigid body properties, such as mass and rigid body materials. Randomization of the physics scene gravity is also supported. Note that randomization of scale is current not supported in Isaac Lab. To randomize scale, please set up the scene in a way where each environment holds the actor at a different scale."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:903
+msgid "Once the ``configclass`` for the randomization terms have been set up, the class must be added to the base config class for the task and be assigned to the variable ``events``."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:914
+msgid "Action and Observation Noise"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:916
+msgid "Actions and observation noise can also be added using the :class:`~utils.configclass` module. Action and observation noise configs must be added to the main task config using the ``action_noise_model`` and ``observation_noise_model`` variables:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:936
+msgid ":class:`~.utils.noise.NoiseModelWithAdditiveBiasCfg` can be used to sample both uncorrelated noise per step as well as correlated noise that is re-sampled at reset time. The ``noise_cfg`` term specifies the Gaussian distribution that will be sampled at each step for all environments. This noise will be added to the corresponding actions and observations buffers at every step. The ``bias_noise_cfg`` term specifies the Gaussian distribution for the correlated noise that will be sampled at reset time for the environments being reset. The same noise will be applied each step for the remaining of the episode for the environments and resampled at the next reset."
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:946
+msgid "This replaces the following setup in OmniIsaacGymEnvs:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:976
+msgid "Launching Training"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:978
+msgid "To launch a training in Isaac Lab, use the command:"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:985
+msgid "Launching Inferencing"
+msgstr ""
+
+#: ../../source/migration/migrating_from_omniisaacgymenvs.rst:987
+msgid "To launch inferencing in Isaac Lab, use the command:"
+msgstr ""

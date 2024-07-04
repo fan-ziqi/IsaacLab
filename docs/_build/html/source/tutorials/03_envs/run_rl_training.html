@@ -1,0 +1,919 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>使用RL代理进行训练 &#8212; Isaac Lab documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.4/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.4/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/translations.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/tutorials/03_envs/run_rl_training';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="集成传感器" href="../04_sensors/index.html" />
+    <link rel="prev" title="注册环境" href="register_rl_env_gym.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2024 年 07 月 04 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-4.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">关于翻译</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/installation/index.html">安装指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/pip_installation.html">使用 Isaac Sim pip 进行安装（试验性）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/binaries_installation.html">使用Isaac Sim二进制进行安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/verifying_installation.html">验证安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/cloud_installation.html">在云中运行Isaac Lab</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/developer.html">开发人员指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/sample.html">运行现有脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/template.html">建立您自己的项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/faq.html">常见问题</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../features/task_workflows.html">任务设计工作流</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/tiled_rendering.html">平铺渲染和录制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/actuators.html">执行器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">教程</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../00_sim/index.html">设置一个简单的模拟</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../00_sim/spawn_prims.html">场景中生成主体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../00_sim/launch_app.html">深度讨论AppLauncher</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../01_assets/index.html">与资产互动</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../01_assets/run_articulation.html">与关节交互</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../02_scene/index.html">创建一个场景</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../02_scene/create_scene.html">使用交互式场景</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">设计环境</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_manager_rl_env.html">创建基于Manager的RL环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">使用RL代理进行训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../04_sensors/index.html">集成传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../04_sensors/add_sensors_on_robot.html">在机器人上添加传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../05_controllers/index.html">使用运动生成器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-to/index.html">指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/import_new_asset.html">引入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/make_fixed_prim.html">在模拟中固定物理原语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/save_camera_output.html">保存渲染图像和3D重新投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/wrap_rl_env.html">封装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/master_omniverse.html">掌握Omniverse机器人技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_animation.html">仿真动画录制</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/docker.html">Docker Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/run_docker_example.html">在使用Docker运行示例</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">来源 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.app.html">omni.isaac.lab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.actuators.html">omni.isaac.lab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.assets.html">omni.isaac.lab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.controllers.html">omni.isaac.lab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.devices.html">omni.isaac.lab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html">omni.isaac.lab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html">omni.isaac.lab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.markers.html">omni.isaac.lab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html">omni.isaac.lab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.sensors.html">omni.isaac.lab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.html">omni.isaac.lab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.terrains.html">omni.isaac.lab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.utils.html">omni.isaac.lab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.mdp.html">omni.isaac.lab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.ui.html">omni.isaac.lab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.sensors.patterns.html">omni.isaac.lab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.converters.html">omni.isaac.lab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.schemas.html">omni.isaac.lab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.spawners.html">omni.isaac.lab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/omni.isaac.lab_tasks.utils.html">omni.isaac.lab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/omni.isaac.lab_tasks.utils.wrappers.html">omni.isaac.lab_tasks.utils.wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/omni.isaac.lab_tasks.utils.data_collector.html">omni.isaac.lab_tasks.utils.data_collector</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_isaacgymenvs.html">来自IsaacGymEnvs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_omniisaacgymenvs.html">从 OmniIsaacGymEnvs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_orbit.html">从轨道</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">建议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">Extensions Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考文献</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.omniverse.nvidia.com/isaacsim/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.0/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/source/tutorials/03_envs/run_rl_training.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/tutorials/03_envs/run_rl_training.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/tutorials/03_envs/run_rl_training.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>使用RL代理进行训练</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code">代码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-explained">代码的解释</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-the-agent">训练代理</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#headless-execution">无头执行</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#headless-execution-with-off-screen-render">带离屏渲染的无头执行</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-execution">交互式执行</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-the-logs">查看日志</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#playing-the-trained-agent">播放训练代理</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="training-with-an-rl-agent">
+<h1>使用RL代理进行训练<a class="headerlink" href="#training-with-an-rl-agent" title="此标题的永久链接">#</a></h1>
+<p>在之前的教程中，我们介绍了如何定义一个RL任务环境，将其注册到``gym``注册表中，并使用随机代理与其进行交互。现在我们继续进行下一步：训练一个RL代理来解决这个任务。</p>
+<p>尽管 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 符合 <a class="reference external" href="https://gymnasium.farama.org/api/env/#gymnasium.Env" title="（在 Gymnasium）"><code class="xref py py-class docutils literal notranslate"><span class="pre">gymnasium.Env</span></code></a> 接口，但它并不是一个 <code class="docutils literal notranslate"><span class="pre">gym</span></code> 环境。环境的输入和输出不是 numpy 数组，而是基于 torch 张量，其中第一个维度是环境实例的数量。</p>
+<p>此外，大多数RL库都希望环境遵循它们自己的环境接口的变体。例如，<a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable-Baselines3</a> 期望环境符合其 <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html#vecenv-api-vs-gym-api">VecEnv API</a>，该接口期望一个 numpy 数组列表而不是单个张量。类似地，<a class="reference external" href="https://github.com/leggedrobotics/rsl_rl">RSL-RL</a>、<a class="reference external" href="https://github.com/Denys88/rl_games">RL-Games</a> 和 <a class="reference external" href="https://skrl.readthedocs.io">SKRL</a> 也期望一个不同的接口。由于没有一劳永逸的解决方案，我们不以任何特定的学习库为基础来构建 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a>。相反，我们实现了包装器来将环境转换为所期望的接口。这些包装器在 <a class="reference internal" href="../../api/lab_tasks/omni.isaac.lab_tasks.utils.wrappers.html#module-omni.isaac.lab_tasks.utils.wrappers" title="omni.isaac.lab_tasks.utils.wrappers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">omni.isaac.lab_tasks.utils.wrappers</span></code></a> 模块中指定。</p>
+<p>在本教程中，我们将使用 <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable-Baselines3</a> 来训练一个RL代理以解决平衡倒立摆任务。</p>
+<div class="admonition caution">
+<p class="admonition-title">小心</p>
+<p>使用相应学习框架的包装器包装环境应该发生在最后，即在应用所有其他包装器之后。这是因为学习框架的包装器修改了环境API的解释，可能不再兼容 <a class="reference external" href="https://gymnasium.farama.org/api/env/#gymnasium.Env" title="（在 Gymnasium）"><code class="xref py py-class docutils literal notranslate"><span class="pre">gymnasium.Env</span></code></a>。</p>
+</div>
+<section id="the-code">
+<h2>代码<a class="headerlink" href="#the-code" title="此标题的永久链接">#</a></h2>
+<p>在本教程中，我们使用来自`Stable-Baselines3`_工作流中的训练脚本，位于``source/standalone/workflows/sb3``目录中。</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">train.py的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># Copyright (c) 2022-2024, The Isaac Lab Project Developers.</span>
+<span class="linenos">  2</span><span class="c1"># All rights reserved.</span>
+<span class="linenos">  3</span><span class="c1">#</span>
+<span class="linenos">  4</span><span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span><span class="sd">&quot;&quot;&quot;Script to train RL agent with Stable Baselines3.</span>
+<span class="linenos">  7</span>
+<span class="linenos">  8</span><span class="sd">Since Stable-Baselines3 does not support buffers living on GPU directly,</span>
+<span class="linenos">  9</span><span class="sd">we recommend using smaller number of environments. Otherwise,</span>
+<span class="linenos"> 10</span><span class="sd">there will be significant overhead in GPU-&gt;CPU transfer.</span>
+<span class="linenos"> 11</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="sd">&quot;&quot;&quot;Launch Isaac Sim Simulator first.&quot;&quot;&quot;</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="linenos"> 16</span>
+<span class="linenos"> 17</span><span class="kn">from</span> <span class="nn">omni.isaac.lab.app</span> <span class="kn">import</span> <span class="n">AppLauncher</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span><span class="c1"># add argparse arguments</span>
+<span class="linenos"> 20</span><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Train an RL agent with Stable-Baselines3.&quot;</span><span class="p">)</span>
+<span class="linenos"> 21</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--video&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Record videos during training.&quot;</span><span class="p">)</span>
+<span class="linenos"> 22</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--video_length&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of the recorded video (in steps).&quot;</span><span class="p">)</span>
+<span class="linenos"> 23</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--video_interval&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Interval between video recordings (in steps).&quot;</span><span class="p">)</span>
+<span class="linenos"> 24</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--cpu&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use CPU pipeline.&quot;</span><span class="p">)</span>
+<span class="linenos"> 25</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+<span class="linenos"> 26</span>    <span class="s2">&quot;--disable_fabric&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Disable fabric and use USD I/O operations.&quot;</span>
+<span class="linenos"> 27</span><span class="p">)</span>
+<span class="linenos"> 28</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_envs&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of environments to simulate.&quot;</span><span class="p">)</span>
+<span class="linenos"> 29</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--task&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of the task.&quot;</span><span class="p">)</span>
+<span class="linenos"> 30</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--seed&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Seed used for the environment&quot;</span><span class="p">)</span>
+<span class="linenos"> 31</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--max_iterations&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;RL Policy training iterations.&quot;</span><span class="p">)</span>
+<span class="linenos"> 32</span><span class="c1"># append AppLauncher cli args</span>
+<span class="linenos"> 33</span><span class="n">AppLauncher</span><span class="o">.</span><span class="n">add_app_launcher_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+<span class="linenos"> 34</span><span class="c1"># parse the arguments</span>
+<span class="linenos"> 35</span><span class="n">args_cli</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="linenos"> 36</span><span class="c1"># always enable cameras to record video</span>
+<span class="linenos"> 37</span><span class="k">if</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">video</span><span class="p">:</span>
+<span class="linenos"> 38</span>    <span class="n">args_cli</span><span class="o">.</span><span class="n">enable_cameras</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos"> 39</span>
+<span class="linenos"> 40</span><span class="c1"># launch omniverse app</span>
+<span class="linenos"> 41</span><span class="n">app_launcher</span> <span class="o">=</span> <span class="n">AppLauncher</span><span class="p">(</span><span class="n">args_cli</span><span class="p">)</span>
+<span class="linenos"> 42</span><span class="n">simulation_app</span> <span class="o">=</span> <span class="n">app_launcher</span><span class="o">.</span><span class="n">app</span>
+<span class="linenos"> 43</span>
+<span class="linenos"> 44</span><span class="sd">&quot;&quot;&quot;Rest everything follows.&quot;&quot;&quot;</span>
+<span class="linenos"> 45</span>
+<span class="linenos"> 46</span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="linenos"> 47</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 48</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="linenos"> 49</span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos"> 50</span>
+<span class="linenos"> 51</span><span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">PPO</span>
+<span class="linenos"> 52</span><span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CheckpointCallback</span>
+<span class="linenos"> 53</span><span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
+<span class="linenos"> 54</span><span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">VecNormalize</span>
+<span class="linenos"> 55</span>
+<span class="linenos"> 56</span><span class="kn">from</span> <span class="nn">omni.isaac.lab.utils.dict</span> <span class="kn">import</span> <span class="n">print_dict</span>
+<span class="hll"><span class="linenos"> 57</span><span class="kn">from</span> <span class="nn">omni.isaac.lab.utils.io</span> <span class="kn">import</span> <span class="n">dump_pickle</span><span class="p">,</span> <span class="n">dump_yaml</span>
+</span><span class="linenos"> 58</span>
+<span class="linenos"> 59</span><span class="kn">import</span> <span class="nn">omni.isaac.lab_tasks</span>  <span class="c1"># noqa: F401</span>
+<span class="linenos"> 60</span><span class="kn">from</span> <span class="nn">omni.isaac.lab_tasks.utils</span> <span class="kn">import</span> <span class="n">load_cfg_from_registry</span><span class="p">,</span> <span class="n">parse_env_cfg</span>
+<span class="linenos"> 61</span><span class="kn">from</span> <span class="nn">omni.isaac.lab_tasks.utils.wrappers.sb3</span> <span class="kn">import</span> <span class="n">Sb3VecEnvWrapper</span><span class="p">,</span> <span class="n">process_sb3_cfg</span>
+<span class="linenos"> 62</span>
+<span class="linenos"> 63</span>
+<span class="linenos"> 64</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="linenos"> 65</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Train with stable-baselines agent.&quot;&quot;&quot;</span>
+<span class="hll"><span class="linenos"> 66</span>    <span class="c1"># parse configuration</span>
+</span><span class="linenos"> 67</span>    <span class="n">env_cfg</span> <span class="o">=</span> <span class="n">parse_env_cfg</span><span class="p">(</span>
+<span class="hll"><span class="linenos"> 68</span>        <span class="n">args_cli</span><span class="o">.</span><span class="n">task</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="ow">not</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">cpu</span><span class="p">,</span> <span class="n">num_envs</span><span class="o">=</span><span class="n">args_cli</span><span class="o">.</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">use_fabric</span><span class="o">=</span><span class="ow">not</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">disable_fabric</span>
+</span><span class="hll"><span class="linenos"> 69</span>    <span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 70</span>    <span class="n">agent_cfg</span> <span class="o">=</span> <span class="n">load_cfg_from_registry</span><span class="p">(</span><span class="n">args_cli</span><span class="o">.</span><span class="n">task</span><span class="p">,</span> <span class="s2">&quot;sb3_cfg_entry_point&quot;</span><span class="p">)</span>
+</span><span class="linenos"> 71</span>
+<span class="linenos"> 72</span>    <span class="c1"># override configuration with command line arguments</span>
+<span class="linenos"> 73</span>    <span class="k">if</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos"> 74</span>        <span class="n">agent_cfg</span><span class="p">[</span><span class="s2">&quot;seed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">seed</span>
+<span class="linenos"> 75</span>
+<span class="linenos"> 76</span>    <span class="c1"># max iterations for training</span>
+<span class="linenos"> 77</span>    <span class="k">if</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">max_iterations</span><span class="p">:</span>
+<span class="linenos"> 78</span>        <span class="n">agent_cfg</span><span class="p">[</span><span class="s2">&quot;n_timesteps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">*</span> <span class="n">agent_cfg</span><span class="p">[</span><span class="s2">&quot;n_steps&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">env_cfg</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">num_envs</span>
+<span class="linenos"> 79</span>
+<span class="linenos"> 80</span>    <span class="c1"># directory for logging into</span>
+<span class="hll"><span class="linenos"> 81</span>    <span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="s2">&quot;sb3&quot;</span><span class="p">,</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">task</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">_%H-%M-%S&quot;</span><span class="p">))</span>
+</span><span class="linenos"> 82</span>    <span class="c1"># dump the configuration into log-directory</span>
+<span class="linenos"> 83</span>    <span class="n">dump_yaml</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;env.yaml&quot;</span><span class="p">),</span> <span class="n">env_cfg</span><span class="p">)</span>
+<span class="linenos"> 84</span>    <span class="n">dump_yaml</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;agent.yaml&quot;</span><span class="p">),</span> <span class="n">agent_cfg</span><span class="p">)</span>
+<span class="linenos"> 85</span>    <span class="n">dump_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;env.pkl&quot;</span><span class="p">),</span> <span class="n">env_cfg</span><span class="p">)</span>
+<span class="linenos"> 86</span>    <span class="n">dump_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;agent.pkl&quot;</span><span class="p">),</span> <span class="n">agent_cfg</span><span class="p">)</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span>    <span class="c1"># post-process agent configuration</span>
+<span class="linenos"> 89</span>    <span class="n">agent_cfg</span> <span class="o">=</span> <span class="n">process_sb3_cfg</span><span class="p">(</span><span class="n">agent_cfg</span><span class="p">)</span>
+<span class="hll"><span class="linenos"> 90</span>    <span class="c1"># read configurations about the agent-training</span>
+</span><span class="hll"><span class="linenos"> 91</span>    <span class="n">policy_arch</span> <span class="o">=</span> <span class="n">agent_cfg</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;policy&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 92</span>    <span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">agent_cfg</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;n_timesteps&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 93</span>
+</span><span class="hll"><span class="linenos"> 94</span>    <span class="c1"># create isaac environment</span>
+</span><span class="hll"><span class="linenos"> 95</span>    <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">args_cli</span><span class="o">.</span><span class="n">task</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="n">env_cfg</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array&quot;</span> <span class="k">if</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">video</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 96</span>    <span class="c1"># wrap for video recording</span>
+</span><span class="hll"><span class="linenos"> 97</span>    <span class="k">if</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">video</span><span class="p">:</span>
+</span><span class="hll"><span class="linenos"> 98</span>        <span class="n">video_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="linenos"> 99</span>            <span class="s2">&quot;video_folder&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;videos&quot;</span><span class="p">),</span>
+<span class="hll"><span class="linenos">100</span>            <span class="s2">&quot;step_trigger&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">step</span><span class="p">:</span> <span class="n">step</span> <span class="o">%</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">video_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
+</span><span class="linenos">101</span>            <span class="s2">&quot;video_length&quot;</span><span class="p">:</span> <span class="n">args_cli</span><span class="o">.</span><span class="n">video_length</span><span class="p">,</span>
+<span class="linenos">102</span>            <span class="s2">&quot;disable_logger&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="linenos">103</span>        <span class="p">}</span>
+<span class="linenos">104</span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO] Recording videos during training.&quot;</span><span class="p">)</span>
+<span class="hll"><span class="linenos">105</span>        <span class="n">print_dict</span><span class="p">(</span><span class="n">video_kwargs</span><span class="p">,</span> <span class="n">nesting</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">106</span>        <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">wrappers</span><span class="o">.</span><span class="n">RecordVideo</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">video_kwargs</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">107</span>    <span class="c1"># wrap around environment for stable baselines</span>
+</span><span class="hll"><span class="linenos">108</span>    <span class="n">env</span> <span class="o">=</span> <span class="n">Sb3VecEnvWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">109</span>    <span class="c1"># set the seed</span>
+</span><span class="hll"><span class="linenos">110</span>    <span class="n">env</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">agent_cfg</span><span class="p">[</span><span class="s2">&quot;seed&quot;</span><span class="p">])</span>
+</span><span class="hll"><span class="linenos">111</span>
+</span><span class="hll"><span class="linenos">112</span>    <span class="k">if</span> <span class="s2">&quot;normalize_input&quot;</span> <span class="ow">in</span> <span class="n">agent_cfg</span><span class="p">:</span>
+</span><span class="hll"><span class="linenos">113</span>        <span class="n">env</span> <span class="o">=</span> <span class="n">VecNormalize</span><span class="p">(</span>
+</span><span class="linenos">114</span>            <span class="n">env</span><span class="p">,</span>
+<span class="hll"><span class="linenos">115</span>            <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">116</span>            <span class="n">norm_obs</span><span class="o">=</span><span class="s2">&quot;normalize_input&quot;</span> <span class="ow">in</span> <span class="n">agent_cfg</span> <span class="ow">and</span> <span class="n">agent_cfg</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;normalize_input&quot;</span><span class="p">),</span>
+</span><span class="linenos">117</span>            <span class="n">norm_reward</span><span class="o">=</span><span class="s2">&quot;normalize_value&quot;</span> <span class="ow">in</span> <span class="n">agent_cfg</span> <span class="ow">and</span> <span class="n">agent_cfg</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;normalize_value&quot;</span><span class="p">),</span>
+<span class="linenos">118</span>            <span class="n">clip_obs</span><span class="o">=</span><span class="s2">&quot;clip_obs&quot;</span> <span class="ow">in</span> <span class="n">agent_cfg</span> <span class="ow">and</span> <span class="n">agent_cfg</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;clip_obs&quot;</span><span class="p">),</span>
+<span class="linenos">119</span>            <span class="n">gamma</span><span class="o">=</span><span class="n">agent_cfg</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">],</span>
+<span class="linenos">120</span>            <span class="n">clip_reward</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+<span class="hll"><span class="linenos">121</span>        <span class="p">)</span>
+</span><span class="hll"><span class="linenos">122</span>
+</span><span class="hll"><span class="linenos">123</span>    <span class="c1"># create agent from stable baselines</span>
+</span><span class="hll"><span class="linenos">124</span>    <span class="n">agent</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="n">policy_arch</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">agent_cfg</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">125</span>    <span class="c1"># configure the logger</span>
+</span><span class="hll"><span class="linenos">126</span>    <span class="n">new_logger</span> <span class="o">=</span> <span class="n">configure</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;stdout&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorboard&quot;</span><span class="p">])</span>
+</span><span class="linenos">127</span>    <span class="n">agent</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">new_logger</span><span class="p">)</span>
+<span class="linenos">128</span>
+<span class="linenos">129</span>    <span class="c1"># callbacks for agent</span>
+<span class="linenos">130</span>    <span class="n">checkpoint_callback</span> <span class="o">=</span> <span class="n">CheckpointCallback</span><span class="p">(</span><span class="n">save_freq</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">131</span>    <span class="c1"># train the agent</span>
+<span class="linenos">132</span>    <span class="n">agent</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">checkpoint_callback</span><span class="p">)</span>
+<span class="hll"><span class="linenos">133</span>    <span class="c1"># save the final model</span>
+</span><span class="hll"><span class="linenos">134</span>    <span class="n">agent</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">))</span>
+</span><span class="hll"><span class="linenos">135</span>
+</span><span class="hll"><span class="linenos">136</span>    <span class="c1"># close the simulator</span>
+</span><span class="linenos">137</span>    <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">138</span>
+<span class="linenos">139</span>
+<span class="linenos">140</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">141</span>    <span class="c1"># run the main function</span>
+<span class="linenos">142</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">143</span>    <span class="c1"># close sim app</span>
+<span class="linenos">144</span>    <span class="n">simulation_app</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="the-code-explained">
+<h2>代码的解释<a class="headerlink" href="#the-code-explained" title="此标题的永久链接">#</a></h2>
+<p>以上大部分代码是用来创建日志目录、保存解析的配置以及设置不同的Stable-Baselines3组件的样板代码。对于本教程而言，重要的部分是创建环境并使用Stable-Baselines3包装器对其进行包装。</p>
+<p>代码中使用了三个包装器：</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://gymnasium.farama.org/api/wrappers/misc_wrappers/#gymnasium.wrappers.RecordVideo" title="（在 Gymnasium）"><code class="xref py py-class docutils literal notranslate"><span class="pre">gymnasium.wrappers.RecordVideo</span></code></a>：此包装器记录环境的视频并将其保存到指定目录。这对于在训练过程中可视化代理的行为非常有用。</p></li>
+<li><p><a class="reference internal" href="../../api/lab_tasks/omni.isaac.lab_tasks.utils.wrappers.html#omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper" title="omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">wrappers.sb3.Sb3VecEnvWrapper</span></code></a>：此包装器将环境转换为与Stable-Baselines3兼容的环境。</p></li>
+<li><p><a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html#vecnormalize">stable_baselines3.common.vec_env.VecNormalize</a>：此包装器对环境的观测和奖励进行归一化。</p></li>
+</ol>
+<p>这些包装器都是通过不断执行 <code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">wrapper(env,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> 来包装在前一个包装器周围的。然后使用最终环境来训练代理。有关这些包装器的更多信息，请参考 <a class="reference internal" href="../../how-to/wrap_rl_env.html#how-to-env-wrappers"><span class="std std-ref">封装环境</span></a> 文档。</p>
+</section>
+<section id="the-code-execution">
+<h2>代码执行<a class="headerlink" href="#the-code-execution" title="此标题的永久链接">#</a></h2>
+<p>我们使用来自Stable-Baselines3的PPO代理来解决平衡倒立摆任务。</p>
+<section id="training-the-agent">
+<h3>训练代理<a class="headerlink" href="#training-the-agent" title="此标题的永久链接">#</a></h3>
+<p>训练代理有三种主要方式。每种方式都有其自身的优点和缺点。根据您的用例，您可以决定哪种方式更适合您。</p>
+<section id="headless-execution">
+<h4>无头执行<a class="headerlink" href="#headless-execution" title="此标题的永久链接">#</a></h4>
+<p>如果设置了``–headless``标志，则在训练过程中不会呈现模拟。这在在远程服务器上进行训练或者不想查看模拟时非常有用。通常情况下，这可以加快训练过程，因为只执行物理模拟步骤。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/workflows/sb3/train.py<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-v0<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">64</span><span class="w"> </span>--headless
+</pre></div>
+</div>
+</section>
+<section id="headless-execution-with-off-screen-render">
+<h4>带离屏渲染的无头执行<a class="headerlink" href="#headless-execution-with-off-screen-render" title="此标题的永久链接">#</a></h4>
+<p>由于上述命令不会呈现模拟，因此无法在训练过程中可视化代理的行为。为了可视化代理的行为，我们传递 <code class="docutils literal notranslate"><span class="pre">--enable_cameras</span></code> 以启用离屏渲染。此外，我们传递标志 <code class="docutils literal notranslate"><span class="pre">--video</span></code>，该标志记录代理在训练过程中的行为视频。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/workflows/sb3/train.py<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-v0<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">64</span><span class="w"> </span>--headless<span class="w"> </span>--enable_cameras<span class="w"> </span>--video
+</pre></div>
+</div>
+<p>这些视频将保存在 <code class="docutils literal notranslate"><span class="pre">logs/sb3/Isaac-Cartpole-v0/&lt;run-dir&gt;/videos</span></code> 目录中。您可以使用任何视频播放器打开这些视频。</p>
+</section>
+<section id="interactive-execution">
+<h4>交互式执行<a class="headerlink" href="#interactive-execution" title="此标题的永久链接">#</a></h4>
+<p>虽然以上两种方法对于训练代理非常有用，但它们不允许您与模拟进行交互以查看发生了什么。在这种情况下，您可以忽略 <code class="docutils literal notranslate"><span class="pre">--headless</span></code> 标志，并按照以下方式运行训练脚本：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/workflows/sb3/train.py<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-v0<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">64</span>
+</pre></div>
+</div>
+<p>这将打开Isaac Sim窗口，您可以在环境中看到代理的训练过程。但是，这将减慢训练过程，因为模拟是在屏幕上呈现的。作为解决方法，您可以在屏幕右下角停靠的``”Isaac Lab”<a href="#id1"><span class="problematic" id="id2">``</span></a>窗口中在不同的渲染模式之间切换。要了解更多有关这些渲染模式的信息，请查阅 <a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.SimulationContext.RenderMode" title="omni.isaac.lab.sim.SimulationContext.RenderMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">sim.SimulationContext.RenderMode</span></code></a> 类。</p>
+</section>
+</section>
+<section id="viewing-the-logs">
+<h3>查看日志<a class="headerlink" href="#viewing-the-logs" title="此标题的永久链接">#</a></h3>
+<p>在单独的终端上，您可以通过执行以下命令来监视训练进度：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># execute from the root directory of the repository</span>
+./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>-m<span class="w"> </span>tensorboard.main<span class="w"> </span>--logdir<span class="w"> </span>logs/sb3/Isaac-Cartpole-v0
+</pre></div>
+</div>
+</section>
+<section id="playing-the-trained-agent">
+<h3>播放训练代理<a class="headerlink" href="#playing-the-trained-agent" title="此标题的永久链接">#</a></h3>
+<p>一旦训练完成，您可以通过执行以下命令来查看经过训练的代理：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># execute from the root directory of the repository</span>
+./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/workflows/sb3/play.py<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-v0<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">32</span><span class="w"> </span>--use_last_checkpoint
+</pre></div>
+</div>
+<p>上述命令将从``logs/sb3/Isaac-Cartpole-v0``目录中加载最新的检查点。您也可以通过传递``–checkpoint``标志来指定特定的检查点。</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="register_rl_env_gym.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">注册环境</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_sensors/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">集成传感器</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code">代码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-explained">代码的解释</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-the-agent">训练代理</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#headless-execution">无头执行</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#headless-execution-with-off-screen-render">带离屏渲染的无头执行</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-execution">交互式执行</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-the-logs">查看日志</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#playing-the-trained-agent">播放训练代理</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2024 年 07 月 04 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

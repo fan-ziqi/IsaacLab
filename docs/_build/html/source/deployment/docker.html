@@ -1,0 +1,929 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Docker Guide &#8212; Isaac Lab documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.4/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.4/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/translations.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/deployment/docker';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="集群指南" href="cluster.html" />
+    <link rel="prev" title="容器部署" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2024 年 07 月 04 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-4.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">关于翻译</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/installation/index.html">安装指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/pip_installation.html">使用 Isaac Sim pip 进行安装（试验性）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/binaries_installation.html">使用Isaac Sim二进制进行安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/verifying_installation.html">验证安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/cloud_installation.html">在云中运行Isaac Lab</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/developer.html">开发人员指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/sample.html">运行现有脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/template.html">建立您自己的项目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/faq.html">常见问题</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../features/task_workflows.html">任务设计工作流</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/tiled_rendering.html">平铺渲染和录制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/actuators.html">执行器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/00_sim/index.html">设置一个简单的模拟</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/00_sim/spawn_prims.html">场景中生成主体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/00_sim/launch_app.html">深度讨论AppLauncher</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/01_assets/index.html">与资产互动</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/02_scene/index.html">创建一个场景</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/03_envs/index.html">设计环境</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html">创建基于Manager的RL环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/03_envs/run_rl_training.html">使用RL代理进行训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/04_sensors/index.html">集成传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/04_sensors/add_sensors_on_robot.html">在机器人上添加传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/05_controllers/index.html">使用运动生成器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../how-to/index.html">指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/import_new_asset.html">引入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/make_fixed_prim.html">在模拟中固定物理原语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/save_camera_output.html">保存渲染图像和3D重新投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/wrap_rl_env.html">封装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/master_omniverse.html">掌握Omniverse机器人技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_animation.html">仿真动画录制</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">容器部署</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Docker Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_docker_example.html">在使用Docker运行示例</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">来源 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.app.html">omni.isaac.lab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.actuators.html">omni.isaac.lab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html">omni.isaac.lab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.controllers.html">omni.isaac.lab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.devices.html">omni.isaac.lab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html">omni.isaac.lab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.managers.html">omni.isaac.lab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.markers.html">omni.isaac.lab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html">omni.isaac.lab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sensors.html">omni.isaac.lab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html">omni.isaac.lab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.terrains.html">omni.isaac.lab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html">omni.isaac.lab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.envs.mdp.html">omni.isaac.lab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.envs.ui.html">omni.isaac.lab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sensors.patterns.html">omni.isaac.lab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html">omni.isaac.lab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.schemas.html">omni.isaac.lab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.spawners.html">omni.isaac.lab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/omni.isaac.lab_tasks.utils.html">omni.isaac.lab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/omni.isaac.lab_tasks.utils.wrappers.html">omni.isaac.lab_tasks.utils.wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/omni.isaac.lab_tasks.utils.data_collector.html">omni.isaac.lab_tasks.utils.data_collector</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_isaacgymenvs.html">来自IsaacGymEnvs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_omniisaacgymenvs.html">从 OmniIsaacGymEnvs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_orbit.html">从轨道</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">建议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">Extensions Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考文献</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.omniverse.nvidia.com/isaacsim/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.0/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/source/deployment/docker.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/deployment/docker.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/deployment/docker.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Docker Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-instructions">Setup Instructions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-and-docker-compose">Docker and Docker Compose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-the-isaac-sim-container">Obtaining the Isaac Sim Container</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directory-organization">Directory Organization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-container">Running the Container</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-interpreter">Python Interpreter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-mounted-volumes">Understanding the mounted volumes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isaac-lab-image-extensions">Isaac Lab图像扩展</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ros2-image-extension">ROS2图片扩展</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">已知问题</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invalid-mount-config-for-type-bind">类型“bind”的无效挂载配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#webrtc-streaming">WebRTC流</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="docker-guide">
+<span id="deployment-docker"></span><h1>Docker Guide<a class="headerlink" href="#docker-guide" title="此标题的永久链接">#</a></h1>
+<div class="admonition caution">
+<p class="admonition-title">小心</p>
+<p>Due to the dependency on Isaac Sim docker image, by running this container you are implicitly
+agreeing to the <a class="reference external" href="https://docs.omniverse.nvidia.com/platform/latest/common/NVIDIA_Omniverse_License_Agreement.html">NVIDIA Omniverse EULA</a>. If you do not agree to the EULA, do not run this container.</p>
+</div>
+<section id="setup-instructions">
+<h2>Setup Instructions<a class="headerlink" href="#setup-instructions" title="此标题的永久链接">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The following steps are taken from the NVIDIA Omniverse Isaac Sim documentation on <a class="reference external" href="https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_container.html">container installation</a>.
+They have been added here for the sake of completeness.</p>
+</div>
+<section id="docker-and-docker-compose">
+<h3>Docker and Docker Compose<a class="headerlink" href="#docker-and-docker-compose" title="此标题的永久链接">#</a></h3>
+<p>We have tested the container using Docker Engine version 26.0.0 and Docker Compose version 2.25.0
+We recommend using these versions or newer.</p>
+<ul class="simple">
+<li><p>To install Docker, please follow the instructions for your operating system on the <a class="reference external" href="https://docs.docker.com/desktop/install/linux-install/">Docker website</a>.</p></li>
+<li><p>To install Docker Compose, please follow the instructions for your operating system on the <a class="reference external" href="https://docs.docker.com/compose/install/linux/#install-using-the-repository">docker compose</a> page.</p></li>
+<li><p>Follow the post-installation steps for Docker on the <a class="reference external" href="https://docs.docker.com/engine/install/linux-postinstall/">post-installation steps</a> page. These steps allow you to run
+Docker without using <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p></li>
+<li><p>To build and run GPU-accelerated containers, you also need install the <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit">NVIDIA Container Toolkit</a>.
+Please follow the instructions on the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html">Container Toolkit website</a> for installation steps.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Due to limitations with <a class="reference external" href="https://snapcraft.io/docs/home-outside-home">snap</a>, please make sure
+the Isaac Lab directory is placed under the <code class="docutils literal notranslate"><span class="pre">/home</span></code> directory tree when using docker.</p>
+</div>
+</section>
+<section id="obtaining-the-isaac-sim-container">
+<h3>Obtaining the Isaac Sim Container<a class="headerlink" href="#obtaining-the-isaac-sim-container" title="此标题的永久链接">#</a></h3>
+<ul>
+<li><p>Get access to the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/isaac-sim">Isaac Sim container</a> by joining the NVIDIA Developer Program credentials.</p></li>
+<li><p>Generate your <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-user-guide/index.html#generating-api-key">NGC API key</a> to access locked container images from NVIDIA GPU Cloud (NGC).</p>
+<ul>
+<li><p>This step requires you to create an NGC account if you do not already have one.</p></li>
+<li><p>You would also need to install the NGC CLI to perform operations from the command line.</p></li>
+<li><p>Once you have your generated API key and have installed the NGC CLI, you need to log in to NGC
+from the terminal.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ngc<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Use the command line to pull the Isaac Sim container image from NGC.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>login<span class="w"> </span>nvcr.io
+</pre></div>
+</div>
+<ul>
+<li><p>For the username, enter <code class="docutils literal notranslate"><span class="pre">$oauthtoken</span></code> exactly as shown. It is a special username that is used to
+authenticate with NGC.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Username: $oauthtoken
+Password: &lt;Your NGC API Key&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="directory-organization">
+<h2>Directory Organization<a class="headerlink" href="#directory-organization" title="此标题的永久链接">#</a></h2>
+<p>The root of the Isaac Lab repository contains the <code class="docutils literal notranslate"><span class="pre">docker</span></code> directory that has various files and scripts
+needed to run Isaac Lab inside a Docker container. A subset of these are summarized below:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Dockerfile.base</span></code>: Defines the isaaclab image by overlaying Isaac Lab dependencies onto the Isaac Sim Docker image.
+<code class="docutils literal notranslate"><span class="pre">Dockerfiles</span></code> which end with something else, (i.e. <code class="docutils literal notranslate"><span class="pre">Dockerfile.ros2</span></code>) build an <a class="reference external" href="#isaac-lab-image-extensions">image_extension</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>: Creates mounts to allow direct editing of Isaac Lab code from the host machine that runs
+the container. It also creates several named volumes such as <code class="docutils literal notranslate"><span class="pre">isaac-cache-kit</span></code> to
+store frequently re-used resources compiled by Isaac Sim, such as shaders, and to retain logs, data, and documents.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">base.env</span></code>: Stores environment variables required for the <code class="docutils literal notranslate"><span class="pre">base</span></code> build process and the container itself. <code class="docutils literal notranslate"><span class="pre">.env</span></code>
+files which end with something else (i.e. <code class="docutils literal notranslate"><span class="pre">.env.ros2</span></code>) define these for <a class="reference external" href="#isaac-lab-image-extensions">image_extension</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">container.sh</span></code>: A script that wraps the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> command to build the image and run the container.</p></li>
+</ul>
+</section>
+<section id="running-the-container">
+<h2>Running the Container<a class="headerlink" href="#running-the-container" title="此标题的永久链接">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The docker container copies all the files from the repository into the container at the
+location <code class="docutils literal notranslate"><span class="pre">/workspace/isaaclab</span></code> at build time. This means that any changes made to the files in the container would not
+normally be reflected in the repository after the image has been built, i.e. after <code class="docutils literal notranslate"><span class="pre">./container.sh</span> <span class="pre">start</span></code> is run.</p>
+<p>For a faster development cycle, we mount the following directories in the Isaac Lab repository into the container
+so that you can edit their files from the host machine:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code>: This is the directory that contains the Isaac Lab source code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs</span></code>: This is the directory that contains the source code for Isaac Lab documentation. This is overlaid except
+for the <code class="docutils literal notranslate"><span class="pre">_build</span></code> subdirectory where build artifacts are stored.</p></li>
+</ul>
+</div>
+<p>The script <code class="docutils literal notranslate"><span class="pre">container.sh</span></code> wraps around three basic <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> commands. Each can accept an <a class="reference external" href="#isaac-lab-image-extensions">image_extension argument</a>,
+or else they will default to image_extension <code class="docutils literal notranslate"><span class="pre">base</span></code>:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: This builds the image and brings up the container in detached mode (i.e. in the background).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enter</span></code>: This begins a new bash process in an existing isaaclab container, and which can be exited
+without bringing down the container.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copy</span></code>: This copies the <code class="docutils literal notranslate"><span class="pre">logs</span></code>, <code class="docutils literal notranslate"><span class="pre">data_storage</span></code> and <code class="docutils literal notranslate"><span class="pre">docs/_build</span></code> artifacts, from the <code class="docutils literal notranslate"><span class="pre">isaac-lab-logs</span></code>, <code class="docutils literal notranslate"><span class="pre">isaac-lab-data</span></code> and <code class="docutils literal notranslate"><span class="pre">isaac-lab-docs</span></code>
+volumes respectively, to the <code class="docutils literal notranslate"><span class="pre">docker/artifacts</span></code> directory. These artifacts persist between docker
+container instances and are shared between image extensions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop</span></code>: This brings down the container and removes it.</p></li>
+</ol>
+<p>The following shows how to launch the container in a detached state and enter it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch the container in detached mode</span>
+<span class="c1"># We don&#39;t pass an image extension arg, so it defaults to &#39;base&#39;</span>
+./docker/container.sh<span class="w"> </span>start
+<span class="c1"># Enter the container</span>
+<span class="c1"># We pass &#39;base&#39; explicitly, but if we hadn&#39;t it would default to &#39;base&#39;</span>
+./docker/container.sh<span class="w"> </span>enter<span class="w"> </span>base
+</pre></div>
+</div>
+<p>To copy files from the base container to the host machine, you can use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the file /workspace/isaaclab/logs to the current directory</span>
+docker<span class="w"> </span>cp<span class="w"> </span>isaac-lab-base:/workspace/isaaclab/logs<span class="w"> </span>.
+</pre></div>
+</div>
+<p>The script <code class="docutils literal notranslate"><span class="pre">container.sh</span></code> provides a wrapper around this command to copy the <code class="docutils literal notranslate"><span class="pre">logs</span></code> , <code class="docutils literal notranslate"><span class="pre">data_storage</span></code> and <code class="docutils literal notranslate"><span class="pre">docs/_build</span></code>
+directories to the <code class="docutils literal notranslate"><span class="pre">docker/artifacts</span></code> directory. This is useful for copying the logs, data and documentation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># stop the container</span>
+<span class="o">./</span><span class="n">docker</span><span class="o">/</span><span class="n">container</span><span class="o">.</span><span class="n">sh</span> <span class="n">stop</span>
+</pre></div>
+</div>
+<section id="python-interpreter">
+<h3>Python Interpreter<a class="headerlink" href="#python-interpreter" title="此标题的永久链接">#</a></h3>
+<p>The container uses the Python interpreter provided by Isaac Sim. This interpreter is located at
+<code class="docutils literal notranslate"><span class="pre">/isaac-sim/python.sh</span></code>. We set aliases inside the container to make it easier to run the Python
+interpreter. You can use the following commands to run the Python interpreter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the Python interpreter -&gt; points to /isaac-sim/python.sh</span>
+python
+</pre></div>
+</div>
+</section>
+<section id="understanding-the-mounted-volumes">
+<h3>Understanding the mounted volumes<a class="headerlink" href="#understanding-the-mounted-volumes" title="此标题的永久链接">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file creates several named volumes that are mounted to the container.
+These are summarized below:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-cache-kit</span></code>: This volume is used to store cached Kit resources (<cite>/isaac-sim/kit/cache</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-cache-ov</span></code>: This volume is used to store cached OV resources (<cite>/root/.cache/ov</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-cache-pip</span></code>: This volume is used to store cached pip resources (<cite>/root/.cache/pip`</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-cache-gl</span></code>: This volume is used to store cached GLCache resources (<cite>/root/.cache/nvidia/GLCache</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-cache-compute</span></code>: This volume is used to store cached compute resources (<cite>/root/.nv/ComputeCache</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-logs</span></code>: This volume is used to store logs generated by Omniverse. (<cite>/root/.nvidia-omniverse/logs</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-carb-logs</span></code>: This volume is used to store logs generated by carb. (<cite>/isaac-sim/kit/logs/Kit/Isaac-Sim</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-data</span></code>: This volume is used to store data generated by Omniverse. (<cite>/root/.local/share/ov/data</cite> in container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-docs</span></code>: 用于存储Omniverse生成的文档。（容器中的`/root/Documents`）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-lab-docs</span></code>: 在容器内建立Isaac Lab时，用于存储Isaac Lab的文档。（容器中的`/workspace/isaaclab/docs/_build`）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-lab-logs</span></code>: 在容器内运行Isaac Lab工作流时，用于存储Isaac Lab生成的日志。（容器中的`/workspace/isaaclab/logs`）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isaac-lab-data</span></code>: 用于存储用户在容器运行之间希望保留的任何数据。（容器中的`/workspace/isaaclab/data_storage`）</p></li>
+</ul>
+<p>要查看这些卷的内容，可以使用以下命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># list all volumes</span>
+docker<span class="w"> </span>volume<span class="w"> </span>ls
+<span class="c1"># inspect a specific volume, e.g. isaac-cache-kit</span>
+docker<span class="w"> </span>volume<span class="w"> </span>inspect<span class="w"> </span>isaac-cache-kit
+</pre></div>
+</div>
+</section>
+</section>
+<section id="isaac-lab-image-extensions">
+<h2>Isaac Lab图像扩展<a class="headerlink" href="#isaac-lab-image-extensions" title="此标题的永久链接">#</a></h2>
+<p>生成的图像取决于传递给``./container.sh start``和``./container.sh stop``的参数。这些命令接受``image_extension``作为附加参数。 如果未传递参数，则这些命令默认为``base``。 目前，唯一有效的``image_extension``参数是（<code class="docutils literal notranslate"><span class="pre">base</span></code>, <code class="docutils literal notranslate"><span class="pre">ros2</span></code>）。一次只能传递一个``image_extension``，生成的容器将被命名为``isaaclab``。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># start base by default</span>
+./container.sh<span class="w"> </span>start
+<span class="c1"># stop base explicitly</span>
+./container.sh<span class="w"> </span>stop<span class="w"> </span>base
+<span class="c1"># start ros2 container</span>
+./container.sh<span class="w"> </span>start<span class="w"> </span>ros2
+<span class="c1"># stop ros2 container</span>
+./container.sh<span class="w"> </span>stop<span class="w"> </span>ros2
+</pre></div>
+</div>
+<p>传递的``image_extension``参数将构建``Dockerfile.${image_extension}``中定义的镜像，以及``docker-compose.yaml``中的相应`profile`_和``.env.${image_extension}``中的环境变量，以及``.env.base``（如果有）。</p>
+<section id="ros2-image-extension">
+<h3>ROS2图片扩展<a class="headerlink" href="#ros2-image-extension" title="此标题的永久链接">#</a></h3>
+<p>在``Dockerfile.ros2``中，容器通过`apt package`_安装ROS2 Humble，并在``.bashrc``中进行源码。 具体版本由``.env.ros2``文件中的变量``ROS_APT_PACKAGE``指定，默认为``ros-base``。 <code class="docutils literal notranslate"><span class="pre">.env.ros2``文件还指定了其他相关的ROS2变量，包括定义`各种中间件`_选项的变量。</span> <span class="pre">容器默认为``FastRTPS</span></code>，但也支持``CylconeDDS``。 每个中间件可以使用``docker/.ros``下的相应的``.xml``文件进行`tuning`_。</p>
+</section>
+</section>
+<section id="known-issues">
+<h2>已知问题<a class="headerlink" href="#known-issues" title="此标题的永久链接">#</a></h2>
+<section id="invalid-mount-config-for-type-bind">
+<h3>类型“bind”的无效挂载配置<a class="headerlink" href="#invalid-mount-config-for-type-bind" title="此标题的永久链接">#</a></h3>
+<p>如果在构建容器时出现以下错误：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>⠋ Container isaaclab  Creating                                                                                                                                                                         0.0s
+Error response from daemon: invalid mount config for type &quot;bind&quot;: bind source path does not exist: ${HOME}/.Xauthority
+</pre></div>
+</div>
+<p>这意味着主机机器的主目录中没有``.Xauthority``文件。 docker-compose.yaml中启用此功能的部分默认情况下已经被注释，因此除非它已被更改，否则不应发生。 此文件为使X11转发正常工作所必需。 要修复这个问题，您可以在主目录中创建一个空``.Xauthority``文件。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch<span class="w"> </span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.Xauthority
+</pre></div>
+</div>
+<p>类似的错误，但需要不同的修复方法：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>⠋ Container isaaclab  Creating                                                                                                                                                                         0.0s
+Error response from daemon: invalid mount config for type &quot;bind&quot;: bind source path does not exist: /tmp/.X11-unix
+</pre></div>
+</div>
+<p>这意味着主机机器上要么缺少文件夹/文件，要么无法访问。 docker-compose.yaml中启用此功能的部分默认情况下已被注释，因此除非它已被更改，否则不应发生。 这通常是由于您在计算机上安装了多个docker版本。 要解决此问题，您可以尝试以下方法：</p>
+<ul>
+<li><p>从您的计算机中删除所有docker版本。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>docker*
+sudo<span class="w"> </span>apt<span class="w"> </span>remove<span class="w"> </span>docker<span class="w"> </span>docker-engine<span class="w"> </span>docker.io<span class="w"> </span>containerd<span class="w"> </span>runc<span class="w"> </span>docker-desktop<span class="w"> </span>docker-compose-plugin
+sudo<span class="w"> </span>snap<span class="w"> </span>remove<span class="w"> </span>docker
+sudo<span class="w"> </span>apt<span class="w"> </span>clean<span class="w"> </span>autoclean<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>autoremove<span class="w"> </span>--yes
+</pre></div>
+</div>
+</li>
+<li><p>根据设置部分中的说明安装最新版本的docker。</p></li>
+</ul>
+</section>
+<section id="webrtc-streaming">
+<h3>WebRTC流<a class="headerlink" href="#webrtc-streaming" title="此标题的永久链接">#</a></h3>
+<p>当从Isaac Sim中传输GUI时，有`多个传输客户端`_可用。 使用Google Chrome和Safari运行Isaac Sim时，会出现`已知问题`_。 为了避免这个问题，我们建议使用Native Streaming Client或在其上WebRTC可以正常工作的Mozilla Firefox浏览器。</p>
+<p>从容器内可视化Isaac GUI的唯一支持方法是流式传输。 Omniverse Streaming Client可以免费从Omniverse应用程序中获取，并且易于使用。 其他流传输方法同样只需要一个Web浏览器。 如果用户想要使用X11转发以使应用程序像本地GUI窗口一样运行，可以取消注释docker-compose.yaml中的相关部分。</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">容器部署</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cluster.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">集群指南</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-instructions">Setup Instructions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-and-docker-compose">Docker and Docker Compose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-the-isaac-sim-container">Obtaining the Isaac Sim Container</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directory-organization">Directory Organization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-container">Running the Container</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-interpreter">Python Interpreter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-mounted-volumes">Understanding the mounted volumes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isaac-lab-image-extensions">Isaac Lab图像扩展</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ros2-image-extension">ROS2图片扩展</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">已知问题</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invalid-mount-config-for-type-bind">类型“bind”的无效挂载配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#webrtc-streaming">WebRTC流</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2024 年 07 月 04 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

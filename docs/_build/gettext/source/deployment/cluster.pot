@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 15:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/deployment/cluster.rst:5
+msgid "Cluster Guide"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:7
+msgid "Clusters are a great way to speed up training and evaluation of learning algorithms. While the Isaac Lab Docker image can be used to run jobs on a cluster, many clusters only support singularity images. This is because `singularity`_ is designed for ease-of-use on shared multi-user systems and high performance computing (HPC) environments. It does not require root privileges to run containers and can be used to run user-defined containers."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:14
+msgid "Singularity is compatible with all Docker images. In this section, we describe how to convert the Isaac Lab Docker image into a singularity image and use it to submit jobs to a cluster."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:19
+msgid "Cluster setup varies across different institutions. The following instructions have been tested on the `ETH Zurich Euler`_ cluster (which uses the SLURM workload manager), and the IIT Genoa Franklin cluster (which uses PBS workload manager)."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:23
+msgid "The instructions may need to be adapted for other clusters. If you have successfully adapted the instructions for another cluster, please consider contributing to the documentation."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:29
+msgid "Setup Instructions"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:31
+msgid "In order to export the Docker Image to a singularity image, `apptainer`_ is required. A detailed overview of the installation procedure for ``apptainer`` can be found in its `documentation`_. For convenience, we summarize the steps here for a local installation:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:43
+msgid "For simplicity, we recommend that an SSH connection is set up between the local development machine and the cluster. Such a connection will simplify the file transfer and prevent the user cluster password from being requested multiple times."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:48
+msgid "The workflow has been tested with ``apptainer version 1.2.5-1.el7`` and ``docker version 24.0.7``."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:50
+msgid "``apptainer``: There have been reported binding issues with previous versions (such as ``apptainer version 1.1.3-1.el7``). Please ensure that you are using the latest version."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:53
+msgid "``Docker``: The latest versions (``25.x``) cannot be used as they are not compatible yet with apptainer/ singularity."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:56
+msgid "We are waiting for an update from the apptainer team. To track this issue, please check the `forum post`_."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:59
+msgid "Configuring the cluster parameters"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:61
+msgid "First, you need to configure the cluster-specific parameters in ``docker/.env.base`` file. The following describes the parameters that need to be configured: - ``CLUSTER_JOB_SCHEDULER``:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:64
+msgid "The job scheduler/workload manager used by your cluster. Currently, we support SLURM and PBS workload managers [SLURM | PBS]."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:66
+msgid "``CLUSTER_ISAAC_SIM_CACHE_DIR``: The directory on the cluster where the Isaac Sim cache is stored. This directory has to end on ``docker-isaac-sim``. This directory will be copied to the compute node and mounted into the singularity container. It should increase the speed of starting the simulation."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:71
+msgid "``CLUSTER_ISAACLAB_DIR``: The directory on the cluster where the Isaac Lab code is stored. This directory has to end on ``isaaclab``. This directory will be copied to the compute node and mounted into the singularity container. When a job is submitted, the latest local changes will be copied to the cluster."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:76
+msgid "``CLUSTER_LOGIN``: The login to the cluster. Typically, this is the user and cluster names, e.g., ``your_user@euler.ethz.ch``."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:79
+msgid "``CLUSTER_SIF_PATH``: The path on the cluster where the singularity image will be stored. The image will be copied to the compute node but not uploaded again to the cluster when a job is submitted."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:82
+msgid "``CLUSTER_PYTHON_EXECUTABLE``: The path within Isaac Lab to the Python executable that should be executed in the submitted job."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:86
+msgid "Exporting to singularity image"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:88
+msgid "Next, we need to export the Docker image to a singularity image and upload it to the cluster. This step is only required once when the first job is submitted or when the Docker image is updated. For instance, due to an upgrade of the Isaac Sim version, or additional requirements for your project."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:93
+msgid "To export to a singularity image, execute the following command:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:99
+msgid "This command will create a singularity image under ``docker/exports`` directory and upload it to the defined location on the cluster. Be aware that creating the singularity image can take a while. ``[profile]`` is an optional argument that specifies the container profile to be used. If no profile is specified, the default profile ``base`` will be used."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:106
+msgid "By default, the singularity image is created without root access by providing the ``--fakeroot`` flag to the ``apptainer build`` command. In case the image creation fails, you can try to create it with root access by removing the flag in ``docker/container.sh``."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:112
+msgid "Defining the job parameters"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:115
+msgid "The job parameters need to be defined based on the job scheduler used by your cluster. You only need to update the appropriate script for the scheduler available to you."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:117
+msgid "For SLURM, update the parameters in ``docker/cluster/submit_job_slurm.sh``."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:118
+msgid "For PBS, update the parameters in ``docker/cluster/submit_job_pbs.sh``."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:121
+msgid "For SLURM"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:123
+msgid "The job parameters are defined inside the ``docker/cluster/submit_job_slurm.sh``. A typical SLURM operation requires specifying the number of CPUs and GPUs, the memory, and the time limit. For more information, please check the `SLURM documentation`_."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:127
+#: ../../source/deployment/cluster.rst:155
+msgid "The default configuration is as follows:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:135
+msgid "An essential requirement for the cluster is that the compute node has access to the internet at all times. This is required to load assets from the Nucleus server. For some cluster architectures, extra modules must be loaded to allow internet access."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:139
+msgid "For instance, on ETH Zurich Euler cluster, the ``eth_proxy`` module needs to be loaded. This can be done by adding the following line to the ``submit_job_slurm.sh`` script:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:149
+msgid "For PBS"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:151
+msgid "The job parameters are defined inside the ``docker/cluster/submit_job_pbs.sh``. A typical PBS operation requires specifying the number of CPUs and GPUs, and the time limit. For more information, please check the `PBS Official Site`_."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:165
+msgid "Submitting a job"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:167
+msgid "To submit a job on the cluster, the following command can be used:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:173
+msgid "This command will copy the latest changes in your code to the cluster and submit a job. Please ensure that your Python executable's output is stored under ``isaaclab/logs`` as this directory will be copied again from the compute node to ``CLUSTER_ISAACLAB_DIR``."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:177
+msgid "``[profile]`` is an optional argument that specifies which singularity image corresponding to the  container profile will be used. If no profile is specified, the default profile ``base`` will be used. The profile has be defined directlty after the ``job`` command. All other arguments are passed to the Python executable. If no profile is defined, all arguments are passed to the Python executable."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:182
+msgid "The training arguments are passed to the Python executable. As an example, the standard ANYmal rough terrain locomotion training can be executed with the following command:"
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:189
+msgid "The above will, in addition, also render videos of the training progress and store them under ``isaaclab/logs`` directory."
+msgstr ""
+
+#: ../../source/deployment/cluster.rst:193
+msgid "The ``./docker/container.sh job`` command will copy the latest changes in your code to the cluster. However, it will not delete any files that have been deleted locally. These files will still exist on the cluster which can lead to issues. In this case, we recommend removing the ``CLUSTER_ISAACLAB_DIR`` directory on the cluster and re-run the command."
+msgstr ""

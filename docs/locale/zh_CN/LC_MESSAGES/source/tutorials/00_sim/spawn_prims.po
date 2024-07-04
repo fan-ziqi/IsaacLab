@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:5
+msgid "Spawning prims into the scene"
+msgstr "场景中生成主体"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:9
+msgid ""
+"This tutorial explores how to spawn various objects (or prims) into the "
+"scene in Isaac Lab from Python. It builds upon the previous tutorial on "
+"running the simulator from a standalone script and demonstrates how to spawn"
+" a ground plane, lights, primitive shapes, and meshes from USD files."
+msgstr ""
+"本教程探讨了如何从Python在Isaac "
+"Lab中生成各种对象（或prims）到场景中。它在上一个教程的基础上构建，该教程介绍了如何从独立脚本中运行模拟器，并演示了如何生成地面平面、灯光、基本形状和来自USD文件的网格。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:15
+msgid "The Code"
+msgstr "代码"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:17
+msgid ""
+"The tutorial corresponds to the ``spawn_prims.py`` script in the "
+"``source/standalone/tutorials/00_sim`` directory. Let's take a look at the "
+"Python script:"
+msgstr ""
+"该教程对应于``source/standalone/tutorials/00_sim``目录中的``spawn_prims.py``脚本。让我们来看一下Python脚本："
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst
+msgid "Code for spawn_prims.py"
+msgstr "spawn_prims.py的代码"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:30
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:32
+msgid ""
+"Scene designing in Omniverse is built around a software system and file "
+"format called USD (Universal Scene Description). It allows describing 3D "
+"scenes in a hierarchical manner, similar to a file system. Since USD is a "
+"comprehensive framework, we recommend reading the `USD documentation`_ to "
+"learn more about it."
+msgstr ""
+"Omniverse中的场景设计建立在一个名为USD（通用场景描述）的软件系统和文件格式之上。它允许以分层方式描述3D场景，类似于文件系统。由于USD是一个综合性框架，我们建议阅读`USD文档`_以了解更多关于它的信息。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:36
+msgid ""
+"For completeness, we introduce the must know concepts of USD in this "
+"tutorial."
+msgstr "为了完整起见，我们在本教程中介绍了USD的必知概念。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:38
+msgid ""
+"**Primitives (Prims)**: These are the basic building blocks of a USD scene. "
+"They can be thought of as nodes in a scene graph. Each node can be a mesh, a"
+" light, a camera, or a transform. It can also be a group of other prims "
+"under it."
+msgstr ""
+"**基本形状（Prims）**：这些是USD场景的基本构件。它们可以被视为场景图中的节点。每个节点可以是网格、灯光、相机或变换。它还可以是其下其他prims的组合。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:40
+msgid ""
+"**Attributes**: These are the properties of a prim. They can be thought of "
+"as key-value pairs. For example, a prim can have an attribute called "
+"``color`` with a value of ``red``."
+msgstr "**属性**：这些是prim的属性。它们可以被视为键值对。例如，一个prim可以有一个名为``color``的属性，值为``red``。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:42
+msgid ""
+"**Relationships**: These are the connections between prims. They can be "
+"thought of as pointers to other prims. For example, a mesh prim can have a "
+"relationship to a material prim for shading."
+msgstr ""
+"**关系**：这些是prims之间的连接。它们可以被视为指向其他prims的指针。例如，一个网格prim可以与一个用于着色的材质prim建立关系。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:45
+msgid ""
+"A collection of these prims, with their attributes and relationships, is "
+"called a **USD stage**. It can be thought of as a container for all prims in"
+" a scene. When we say we are designing a scene, we are actually designing a "
+"USD stage."
+msgstr ""
+"这些prims的集合，以及它们的属性和关系，被称为**USD "
+"stage**。可以将其视为场景中所有prims的容器。当我们说我们正在设计场景时，实际上正在设计一个USD stage。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:48
+msgid ""
+"While working with direct USD APIs provides a lot of flexibility, it can be "
+"cumbersome to learn and use. To make it easier to design scenes, Isaac Lab "
+"builds on top of the USD APIs to provide a configuration-driven interface to"
+" spawn prims into a scene. These are included in the :mod:`sim.spawners` "
+"module."
+msgstr ""
+"使用直接的USD API可以提供很大的灵活性，但可能会使学习和使用变得麻烦。为了更轻松地设计场景，Isaac Lab在USD "
+"API的基础上构建，提供了一种配置驱动的界面，以在场景中生成prims。这些包含在:mod:`sim.spawners`模块中。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:52
+msgid ""
+"When spawning prims into the scene, each prim requires a configuration class"
+" instance that defines the prim's attributes and relationships (through "
+"material and shading information). The configuration class is then passed to"
+" its respective function where the prim name and transformation are "
+"specified. The function then spawns the prim into the scene."
+msgstr ""
+"将prims生成到场景中时，每个prim都需要一个配置类实例，用于定义prim的属性和关系（通过材料和着色信息）。然后将配置类传递给其相应的函数，其中指定prim名称和变换。然后函数将prim生成到场景中。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:56
+msgid "At a high-level, this is how it works:"
+msgstr "在高层次上，它是如何工作的："
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:71
+msgid ""
+"In this tutorial, we demonstrate the spawning of various different prims "
+"into the scene. For more information on the available spawners, please refer"
+" to the :mod:`sim.spawners` module in Isaac Lab."
+msgstr ""
+"在本教程中，我们演示了将各种不同的prims生成到场景中。有关可用spawner的更多信息，请参阅Isaac "
+"Lab中的:mod:`sim.spawners`模块。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:76
+msgid ""
+"All the scene designing must happen before the simulation starts. Once the "
+"simulation starts, we recommend keeping the scene frozen and only altering "
+"the properties of the prim. This is particularly important for GPU "
+"simulation as adding new prims during simulation may alter the physics "
+"simulation buffers on GPU and lead to unexpected behaviors."
+msgstr ""
+"所有的场景设计必须在模拟开始之前完成。一旦模拟开始，我们建议保持场景处于冻结状态，只修改prim的属性。这对于GPU模拟尤为重要，因为在模拟过程中添加新的prims可能会更改GPU上的物理模拟缓冲，导致意外行为。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:83
+msgid "Spawning a ground plane"
+msgstr "生成地面平面"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:85
+msgid ""
+"The :class:`~sim.spawners.from_files.GroundPlaneCfg` configures a grid-like "
+"ground plane with modifiable properties such as its appearance and size."
+msgstr ""
+":class:`~sim.spawners.from_files.GroundPlaneCfg`配置一个类似网格的地面平面，具有可修改的外观和尺寸等属性。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:95
+msgid "Spawning lights"
+msgstr "生成灯光"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:97
+msgid ""
+"It is possible to spawn `different light prims`_ into the stage. These "
+"include distant lights, sphere lights, disk lights, and cylinder lights. In "
+"this tutorial, we spawn a distant light which is a light that is infinitely "
+"far away from the scene and shines in a single direction."
+msgstr ""
+"可以将`不同类型的灯光prims`_生成到舞台中。这些包括远距离灯光、球体灯光、圆盘灯光和柱体灯光。在本教程中，我们生成了一个远距离灯光，它是一种无限远离场景并朝一个方向发光的灯光。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:108
+msgid "Spawning primitive shapes"
+msgstr "生成基本形状"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:110
+msgid ""
+"Before spawning primitive shapes, we introduce the concept of a transform "
+"prim or Xform. A transform prim is a prim that contains only transformation "
+"properties. It is used to group other prims under it and to transform them "
+"as a group. Here we make an Xform prim to group all the primitive shapes "
+"under it."
+msgstr ""
+"在生成基本形状之前，我们介绍一个转换prim或Xform的概念。转换prim是一个只包含转换属性的prim。它用于将其他prims组合在其下，并将它们作为一个组进行转换。在这里，我们制作一个Xform"
+" prim，将所有基本形状组合在其下。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:119
+msgid ""
+"Next, we spawn a cone using the :class:`~sim.spawners.shapes.ConeCfg` class."
+" It is possible to specify the radius, height, physics properties, and "
+"material properties of the cone. By default, the physics and material "
+"properties are disabled."
+msgstr ""
+"接下来，我们使用:class:`~sim.spawners.shapes.ConeCfg`类生成一个圆锥体。可以指定圆锥体的半径、高度、物理属性和材质属性。默认情况下，物理和材质属性是禁用的。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:123
+msgid ""
+"The first two cones we spawn ``Cone1`` and ``Cone2`` are visual elements and"
+" do not have physics enabled."
+msgstr "我们生成的前两个圆锥``Cone1``和``Cone2``是可视元素，并且没有启用物理。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:130
+msgid ""
+"For the third cone ``ConeRigid``, we add rigid body physics to it by setting"
+" the attributes for that in the configuration class. Through these "
+"attributes, we can specify the mass, friction, and restitution of the cone. "
+"If unspecified, they default to the default values set by USD Physics."
+msgstr ""
+"对于第三个圆锥``ConeRigid``，我们通过设置配置类中的属性为其添加了刚体物理。通过这些属性，我们可以指定圆锥的质量、摩擦力和恢复力。如果未指定，它们会按照USD"
+" Physics设置的默认值进行处理。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:141
+msgid "Spawning from another file"
+msgstr "从其他文件生成"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:143
+msgid ""
+"Lastly, it is possible to spawn prims from other file formats such as other "
+"USD, URDF, or OBJ files. In this tutorial, we spawn a USD file of a table "
+"into the scene. The table is a mesh prim and has a material prim associated "
+"with it. All of this information is stored in its USD file."
+msgstr ""
+"最后，可以从其他文件格式（例如其他USD、URDF或OBJ文件）中生成prims。在本教程中，我们将一个表的USD文件生成到场景中。该桌子是一个网格prim，并与其关联一个材质prim。所有这些信息都存储在它的USD文件中。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:152
+msgid ""
+"The table above is added as a reference to the scene. In layman terms, this "
+"means that the table is not actually added to the scene, but a ``pointer`` "
+"to the table asset is added. This allows us to modify the table asset and "
+"have the changes reflected in the scene in a non-destructive manner. For "
+"example, we can change the material of the table without actually modifying "
+"the underlying file for the table asset directly. Only the changes are "
+"stored in the USD stage."
+msgstr ""
+"上面的表被添加为场景的一个引用。俗称来说，这意味着表实际上并没有被添加到场景中，而是添加了一个``指针``引用到了表资源。这使我们能够修改表资源，并在场景中以一种非破坏性的方式反映出更改。例如，我们可以更改表的材质，而不必直接修改表资产的基础文件。只有更改存储在USD"
+" stage中。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:159
+msgid "Executing the Script"
+msgstr "执行脚本"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:161
+msgid ""
+"Similar to the tutorial before, to run the script, execute the following "
+"command:"
+msgstr "与之前的教程类似，要运行此脚本，请执行以下命令："
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:167
+msgid ""
+"Once the simulation starts, you should see a window with a ground plane, a "
+"light, some cones, and a table. The green cone, which has rigid body physics"
+" enabled, should fall and collide with the table and the ground plane. The "
+"other cones are visual elements and should not move. To stop the simulation,"
+" you can close the window, or press ``Ctrl+C`` in the terminal."
+msgstr ""
+"一旦模拟开始，您应该会看到一个带有地面平面、灯光、一些圆锥体和一张桌子的窗口。启用刚体物理的绿色圆锥体应该会下落并与桌子和地面平面发生碰撞。其他圆锥都是可视元素而不会移动。要停止模拟，可以关闭窗口，或在终端中按``Ctrl+C``。"
+
+#: ../../source/tutorials/00_sim/spawn_prims.rst:172
+msgid ""
+"This tutorial provided a foundation for spawning various prims into the "
+"scene in Isaac Lab. Although simple, it demonstrates the basic concepts of "
+"scene designing in Isaac Lab and how to use the spawners. In the coming "
+"tutorials, we will now look at how to interact with the scene and the "
+"simulation."
+msgstr ""
+"本教程为在Isaac Lab中生成各种prims提供了基础。尽管简单，但它演示了在Isaac "
+"Lab中设计场景的基本概念以及如何使用spawner。在接下来的教程中，我们将会看看如何与场景和模拟进行交互。"

@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:4
+msgid "Interacting with an articulation"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:9
+msgid "This tutorial shows how to interact with an articulated robot in the simulation. It is a continuation of the :ref:`tutorial-interact-rigid-object` tutorial, where we learned how to interact with a rigid object. On top of setting the root state, we will see how to set the joint state and apply commands to the articulated robot."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:16
+msgid "The Code"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:18
+msgid "The tutorial corresponds to the ``run_articulation.py`` script in the ``source/standalone/tutorials/01_assets`` directory."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:0
+msgid "Code for run_articulation.py"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:31
+msgid "The Code Explained"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:34
+msgid "Designing the scene"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:36
+msgid "Similar to the previous tutorial, we populate the scene with a ground plane and a distant light. Instead of spawning rigid objects, we now spawn a cart-pole articulation from its USD file. The cart-pole is a simple robot consisting of a cart and a pole attached to it. The cart is free to move along the x-axis, and the pole is free to rotate about the cart. The USD file for the cart-pole contains the robot's geometry, joints, and other physical properties."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:42
+msgid "For the cart-pole, we use its pre-defined configuration object, which is an instance of the :class:`assets.ArticulationCfg` class. This class contains information about the articulation's spawning strategy, default initial state, actuator models for different joints, and other meta-information. A deeper-dive into how to create this configuration object is provided in the :ref:`how-to-write-articulation-config` tutorial."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:47
+msgid "As seen in the previous tutorial, we can spawn the articulation into the scene in a similar fashion by creating an instance of the :class:`assets.Articulation` class by passing the configuration object to its constructor."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:57
+msgid "Running the simulation loop"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:59
+msgid "Continuing from the previous tutorial, we reset the simulation at regular intervals, set commands to the articulation, step the simulation, and update the articulation's internal buffers."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:63
+msgid "Resetting the simulation"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:65
+msgid "Similar to a rigid object, an articulation also has a root state. This state corresponds to the root body in the articulation tree. On top of the root state, an articulation also has joint states. These states correspond to the joint positions and velocities."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:69
+msgid "To reset the articulation, we first set the root state by calling the :meth:`Articulation.write_root_state_to_sim` method. Similarly, we set the joint states by calling the :meth:`Articulation.write_joint_state_to_sim` method. Finally, we call the :meth:`Articulation.reset` method to reset any internal buffers and caches."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:79
+msgid "Stepping the simulation"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:81
+msgid "Applying commands to the articulation involves two steps:"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:83
+msgid "*Setting the joint targets*: This sets the desired joint position, velocity, or effort targets for the articulation."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:84
+msgid "*Writing the data to the simulation*: Based on the articulation's configuration, this step handles any :ref:`actuation conversions <feature-actuators>` and writes the converted values to the PhysX buffer."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:87
+msgid "In this tutorial, we control the articulation using joint effort commands. For this to work, we need to set the articulation's stiffness and damping parameters to zero. This is done a-priori inside the cart-pole's pre-defined configuration object."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:91
+msgid "At every step, we randomly sample joint efforts and set them to the articulation by calling the :meth:`Articulation.set_joint_effort_target` method. After setting the targets, we call the :meth:`Articulation.write_data_to_sim` method to write the data to the PhysX buffer. Finally, we step the simulation."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:103
+msgid "Updating the state"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:105
+msgid "Every articulation class contains a :class:`assets.ArticulationData` object. This stores the state of the articulation. To update the state inside the buffer, we call the :meth:`assets.Articulation.update` method."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:115
+msgid "The Code Execution"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:117
+msgid "To run the code and see the results, let's run the script from the terminal:"
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:124
+msgid "This command should open a stage with a ground plane, lights, and two cart-poles that are moving around randomly. To stop the simulation, you can either close the window, press the ``STOP`` button in the UI, or press ``Ctrl+C`` in the terminal."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:128
+msgid "In this tutorial, we learned how to create and interact with a simple articulation. We saw how to set the state of an articulation (its root and joint state) and how to apply commands to it. We also saw how to update its buffers to read the latest state from the simulation."
+msgstr ""
+
+#: ../../source/tutorials/01_assets/run_articulation.rst:132
+msgid "In addition to this tutorial, we also provide a few other scripts that spawn different robots.These are included in the ``source/standalone/demos`` directory. You can run these scripts as:"
+msgstr ""
