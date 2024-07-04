@@ -1,7 +1,7 @@
 About Translation
 =========================
 
-Website: `docs.robotsfan.com/isaaclab <docs.robotsfan.com/isaaclab>`__ 
+Website: `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__ 
 
 Translator: `fan-ziqi <https://github.com/fan-ziqi>`__ 
 
