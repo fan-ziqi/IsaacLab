@@ -259,3 +259,4 @@ def setup(app):
 
 locale_dirs = ['locale/']  # path is example but recommended.
 gettext_compact = False     # optional.
+gettext_last_translator = "Ziqi Fan <fanziqi614@gmail.com>"

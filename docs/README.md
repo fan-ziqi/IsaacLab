@@ -32,6 +32,6 @@ Execute the following instructions to build the documentation (assumed from the 
 ```bash
 make gettext
 sphinx-intl update -p _build/gettext -l zh_CN
-python po_translator.py --folder ./locales --lang zh_CN --folder-language --bulk
+python po_translator.py --folder ./locale --lang zh_CN --folder-language --bulk
 make -e SPHINXOPTS="-D language='zh_CN'" html
 ```

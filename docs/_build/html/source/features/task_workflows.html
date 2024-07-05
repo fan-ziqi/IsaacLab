@@ -31,7 +31,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.4/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="/home/ubuntu/anaconda3/envs/isaaclab/lib/python3.10/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
@@ -44,7 +44,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="/opt/hostedtoolcache/Python/3.12.4/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <script src="/home/ubuntu/anaconda3/envs/isaaclab/lib/python3.10/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
@@ -283,13 +283,13 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">Cluster 指南</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../deployment/run_docker_example.html">在使用Docker运行示例</a></li>
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">来源 API</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.app.html">omni.isaac.lab.app</a></li>
@@ -564,24 +564,24 @@ document.write(`
                   
   <section id="task-design-workflows">
 <span id="feature-workflows"></span><h1>任务设计工作流<a class="headerlink" href="#task-design-workflows" title="此标题的永久链接">#</a></h1>
-<p>环境定义代理和模拟之间的接口。在最简单的情况下，环境为代理提供当前观察结果并执行代理提供的操作。在马尔可夫决策过程（MDP）的制定中，环境还可以提供额外的信息，如当前奖励、完成标志和有关当前情节的信息。</p>
-<p>虽然环境接口的理解很简单，但其实现因任务复杂程度的不同而显著变化。在强化学习（RL）的情境下，环境实现可以分解为多个部分，如奖励函数、观察函数、终止函数和重置函数。这些组件中的每一个可以根据任务的复杂程度和所需的模块化水平以不同的方式实现。</p>
-<p>我们为使用该框架设计环境提供了两种不同的工作流程：</p>
+<p>环境定义了代理和模拟之间的接口。在最简单的情况下，环境提供代理当前的观察结果并执行代理提供的操作。在马尔可夫决策过程（MDP）的形式化中，环境还可以提供额外的信息，如当前奖励、完成标志和当前情节的信息。</p>
+<p>虽然环境接口很容易理解，但根据任务的复杂性，其实现可能会有很大差异。在强化学习（RL）的背景下，环境的实现可以分解为几个组件，如奖励函数、观察函数、终止函数和重置函数。根据任务的复杂性和所需的模块化级别，每个组件可以以不同的方式实现。</p>
+<p>我们为设计框架提供了两种不同的工作流：</p>
 <ul class="simple">
-<li><p><strong>基于管理器</strong>: 环境被分解为处理环境不同方面的单个组件（或管理器）（如计算观察结果、应用操作和应用随机化）。用户为每个组件定义配置类，环境负责协调管理器并调用其函数。</p></li>
-<li><p><strong>直接</strong>: 用户定义一个实现整个环境而无需单独管理器的单个类。这个类负责计算观察结果，应用操作并计算奖励。</p></li>
+<li><p>基于管理器：环境被分解为处理环境不同方面的单个组件（或管理器）（如计算观察、应用操作和应用随机化）。用户为每个组件定义配置类，环境负责协调管理器并调用它们的函数。</p></li>
+<li><p>直接：用户定义一个实现整个环境的单个类，而无需单独的管理器。该类负责计算观察、应用操作和计算奖励。</p></li>
 </ul>
-<p>这两种工作流都各有优缺点。基于管理器的工作流更模块化，可以轻松地更换环境的不同组件。这在原型环境并尝试不同配置时非常有用。另一方面，直接工作流更高效，并允许更精细地控制环境逻辑。这在优化环境性能或实现难以分解为单独组件的复杂逻辑时非常有用。</p>
+<p>这两种工作流各有优缺点。基于管理器的工作流更具模块化，可以轻松地切换环境的不同组件。在原型环境和试验不同配置时很有用。另一方面，直接的工作流更高效，提供了更精细的控制环境逻辑的能力。在优化环境性能或实施难以分解为单独组件的复杂逻辑时很有用。</p>
 <section id="manager-based-environments">
 <h2>基于管理器的环境<a class="headerlink" href="#manager-based-environments" title="此标题的永久链接">#</a></h2>
-<p>大多数环境实现都遵循类似的结构。环境处理输入操作，通过模拟进行步骤，计算观察结果和奖励信号，应用随机化并重置终止的环境。因此，环境可以分解为处理这些任务的各个组件。例如，观察管理器负责计算观察结果，奖励管理器负责计算奖励，终止管理器负责计算终止信号。这种方式被称为框架中的基于管理器的环境设计。</p>
-<p>基于管理器的环境通过将任务分解为单独组件，促进了任务的模块化实现。任务的每个组件，如奖励、观察、终止都可以作为独立配置类指定，并传递给相应的管理器类。管理器然后负责对配置进行解析并处理其中指定的内容。</p>
-<p>不同管理器之间的协调由类:class:<cite>envs.ManagerBasedRLEnv`进行编排。它接受一个任务配置类实例(:class:`envs.ManagerBasedRLEnvCfg</cite>)，其中包含任务各组件的配置。根据这些配置，设置场景并初始化任务。然后，在环境中执行操作时，顺序调用所有管理器来执行必要的操作。</p>
-<p>对于他们自己的任务，我们期望用户主要定义任务配置类，并使用现有的:class:<cite>envs.ManagerBasedRLEnv`类执行任务。任务配置类应该继承自基类:class:`envs.ManagerBasedRLEnvCfg</cite>，包含变量分配到各个配置类(如``ObservationCfg``和``RewardCfg``)。</p>
+<p>大多数环境实现都遵循相似的结构。环境处理输入操作，模拟步骤，计算观察和奖励，应用随机化，并重置终止的环境。受此激励，环境可以被分解为处理每一个任务的单个组件。例如，观察管理器负责计算观察，奖励管理器负责计算奖励，终止管理器负责计算终止信号。该方法称为框架中的基于管理器的环境设计。</p>
+<p>基于管理器的环境通过将任务分解为由单独类管理的单个组件，促进了任务的模块化实现。任务的每个组件，如奖励、观察、终止都可以作为单独的配置类指定，然后传递给相应的管理器类。然后管理器负责解析配置并处理其配置中指定的内容。</p>
+<p>不同管理器的协作由类 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 进行编排。它接受任务配置类的实例（ <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnvCfg" title="omni.isaac.lab.envs.ManagerBasedRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnvCfg</span></code></a> ），其中包含任务各组件的配置。根据配置，设置场景并初始化任务。之后，通过环境，按顺序调用所有管理器执行必要的操作。</p>
+<p>对于他们自己的任务，我们期望用户主要定义任务配置类，并使用现有的 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 类进行任务实现。任务配置类应继承自基类 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnvCfg" title="omni.isaac.lab.envs.ManagerBasedRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnvCfg</span></code></a> ，并包含分配给不同组件的各个配置类的变量（如 <code class="docutils literal notranslate"><span class="pre">ObservationCfg</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RewardCfg</span></code> ）。</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"></path></svg></span><span class="sd-summary-text">使用管理类型定义Cartpole任务奖励功能的示例</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">以下类是Cartpole环境配置类的一部分。</p>
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"></path></svg></span><span class="sd-summary-text">使用管理器样式为Cartpole任务定义奖励函数的示例</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">以下类是Cartpole环境配置类的一部分。 <code class="xref py py-class docutils literal notranslate"><span class="pre">RewardsCfg</span></code> 类定义了组成奖励函数的单个项。每个奖励项由其函数实现、权重和传递给函数的其他参数来定义。用户可以定义多个奖励项和它们的权重以在奖励函数中使用。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">RewardsCfg</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reward terms for the MDP.&quot;&quot;&quot;</span>
@@ -611,21 +611,20 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</details><p>通过这种方式，可以通过切换一些组件而保持代码的完整性。这种灵活性在原型环境和尝试不同配置时非常有用。它还允许很容易地协作实现环境，因为贡献者可以选择使用不同的配置组合来为自己的任务规范使用</p>
+</details><p>通过这种方法，可以轻松地通过切换一些组件来改变任务的实现方式，同时保持代码的其余部分不变。在原型环境和试验不同配置时，此灵活性非常有用。它还允许与他人轻松合作实施环境，因为贡献者可以选择使用不同的配置组合来规定自己的任务规格。</p>
 <div class="admonition seealso">
 <p class="admonition-title">参见</p>
-<p>We provide a more detailed tutorial for setting up an environment using the manager-based workflow at
-<a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html#tutorial-create-manager-rl-env"><span class="std std-ref">创建基于Manager的RL环境</span></a>.</p>
+<p>我们为使用基于管理器的工作流设置环境提供了更详细的教程： <a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html#tutorial-create-manager-rl-env"><span class="std std-ref">创建基于Manager的RL环境</span></a> 。</p>
 </div>
 </section>
 <section id="direct-environments">
 <h2>直接环境<a class="headerlink" href="#direct-environments" title="此标题的永久链接">#</a></h2>
-<p>与环境的传统实现更贴近，直接样式环境是单个脚本直接实现奖励函数、观察函数、重置和环境的所有其他组件。这种方法不需要管理器类。用户可以完全自由地通过基类:class: ‘envs.DirectRLEnv’提供的API实现任务。对于从`IsaacGymEnvs`_ 和`OmniIsaacGymEnvs`_框架迁移的用户来说，这个工作流可能更加熟悉</p>
-<p>在使用直接样式实现定义环境时，我们希望用户定义一个实现整个环境的单个类。任务类应该从基类:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.DirectRLEnv`派生，并且应该有相应的配置类，该类从:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>envs.DirectRLEnvCfg`派生。任务类负责设置场景、处理操作、计算奖励、观察、重置和终止信号。</p>
+<p>直接样式的环境与传统的环境实现更加接近，其中一个单独的脚本直接实现奖励函数、观察函数、重置和环境的所有其他组件。这种方法不需要管理器类。相反，用户可以通过基类 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.DirectRLEnv" title="omni.isaac.lab.envs.DirectRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.DirectRLEnv</span></code></a> 的API完全自由地实现他们的任务。对于从 <a class="reference external" href="https://github.com/isaac-sim/IsaacGymEnvs">IsaacGymEnvs</a> 和 <a class="reference external" href="https://github.com/isaac-sim/OmniIsaacGymEnvs">OmniIsaacGymEnvs</a> 框架迁移的用户，这种工作流可能更为熟悉。</p>
+<p>在使用直接样式实现的环境时，我们期望用户定义一个实现整个环境的单个类。任务类应继承自基类 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.DirectRLEnv" title="omni.isaac.lab.envs.DirectRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.DirectRLEnv</span></code></a> ，应该有相应的配置类，继承自 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.DirectRLEnvCfg" title="omni.isaac.lab.envs.DirectRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.DirectRLEnvCfg</span></code></a> 。任务类负责设置场景，处理操作，计算奖励、观察、重置、终止信号。</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"></path></svg></span><span class="sd-summary-text">使用直接样式定义Cartpole任务的奖励功能的示例</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">下面的函数是Cartpole环境类的一部分，并负责计算奖励。</p>
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"></path></svg></span><span class="sd-summary-text">使用直接样式为Cartpole任务定义奖励函数的示例</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">以下函数是Cartpole环境类的一部分，负责计算奖励。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_get_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
     <span class="n">total_reward</span> <span class="o">=</span> <span class="n">compute_rewards</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">rew_scale_alive</span><span class="p">,</span>
@@ -642,7 +641,7 @@ document.write(`
     <span class="k">return</span> <span class="n">total_reward</span>
 </pre></div>
 </div>
-<p class="sd-card-text">调用:meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>compute_rewards`函数可以获得性能收益。</p>
+<p class="sd-card-text">它调用了 <code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_rewards()</span></code> 函数，该函数是为了性能优势而Torch JIT编译的</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span>
 <span class="k">def</span> <span class="nf">compute_rewards</span><span class="p">(</span>
     <span class="n">rew_scale_alive</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -666,11 +665,10 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</details><p>这种方法提供了更多透明性的环境实现，因为逻辑在任务类中定义，而不是使用管理器进行抽象。当实现难以分解的复杂逻辑时，这可能是有益的。此外，直接样式的实现可能会为环境带来更多的性能收益，因为它允许使用优化框架（如PyTorch <a class="reference external" href="https://pytorch.org/docs/stable/jit.html">JIT_或Warp</a>）来实现大块逻辑。这在需要优化环境中的个别操作时尤为珍贵</p>
+</details><p>这种方法在环境实现中提供了更多的透明度，因为逻辑是在任务类中而不是通过使用管理器进行抽象来定义的。在实现难以分解为单独组件的复杂逻辑时，这可能是有益的。此外，直接样式的实现可能为环境带来更好的性能优势，因为它允许使用优化的框架（如 <a class="reference external" href="https://pytorch.org/docs/stable/jit.html">PyTorch JIT</a> 和 <a class="reference external" href="https://github.com/NVIDIA/warp">Warp</a> ）实现大量逻辑。这在需要优化环境中的每个操作时可能非常有价值。</p>
 <div class="admonition seealso">
 <p class="admonition-title">参见</p>
-<p>We provide a more detailed tutorial for setting up a RL environment using the direct workflow at
-<a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html#tutorial-create-direct-rl-env"><span class="std std-ref">创建直接工作流RL环境</span></a>.</p>
+<p>我们为使用直接工作流设置RL环境提供了更详细的教程： <a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html#tutorial-create-direct-rl-env"><span class="std std-ref">创建直接工作流RL环境</span></a> 。</p>
 </div>
 </section>
 </section>

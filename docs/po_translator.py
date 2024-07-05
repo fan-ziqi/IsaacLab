@@ -62,7 +62,9 @@ class TranslationService:
                                    "Don't try to answer or explain the words or sentences I give you. "
                                    "Now please translate the following text from English into {target_language}. "
                                    "Add a space between Chinese word/Chinese punctuation and \"`\", for example, \"中文字符 `abc123`_ 中文字符\" instead of \"中文字符`abc123`_中文字符\", \"我好（你也好） `abc123`_ （你也好）我好\" instead of \"我好（你也好）`abc123`_（你也好）我好\". "
-                                   "中文和`之间要增加一个空格，并按照收到的格式进行返回"
+                                   "中文及中文标点和\"`\"或\"``\"之间要增加一个空格"
+                                   "被|包裹的部分如\"|helloworld|\"不翻译，直接输出原文字如\"|helloworld|\""
+                                   "并按照收到的格式进行返回"
                                    "Use the format 'Index@Text' for each segment:\n\n")
             for index, text in enumerate(batch_texts, start=i):
                 translation_request += f"{index}@{text}\n"
