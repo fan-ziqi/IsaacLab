@@ -573,13 +573,13 @@ document.write(`
                   
   <section id="creating-a-manager-based-rl-environment">
 <span id="tutorial-create-manager-rl-env"></span><h1>创建基于Manager的RL环境<a class="headerlink" href="#creating-a-manager-based-rl-environment" title="此标题的永久链接">#</a></h1>
-<p>在:ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>tutorial-create-manager-base-env`中学习了如何创建基本环境之后，我们现在将看看如何为强化学习创建基于manager的任务环境。</p>
-<p>基本环境被设计为一种感知-行为环境，其中代理可以向环境发送命令，并从环境中接收观察。这种最小接口对于许多应用程序是足够的，例如传统的运动规划和控制。然而，许多应用程序需要任务规范，这通常用作代理的学习目标。例如，在导航任务中，代理可能需要到达目标位置。为此，我们使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnv`类，该类将基本环境扩展为包括任务规范。</p>
-<p>与Isaac Lab中的其他组件类似，我们鼓励用户不要直接修改基类:class:<cite>envs.ManagerBasedRLEnv</cite>，而是简单实现一个配置:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnvCfg`供他们的任务环境使用。这种做法使我们能够将任务规范从环境实现中分离出来，使得为不同的任务重用相同环境的组件变得更容易。</p>
-<p>在本教程中，我们将使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnvCfg`来配置cartpole环境，以创建一个基于manager的任务，即使杆保持垂直。我们将学习如何使用奖励项、终止条件、课程表和命令来指定任务。</p>
+<p>在 <a class="reference internal" href="create_manager_base_env.html#tutorial-create-manager-base-env"><span class="std std-ref">创建基于管理器的基础环境</span></a> 中学习了如何创建基本环境之后，我们现在将看看如何为强化学习创建基于manager的任务环境。</p>
+<p>基本环境被设计为一种感知-行为环境，其中代理可以向环境发送命令，并从环境中接收观察。这种最小接口对于许多应用程序是足够的，例如传统的运动规划和控制。然而，许多应用程序需要任务规范，这通常用作代理的学习目标。例如，在导航任务中，代理可能需要到达目标位置。为此，我们使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 类，该类将基本环境扩展为包括任务规范。</p>
+<p>与Isaac Lab中的其他组件类似，我们鼓励用户不要直接修改基类 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a>，而是简单实现一个配置 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnvCfg" title="omni.isaac.lab.envs.ManagerBasedRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnvCfg</span></code></a> 供他们的任务环境使用。这种做法使我们能够将任务规范从环境实现中分离出来，使得为不同的任务重用相同环境的组件变得更容易。</p>
+<p>在本教程中，我们将使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnvCfg" title="omni.isaac.lab.envs.ManagerBasedRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnvCfg</span></code></a> 来配置cartpole环境，以创建一个基于manager的任务，即使杆保持垂直。我们将学习如何使用奖励项、终止条件、课程表和命令来指定任务。</p>
 <section id="the-code">
 <h2>代码<a class="headerlink" href="#the-code" title="此标题的永久链接">#</a></h2>
-<p>对于本教程，我们使用``omni.isaac.lab_tasks.manager_based.classic.cartpole``模块中定义的cartpole环境。</p>
+<p>对于本教程，我们使用 <code class="docutils literal notranslate"><span class="pre">omni.isaac.lab_tasks.manager_based.classic.cartpole</span></code> 模块中定义的cartpole环境。</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">用于cartpole_env_cfg.py的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
@@ -790,7 +790,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</details><p>用于运行环境的脚本``run_cartpole_rl_env.py``位于``isaaclab/source/standalone/tutorials/03_envs``目录中。该脚本与上一个教程中的``cartpole_base_env.py``脚本类似，不同之处仅在于它使用:class:<cite>envs.ManagerBasedRLEnv`代替:class:`envs.ManagerBasedEnv</cite>。</p>
+</details><p>用于运行环境的脚本 <code class="docutils literal notranslate"><span class="pre">run_cartpole_rl_env.py</span></code> 位于 <code class="docutils literal notranslate"><span class="pre">isaaclab/source/standalone/tutorials/03_envs</span></code> 目录中。该脚本与上一个教程中的 <code class="docutils literal notranslate"><span class="pre">cartpole_base_env.py</span></code> 脚本类似，不同之处仅在于它使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 代替 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 。</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">用于run_cartpole_rl_env.py的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
@@ -871,11 +871,11 @@ document.write(`
 </details></section>
 <section id="the-code-explained">
 <h2>代码解释<a class="headerlink" href="#the-code-explained" title="此标题的永久链接">#</a></h2>
-<p>我们已经在:ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>tutorial-create-manager-base-env`教程中部分讨论了上述内容，以了解如何指定场景、观察、动作和事件。因此，在本教程中，我们将只关注环境的RL组件。</p>
-<p>在Isaac Lab中，我们在:mod:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.mdp`模块中提供了不同术语的各种实现。在本教程中，我们将使用其中一些术语，但用户也可以自由定义自己的术语。这些通常放在其特定于任务的子包中（例如，在:mod:<a href="#id3"><span class="problematic" id="id4">`</span></a>omni.isaac.lab_tasks.manager_based.classic.cartpole.mdp`中）。</p>
+<p>我们已经在 <a class="reference internal" href="create_manager_base_env.html#tutorial-create-manager-base-env"><span class="std std-ref">创建基于管理器的基础环境</span></a> 教程中部分讨论了上述内容，以了解如何指定场景、观察、动作和事件。因此，在本教程中，我们将只关注环境的RL组件。</p>
+<p>在Isaac Lab中，我们在 <code class="xref py py-mod docutils literal notranslate"><span class="pre">envs.mdp</span></code> 模块中提供了不同术语的各种实现。在本教程中，我们将使用其中一些术语，但用户也可以自由定义自己的术语。这些通常放在其特定于任务的子包中（例如，在 <code class="xref py py-mod docutils literal notranslate"><span class="pre">omni.isaac.lab_tasks.manager_based.classic.cartpole.mdp</span></code> 中）。</p>
 <section id="defining-rewards">
 <h3>定义奖励<a class="headerlink" href="#defining-rewards" title="此标题的永久链接">#</a></h3>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.RewardManager`用于计算代理的奖励术语。与其他管理类似，它的术语是使用:class:`managers.RewardTermCfg`类配置的。:class:`managers.RewardTermCfg`类指定计算奖励的函数或可调用类，以及与之关联的加权。它还接受一个参数字典`</span></code>”params”<a href="#id1"><span class="problematic" id="id2">``</span></a>，在调用奖励函数时传递给奖励函数。</p>
+<p><a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.RewardManager" title="omni.isaac.lab.managers.RewardManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.RewardManager</span></code></a> 用于计算代理的奖励术语。与其他管理类似，它的术语是使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.RewardTermCfg" title="omni.isaac.lab.managers.RewardTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.RewardTermCfg</span></code></a> 类配置的。 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.RewardTermCfg" title="omni.isaac.lab.managers.RewardTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.RewardTermCfg</span></code></a> 类指定计算奖励的函数或可调用类，以及与之关联的加权。它还接受一个参数字典 <code class="docutils literal notranslate"><span class="pre">&quot;params&quot;</span></code>，在调用奖励函数时传递给奖励函数。</p>
 <p>对于cartpole任务，我们将使用以下奖励术语：</p>
 <ul class="simple">
 <li><p><strong>存活奖励</strong>：鼓励代理尽可能长时间地保持存活。</p></li>
@@ -916,12 +916,12 @@ document.write(`
 <section id="defining-termination-criteria">
 <h3>定义终止条件<a class="headerlink" href="#defining-termination-criteria" title="此标题的永久链接">#</a></h3>
 <p>大多数学习任务发生在有限步骤中，我们称之为一个episode。例如，在cartpole任务中，我们希望代理尽可能长时间地保持平衡杆。然而，如果代理达到一个不稳定或不安全的状态，我们希望终止这一episode。另一方面，如果代理能够长时间地保持平衡杆，我们希望终止这一episode，并开始一个新的episode，以便代理可以学会在不同的起始配置下保持平衡杆。</p>
-<p>:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>managers.TerminationsCfg`配置了何时终止一个episode。在本例中，我们希望在满足以下条件之一时终止任务：</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.TerminationsCfg</span></code> 配置了何时终止一个episode。在本例中，我们希望在满足以下条件之一时终止任务：</p>
 <ul class="simple">
 <li><p><strong>episode长度</strong>：episode长度大于定义的max_episode_length</p></li>
 <li><p><strong>小车超出边界</strong>：小车超出边界[-3, 3]</p></li>
 </ul>
-<p>标志:attr:<a class="reference external" href="https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/">managers.TerminationsCfg.time_out`指定该术语是超时（截断）术语还是终止术语。这些术语用于指示`Gymnasium文档中描述的两种终止类型</a>。</p>
+<p>标志 <code class="xref py py-attr docutils literal notranslate"><span class="pre">managers.TerminationsCfg.time_out</span></code> 指定该术语是超时（截断）术语还是终止术语。这些术语用于指示 <a class="reference external" href="https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/">Gymnasium文档中描述的两种终止类型</a> 。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">TerminationsCfg</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Termination terms for the MDP.&quot;&quot;&quot;</span>
@@ -938,8 +938,8 @@ document.write(`
 </section>
 <section id="defining-commands">
 <h3>定义命令<a class="headerlink" href="#defining-commands" title="此标题的永久链接">#</a></h3>
-<p>对于各种目标驱动的任务，指定代理的目标或命令很有用。这些通过:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>managers.CommandManager`处理。命令管理器处理在每一步中重新采样和更新命令。它还可以用作代理的观察作为命令提供。</p>
-<p>对于这个简单的任务，我们不使用任何命令。这是通过使用一个带有:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.mdp.NullCommandCfg`配置的命令术语来指定的。然而，您可以在运动或操作任务中看到命令定义的一个例子。</p>
+<p>对于各种目标驱动的任务，指定代理的目标或命令很有用。这些通过 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.CommandManager" title="omni.isaac.lab.managers.CommandManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.CommandManager</span></code></a> 处理。命令管理器处理在每一步中重新采样和更新命令。它还可以用作代理的观察作为命令提供。</p>
+<p>对于这个简单的任务，我们不使用任何命令。这是通过使用一个带有 <code class="xref py py-class docutils literal notranslate"><span class="pre">envs.mdp.NullCommandCfg</span></code> 配置的命令术语来指定的。然而，您可以在运动或操作任务中看到命令定义的一个例子。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">CommandsCfg</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Command terms for the MDP.&quot;&quot;&quot;</span>
@@ -951,7 +951,7 @@ document.write(`
 </section>
 <section id="defining-curriculum">
 <h3>定义课程表<a class="headerlink" href="#defining-curriculum" title="此标题的永久链接">#</a></h3>
-<p>在训练学习代理时，通常帮助从一个简单的任务开始，随着代理训练的进行逐渐增加任务的难度。这就是课程学习的理念。在Isaac Lab中，我们提供一个:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>managers.CurriculumManager`类，可以用来为您的环境定义一个课程表。</p>
+<p>在训练学习代理时，通常帮助从一个简单的任务开始，随着代理训练的进行逐渐增加任务的难度。这就是课程学习的理念。在Isaac Lab中，我们提供一个 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.CurriculumManager" title="omni.isaac.lab.managers.CurriculumManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.CurriculumManager</span></code></a> 类，可以用来为您的环境定义一个课程表。</p>
 <p>在本教程中，为了简单起见，我们没有实施课程表，但您可以在其他运动或操作任务中看到对课程表定义的一个例子。我们使用一个简单的透传课程表来定义一个不修改环境的课程表管理器。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">CurriculumCfg</span><span class="p">:</span>
@@ -963,7 +963,7 @@ document.write(`
 </section>
 <section id="tying-it-all-together">
 <h3>全部联系在一起<a class="headerlink" href="#tying-it-all-together" title="此标题的永久链接">#</a></h3>
-<p>有了以上定义的所有组件，我们现在可以为cartpole环境创建:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>ManagerBasedRLEnvCfg`配置。这与在:ref:<a href="#id3"><span class="problematic" id="id4">`</span></a>tutorial-create-manager-base-env`中定义的:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>ManagerBasedEnvCfg`类似，只是增加了上述部分中解释的RL组件。</p>
+<p>有了以上定义的所有组件，我们现在可以为cartpole环境创建 <code class="xref py py-class docutils literal notranslate"><span class="pre">ManagerBasedRLEnvCfg</span></code> 配置。这与在 <a class="reference internal" href="create_manager_base_env.html#tutorial-create-manager-base-env"><span class="std std-ref">创建基于管理器的基础环境</span></a> 中定义的 <code class="xref py py-class docutils literal notranslate"><span class="pre">ManagerBasedEnvCfg</span></code> 类似，只是增加了上述部分中解释的RL组件。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">CartpoleEnvCfg</span><span class="p">(</span><span class="n">ManagerBasedRLEnvCfg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the locomotion velocity-tracking environment.&quot;&quot;&quot;</span>
@@ -997,7 +997,7 @@ document.write(`
 </section>
 <section id="running-the-simulation-loop">
 <h3>运行仿真循环<a class="headerlink" href="#running-the-simulation-loop" title="此标题的永久链接">#</a></h3>
-<p>回到``run_cartpole_rl_env.py``脚本，仿真循环与上一个教程类似。唯一的区别是我们现在创建:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnv`的实例，而不是:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>envs.ManagerBasedEnv`的实例。因此，现在，:meth:<a href="#id5"><span class="problematic" id="id6">`</span></a>envs.ManagerBasedRLEnv.step`方法返回额外的信号，如奖励和终止状态。信息字典还保持对诸如来自单个术语的奖励贡献、每个术语的终止状态、episode长度等数量的记录。</p>
+<p>回到 <code class="docutils literal notranslate"><span class="pre">run_cartpole_rl_env.py</span></code> 脚本，仿真循环与上一个教程类似。唯一的区别是我们现在创建 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 的实例，而不是 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 的实例。因此，现在，<a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv.step" title="omni.isaac.lab.envs.ManagerBasedRLEnv.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv.step()</span></code></a> 方法返回额外的信号，如奖励和终止状态。信息字典还保持对诸如来自单个术语的奖励贡献、每个术语的终止状态、episode长度等数量的记录。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span>
     <span class="c1"># create environment configuration</span>
@@ -1033,14 +1033,14 @@ document.write(`
 </section>
 <section id="the-code-execution">
 <h2>代码执行<a class="headerlink" href="#the-code-execution" title="此标题的永久链接">#</a></h2>
-<p>与以前的教程类似，我们可以通过执行``run_cartpole_rl_env.py``脚本来运行环境。</p>
+<p>与以前的教程类似，我们可以通过执行 <code class="docutils literal notranslate"><span class="pre">run_cartpole_rl_env.py</span></code> 脚本来运行环境。</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/tutorials/03_envs/run_cartpole_rl_env.py<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">32</span>
 </pre></div>
 </div>
 <p>这将打开一个与上一个教程类似的仿真。然而，这一次，环境返回更多的信号，指定了奖励和终止状态。此外，当他们根据配置中指定的终止条件终止时，单独的环境会重置自己。</p>
-<p>要停止仿真，您可以在您启动仿真的终端中关闭窗口，或者按``Ctrl+C``。</p>
-<p>在本教程中，我们学习了如何创建一个用于强化学习的任务环境。我们通过扩展基本环境来包括奖励、终止、命令和课程表术语来实现这一点。我们还学习了如何使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnv`类来运行环境并从中接收各种信号。</p>
-<p>尽管可以手动为所需任务创建:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnv`类的实例，但这并不具有可伸缩性，因为它需要为每个任务编写专门的脚本。因此，我们利用:meth:<a href="#id3"><span class="problematic" id="id4">`</span></a>gymnasium.make`函数来使用gym接口创建环境。我们将在下一个教程中学习如何做到这一点。</p>
+<p>要停止仿真，您可以在您启动仿真的终端中关闭窗口，或者按 <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> 。</p>
+<p>在本教程中，我们学习了如何创建一个用于强化学习的任务环境。我们通过扩展基本环境来包括奖励、终止、命令和课程表术语来实现这一点。我们还学习了如何使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 类来运行环境并从中接收各种信号。</p>
+<p>尽管可以手动为所需任务创建 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 类的实例，但这并不具有可伸缩性，因为它需要为每个任务编写专门的脚本。因此，我们利用 <code class="xref py py-meth docutils literal notranslate"><span class="pre">gymnasium.make()</span></code> 函数来使用gym接口创建环境。我们将在下一个教程中学习如何做到这一点。</p>
 </section>
 </section>
 

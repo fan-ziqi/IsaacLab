@@ -578,29 +578,29 @@ document.write(`
 <li><p><strong>资产导入器</strong> - 从各种文件格式（包括OBJ、FBX、STL和glTF）导入资产。</p></li>
 </ul>
 <p>NVIDIA推荐的工作流程是使用上述导入器将资产转换为其USD表示。 一旦资产以USD格式存在，就可以使用Omniverse Kit来编辑资产并将其导出到其他文件格式中。</p>
-<p>使用大规模模拟的重要提示是确保资产处于`实例化`_格式。这可以使资产有效地加载到内存中，并在场景中多次使用。否则，资产将多次加载到内存中，这可能会导致性能问题。有关实例化资产的更多详细信息，请查看Isaac Sim <a class="reference external" href="https://openusd.org/dev/api/_usd__page__scenegraph_instancing.html">文档</a>。</p>
+<p>使用大规模模拟的重要提示是确保资产处于 ` 实例化 <a href="#id1"><span class="problematic" id="id2">`</span></a>_ 格式。这可以使资产有效地加载到内存中，并在场景中多次使用。否则，资产将多次加载到内存中，这可能会导致性能问题。有关实例化资产的更多详细信息，请查看Isaac Sim ` 文档 <a href="#id3"><span class="problematic" id="id4">`</span></a>_ 。</p>
 <section id="using-urdf-importer">
 <h2>使用URDF导入器<a class="headerlink" href="#using-urdf-importer" title="此标题的永久链接">#</a></h2>
 <p>Isaac Sim默认包括URDF和MJCF导入器。 这些导入器支持将资产导入为实例化资产的选项。 通过选择此选项，导入器将创建两个USD文件：一个用于所有网格数据，一个用于所有非网格数据（例如关节、刚体等）。 网格数据文件中的prims将在非网格数据文件中引用。 这使得网格数据（通常是臃肿的）仅加载到内存中一次，并在场景中多次使用。</p>
-<p>要从GUI中使用这些导入器，请分别查看`MJCF导入器`_和`URDF导入器`_的文档。</p>
-<p>要从Python脚本中使用URDF导入器，我们包括了一个实用工具称为``convert_urdf.py``。在内部，此脚本创建了:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~sim.converters.UrdfConverterCfg`的实例，然后将其传递给:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~sim.converters.UrdfConverter`类。配置类指定了导入器的默认值。重要的设置是：</p>
+<p>要从GUI中使用这些导入器，请分别查看 <a href="#id1"><span class="problematic" id="id2">`</span></a>MJCF导入器 <a href="#id3"><span class="problematic" id="id4">`</span></a>_ 和 <a href="#id5"><span class="problematic" id="id6">`</span></a>URDF导入器 <a href="#id7"><span class="problematic" id="id8">`</span></a>_ 的文档。</p>
+<p>要从Python脚本中使用URDF导入器，我们包括了一个实用工具称为 <code class="docutils literal notranslate"><span class="pre">convert_urdf.py</span></code> 。在内部，此脚本创建了 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg" title="omni.isaac.lab.sim.converters.UrdfConverterCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">UrdfConverterCfg</span></code></a> 的实例，然后将其传递给 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverter" title="omni.isaac.lab.sim.converters.UrdfConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">UrdfConverter</span></code></a> 类。配置类指定了导入器的默认值。重要的设置是：</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.fix_base" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.fix_base"><code class="xref py py-attr docutils literal notranslate"><span class="pre">fix_base</span></code></a> - 是否固定机器人的基座。这取决于你是否有一个浮动基座或固定基座机器人。</p></li>
-<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.make_instanceable" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.make_instanceable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">make_instanceable</span></code></a> - 是否创建实例化资产。通常应将其设置为``True``。</p></li>
-<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.merge_fixed_joints" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.merge_fixed_joints"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merge_fixed_joints</span></code></a> - 是否合并固定关节。通常，这应该设置为``True``以减少资产复杂性。</p></li>
-<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_type" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default_drive_type</span></code></a> - 关节的驱动类型。我们建议始终设置为``”none”<a href="#id1"><span class="problematic" id="id2">``</span></a>。这允许使用执行器模型更改驱动器配置。</p></li>
-<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_stiffness" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_stiffness"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default_drive_stiffness</span></code></a> - 关节的驱动刚度。我们建议始终设置为``0.0``。这允许使用执行器模型更改驱动器配置。</p></li>
-<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_damping" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_damping"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default_drive_damping</span></code></a> - 关节的驱动阻尼。与刚度类似，我们建议始终将其设置为``0.0``。</p></li>
+<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.make_instanceable" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.make_instanceable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">make_instanceable</span></code></a> - 是否创建实例化资产。通常应将其设置为 <code class="docutils literal notranslate"><span class="pre">True</span></code> 。</p></li>
+<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.merge_fixed_joints" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.merge_fixed_joints"><code class="xref py py-attr docutils literal notranslate"><span class="pre">merge_fixed_joints</span></code></a> - 是否合并固定关节。通常，这应该设置为 <code class="docutils literal notranslate"><span class="pre">True</span></code> 以减少资产复杂性。</p></li>
+<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_type" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default_drive_type</span></code></a> - 关节的驱动类型。我们建议始终设置为 <code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code> 。这允许使用执行器模型更改驱动器配置。</p></li>
+<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_stiffness" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_stiffness"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default_drive_stiffness</span></code></a> - 关节的驱动刚度。我们建议始终设置为 <code class="docutils literal notranslate"><span class="pre">0.0</span></code> 。这允许使用执行器模型更改驱动器配置。</p></li>
+<li><p><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_damping" title="omni.isaac.lab.sim.converters.UrdfConverterCfg.default_drive_damping"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default_drive_damping</span></code></a> - 关节的驱动阻尼。与刚度类似，我们建议始终将其设置为 <code class="docutils literal notranslate"><span class="pre">0.0</span></code> 。</p></li>
 </ul>
 <section id="example-usage">
 <h3>示例用法<a class="headerlink" href="#example-usage" title="此标题的永久链接">#</a></h3>
-<p>在此示例中，我们使用了任天堂-D机器人的预处理URDF文件。要检查预处理好的URDF，请查看文件``anymal.urdf``_。预处理URDF和原始URDF之间的主要区别是：</p>
+<p>在此示例中，我们使用了任天堂-D机器人的预处理URDF文件。要检查预处理好的URDF，请查看文件 <a href="#id1"><span class="problematic" id="id2">``</span></a>anymal.urdf``_ 。预处理URDF和原始URDF之间的主要区别是：</p>
 <ul class="simple">
-<li><p>我们从URDF中删除了``&lt;gazebo&gt;``标签。此标签不受URDF导入器支持。</p></li>
-<li><p>我们从URDF中删除了``&lt;transmission&gt;``标签。URDF导入器不支持此标签。</p></li>
+<li><p>我们从URDF中删除了 <code class="docutils literal notranslate"><span class="pre">&lt;gazebo&gt;</span></code> 标签。此标签不受URDF导入器支持。</p></li>
+<li><p>我们从URDF中删除了 <code class="docutils literal notranslate"><span class="pre">&lt;transmission&gt;</span></code> 标签。URDF导入器不支持此标签。</p></li>
 <li><p>我们从URDF中删除了多个碰撞体，以减少资产的复杂性。</p></li>
-<li><p>我们将所有关节的阻尼和摩擦参数更改为``0.0``。这确保我们可以在没有PhysX增加额外阻尼的情况下对关节进行努力控制。</p></li>
-<li><p>我们向固定关节添加了``&lt;dont_collapse&gt;``标签。这确保导入器不会合并这些固定关节。</p></li>
+<li><p>我们将所有关节的阻尼和摩擦参数更改为 <code class="docutils literal notranslate"><span class="pre">0.0</span></code> 。这确保我们可以在没有PhysX增加额外阻尼的情况下对关节进行努力控制。</p></li>
+<li><p>我们向固定关节添加了 <code class="docutils literal notranslate"><span class="pre">&lt;dont_collapse&gt;</span></code> 标签。这确保导入器不会合并这些固定关节。</p></li>
 </ul>
 <p>以下是克隆存储库并运行转换器的步骤：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a directory to clone</span>
@@ -618,23 +618,23 @@ git<span class="w"> </span>clone<span class="w"> </span>git@github.com:isaac-orb
 <span class="w">  </span>--make-instanceable
 </pre></div>
 </div>
-<p>执行上述脚本将在``source/extensions/omni.isaac.lab_assets/data/Robots/ANYbotics/<a href="#id1"><span class="problematic" id="id2">``</span></a>目录内创建两个USD文件：</p>
+<p>执行上述脚本将在 <code class="docutils literal notranslate"><span class="pre">source/extensions/omni.isaac.lab_assets/data/Robots/ANYbotics/</span></code> 目录内创建两个USD文件：</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">anymal_d.usd</span></code> - 这是主资产文件。 它包含所有非网格数据。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Props/instanceable_assets.usd</span></code> - 这是网格数据文件。</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>自Isaac Sim 2023.1.1以来，URDF导入器的行为发生了变化，它会将网格数据存储到主资产文件中，即使设置了``–make-instanceable``标志。这意味着``Props/instanceable_assets.usd``文件已创建，但不再被使用。</p>
+<p>自Isaac Sim 2023.1.1以来，URDF导入器的行为发生了变化，它会将网格数据存储到主资产文件中，即使设置了 <code class="docutils literal notranslate"><span class="pre">--make-instanceable</span></code> 标志。这意味着 <code class="docutils literal notranslate"><span class="pre">Props/instanceable_assets.usd</span></code> 文件已创建，但不再被使用。</p>
 </div>
-<p>您可以按下打开窗口的“播放”按钮，以在场景中看到资产。如果一切正常的话，资产应该会“坍塌”。 如果发生爆炸，那么可能是URDF中存在自我碰撞。</p>
-<p>要无头运行脚本，您可以添加``–headless``标志。 这将不会打开GUI，并在转换完成后退出脚本。</p>
+<p>您可以按下打开窗口的 `` 播放 `` 按钮，以在场景中看到资产。如果一切正常的话，资产应该会 `` 坍塌 `` 。 如果发生爆炸，那么可能是URDF中存在自我碰撞。</p>
+<p>要无头运行脚本，您可以添加 <code class="docutils literal notranslate"><span class="pre">--headless</span></code> 标志。 这将不会打开GUI，并在转换完成后退出脚本。</p>
 </section>
 </section>
 <section id="using-mesh-importer">
 <h2>使用网格导入器<a class="headerlink" href="#using-mesh-importer" title="此标题的永久链接">#</a></h2>
-<p>Omniverse Kit包括使用ASSIMP库的网格转换器工具，用于从各种网格格式（例如OBJ、FBX、STL、glTF等）导入资产。资产转换器工具作为Omniverse Kit的扩展可用。请查看`资产转换器`_文档以获取更多详细信息。 但是，与Isaac Sim的URDF和MJCF导入器不同，资产转换器工具不支持创建实例化资产。 这意味着如果在场景中多次使用资产，则资产将多次加载到内存中。</p>
-<p>因此，我们包括了一个名为``convert_mesh.py``的实用工具，该工具使用资产转换器工具导入资产，然后将其转换为可实例化的资产。在内部，此脚本创建了:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~sim.converters.MeshConverterCfg`的实例，然后将其传递给:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~sim.converters.MeshConverter`类。由于网格文件不包含任何物理信息，配置类将接受不同的物理属性（例如质量、碰撞形状等）作为输入。请查看:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>~sim.converters.MeshConverterCfg`的文档以获取更多详细信息。</p>
+<p>Omniverse Kit包括使用ASSIMP库的网格转换器工具，用于从各种网格格式（例如OBJ、FBX、STL、glTF等）导入资产。资产转换器工具作为Omniverse Kit的扩展可用。请查看 ` 资产转换器 <a href="#id1"><span class="problematic" id="id2">`</span></a>_ 文档以获取更多详细信息。 但是，与Isaac Sim的URDF和MJCF导入器不同，资产转换器工具不支持创建实例化资产。 这意味着如果在场景中多次使用资产，则资产将多次加载到内存中。</p>
+<p>因此，我们包括了一个名为 <code class="docutils literal notranslate"><span class="pre">convert_mesh.py</span></code> 的实用工具，该工具使用资产转换器工具导入资产，然后将其转换为可实例化的资产。在内部，此脚本创建了 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.MeshConverterCfg" title="omni.isaac.lab.sim.converters.MeshConverterCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshConverterCfg</span></code></a> 的实例，然后将其传递给 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.MeshConverter" title="omni.isaac.lab.sim.converters.MeshConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshConverter</span></code></a> 类。由于网格文件不包含任何物理信息，配置类将接受不同的物理属性（例如质量、碰撞形状等）作为输入。请查看 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html#omni.isaac.lab.sim.converters.MeshConverterCfg" title="omni.isaac.lab.sim.converters.MeshConverterCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshConverterCfg</span></code></a> 的文档以获取更多详细信息。</p>
 <section id="id1">
 <h3>示例用法<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h3>
 <p>我们使用一个立方体的OBJ文件来演示网格转换器的用法。以下是克隆存储库并运行转换器的步骤：</p>
@@ -654,10 +654,10 @@ git<span class="w"> </span>clone<span class="w"> </span>git@github.com:NVIDIA-Om
 <span class="w">  </span>--mass<span class="w"> </span><span class="m">1</span>.0
 </pre></div>
 </div>
-<p>与URDF转换器类似，执行上述脚本将在``source/extensions/omni.isaac.lab_assets/data/Props/CubeMultiColor/<a href="#id1"><span class="problematic" id="id2">``</span></a>目录内创建两个USD文件。此外，如果您按下打开窗口的“播放”按钮，应该会看到资产在重力的影响下倒下。</p>
+<p>与URDF转换器类似，执行上述脚本将在 <code class="docutils literal notranslate"><span class="pre">source/extensions/omni.isaac.lab_assets/data/Props/CubeMultiColor/</span></code> 目录内创建两个USD文件。此外，如果您按下打开窗口的 `` 播放 `` 按钮，应该会看到资产在重力的影响下倒下。</p>
 <ul class="simple">
-<li><p>如果不设置``–mass``标志，则不会向资产添加刚体属性。它将作为静态资产导入。</p></li>
-<li><p>如果您还没有设置``–collision-approximation``标志，则该资产也不会具有任何碰撞器属性，并且将作为视觉资产导入。</p></li>
+<li><p>如果不设置 <code class="docutils literal notranslate"><span class="pre">--mass</span></code> 标志，则不会向资产添加刚体属性。它将作为静态资产导入。</p></li>
+<li><p>如果您还没有设置 <code class="docutils literal notranslate"><span class="pre">--collision-approximation</span></code> 标志，则该资产也不会具有任何碰撞器属性，并且将作为视觉资产导入。</p></li>
 </ul>
 </section>
 </section>

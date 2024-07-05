@@ -573,16 +573,16 @@ document.write(`
                   
   <section id="cluster-guide">
 <span id="deployment-cluster"></span><h1>Cluster 指南<a class="headerlink" href="#cluster-guide" title="此标题的永久链接">#</a></h1>
-<p>Cluster是加速训练和评估学习算法的绝佳方式。虽然Isaac Lab Docker映像可用于在Cluster上运行作业，但许多Cluster只支持singularity映像。这是因为`singularity`_旨在在共享的多用户系统和高性能计算（HPC）环境上提供易用性。它不需要root特权来运行容器，可用于运行用户定义的容器。</p>
+<p>Cluster是加速训练和评估学习算法的绝佳方式。虽然Isaac Lab Docker映像可用于在Cluster上运行作业，但许多Cluster只支持singularity映像。这是因为 <a class="reference external" href="https://docs.sylabs.io/guides/2.6/user-guide/index.html">singularity</a> 旨在在共享的多用户系统和高性能计算（HPC）环境上提供易用性。它不需要root特权来运行容器，可用于运行用户定义的容器。</p>
 <p>Singularity与所有Docker映像兼容。在本节中，我们将介绍如何将Isaac Lab Docker映像转换为singularity映像并将其用于在Cluster上提交作业。</p>
 <div class="admonition attention">
 <p class="admonition-title">注意</p>
-<p>不同机构的Cluster设置有所不同。下面的说明已在`ETH Zurich Euler`_Cluster（使用SLURM工作负载管理器）和IIT Genoa FranklinCluster（使用PBS工作负载管理器）上进行了测试。</p>
+<p>不同机构的Cluster设置有所不同。下面的说明已在 <a href="#id1"><span class="problematic" id="id2">`</span></a>ETH Zurich Euler`_Cluster（使用SLURM工作负载管理器）和IIT Genoa FranklinCluster（使用PBS工作负载管理器）上进行了测试。</p>
 <p>这些说明可能需要针对其他Cluster进行调整。如果您已经成功地针对另一个Cluster进行了调整，请考虑为文档做出贡献。</p>
 </div>
 <section id="setup-instructions">
 <h2>设置说明<a class="headerlink" href="#setup-instructions" title="此标题的永久链接">#</a></h2>
-<p>为了将Docker映像导出为singularity映像，需要使用`apptainer`_。有关“apptainer”的安装过程的详细概述可以在其`文档`_中找到。为方便起见，我们在此总结了本地安装的步骤：</p>
+<p>为了将Docker映像导出为singularity映像，需要使用 <a class="reference external" href="https://apptainer.org/">apptainer</a> 。有关 <code class="docutils literal notranslate"><span class="pre">apptainer</span></code> 的安装过程的详细概述可以在其 ` 文档 <a href="#id1"><span class="problematic" id="id2">`</span></a>_ 中找到。为方便起见，我们在此总结了本地安装的步骤：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>software-properties-common
 sudo<span class="w"> </span>add-apt-repository<span class="w"> </span>-y<span class="w"> </span>ppa:apptainer/ppa
@@ -593,24 +593,24 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <p>为了简化起见，我们建议在本地开发机和Cluster之间建立一个SSH连接。这样的连接将简化文件传输，并防止多次请求用户Cluster密码。</p>
 <div class="admonition attention">
 <p class="admonition-title">注意</p>
-<p>该工作流已经通过``apptainer版本1.2.5-1.el7``和``docker版本24.0.7``进行了测试。</p>
+<p>该工作流已经通过 <code class="docutils literal notranslate"><span class="pre">apptainer版本1.2.5-1.el7</span></code> 和 <code class="docutils literal notranslate"><span class="pre">docker版本24.0.7</span></code> 进行了测试。</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">apptainer</span></code>：早期版本（如``apptainer版本1.1.3-1.el7``）存在绑定问题。请确保使用最新版本。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Docker</span></code>：最新版本（<code class="docutils literal notranslate"><span class="pre">25.x</span></code>）不能使用，因为它们尚不与apptainer/singularity兼容。</p>
-<p>我们正在等待apptainer团队的最新消息。要跟踪此问题，请查看`论坛帖子`_。</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">apptainer</span></code>：早期版本（如 <code class="docutils literal notranslate"><span class="pre">apptainer版本1.1.3-1.el7</span></code> ）存在绑定问题。请确保使用最新版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Docker</span></code>：最新版本（ <code class="docutils literal notranslate"><span class="pre">25.x</span></code> ）不能使用，因为它们尚不与apptainer/singularity兼容。</p>
+<p>我们正在等待apptainer团队的最新消息。要跟踪此问题，请查看 ` 论坛帖子 <a href="#id1"><span class="problematic" id="id2">`</span></a>_ 。</p>
 </li>
 </ul>
 </div>
 <section id="configuring-the-cluster-parameters">
 <h3>配置Cluster参数<a class="headerlink" href="#configuring-the-cluster-parameters" title="此标题的永久链接">#</a></h3>
-<p>首先，您需要配置“docker/.env.base”文件中的特定于Cluster的参数。以下描述了需要配置的参数：- <code class="docutils literal notranslate"><span class="pre">CLUSTER_JOB_SCHEDULER</span></code>：</p>
+<p>首先，您需要配置 <code class="docutils literal notranslate"><span class="pre">docker/.env.base</span></code> 文件中的特定于Cluster的参数。以下描述了需要配置的参数：- <code class="docutils literal notranslate"><span class="pre">CLUSTER_JOB_SCHEDULER</span></code>：</p>
 <blockquote>
 <div><p>Cluster使用的作业调度器/工作负载管理器。目前，我们支持SLURM和PBS工作负载管理器[SLURM | PBS]。</p>
 </div></blockquote>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_ISAAC_SIM_CACHE_DIR</span></code>：Isaac Sim缓存存储在Cluster上的目录。该目录必须以``docker-isaac-sim``结尾。此目录将被复制到计算节点并挂载到singularity容器中。它应当增加模拟启动的速度。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_ISAACLAB_DIR</span></code>：Isaac Lab代码存储在Cluster上的目录。此目录必须以``isaaclab``结束。当提交作业时，最新的本地更改将被复制到Cluster。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_LOGIN</span></code>：登录到Cluster。通常是用户和Cluster名称，例如，<code class="docutils literal notranslate"><span class="pre">your_user&#64;euler.ethz.ch</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_ISAAC_SIM_CACHE_DIR</span></code>：Isaac Sim缓存存储在Cluster上的目录。该目录必须以 <code class="docutils literal notranslate"><span class="pre">docker-isaac-sim</span></code> 结尾。此目录将被复制到计算节点并挂载到singularity容器中。它应当增加模拟启动的速度。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_ISAACLAB_DIR</span></code>：Isaac Lab代码存储在Cluster上的目录。此目录必须以 <code class="docutils literal notranslate"><span class="pre">isaaclab</span></code> 结束。当提交作业时，最新的本地更改将被复制到Cluster。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_LOGIN</span></code>：登录到Cluster。通常是用户和Cluster名称，例如，<code class="docutils literal notranslate"><span class="pre">your_user&#64;euler.ethz.ch</span></code> 。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_SIF_PATH</span></code>：singularity映像存储在Cluster上的路径。当提交作业时，映像将被复制到计算节点，但不会再次上传到Cluster。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_PYTHON_EXECUTABLE</span></code>：Isaac Lab内的Python可执行文件的路径，应在提交的作业中执行。</p></li>
 </ul>
@@ -622,10 +622,10 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/container.sh<span class="w"> </span>push<span class="w"> </span><span class="o">[</span>profile<span class="o">]</span>
 </pre></div>
 </div>
-<p>此命令将在``docker/exports``目录下创建一个singularity映像，并将其上传到Cluster上定义的位置。请注意，创建singularity映像可能需要一些时间。<code class="docutils literal notranslate"><span class="pre">[profile]``是一个可选参数，用于指定要用于的容器配置文件。如果未指定配置文件，则将使用默认配置文件``base</span></code>。</p>
+<p>此命令将在 <code class="docutils literal notranslate"><span class="pre">docker/exports</span></code> 目录下创建一个singularity映像，并将其上传到Cluster上定义的位置。请注意，创建singularity映像可能需要一些时间。 <code class="docutils literal notranslate"><span class="pre">[profile]</span></code> 是一个可选参数，用于指定要用于的容器配置文件。如果未指定配置文件，则将使用默认配置文件 <code class="docutils literal notranslate"><span class="pre">base</span></code> 。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>默认情况下，提供``–fakeroot``标志给``apptainer build``命令，将创建不具备根访问权限的singularity映像。如果创建映像失败，您可以尝试删除``docker/container.sh``中的标志以使用根访问权限创建它。</p>
+<p>默认情况下，提供 <code class="docutils literal notranslate"><span class="pre">--fakeroot</span></code> 标志给 <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">build</span></code> 命令，将创建不具备根访问权限的singularity映像。如果创建映像失败，您可以尝试删除 <code class="docutils literal notranslate"><span class="pre">docker/container.sh</span></code> 中的标志以使用根访问权限创建它。</p>
 </div>
 </section>
 </section>
@@ -633,12 +633,12 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <h2>定义作业参数<a class="headerlink" href="#defining-the-job-parameters" title="此标题的永久链接">#</a></h2>
 <p>作业参数需要根据Cluster使用的作业调度器进行定义。您只需要更新您可用的调度器的相应脚本。</p>
 <ul class="simple">
-<li><p>对于SLURM，请在``docker/cluster/submit_job_slurm.sh``中更新参数。</p></li>
-<li><p>对于PBS，请在``docker/cluster/submit_job_pbs.sh``中更新参数。</p></li>
+<li><p>对于SLURM，请在 <code class="docutils literal notranslate"><span class="pre">docker/cluster/submit_job_slurm.sh</span></code> 中更新参数。</p></li>
+<li><p>对于PBS，请在 <code class="docutils literal notranslate"><span class="pre">docker/cluster/submit_job_pbs.sh</span></code> 中更新参数。</p></li>
 </ul>
 <section id="for-slurm">
 <h3>对于SLURM<a class="headerlink" href="#for-slurm" title="此标题的永久链接">#</a></h3>
-<p>作业参数在``docker/cluster/submit_job_slurm.sh``内定义。典型的SLURM操作需要指定CPU和GPU的数量、内存和时间限制。有关更多信息，请检查`SLURM文档`_。</p>
+<p>作业参数在 <code class="docutils literal notranslate"><span class="pre">docker/cluster/submit_job_slurm.sh</span></code> 内定义。典型的SLURM操作需要指定CPU和GPU的数量、内存和时间限制。有关更多信息，请检查 <a href="#id1"><span class="problematic" id="id2">`</span></a>SLURM文档 <a href="#id3"><span class="problematic" id="id4">`</span></a>_ 。</p>
 <p>默认配置如下所示：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">12</span><span class="c1">#SBATCH --cpus-per-task=8</span>
 <span class="linenos">13</span><span class="c1">#SBATCH --gpus=rtx_3090:1</span>
@@ -650,7 +650,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </pre></div>
 </div>
 <p>对于Cluster的一个重要要求是计算节点始终能够访问互联网。这是从Nucleus服务器加载资源所必需的。对于某些Cluster架构，必须加载额外模块以允许互联网访问。</p>
-<p>例如，在ETH Zurich EulerCluster上，需要加载``eth_proxy``模块。可以通过将以下行添加到``submit_job_slurm.sh``脚本中来完成此操作：</p>
+<p>例如，在ETH Zurich EulerCluster上，需要加载 <code class="docutils literal notranslate"><span class="pre">eth_proxy</span></code> 模块。可以通过将以下行添加到 <code class="docutils literal notranslate"><span class="pre">submit_job_slurm.sh</span></code> 脚本中来完成此操作：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">3</span><span class="c1"># in the case you need to load specific modules on the cluster, add them here</span>
 <span class="linenos">4</span><span class="c1"># e.g., `module load eth_proxy`</span>
 </pre></div>
@@ -658,7 +658,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </section>
 <section id="for-pbs">
 <h3>对于PBS<a class="headerlink" href="#for-pbs" title="此标题的永久链接">#</a></h3>
-<p>作业参数在``docker/cluster/submit_job_pbs.sh``内定义。典型的PBS操作需要指定CPU和GPU的数量，以及时间限制。有关更多信息，请检查`PBS官方网站`_。</p>
+<p>作业参数在 <code class="docutils literal notranslate"><span class="pre">docker/cluster/submit_job_pbs.sh</span></code> 内定义。典型的PBS操作需要指定CPU和GPU的数量，以及时间限制。有关更多信息，请检查 <a href="#id1"><span class="problematic" id="id2">`</span></a>PBS官方网站 <a href="#id3"><span class="problematic" id="id4">`</span></a>_ 。</p>
 <p>默认配置如下所示：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">11</span><span class="c1">#PBS -l select=1:ncpus=8:mpiprocs=1:ngpus=1</span>
 <span class="linenos">12</span><span class="c1">#PBS -l walltime=01:00:00</span>
@@ -676,16 +676,16 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/container.sh<span class="w"> </span>job<span class="w"> </span><span class="o">[</span>profile<span class="o">]</span><span class="w"> </span><span class="s2">&quot;argument1&quot;</span><span class="w"> </span><span class="s2">&quot;argument2&quot;</span><span class="w"> </span>...
 </pre></div>
 </div>
-<p>此命令将最新的代码更改复制到Cluster并提交作业。请确保您的Python可执行文件的输出存储在``isaaclab/logs``目录下，因为这个目录会再次从计算节点复制到``CLUSTER_ISAACLAB_DIR``中。</p>
-<p><code class="docutils literal notranslate"><span class="pre">[profile]``是一个可选参数，指定用于容器配置文件的singularity映像。如果未指定配置文件，将使用默认配置文件``base</span></code>。配置文件必须直接在``job``命令之后进行定义。其他所有参数都传递给Python可执行文件。如果未定义配置文件，所有参数都将传递给Python可执行文件。</p>
+<p>此命令将最新的代码更改复制到Cluster并提交作业。请确保您的Python可执行文件的输出存储在 <code class="docutils literal notranslate"><span class="pre">isaaclab/logs</span></code> 目录下，因为这个目录会再次从计算节点复制到 <code class="docutils literal notranslate"><span class="pre">CLUSTER_ISAACLAB_DIR</span></code> 中。</p>
+<p><code class="docutils literal notranslate"><span class="pre">[profile]</span></code> 是一个可选参数，指定用于容器配置文件的singularity映像。如果未指定配置文件，将使用默认配置文件 <code class="docutils literal notranslate"><span class="pre">base</span></code> 。配置文件必须直接在 <code class="docutils literal notranslate"><span class="pre">job</span></code> 命令之后进行定义。其他所有参数都传递给Python可执行文件。如果未定义配置文件，所有参数都将传递给Python可执行文件。</p>
 <p>训练参数将传递给Python可执行文件。例如，可以使用以下命令执行标准的ANYmal粗糙地形运动训练：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/container.sh<span class="w"> </span>job<span class="w"> </span>--task<span class="w"> </span>Isaac-Velocity-Rough-Anymal-C-v0<span class="w"> </span>--headless<span class="w"> </span>--video<span class="w"> </span>--enable_cameras
 </pre></div>
 </div>
-<p>另外，上述命令还会渲染训练进度的视频，并将其存储在``isaaclab/logs``目录下。</p>
+<p>另外，上述命令还会渲染训练进度的视频，并将其存储在 <code class="docutils literal notranslate"><span class="pre">isaaclab/logs</span></code> 目录下。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>./docker/container.sh job``命令将最新的代码更改复制到Cluster。但是，它不会删除本地已删除的任何文件。这些文件仍将存在于Cluster上，可能会导致问题。在这种情况下，我们建议删除Cluster上的``CLUSTER_ISAACLAB_DIR``目录并重新运行命令。</p>
+<p><code class="docutils literal notranslate"><span class="pre">./docker/container.sh</span> <span class="pre">job</span></code> 命令将最新的代码更改复制到Cluster。但是，它不会删除本地已删除的任何文件。这些文件仍将存在于Cluster上，可能会导致问题。在这种情况下，我们建议删除Cluster上的 <code class="docutils literal notranslate"><span class="pre">CLUSTER_ISAACLAB_DIR</span></code> 目录并重新运行命令。</p>
 </div>
 </section>
 </section>

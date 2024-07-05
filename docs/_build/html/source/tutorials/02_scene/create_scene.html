@@ -571,7 +571,7 @@ document.write(`
                   
   <section id="using-the-interactive-scene">
 <span id="tutorial-interactive-scene"></span><h1>使用交互式场景<a class="headerlink" href="#using-the-interactive-scene" title="此标题的永久链接">#</a></h1>
-<p>到目前为止，在教程中，我们手动将资产生成到模拟中，并创建对象实例与它们进行交互。然而，随着场景复杂性的增加，手动执行这些任务变得繁琐。在本教程中，我们将介绍:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveScene`类，为在模拟中生成prims和管理它们提供便捷的接口。</p>
+<p>到目前为止，在教程中，我们手动将资产生成到模拟中，并创建对象实例与它们进行交互。然而，随着场景复杂性的增加，手动执行这些任务变得繁琐。在本教程中，我们将介绍 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 类，为在模拟中生成prims和管理它们提供便捷的接口。</p>
 <p>在高层次上，交互式场景是场景实体的集合。每个实体可以是非交互式prim（例如地平面，光源），交互式prim（例如关节，刚性物体），或传感器（例如摄像头，激光雷达）。交互式场景提供了一个方便的接口，用于在模拟中生成这些实体和对它们进行管理。</p>
 <p>与手动方法相比，它提供了以下好处：</p>
 <ul class="simple">
@@ -579,10 +579,10 @@ document.write(`
 <li><p>为多个环境启用用户友好的场景prims克隆。</p></li>
 <li><p>将所有场景实体收集到一个单个对象中，使它们更易于管理。</p></li>
 </ul>
-<p>在本教程中，我们从:ref:教程交互关节中的cartpole示例，替换``design_scene``函数为:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveScene`对象。虽然在这个简单的例子中使用交互式场景似乎有点过头，但随着未来增加更多资产和传感器，它将变得更加有用。</p>
+<p>在本教程中，我们从 :ref: 教程交互关节中的cartpole示例，替换 <code class="docutils literal notranslate"><span class="pre">design_scene</span></code> 函数为 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 对象。虽然在这个简单的例子中使用交互式场景似乎有点过头，但随着未来增加更多资产和传感器，它将变得更加有用。</p>
 <section id="the-code">
 <h2>代码<a class="headerlink" href="#the-code" title="此标题的永久链接">#</a></h2>
-<p>该教程对应于``source/standalone/tutorials/02_scene``目录下的``create_scene.py``脚本。</p>
+<p>该教程对应于 <code class="docutils literal notranslate"><span class="pre">source/standalone/tutorials/02_scene</span></code> 目录下的 <code class="docutils literal notranslate"><span class="pre">create_scene.py</span></code> 脚本。</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">create_scene.py的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
@@ -726,8 +726,8 @@ document.write(`
 <p>虽然代码与上一个教程类似，但有一些关键区别我们将会详细讨论。</p>
 <section id="scene-configuration">
 <h3>场景配置<a class="headerlink" href="#scene-configuration" title="此标题的永久链接">#</a></h3>
-<p>场景由一系列拥有自己配置的实体组成。这些被指定在一个从:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveSceneCfg`继承的配置类中。然后这个配置类被传递到:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>scene.InteractiveScene`构造函数中用于创建场景。</p>
-<p>对于cartpole示例，我们指定了与上一个教程中相同的场景，但现在在配置类:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>CartpoleSceneCfg`中列出它们，而不是手动生成它们。</p>
+<p>场景由一系列拥有自己配置的实体组成。这些被指定在一个从 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveSceneCfg</span></code></a> 继承的配置类中。然后这个配置类被传递到 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 构造函数中用于创建场景。</p>
+<p>对于cartpole示例，我们指定了与上一个教程中相同的场景，但现在在配置类 <code class="xref py py-class docutils literal notranslate"><span class="pre">CartpoleSceneCfg</span></code> 中列出它们，而不是手动生成它们。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">CartpoleSceneCfg</span><span class="p">(</span><span class="n">InteractiveSceneCfg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for a cart-pole scene.&quot;&quot;&quot;</span>
@@ -744,19 +744,19 @@ document.write(`
     <span class="n">cartpole</span><span class="p">:</span> <span class="n">ArticulationCfg</span> <span class="o">=</span> <span class="n">CARTPOLE_CFG</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{ENV_REGEX_NS}</span><span class="s2">/Robot&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>配置类中的变量名被用作键来访问:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveScene`对象中的相应实体。例如，可以通过``scene[“cartpole”]``访问cartpole。但是，我们稍后将讲到。首先，让我们看看如何配置单个场景实体。</p>
-<p>与之前的教程中配置一个刚性物体和关节类似，配置是使用配置类指定的。然而，场景中地平面和光源的配置与cartpole的配置有一个关键区别。地平面和光源是非交互式prims，而cartpole是交互式prim。这一差异反映在用于指定它们的配置类中。地平面和光源的配置使用了:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>assets.AssetBaseCfg`的实例，而cartpole使用了:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>assets.ArticulationCfg`的实例。在模拟步骤期间，场景不“处理”任何不是交互式prim（即不是资产也不是传感器）的东西。</p>
+<p>配置类中的变量名被用作键来访问 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 对象中的相应实体。例如，可以通过 <code class="docutils literal notranslate"><span class="pre">scene[&quot;cartpole&quot;]</span></code> 访问cartpole。但是，我们稍后将讲到。首先，让我们看看如何配置单个场景实体。</p>
+<p>与之前的教程中配置一个刚性物体和关节类似，配置是使用配置类指定的。然而，场景中地平面和光源的配置与cartpole的配置有一个关键区别。地平面和光源是非交互式prims，而cartpole是交互式prim。这一差异反映在用于指定它们的配置类中。地平面和光源的配置使用了 <a class="reference internal" href="../../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.AssetBaseCfg" title="omni.isaac.lab.assets.AssetBaseCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.AssetBaseCfg</span></code></a> 的实例，而cartpole使用了 <a class="reference internal" href="../../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.ArticulationCfg</span></code></a> 的实例。在模拟步骤期间，场景不 `` 处理 `` 任何不是交互式prim（即不是资产也不是传感器）的东西。</p>
 <p>还需要注意的另一个关键区别在于不同prim的prim路径的指定方式：</p>
 <ul class="simple">
 <li><p>地平面：<code class="docutils literal notranslate"><span class="pre">/World/defaultGroundPlane</span></code></p></li>
 <li><p>光源：<code class="docutils literal notranslate"><span class="pre">/World/Light</span></code></p></li>
 <li><p>Cartpole：<code class="docutils literal notranslate"><span class="pre">{ENV_REGEX_NS}/Robot</span></code></p></li>
 </ul>
-<p>正如之前所学的，Omniverse创建了USD阶段的prims图。prim路径用于指定图中prim的位置。地平面和光源使用绝对路径指定，而cartpole使用相对路径指定。相对路径使用了``ENV_REGEX_NS``变量，这是一个特殊变量，在场景创建期间由环境名称替换。任何在其prim路径中具有``ENV_REGEX_NS``变量的实体都将被克隆为每个环境。此路径被scene对象替换为``/World/envs/env_{i}``其中``i``是环境索引。</p>
+<p>正如之前所学的，Omniverse创建了USD阶段的prims图。prim路径用于指定图中prim的位置。地平面和光源使用绝对路径指定，而cartpole使用相对路径指定。相对路径使用了 <code class="docutils literal notranslate"><span class="pre">ENV_REGEX_NS</span></code> 变量，这是一个特殊变量，在场景创建期间由环境名称替换。任何在其prim路径中具有 <code class="docutils literal notranslate"><span class="pre">ENV_REGEX_NS</span></code> 变量的实体都将被克隆为每个环境。此路径被scene对象替换为 <code class="docutils literal notranslate"><span class="pre">/World/envs/env_{i}</span></code> 其中 <code class="docutils literal notranslate"><span class="pre">i</span></code> 是环境索引。</p>
 </section>
 <section id="scene-instantiation">
 <h3>场景实例化<a class="headerlink" href="#scene-instantiation" title="此标题的永久链接">#</a></h3>
-<p>与以前我们调用``design_scene``函数创建场景不同，我们现在创建:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveScene`类的一个实例，并将配置对象传递给它的构造函数。在创建``CartpoleSceneCfg``的配置实例期间，我们使用``num_envs``参数指定要创建多少环境副本。这将用于为每个环境克隆场景。</p>
+<p>与以前我们调用 <code class="docutils literal notranslate"><span class="pre">design_scene</span></code> 函数创建场景不同，我们现在创建 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 类的一个实例，并将配置对象传递给它的构造函数。在创建 <code class="docutils literal notranslate"><span class="pre">CartpoleSceneCfg</span></code> 的配置实例期间，我们使用 <code class="docutils literal notranslate"><span class="pre">num_envs</span></code> 参数指定要创建多少环境副本。这将用于为每个环境克隆场景。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Design scene</span>
     <span class="n">scene_cfg</span> <span class="o">=</span> <span class="n">CartpoleSceneCfg</span><span class="p">(</span><span class="n">num_envs</span><span class="o">=</span><span class="n">args_cli</span><span class="o">.</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">env_spacing</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
     <span class="n">scene</span> <span class="o">=</span> <span class="n">InteractiveScene</span><span class="p">(</span><span class="n">scene_cfg</span><span class="p">)</span>
@@ -765,7 +765,7 @@ document.write(`
 </section>
 <section id="accessing-scene-elements">
 <h3>访问场景实体<a class="headerlink" href="#accessing-scene-elements" title="此标题的永久链接">#</a></h3>
-<p>你可以使用与以前教程中用字典从entities中访问的类似方法从:class:<cite>InteractiveScene`对象中访问场景实体，使用``[]``运算符。该运算代入一个字符串键并返回相应的实体。键是通过每个实体的配置类指定的。例如，cartpole 在配置类中使用键`</cite>”cartpole”<a href="#id1"><span class="problematic" id="id2">``</span></a>指定。</p>
+<p>你可以使用与以前教程中用字典从entities中访问的类似方法从 <code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code> 对象中访问场景实体，使用 <code class="docutils literal notranslate"><span class="pre">[]</span></code> 运算符。该运算代入一个字符串键并返回相应的实体。键是通过每个实体的配置类指定的。例如，cartpole 在配置类中使用键 <code class="docutils literal notranslate"><span class="pre">&quot;cartpole&quot;</span></code> 指定。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Extract scene entities</span>
     <span class="c1"># note: we only do this here for readability.</span>
     <span class="n">robot</span> <span class="o">=</span> <span class="n">scene</span><span class="p">[</span><span class="s2">&quot;cartpole&quot;</span><span class="p">]</span>
@@ -780,17 +780,17 @@ document.write(`
 <li><p><a class="reference internal" href="../../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation.write_data_to_sim" title="omni.isaac.lab.assets.Articulation.write_data_to_sim"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.Articulation.write_data_to_sim()</span></code></a> ⟶ <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene.write_data_to_sim" title="omni.isaac.lab.scene.InteractiveScene.write_data_to_sim"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scene.InteractiveScene.write_data_to_sim()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation.update" title="omni.isaac.lab.assets.Articulation.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.Articulation.update()</span></code></a> ⟶ <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene.update" title="omni.isaac.lab.scene.InteractiveScene.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scene.InteractiveScene.update()</span></code></a></p></li>
 </ul>
-<p>在内部，:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveScene`的方法调用了场景中的实体的相应方法。</p>
+<p>在内部，<a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 的方法调用了场景中的实体的相应方法。</p>
 </section>
 </section>
 <section id="the-code-execution">
 <h2>代码执行<a class="headerlink" href="#the-code-execution" title="此标题的永久链接">#</a></h2>
-<p>让我们运行脚本来模拟场景中的32个cartpole。我们可以通过向脚本传递``–num_envs``参数来实现。这应该会打开一个包含32个cartpole随机摆动的舞台，你可以使用鼠标旋转相机，使用箭头键在场景中移动。</p>
+<p>让我们运行脚本来模拟场景中的32个cartpole。我们可以通过向脚本传递 <code class="docutils literal notranslate"><span class="pre">--num_envs</span></code> 参数来实现。这应该会打开一个包含32个cartpole随机摆动的舞台，你可以使用鼠标旋转相机，使用箭头键在场景中移动。</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/tutorials/02_scene/create_scene.py<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">32</span>
 </pre></div>
 </div>
-<p>在本教程中，我们学习了如何使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveScene`来创建一个带有多个资产的场景。我们还学习了如何使用``num_envs``参数来为多个环境克隆场景。</p>
-<p>在``omni.isaac.lab_tasks``扩展中的任务中还有更多:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>scene.InteractiveSceneCfg`的示例用法。请查看源代码，了解它们在更复杂的场景中如何使用。</p>
+<p>在本教程中，我们学习了如何使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a> 来创建一个带有多个资产的场景。我们还学习了如何使用 <code class="docutils literal notranslate"><span class="pre">num_envs</span></code> 参数来为多个环境克隆场景。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">omni.isaac.lab_tasks</span></code> 扩展中的任务中还有更多 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveSceneCfg</span></code></a> 的示例用法。请查看源代码，了解它们在更复杂的场景中如何使用。</p>
 <p>在 <code class="docutils literal notranslate"><span class="pre">omni.isaac.lab_tasks</span></code> 扩展中找到的任务中，有许多对 <a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveSceneCfg</span></code></a> 的用法示例。请查看源代码，了解它们如何用于更复杂的场景。</p>
 </section>
 </section>

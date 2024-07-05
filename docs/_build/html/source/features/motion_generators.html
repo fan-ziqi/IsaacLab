@@ -581,11 +581,11 @@ document.write(`
                   
   <section id="motion-generators">
 <h1>运动发生器<a class="headerlink" href="#motion-generators" title="此标题的永久链接">#</a></h1>
-<p>机器人任务通常以期望的末端执行器轨迹在任务空间中定义，而控制动作则在关节空间中执行。这自然地导致了 <em>关节空间</em> 和 <em>任务空间</em> (操作空间) 控制方法。然而，成功执行使用运动控制的交互任务通常需要准确的机器人手臂模型以及其环境的模型。虽然可能已知足够精确的机械手模型，但很难获得环境的详细描述 <span id="id1">[<a class="reference internal" href="../refs/bibliography.html#id5" title="Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani, and Giuseppe Oriolo. Force control. Springer, 2009.">SSVO09</a>]</span>。规划错误由此不匹配可能可以通过引入在交互期间的*顺应*行为来克服。</p>
+<p>机器人任务通常以期望的末端执行器轨迹在任务空间中定义，而控制动作则在关节空间中执行。这自然地导致了 <em>关节空间</em> 和 <em>任务空间</em> (操作空间) 控制方法。然而，成功执行使用运动控制的交互任务通常需要准确的机器人手臂模型以及其环境的模型。虽然可能已知足够精确的机械手模型，但很难获得环境的详细描述 <span id="id1">[<a class="reference internal" href="../refs/bibliography.html#id5" title="Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani, and Giuseppe Oriolo. Force control. Springer, 2009.">SSVO09</a>]</span> 。规划错误由此不匹配可能可以通过引入在交互期间的*顺应*行为来克服。</p>
 <p>虽然通过机器人的结构（例如弹性执行器、软机器人手臂）被动地实现了顺应，但我们更感兴趣的是侧重于主动交互控制的控制器设计。这些广泛地分为：</p>
 <ol class="arabic simple">
-<li><p><strong>阻抗控制:</strong> 在此间接控制方法中，交互期间引起的运动偏差与可调参数（刚度和阻尼）的质量-弹簧-阻尼系统有关。此的一个专门情况是*刚度*控制，其中仅考虑位置误差和接触力之间的静态关系。</p></li>
-<li><p><strong>混合力/运动控制:</strong> 主动控制方法，沿着无约束和约束任务方向分别控制运动和力。在混合运动控制的各种方案中，提供的实施是基于操作空间中的逆动力学控制 <span id="id2">[<a class="reference internal" href="../refs/bibliography.html#id4" title="O. Khatib. A unified approach for motion and force control of robot manipulators: the operational space formulation. IEEE Journal on Robotics and Automation, 3(1):43-53, 1987. doi:10.1109/JRA.1987.1087068.">Kha87</a>]</span>。</p></li>
+<li><p><strong>阻抗控制 :</strong> 在此间接控制方法中，交互期间引起的运动偏差与可调参数（刚度和阻尼）的质量-弹簧-阻尼系统有关。此的一个专门情况是*刚度*控制，其中仅考虑位置误差和接触力之间的静态关系。</p></li>
+<li><p><strong>混合力/运动控制 :</strong> 主动控制方法，沿着无约束和约束任务方向分别控制运动和力。在混合运动控制的各种方案中，提供的实施是基于操作空间中的逆动力学控制 <span id="id2">[<a class="reference internal" href="../refs/bibliography.html#id4" title="O. Khatib. A unified approach for motion and force control of robot manipulators: the operational space formulation. IEEE Journal on Robotics and Automation, 3(1):43-53, 1987. doi:10.1109/JRA.1987.1087068.">Kha87</a>]</span> 。</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
@@ -595,7 +595,7 @@ document.write(`
 <h2>关节空间控制<a class="headerlink" href="#joint-space-controllers" title="此标题的永久链接">#</a></h2>
 <section id="torque-control">
 <h3>力矩控制<a class="headerlink" href="#torque-control" title="此标题的永久链接">#</a></h3>
-<p>动作维度：<a href="#id1"><span class="problematic" id="id2">``</span></a>”n”<a href="#id3"><span class="problematic" id="id4">``</span></a>（关节数量）</p>
+<p>动作维度：<code class="docutils literal notranslate"><span class="pre">&quot;n&quot;</span></code> （关节数量）</p>
 <p>在力矩控制模式下，输入动作直接设置为前馈关节力矩命令，即在每个时间步长，</p>
 <div class="math notranslate nohighlight">
 \[\tau = \tau_{des}\]</div>
@@ -603,12 +603,12 @@ document.write(`
 </section>
 <section id="velocity-control">
 <h3>速度控制<a class="headerlink" href="#velocity-control" title="此标题的永久链接">#</a></h3>
-<p>动作维度：<a href="#id1"><span class="problematic" id="id2">``</span></a>”n”<a href="#id3"><span class="problematic" id="id4">``</span></a>（关节数量）</p>
+<p>动作维度：<code class="docutils literal notranslate"><span class="pre">&quot;n&quot;</span></code> （关节数量）</p>
 <p>在速度控制模式下，需要比例控制定律来减少当前和期望关节速度之间的误差。根据输入动作，关节力矩指令计算如下：</p>
 <div class="math notranslate nohighlight">
 \[\tau = k_d (\dot{q}_{des} - \dot{q})\]</div>
-<p>其中:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>k_d`是从配置解析的增益。</p>
-<p>通过将执行器组的命令类型设置为 <code class="docutils literal notranslate"><span class="pre">&quot;v_abs&quot;</span></code> 或 <a href="#id1"><span class="problematic" id="id2">``</span></a>”v_rel”<a href="#id3"><span class="problematic" id="id4">``</span></a>类，可以实现该控制模式，通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">ActuatorControlCfg</span></code> 类。</p>
+<p>其中 <span class="math notranslate nohighlight">\(k_d\)</span> 是从配置解析的增益。</p>
+<p>通过将执行器组的命令类型设置为 <code class="docutils literal notranslate"><span class="pre">&quot;v_abs&quot;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&quot;v_rel&quot;</span></code> 类，可以实现该控制模式，通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">ActuatorControlCfg</span></code> 类。</p>
 <div class="admonition attention">
 <p class="admonition-title">注意</p>
 <p>在执行速度控制时，通常需要重力补偿，以确保更好地跟踪命令。在这种情况下，建议在模拟中为关节禁用重力。</p>
@@ -616,29 +616,29 @@ document.write(`
 </section>
 <section id="position-control-with-fixed-impedance">
 <h3>带有固定阻抗的位置控制<a class="headerlink" href="#position-control-with-fixed-impedance" title="此标题的永久链接">#</a></h3>
-<p>动作维度：<a href="#id1"><span class="problematic" id="id2">``</span></a>”n”<a href="#id3"><span class="problematic" id="id4">``</span></a>（关节数量）</p>
+<p>动作维度：<code class="docutils literal notranslate"><span class="pre">&quot;n&quot;</span></code> （关节数量）</p>
 <p>在位置控制模式下，采用比例-阻尼（PD）控制律来跟踪期望的关节位置，并确保在期望位置上关节保持静止（即期望关节速度为零）。根据输入动作，关节力矩指令计算如下：</p>
 <div class="math notranslate nohighlight">
 \[\tau = k_p (q_{des} - q) - k_d \dot{q}\]</div>
-<p>其中:math:<cite>k_p</cite> 和 :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>k_d`是根据配置解析的增益。</p>
+<p>其中 <span class="math notranslate nohighlight">\(k_p\)</span> 和 <span class="math notranslate nohighlight">\(k_d\)</span> 是根据配置解析的增益。</p>
 <p>在其最简单的形式上，可以通过将执行器组的命令类型设置为 <code class="docutils literal notranslate"><span class="pre">&quot;p_abs&quot;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&quot;p_rel&quot;</span></code>，以实现此控制模式，通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">ActuatorControlCfg</span></code> 类。</p>
 <p>然而，一个更完整的公式化考虑了关节动力学，即：</p>
 <div class="math notranslate nohighlight">
 \[\tau = M \left( k_p (q_{des} - q) - k_d \dot{q} \right) + g\]</div>
-<p>其中:math:<cite>M`是关节空间惯性矩阵，维度为 :math:`n times n</cite>，<span class="math notranslate nohighlight">\(g`是关节空间重力矢量。通过将阻抗模式设置为 `\)</span>”固定”<a href="#id1"><span class="problematic" id="id2">``</span></a>，可以通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">JointImpedanceController</span></code> 类中的该实现。从输入配置解析增益:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>k_p`的同时考虑系统作为分离点质量振荡器。</p>
+<p>其中 <span class="math notranslate nohighlight">\(M\)</span> 是关节空间惯性矩阵，维度为 <span class="math notranslate nohighlight">\(n \times n\)</span>，<span class="math notranslate nohighlight">\(g\)</span> 是关节空间重力矢量。通过将阻抗模式设置为 <code class="docutils literal notranslate"><span class="pre">&quot;固定&quot;</span></code>，可以通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">JointImpedanceController</span></code> 类中的该实现。从输入配置解析增益 <span class="math notranslate nohighlight">\(k_p\)</span> 的同时考虑系统作为分离点质量振荡器。</p>
 <div class="math notranslate nohighlight">
 \[k_d = 2 \sqrt{k_p} \times D\]</div>
-<p>其中:math:<cite>D`是系统的阻尼比。当 :math:`D = 1</cite> 时实现临界阻尼，<span class="math notranslate nohighlight">\(D &gt; 1\)</span> 时实现过临界阻尼，<span class="math notranslate nohighlight">\(D &lt; 1\)</span> 时实现欠临界阻尼。</p>
+<p>其中 <span class="math notranslate nohighlight">\(D\)</span> 是系统的阻尼比。当 <span class="math notranslate nohighlight">\(D = 1\)</span> 时实现临界阻尼，<span class="math notranslate nohighlight">\(D &gt; 1\)</span> 时实现过临界阻尼，<span class="math notranslate nohighlight">\(D &lt; 1\)</span> 时实现欠临界阻尼。</p>
 <p>此外，可以通过将配置中的标志 <code class="xref py py-attr docutils literal notranslate"><span class="pre">inertial_compensation</span></code> 和 <code class="xref py py-attr docutils literal notranslate"><span class="pre">gravity_compensation</span></code> 设置为 <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="（在 Python v3.12）"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>，在控制器中禁用惯性或重力补偿。</p>
 </section>
 <section id="position-control-with-variable-stiffness">
 <h3>带有可变刚度的位置控制<a class="headerlink" href="#position-control-with-variable-stiffness" title="此标题的永久链接">#</a></h3>
-<p>动作维度： <a href="#id1"><span class="problematic" id="id2">``</span></a>”2n”<a href="#id3"><span class="problematic" id="id4">``</span></a>（关节数量）</p>
-<p>在刚度控制中，使用与上述相同的公式，然而，增益:math:<cite>k_p`是输入命令的一部分。通过将阻抗模式设置为 `</cite>”可变普”<a href="#id1"><span class="problematic" id="id2">``</span></a>，可以通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">JointImpedanceController</span></code> 类中的该实现。</p>
+<p>动作维度： <code class="docutils literal notranslate"><span class="pre">&quot;2n&quot;</span></code> （关节数量）</p>
+<p>在刚度控制中，使用与上述相同的公式，然而，增益 <span class="math notranslate nohighlight">\(k_p\)</span> 是输入命令的一部分。通过将阻抗模式设置为 <code class="docutils literal notranslate"><span class="pre">&quot;可变普&quot;</span></code>，可以通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">JointImpedanceController</span></code> 类中的该实现。</p>
 </section>
 <section id="position-control-with-variable-impedance">
 <h3>带有可变阻抗的位置控制<a class="headerlink" href="#position-control-with-variable-impedance" title="此标题的永久链接">#</a></h3>
-<p>动作维度： <a href="#id1"><span class="problematic" id="id2">``</span></a>”3n”<a href="#id3"><span class="problematic" id="id4">``</span></a>（关节数量）</p>
+<p>动作维度： <code class="docutils literal notranslate"><span class="pre">&quot;3n&quot;</span></code> （关节数量）</p>
 <p>在阻抗控制中，采用与上述相同的公式，然而，增益 <span class="math notranslate nohighlight">\(k_p\)</span> 和 <span class="math notranslate nohighlight">\(k_d\)</span> 是输入命令的一部分。通过将阻抗模式设置为 <code class="docutils literal notranslate"><span class="pre">&quot;变量&quot;</span></code>，可以通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">JointImpedanceController</span></code> 类中的该实现。</p>
 </section>
 </section>
@@ -646,17 +646,17 @@ document.write(`
 <h2>任务空间控制器<a class="headerlink" href="#task-space-controllers" title="此标题的永久链接">#</a></h2>
 <section id="differential-inverse-kinematics-ik">
 <h3>差分逆运动学（IK）<a class="headerlink" href="#differential-inverse-kinematics-ik" title="此标题的永久链接">#</a></h3>
-<p>动作维度： <code class="docutils literal notranslate"><span class="pre">&quot;3&quot;</span></code> （相对/绝对位置）, <code class="docutils literal notranslate"><span class="pre">&quot;6&quot;</span></code> （相对姿态）, 或 <code class="docutils literal notranslate"><span class="pre">&quot;7&quot;</span></code> （绝对姿态）</p>
+<p>动作维度： <code class="docutils literal notranslate"><span class="pre">&quot;3&quot;</span></code> （相对/绝对位置） , <code class="docutils literal notranslate"><span class="pre">&quot;6&quot;</span></code> （相对姿态） , 或 <code class="docutils literal notranslate"><span class="pre">&quot;7&quot;</span></code> （绝对姿态）</p>
 <p>逆运动学将任务空间追踪误差转换为关节空间误差。在其最典型的实施中，任务空间中的姿势误差，<span class="math notranslate nohighlight">\(\Delta \chi_e = (\Delta p_e, \Delta \phi_e)\)</span>，被计算为期望和当前任务空间位置之间的笛卡尔距离，以及期望和当前任务空间方向之间 <span class="math notranslate nohighlight">\(\mathbb{SO}(3)\)</span> 中的最短距离。</p>
-<p>使用 :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>J_{eO} in mathbb{R}^{6 times n}`的几何雅克比矩阵，将任务空间速度与关节空间速度联系起来，我们通过设计控制律来获得期望的关节位置：</p>
+<p>使用 <span class="math notranslate nohighlight">\(J_{eO} \in \mathbb{R}^{6 \times n}\)</span> 的几何雅克比矩阵，将任务空间速度与关节空间速度联系起来，我们通过设计控制律来获得期望的关节位置：</p>
 <div class="math notranslate nohighlight">
 \[q_{des} = q + \eta J_{eO}^{-} \Delta \chi_e\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\eta\)</span> 是一个缩放参数，<span class="math notranslate nohighlight">\(J_{eO}^{-}\)</span> 是雅克比的伪逆。</p>
 <p>可以使用不同的公式计算伪逆雅克比矩阵：</p>
 <ul class="simple">
-<li><p>Moore-Penrose伪逆: <span class="math notranslate nohighlight">\(A^{-} = A^T(AA^T)^{-1}\)</span>.</p></li>
-<li><p>Levenberg-Marquardt伪逆（阻尼最小二乘）: <span class="math notranslate nohighlight">\(A^{-} = A^T (AA^T + \lambda \mathbb{I})^{-1}\)</span>.</p></li>
-<li><p>转置伪逆: <span class="math notranslate nohighlight">\(A^{-} = A^T\)</span>.</p></li>
+<li><p>Moore-Penrose伪逆 : <span class="math notranslate nohighlight">\(A^{-} = A^T(AA^T)^{-1}\)</span>.</p></li>
+<li><p>Levenberg-Marquardt伪逆（阻尼最小二乘） : <span class="math notranslate nohighlight">\(A^{-} = A^T (AA^T + \lambda \mathbb{I})^{-1}\)</span>.</p></li>
+<li><p>转置伪逆 : <span class="math notranslate nohighlight">\(A^{-} = A^T\)</span>.</p></li>
 <li><p>自适应奇异值分解（SVD）伪逆来源 <span id="id3">Buss [<a class="reference internal" href="../refs/bibliography.html#id7" title="Samuel Buss. Introduction to inverse kinematics with jacobian transpose, pseudoinverse and damped least squares methods. IEEE Transactions in Robotics and Automation, 17:, 2004.">Bus04</a>]</span>.</p></li>
 </ul>
 <p>这些实现可以通过 <code class="xref py py-class docutils literal notranslate"><span class="pre">DifferentialInverseKinematics</span></code> 类进行。[Google 翻译]</p>
@@ -683,8 +683,8 @@ document.write(`
 <p>典型的任务空间控制器不考虑关节限位、自身碰撞和环境碰撞等运动约束。相反，它们依赖于高级规划器（如RRT）来处理这些非欧几里德约束，并给出关节/任务空间的路标给控制器。然而，这些方法通常保守，并且在靠近物体时有不良的减速。最近，不同的方法将约束直接结合到优化问题中，从而为运动生成和控制提供了整体解决方案。</p>
 <p>我们目前支持以下规划器：</p>
 <ul class="simple">
-<li><p><a href="#id1"><span class="problematic" id="id2">**</span></a>RMPFlow（lula）：<a href="#id3"><span class="problematic" id="id4">**</span></a>这是一种基于加速度的策略，由多个Reimannian Motion Policies (RMPs)组成，用于解决任务层次结构问题 <span id="id4">[<a class="reference internal" href="../refs/bibliography.html#id6" title="Ching-An Cheng, Mustafa Mukadam, Jan Issac, Stan Birchfield, Dieter Fox, Byron Boots, and Nathan Ratliff. Rmpflow: a geometric framework for generation of multitask motion policies. IEEE Transactions on Automation Science and Engineering, 18(3):968-987, 2021. doi:10.1109/TASE.2021.3053422.">CMI+21</a>]</span>。 它可以在将末端执行器导航到目标的同时执行动态避碰。</p></li>
-<li><p><a href="#id1"><span class="problematic" id="id2">**</span></a>MPC（OCS2）：<a href="#id3"><span class="problematic" id="id4">**</span></a>这是一种基于顺序线性二次（SLQ）规划的滚动视域控制策略。它通过软惩罚将各种约束转化为单个优化问题，并使用自动微分来计算系统动力学、约束和代价的导数。目前，我们支持MPC公式用于固定臂和移动机械手的末端执行器轨迹跟踪。该公式考虑了具有关节限位和自身碰撞避免的运动学系统模型 <span id="id5">[<a class="reference internal" href="../refs/bibliography.html#id9" title="Mayank Mittal, David Hoeller, Farbod Farshidian, Marco Hutter, and Animesh Garg. Articulated object interaction in unknown scenes with whole-body mobile manipulation. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2022.">MHF+22</a>]</span>。</p></li>
+<li><p><a href="#id1"><span class="problematic" id="id2">**</span></a>RMPFlow（lula）：<a href="#id3"><span class="problematic" id="id4">**</span></a>这是一种基于加速度的策略，由多个Reimannian Motion Policies (RMPs)组成，用于解决任务层次结构问题 <span id="id4">[<a class="reference internal" href="../refs/bibliography.html#id6" title="Ching-An Cheng, Mustafa Mukadam, Jan Issac, Stan Birchfield, Dieter Fox, Byron Boots, and Nathan Ratliff. Rmpflow: a geometric framework for generation of multitask motion policies. IEEE Transactions on Automation Science and Engineering, 18(3):968-987, 2021. doi:10.1109/TASE.2021.3053422.">CMI+21</a>]</span> 。 它可以在将末端执行器导航到目标的同时执行动态避碰。</p></li>
+<li><p><a href="#id1"><span class="problematic" id="id2">**</span></a>MPC（OCS2）：<a href="#id3"><span class="problematic" id="id4">**</span></a>这是一种基于顺序线性二次（SLQ）规划的滚动视域控制策略。它通过软惩罚将各种约束转化为单个优化问题，并使用自动微分来计算系统动力学、约束和代价的导数。目前，我们支持MPC公式用于固定臂和移动机械手的末端执行器轨迹跟踪。该公式考虑了具有关节限位和自身碰撞避免的运动学系统模型 <span id="id5">[<a class="reference internal" href="../refs/bibliography.html#id9" title="Mayank Mittal, David Hoeller, Farbod Farshidian, Marco Hutter, and Animesh Garg. Articulated object interaction in unknown scenes with whole-body mobile manipulation. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2022.">MHF+22</a>]</span> 。</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">警告</p>

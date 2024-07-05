@@ -596,7 +596,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/isaac-sim/OmniIsaacGymEnvs">OmniIsaacGymEnvs</a> 是一个使用Isaac Sim平台的强化学习框架。来自OmniIsaacGymEnvs的功能已集成到Isaac Lab框架中。我们已将OmniIsaacGymEnvs更新到Isaac Sim版本4.0.0，以支持迁移流程到Isaac Lab。未来，OmniIsaacGymEnvs将被弃用，未来的开发将继续在Isaac Lab中进行。</p>
 <section id="task-config-setup">
 <h2>任务配置设置<a class="headerlink" href="#task-config-setup" title="此标题的永久链接">#</a></h2>
-<p>在OmniIsaacGymEnvs中，任务配置文件是以``.yaml``格式定义的。在Isaac Lab中，现在使用一个专门的Python类 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 来指定配置。<a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块在Python的``dataclasses``模块之上提供了一个包装器。每个环境都应指定其自己的配置类，该类由``&#64;configclass``注释，并且继承自:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~envs.DirectRLEnvCfg`类，可以包括模拟参数、环境场景参数、机器人参数和特定任务参数。</p>
+<p>在OmniIsaacGymEnvs中，任务配置文件是以 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> 格式定义的。在Isaac Lab中，现在使用一个专门的Python类 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 来指定配置。 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块在Python的 <code class="docutils literal notranslate"><span class="pre">dataclasses</span></code> 模块之上提供了一个包装器。每个环境都应指定其自己的配置类，该类由 <code class="docutils literal notranslate"><span class="pre">&#64;configclass</span></code> 注释，并且继承自 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.DirectRLEnvCfg" title="omni.isaac.lab.envs.DirectRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRLEnvCfg</span></code></a> 类，可以包括模拟参数、环境场景参数、机器人参数和特定任务参数。</p>
 <p>以下是任务配置类的范例框架：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">omni.isaac.lab.envs</span> <span class="kn">import</span> <span class="n">DirectRLEnvCfg</span>
 <span class="kn">from</span> <span class="nn">omni.isaac.lab.scene</span> <span class="kn">import</span> <span class="n">InteractiveSceneCfg</span>
@@ -622,9 +622,9 @@ document.write(`
 </div>
 <section id="simulation-config">
 <h3>模拟配置<a class="headerlink" href="#simulation-config" title="此标题的永久链接">#</a></h3>
-<p>与模拟相关的参数定义在:class:<cite>~omni.isaac.lab.sim.SimulationCfg`类中，这是一个:class:`~omni.isaac.lab.utils.configclass`模块，包含模拟参数，如``dt`</cite>、<code class="docutils literal notranslate"><span class="pre">device``和``gravity</span></code>。每个任务配置必须有一个名为``sim``的变量来定义一个类型为:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~omni.isaac.lab.sim.SimulationCfg`的对象。</p>
-<p>对于关节和刚性体的模拟参数，如``num_position_iterations``、<code class="docutils literal notranslate"><span class="pre">num_velocity_iterations</span></code>、<code class="docutils literal notranslate"><span class="pre">contact_offset</span></code>、<code class="docutils literal notranslate"><span class="pre">rest_offset</span></code>、<code class="docutils literal notranslate"><span class="pre">bounce_threshold_velocity</span></code>、<code class="docutils literal notranslate"><span class="pre">max_depenetration_velocity</span></code>，都可以在每个独立关节和刚性体的配置类中指定。</p>
-<p>在GPU上运行模拟时，PhysX中的缓冲区需要进行预先分配，用于计算和存储接触、碰撞和聚合对等信息。这些缓冲区可能需要根据环境的复杂性、预期接触和碰撞的数量以及环境中的参与者数量进行调整。:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~omni.isaac.lab.sim.PhysxCfg`类提供了访问设置GPU缓冲区尺寸的功能。</p>
+<p>与模拟相关的参数定义在 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.SimulationCfg" title="omni.isaac.lab.sim.SimulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationCfg</span></code></a> 类中，这是一个 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块，包含模拟参数，如 <code class="docutils literal notranslate"><span class="pre">dt</span></code>、<code class="docutils literal notranslate"><span class="pre">device</span></code> 和 <code class="docutils literal notranslate"><span class="pre">gravity</span></code> 。每个任务配置必须有一个名为 <code class="docutils literal notranslate"><span class="pre">sim</span></code> 的变量来定义一个类型为 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.SimulationCfg" title="omni.isaac.lab.sim.SimulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationCfg</span></code></a> 的对象。</p>
+<p>对于关节和刚性体的模拟参数，如 <code class="docutils literal notranslate"><span class="pre">num_position_iterations</span></code>、<code class="docutils literal notranslate"><span class="pre">num_velocity_iterations</span></code>、<code class="docutils literal notranslate"><span class="pre">contact_offset</span></code>、<code class="docutils literal notranslate"><span class="pre">rest_offset</span></code>、<code class="docutils literal notranslate"><span class="pre">bounce_threshold_velocity</span></code>、<code class="docutils literal notranslate"><span class="pre">max_depenetration_velocity</span></code>，都可以在每个独立关节和刚性体的配置类中指定。</p>
+<p>在GPU上运行模拟时，PhysX中的缓冲区需要进行预先分配，用于计算和存储接触、碰撞和聚合对等信息。这些缓冲区可能需要根据环境的复杂性、预期接触和碰撞的数量以及环境中的参与者数量进行调整。 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.PhysxCfg" title="omni.isaac.lab.sim.PhysxCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysxCfg</span></code></a> 类提供了访问设置GPU缓冲区尺寸的功能。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># OmniIsaacGymEnvs</span>
@@ -717,11 +717,11 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>现在的参数，比如``add_ground_plane``和``add_distant_light``，都是在创建场景时的任务逻辑的一部分。<code class="docutils literal notranslate"><span class="pre">enable_cameras``现在是一个命令行参数</span></code>–enable_cameras``，可以直接传递给训练脚本。</p>
+<p>现在的参数，比如 <code class="docutils literal notranslate"><span class="pre">add_ground_plane</span></code> 和 <code class="docutils literal notranslate"><span class="pre">add_distant_light</span></code>，都是在创建场景时的任务逻辑的一部分。 <code class="docutils literal notranslate"><span class="pre">enable_cameras</span></code> 现在是一个命令行参数 <code class="docutils literal notranslate"><span class="pre">--enable_cameras</span></code>，可以直接传递给训练脚本。</p>
 </section>
 <section id="scene-config">
 <h3>场景配置<a class="headerlink" href="#scene-config" title="此标题的永久链接">#</a></h3>
-<p>:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~omni.isaac.lab.scene.InteractiveSceneCfg`类可以指定与场景相关的参数，比如环境的数量和环境之间的间距。每个任务配置必须有一个名为``scene``的变量来定义一个类型为:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~omni.isaac.lab.scene.InteractiveSceneCfg`的对象。</p>
+<p><a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveSceneCfg</span></code></a> 类可以指定与场景相关的参数，比如环境的数量和环境之间的间距。每个任务配置必须有一个名为 <code class="docutils literal notranslate"><span class="pre">scene</span></code> 的变量来定义一个类型为 <a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveSceneCfg</span></code></a> 的对象。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># OmniIsaacGymEnvs</span>
@@ -746,8 +746,8 @@ document.write(`
 <section id="task-config">
 <h3>任务配置<a class="headerlink" href="#task-config" title="此标题的永久链接">#</a></h3>
 <p>每个环境都应该指定自己的配置类，其中包括特定任务的参数，比如观察和动作缓冲区的尺寸。还可以在配置类中指定奖励项的缩放参数。</p>
-<p>在Isaac Lab中，<code class="docutils literal notranslate"><span class="pre">controlFrequencyInv``参数被重命名为``decimation</span></code>，必须在配置类中指定。</p>
-<p>此外，最大的episode长度参数（现在是``episode_length_s``）是以秒为单位，而不是像在OmniIsaacGymEnvs中的步数那样。要在步数和秒之间进行转换，使用以下公式: <code class="docutils literal notranslate"><span class="pre">episode_length_s</span> <span class="pre">=</span> <span class="pre">dt</span> <span class="pre">*</span> <span class="pre">decimation</span> <span class="pre">*</span> <span class="pre">num_steps</span></code>。</p>
+<p>在Isaac Lab中，<code class="docutils literal notranslate"><span class="pre">controlFrequencyInv</span></code> 参数被重命名为 <code class="docutils literal notranslate"><span class="pre">decimation</span></code>，必须在配置类中指定。</p>
+<p>此外，最大的episode长度参数（现在是 <code class="docutils literal notranslate"><span class="pre">episode_length_s</span></code> ）是以秒为单位，而不是像在OmniIsaacGymEnvs中的步数那样。要在步数和秒之间进行转换，使用以下公式 : <code class="docutils literal notranslate"><span class="pre">episode_length_s</span> <span class="pre">=</span> <span class="pre">dt</span> <span class="pre">*</span> <span class="pre">decimation</span> <span class="pre">*</span> <span class="pre">num_steps</span></code> 。</p>
 <p>每个环境配置都必须设置以下参数：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">decimation</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">episode_length_s</span> <span class="o">=</span> <span class="mf">5.0</span>
@@ -760,8 +760,8 @@ document.write(`
 </section>
 <section id="rl-config-setup">
 <h2>强化学习配置设置<a class="headerlink" href="#rl-config-setup" title="此标题的永久链接">#</a></h2>
-<p>在Isaac Lab中，rl_games库的配置文件仍然可以在``.yaml``文件中定义。大部分配置文件的内容可以直接从OmniIsaacGymEnvs中复制过来。请注意，在Isaac Lab中，我们不使用hydra来解析配置文件中的相对路径。请用实际参数值替换任何相对路径，比如``${….device}``。</p>
-<p>此外，观察和动作的剪切范围已经移到了RL配置文件中。对于在IsaacGymEnvs任务配置文件中定义的任何``clipObservations``和``clipActions``参数，现在应该将它们移动到Isaac Lab的RL配置文件中。</p>
+<p>在Isaac Lab中，rl_games库的配置文件仍然可以在 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> 文件中定义。大部分配置文件的内容可以直接从OmniIsaacGymEnvs中复制过来。请注意，在Isaac Lab中，我们不使用hydra来解析配置文件中的相对路径。请用实际参数值替换任何相对路径，比如 <code class="docutils literal notranslate"><span class="pre">${....device}</span></code> 。</p>
+<p>此外，观察和动作的剪切范围已经移到了RL配置文件中。对于在IsaacGymEnvs任务配置文件中定义的任何 <code class="docutils literal notranslate"><span class="pre">clipObservations</span></code> 和 <code class="docutils literal notranslate"><span class="pre">clipActions</span></code> 参数，现在应该将它们移动到Isaac Lab的RL配置文件中。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>IsaacGymEnvs任务配置</p></td>
@@ -789,9 +789,9 @@ document.write(`
 </section>
 <section id="environment-creation">
 <h2>环境创建<a class="headerlink" href="#environment-creation" title="此标题的永久链接">#</a></h2>
-<p>在OmniIsaacGymEnvs中，环境的创建通常在``set_up_scene()``API中进行，这涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并为参与者创建``View``类。</p>
-<p>在Isaac Lab中，类似的功能在``_setup_scene()``API中执行。主要区别在于基类``_setup_scene()``不再执行克隆环境和添加地面和光线的操作。相反，这些操作现在应该在各个任务的``_setup_scene``实现中实现，以提供更灵活的场景设置过程。</p>
-<p>还要注意，通过定义``Articulation``或``RigidObject``对象，将根据actor配置中的``spawn``参数将actor添加到场景，并自动为actor创建``View``类。这避免了需要为actor单独定义``ArticulationView``或``RigidPrimView``对象的需要。</p>
+<p>在OmniIsaacGymEnvs中，环境的创建通常在 <code class="docutils literal notranslate"><span class="pre">set_up_scene()``API中进行，这涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并为参与者创建</span> <span class="pre">``View</span></code> 类。</p>
+<p>在Isaac Lab中，类似的功能在 <code class="docutils literal notranslate"><span class="pre">_setup_scene()``API中执行。主要区别在于基类</span> <span class="pre">``_setup_scene()</span></code> 不再执行克隆环境和添加地面和光线的操作。相反，这些操作现在应该在各个任务的 <code class="docutils literal notranslate"><span class="pre">_setup_scene</span></code> 实现中实现，以提供更灵活的场景设置过程。</p>
+<p>还要注意，通过定义 <code class="docutils literal notranslate"><span class="pre">Articulation</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RigidObject</span></code> 对象，将根据actor配置中的 <code class="docutils literal notranslate"><span class="pre">spawn</span></code> 参数将actor添加到场景，并自动为actor创建 <code class="docutils literal notranslate"><span class="pre">View</span></code> 类。这避免了需要为actor单独定义 <code class="docutils literal notranslate"><span class="pre">ArticulationView</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RigidPrimView</span></code> 对象的需要。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -830,7 +830,7 @@ document.write(`
 </div>
 <section id="ground-plane">
 <h3>地面<a class="headerlink" href="#ground-plane" title="此标题的永久链接">#</a></h3>
-<p>除了上面的例子之外，更复杂的地面可以使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~terrains.TerrainImporterCfg`类进行定义。</p>
+<p>除了上面的例子之外，更复杂的地面可以使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.terrains.html#omni.isaac.lab.terrains.TerrainImporterCfg" title="omni.isaac.lab.terrains.TerrainImporterCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">TerrainImporterCfg</span></code></a> 类进行定义。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">omni.isaac.lab.terrains</span> <span class="kn">import</span> <span class="n">TerrainImporterCfg</span>
 
 <span class="n">terrain</span> <span class="o">=</span> <span class="n">TerrainImporterCfg</span><span class="p">(</span>
@@ -847,19 +847,19 @@ document.write(`
  <span class="p">)</span>
 </pre></div>
 </div>
-<p>然后，地形可以通过引用``TerrainImporterCfg``对象在``_setup_scene(self)``中添加到场景中：</p>
+<p>然后，地形可以通过引用 <code class="docutils literal notranslate"><span class="pre">TerrainImporterCfg</span></code> 对象在 <code class="docutils literal notranslate"><span class="pre">_setup_scene(self)</span></code> 中添加到场景中：</p>
 </section>
 <section id="actors">
 <h3>参与者<a class="headerlink" href="#actors" title="此标题的永久链接">#</a></h3>
-<p>在Isaac Lab中，每个关节和刚体actor可以有自己的配置类。:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~omni.isaac.lab.assets.ArticulationCfg`类可用于定义关节actor的参数，包括文件路径、模拟参数、执行器属性和初始状态。</p>
-<p>在:class:<cite>~assets.ArticulationCfg`内部，``spawn``属性可以用于通过指定机器人文件的路径将机器人添加到场景。此外，:class:`~omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg`类可用于为关节中的刚体指定模拟属性。同样，:class:`~omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg`类可以用于为关节指定模拟属性。使用:class:`~actuators.ImplicitActuatorCfg</cite>，相同属性的关节可以被分组到正则表达式中，或者提供一个名称或表达式列表。</p>
-<p>通过简单调用``self.cartpole = Articulation(self.cfg.robot_cfg)``来将参与者添加到场景，其中``self.cfg.robot_cfg``是一个:class:<cite>~assets.ArticulationCfg`对象。初始化后，它们也应该被添加到:class:`~scene.InteractiveScene`中，通过调用``self.scene.articulations[“cartpole”] = self.cartpole`</cite>，从而使:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~scene.InteractiveScene`能够遍历场景中的actors，以便向模拟中写入值并进行重置。</p>
+<p>在Isaac Lab中，每个关节和刚体actor可以有自己的配置类。 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 类可用于定义关节actor的参数，包括文件路径、模拟参数、执行器属性和初始状态。</p>
+<p>在 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 内部，<code class="docutils literal notranslate"><span class="pre">spawn</span></code> 属性可以用于通过指定机器人文件的路径将机器人添加到场景。此外，<a class="reference internal" href="../api/lab/omni.isaac.lab.sim.schemas.html#omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg" title="omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidBodyPropertiesCfg</span></code></a> 类可用于为关节中的刚体指定模拟属性。同样，<a class="reference internal" href="../api/lab/omni.isaac.lab.sim.schemas.html#omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg" title="omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationRootPropertiesCfg</span></code></a> 类可以用于为关节指定模拟属性。使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.actuators.html#omni.isaac.lab.actuators.ImplicitActuatorCfg" title="omni.isaac.lab.actuators.ImplicitActuatorCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImplicitActuatorCfg</span></code></a>，相同属性的关节可以被分组到正则表达式中，或者提供一个名称或表达式列表。</p>
+<p>通过简单调用 <code class="docutils literal notranslate"><span class="pre">self.cartpole</span> <span class="pre">=</span> <span class="pre">Articulation(self.cfg.robot_cfg)</span></code> 来将参与者添加到场景，其中 <code class="docutils literal notranslate"><span class="pre">self.cfg.robot_cfg</span></code> 是一个 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 对象。初始化后，它们也应该被添加到 <a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code></a> 中，通过调用 <code class="docutils literal notranslate"><span class="pre">self.scene.articulations[&quot;cartpole&quot;]</span> <span class="pre">=</span> <span class="pre">self.cartpole</span></code>，从而使 <a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code></a> 能够遍历场景中的actors，以便向模拟中写入值并进行重置。</p>
 </section>
 </section>
 <section id="accessing-states-from-simulation">
 <h2>从模拟中获取状态<a class="headerlink" href="#accessing-states-from-simulation" title="此标题的永久链接">#</a></h2>
-<p>在Isaac Lab中，访问物理状态的API需要创建一个:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~assets.Articulation`或:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~assets.RigidObject`对象。可以通过定义对应的:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>~assets.ArticulationCfg`或:class:<a href="#id7"><span class="problematic" id="id8">`</span></a>~assets.RigidObjectCfg`配置来初始化不同的关节或刚体对象。这取代了在OmniIsaacGymEnvs中使用的:class:<a href="#id9"><span class="problematic" id="id10">`</span></a>~omni.isaac.core.articulations.ArticulationView`和:class:<a href="#id11"><span class="problematic" id="id12">`</span></a>omni.isaac.core.prims.RigidPrimView`类。</p>
-<p>但是，这些类之间的功能是相似的:</p>
+<p>在Isaac Lab中，访问物理状态的API需要创建一个 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation" title="omni.isaac.lab.assets.Articulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Articulation</span></code></a> 或 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObject" title="omni.isaac.lab.assets.RigidObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObject</span></code></a> 对象。可以通过定义对应的 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 或 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObjectCfg" title="omni.isaac.lab.assets.RigidObjectCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectCfg</span></code></a> 配置来初始化不同的关节或刚体对象。这取代了在OmniIsaacGymEnvs中使用的 <a class="reference external" href="https://docs.omniverse.nvidia.com/py/isaacsim/source/extensions/omni.isaac.core/docs/index.html#omni.isaac.core.articulations.ArticulationView" title="（在 isaac_sim）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationView</span></code></a> 和 <a class="reference external" href="https://docs.omniverse.nvidia.com/py/isaacsim/source/extensions/omni.isaac.core/docs/index.html#omni.isaac.core.prims.RigidPrimView" title="（在 isaac_sim）"><code class="xref py py-class docutils literal notranslate"><span class="pre">omni.isaac.core.prims.RigidPrimView</span></code></a> 类。</p>
+<p>但是，这些类之间的功能是相似的 :</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -879,7 +879,7 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>在Isaac Lab中，<code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectData</span></code>）包含了保存关节和刚体状态的缓冲区，并提供了一种更高效的方式从actors中检索状态。</p>
+<p>在Isaac Lab中，<a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation" title="omni.isaac.lab.assets.Articulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Articulation</span></code></a> 和 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObject" title="omni.isaac.lab.assets.RigidObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObject</span></code></a> 类都有一个 <code class="docutils literal notranslate"><span class="pre">data</span></code> 类。data类（ <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationData" title="omni.isaac.lab.assets.ArticulationData"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationData</span></code></a> 和 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObjectData" title="omni.isaac.lab.assets.RigidObjectData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectData</span></code></a> ）包含了保存关节和刚体状态的缓冲区，并提供了一种更高效的方式从actors中检索状态。</p>
 <p>除了一些API的重命名，设置actors的状态也可以在OmniIsaacGymEnvs和Isaac Lab中类似地进行。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -901,11 +901,11 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>在Isaac Lab中，<code class="docutils literal notranslate"><span class="pre">root_pose</span></code> 和 <code class="docutils literal notranslate"><span class="pre">root_velocity</span></code> 已经合并为单个缓冲区，不再分为 <code class="docutils literal notranslate"><span class="pre">root_position</span></code>、<code class="docutils literal notranslate"><span class="pre">root_orientation</span></code>、<code class="docutils literal notranslate"><span class="pre">root_linear_velocity</span></code> 和 <code class="docutils literal notranslate"><span class="pre">root_angular_velocity</span></code>。</p>
+<p>在Isaac Lab中，<code class="docutils literal notranslate"><span class="pre">root_pose</span></code> 和 <code class="docutils literal notranslate"><span class="pre">root_velocity</span></code> 已经合并为单个缓冲区，不再分为 <code class="docutils literal notranslate"><span class="pre">root_position</span></code>、<code class="docutils literal notranslate"><span class="pre">root_orientation</span></code>、<code class="docutils literal notranslate"><span class="pre">root_linear_velocity</span></code> 和 <code class="docutils literal notranslate"><span class="pre">root_angular_velocity</span></code> 。</p>
 </section>
 <section id="creating-a-new-environment">
 <h2>创建一个新的环境<a class="headerlink" href="#creating-a-new-environment" title="此标题的永久链接">#</a></h2>
-<p>Isaac Lab中的每个环境都应该按照以下结构放在自己的目录中:</p>
+<p>Isaac Lab中的每个环境都应该按照以下结构放在自己的目录中 :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>my_environment/
     - agents/
         - __init__.py
@@ -917,7 +917,7 @@ document.write(`
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">my_environment</span></code> 是任务的根目录。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">my_environment/agents</span></code> 是包含任务的所有RL配置文件的目录。Isaac Lab支持多个RL库，每个库可以有自己独立的配置文件。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">my_environment/__init__.py</span></code> 是将环境注册到Gymnasium接口的主文件。这使得训练和推理脚本可以通过名称找到任务。此文件的内容应该如下:</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_environment/__init__.py</span></code> 是将环境注册到Gymnasium接口的主文件。这使得训练和推理脚本可以通过名称找到任务。此文件的内容应该如下 :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">agents</span>
@@ -944,9 +944,9 @@ document.write(`
 </section>
 <section id="task-logic">
 <h2>任务逻辑<a class="headerlink" href="#task-logic" title="此标题的永久链接">#</a></h2>
-<p>在Isaac Lab中，不再需要``post_reset``API。以往在``post_reset``中所做的所有操作现在可以在执行基类的``__init__``方法后的``__init__``方法中完成。此时，模拟已经开始。</p>
-<p>在OmniIsaacGymEnvs中，由于GPU API的限制，重置不能根据当前步骤的状态进行。相反，重置必须在下一个时间步骤的开始时执行。在Isaac Lab中，这个限制已经被取消，因此任务遵循应用动作、模拟步进、收集状态、计算done、计算奖励、执行重置和最终计算观察结的正确工作流程。这个工作流程是由框架自动完成的，因此任务不需要``post_physics_step``API。但是，每个任务都可以覆盖``step()``API以控制工作流程。</p>
-<p>在Isaac实验室中，我们还将``pre_physics_step`` API与``apply_action`` API分开处理，前者用于处理来自策略的动作，后者则将动作设置到模拟过程中。这样可以更灵活地控制在何时使用``decimation``时将动作写入模拟过程中。在每一步之前，<a href="#id1"><span class="problematic" id="id2">``</span></a>pre_physics_step``方法都将被调用一次。而``apply_actions``方法将在每个RL步骤之前调用``decimation``次，即在每次模拟调用之前调用一次。</p>
+<p>在Isaac Lab中，不再需要 <code class="docutils literal notranslate"><span class="pre">post_reset``API。以往在</span> <span class="pre">``post_reset</span></code> 中所做的所有操作现在可以在执行基类的 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法后的 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法中完成。此时，模拟已经开始。</p>
+<p>在OmniIsaacGymEnvs中，由于GPU API的限制，重置不能根据当前步骤的状态进行。相反，重置必须在下一个时间步骤的开始时执行。在Isaac Lab中，这个限制已经被取消，因此任务遵循应用动作、模拟步进、收集状态、计算done、计算奖励、执行重置和最终计算观察结的正确工作流程。这个工作流程是由框架自动完成的，因此任务不需要 <a href="#id1"><span class="problematic" id="id2">``</span></a>post_physics_step``API。但是，每个任务都可以覆盖 <a href="#id3"><span class="problematic" id="id4">``</span></a>step()``API以控制工作流程。</p>
+<p>在Isaac实验室中，我们还将 <code class="docutils literal notranslate"><span class="pre">pre_physics_step</span></code> API与 <code class="docutils literal notranslate"><span class="pre">apply_action</span></code> API分开处理，前者用于处理来自策略的动作，后者则将动作设置到模拟过程中。这样可以更灵活地控制在何时使用 <code class="docutils literal notranslate"><span class="pre">decimation</span></code> 时将动作写入模拟过程中。在每一步之前，<code class="docutils literal notranslate"><span class="pre">pre_physics_step</span></code> 方法都将被调用一次。而 <code class="docutils literal notranslate"><span class="pre">apply_actions</span></code> 方法将在每个RL步骤之前调用 <code class="docutils literal notranslate"><span class="pre">decimation</span></code> 次，即在每次模拟调用之前调用一次。</p>
 <p>调用的顺序如下：</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
@@ -987,9 +987,9 @@ post_physics_step
 <li><p><code class="docutils literal notranslate"><span class="pre">post_reset(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">__init__(...)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pre_physics_step(self,</span> <span class="pre">actions)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_pre_physics_step(self,</span> <span class="pre">actions)</span></code> and <code class="docutils literal notranslate"><span class="pre">_apply_action(self)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">reset_idx(self,</span> <span class="pre">env_ids)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_reset_idx(self,</span> <span class="pre">env_ids)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_observations(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_observations(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_observations()``现在应该返回一个字典``{&quot;policy&quot;:</span> <span class="pre">obs}</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">calculate_metrics(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_rewards(self)</span></code> - <a href="#id1"><span class="problematic" id="id2">``</span></a>_get_rewards()``现在应该返回奖励缓冲区</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">is_done(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_dones(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_dones()``现在应该返回两个缓冲区：``reset</span></code> 和 <code class="docutils literal notranslate"><span class="pre">time_out</span></code> 缓冲区</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_observations(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_observations(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_observations()</span></code> 现在应该返回一个字典 <code class="docutils literal notranslate"><span class="pre">{&quot;policy&quot;:</span> <span class="pre">obs}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calculate_metrics(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_rewards(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_rewards()</span></code> 现在应该返回奖励缓冲区</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_done(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_dones(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_dones()</span></code> 现在应该返回两个缓冲区：<code class="docutils literal notranslate"><span class="pre">reset</span></code> 和 <code class="docutils literal notranslate"><span class="pre">time_out</span></code> 缓冲区</p></li>
 </ul>
 </section>
 <section id="putting-it-all-together">
@@ -1158,7 +1158,7 @@ post_physics_step
 </section>
 <section id="task-setup">
 <h3>任务设置<a class="headerlink" href="#task-setup" title="此标题的永久链接">#</a></h3>
-<p>在Isaac Lab中，不再需要``post_reset``API。以往在``post_reset``中所做的所有操作现在可以在执行基类的``__init__``方法后的``__init__``方法中完成。此时，模拟已经开始。</p>
+<p>在Isaac Lab中，不再需要 <code class="docutils literal notranslate"><span class="pre">post_reset``API。以往在</span> <span class="pre">``post_reset</span></code> 中所做的所有操作现在可以在执行基类的 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法后的 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法中完成。此时，模拟已经开始。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -1228,7 +1228,7 @@ post_physics_step
 </section>
 <section id="scene-setup">
 <h3>场景设置<a class="headerlink" href="#scene-setup" title="此标题的永久链接">#</a></h3>
-<p>在OmniIsaacGymEnvs中的``set_up_scene``方法已经被Isaac Lab的任务类中的``_setup_scene``API所取代。此外，场景克隆和碰撞筛选已经作为任务类调用的API提供。同样地，添加地平面和光源也应该由任务类负责。将演员添加到场景已经被``self.scene.articulations[“cartpole”] = self.cartpole``取代。</p>
+<p>在OmniIsaacGymEnvs中的 <code class="docutils literal notranslate"><span class="pre">set_up_scene</span></code> 方法已经被Isaac Lab的任务类中的 <code class="docutils literal notranslate"><span class="pre">_setup_scene``API所取代。此外，场景克隆和碰撞筛选已经作为任务类调用的API提供。同样地，添加地平面和光源也应该由任务类负责。将演员添加到场景已经被</span> <span class="pre">``self.scene.articulations[&quot;cartpole&quot;]</span> <span class="pre">=</span> <span class="pre">self.cartpole</span></code> 取代。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -1288,7 +1288,7 @@ post_physics_step
 </section>
 <section id="pre-physics-step">
 <h3>预物理步骤<a class="headerlink" href="#pre-physics-step" title="此标题的永久链接">#</a></h3>
-<p>请注意，重置现在不再在``pre_physics_step`` API中执行。此外，<a href="#id1"><span class="problematic" id="id2">``</span></a>_pre_physics_step``和``_apply_action``方法的分离允许在处理动作缓冲区和将动作设置到模拟中更灵活。</p>
+<p>请注意，重置现在不再在 <code class="docutils literal notranslate"><span class="pre">pre_physics_step</span></code> API中执行。此外，<code class="docutils literal notranslate"><span class="pre">_pre_physics_step</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_apply_action</span></code> 方法的分离允许在处理动作缓冲区和将动作设置到模拟中更灵活。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -1335,7 +1335,7 @@ post_physics_step
 </section>
 <section id="dones-and-resets">
 <h3>重置与完成<a class="headerlink" href="#dones-and-resets" title="此标题的永久链接">#</a></h3>
-<p>在Isaac实验室中，<code class="docutils literal notranslate"><span class="pre">dones``是在``_get_dones()``方法中计算的，并应返回两个变量：``resets</span></code> 和 <code class="docutils literal notranslate"><span class="pre">time_out</span></code>。<code class="docutils literal notranslate"><span class="pre">_reset_idx()``方法也是在模拟后调用的，而不是像在OmniIsaacGymEnvs中那样是在之前。``progress_buf``张量在Isaac实验室中已被重命名为``episode_length_buf</span></code>，并且现在由框架自动完成簿记。任务实现不再需要增加或重置``episode_length_buf``缓冲区。</p>
+<p>在Isaac实验室中，<code class="docutils literal notranslate"><span class="pre">dones</span></code> 是在 <code class="docutils literal notranslate"><span class="pre">_get_dones()</span></code> 方法中计算的，并应返回两个变量：<code class="docutils literal notranslate"><span class="pre">resets</span></code> 和 <code class="docutils literal notranslate"><span class="pre">time_out</span></code> 。 <code class="docutils literal notranslate"><span class="pre">_reset_idx()</span></code> 方法也是在模拟后调用的，而不是像在OmniIsaacGymEnvs中那样是在之前。 <code class="docutils literal notranslate"><span class="pre">progress_buf</span></code> 张量在Isaac实验室中已被重命名为 <code class="docutils literal notranslate"><span class="pre">episode_length_buf</span></code>，并且现在由框架自动完成簿记。任务实现不再需要增加或重置 <code class="docutils literal notranslate"><span class="pre">episode_length_buf</span></code> 缓冲区。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -1433,7 +1433,7 @@ post_physics_step
 </section>
 <section id="rewards">
 <h3>奖励<a class="headerlink" href="#rewards" title="此标题的永久链接">#</a></h3>
-<p>在Isaac实验室中，奖励是在``_get_rewards`` API中实现的，应该返回奖励缓冲区，而不是直接分配给``self.rew_buf``。奖励功能还可以通过定义带有``&#64;torch.jit.script``注释的函数来使用pytorch jit进行计算。</p>
+<p>在Isaac实验室中，奖励是在 <code class="docutils literal notranslate"><span class="pre">_get_rewards</span></code> API中实现的，应该返回奖励缓冲区，而不是直接分配给 <code class="docutils literal notranslate"><span class="pre">self.rew_buf</span></code> 。奖励功能还可以通过定义带有 <code class="docutils literal notranslate"><span class="pre">&#64;torch.jit.script</span></code> 注释的函数来使用pytorch jit进行计算。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -1503,7 +1503,7 @@ post_physics_step
 </section>
 <section id="observations">
 <h3>观察<a class="headerlink" href="#observations" title="此标题的永久链接">#</a></h3>
-<p>在Isaac实验室中，<code class="docutils literal notranslate"><span class="pre">_get_observations()</span></code> API必须返回一个字典，其键为``policy``，值为观察缓冲区。当与不对称演员-评论者状态一起使用时，评论者的状态应具有键``critic``，并与观察缓冲区一起返回到同一个字典中。</p>
+<p>在Isaac实验室中，<code class="docutils literal notranslate"><span class="pre">_get_observations()</span></code> API必须返回一个字典，其键为 <code class="docutils literal notranslate"><span class="pre">policy</span></code>，值为观察缓冲区。当与不对称演员-评论者状态一起使用时，评论者的状态应具有键 <code class="docutils literal notranslate"><span class="pre">critic</span></code>，并与观察缓冲区一起返回到同一个字典中。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
@@ -1551,7 +1551,7 @@ post_physics_step
 </section>
 <section id="domain-randomization">
 <h2>域随机化<a class="headerlink" href="#domain-randomization" title="此标题的永久链接">#</a></h2>
-<p>在OmniIsaacGymEnvs中，域随机化是通过任务``.yaml``配置文件指定的。在Isaac实验室中，域随机化配置使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~omni.isaac.lab.utils.configclass`模块来指定一个由:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~managers.EventTermCfg`变量组成的配置类。</p>
+<p>在OmniIsaacGymEnvs中，域随机化是通过任务 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> 配置文件指定的。在Isaac实验室中，域随机化配置使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块来指定一个由 <a class="reference internal" href="../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventTermCfg" title="omni.isaac.lab.managers.EventTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventTermCfg</span></code></a> 变量组成的配置类。</p>
 <p>以下是域随机化的配置类示例：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">EventCfg</span><span class="p">:</span>
@@ -1590,11 +1590,11 @@ post_physics_step
   <span class="p">)</span>
 </pre></div>
 </div>
-<p>每个``EventTerm``对象都是:class:<cite>~managers.EventTermCfg`类的对象，接受一个``func``参数来指定随机化时调用的函数，一个``mode``参数，可以是``startup`</cite>、<code class="docutils literal notranslate"><span class="pre">reset``或``interval</span></code>。 <a href="#id1"><span class="problematic" id="id2">``</span></a>params``字典应该提供函数所需的参数。作为``EventTerm``的``func``指定的函数可以在:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~envs.mdp.events`模块中找到。</p>
-<p>注意，作为``”asset_cfg”：SceneEntityCfg(“robot”, body_names=”.*”)``参数的一部分，“robot”角色的名称已经提供，以及作为正则表达式指定的身体或关节名称，这些将是将随机应用到的角色和身体/关节。</p>
-<p>与OmniIsaacGymEnvs不同的一点是，<code class="docutils literal notranslate"><span class="pre">interval``随机化现在指定为秒而不是步数。当``mode=&quot;interval&quot;``时，还必须提供``interval_range_s``参数，该参数指定应该应用随机化的秒数范围。然后将对这个范围进行随机化，以确定术语的具体时间点。要在步数和秒之间转化，请使用方程``time_s</span> <span class="pre">=</span> <span class="pre">num_steps</span> <span class="pre">*</span> <span class="pre">(decimation</span> <span class="pre">*</span> <span class="pre">dt)</span></code>。</p>
+<p>每个 <code class="docutils literal notranslate"><span class="pre">EventTerm</span></code> 对象都是 <a class="reference internal" href="../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventTermCfg" title="omni.isaac.lab.managers.EventTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventTermCfg</span></code></a> 类的对象，接受一个 <code class="docutils literal notranslate"><span class="pre">func</span></code> 参数来指定随机化时调用的函数，一个 <code class="docutils literal notranslate"><span class="pre">mode</span></code> 参数，可以是 <code class="docutils literal notranslate"><span class="pre">startup</span></code>、<code class="docutils literal notranslate"><span class="pre">reset</span></code> 或 <code class="docutils literal notranslate"><span class="pre">interval</span></code> 。 <code class="docutils literal notranslate"><span class="pre">params</span></code> 字典应该提供函数所需的参数。作为 <code class="docutils literal notranslate"><span class="pre">EventTerm</span></code> 的 <code class="docutils literal notranslate"><span class="pre">func</span></code> 指定的函数可以在 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.mdp.html#module-omni.isaac.lab.envs.mdp.events" title="omni.isaac.lab.envs.mdp.events"><code class="xref py py-class docutils literal notranslate"><span class="pre">events</span></code></a> 模块中找到。</p>
+<p>注意，作为 <code class="docutils literal notranslate"><span class="pre">&quot;asset_cfg&quot;：SceneEntityCfg(&quot;robot&quot;,</span> <span class="pre">body_names=&quot;.*&quot;)</span></code> 参数的一部分，<code class="docutils literal notranslate"><span class="pre">robot</span></code> 角色的名称已经提供，以及作为正则表达式指定的身体或关节名称，这些将是将随机应用到的角色和身体/关节。</p>
+<p>与OmniIsaacGymEnvs不同的一点是，<code class="docutils literal notranslate"><span class="pre">interval</span></code> 随机化现在指定为秒而不是步数。当 <code class="docutils literal notranslate"><span class="pre">mode=&quot;interval&quot;</span></code> 时，还必须提供 <code class="docutils literal notranslate"><span class="pre">interval_range_s</span></code> 参数，该参数指定应该应用随机化的秒数范围。然后将对这个范围进行随机化，以确定术语的具体时间点。要在步数和秒之间转化，请使用方程 <code class="docutils literal notranslate"><span class="pre">time_s</span> <span class="pre">=</span> <span class="pre">num_steps</span> <span class="pre">*</span> <span class="pre">(decimation</span> <span class="pre">*</span> <span class="pre">dt)</span></code> 。</p>
 <p>与OmniIsaacGymEnvs一样，用于随机化构造性属性的随机化API现在可用，如关节刚度和阻尼、关节限制、刚性体材料、固定肌腱属性以及刚性体属性，比如质量和刚性体材料。还支持对物理场景重力进行随机化。需要注意的是，Isaac实验室目前不支持比例的随机化。要随机化比例，请以每个环境在不同比例下持有演员的方式设置场景。</p>
-<p>一旦随机化术语的``configclass``设置完成，该类必须被添加到任务的基本配置类中，并分配给变量``events``。</p>
+<p>一旦随机化术语的 <code class="docutils literal notranslate"><span class="pre">configclass</span></code> 设置完成，该类必须被添加到任务的基本配置类中，并分配给变量 <code class="docutils literal notranslate"><span class="pre">events</span></code> 。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">MyTaskConfig</span><span class="p">:</span>
   <span class="n">events</span><span class="p">:</span> <span class="n">EventCfg</span> <span class="o">=</span> <span class="n">EventCfg</span><span class="p">()</span>
@@ -1602,7 +1602,7 @@ post_physics_step
 </div>
 <section id="action-and-observation-noise">
 <h3>动作和观察噪声<a class="headerlink" href="#action-and-observation-noise" title="此标题的永久链接">#</a></h3>
-<p>还可以使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~utils.configclass`模块添加动作和观测噪声。必须使用``action_noise_model``和``observation_noise_model``变量将动作和观测噪声配置添加到主任务配置中：</p>
+<p>还可以使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块添加动作和观测噪声。必须使用 <code class="docutils literal notranslate"><span class="pre">action_noise_model</span></code> 和 <code class="docutils literal notranslate"><span class="pre">observation_noise_model</span></code> 变量将动作和观测噪声配置添加到主任务配置中：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">MyTaskConfig</span><span class="p">:</span>
     <span class="c1"># at every time-step add gaussian noise + bias. The bias is a gaussian sampled at reset</span>
@@ -1617,7 +1617,7 @@ post_physics_step
     <span class="p">)</span>
 </pre></div>
 </div>
-<p>:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~.utils.noise.NoiseModelWithAdditiveBiasCfg`可以用于对每步采样不相关的噪声以及在重置时重新采样相关噪声。<a href="#id3"><span class="problematic" id="id4">``</span></a>noise_cfg``项指定了将在每步对所有环境进行采样的高斯分布。此噪声将被添加到相应的动作和观察值缓冲区中的每一步。<a href="#id5"><span class="problematic" id="id6">``</span></a>bias_noise_cfg``项指定了在被重置的环境中在重置时间进行重新采样的相关噪声的高斯分布。相同噪声将在剩余的情节中的每一步被应用，并在下一次重置时被重新采样。</p>
+<p><a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#omni.isaac.lab.utils.noise.NoiseModelWithAdditiveBiasCfg" title="omni.isaac.lab.utils.noise.NoiseModelWithAdditiveBiasCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseModelWithAdditiveBiasCfg</span></code></a> 可以用于对每步采样不相关的噪声以及在重置时重新采样相关噪声。 <code class="docutils literal notranslate"><span class="pre">noise_cfg</span></code> 项指定了将在每步对所有环境进行采样的高斯分布。此噪声将被添加到相应的动作和观察值缓冲区中的每一步。 <code class="docutils literal notranslate"><span class="pre">bias_noise_cfg</span></code> 项指定了在被重置的环境中在重置时间进行重新采样的相关噪声的高斯分布。相同噪声将在剩余的情节中的每一步被应用，并在下一次重置时被重新采样。</p>
 <p>这取代了OmniIsaacGymEnvs中的以下设置：</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">domain_randomization</span><span class="p">:</span>
 <span class="nt">randomize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>

@@ -566,15 +566,15 @@ document.write(`
                   
   <section id="running-an-example-with-docker">
 <h1>在使用Docker运行示例<a class="headerlink" href="#running-an-example-with-docker" title="此标题的永久链接">#</a></h1>
-<p>从``Isaac Lab``存储库的根目录开始，<a href="#id1"><span class="problematic" id="id2">``</span></a>docker``目录包含所有与Docker相关的文件。这些文件包括三个文件（<strong>Dockerfile</strong>，<strong>docker-compose.yaml</strong>，<strong>.env</strong>），这些文件由Docker使用，以及我们用来与它们进行交互的附加脚本，<strong>container.sh</strong>。</p>
-<p>在本教程中，我们将学习如何使用Isaac Lab Docker容器进行开发。有关Docker设置的详细说明，包括安装和获取对Isaac Sim映像的访问权限，请参考：ref：<cite>部署-docker</cite>。有关Docker的一般描述，请参阅`官方文档&lt;<a class="reference external" href="https://docs.docker.com/get-started/overview/">https://docs.docker.com/get-started/overview/</a>&gt;`_。</p>
+<p>从 <code class="docutils literal notranslate"><span class="pre">Isaac</span> <span class="pre">Lab</span></code> 存储库的根目录开始，<code class="docutils literal notranslate"><span class="pre">docker</span></code> 目录包含所有与Docker相关的文件。这些文件包括三个文件（<strong>Dockerfile</strong>，<strong>docker-compose.yaml</strong>，<strong>.env</strong>），这些文件由Docker使用，以及我们用来与它们进行交互的附加脚本，<strong>container.sh</strong>。</p>
+<p>在本教程中，我们将学习如何使用Isaac Lab Docker容器进行开发。有关Docker设置的详细说明，包括安装和获取对Isaac Sim映像的访问权限，请参考：ref：` 部署-docker` 。有关Docker的一般描述，请参阅 ` 官方文档&lt;<a class="reference external" href="https://docs.docker.com/get-started/overview/">https://docs.docker.com/get-started/overview/</a>&gt;`_ 。</p>
 <section id="building-the-container">
 <h2>构建容器<a class="headerlink" href="#building-the-container" title="此标题的永久链接">#</a></h2>
 <p>要从Isaac Lab存储库的根目录构建Isaac Lab容器，我们将运行以下命令：</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./docker/container.sh start</span>
 </pre></div>
 </div>
-<p>终端将首先提取基本的IsaacSim映像，在其上构建Isaac Lab映像的附加层，并运行Isaac Lab容器。第一次构建可能需要几分钟，但在后续运行中将更短，因为Docker的缓存可以防止重复工作。如果我们在终端上运行命令``docker container ls``，输出将列出在系统上运行的容器。如果一切设置正确，将会出现一个名称为**isaaclab**的容器，类似于下面的样子：</p>
+<p>终端将首先提取基本的IsaacSim映像，在其上构建Isaac Lab映像的附加层，并运行Isaac Lab容器。第一次构建可能需要几分钟，但在后续运行中将更短，因为Docker的缓存可以防止重复工作。如果我们在终端上运行命令 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">container</span> <span class="pre">ls</span></code>，输出将列出在系统上运行的容器。如果一切设置正确，将会出现一个名称为**isaaclab**的容器，类似于下面的样子：</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">CONTAINER ID   IMAGE         COMMAND   CREATED           STATUS         PORTS     NAMES</span>
 <span class="go">483d1d5e2def   isaaclab      &quot;bash&quot;    30 seconds ago   Up 30 seconds             isaaclab</span>
 </pre></div>
@@ -583,13 +583,13 @@ document.write(`
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./docker/container.sh enter</span>
 </pre></div>
 </div>
-<p>进入Isaac Lab容器后，我们将作为超级用户``root``进入终端。此环境包含Isaac Lab存储库的副本，还可以访问Isaac Sim的目录和库。我们可以使用一些方便的别名从这个环境中运行实验，这些别名已经放入了``root``**.bashrc** 中。例如，我们已经使**isaaclab.sh**脚本通过键入其别名``isaaclab``可以在任何地方使用。</p>
-<p>此外，在容器中，我们已经将`IsaacLab/source`目录从主机机器`bind mounted`_到容器中。这意味着如果我们在主机机器上的编辑器中修改了此目录下的文件，则这些更改将立即反映在容器中，而无需重新构建Docker镜像。</p>
+<p>进入Isaac Lab容器后，我们将作为超级用户 <code class="docutils literal notranslate"><span class="pre">root</span></code> 进入终端。此环境包含Isaac Lab存储库的副本，还可以访问Isaac Sim的目录和库。我们可以使用一些方便的别名从这个环境中运行实验，这些别名已经放入了 <code class="docutils literal notranslate"><span class="pre">root``**.bashrc**</span> <span class="pre">中。例如，我们已经使**isaaclab.sh**脚本通过键入其别名</span> <span class="pre">``isaaclab</span></code> 可以在任何地方使用。</p>
+<p>此外，在容器中，我们已经将 <cite>IsaacLab/source</cite> 目录从主机机器 <a class="reference external" href="https://docs.docker.com/storage/bind-mounts/">bind mounted</a> 到容器中。这意味着如果我们在主机机器上的编辑器中修改了此目录下的文件，则这些更改将立即反映在容器中，而无需重新构建Docker镜像。</p>
 <p>现在，我们将在容器内运行一个样本脚本，以演示如何从Isaac Lab Docker容器中提取工件。</p>
 </section>
 <section id="the-code">
 <h2>代码<a class="headerlink" href="#the-code" title="此标题的永久链接">#</a></h2>
-<p>本教程对应于``IsaacLab/source/standalone/tutorials/00_sim``目录中的``log_time.py``脚本。</p>
+<p>本教程对应于 <code class="docutils literal notranslate"><span class="pre">IsaacLab/source/standalone/tutorials/00_sim</span></code> 目录中的 <code class="docutils literal notranslate"><span class="pre">log_time.py</span></code> 脚本。</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">log_time.py的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
@@ -681,7 +681,7 @@ document.write(`
 </details></section>
 <section id="the-code-explained">
 <h2>代码的解释<a class="headerlink" href="#the-code-explained" title="此标题的永久链接">#</a></h2>
-<p>Isaac Lab Docker容器具有多个`volumes`_以方便主机计算机和容器之间的持久存储。其中一个卷是``/ workspace / isaaclab / logs``目录。<a href="#id1"><span class="problematic" id="id2">``</span></a>log_time.py``脚本将此目录指定为写入``log.txt``的位置：</p>
+<p>Isaac Lab Docker容器具有多个 <a class="reference external" href="https://docs.docker.com/storage/volumes/">volumes</a> 以方便主机计算机和容器之间的持久存储。其中一个卷是 <code class="docutils literal notranslate"><span class="pre">/</span> <span class="pre">workspace</span> <span class="pre">/</span> <span class="pre">isaaclab</span> <span class="pre">/</span> <span class="pre">logs</span></code> 目录。 <code class="docutils literal notranslate"><span class="pre">log_time.py</span></code> 脚本将此目录指定为写入 <code class="docutils literal notranslate"><span class="pre">log.txt</span></code> 的位置：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Specify that the logs must be in logs/docker_tutorial</span>
     <span class="n">log_dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="s2">&quot;docker_tutorial&quot;</span><span class="p">)</span>
     <span class="c1"># In the container, the absolute path will be</span>
@@ -694,7 +694,7 @@ document.write(`
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] Logging experiment to directory: </span><span class="si">{</span><span class="n">log_dir_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>如注释所述，<code class="xref py py-func docutils literal notranslate"><span class="pre">os.path.abspath()`将在前面添加`()</span></code>/ workspace / isaaclab``，因为在Docker容器中所有python执行都是通过``/ workspace / isaaclab / isaaclab.sh``进行的。输出将是一个文件，<code class="docutils literal notranslate"><span class="pre">log.txt</span></code>，每次模拟步骤都会写入``sim_time``的换行符：</p>
+<p>如注释所述，<a class="reference external" href="https://docs.python.org/3/library/os.path.html#os.path.abspath" title="（在 Python v3.12）"><code class="xref py py-func docutils literal notranslate"><span class="pre">os.path.abspath()</span></code></a> 将在前面添加 <code class="docutils literal notranslate"><span class="pre">/</span> <span class="pre">workspace</span> <span class="pre">/</span> <span class="pre">isaaclab</span></code>，因为在Docker容器中所有python执行都是通过 <code class="docutils literal notranslate"><span class="pre">/</span> <span class="pre">workspace</span> <span class="pre">/</span> <span class="pre">isaaclab</span> <span class="pre">/</span> <span class="pre">isaaclab.sh</span></code> 进行的。输出将是一个文件，<code class="docutils literal notranslate"><span class="pre">log.txt</span></code>，每次模拟步骤都会写入 <code class="docutils literal notranslate"><span class="pre">sim_time</span></code> 的换行符：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Prepare to count sim_time</span>
     <span class="n">sim_dt</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span>
     <span class="n">sim_time</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -712,25 +712,25 @@ document.write(`
 </section>
 <section id="executing-the-script">
 <h2>执行脚本<a class="headerlink" href="#executing-the-script" title="此标题的永久链接">#</a></h2>
-<p>我们将执行脚本以生成日志，添加``–headless``标志以防止GUI：</p>
+<p>我们将执行脚本以生成日志，添加 <code class="docutils literal notranslate"><span class="pre">--headless</span></code> 标志以防止GUI：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>isaaclab<span class="w"> </span>-p<span class="w"> </span>source/standalone/tutorials/00_sim/log_time.py<span class="w"> </span>--headless
 </pre></div>
 </div>
-<p>现在，<code class="docutils literal notranslate"><span class="pre">log.txt``将在</span></code>/workspace/isaaclab/logs/docker_tutorial``中生成。如果我们键入``exit``退出容器，我们将返回到主机终端环境中的``IsaacLab/docker``。然后，我们可以输入以下命令从Docker容器中检索日志并将它们放在我们的主机机器上：</p>
+<p>现在，<code class="docutils literal notranslate"><span class="pre">log.txt</span></code> 将在 <code class="docutils literal notranslate"><span class="pre">/workspace/isaaclab/logs/docker_tutorial</span></code> 中生成。如果我们键入 <code class="docutils literal notranslate"><span class="pre">exit</span></code> 退出容器，我们将返回到主机终端环境中的 <code class="docutils literal notranslate"><span class="pre">IsaacLab/docker</span></code> 。然后，我们可以输入以下命令从Docker容器中检索日志并将它们放在我们的主机机器上：</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./container.sh copy</span>
 </pre></div>
 </div>
-<p>我们将看到终端输出报告我们从容器中检索的工件。如果我们导航到``/isaaclab/docker/artifacts/logs/docker_tutorial``，我们将看到上面脚本生成的``log.txt``文件的副本。</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>artifacts``下的每个目录对应于容器内映射到目录的Docker`volumes`_，<a href="#id3"><span class="problematic" id="id4">``</span></a>container.sh copy``命令将它们从这些`volumes`_复制到这些目录中。</p>
-<p>我们可以通过再次运行``container.sh enter``返回到Isaac Lab Docker终端环境，但我们已经检索到我们的日志并希望去检查它们。我们可以使用以下命令停止Isaac Lab Docker容器：</p>
+<p>我们将看到终端输出报告我们从容器中检索的工件。如果我们导航到 <code class="docutils literal notranslate"><span class="pre">/isaaclab/docker/artifacts/logs/docker_tutorial</span></code>，我们将看到上面脚本生成的 <code class="docutils literal notranslate"><span class="pre">log.txt</span></code> 文件的副本。</p>
+<p><code class="docutils literal notranslate"><span class="pre">artifacts</span></code> 下的每个目录对应于容器内映射到目录的Docker`volumes`_，<code class="docutils literal notranslate"><span class="pre">container.sh</span> <span class="pre">copy</span></code> 命令将它们从这些 <a class="reference external" href="https://docs.docker.com/storage/volumes/">volumes</a> 复制到这些目录中。</p>
+<p>我们可以通过再次运行 <code class="docutils literal notranslate"><span class="pre">container.sh</span> <span class="pre">enter</span></code> 返回到Isaac Lab Docker终端环境，但我们已经检索到我们的日志并希望去检查它们。我们可以使用以下命令停止Isaac Lab Docker容器：</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./container.sh stop</span>
 </pre></div>
 </div>
-<p>这将关闭Docker Isaac Lab容器。镜像将保持存在并继续可用，<cite>volumes`_的内容也将保持存在。如果我们希望释放镜像占用的磁盘空间（~20.1GB），并且不介意在下次运行`</cite>./container.sh start``时重复构建过程，则可以键入以下命令来删除**isaaclab**镜像：</p>
+<p>这将关闭Docker Isaac Lab容器。镜像将保持存在并继续可用，<a class="reference external" href="https://docs.docker.com/storage/volumes/">volumes</a> 的内容也将保持存在。如果我们希望释放镜像占用的磁盘空间（~20.1GB），并且不介意在下次运行 <code class="docutils literal notranslate"><span class="pre">./container.sh</span> <span class="pre">start</span></code> 时重复构建过程，则可以键入以下命令来删除**isaaclab**镜像：</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker image rm isaaclab</span>
 </pre></div>
 </div>
-<p>接下来再次运行``docker image ls```将显示标记为**isaaclab**的镜像现在已经消失。如果我们希望释放更多空间，可以对底层的NVIDIA容器执行相同的操作。如果需要一种更强大的从Docker释放资源的方法，请查阅`docker prune`_命令的文档。</p>
+<p>接下来再次运行 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">image</span> <span class="pre">ls`</span></code> 将显示标记为**isaaclab**的镜像现在已经消失。如果我们希望释放更多空间，可以对底层的NVIDIA容器执行相同的操作。如果需要一种更强大的从Docker释放资源的方法，请查阅 <a class="reference external" href="https://docs.docker.com/config/pruning/">docker prune</a> 命令的文档。</p>
 </section>
 </section>
 

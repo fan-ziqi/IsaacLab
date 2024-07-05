@@ -573,8 +573,8 @@ document.write(`
                   
   <section id="creating-a-manager-based-base-environment">
 <span id="tutorial-create-manager-base-env"></span><h1>创建基于管理器的基础环境<a class="headerlink" href="#creating-a-manager-based-base-environment" title="此标题的永久链接">#</a></h1>
-<p>环境将模拟的不同方面（如场景、观察和行动空间、重置事件等）组合在一起，为各种应用程序创建一个连贯的接口。在Isaac Lab中，基于管理器的环境实现为:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnv`和:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>envs.ManagerBasedRLEnv`类。这两个类非常相似，但是:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>envs.ManagerBasedRLEnv`对于强化学习任务非常有用，包含奖励、终止、课程和指令生成。:class:<a href="#id7"><span class="problematic" id="id8">`</span></a>envs.ManagerBasedEnv`类对于传统机器人控制非常有用，不包含奖励和终止。</p>
-<p>在本教程中，我们将查看:class:<cite>envs.ManagerBasedEnv`的基类和其对应的配置类:class:`envs.ManagerBasedEnvCfg</cite>，用于基于管理器的工作流程。我们将使用之前的cartpole环境来说明如何创建新的:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnv`环境中的不同组件。</p>
+<p>环境将模拟的不同方面（如场景、观察和行动空间、重置事件等）组合在一起，为各种应用程序创建一个连贯的接口。在Isaac Lab中，基于管理器的环境实现为 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 和 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 类。这两个类非常相似，但是 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 对于强化学习任务非常有用，包含奖励、终止、课程和指令生成。 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 类对于传统机器人控制非常有用，不包含奖励和终止。</p>
+<p>在本教程中，我们将查看 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 的基类和其对应的配置类 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnvCfg" title="omni.isaac.lab.envs.ManagerBasedEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnvCfg</span></code></a>，用于基于管理器的工作流程。我们将使用之前的cartpole环境来说明如何创建新的 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 环境中的不同组件。</p>
 <section id="the-code">
 <h2>代码<a class="headerlink" href="#the-code" title="此标题的永久链接">#</a></h2>
 <p>本教程对应于’dtand-alone/tutorials/03_envs’目录中的’create_cartpole_base_env’脚本。</p>
@@ -755,22 +755,22 @@ document.write(`
 </details></section>
 <section id="the-code-explained">
 <h2>代码解释<a class="headerlink" href="#the-code-explained" title="此标题的永久链接">#</a></h2>
-<p>基类:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnv`包装了许多仿真交互的复杂性，并提供了一个简单的接口，供用户运行仿真并与之交互。它由以下组件组成:</p>
+<p>基类 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 包装了许多仿真交互的复杂性，并提供了一个简单的接口，供用户运行仿真并与之交互。它由以下组件组成 :</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">scene.InteractiveScene</span></code></a>-用于仿真的场景。</p></li>
 <li><p><a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ActionManager" title="omni.isaac.lab.managers.ActionManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ActionManager</span></code></a>-处理操作的管理器。</p></li>
 <li><p><a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ObservationManager" title="omni.isaac.lab.managers.ObservationManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ObservationManager</span></code></a>-处理观察的管理器。</p></li>
 <li><p><a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventManager" title="omni.isaac.lab.managers.EventManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.EventManager</span></code></a>-在指定的仿真事件上安排操作（例如域随机化）。例如，启动时、重置时或定期间隔。</p></li>
 </ul>
-<p>通过配置这些组件，用户可以轻松地创建相同环境的不同变体。在本教程中，我们将介绍:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnv`类的不同组件和如何配置它们以创建新的环境。</p>
+<p>通过配置这些组件，用户可以轻松地创建相同环境的不同变体。在本教程中，我们将介绍 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 类的不同组件和如何配置它们以创建新的环境。</p>
 <section id="designing-the-scene">
 <h3>设计场景<a class="headerlink" href="#designing-the-scene" title="此标题的永久链接">#</a></h3>
-<p>创建新环境的第一步是配置其场景。对于cartpole环境，我们将使用之前教程中的场景。因此，我们在这里省略了场景配置。有关如何配置场景的更多详细信息，请参见:ref:<cite>tutorial-interactive-scene</cite>。</p>
+<p>创建新环境的第一步是配置其场景。对于cartpole环境，我们将使用之前教程中的场景。因此，我们在这里省略了场景配置。有关如何配置场景的更多详细信息，请参见 <a class="reference internal" href="../02_scene/create_scene.html#tutorial-interactive-scene"><span class="std std-ref">使用交互式场景</span></a> 。</p>
 </section>
 <section id="defining-actions">
 <h3>定义行动<a class="headerlink" href="#defining-actions" title="此标题的永久链接">#</a></h3>
-<p>在上一个教程中，我们直接使用:meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>assets.Articulation.set_joint_effort_target`方法将动作直接输入到cartpole。在本教程中，我们将使用:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>managers.ActionManager`来处理这些动作。</p>
-<p>动作管理器可以包含多个:class:<cite>managers.ActionTerm</cite>。每个动作期限负责在环境的特定方面上应用*控制*。例如，对于机器人臂来说，我们可以有两个行动期限 - 一个用于控制手臂的关节，另一个用于控制手爪。这种组合允许用户为不同方面的环境定义不同的控制方案。</p>
+<p>在上一个教程中，我们直接使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation.set_joint_effort_target" title="omni.isaac.lab.assets.Articulation.set_joint_effort_target"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.Articulation.set_joint_effort_target()</span></code></a> 方法将动作直接输入到cartpole。在本教程中，我们将使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ActionManager" title="omni.isaac.lab.managers.ActionManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ActionManager</span></code></a> 来处理这些动作。</p>
+<p>动作管理器可以包含多个 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ActionTerm" title="omni.isaac.lab.managers.ActionTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ActionTerm</span></code></a> 。每个动作期限负责在环境的特定方面上应用*控制*。例如，对于机器人臂来说，我们可以有两个行动期限 - 一个用于控制手臂的关节，另一个用于控制手爪。这种组合允许用户为不同方面的环境定义不同的控制方案。</p>
 <p>在cartpole环境中，我们希望控制施加在小车上来平衡杆的力。因此，我们将创建一个行动期限，用于控制施加在小车上的力。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">ActionsCfg</span><span class="p">:</span>
@@ -782,10 +782,10 @@ document.write(`
 </section>
 <section id="defining-observations">
 <h3>定义观察<a class="headerlink" href="#defining-observations" title="此标题的永久链接">#</a></h3>
-<p>虽然场景定义了环境的状态，但观察定义了代理可以观察到的状态。这些观察由:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>managers.ObservationManager`类计算。代理使用这些观察来决定采取哪些行动。在Isaac Lab中，观察是由:class:<a href="#id3"><span class="problematic" id="id4">`</span></a>managers.ObservationManager`类计算的。</p>
+<p>虽然场景定义了环境的状态，但观察定义了代理可以观察到的状态。这些观察由 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ObservationManager" title="omni.isaac.lab.managers.ObservationManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ObservationManager</span></code></a> 类计算。代理使用这些观察来决定采取哪些行动。在Isaac Lab中，观察是由 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ObservationManager" title="omni.isaac.lab.managers.ObservationManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ObservationManager</span></code></a> 类计算的。</p>
 <p>与动作管理器类似，观察管理器可以包含多个观察期限。这些进一步分组成观察组，用于为环境定义不同的观察空间。例如，对于分层控制，我们可能想为低级控制器和高级控制器定义两个观察组。假定观察组中的所有观察期限具有相同的维度。</p>
-<p>对于本教程，我们只定义一个名为”policy”的观察组。虽然不是完全规定性的，但这个组是Isaac Lab中各种包装器的必要要求。我们通过从:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>managers.ObservationGroupCfg`类继承来定义一个组。此类收集不同的观察期限，并帮助定义组的公共属性，例如启用噪声损坏或将观察结果连接到单个张量中。</p>
-<p>通过从:class:<cite>managers.ObservationTermCfg`类继承来定义单个期限 。此类接受定义了观察期限的函数或可调用类的:class:`managers.ObservationTermCfg.func</cite>。它包括用于定义噪声模型、剪切、缩放等的其他参数。但是，我们在本教程中将这些参数保留到它们的默认值。</p>
+<p>对于本教程，我们只定义一个名为”policy”的观察组。虽然不是完全规定性的，但这个组是Isaac Lab中各种包装器的必要要求。我们通过从 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ObservationGroupCfg" title="omni.isaac.lab.managers.ObservationGroupCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ObservationGroupCfg</span></code></a> 类继承来定义一个组。此类收集不同的观察期限，并帮助定义组的公共属性，例如启用噪声损坏或将观察结果连接到单个张量中。</p>
+<p>通过从 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ObservationTermCfg" title="omni.isaac.lab.managers.ObservationTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ObservationTermCfg</span></code></a> 类继承来定义单个期限 。此类接受定义了观察期限的函数或可调用类的 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.ObservationTermCfg.func" title="omni.isaac.lab.managers.ObservationTermCfg.func"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.ObservationTermCfg.func</span></code></a> 。它包括用于定义噪声模型、剪切、缩放等的其他参数。但是，我们在本教程中将这些参数保留到它们的默认值。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">ObservationsCfg</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Observation specifications for the environment.&quot;&quot;&quot;</span>
@@ -810,8 +810,8 @@ document.write(`
 <section id="defining-events">
 <h3>定义事件<a class="headerlink" href="#defining-events" title="此标题的永久链接">#</a></h3>
 <p>此时，我们已经为cartpole环境定义了场景、行动和观察。所有这些组件的一般思想是定义配置类，然后将它们传递给相应的管理器。事件管理器也不例外。</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.EventManager`类负责对仿真状态更改所对应的事件。这包括重置（或随机化）场景、随机物理属性（例如质量、摩擦力等）以及更改视觉属性（例如颜色、纹理等）。每个事件都是通过:class:`managers.EventTermCfg`类指定的，它接受:class:`managers.EventTermCfg.func</span></code>，该属性指定执行事件的函数或可调用类。</p>
-<p>另外，它期望事件的**模式**。模式指定何时应用事件期限。可以指定自己的模式。为此，您需要调整:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~envs.ManagerBasedEnv`类。但是，Isaac Lab提供了三种常用模式:</p>
+<p><a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventManager" title="omni.isaac.lab.managers.EventManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.EventManager</span></code></a> 类负责对仿真状态更改所对应的事件。这包括重置（或随机化）场景、随机物理属性（例如质量、摩擦力等）以及更改视觉属性（例如颜色、纹理等）。每个事件都是通过 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventTermCfg" title="omni.isaac.lab.managers.EventTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.EventTermCfg</span></code></a> 类指定的，它接受 <a class="reference internal" href="../../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventTermCfg.func" title="omni.isaac.lab.managers.EventTermCfg.func"><code class="xref py py-class docutils literal notranslate"><span class="pre">managers.EventTermCfg.func</span></code></a>，该属性指定执行事件的函数或可调用类。</p>
+<p>另外，它期望事件的**模式**。模式指定何时应用事件期限。可以指定自己的模式。为此，您需要调整 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManagerBasedEnv</span></code></a> 类。但是，Isaac Lab提供了三种常用模式 :</p>
 <ul class="simple">
 <li><p>“ startup “ - 只在环境启动时发生的事件。</p></li>
 <li><p>“reset” - 环境终止和重置时出现的事件。</p></li>
@@ -858,8 +858,8 @@ document.write(`
 </section>
 <section id="tying-it-all-together">
 <h3>将所有这些组件结合起来<a class="headerlink" href="#tying-it-all-together" title="此标题的永久链接">#</a></h3>
-<p>定义了场景和管理器配置之后，现在可以通过:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnvCfg`类定义环境配置。该类接受场景、行动、观察和事件配置。</p>
-<p>除这些配置之外，它还接受:class:<cite>envs.ManagerBasedEnvCfg.sim</cite>，该属性定义仿真参数，例如时间步长、重力等。这初始化为默认值，但可以根据需要进行修改。我们建议通过在:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnvCfg`类中定义:meth:<a href="#id3"><span class="problematic" id="id4">`</span></a>__post_init__`方法来执行此操作，该方法在初始化配置后调用。</p>
+<p>定义了场景和管理器配置之后，现在可以通过 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnvCfg" title="omni.isaac.lab.envs.ManagerBasedEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnvCfg</span></code></a> 类定义环境配置。该类接受场景、行动、观察和事件配置。</p>
+<p>除这些配置之外，它还接受 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnvCfg.sim" title="omni.isaac.lab.envs.ManagerBasedEnvCfg.sim"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnvCfg.sim</span></code></a>，该属性定义仿真参数，例如时间步长、重力等。这初始化为默认值，但可以根据需要进行修改。我们建议通过在 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnvCfg" title="omni.isaac.lab.envs.ManagerBasedEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnvCfg</span></code></a> 类中定义 <code class="xref py py-meth docutils literal notranslate"><span class="pre">__post_init__()</span></code> 方法来执行此操作，该方法在初始化配置后调用。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
 <span class="k">class</span> <span class="nc">CartpoleEnvCfg</span><span class="p">(</span><span class="n">ManagerBasedEnvCfg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the cartpole environment.&quot;&quot;&quot;</span>
@@ -885,8 +885,8 @@ document.write(`
 </section>
 <section id="running-the-simulation">
 <h3>运行仿真<a class="headerlink" href="#running-the-simulation" title="此标题的永久链接">#</a></h3>
-<p>最后，我们重新访问仿真执行循环。现在，由于我们已经将大部分细节抽象出到环境配置中，因此这非常简单。我们只需要调用:meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnv.reset`方法重置环境，并调用:meth:<a href="#id3"><span class="problematic" id="id4">`</span></a>envs.ManagerBasedEnv.step`方法来步进环境。这些函数都返回观察和信息字典，其中可能包含环境提供的其他信息。这些都可以被代理用于决策制定。</p>
-<p>:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedEnv`类没有终止的概念，因为该概念特定于情节任务。因此，用户负责为环境定义终止条件。在本教程中，我们在定期间隔重置仿真。</p>
+<p>最后，我们重新访问仿真执行循环。现在，由于我们已经将大部分细节抽象出到环境配置中，因此这非常简单。我们只需要调用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv.reset" title="omni.isaac.lab.envs.ManagerBasedEnv.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv.reset()</span></code></a> 方法重置环境，并调用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv.step" title="omni.isaac.lab.envs.ManagerBasedEnv.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv.step()</span></code></a> 方法来步进环境。这些函数都返回观察和信息字典，其中可能包含环境提供的其他信息。这些都可以被代理用于决策制定。</p>
+<p><a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedEnv" title="omni.isaac.lab.envs.ManagerBasedEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedEnv</span></code></a> 类没有终止的概念，因为该概念特定于情节任务。因此，用户负责为环境定义终止条件。在本教程中，我们在定期间隔重置仿真。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span>
     <span class="c1"># parse the arguments</span>
@@ -918,7 +918,7 @@ document.write(`
     <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>需要注意的重要事情是整个仿真循环都包装在:meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>torch.inference_mode`上下文管理器中。这是因为环境在幕后使用了PyTorch操作，我们希望确保仿真不会被PyTorch的自动求导引擎减慢速度，并且不会为仿真操作计算梯度。</p>
+<p>需要注意的重要事情是整个仿真循环都包装在 <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.inference_mode()</span></code> 上下文管理器中。这是因为环境在幕后使用了PyTorch操作，我们希望确保仿真不会被PyTorch的自动求导引擎减慢速度，并且不会为仿真操作计算梯度。</p>
 </section>
 </section>
 <section id="the-code-execution">
@@ -928,8 +928,8 @@ document.write(`
 </pre></div>
 </div>
 <p>这应该会打开一个带有地面平面、光源和车杆的舞台。仿真应该在车杆上随机运动。此外，它还在屏幕右下角打开了一个名为”Isaac Lab”的UI窗口。此窗口包含可以用于调试和可视化的不同UI元素。</p>
-<p>要停止仿真，可以关闭窗口，或在启动仿真的终端中按“Ctrl+C”。</p>
-<p>在本教程中，我们了解了帮助定义基本环境的不同管理器。我们在’dtand-alone/tutorials/03_envs’目录中包含了更多定义基本环境的示例。为了完整起见，它们可以使用以下命令运行:</p>
+<p>要停止仿真，可以关闭窗口，或在启动仿真的终端中按 <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> 。</p>
+<p>在本教程中，我们了解了帮助定义基本环境的不同管理器。我们在’dtand-alone/tutorials/03_envs’目录中包含了更多定义基本环境的示例。为了完整起见，它们可以使用以下命令运行 :</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Floating cube environment with custom action term for PD control</span>
 ./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/tutorials/03_envs/create_cube_base_env.py<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">32</span>
 
@@ -937,7 +937,7 @@ document.write(`
 ./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/tutorials/03_envs/create_quadruped_base_env.py<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">32</span>
 </pre></div>
 </div>
-<p>在下一个教程中，我们将查看:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>envs.ManagerBasedRLEnv`类，以及如何使用它来创建马尔可夫决策过程（MDP）。</p>
+<p>在下一个教程中，我们将查看 <a class="reference internal" href="../../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.ManagerBasedRLEnv" title="omni.isaac.lab.envs.ManagerBasedRLEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">envs.ManagerBasedRLEnv</span></code></a> 类，以及如何使用它来创建马尔可夫决策过程（MDP）。</p>
 </section>
 </section>
 

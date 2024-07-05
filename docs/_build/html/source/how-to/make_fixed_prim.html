@@ -612,7 +612,7 @@ document.write(`
 <ul class="simple">
 <li><p>如果设置为 <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="（在 Python v3.12）"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>，则不会修改根链接。</p></li>
 <li><p>如果关节已经有了固定的根链接，此标志将启用或禁用固定关节。</p></li>
-<li><p>如果关节没有固定的根链接，此标志将在世界框架和根链接之间创建一个固定关节。该关节在根链接下以“FixedJoint”的名称创建。</p></li>
+<li><p>如果关节没有固定的根链接，此标志将在世界框架和根链接之间创建一个固定关节。该关节在根链接下以 <code class="docutils literal notranslate"><span class="pre">FixedJoint</span></code> 的名称创建。</p></li>
 </ul>
 <p>例如，要生成一个ANYmal机器人并使其在模拟世界中静止，可以使用以下代码：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">omni.isaac.lab.sim</span> <span class="k">as</span> <span class="nn">sim_utils</span>
@@ -642,21 +642,21 @@ document.write(`
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>这将在原语路径``”/World/ANYmal/base/FixedJoint”<code class="docutils literal notranslate"><span class="pre">和根链接</span></code>”/World/ANYmal/base”<a href="#id1"><span class="problematic" id="id2">``</span></a>处创建一个固定的关节。</p>
+<p>这将在原语路径 <code class="docutils literal notranslate"><span class="pre">&quot;/World/ANYmal/base/FixedJoint&quot;</span></code> 和根链接 <code class="docutils literal notranslate"><span class="pre">&quot;/World/ANYmal/base&quot;</span></code> 处创建一个固定的关节。</p>
 </section>
 <section id="further-notes">
 <h2>进一步说明<a class="headerlink" href="#further-notes" title="此标题的永久链接">#</a></h2>
 <p>鉴于 USD 资产设计的灵活性，通常会遇到以下可能的情况：</p>
 <ol class="arabic">
 <li><p><strong>在没有固定关节的刚体原语上的关节根模式</strong>：</p>
-<p>这是浮动基座关节的最常见和推荐的情况。根原语既具有刚体属性，也具有关节根属性。在这种情况下，关节根被解析为具有关节根原语“Link0Xform”的浮动基座。</p>
+<p>这是浮动基座关节的最常见和推荐的情况。根原语既具有刚体属性，也具有关节根属性。在这种情况下，关节根被解析为具有关节根原语 <code class="docutils literal notranslate"><span class="pre">Link0Xform</span></code> 的浮动基座。</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ArticulationXform
     └── Link0Xform  (RigidBody and ArticulationRoot schema)
 </pre></div>
 </div>
 </li>
 <li><p><strong>在具有固定关节的父原语上的关节根模式</strong>：</p>
-<p>这是固定基座关节的预期安排。根原语只具有刚体属性，关节根属性应用于其父原语。在这种情况下，关节根被解析为具有关节根原语“Link0Xform”的固定基座。</p>
+<p>这是固定基座关节的预期安排。根原语只具有刚体属性，关节根属性应用于其父原语。在这种情况下，关节根被解析为具有关节根原语 <code class="docutils literal notranslate"><span class="pre">Link0Xform</span></code> 的固定基座。</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ArticulationXform (ArticulationRoot schema)
     └── Link0Xform  (RigidBody schema)
     └── FixedJoint (connecting the world frame and Link0Xform)
@@ -664,7 +664,7 @@ document.write(`
 </div>
 </li>
 <li><p><strong>在没有固定关节的父原语上的关节根模式</strong>：</p>
-<p>这是根原语只具有刚体属性，而关节根属性应用于其父原语的情况。但是，不会在世界框架和根链接之间创建固定关节。在这种情况下，关节被解析为浮动基座系统。但是，PhysX 解析器使用自己的启发式方法（如字母顺序）来确定关节根原语。它可以选择``Link0Xform``的根原语，也可以选择另一个原语作为根原语。</p>
+<p>这是根原语只具有刚体属性，而关节根属性应用于其父原语的情况。但是，不会在世界框架和根链接之间创建固定关节。在这种情况下，关节被解析为浮动基座系统。但是，PhysX 解析器使用自己的启发式方法（如字母顺序）来确定关节根原语。它可以选择 <code class="docutils literal notranslate"><span class="pre">Link0Xform</span></code> 的根原语，也可以选择另一个原语作为根原语。</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ArticulationXform (ArticulationRoot schema)
     └── Link0Xform  (RigidBody schema)
 </pre></div>

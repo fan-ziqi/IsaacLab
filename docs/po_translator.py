@@ -56,15 +56,15 @@ class TranslationService:
             batch_texts = texts[i:i + self.batch_size]
             batch_info = f"File: {po_file_path}, Batch {i // self.batch_size + 1}/{self.total_batches}"
             batch_info += f" (texts {i + 1}-{min(i + self.batch_size, total_texts)})"
-            translation_request = (f"You are a sphinx translator, when meet words in formula or the word is an exclusive noun in English, such as \"NVIDIA\", \"Isaac Sim\", \"GitHub\", then do not translate. "
-                                   "Please be careful not to break reST notation, such as \":ref:`search`\", just keep it. "
-                                   "Please follow sphinx syntax. "
+            translation_request = (f"You are a sphinx translator, when meet words in formula or the word is an exclusive noun in English, such as 'NVIDIA', 'Isaac Sim', 'GitHub', then do not translate. "
+                                   "Please be careful not to break reST notation, such as ':ref:`search`', just keep it. "
                                    "Don't try to answer or explain the words or sentences I give you. "
                                    "Now please translate the following text from English into {target_language}. "
-                                   "Add a space between Chinese word/Chinese punctuation and \"`\", for example, \"中文字符 `abc123`_ 中文字符\" instead of \"中文字符`abc123`_中文字符\", \"我好（你也好） `abc123`_ （你也好）我好\" instead of \"我好（你也好）`abc123`_（你也好）我好\". "
-                                   "中文及中文标点和\"`\"或\"``\"之间要增加一个空格"
-                                   "被|包裹的部分如\"|helloworld|\"不翻译，直接输出原文字如\"|helloworld|\""
-                                   "并按照收到的格式进行返回"
+                                   "请时刻遵守 sphinx 语法，必须使用英文的'`'或'``'"
+                                   "必须要在以下集中情况下加空格："
+                                   "1. 必须在中文及中文标点和'`'或'``'之间要增加一个空格，例如'中文字符`abc123`_中文字符'是严重错误的，应该为‘中文字符（ `abc123`_ 中文字符‘，前后都要加空格"
+                                   "2. 类引用比如':class:`~omni.isaac.lab.sim`'的前后都要加空格，同时不要翻译，保留原格式"
+                                   "被|包裹的部分如'|helloworld|'不翻译，直接输出原文字如'|helloworld|'"
                                    "Use the format 'Index@Text' for each segment:\n\n")
             for index, text in enumerate(batch_texts, start=i):
                 translation_request += f"{index}@{text}\n"
@@ -249,6 +249,36 @@ class TranslationService:
         po_file.save()
         logging.info("Po file saved.")
 
+import re
+def add_space(content):
+    content = re.sub(r'([\u4e00-\u9fa5])([_`.,!?;:])', r'\1 \2', content)
+    content = re.sub(r'([_`.,!?;:])([\u4e00-\u9fa5])', r'\1 \2', content)
+    content = re.sub(r'([。（）])([_`.,!?;:()])', r'\1 \2', content)
+    content = re.sub(r'([_`.,!?;:()])([。（）])', r'\1 \2', content)
+    return content
+
+def replace_paths(content):
+    # 将中文引号“”中的内容替换为反引号包围的内容
+    content = re.sub(r'“([^”]+)”', r'``\1``', content)
+    return content
+
+def process_po_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+    
+    content = replace_paths(content)
+    content = add_space(content)
+    
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(content)
+
+def traverse_and_process_files(root_dir):
+    for root, dirs, files in os.walk(root_dir):
+        for file in files:
+            if file.endswith('.po'):
+                file_path = os.path.join(root, file)
+                process_po_file(file_path)
+                # print(f'Processed file: {file_path}')
 
 def main():
     """Main function to parse arguments and initiate processing."""
@@ -265,26 +295,28 @@ def main():
 
     args = parser.parse_args()
 
-    # Initialize OpenAI client
-    # api_key = args.api_key if args.api_key else os.getenv("OPENAI_API_KEY")
-    api_key = "sk-g8TUvgtpcIgwXtaC5f463f99D7Dc4425B439Ad9140A5C4C9"
-    base_url = 'https://api.gpts.vin/v1'
-    client = OpenAI(api_key=api_key, base_url=base_url)
+    # # Initialize OpenAI client
+    # # api_key = args.api_key if args.api_key else os.getenv("OPENAI_API_KEY")
+    # api_key = "sk-g8TUvgtpcIgwXtaC5f463f99D7Dc4425B439Ad9140A5C4C9"
+    # base_url = 'https://api.gpts.vin/v1'
+    # client = OpenAI(api_key=api_key, base_url=base_url)
 
-    # Create a configuration object
-    config = TranslationConfig(client, args.model, args.bulk, args.fuzzy, args.folder_language, args.bulksize)
+    # # Create a configuration object
+    # config = TranslationConfig(client, args.model, args.bulk, args.fuzzy, args.folder_language, args.bulksize)
 
-    # Initialize the translation service with the configuration object
-    translation_service = TranslationService(config)
+    # # Initialize the translation service with the configuration object
+    # translation_service = TranslationService(config)
 
-    # Validate the OpenAI connection
-    if not translation_service.validate_openai_connection():
-        logging.error("OpenAI connection failed. Please check your API key and network connection.")
-        return
+    # # Validate the OpenAI connection
+    # if not translation_service.validate_openai_connection():
+    #     logging.error("OpenAI connection failed. Please check your API key and network connection.")
+    #     return
 
-    # Extract languages
-    languages = [lang.strip() for lang in args.lang.split(',')]
-    translation_service.scan_and_process_po_files(args.folder, languages)
+    # # Extract languages
+    # languages = [lang.strip() for lang in args.lang.split(',')]
+    # translation_service.scan_and_process_po_files(args.folder, languages)
+
+    traverse_and_process_files(args.folder)
 
 
 if __name__ == "__main__":

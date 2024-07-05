@@ -574,7 +574,7 @@ document.write(`
 <p>本教程探讨了如何从Python在Isaac Lab中生成各种对象（或prims）到场景中。它在上一个教程的基础上构建，该教程介绍了如何从独立脚本中运行模拟器，并演示了如何生成地面平面、灯光、基本形状和来自USD文件的网格。</p>
 <section id="the-code">
 <h2>代码<a class="headerlink" href="#the-code" title="此标题的永久链接">#</a></h2>
-<p>该教程对应于``source/standalone/tutorials/00_sim``目录中的``spawn_prims.py``脚本。让我们来看一下Python脚本：</p>
+<p>该教程对应于 <code class="docutils literal notranslate"><span class="pre">source/standalone/tutorials/00_sim</span></code> 目录中的 <code class="docutils literal notranslate"><span class="pre">spawn_prims.py</span></code> 脚本。让我们来看一下Python脚本：</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">spawn_prims.py的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
@@ -693,15 +693,15 @@ document.write(`
 </details></section>
 <section id="the-code-explained">
 <h2>代码解释<a class="headerlink" href="#the-code-explained" title="此标题的永久链接">#</a></h2>
-<p>Omniverse中的场景设计建立在一个名为USD（通用场景描述）的软件系统和文件格式之上。它允许以分层方式描述3D场景，类似于文件系统。由于USD是一个综合性框架，我们建议阅读`USD文档`_以了解更多关于它的信息。</p>
+<p>Omniverse中的场景设计建立在一个名为USD（通用场景描述）的软件系统和文件格式之上。它允许以分层方式描述3D场景，类似于文件系统。由于USD是一个综合性框架，我们建议阅读 <a href="#id1"><span class="problematic" id="id2">`</span></a>USD文档 <a href="#id3"><span class="problematic" id="id4">`</span></a>_ 以了解更多关于它的信息。</p>
 <p>为了完整起见，我们在本教程中介绍了USD的必知概念。</p>
 <ul class="simple">
 <li><p><strong>基本形状（Prims）</strong>：这些是USD场景的基本构件。它们可以被视为场景图中的节点。每个节点可以是网格、灯光、相机或变换。它还可以是其下其他prims的组合。</p></li>
-<li><p><strong>属性</strong>：这些是prim的属性。它们可以被视为键值对。例如，一个prim可以有一个名为``color``的属性，值为``red``。</p></li>
+<li><p><strong>属性</strong>：这些是prim的属性。它们可以被视为键值对。例如，一个prim可以有一个名为 <code class="docutils literal notranslate"><span class="pre">color</span></code> 的属性，值为 <code class="docutils literal notranslate"><span class="pre">red</span></code> 。</p></li>
 <li><p><strong>关系</strong>：这些是prims之间的连接。它们可以被视为指向其他prims的指针。例如，一个网格prim可以与一个用于着色的材质prim建立关系。</p></li>
 </ul>
 <p>这些prims的集合，以及它们的属性和关系，被称为**USD stage**。可以将其视为场景中所有prims的容器。当我们说我们正在设计场景时，实际上正在设计一个USD stage。</p>
-<p>使用直接的USD API可以提供很大的灵活性，但可能会使学习和使用变得麻烦。为了更轻松地设计场景，Isaac Lab在USD API的基础上构建，提供了一种配置驱动的界面，以在场景中生成prims。这些包含在:mod:<a href="#id1"><span class="problematic" id="id2">`</span></a>sim.spawners`模块中。</p>
+<p>使用直接的USD API可以提供很大的灵活性，但可能会使学习和使用变得麻烦。为了更轻松地设计场景，Isaac Lab在USD API的基础上构建，提供了一种配置驱动的界面，以在场景中生成prims。这些包含在 <code class="xref py py-mod docutils literal notranslate"><span class="pre">sim.spawners</span></code> 模块中。</p>
 <p>将prims生成到场景中时，每个prim都需要一个配置类实例，用于定义prim的属性和关系（通过材料和着色信息）。然后将配置类传递给其相应的函数，其中指定prim名称和变换。然后函数将prim生成到场景中。</p>
 <p>在高层次上，它是如何工作的：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a configuration class instance</span>
@@ -715,14 +715,14 @@ document.write(`
 <span class="n">cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">prim_path</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orientation</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>在本教程中，我们演示了将各种不同的prims生成到场景中。有关可用spawner的更多信息，请参阅Isaac Lab中的:mod:<a href="#id1"><span class="problematic" id="id2">`</span></a>sim.spawners`模块。</p>
+<p>在本教程中，我们演示了将各种不同的prims生成到场景中。有关可用spawner的更多信息，请参阅Isaac Lab中的 <code class="xref py py-mod docutils literal notranslate"><span class="pre">sim.spawners</span></code> 模块。</p>
 <div class="admonition attention">
 <p class="admonition-title">注意</p>
 <p>所有的场景设计必须在模拟开始之前完成。一旦模拟开始，我们建议保持场景处于冻结状态，只修改prim的属性。这对于GPU模拟尤为重要，因为在模拟过程中添加新的prims可能会更改GPU上的物理模拟缓冲，导致意外行为。</p>
 </div>
 <section id="spawning-a-ground-plane">
 <h3>生成地面平面<a class="headerlink" href="#spawning-a-ground-plane" title="此标题的永久链接">#</a></h3>
-<p>:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~sim.spawners.from_files.GroundPlaneCfg`配置一个类似网格的地面平面，具有可修改的外观和尺寸等属性。</p>
+<p><a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.spawners.html#omni.isaac.lab.sim.spawners.from_files.GroundPlaneCfg" title="omni.isaac.lab.sim.spawners.from_files.GroundPlaneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroundPlaneCfg</span></code></a> 配置一个类似网格的地面平面，具有可修改的外观和尺寸等属性。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Ground-plane</span>
     <span class="n">cfg_ground</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">GroundPlaneCfg</span><span class="p">()</span>
     <span class="n">cfg_ground</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/defaultGroundPlane&quot;</span><span class="p">,</span> <span class="n">cfg_ground</span><span class="p">)</span>
@@ -731,7 +731,7 @@ document.write(`
 </section>
 <section id="spawning-lights">
 <h3>生成灯光<a class="headerlink" href="#spawning-lights" title="此标题的永久链接">#</a></h3>
-<p>可以将`不同类型的灯光prims`_生成到舞台中。这些包括远距离灯光、球体灯光、圆盘灯光和柱体灯光。在本教程中，我们生成了一个远距离灯光，它是一种无限远离场景并朝一个方向发光的灯光。</p>
+<p>可以将 ` 不同类型的灯光prims`_ 生成到舞台中。这些包括远距离灯光、球体灯光、圆盘灯光和柱体灯光。在本教程中，我们生成了一个远距离灯光，它是一种无限远离场景并朝一个方向发光的灯光。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># spawn distant light</span>
     <span class="n">cfg_light_distant</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">DistantLightCfg</span><span class="p">(</span>
         <span class="n">intensity</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
@@ -748,8 +748,8 @@ document.write(`
     <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="s2">&quot;/World/Objects&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>接下来，我们使用:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~sim.spawners.shapes.ConeCfg`类生成一个圆锥体。可以指定圆锥体的半径、高度、物理属性和材质属性。默认情况下，物理和材质属性是禁用的。</p>
-<p>我们生成的前两个圆锥``Cone1``和``Cone2``是可视元素，并且没有启用物理。</p>
+<p>接下来，我们使用 <a class="reference internal" href="../../api/lab/omni.isaac.lab.sim.spawners.html#omni.isaac.lab.sim.spawners.shapes.ConeCfg" title="omni.isaac.lab.sim.spawners.shapes.ConeCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConeCfg</span></code></a> 类生成一个圆锥体。可以指定圆锥体的半径、高度、物理属性和材质属性。默认情况下，物理和材质属性是禁用的。</p>
+<p>我们生成的前两个圆锥 <code class="docutils literal notranslate"><span class="pre">Cone1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Cone2</span></code> 是可视元素，并且没有启用物理。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># spawn a red cone</span>
     <span class="n">cfg_cone</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">ConeCfg</span><span class="p">(</span>
         <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
@@ -760,7 +760,7 @@ document.write(`
     <span class="n">cfg_cone</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Objects/Cone2&quot;</span><span class="p">,</span> <span class="n">cfg_cone</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>对于第三个圆锥``ConeRigid``，我们通过设置配置类中的属性为其添加了刚体物理。通过这些属性，我们可以指定圆锥的质量、摩擦力和恢复力。如果未指定，它们会按照USD Physics设置的默认值进行处理。</p>
+<p>对于第三个圆锥 <code class="docutils literal notranslate"><span class="pre">ConeRigid</span></code>，我们通过设置配置类中的属性为其添加了刚体物理。通过这些属性，我们可以指定圆锥的质量、摩擦力和恢复力。如果未指定，它们会按照USD Physics设置的默认值进行处理。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># spawn a green cone with colliders and rigid body</span>
     <span class="n">cfg_cone_rigid</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">ConeCfg</span><span class="p">(</span>
         <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
@@ -785,7 +785,7 @@ document.write(`
     <span class="n">cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Objects/Table&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>上面的表被添加为场景的一个引用。俗称来说，这意味着表实际上并没有被添加到场景中，而是添加了一个``指针``引用到了表资源。这使我们能够修改表资源，并在场景中以一种非破坏性的方式反映出更改。例如，我们可以更改表的材质，而不必直接修改表资产的基础文件。只有更改存储在USD stage中。</p>
+<p>上面的表被添加为场景的一个引用。俗称来说，这意味着表实际上并没有被添加到场景中，而是添加了一个 `` 指针 `` 引用到了表资源。这使我们能够修改表资源，并在场景中以一种非破坏性的方式反映出更改。例如，我们可以更改表的材质，而不必直接修改表资产的基础文件。只有更改存储在USD stage中。</p>
 </section>
 </section>
 <section id="executing-the-script">
@@ -794,7 +794,7 @@ document.write(`
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>source/standalone/tutorials/00_sim/spawn_prims.py
 </pre></div>
 </div>
-<p>一旦模拟开始，您应该会看到一个带有地面平面、灯光、一些圆锥体和一张桌子的窗口。启用刚体物理的绿色圆锥体应该会下落并与桌子和地面平面发生碰撞。其他圆锥都是可视元素而不会移动。要停止模拟，可以关闭窗口，或在终端中按``Ctrl+C``。</p>
+<p>一旦模拟开始，您应该会看到一个带有地面平面、灯光、一些圆锥体和一张桌子的窗口。启用刚体物理的绿色圆锥体应该会下落并与桌子和地面平面发生碰撞。其他圆锥都是可视元素而不会移动。要停止模拟，可以关闭窗口，或在终端中按 <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> 。</p>
 <p>本教程为在Isaac Lab中生成各种prims提供了基础。尽管简单，但它演示了在Isaac Lab中设计场景的基本概念以及如何使用spawner。在接下来的教程中，我们将会看看如何与场景和模拟进行交互。</p>
 </section>
 </section>
