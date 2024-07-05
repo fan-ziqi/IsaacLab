@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"POT-Creation-Date: 2024-07-05 06:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:4
 msgid "From OmniIsaacGymEnvs"
-msgstr "从 OmniIsaacGymEnvs"
+msgstr "从OmniIsaacGymEnvs迁移"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:9
 msgid ""
@@ -32,9 +32,9 @@ msgid ""
 "OmniIsaacGymEnvs will be deprecated and future development will continue in "
 "Isaac Lab."
 msgstr ""
-"`OmniIsaacGymEnvs`_ 是一个使用Isaac Sim平台的强化学习框架。来自OmniIsaacGymEnvs的功能已集成到Isaac "
-"Lab框架中。我们已将OmniIsaacGymEnvs更新到Isaac Sim版本4.0.0，以支持迁移流程到Isaac "
-"Lab。未来，OmniIsaacGymEnvs将被弃用，未来的开发将继续在Isaac Lab中进行。"
+"`OmniIsaacGymEnvs`_ 是一个使用 Isaac Sim 平台的强化学习框架。来自 OmniIsaacGymEnvs 的功能已经整合到 "
+"Isaac Lab 框架中。我们已经更新了 OmniIsaacGymEnvs 到 Isaac Sim 版本 4.0.0，以支持迁移到 Isaac Lab"
+" 的过程。今后，OmniIsaacGymEnvs 将被弃用，未来的开发将继续在 Isaac Lab 中进行。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:17
 msgid "Task Config Setup"
@@ -52,15 +52,15 @@ msgid ""
 "parameters, environment scene parameters, robot parameters, and task-"
 "specific parameters."
 msgstr ""
-"在OmniIsaacGymEnvs中，任务配置文件是以 ``.yaml`` 格式定义的。在Isaac Lab中，现在使用一个专门的Python类 "
-":class:`~omni.isaac.lab.utils.configclass` 来指定配置。 "
-":class:`~omni.isaac.lab.utils.configclass` 模块在Python的 ``dataclasses`` "
-"模块之上提供了一个包装器。每个环境都应指定其自己的配置类，该类由 ``@configclass`` 注释，并且继承自 "
-":class:`~envs.DirectRLEnvCfg` 类，可以包括模拟参数、环境场景参数、机器人参数和特定任务参数。"
+"在 OmniIsaacGymEnvs中，任务配置文件是以 ``.yaml`` 格式定义的。而使用 Isaac Lab，配置现在使用专门的 Python "
+"类 :class:`~omni.isaac.lab.utils.configclass` 来指定。 "
+":class:`~omni.isaac.lab.utils.configclass` 模块提供了对 Python 的 ``dataclasses`` "
+"模块的包装。每个环境都应该指定自己的配置类，配置类使用 ``@configclass`` 注释，并继承自 "
+":class:`~envs.DirectRLEnvCfg` 类，其中可以包括模拟参数、环境场景参数、机器人参数和特定于任务的参数。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:26
 msgid "Below is an example skeleton of a task config class:"
-msgstr "以下是任务配置类的范例框架："
+msgstr "下面是任务配置类的示例骨架："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:52
 msgid "Simulation Config"
@@ -75,10 +75,10 @@ msgid ""
 "must have a variable named ``sim`` defined that holds the type "
 ":class:`~omni.isaac.lab.sim.SimulationCfg`."
 msgstr ""
-"与模拟相关的参数定义在 :class:`~omni.isaac.lab.sim.SimulationCfg` 类中，这是一个 "
-":class:`~omni.isaac.lab.utils.configclass` 模块，包含模拟参数，如 ``dt``、``device`` 和 "
-"``gravity`` 。每个任务配置必须有一个名为 ``sim`` 的变量来定义一个类型为 "
-":class:`~omni.isaac.lab.sim.SimulationCfg` 的对象。"
+"与模拟相关的参数是作为 :class:`~omni.isaac.lab.sim.SimulationCfg` 类的一部分进行定义的，这是一个 "
+":class:`~omni.isaac.lab.utils.configclass` 模块，包含模拟参数，如 ``dt`` ， ``device`` 和"
+" ``gravity`` 。每个任务配置必须定义一个名为 ``sim`` 的变量，它包含类型 "
+":class:`~omni.isaac.lab.sim.SimulationCfg` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:59
 msgid ""
@@ -87,9 +87,7 @@ msgid ""
 "``contact_offset``, ``rest_offset``, ``bounce_threshold_velocity``, "
 "``max_depenetration_velocity`` can all be specified on a per-actor basis in "
 "the config class for each individual articulation and rigid body."
-msgstr ""
-"对于关节和刚性体的模拟参数，如 "
-"``num_position_iterations``、``num_velocity_iterations``、``contact_offset``、``rest_offset``、``bounce_threshold_velocity``、``max_depenetration_velocity``，都可以在每个独立关节和刚性体的配置类中指定。"
+msgstr "关节配置"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:63
 msgid ""
@@ -101,8 +99,10 @@ msgid ""
 ":class:`~omni.isaac.lab.sim.PhysxCfg` class provides access for setting the "
 "GPU buffer dimensions."
 msgstr ""
-"在GPU上运行模拟时，PhysX中的缓冲区需要进行预先分配，用于计算和存储接触、碰撞和聚合对等信息。这些缓冲区可能需要根据环境的复杂性、预期接触和碰撞的数量以及环境中的参与者数量进行调整。"
-" :class:`~omni.isaac.lab.sim.PhysxCfg` 类提供了访问设置GPU缓冲区尺寸的功能。"
+"同样地，每个个体关节和刚体的模拟参数，比如 ``num_position_iterations`` ， "
+"``num_velocity_iterations`` ， ``contact_offset`` ， ``rest_offset`` ， "
+"``bounce_threshold_velocity`` ， ``max_depenetration_velocity`` "
+"，都可以在每个单独个体的配置类中进行指定。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:116
 msgid ""
@@ -111,8 +111,8 @@ msgid ""
 "command line argument ``--enable_cameras`` that can be passed directly to "
 "the training script."
 msgstr ""
-"现在的参数，比如 ``add_ground_plane`` 和 ``add_distant_light``，都是在创建场景时的任务逻辑的一部分。 "
-"``enable_cameras`` 现在是一个命令行参数 ``--enable_cameras``，可以直接传递给训练脚本。"
+"更进一步，在GPU上运行模拟时，PhysX中的缓冲区需要预先分配，用于计算和存储信息，比如接触、碰撞和聚合对。这些缓冲区可能需要根据环境的复杂性、预期的接触和碰撞数量以及环境中的角色数量进行调整。"
+" :class:`~omni.isaac.lab.sim.PhysxCfg` 类提供了设置GPU缓冲区维度的访问。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:121
 msgid "Scene Config"
@@ -127,8 +127,8 @@ msgid ""
 ":class:`~omni.isaac.lab.scene.InteractiveSceneCfg`."
 msgstr ""
 ":class:`~omni.isaac.lab.scene.InteractiveSceneCfg` "
-"类可以指定与场景相关的参数，比如环境的数量和环境之间的间距。每个任务配置必须有一个名为 ``scene`` 的变量来定义一个类型为 "
-":class:`~omni.isaac.lab.scene.InteractiveSceneCfg` 的对象。"
+"类可用于指定与场景相关的参数，比如环境数量和环境之间的间距。每个任务配置必须定义一个名为 ``scene`` 的变量，其中包含类型 "
+":class:`~omni.isaac.lab.scene.InteractiveSceneCfg` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:138
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:473
@@ -141,13 +141,14 @@ msgid ""
 "specific parameters, such as the dimensions of the observation and action "
 "buffers. Reward term scaling parameters can also be specified in the config "
 "class."
-msgstr "每个环境都应该指定自己的配置类，其中包括特定任务的参数，比如观察和动作缓冲区的尺寸。还可以在配置类中指定奖励项的缩放参数。"
+msgstr "每个环境都应该指定自己的配置类，该类包含特定于任务的参数，比如观察和行动缓冲区的维度。奖励项缩放参数也可以在配置类中进行指定。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:143
 msgid ""
 "In Isaac Lab, the ``controlFrequencyInv`` parameter has been renamed to "
 "``decimation``, which must be specified as a parameter in the config class."
-msgstr "在Isaac Lab中，``controlFrequencyInv`` 参数被重命名为 ``decimation``，必须在配置类中指定。"
+msgstr ""
+"在Isaac Lab中， ``controlFrequencyInv`` 参数已更名为 ``decimation`` ，必须在配置类中作为参数进行指定。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:146
 msgid ""
@@ -157,16 +158,16 @@ msgid ""
 "decimation * num_steps``."
 msgstr ""
 "此外，最大的episode长度参数（现在是 ``episode_length_s`` "
-"）是以秒为单位，而不是像在OmniIsaacGymEnvs中的步数那样。要在步数和秒之间进行转换，使用以下公式 : ``episode_length_s"
-" = dt * decimation * num_steps`` 。"
+"）以秒为单位，而不是作为在OmniIsaacGymEnvs中的步数。要在步数和秒数之间转换，使用以下方程： ``episode_length_s = "
+"dt * decimation * num_steps`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:150
 msgid "The following parameters must be set for each environment config:"
-msgstr "每个环境配置都必须设置以下参数："
+msgstr "下面的参数必须为每个环境配置设置："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:162
 msgid "RL Config Setup"
-msgstr "强化学习配置设置"
+msgstr "RL配置设置"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:164
 msgid ""
@@ -177,9 +178,9 @@ msgid ""
 "relative paths such as ``${....device}`` with the actual values of the "
 "parameters."
 msgstr ""
-"在Isaac Lab中，rl_games库的配置文件仍然可以在 ``.yaml`` "
-"文件中定义。大部分配置文件的内容可以直接从OmniIsaacGymEnvs中复制过来。请注意，在Isaac "
-"Lab中，我们不使用hydra来解析配置文件中的相对路径。请用实际参数值替换任何相对路径，比如 ``${....device}`` 。"
+"RL游戏库的rl配置文件在Isaac Lab中可以继续使用 ``.yaml`` "
+"文件进行定义。配置文件的大部分内容可以直接从OmniIsaacGymEnvs中复制。请注意，在Isaac "
+"Lab中，我们不使用hydra来解析配置文件中的相对路径。请用参数的实际值替换任何相对路径，如 ``${....device}`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:169
 msgid ""
@@ -188,8 +189,8 @@ msgid ""
 "that were defined in the IsaacGymEnvs task config file, they should be moved"
 " to the RL config file in Isaac Lab."
 msgstr ""
-"此外，观察和动作的剪切范围已经移到了RL配置文件中。对于在IsaacGymEnvs任务配置文件中定义的任何 ``clipObservations`` 和"
-" ``clipActions`` 参数，现在应该将它们移动到Isaac Lab的RL配置文件中。"
+"此外，观察和行动裁剪范围已经移到RL配置文件中。对于在IsaacGymEnvs任务配置文件中定义的 ``clipObservations`` 和 "
+"``clipActions`` 参数，它们应该被移到Isaac Lab的RL配置文件中。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:175
 msgid "IsaacGymEnvs Task Config"
@@ -210,8 +211,8 @@ msgid ""
 "cloning the environment, filtering collisions, adding the ground plane and "
 "lights, and creating the ``View`` classes for the actors."
 msgstr ""
-"在OmniIsaacGymEnvs中，环境的创建通常在 "
-"``set_up_scene()``API中进行，这涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并为参与者创建 ``View`` 类。"
+"在OmniIsaacGymEnvs中，环境创建通常发生在 "
+"``set_up_scene()``API中，其中涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并创建角色的 ``View`` 类。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:193
 msgid ""
@@ -223,7 +224,7 @@ msgid ""
 "the scene setup process."
 msgstr ""
 "在Isaac Lab中，类似的功能在 ``_setup_scene()``API中执行。主要区别在于基类 ``_setup_scene()`` "
-"不再执行克隆环境和添加地面和光线的操作。相反，这些操作现在应该在各个任务的 ``_setup_scene`` 实现中实现，以提供更灵活的场景设置过程。"
+"不再执行克隆环境和添加地面和光线的操作。相反，现在这些操作应该在各个任务的 ``_setup_scene`` 实现中进行，以提供更灵活的场景设置过程。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:199
 msgid ""
@@ -233,9 +234,9 @@ msgid ""
 "actor. This avoids the need to separately define an ``ArticulationView`` or "
 "``RigidPrimView`` object for the actors."
 msgstr ""
-"还要注意，通过定义 ``Articulation`` 或 ``RigidObject`` 对象，将根据actor配置中的 ``spawn`` "
-"参数将actor添加到场景，并自动为actor创建 ``View`` 类。这避免了需要为actor单独定义 ``ArticulationView`` 或"
-" ``RigidPrimView`` 对象的需要。"
+"还要注意的是，通过定义 ``Articulation`` 或 ``RigidObject`` 对象，将根据角色配置中的 ``spawn`` "
+"参数将角色添加到场景中，并且 ``View`` 类将自动为角色创建。这样可以避免需要单独为角色定义 ``ArticulationView`` 或 "
+"``RigidPrimView`` 对象。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:206
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:332
@@ -272,18 +273,18 @@ msgstr "地面"
 msgid ""
 "In addition to the above example, more sophisticated ground planes can be "
 "defined using the :class:`~terrains.TerrainImporterCfg` class."
-msgstr "除了上面的例子之外，更复杂的地面可以使用 :class:`~terrains.TerrainImporterCfg` 类进行定义。"
+msgstr "除了以上示例外，还可以使用 :class:`~terrains.TerrainImporterCfg` 类定义更复杂的地面。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:247
 msgid ""
 "The terrain can then be added to the scene in ``_setup_scene(self)`` by "
 "referencing the ``TerrainImporterCfg`` object:"
 msgstr ""
-"然后，地形可以通过引用 ``TerrainImporterCfg`` 对象在 ``_setup_scene(self)`` 中添加到场景中："
+"然后，在 ``_setup_scene(self)`` 中，通过引用 ``TerrainImporterCfg`` 对象将地形添加到场景中："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:259
 msgid "Actors"
-msgstr "参与者"
+msgstr "角色"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:261
 msgid ""
@@ -292,9 +293,9 @@ msgid ""
 "used to define parameters for articulation actors, including file path, "
 "simulation parameters, actuator properties, and initial states."
 msgstr ""
-"在Isaac Lab中，每个关节和刚体actor可以有自己的配置类。 "
+"在Isaac Lab中，每个关节和刚体角色都可以有自己的配置类。 "
 ":class:`~omni.isaac.lab.assets.ArticulationCfg` "
-"类可用于定义关节actor的参数，包括文件路径、模拟参数、执行器属性和初始状态。"
+"类可用于定义关节角色的参数，包括文件路径、模拟参数、执行器属性和初始状态。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:305
 msgid ""
@@ -311,12 +312,13 @@ msgid ""
 " be grouped into regex expressions or provided as a list of names or "
 "expressions."
 msgstr ""
-"在 :class:`~assets.ArticulationCfg` 内部，``spawn`` "
-"属性可以用于通过指定机器人文件的路径将机器人添加到场景。此外，:class:`~omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg`"
-" "
-"类可用于为关节中的刚体指定模拟属性。同样，:class:`~omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg`"
-" 类可以用于为关节指定模拟属性。使用 "
-":class:`~actuators.ImplicitActuatorCfg`，相同属性的关节可以被分组到正则表达式中，或者提供一个名称或表达式列表。"
+"在 :class:`~assets.ArticulationCfg` 中， ``spawn`` "
+"属性可用于通过指定机器人文件的路径将机器人添加到场景中。此外， "
+":class:`~omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg` "
+"类可用于为关节中的刚体指定模拟属性。同样， "
+":class:`~omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg` "
+"类可用于指定关节的模拟属性。使用 :class:`~actuators.ImplicitActuatorCfg` ，关节属性现在作为 "
+"``actuators`` 字典的一部分进行指定。具有相同属性的关节可以被分组成正则表达式或提供为名称或表达式的列表。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:313
 msgid ""
@@ -328,11 +330,11 @@ msgid ""
 ":class:`~scene.InteractiveScene` can traverse through actors in the scene "
 "for writing values to the simulation and resetting."
 msgstr ""
-"通过简单调用 ``self.cartpole = Articulation(self.cfg.robot_cfg)`` 来将参与者添加到场景，其中 "
+"角色是通过简单地调用 ``self.cartpole = Articulation(self.cfg.robot_cfg)`` 进行添加到场景的，其中 "
 "``self.cfg.robot_cfg`` 是一个 :class:`~assets.ArticulationCfg` "
 "对象。初始化后，它们也应该被添加到 :class:`~scene.InteractiveScene` 中，通过调用 "
-"``self.scene.articulations[\"cartpole\"] = self.cartpole``，从而使 "
-":class:`~scene.InteractiveScene` 能够遍历场景中的actors，以便向模拟中写入值并进行重置。"
+"``self.scene.articulations[\"cartpole\"] = self.cartpole`` ，以便 "
+":class:`~scene.InteractiveScene` 可以遍历场景中的角色，以便向模拟写入值并进行重置。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:321
 msgid "Accessing States from Simulation"
@@ -351,14 +353,15 @@ msgid ""
 "OmniIsaacGymEnvs."
 msgstr ""
 "在Isaac Lab中，访问物理状态的API需要创建一个 :class:`~assets.Articulation` 或 "
-":class:`~assets.RigidObject` 对象。可以通过定义对应的 :class:`~assets.ArticulationCfg` 或"
-" :class:`~assets.RigidObjectCfg` 配置来初始化不同的关节或刚体对象。这取代了在OmniIsaacGymEnvs中使用的 "
+":class:`~assets.RigidObject` 对象。可以通过定义相应的 :class:`~assets.ArticulationCfg` 或"
+" :class:`~assets.RigidObjectCfg` "
+"配置来为场景中的不同关节或刚体初始化多个对象，就像在上面的部分中所述的。这取代了以前在OmniIsaacGymEnvs中使用的 "
 ":class:`~omni.isaac.core.articulations.ArticulationView` 和 "
 ":class:`omni.isaac.core.prims.RigidPrimView` 类。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:329
 msgid "However, functionality between the classes are similar:"
-msgstr "但是，这些类之间的功能是相似的 :"
+msgstr "然而，这些类之间的功能是类似的："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:340
 msgid ""
@@ -368,15 +371,15 @@ msgid ""
 "contain buffers that hold the states for the articulation and rigid objects "
 "and provide a more performant way of retrieving states from the actors."
 msgstr ""
-"在Isaac Lab中，:class:`~assets.Articulation` 和 :class:`~assets.RigidObject` "
-"类都有一个 ``data`` 类。data类（ :class:`~assets.ArticulationData` 和 "
-":class:`~assets.RigidObjectData` ）包含了保存关节和刚体状态的缓冲区，并提供了一种更高效的方式从actors中检索状态。"
+"在Isaac Lab中， :class:`~assets.Articulation` 和 :class:`~assets.RigidObject` "
+"类都有一个 ``data`` 类。数据类（ :class:`~assets.ArticulationData` 和 "
+":class:`~assets.RigidObjectData` ）包含用于保存关节和刚体状态的缓冲区，并提供了一种更高效的方式从角色获取状态。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:345
 msgid ""
 "Apart from some renamings of APIs, setting states for actors can also be "
 "performed similarly between OmniIsaacGymEnvs and Isaac Lab."
-msgstr "除了一些API的重命名，设置actors的状态也可以在OmniIsaacGymEnvs和Isaac Lab中类似地进行。"
+msgstr "除了一些API的重命名外，设置角色状态的功能在OmniIsaacGymEnvs和Isaac Lab之间也可以进行类似的操作。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:357
 msgid ""
@@ -385,19 +388,19 @@ msgid ""
 "``root_orientation``, ``root_linear_velocity`` and "
 "``root_angular_velocity``."
 msgstr ""
-"在Isaac Lab中，``root_pose`` 和 ``root_velocity`` 已经合并为单个缓冲区，不再分为 "
-"``root_position``、``root_orientation``、``root_linear_velocity`` 和 "
+"在Isaac Lab中， ``root_pose`` 和 ``root_velocity`` 已合并为单个缓冲区，并且不再分割为 "
+"``root_position`` ， ``root_orientation`` ， ``root_linear_velocity`` 和 "
 "``root_angular_velocity`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:367
 msgid "Creating a New Environment"
-msgstr "创建一个新的环境"
+msgstr "创建一个新环境"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:369
 msgid ""
 "Each environment in Isaac Lab should be in its own directory following this "
 "structure:"
-msgstr "Isaac Lab中的每个环境都应该按照以下结构放在自己的目录中 :"
+msgstr "Isaac Lab中的每个环境应该在自己的目录中，遵循以下结构："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:380
 msgid "``my_environment`` is the root directory of the task."
@@ -409,8 +412,7 @@ msgid ""
 "for the task. Isaac Lab supports multiple RL libraries that can each have "
 "its own individual config file."
 msgstr ""
-"``my_environment/agents`` 是包含任务的所有RL配置文件的目录。Isaac "
-"Lab支持多个RL库，每个库可以有自己独立的配置文件。"
+"``my_environment/agents`` 是包含任务的所有RL配置文件的目录。Isaac Lab支持多个RL库，每个库可以有自己的配置文件。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:383
 msgid ""
@@ -420,13 +422,13 @@ msgid ""
 "should be as follow:"
 msgstr ""
 "``my_environment/__init__.py`` "
-"是将环境注册到Gymnasium接口的主文件。这使得训练和推理脚本可以通过名称找到任务。此文件的内容应该如下 :"
+"是通过Gymnasium接口将环境注册到Gymnasium接口的主文件。这允许训练和推断脚本通过名称找到任务。此文件的内容应该是如下所示："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:408
 msgid ""
 "``my_environment/my_env.py`` is the main python script that implements the "
 "task logic and task config class for the environment."
-msgstr "``my_environment/my_env.py`` 是实现任务逻辑和环境的主要Python脚本。"
+msgstr "``my_environment/my_env.py`` 是实现任务逻辑和环境的任务配置类的主要python脚本。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:413
 msgid "Task Logic"
@@ -440,8 +442,8 @@ msgid ""
 "the ``__init__`` method after executing the base class's ``__init__``. At "
 "this point, simulation has already started."
 msgstr ""
-"在Isaac Lab中，不再需要 ``post_reset``API。以往在 ``post_reset`` 中所做的所有操作现在可以在执行基类的 "
-"``__init__`` 方法后的 ``__init__`` 方法中完成。此时，模拟已经开始。"
+"在Isaac Lab中，不再需要 ``post_reset``API。以前在 ``post_reset`` 中完成的所有操作都可以在执行基类的 "
+"``__init__`` 方法后在 ``__init__`` 方法中完成。此时，模拟已经开始。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:419
 msgid ""
@@ -455,10 +457,10 @@ msgid ""
 "``post_physics_step`` API is not required in the task. However, individual "
 "tasks can override the ``step()`` API to control the workflow."
 msgstr ""
-"在OmniIsaacGymEnvs中，由于GPU API的限制，重置不能根据当前步骤的状态进行。相反，重置必须在下一个时间步骤的开始时执行。在Isaac"
+"在OmniIsaacGymEnvs中，由于GPU API的限制，不能根据当前步骤的状态进行重置。所以，重置必须在下一个时间步骤的开始时执行。在Isaac"
 " "
-"Lab中，这个限制已经被取消，因此任务遵循应用动作、模拟步进、收集状态、计算done、计算奖励、执行重置和最终计算观察结的正确工作流程。这个工作流程是由框架自动完成的，因此任务不需要"
-" ``post_physics_step``API。但是，每个任务都可以覆盖 ``step()``API以控制工作流程。"
+"Lab中，这个限制被消除了，因此这些任务可以按照正确的工作流程进行操作，包括应用动作、模拟步进、收集状态、计算完成标志、计算奖励、执行重置，最后计算观察。这个工作流程可以被框架自动执行，因此任务不需要"
+" ``post_physics_step``API。但是，各个任务可以覆盖 ``step()``API以控制工作流程。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:426
 msgid ""
@@ -470,10 +472,10 @@ msgid ""
 " simulation. The ``apply_actions`` method will be called ``decimation`` "
 "number of times for each RL step, once before each simulation step call."
 msgstr ""
-"在Isaac实验室中，我们还将 ``pre_physics_step`` API与 ``apply_action`` "
-"API分开处理，前者用于处理来自策略的动作，后者则将动作设置到模拟过程中。这样可以更灵活地控制在何时使用 ``decimation`` "
-"时将动作写入模拟过程中。在每一步之前，``pre_physics_step`` 方法都将被调用一次。而 ``apply_actions`` "
-"方法将在每个RL步骤之前调用 ``decimation`` 次，即在每次模拟调用之前调用一次。"
+"在 Isaac Lab 中，我们还将 ``pre_physics_step`` API 与 ``apply_action`` API "
+"分开，用于处理来自策略的动作，后者将动作设置到仿真中。这样可以更灵活地控制在使用 ``decimation`` 时何时将动作写入仿真。 "
+"``pre_physics_step`` 方法将在每个步骤之前调用一次，在仿真步骤之前。 ``apply_actions`` 方法将在每个 RL "
+"步骤中调用 ``decimation`` 次，即在每个仿真步骤调用之前各一次。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:433
 msgid "The ordering of the calls are as follow:"
@@ -484,11 +486,11 @@ msgid ""
 "With this approach, resets are performed based on actions from the current "
 "step instead of the previous step. Observations will also be computed with "
 "the correct states after resets."
-msgstr "采用这种方法，重置是根据当前步骤的动作而不是上一步来执行的。重置之后还可以根据正确的状态计算观察值。"
+msgstr "通过这种方法，重置是基于当前步骤的动作而不是上一个步骤执行的。观察还将根据重置后的正确状态进行计算。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:454
 msgid "We have also performed some renamings of APIs:"
-msgstr "我们还对API进行了一些重命名："
+msgstr "我们还进行了一些API的重命名："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:456
 msgid "``set_up_scene(self, scene)`` --> ``_setup_scene(self)``"
@@ -504,7 +506,7 @@ msgid ""
 " and ``_apply_action(self)``"
 msgstr ""
 "``pre_physics_step(self, actions)`` --> ``_pre_physics_step(self, actions)``"
-" and ``_apply_action(self)``"
+" 和 ``_apply_action(self)``"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:459
 msgid "``reset_idx(self, env_ids)`` --> ``_reset_idx(self, env_ids)``"
@@ -531,25 +533,25 @@ msgid ""
 "``is_done(self)`` --> ``_get_dones(self)`` - ``_get_dones()`` should now "
 "return 2 buffers: ``reset`` and ``time_out`` buffers"
 msgstr ""
-"``is_done(self)`` --> ``_get_dones(self)`` - ``_get_dones()`` "
-"现在应该返回两个缓冲区：``reset`` 和 ``time_out`` 缓冲区"
+"``is_done(self)`` --> ``_get_dones(self)`` - 现在 ``_get_dones()`` 应该返回 2 "
+"个缓冲区： ``reset`` 和 ``time_out`` 缓冲区"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:467
 msgid "Putting It All Together"
-msgstr "将所有内容整合在一起"
+msgstr "将所有内容组合在一起"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:469
 msgid ""
 "The Cartpole environment is shown here in completion to fully show the "
 "comparison between the OmniIsaacGymEnvs implementation and the Isaac Lab "
 "implementation."
-msgstr "Cartpole环境在此处已经完全展示，以充分展示OmniIsaacGymEnvs实现和Isaac Lab实现之间的比较。"
+msgstr "Cartpole 环境在这里被完整展示，以充分展示 OmniIsaacGymEnvs 实现和 Isaac Lab 实现之间的比较。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:475
 msgid ""
 "Task config in Isaac Lab can be split into the main task configuration class"
 " and individual config objects for the actors."
-msgstr "Isaac Lab中的任务配置可以分为主任务配置类和用于执行者的单独配置对象。"
+msgstr "在 Isaac Lab 中，任务配置可以分为主要任务配置类和用于演员的单独配置对象。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:562
 msgid "Task Setup"
@@ -569,9 +571,10 @@ msgid ""
 "has been replaced by ``self.scene.articulations[\"cartpole\"] = "
 "self.cartpole``."
 msgstr ""
-"在OmniIsaacGymEnvs中的 ``set_up_scene`` 方法已经被Isaac Lab的任务类中的 "
-"``_setup_scene``API所取代。此外，场景克隆和碰撞筛选已经作为任务类调用的API提供。同样地，添加地平面和光源也应该由任务类负责。将演员添加到场景已经被"
-" ``self.scene.articulations[\"cartpole\"] = self.cartpole`` 取代。"
+"在 OmniIsaacGymEnvs 中， ``set_up_scene`` 方法已被 Isaac Lab 中任务类中的 "
+"``_setup_scene`` API 替换。此外，还提供了场景克隆和碰撞过滤作为任务类在必要时调用的 "
+"API。同样，添加地平面和光源也应在任务类中处理。向场景添加演员已被替换为 "
+"``self.scene.articulations[\"cartpole\"] = self.cartpole`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:654
 msgid "Pre-Physics Step"
@@ -584,16 +587,16 @@ msgid ""
 " methods allow for more flexibility in processing the action buffer and "
 "setting actions into simulation."
 msgstr ""
-"请注意，重置现在不再在 ``pre_physics_step`` API中执行。此外，``_pre_physics_step`` 和 "
-"``_apply_action`` 方法的分离允许在处理动作缓冲区和将动作设置到模拟中更灵活。"
+"请注意，重置不再在 ``pre_physics_step`` API 中执行。此外， ``_pre_physics_step`` 和 "
+"``_apply_action`` 方法的分离允许更灵活地处理动作缓冲区并将动作设置到仿真中。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:661
 msgid "IsaacLab"
-msgstr "Isaac Lab"
+msgstr "IsaacLab"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:690
 msgid "Dones and Resets"
-msgstr "重置与完成"
+msgstr "完成和重置"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:692
 msgid ""
@@ -605,11 +608,10 @@ msgid ""
 "now done automatically by the framework. Task implementations no longer need"
 " to increment or reset the ``episode_length_buf`` buffer."
 msgstr ""
-"在Isaac实验室中，``dones`` 是在 ``_get_dones()`` 方法中计算的，并应返回两个变量：``resets`` 和 "
-"``time_out`` 。 ``_reset_idx()`` 方法也是在模拟后调用的，而不是像在OmniIsaacGymEnvs中那样是在之前。 "
-"``progress_buf`` 张量在Isaac实验室中已被重命名为 "
-"``episode_length_buf``，并且现在由框架自动完成簿记。任务实现不再需要增加或重置 ``episode_length_buf`` "
-"缓冲区。"
+"在 Isaac Lab 中， ``dones`` 是在 ``_get_dones()`` 方法中计算的，应该返回两个变量： ``resets`` 和 "
+"``time_out`` 。 ``_reset_idx()`` 方法也在仿真后而不是在 OmniIsaacGymEnvs 中之前调用。 "
+"``progress_buf`` 张量在 Isaac Lab 中已更名为 ``episode_length_buf`` "
+"，框架现在会自动处理记录。任务实现不再需要递增或重置 ``episode_length_buf`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:749
 msgid "Rewards"
@@ -623,8 +625,9 @@ msgid ""
 "using pytorch jit through defining functions with the ``@torch.jit.script`` "
 "annotation."
 msgstr ""
-"在Isaac实验室中，奖励是在 ``_get_rewards`` API中实现的，应该返回奖励缓冲区，而不是直接分配给 ``self.rew_buf``"
-" 。奖励功能还可以通过定义带有 ``@torch.jit.script`` 注释的函数来使用pytorch jit进行计算。"
+"在 Isaac Lab 中，奖励是在 ``_get_rewards`` API 中实现的，应该返回奖励缓冲区，而不是直接赋值给 "
+"``self.rew_buf`` 。还可以使用 PyTorch jit 通过定义带有 ``@torch.jit.script`` "
+"注释的函数来执行奖励函数的计算。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:803
 msgid "Observations"
@@ -638,13 +641,12 @@ msgid ""
 "should have the key ``critic`` and be returned with the observation buffer "
 "in the same dictionary."
 msgstr ""
-"在Isaac实验室中，``_get_observations()`` API必须返回一个字典，其键为 "
-"``policy``，值为观察缓冲区。当与不对称演员-评论者状态一起使用时，评论者的状态应具有键 "
-"``critic``，并与观察缓冲区一起返回到同一个字典中。"
+"在 Isaac Lab 中， ``_get_observations()`` API 必须返回一个带有键 ``policy`` "
+"且值为观察缓冲区的字典。当使用非对称的演员-评论者状态时，评论者的状态应该有键 ``critic`` ，并与观察缓冲区一起返回在同一个字典中。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:834
 msgid "Domain Randomization"
-msgstr "域随机化"
+msgstr "领域随机化"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:836
 msgid ""
@@ -653,13 +655,13 @@ msgid ""
 "uses the :class:`~omni.isaac.lab.utils.configclass` module to specify a "
 "configuration class consisting of :class:`~managers.EventTermCfg` variables."
 msgstr ""
-"在OmniIsaacGymEnvs中，域随机化是通过任务 ``.yaml`` 配置文件指定的。在Isaac实验室中，域随机化配置使用 "
+"在 OmniIsaacGymEnvs 中，域随机化是通过任务的 ``.yaml`` 配置文件指定的。而在 Isaac Lab 中，域随机化配置使用 "
 ":class:`~omni.isaac.lab.utils.configclass` 模块来指定一个由 "
 ":class:`~managers.EventTermCfg` 变量组成的配置类。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:840
 msgid "Below is an example of a configuration class for domain randomization:"
-msgstr "以下是域随机化的配置类示例："
+msgstr "以下是一个领域随机化的配置类示例："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:880
 msgid ""
@@ -671,9 +673,9 @@ msgid ""
 "Functions specified as ``func`` for the ``EventTerm`` can be found in the "
 ":class:`~envs.mdp.events` module."
 msgstr ""
-"每个 ``EventTerm`` 对象都是 :class:`~managers.EventTermCfg` 类的对象，接受一个 ``func`` "
-"参数来指定随机化时调用的函数，一个 ``mode`` 参数，可以是 ``startup``、``reset`` 或 ``interval`` 。 "
-"``params`` 字典应该提供函数所需的参数。作为 ``EventTerm`` 的 ``func`` 指定的函数可以在 "
+"每个 ``EventTerm`` 对象都是 :class:`~managers.EventTermCfg` 类的实例，并使用 ``func`` "
+"参数来指定在随机化期间调用的函数，使用 ``mode`` 参数来指定 ``startup``、``reset`` 或 ``interval`` 。 "
+"``params`` 字典应提供给函数的必要参数，这些函数作为 ``EventTerm`` 的 ``func`` 参数在 "
 ":class:`~envs.mdp.events` 模块中找到。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:886
@@ -684,8 +686,8 @@ msgid ""
 "expression, which will be the actors and bodies/joints that will have "
 "randomization applied."
 msgstr ""
-"注意，作为 ``\"asset_cfg\"：SceneEntityCfg(\"robot\", body_names=\".*\")`` "
-"参数的一部分，``robot`` 角色的名称已经提供，以及作为正则表达式指定的身体或关节名称，这些将是将随机应用到的角色和身体/关节。"
+"请注意，在 ``\"asset_cfg\": SceneEntityCfg(\"robot\", body_names=\".*\")`` "
+"参数中，提供了演员 ``\"robot\"`` 的名称，以及作为正则表达式表达的主体或关节名称，这些将是将随机化应用于的演员和主体/关节。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:890
 msgid ""
@@ -697,9 +699,9 @@ msgid ""
 "randomization will occur for the term. To convert between steps to seconds, "
 "use the equation ``time_s = num_steps * (decimation * dt)``."
 msgstr ""
-"与OmniIsaacGymEnvs不同的一点是，``interval`` 随机化现在指定为秒而不是步数。当 ``mode=\"interval\"`` "
-"时，还必须提供 ``interval_range_s`` "
-"参数，该参数指定应该应用随机化的秒数范围。然后将对这个范围进行随机化，以确定术语的具体时间点。要在步数和秒之间转化，请使用方程 ``time_s = "
+"与 OmniIsaacGymEnvs 的一个区别是，现在 ``interval`` 随机化是以秒而不是步数指定的。当 "
+"``mode=\"interval\"`` 时，还必须提供 ``interval_range_s`` "
+"参数，该参数指定应用随机化的秒数范围。然后将随机选择此范围，以确定下一个术语的特定时间。要将步长转换为秒，请使用等式 ``time_s = "
 "num_steps * (decimation * dt)`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:896
@@ -713,14 +715,16 @@ msgid ""
 "up the scene in a way where each environment holds the actor at a different "
 "scale."
 msgstr ""
-"与OmniIsaacGymEnvs一样，用于随机化构造性属性的随机化API现在可用，如关节刚度和阻尼、关节限制、刚性体材料、固定肌腱属性以及刚性体属性，比如质量和刚性体材料。还支持对物理场景重力进行随机化。需要注意的是，Isaac实验室目前不支持比例的随机化。要随机化比例，请以每个环境在不同比例下持有演员的方式设置场景。"
+"与 OmniIsaacGymEnvs 类似，随机化 API "
+"可用于随机化关节刚度和阻尼、关节限制、刚体材料、固定肌腱属性以及质量和刚体材料等刚体属性。物理场景重力的随机化也受支持。请注意，Isaac Lab "
+"目前不支持缩放的随机化。要随机化缩放，请以每个环境持有演员在不同尺度的方式设置场景。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:903
 msgid ""
 "Once the ``configclass`` for the randomization terms have been set up, the "
 "class must be added to the base config class for the task and be assigned to"
 " the variable ``events``."
-msgstr "一旦随机化术语的 ``configclass`` 设置完成，该类必须被添加到任务的基本配置类中，并分配给变量 ``events`` 。"
+msgstr "一旦设置了随机化术语的 ``configclass`` 类，该类必须添加到任务的基本配置类中，并分配给变量 ``events`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:914
 msgid "Action and Observation Noise"
@@ -733,8 +737,8 @@ msgid ""
 "must be added to the main task config using the ``action_noise_model`` and "
 "``observation_noise_model`` variables:"
 msgstr ""
-"还可以使用 :class:`~utils.configclass` 模块添加动作和观测噪声。必须使用 ``action_noise_model`` 和 "
-"``observation_noise_model`` 变量将动作和观测噪声配置添加到主任务配置中："
+"使用 :class:`~utils.configclass` 模块也可以添加动作和观察噪声。必须将动作和观察噪声配置添加到主要任务配置中，使用 "
+"``action_noise_model`` 和 ``observation_noise_model`` 变量："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:936
 msgid ""
@@ -750,13 +754,13 @@ msgid ""
 "reset."
 msgstr ""
 ":class:`~.utils.noise.NoiseModelWithAdditiveBiasCfg` "
-"可以用于对每步采样不相关的噪声以及在重置时重新采样相关噪声。 ``noise_cfg`` "
-"项指定了将在每步对所有环境进行采样的高斯分布。此噪声将被添加到相应的动作和观察值缓冲区中的每一步。 ``bias_noise_cfg`` "
-"项指定了在被重置的环境中在重置时间进行重新采样的相关噪声的高斯分布。相同噪声将在剩余的情节中的每一步被应用，并在下一次重置时被重新采样。"
+"可以用于每个步骤产生不相关的噪声，以及在重置时重新采样的相关噪声。 ``noise_cfg`` "
+"术语指定将在每个步骤为所有环境采样的高斯分布。此噪声将在每一步添加到相应的动作和观察缓冲区中。 ``bias_noise_cfg`` "
+"术语指定在被重置的环境的重置时间采样的相关噪声的高斯分布。相同的噪声将在剩余的剧集每一步应用，并在下一次重置时重新采样。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:946
 msgid "This replaces the following setup in OmniIsaacGymEnvs:"
-msgstr "这取代了OmniIsaacGymEnvs中的以下设置："
+msgstr "这取代了 OmniIsaacGymEnvs 中的以下设置："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:976
 msgid "Launching Training"
@@ -764,7 +768,7 @@ msgstr "启动训练"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:978
 msgid "To launch a training in Isaac Lab, use the command:"
-msgstr "要在Isaac实验室中启动训练，请使用以下命令："
+msgstr "要在 Isaac Lab 中启动训练，使用该命令："
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:985
 msgid "Launching Inferencing"
@@ -772,4 +776,4 @@ msgstr "启动推理"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:987
 msgid "To launch inferencing in Isaac Lab, use the command:"
-msgstr "要在Isaac实验室中启动推理，请使用以下命令："
+msgstr "要在 Isaac Lab 中启动推理，使用该命令："

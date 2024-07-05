@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"POT-Creation-Date: 2024-07-05 06:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:2
 msgid "Training with an RL Agent"
-msgstr "使用RL代理进行训练"
+msgstr "与 RL Agent 进行训练"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:6
 msgid ""
@@ -30,7 +30,8 @@ msgid ""
 "agent. We now move on to the next step: training an RL agent to solve the "
 "task."
 msgstr ""
-"在之前的教程中，我们介绍了如何定义一个RL任务环境，将其注册到 ``gym`` 注册表中，并使用随机代理与其进行交互。现在我们继续进行下一步：训练一个RL代理来解决这个任务。"
+"在之前的教程中，我们介绍了如何定义一个 RL 任务环境、将其注册到 ``gym`` 注册表中，并使用一个随机 agent "
+"与其交互。现在我们继续进行下一步：训练一个 RL agent 来解决这个任务。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:10
 msgid ""
@@ -40,8 +41,8 @@ msgid ""
 "based on torch tensors with the first dimension being the number of "
 "environment instances."
 msgstr ""
-"尽管 :class:`envs.ManagerBasedRLEnv` 符合 :class:`gymnasium.Env` 接口，但它并不是一个 "
-"``gym`` 环境。环境的输入和输出不是 numpy 数组，而是基于 torch 张量，其中第一个维度是环境实例的数量。"
+"尽管 :class:`envs.ManagerBasedRLEnv` 符合 :class:`gymnasium.Env` 接口，但它并不完全是一个 "
+"``gym`` 环境。环境的输入和输出不是 numpy 数组，而是基于torch tensors，其中第一个维度是环境实例的数量。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:15
 msgid ""
@@ -55,17 +56,17 @@ msgid ""
 "expected interface. These are specified in the "
 ":mod:`omni.isaac.lab_tasks.utils.wrappers` module."
 msgstr ""
-"此外，大多数RL库都希望环境遵循它们自己的环境接口的变体。例如，`Stable-Baselines3`_ 期望环境符合其 `VecEnv "
-"API`_，该接口期望一个 numpy 数组列表而不是单个张量。类似地，`RSL-RL`_、`RL-Games`_ 和 `SKRL`_ "
-"也期望一个不同的接口。由于没有一劳永逸的解决方案，我们不以任何特定的学习库为基础来构建 "
-":class:`envs.ManagerBasedRLEnv` 。相反，我们实现了包装器来将环境转换为所期望的接口。这些包装器在 "
+"此外，大多数 RL 库都期望其自己的环境接口变体。例如， `Stable-Baselines3`_ 期望环境符合其 `VecEnv API`_ ，该 "
+"API 期望接收一个 numpy 数组列表而不是一个单一的张量。类似地， `RSL-RL`、`RL-Games` 和 `SKRL` "
+"也预期另一个接口。由于没有一种适合所有情况的解决方案，我们不将 :class:`envs.ManagerBasedRLEnv` "
+"基于任何特定的学习库。相反，我们实现了包装器来将环境转换为所期望的接口。这些包装器在 "
 ":mod:`omni.isaac.lab_tasks.utils.wrappers` 模块中指定。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:23
 msgid ""
 "In this tutorial, we will use `Stable-Baselines3`_ to train an RL agent to "
 "solve the cartpole balancing task."
-msgstr "在本教程中，我们将使用 `Stable-Baselines3`_ 来训练一个RL代理以解决平衡倒立摆任务。"
+msgstr "在本教程中，我们将使用 `Stable-Baselines3`_ 来训练一个 RL agent 来解决 cartpole 平衡任务。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:28
 msgid ""
@@ -75,8 +76,8 @@ msgid ""
 " of environment's APIs which may no longer be compatible with "
 ":class:`gymnasium.Env`."
 msgstr ""
-"使用相应学习框架的包装器包装环境应该发生在最后，即在应用所有其他包装器之后。这是因为学习框架的包装器修改了环境API的解释，可能不再兼容 "
-":class:`gymnasium.Env` 。"
+"在最后，使用所对应的学习框架的包装器对环境进行包装。这是因为学习框架的包装器修改了环境 API 的解释，这可能不再与 "
+":class:`gymnasium.Env` 兼容。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:33
 msgid "The Code"
@@ -87,16 +88,16 @@ msgid ""
 "For this tutorial, we use the training script from `Stable-Baselines3`_ "
 "workflow in the ``source/standalone/workflows/sb3`` directory."
 msgstr ""
-"在本教程中，我们使用来自 `Stable-"
-"Baselines3`_ 工作流中的训练脚本，位于 ``source/standalone/workflows/sb3`` 目录中。"
+"在本教程中，我们使用 ``source/standalone/workflows/sb3`` 目录中的 `Stable-Baselines3`_ "
+"workflow 的训练脚本。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst
 msgid "Code for train.py"
-msgstr "train.py的代码"
+msgstr "train.py 代码"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:47
 msgid "The Code Explained"
-msgstr "代码的解释"
+msgstr "代码解释"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:51
 msgid ""
@@ -105,8 +106,8 @@ msgid ""
 " components. For this tutorial, the important part is creating the "
 "environment and wrapping it with the Stable-Baselines3 wrapper."
 msgstr ""
-"以上大部分代码是用来创建日志目录、保存解析的配置以及设置不同的Stable-"
-"Baselines3组件的样板代码。对于本教程而言，重要的部分是创建环境并使用Stable-Baselines3包装器对其进行包装。"
+"上面的大部分代码是创建日志目录、保存解析的配置和设置不同的 Stable-Baselines3 组件的样板代码。对于本教程，重要的部分是创建环境并使用 "
+"Stable-Baselines3 包装器对其进行包装。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:55
 msgid "There are three wrappers used in the code above:"
@@ -118,20 +119,23 @@ msgid ""
 " environment and saves it to the specified directory. This is useful for "
 "visualizing the agent's behavior during training."
 msgstr ""
-":class:`gymnasium.wrappers.RecordVideo`：此包装器记录环境的视频并将其保存到指定目录。这对于在训练过程中可视化代理的行为非常有用。"
+":class:`~gymnasium.wrappers.RecordVideo`: "
+"这个包装器记录环境的视频并将其保存到指定目录。这对于在训练过程中可视化 agent 的行为非常有用。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:60
 msgid ""
 ":class:`wrappers.sb3.Sb3VecEnvWrapper`: This wrapper converts the "
 "environment into a Stable-Baselines3 compatible environment."
 msgstr ""
-":class:`wrappers.sb3.Sb3VecEnvWrapper`：此包装器将环境转换为与Stable-Baselines3兼容的环境。"
+":class:`~wrappers.sb3.Sb3VecEnvWrapper`: 这个包装器将环境转换为 Stable-Baselines3 "
+"兼容的环境。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:62
 msgid ""
 "`stable_baselines3.common.vec_env.VecNormalize`_: This wrapper normalizes "
 "the environment's observations and rewards."
-msgstr "`stable_baselines3.common.vec_env.VecNormalize`_：此包装器对环境的观测和奖励进行归一化。"
+msgstr ""
+"`stable_baselines3.common.vec_env.VecNormalize`_: 这个包装器对环境的观察和奖励进行标准化。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:65
 msgid ""
@@ -140,8 +144,9 @@ msgid ""
 "used to train the agent. For more information on how these wrappers work, "
 "please refer to the :ref:`how-to-env-wrappers` documentation."
 msgstr ""
-"这些包装器都是通过不断执行 ``env = wrapper(env, *args, **kwargs)`` "
-"来包装在前一个包装器周围的。然后使用最终环境来训练代理。有关这些包装器的更多信息，请参考 :ref:`how-to-env-wrappers` 文档。"
+"这些包装器中的每一个都通过反复执行 ``env = wrapper(env, *args, **kwargs)`` "
+"来包装前一个包装器。然后使用最终的环境来训练 agent。有关这些包装器如何工作的更多信息，请参考 :ref:`how-to-env-wrappers`"
+" 文档。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:70
 msgid "The Code Execution"
@@ -151,22 +156,22 @@ msgstr "代码执行"
 msgid ""
 "We train a PPO agent from Stable-Baselines3 to solve the cartpole balancing "
 "task."
-msgstr "我们使用来自Stable-Baselines3的PPO代理来解决平衡倒立摆任务。"
+msgstr "我们训练一个从 Stable-Baselines3 学习的 PPO agent 来解决 cartpole 平衡任务。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:75
 msgid "Training the agent"
-msgstr "训练代理"
+msgstr "训练 agent"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:77
 msgid ""
 "There are three main ways to train the agent. Each of them has their own "
 "advantages and disadvantages. It is up to you to decide which one you prefer"
 " based on your use case."
-msgstr "训练代理有三种主要方式。每种方式都有其自身的优点和缺点。根据您的用例，您可以决定哪种方式更适合您。"
+msgstr "训练 agent 有三种主要方法。每种方法都有其自己的优点和缺点。根据您的用例，您可以决定使用哪种方法。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:81
 msgid "Headless execution"
-msgstr "无头执行"
+msgstr "无界面执行"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:83
 msgid ""
@@ -175,11 +180,12 @@ msgid ""
 " want to see the simulation. Typically, it speeds up the training process "
 "since only physics simulation step is performed."
 msgstr ""
-"如果设置了 ``--headless`` 标志，则在训练过程中不会呈现模拟。这在在远程服务器上进行训练或者不想查看模拟时非常有用。通常情况下，这可以加快训练过程，因为只执行物理模拟步骤。"
+"如果设置了 ``--headless`` "
+"标志，则在训练过程中不会呈现模拟。当在远程服务器上进行训练或者不想看到模拟时，这很有用。通常情况下，此操作会加快训练过程，因为只执行物理模拟步骤。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:93
 msgid "Headless execution with off-screen render"
-msgstr "带离屏渲染的无头执行"
+msgstr "无界面执行与离屏渲染"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:95
 msgid ""
@@ -189,15 +195,15 @@ msgid ""
 "rendering. Additionally, we pass the flag ``--video`` which records a video "
 "of the agent's behavior during training."
 msgstr ""
-"由于上述命令不会呈现模拟，因此无法在训练过程中可视化代理的行为。为了可视化代理的行为，我们传递 ``--enable_cameras`` "
-"以启用离屏渲染。此外，我们传递标志 ``--video``，该标志记录代理在训练过程中的行为视频。"
+"由于上述命令不会呈现模拟，所以无法在训练过程中看到 agent 的行为。要可视化 agent 的行为，我们传递 ``--enable_cameras``"
+" ，这会启用离屏渲染。此外，我们传递标志 ``--video`` ，这会记录 agent 在训练期间的行为视频。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:104
 msgid ""
 "The videos are saved to the ``logs/sb3/Isaac-Cartpole-v0/<run-dir>/videos`` "
 "directory. You can open these videos using any video player."
 msgstr ""
-"这些视频将保存在 ``logs/sb3/Isaac-Cartpole-v0/<run-dir>/videos`` "
+"视频保存在 ``logs/sb3/Isaac-Cartpole-v0/<run-dir>/videos`` "
 "目录中。您可以使用任何视频播放器打开这些视频。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:108
@@ -211,8 +217,8 @@ msgid ""
 "case, you can ignore the ``--headless`` flag and run the training script as "
 "follows:"
 msgstr ""
-"虽然以上两种方法对于训练代理非常有用，但它们不允许您与模拟进行交互以查看发生了什么。在这种情况下，您可以忽略 ``--headless`` "
-"标志，并按照以下方式运行训练脚本："
+"虽然上述两种方法对于训练 agent 很有用，但不能让您与模拟进行交互以查看发生了什么。在这种情况下，您可以忽略 ``--headless`` "
+"标志并按如下方式运行训练脚本："
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:120
 msgid ""
@@ -224,9 +230,9 @@ msgid ""
 "render modes, please check the :class:`sim.SimulationContext.RenderMode` "
 "class."
 msgstr ""
-"这将打开Isaac "
-"Sim窗口，您可以在环境中看到代理的训练过程。但是，这将减慢训练过程，因为模拟是在屏幕上呈现的。作为解决方法，您可以在屏幕右下角停靠的 ``\"Isaac"
-" Lab\"`` 窗口中在不同的渲染模式之间切换。要了解更多有关这些渲染模式的信息，请查阅 "
+"这将打开 Isaac Sim 窗口，您可以看到 agent "
+"在环境中进行训练。然而，这会减慢训练过程，因为模拟会在屏幕上呈现。作为变通方法，您可以在屏幕右下角停靠的 ``\"Isaac Lab\"`` "
+"窗口中在不同的渲染模式之间切换。要了解更多有关这些渲染模式的信息，请查看 "
 ":class:`sim.SimulationContext.RenderMode` 类。"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:127
@@ -237,17 +243,17 @@ msgstr "查看日志"
 msgid ""
 "On a separate terminal, you can monitor the training progress by executing "
 "the following command:"
-msgstr "在单独的终端上，您可以通过执行以下命令来监视训练进度："
+msgstr "在单独的终端中，您可以通过执行以下命令监视训练进度："
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:137
 msgid "Playing the trained agent"
-msgstr "播放训练代理"
+msgstr "播放经过训练的 agent"
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:139
 msgid ""
 "Once the training is complete, you can visualize the trained agent by "
 "executing the following command:"
-msgstr "一旦训练完成，您可以通过执行以下命令来查看经过训练的代理："
+msgstr "一旦训练完成，您可以通过执行以下命令来可视化经过训练的 agent："
 
 #: ../../source/tutorials/03_envs/run_rl_training.rst:146
 msgid ""
@@ -255,5 +261,5 @@ msgid ""
 "Cartpole-v0`` directory. You can also specify a specific checkpoint by "
 "passing the ``--checkpoint`` flag."
 msgstr ""
-"上述命令将从 ``logs/sb3/Isaac-"
-"Cartpole-v0`` 目录中加载最新的检查点。您也可以通过传递 ``--checkpoint`` 标志来指定特定的检查点。"
+"上述命令将从 ``logs/sb3/Isaac-Cartpole-v0`` 目录加载最新的检查点。您也可以通过传递 ``--checkpoint`` "
+"标志指定特定的检查点。"

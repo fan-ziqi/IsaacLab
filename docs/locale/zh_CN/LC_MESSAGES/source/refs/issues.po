@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"POT-Creation-Date: 2024-07-05 06:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -27,11 +27,11 @@ msgstr "已知问题"
 msgid ""
 "Please also refer to the `Omniverse Isaac Sim documentation`_ for known "
 "issues and workarounds."
-msgstr "请参阅 `Omniverse Isaac Sim documentation`_ 以了解已知问题和解决方法。"
+msgstr "请参阅 `Omniverse Isaac Sim documentation`_ 以查看已知问题和解决方法。"
 
 #: ../../source/refs/issues.rst:9
 msgid "Stale values after resetting the environment"
-msgstr "重置环境后出现陈旧值"
+msgstr "重置环境后数据值变旧"
 
 #: ../../source/refs/issues.rst:11
 msgid ""
@@ -41,7 +41,8 @@ msgid ""
 "clouds. This is a known issue which has to do with the way the PhysX and "
 "rendering engines work in Omniverse."
 msgstr ""
-"重置环境时，一些资产和传感器的数据字段未得到更新。这些包括运动链中链接的姿势、摄像机影像、接触传感器读数和激光雷达点云。这是一个已知问题，与Omniverse中PhysX和渲染引擎的工作方式有关。"
+"重置环境时，某些资产和传感器的数据字段未更新。这些包括关节链中链接的姿势、摄像头图像、接触传感器读数和激光雷达点云。这是一个已知问题，与 "
+"Omniverse 中 PhysX 和渲染引擎的工作方式有关。"
 
 #: ../../source/refs/issues.rst:16
 msgid ""
@@ -54,7 +55,9 @@ msgid ""
 "forward call to update the kinematic states of links. This affects both "
 "initialization as well as episodic resets."
 msgstr ""
-"许多物理引擎进行模拟步骤作为一个双级调用：``forward()`` 和 ``simulate()``，分别更新运动和动态状态。不幸的是，PhysX只有一个 ``step()`` 调用，这两个操作被合并在一起。由于通过GPU内核进行计算，对于他们来说拆分这些操作并不那么直接。因此，目前无法设置根和/或关节状态，并进行前向调用以更新链接的运动状态。这既影响初始化，也影响片段重置。"
+"许多物理引擎将模拟步骤作为两级调用处理：“forward()”和“simulate()”，分别更新关节链中的运动学和动态状态。不幸的是，PhysX "
+"只有一个“step()”调用，其中两个操作合并起来。由于通过 GPU "
+"内核计算，它们无法简单地将这些操作拆分开来。因此，目前无法设置根和/或关节状态并进行向前调用以更新链接的运动学状态。这既影响初始化，也影响周期性重置。"
 
 #: ../../source/refs/issues.rst:23
 msgid ""
@@ -65,7 +68,8 @@ msgid ""
 "that the sensor data is not updated immediately after a reset and it will "
 "hold outdated values."
 msgstr ""
-"对于RTX渲染相关的传感器（如摄像头），在设置传感器状态后传感器数据并不会立即更新。渲染引擎的更新会打包到模拟器的 ``step()`` 调用中，只有在模拟向前进行的时候才会进行。这意味着传感器数据在重置后不会立即更新，并且会保留过时的值。"
+"对于与 RTX "
+"渲染相关的传感器（如摄像头），在设置传感器状态后，传感器数据不会立即更新。渲染引擎更新与模拟器的“step()”调用捆绑在一起，仅在模拟向前步进时才会调用。这意味着传感器数据在重置后不会立即更新，它将保留过时的值。"
 
 #: ../../source/refs/issues.rst:29
 msgid ""
@@ -75,18 +79,19 @@ msgid ""
 " Eventually if the agent is learning successfully, this number drops and "
 "does not affect the performance that critically."
 msgstr ""
-"虽然上述情况是错误的，目前并没有对它直接的解决方法。根据我们使用IsaacGym的经验，重置值会根据环境终止的频率对代理的学习产生重大影响。最终，如果代理成功时学习将会减少，并对性能没有产生重大影响。"
+"虽然上述是错误的，但目前没有直接的解决方法。根据我们在使用 IsaacGym "
+"时的经验，重置值对代理学习的影响取决于环境终止的频率。如果代理成功学习，这个数字会下降并且不会对性能有显著影响。"
 
 #: ../../source/refs/issues.rst:34
 msgid ""
 "We have made a feature request to the respective Omniverse teams to have "
 "complete control over stepping different parts of the simulation app. "
 "However, at this point, there is no set timeline for this feature request."
-msgstr "我们已向各自的Omniverse团队提交了一个功能请求，希望能够完全控制模拟应用的不同部分。然而，目前还没有为该功能请求设定时间表。"
+msgstr "我们已向相应的 Omniverse 团队提出了一个功能请求，以完全控制模拟应用的不同部分的步进。然而，目前尚未确定此功能请求的时间表。"
 
 #: ../../source/refs/issues.rst:40
 msgid "Non-determinism in physics simulation"
-msgstr "物理模拟中的非确定性"
+msgstr "物理仿真中的非确定性"
 
 #: ../../source/refs/issues.rst:42
 msgid ""
@@ -99,7 +104,8 @@ msgid ""
 " to divergent execution over the course of simulating thousands of "
 "environments and simulation frames."
 msgstr ""
-"由于GPU工作安排，运行时对模拟参数的更改可能会改变操作顺序。这是因为在GPU忙于其他任务时可能会发生环境更新。由于浮点数的固有特性，执行顺序的任何修改都可能导致输出数据的最低有效位上发生微小的变化。这些变化可能导致在模拟成千上万个环境和模拟帧的过程中发生分歧。"
+"由于 GPU 工作调度，运行时对仿真参数的更改有可能改变操作执行顺序。这是因为当 GPU "
+"忙于其他任务时，环境更新可能会发生。由于浮点数存储的固有性质，对执行顺序的任何修改可能会导致输出数据中最不重要的位的微小变化。这些变化可能会导致在模拟数千个环境和仿真帧的过程中执行发散。"
 
 #: ../../source/refs/issues.rst:49
 msgid ""
@@ -110,13 +116,14 @@ msgid ""
 " Consequently, it is strongly advised to perform this operation only at "
 "setup time, before the environment stepping commences."
 msgstr ""
-"这个问题的一个说明性例子是观察对象物理材料的运行时域随机化。当在GPU上执行时，这个过程可能会在CPU和GPU之间传递这些参数的方式导致确定性和模拟问题。因此，强烈建议只在设置时间时执行此操作，而不是在环境步进开始时执行。"
+"此问题的一个示例是观察对象物理材料的运行时域随机化。由于这些参数是通过低级 API 从 CPU 传递到 GPU "
+"的方式，这个过程可能会导致确定性和仿真问题，因此强烈建议仅在设置时间执行此操作，然后才开始环境步进。"
 
 #: ../../source/refs/issues.rst:55
 msgid ""
 "For more information, please refer to the `PhysX Determinism "
 "documentation`_."
-msgstr "有关更多信息，请参阅 `PhysX Determinism documentation`_ 。"
+msgstr "要了解更多信息，请参阅 `PhysX Determinism documentation`_ 。"
 
 #: ../../source/refs/issues.rst:57
 msgid ""
@@ -132,11 +139,13 @@ msgid ""
 " degradation of around 15-50%, depending on the complexity of actors and "
 "environment."
 msgstr ""
-"此外，由于浮点精度，模拟中不同环境中的状态可能是非确定性的，当相同的动作应用到相同的初始状态时。当环境被放置在世界原点之外的地方时，就会发生这种情况。由于角色被放置在世界中不同的原点上，浮点误差可能会积累，并在从相同的初始状态出发时导致结果略有差异。对于这个问题的一个可能的解决方法是将所有角色/环境放置在世界原点（0，0，0），并过滤掉环境之间的碰撞。请注意，这可能会导致性能下降约15-50%，具体取决于角色和环境的复杂性。"
+"此外，由于浮点精度的原因，在仿真中不同环境中的状态在应用相同的一组动作到相同的初始状态时可能是非确定性的。这是因为环境被放置在世界原点（0, 0, "
+"0）附近。由于演员被放置在世界中不同的原点，浮点错误可能会积累，并导致结果略有不同，即使从相同的初始状态开始。这个问题的一个可能解决方法是将所有演员/环境放置在世界原点（0,"
+" 0, 0）并且过滤掉环境之间的碰撞。请注意，这可能会导致性能下降约15-50%，具体取决于演员和环境的复杂性。"
 
 #: ../../source/refs/issues.rst:69
 msgid "Blank initial frames from the camera"
-msgstr "相机初始帧为空白"
+msgstr "摄像头前的空白初始帧"
 
 #: ../../source/refs/issues.rst:71
 msgid ""
@@ -144,17 +153,19 @@ msgid ""
 "scripts, the first few frames may be blank. This is a known issue with the "
 "simulator where it needs a few steps to load the material textures properly "
 "and fill up the render targets."
-msgstr "在使用独立脚本时，许多初始相机帧可能为空白。这是一个模拟器中的已知问题，在几个步骤之后才能正确加载材质纹理并填充渲染目标。"
+msgstr ""
+"在独立脚本中使用 :class:`~omni.isaac.lab.sensors.Camera` "
+"传感器时，前几帧可能会是空白的。这是一个已知问题，模拟器需要一些步骤来正确加载材质纹理并填充渲染目标。"
 
 #: ../../source/refs/issues.rst:75
 msgid ""
 "A hack to work around this is to add the following after initializing the "
 "camera sensor and setting its pose:"
-msgstr "解决这个问题的一个方法是在初始化相机传感器并设置其姿势后添加以下内容："
+msgstr "解决此问题的一个方法是在初始化摄像头传感器并设置姿势后添加以下内容："
 
 #: ../../source/refs/issues.rst:90
 msgid "Using instanceable assets for markers"
-msgstr "使用可示例化的资产作为标记"
+msgstr "使用实例化资产作为标记对象"
 
 #: ../../source/refs/issues.rst:92
 msgid ""
@@ -163,7 +174,8 @@ msgid ""
 "the :class:`UsdGeom.PointInstancer` schema. This is a known issue and will "
 "hopefully be fixed in a future release."
 msgstr ""
-"在使用 ` 可示例化资产 `_ 作为标记时，由于Omniverse不支持在使用 :class:`UsdGeom.PointInstancer` 模式时使用可示例化的资产，因此标记无法正常工作。这是一个已知问题，希望在将来的版本中修复。"
+"使用 `instanceable assets`_ 作为标记对象时，标记对象不起作用，因为 Omniverse 在使用 "
+":class:`~UsdGeom.PointInstancer` 模式时不支持实例化资产。这是一个已知问题，将在将来的版本中修复。"
 
 #: ../../source/refs/issues.rst:96
 msgid ""
@@ -173,7 +185,8 @@ msgid ""
 " are stored in the instanceable asset's USD file and not in its stage "
 "reference's USD file."
 msgstr ""
-"如果您使用可示例化资产作为标记，标记类将删除资产的所有物理属性。然后，由于可示例化资产的物理属性存储在可示例化资产的USD文件中，而不是存储在其阶段引用的USD文件中，这一问题会在同一资产的其他引用中复制。"
+"如果使用实例化资产作为标记对象，则标记对象类会删除资产的所有物理属性。这会在相同资产的其他引用上复制，因为实例化资产的物理属性存储在实例化资产的 USD"
+" 文件中，而不是在其舞台引用的 USD 文件中。"
 
 #: ../../source/refs/issues.rst:106
 msgid "Exiting the process"
@@ -183,7 +196,7 @@ msgstr "退出进程"
 msgid ""
 "When exiting a process with ``Ctrl+C``, occasionally the below error may "
 "appear:"
-msgstr "当使用 ``Ctrl+C`` 退出进程时，偶尔会出现以下错误："
+msgstr "当使用“Ctrl+C”退出进程时，偶尔会出现以下错误："
 
 #: ../../source/refs/issues.rst:114
 msgid ""
@@ -193,5 +206,5 @@ msgid ""
 "Windows systems, please use ``Ctrl+Break`` or ``Ctrl+fn+B`` to terminate the"
 " process."
 msgstr ""
-"这是由于在物理事件调用中间发生终止，应该不会影响Isaac "
-"Lab的功能。可以忽略错误消息，并继续终止进程。在Windows系统上，请使用 ``Ctrl+Break`` 或 ``Ctrl+fn+B`` 来终止进程。"
+"这是因为终止发生在物理事件调用中间，不应影响 Isaac Lab 的功能。可以安全地忽略错误消息并继续终止进程。在 Windows "
+"系统上，请使用“Ctrl+Break”或“Ctrl+fn+B”来终止进程。"

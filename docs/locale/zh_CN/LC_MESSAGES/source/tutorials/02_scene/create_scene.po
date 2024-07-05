@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-04 11:04+0000\n"
+"POT-Creation-Date: 2024-07-05 06:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -32,7 +32,8 @@ msgid ""
 "class, which provides a convenient interface for spawning prims and managing"
 " them in the simulation."
 msgstr ""
-"到目前为止，在教程中，我们手动将资产生成到模拟中，并创建对象实例与它们进行交互。然而，随着场景复杂性的增加，手动执行这些任务变得繁琐。在本教程中，我们将介绍 :class:`scene.InteractiveScene` 类，为在模拟中生成prims和管理它们提供便捷的接口。"
+"到目前为止，在教程中，我们手动将资产生成到模拟中，并创建对象实例与之交互。然而，随着场景复杂度的增加，手动执行这些任务变得很繁琐。在本教程中，我们将介绍"
+" :class:`scene.InteractiveScene` 类，该类提供了一个方便的接口，用于生成prims并在模拟中管理它们。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:14
 msgid ""
@@ -42,28 +43,28 @@ msgid ""
 "(e.g. camera, lidar). The interactive scene provides a convenient interface "
 "for spawning these entities and managing them in the simulation."
 msgstr ""
-"在高层次上，交互式场景是场景实体的集合。每个实体可以是非交互式prim（例如地平面，光源），交互式prim（例如关节，刚性物体），或传感器（例如摄像头，激光雷达）。交互式场景提供了一个方便的接口，用于在模拟中生成这些实体和对它们进行管理。"
+"在高层次上，交互式场景是场景实体的集合。每个实体可以是不可交互的prim（例如地面平面、光源）、可交互的prim（例如关节、刚体物体）或传感器（例如摄像机、激光雷达）。交互式场景提供了一个便捷的接口，用于生成这些实体并在模拟中管理它们。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:20
 msgid "Compared the manual approach, it provides the following benefits:"
-msgstr "与手动方法相比，它提供了以下好处："
+msgstr "相比手动方法，它提供以下优点："
 
 #: ../../source/tutorials/02_scene/create_scene.rst:22
 msgid ""
 "Alleviates the user needing to spawn each asset separately as this is "
 "handled implicitly."
-msgstr "减轻了用户需要单独生成每个资产的负担，因为这一点被隐式处理。"
+msgstr "减轻了用户需要单独生成每个资产，因为这是隐含处理的。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:23
 msgid ""
 "Enables user-friendly cloning of scene prims for multiple environments."
-msgstr "为多个环境启用用户友好的场景prims克隆。"
+msgstr "可便于用户友好地克隆场景prims以用于多个环境。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:24
 msgid ""
 "Collects all the scene entities into a single object, which makes them "
 "easier to manage."
-msgstr "将所有场景实体收集到一个单个对象中，使它们更易于管理。"
+msgstr "将所有场景实体收集到一个单一对象中，这样更易于管理。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:26
 msgid ""
@@ -74,7 +75,9 @@ msgid ""
 "become more useful in the future as more assets and sensors are added to the"
 " scene."
 msgstr ""
-"在本教程中，我们从 :ref: 教程交互关节中的cartpole示例，替换 ``design_scene`` 函数为 :class:`scene.InteractiveScene` 对象。虽然在这个简单的例子中使用交互式场景似乎有点过头，但随着未来增加更多资产和传感器，它将变得更加有用。"
+"在这个教程中，我们从 :ref:`tutorial-interact-articulation` 教程中的cartpole示例开始，并用 "
+":class:`scene.InteractiveScene` 对象替换 ``design_scene`` "
+"函数。虽然在这个简单的例子中使用交互式场景可能看起来有点过分，但随着场景中增加更多的资产和传感器，它将在将来变得更有用。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:33
 msgid "The Code"
@@ -85,7 +88,7 @@ msgid ""
 "This tutorial corresponds to the ``create_scene.py`` script within "
 "``source/standalone/tutorials/02_scene``."
 msgstr ""
-"该教程对应于 ``source/standalone/tutorials/02_scene`` 目录下的 ``create_scene.py`` 脚本。"
+"该教程对应于 ``source/standalone/tutorials/02_scene`` 中的 ``create_scene.py`` 脚本。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst
 msgid "Code for create_scene.py"
@@ -99,7 +102,7 @@ msgstr "代码解释"
 msgid ""
 "While the code is similar to the previous tutorial, there are a few key "
 "differences that we will go over in detail."
-msgstr "虽然代码与上一个教程类似，但有一些关键区别我们将会详细讨论。"
+msgstr "虽然代码与上一个教程类似，但有一些关键区别我们将详细介绍。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:54
 msgid "Scene configuration"
@@ -113,7 +116,8 @@ msgid ""
 "passed to the :class:`scene.InteractiveScene` constructor to create the "
 "scene."
 msgstr ""
-"场景由一系列拥有自己配置的实体组成。这些被指定在一个从 :class:`scene.InteractiveSceneCfg` 继承的配置类中。然后这个配置类被传递到 :class:`scene.InteractiveScene` 构造函数中用于创建场景。"
+"场景由一系列带有自己配置的实体组成。这些都是在继承自 :class:`scene.InteractiveSceneCfg` "
+"的配置类中指定的。然后将配置类传递给 :class:`scene.InteractiveScene` 构造函数以创建场景。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:61
 msgid ""
@@ -121,7 +125,8 @@ msgid ""
 "tutorial, but list them now in the configuration class "
 ":class:`CartpoleSceneCfg` instead of manually spawning them."
 msgstr ""
-"对于cartpole示例，我们指定了与上一个教程中相同的场景，但现在在配置类 :class:`CartpoleSceneCfg` 中列出它们，而不是手动生成它们。"
+"对于cartpole示例，我们指定与以前教程中相同的场景，但现在将它们列在配置类 :class:`CartpoleSceneCfg` "
+"中，而不是手动生成它们。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:68
 msgid ""
@@ -131,7 +136,8 @@ msgid ""
 "we will get to that later. First, let's look at how individual scene "
 "entities are configured."
 msgstr ""
-"配置类中的变量名被用作键来访问 :class:`scene.InteractiveScene` 对象中的相应实体。例如，可以通过 ``scene[\"cartpole\"]`` 访问cartpole。但是，我们稍后将讲到。首先，让我们看看如何配置单个场景实体。"
+"配置类中的变量名称用作用于从 :class:`scene.InteractiveScene` 对象访问对应实体的键。例如，可以通过 "
+"``scene[\"cartpole\"]`` 来访问cartpole。然而，我们会稍后再解释这个。首先，让我们看看如何配置单个场景实体。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:73
 msgid ""
@@ -148,25 +154,28 @@ msgid ""
 "interactive prim (i.e., neither an asset nor a sensor) is not *handled* by "
 "the scene during simulation steps."
 msgstr ""
-"与之前的教程中配置一个刚性物体和关节类似，配置是使用配置类指定的。然而，场景中地平面和光源的配置与cartpole的配置有一个关键区别。地平面和光源是非交互式prims，而cartpole是交互式prim。这一差异反映在用于指定它们的配置类中。地平面和光源的配置使用了 :class:`assets.AssetBaseCfg` 的实例，而cartpole使用了 :class:`assets.ArticulationCfg` 的实例。在模拟步骤期间，场景不 `` 处理 `` 任何不是交互式prim（即不是资产也不是传感器）的东西。"
+"与先前教程中配置刚体物体和关节类似，配置使用配置类来指定。然而，地面平面和光源的配置与cartpole的配置之间存在一个关键区别。地面平面和光源是不可交互的，而cartpole是可交互的。这种区别在用于指定它们的配置类中得到了体现。地面平面和光源的配置使用"
+" :class:`assets.AssetBaseCfg` 的实例来指定，而cartpole使用 "
+":class:`assets.ArticulationCfg` "
+"的实例来进行配置。在模拟步骤期间，不处理任何不是交互式prim（即既不是资产也不是传感器）。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:84
 msgid ""
 "Another key difference to note is in the specification of the prim paths for"
 " the different prims:"
-msgstr "还需要注意的另一个关键区别在于不同prim的prim路径的指定方式："
+msgstr "另一个需要注意的关键区别是不同prim的prim路径的指定方法："
 
 #: ../../source/tutorials/02_scene/create_scene.rst:87
 msgid "Ground plane: ``/World/defaultGroundPlane``"
-msgstr "地平面：``/World/defaultGroundPlane``"
+msgstr "地面平面：“/World/defaultGroundPlane”"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:88
 msgid "Light source: ``/World/Light``"
-msgstr "光源：``/World/Light``"
+msgstr "光源：“/World/Light”"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:89
 msgid "Cartpole: ``{ENV_REGEX_NS}/Robot``"
-msgstr "Cartpole：``{ENV_REGEX_NS}/Robot``"
+msgstr "Cartpole：“{ENV_REGEX_NS}/Robot”"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:91
 msgid ""
@@ -180,7 +189,7 @@ msgid ""
 " each environment. This path is replaced by the scene object with "
 "``/World/envs/env_{i}`` where ``i`` is the environment index."
 msgstr ""
-"正如之前所学的，Omniverse创建了USD阶段的prims图。prim路径用于指定图中prim的位置。地平面和光源使用绝对路径指定，而cartpole使用相对路径指定。相对路径使用了 ``ENV_REGEX_NS`` 变量，这是一个特殊变量，在场景创建期间由环境名称替换。任何在其prim路径中具有 ``ENV_REGEX_NS`` 变量的实体都将被克隆为每个环境。此路径被scene对象替换为 ``/World/envs/env_{i}`` 其中 ``i`` 是环境索引。"
+"如前所述，Omniverse在USD阶段创建了prims的图形。prim路径用于指定图中prim的位置。地面平面和光源使用绝对路径来指定，而cartpole使用相对路径来指定。相对路径使用“ENV_REGEX_NS”变量来进行指定，这是一个特殊的变量，在场景创建期间会被环境名称替换。任何带有“ENV_REGEX_NS”变量的实体的prim路径在每个环境中都会被克隆。这个路径会被场景对象替换为“/World/envs/env_{i}”，其中“i”是环境索引。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:101
 msgid "Scene instantiation"
@@ -195,11 +204,13 @@ msgid ""
 "many environment copies we want to create using the ``num_envs`` argument. "
 "This will be used to clone the scene for each environment."
 msgstr ""
-"与以前我们调用 ``design_scene`` 函数创建场景不同，我们现在创建 :class:`scene.InteractiveScene` 类的一个实例，并将配置对象传递给它的构造函数。在创建 ``CartpoleSceneCfg`` 的配置实例期间，我们使用 ``num_envs`` 参数指定要创建多少环境副本。这将用于为每个环境克隆场景。"
+"与以前调用 ``design_scene`` 函数来创建场景不同，现在我们创建一个 :class:`scene.InteractiveScene` "
+"类的实例，并将配置对象传递给它的构造函数。在创建 ``CartpoleSceneCfg`` 配置实例时，我们使用 ``num_envs`` "
+"参数指定要创建多少个环境的副本。这将用于为每个环境克隆场景。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:115
 msgid "Accessing scene elements"
-msgstr "访问场景实体"
+msgstr "访问场景元素"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:117
 msgid ""
@@ -211,8 +222,9 @@ msgid ""
 "cartpole is specified using the key ``\"cartpole\"`` in the configuration "
 "class."
 msgstr ""
-"你可以使用与以前教程中用字典从entities中访问的类似方法从 :class:`InteractiveScene` 对象中访问场景实体，使用 ``[]`` 运算符。该运算代入一个字符串键并返回相应的实体。键是通过每个实体的配置类指定的。例如，cartpole"
-" 在配置类中使用键 ``\"cartpole\"`` 指定。"
+"与以前教程中的方法类似，可以使用 :class:`InteractiveScene` 对象从字典中获取场景元素，通过使用 ``[]`` "
+"操作符。操作符接受一个字符串键，并返回相应的实体。键是通过每个实体的配置类指定的。例如，cartpole在配置类中使用键 "
+"``\"cartpole\"`` 来指定。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:129
 msgid "Running the simulation loop"
@@ -223,7 +235,7 @@ msgid ""
 "The rest of the script looks similar to previous scripts that interfaced "
 "with :class:`assets.Articulation`, with a few small differences in the "
 "methods called:"
-msgstr "脚本的其余部分看起来类似于以前与 :class:`assets.Articulation` 交互的脚本，方法的调用有一些小的不同："
+msgstr "脚本的其余部分看起来与先前与 :class:`assets.Articulation` 接口的脚本类似，只是调用的方法有一些小的不同："
 
 #: ../../source/tutorials/02_scene/create_scene.rst:134
 msgid ""
@@ -249,7 +261,7 @@ msgstr ""
 msgid ""
 "Under the hood, the methods of :class:`scene.InteractiveScene` call the "
 "corresponding methods of the entities in the scene."
-msgstr "在内部，:class:`scene.InteractiveScene` 的方法调用了场景中的实体的相应方法。"
+msgstr "在幕后， :class:`scene.InteractiveScene` 的方法调用了场景中实体的相应方法。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:143
 msgid "The Code Execution"
@@ -259,16 +271,14 @@ msgstr "代码执行"
 msgid ""
 "Let's run the script to simulate 32 cartpoles in the scene. We can do this "
 "by passing the ``--num_envs`` argument to the script."
-msgstr ""
-"让我们运行脚本来模拟场景中的32个cartpole。我们可以通过向脚本传递 ``--num_envs`` 参数来实现。这应该会打开一个包含32个cartpole随机摆动的舞台，你可以使用鼠标旋转相机，使用箭头键在场景中移动。"
+msgstr "让我们运行脚本以模拟场景中的32个摇摆。我们可以通过向脚本传递 ``--num_envs`` 参数来实现这一点。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:152
 msgid ""
 "This should open a stage with 32 cartpoles swinging around randomly. You can"
 " use the mouse to rotate the camera and the arrow keys to move around the "
 "scene."
-msgstr ""
-"在本教程中，我们学习了如何使用 :class:`scene.InteractiveScene` 来创建一个带有多个资产的场景。我们还学习了如何使用 ``num_envs`` 参数来为多个环境克隆场景。"
+msgstr "这应该会打开一个舞台，上面有32个随机摆动的cartpole。您可以使用鼠标旋转摄像机，使用箭头键在场景中移动。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:155
 msgid ""
@@ -276,7 +286,8 @@ msgid ""
 "create a scene with multiple assets. We also saw how to use the ``num_envs``"
 " argument to clone the scene for multiple environments."
 msgstr ""
-"在 ``omni.isaac.lab_tasks`` 扩展中的任务中还有更多 :class:`scene.InteractiveSceneCfg` 的示例用法。请查看源代码，了解它们在更复杂的场景中如何使用。"
+"在本教程中，我们学习了如何使用 :class:`scene.InteractiveScene` 创建一个带有多个资产的场景。我们还学习了如何使用 "
+"``num_envs`` 参数来为多个环境克隆场景。"
 
 #: ../../source/tutorials/02_scene/create_scene.rst:159
 msgid ""
@@ -284,5 +295,5 @@ msgid ""
 " in the tasks found under the ``omni.isaac.lab_tasks`` extension. Please "
 "check out the source code to see how they are used for more complex scenes."
 msgstr ""
-"在 ``omni.isaac.lab_tasks`` 扩展中找到的任务中，有许多对 :class:`scene.InteractiveSceneCfg`"
-" 的用法示例。请查看源代码，了解它们如何用于更复杂的场景。"
+"在“omni.isaac.lab_tasks”扩展中， :class:`scene.InteractiveSceneCfg` "
+"还有许多其他示例用法。请查看源代码，了解它们在更复杂的场景中的使用方式。"
