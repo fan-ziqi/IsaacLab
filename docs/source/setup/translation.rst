@@ -22,6 +22,7 @@ About Translation
 
 更新日志：
 
+* 已经校对完格式的章节： **开始** 、 **特点** 、 **资源-如何指南** 、 **资源-容器部署** 
 * **2024-07-05** 使用正则表达式匹配特定位置并修复大部分错误格式；增加校对文档。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-04** 使用Github-Action实现监测官方英文文档变化并自动触发增量翻译。自动构建HTML，上传到gh-pages-zhcn分支，并触发webhook自动同步到阿里云境内服务器，保证国内用户的访问速度。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-03** 使用ChatGPT-3.5-API实现批量翻译脚本，对文档进行粗略翻译，但未翻译 ``API`` 和 ``CHANGELOG`` 。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
