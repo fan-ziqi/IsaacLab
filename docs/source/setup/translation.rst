@@ -18,6 +18,7 @@ About Translation
 * 拉取上述仓库并切换到 ``main`` 分支，并时刻确保你的本地分支与上游同步。
 * 修改 ``docs/locale/zh_CN/LC_MESSAGES`` 中将要校对的 ``*.po`` 文件，然后开启pull-request。
 * 如果上游文档有更新，使用正则表达式 ``(?<!#\n)#, fuzzy`` 找到变动的地方，校对后删除 ``#, fuzzy`` 行
+* 通过搜索 ``#~`` 找到并删除已废弃的翻译。
 
 **最后，感谢所有翻译校对参与者的无私奉献！**
 
@@ -33,7 +34,7 @@ About Translation
 -----------------------------
 
 Ubuntu20.04使用pip安装Isaac Sim
-~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 使用pip安装Isaac Sim只支持 ``GLIBC>=2.34`` 。 `bug link <https://forums.developer.nvidia.com/t/isaac-sim-python-environment-installation-with-pip-through-conda/294913/12>`__ ，如果你使用的是Ubuntu20.04，使用 ``ldd --version`` 查看GLIBC版本，如果版本低于 ``2.34`` 则需要升级GLIBC。 请注意，升级GLIBC是一个危险操作可能会导致无法与其的问题，请谨慎升级！
 

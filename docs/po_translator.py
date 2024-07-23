@@ -125,7 +125,7 @@ class TranslationService:
             # Exclude 'api' folder
             dirs[:] = [d for d in dirs if d != 'api']
             # Collect .po files excluding 'changelog.po'
-            po_files.extend([os.path.join(root, file) for file in files if file.endswith(".po") and file != 'changelog.po'])
+            po_files.extend([os.path.join(root, file) for file in files if file.endswith(".po") and file not in ['changelog.po', 'translation.po']])
         
         total_files = len(po_files)
         
@@ -336,7 +336,7 @@ def main():
     languages = [lang.strip() for lang in args.lang.split(',')]
     translation_service.scan_and_process_po_files(args.folder, languages)
 
-    traverse_and_process_files(args.folder)
+    # traverse_and_process_files(args.folder)
 
 
 if __name__ == "__main__":
