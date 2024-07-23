@@ -212,7 +212,7 @@ msgid ""
 "lights, and creating the ``View`` classes for the actors."
 msgstr ""
 "在OmniIsaacGymEnvs中，环境创建通常发生在 "
-"``set_up_scene()``API中，其中涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并创建角色的 ``View`` 类。"
+"``set_up_scene()`` API中，其中涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并创建角色的 ``View`` 类。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:193
 msgid ""
@@ -223,7 +223,7 @@ msgid ""
 "tasks' ``_setup_scene`` implementations to provide more flexibility around "
 "the scene setup process."
 msgstr ""
-"在Isaac Lab中，类似的功能在 ``_setup_scene()``API中执行。主要区别在于基类 ``_setup_scene()`` "
+"在Isaac Lab中，类似的功能在 ``_setup_scene()`` API中执行。主要区别在于基类 ``_setup_scene()`` "
 "不再执行克隆环境和添加地面和光线的操作。相反，现在这些操作应该在各个任务的 ``_setup_scene`` 实现中进行，以提供更灵活的场景设置过程。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:199
@@ -442,7 +442,7 @@ msgid ""
 "the ``__init__`` method after executing the base class's ``__init__``. At "
 "this point, simulation has already started."
 msgstr ""
-"在Isaac Lab中，不再需要 ``post_reset``API。以前在 ``post_reset`` 中完成的所有操作都可以在执行基类的 "
+"在Isaac Lab中，不再需要 ``post_reset`` API。以前在 ``post_reset`` 中完成的所有操作都可以在执行基类的 "
 "``__init__`` 方法后在 ``__init__`` 方法中完成。此时，模拟已经开始。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:419
@@ -460,7 +460,7 @@ msgstr ""
 "在OmniIsaacGymEnvs中，由于GPU API的限制，不能根据当前步骤的状态进行重置。所以，重置必须在下一个时间步骤的开始时执行。在Isaac"
 " "
 "Lab中，这个限制被消除了，因此这些任务可以按照正确的工作流程进行操作，包括应用动作、模拟步进、收集状态、计算完成标志、计算奖励、执行重置，最后计算观察。这个工作流程可以被框架自动执行，因此任务不需要"
-" ``post_physics_step``API。但是，各个任务可以覆盖 ``step()``API以控制工作流程。"
+" ``post_physics_step`` API。但是，各个任务可以覆盖 ``step()`` API以控制工作流程。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:426
 msgid ""
@@ -551,7 +551,7 @@ msgstr "Cartpole 环境在这里被完整展示，以充分展示 OmniIsaacGymEn
 msgid ""
 "Task config in Isaac Lab can be split into the main task configuration class"
 " and individual config objects for the actors."
-msgstr "在 Isaac Lab 中，任务配置可以分为主要任务配置类和用于演员的单独配置对象。"
+msgstr "在 Isaac Lab 中，任务配置可以分为主要任务配置类和用于actor的单独配置对象。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:562
 msgid "Task Setup"
@@ -573,7 +573,7 @@ msgid ""
 msgstr ""
 "在 OmniIsaacGymEnvs 中， ``set_up_scene`` 方法已被 Isaac Lab 中任务类中的 "
 "``_setup_scene`` API 替换。此外，还提供了场景克隆和碰撞过滤作为任务类在必要时调用的 "
-"API。同样，添加地平面和光源也应在任务类中处理。向场景添加演员已被替换为 "
+"API。同样，添加地平面和光源也应在任务类中处理。向场景添加actor已被替换为 "
 "``self.scene.articulations[\"cartpole\"] = self.cartpole`` 。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:654
@@ -642,7 +642,7 @@ msgid ""
 "in the same dictionary."
 msgstr ""
 "在 Isaac Lab 中， ``_get_observations()`` API 必须返回一个带有键 ``policy`` "
-"且值为观察缓冲区的字典。当使用非对称的演员-评论者状态时，评论者的状态应该有键 ``critic`` ，并与观察缓冲区一起返回在同一个字典中。"
+"且值为观察缓冲区的字典。当使用非对称的actor-critic状态时，评论者的状态应该有键 ``critic`` ，并与观察缓冲区一起返回在同一个字典中。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:834
 msgid "Domain Randomization"
@@ -687,7 +687,7 @@ msgid ""
 "randomization applied."
 msgstr ""
 "请注意，在 ``\"asset_cfg\": SceneEntityCfg(\"robot\", body_names=\".*\")`` "
-"参数中，提供了演员 ``\"robot\"`` 的名称，以及作为正则表达式表达的主体或关节名称，这些将是将随机化应用于的演员和主体/关节。"
+"参数中，提供了actor ``\"robot\"`` 的名称，以及作为正则表达式表达的主体或关节名称，这些将是将随机化应用于的actor和主体/关节。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:890
 msgid ""
@@ -717,7 +717,7 @@ msgid ""
 msgstr ""
 "与 OmniIsaacGymEnvs 类似，随机化 API "
 "可用于随机化关节刚度和阻尼、关节限制、刚体材料、固定肌腱属性以及质量和刚体材料等刚体属性。物理场景重力的随机化也受支持。请注意，Isaac Lab "
-"目前不支持缩放的随机化。要随机化缩放，请以每个环境持有演员在不同尺度的方式设置场景。"
+"目前不支持scale的随机化。要随机化scale，请以每种环境以不同scale容纳actor的方式设置场景。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:903
 msgid ""
