@@ -33,6 +33,10 @@ About Translation
 译者说
 -----------------------------
 
+绝大部分报错都可以在 `Linux Troubleshooting <https://docs.omniverse.nvidia.com/dev-guide/latest/linux-troubleshooting.html>`__ 中找到解决方案。
+
+下面补充一些官方文档中没有的解决方案：
+
 Ubuntu20.04使用pip安装Isaac Sim
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -48,3 +52,13 @@ Ubuntu20.04使用pip安装Isaac Sim
 然后使用 ``ldd --version`` 查看升级后的GLIBC版本。
 
 最后从 ``/etc/apt/sources.list`` 中删除 ``deb http://th.archive.ubuntu.com/ubuntu jammy main`` ，升级完成，可继续使用Pip进行安装。
+
+No module named 'xxx'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+如遇到IsaacLab/IsaacSim更新后无法找到某些包，pull最新的IsaacLab重新执行下述步骤即可解决。（仅限pip安装的Isaac系列）
+
+.. code-block:: bash
+
+   pip install isaacsim-rl isaacsim-replicator isaacsim-extscache-physics isaacsim-extscache-kit-sdk isaacsim-extscache-kit isaacsim-app --extra-index-url https://pypi.nvidia.com
+   ./isaaclab.sh --install
