@@ -16,15 +16,29 @@ About Translation
 
 * 校对之前请在沟通群内声明自己将要校对的文件，以免重复工作。
 * 拉取上述仓库并切换到 ``main`` 分支，并时刻确保你的本地分支与上游同步。
-* 修改 ``docs/locale/zh_CN/LC_MESSAGES`` 中将要校对的 ``*.po`` 文件，然后开启pull-request。
-* 如果上游文档有更新，使用正则表达式 ``(?<!#\n)#, fuzzy`` 找到变动的地方，校对后删除 ``#, fuzzy`` 行
+* 修改 ``docs/locale/zh_CN/LC_MESSAGES`` 中存在问题的 ``*.po`` 文件。
+* 如果上游文档有更新，使用正则表达式 ``(?<!#\n)#, fuzzy`` 找到变动的地方，校对后删除 ``#, fuzzy`` 行。
 * 通过搜索 ``#~`` 找到并删除已废弃的翻译。
+* 改动后开启pull-request。
+
+重建文档的步骤:
+
+.. code-block:: bash
+
+   git remote add upstream https://github.com/isaac-sim/IsaacLab.git
+   git fetch upstream
+   git merge upstream/main --strategy-option ours --allow-unrelated-histories --verbose
+   make gettext
+   sphinx-intl update -p _build/gettext -l zh_CN
+   python po_translator.py --folder ./locale --lang zh_CN --folder-language
+   make -e SPHINXOPTS="-D language='zh_CN'" html
 
 **最后，感谢所有翻译校对参与者的无私奉献！**
 
 更新日志
 -----------------------------
 
+* **2024-07-27** 同步文档至v1.1.0。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-23** 大部分格式问题均已修复，增加 **译者说** 。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-05** 使用正则表达式匹配特定位置并修复大部分错误格式；增加校对文档。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-04** 使用Github-Action实现监测官方英文文档变化并自动触发增量翻译。自动构建HTML，上传到gh-pages-zhcn分支，并触发webhook自动同步到阿里云境内服务器，保证国内用户的访问速度。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
