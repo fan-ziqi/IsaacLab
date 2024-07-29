@@ -12,7 +12,7 @@ About Translation
    随着本站用户的日渐增多，轻量服务器已经承受不住如此大的访问负载。如您认可本站的工作，可以通过下面的赞赏码打赏，所有赞赏均用于升级服务器，感谢您的支持！
 
    .. figure:: ../_static/thanks.png
-      :width: 50%
+      :width: 500px
       :align: center
       :alt: 赞赏码
 
