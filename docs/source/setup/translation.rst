@@ -7,6 +7,15 @@ About Translation
 
 翻译开源在 `fan-ziqi/IsaacLab <https://github.com/fan-ziqi/IsaacLab>`__ ，译者： `github@fan-ziqi <https://github.com/fan-ziqi>`__ 。
 
+.. note::
+
+   随着本站用户的日渐增多，轻量服务器已经承受不住如此大的访问负载。如您认可本站的工作，可以通过下面的赞赏码打赏，所有赞赏均用于升级服务器，感谢您的支持！
+
+   .. figure:: ../_static/thanks.png
+      :width: 50%
+      :align: center
+      :alt: 赞赏码
+
 参与翻译
 -----------------------------
 
@@ -25,19 +34,29 @@ About Translation
 
 .. code-block:: bash
 
+   # install python packages
+   pip install setuptools polib==1.2.0 openai==v1.3.6 python-dotenv==1.0.0 pytest==8.2.2 sphinx-intl sphinx-book-theme==1.0.1 myst-parser sphinxcontrib-bibtex==2.5.0 autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium
+   # merge upstream changes
    git remote add upstream https://github.com/isaac-sim/IsaacLab.git
    git fetch upstream
    git merge upstream/main --strategy-option ours --allow-unrelated-histories --verbose
+   # make pot files
    make gettext
+   # make po files
    sphinx-intl update -p _build/gettext -l zh_CN
+   # transtale to zh_CN
    python po_translator.py --folder ./locale --lang zh_CN --folder-language
+   # make translated html files
    make -e SPHINXOPTS="-D language='zh_CN'" html
+   # open on default browser
+   xdg-open _build/html/index.html
 
 **最后，感谢所有翻译校对参与者的无私奉献！**
 
 更新日志
 -----------------------------
 
+* **2024-07-30** 修复了很多格式及翻译问题，增加赞赏码。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-27** 同步文档至v1.1.0。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-23** 大部分格式问题均已修复，增加 **译者说** 。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-05** 使用正则表达式匹配特定位置并修复大部分错误格式；增加校对文档。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
