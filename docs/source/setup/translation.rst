@@ -58,6 +58,7 @@ About Translation
 更新日志
 -----------------------------
 
+* **2024-08-07** 自动merge有问题，改为定期手动同步。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-30** 修复了很多格式及翻译问题，增加赞赏码。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-27** 同步文档至v1.1.0。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-23** 大部分格式问题均已修复，增加 **译者说** 。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
