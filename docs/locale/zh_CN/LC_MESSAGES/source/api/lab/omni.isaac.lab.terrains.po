@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-05 06:36+0000\n"
+"POT-Creation-Date: 2024-08-07 07:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -821,27 +821,62 @@ msgstr ""
 msgid ""
 "If a curriculum is used, the terrains are generated based on their "
 "difficulty parameter. The difficulty is varied linearly over the number "
-"of rows (i.e. along x). If a curriculum is not used, the terrains are "
-"generated randomly."
+"of rows (i.e. along x) with a small random value added to the difficulty "
+"to ensure that the columns with the same sub-terrain type are not exactly"
+" the same. The difficulty parameter for a sub-terrain at a given row is "
+"calculated as:"
 msgstr ""
 
-#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:21
+#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:22
 msgid ""
-"If the :obj:`cfg.flat_patch_sampling` is specified for a sub-terrain, "
-"flat patches are sampled on the terrain. These can be used for spawning "
-"robots, targets, etc. The sampled patches are stored in the "
-":obj:`flat_patches` dictionary. The key specifies the intention of the "
-"flat patches and the value is a tensor containing the flat patches for "
-"each sub-terrain."
+"\\text{difficulty} = \\frac{\\text{row_id} + \\eta}{\\text{num_rows}} "
+"\\times (\\text{upper} - \\text{lower}) + \\text{lower}"
 msgstr ""
 
 #: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:26
 msgid ""
-"If the flag :obj:`cfg.use_cache` is set to True, the terrains are cached "
-"based on their sub-terrain configurations. This means that if the same "
-"sub-terrain configuration is used multiple times, the terrain is only "
-"generated once and then reused. This is useful when generating complex "
-"sub-terrains that take a long time to generate."
+"where :math:`\\eta\\sim\\mathcal{U}(0, 1)` is a random perturbation to "
+"the difficulty, and :math:`(\\text{lower}, \\text{upper})` is the range "
+"of the difficulty parameter, specified using the "
+":attr:`~TerrainGeneratorCfg.difficulty_range` parameter."
+msgstr ""
+
+#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:30
+msgid ""
+"If a curriculum is not used, the terrains are generated randomly. In this"
+" case, the difficulty parameter is randomly sampled from the specified "
+"range, given by the :attr:`~TerrainGeneratorCfg.difficulty_range` "
+"parameter:"
+msgstr ""
+
+#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:33
+msgid "\\text{difficulty} \\sim \\mathcal{U}(\\text{lower}, \\text{upper})"
+msgstr ""
+
+#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:37
+msgid ""
+"If the :attr:`~TerrainGeneratorCfg.flat_patch_sampling` is specified for "
+"a sub-terrain, flat patches are sampled on the terrain. These can be used"
+" for spawning robots, targets, etc. The sampled patches are stored in the"
+" :obj:`flat_patches` dictionary. The key specifies the intention of the "
+"flat patches and the value is a tensor containing the flat patches for "
+"each sub-terrain."
+msgstr ""
+
+#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:42
+msgid ""
+"If the flag :attr:`~TerrainGeneratorCfg.use_cache` is set to True, the "
+"terrains are cached based on their sub-terrain configurations. This means"
+" that if the same sub-terrain configuration is used multiple times, the "
+"terrain is only generated once and then reused. This is useful when "
+"generating complex sub-terrains that take a long time to generate."
+msgstr ""
+
+#: of omni.isaac.lab.terrains.terrain_generator.TerrainGenerator:49
+msgid ""
+"The terrain generation has its own seed parameter. This is set using the "
+":attr:`TerrainGeneratorCfg.seed` parameter. If the seed is not set and "
+"the caching is disabled, the terrain generation will not be reproducible."
 msgstr ""
 
 #: of
@@ -969,6 +1004,16 @@ msgstr ""
 
 #: of omni.isaac.lab.terrains.TerrainGeneratorCfg.seed:1:<autosummary>:1
 msgid ""
+":py:obj:`border_height "
+"<omni.isaac.lab.terrains.TerrainGeneratorCfg.border_height>`\\"
+msgstr ""
+
+#: of omni.isaac.lab.terrains.TerrainGeneratorCfg.seed:1:<autosummary>:1
+msgid "The height of the border around the terrain (in m)."
+msgstr ""
+
+#: of omni.isaac.lab.terrains.TerrainGeneratorCfg.seed:1:<autosummary>:1
+msgid ""
 ":py:obj:`num_rows "
 "<omni.isaac.lab.terrains.TerrainGeneratorCfg.num_rows>`\\"
 msgstr ""
@@ -1059,7 +1104,7 @@ msgid ""
 msgstr ""
 
 #: of omni.isaac.lab.terrains.TerrainGeneratorCfg.seed:1:<autosummary>:1
-msgid "Whether to load the terrain from cache if it exists."
+msgid "Whether to load the sub-terrain from cache if it exists."
 msgstr ""
 
 #: of omni.isaac.lab.terrains.TerrainGeneratorCfg.seed:1:<autosummary>:1
@@ -1097,6 +1142,11 @@ msgstr ""
 #: omni.isaac.lab.terrains.trimesh.mesh_terrains_cfg.MeshInvertedPyramidStairsTerrainCfg.border_width:1
 #: omni.isaac.lab.terrains.trimesh.mesh_terrains_cfg.MeshPyramidStairsTerrainCfg.border_width:1
 msgid "The width of the border around the terrain (in m). Defaults to 0.0."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.terrains.TerrainGeneratorCfg.border_height:1
+msgid "The height of the border around the terrain (in m). Defaults to 1.0."
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.terrains.TerrainGeneratorCfg.num_rows:1
@@ -1208,7 +1258,16 @@ msgid ""
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.terrains.TerrainGeneratorCfg.use_cache:1
-msgid "Whether to load the terrain from cache if it exists. Defaults to True."
+msgid "Whether to load the sub-terrain from cache if it exists. Defaults to True."
+msgstr ""
+
+#: ../../docstring of omni.isaac.lab.terrains.TerrainGeneratorCfg.use_cache:3
+msgid ""
+"If enabled, the generated terrains are stored in the cache directory. "
+"When generating terrains, the cache is checked to see if the terrain "
+"already exists. If it does, the terrain is loaded from the cache. "
+"Otherwise, the terrain is generated and stored in the cache. Caching can "
+"be used to speed up terrain generation."
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.terrains.TerrainGeneratorCfg.cache_dir:1
@@ -3294,14 +3353,15 @@ msgstr ""
 #: of omni.isaac.lab.terrains.utils.color_meshes_by_height:7
 msgid ""
 "A list of 3 integers in the range [0,255] representing the RGB color of "
-"the mesh. Used when the z-coordinates of all vertices are the same."
+"the mesh. Used when the z-coordinates of all vertices are the same. "
+"Defaults to [172, 216, 230]."
 msgstr ""
 
-#: of omni.isaac.lab.terrains.utils.color_meshes_by_height:9
+#: of omni.isaac.lab.terrains.utils.color_meshes_by_height:10
 msgid "The name of the color map to be used. Defaults to \"turbo\"."
 msgstr ""
 
-#: of omni.isaac.lab.terrains.utils.color_meshes_by_height:11
+#: of omni.isaac.lab.terrains.utils.color_meshes_by_height:12
 msgid ""
 "A trimesh object with the vertices colored based on the z-coordinate "
 "(height) of each vertex."
@@ -3446,4 +3506,55 @@ msgid ""
 " parameters     are not suitable for finding valid patches and maximum "
 "number of iterations is reached."
 msgstr ""
+
+#~ msgid ""
+#~ "If a curriculum is used, the "
+#~ "terrains are generated based on their"
+#~ " difficulty parameter. The difficulty is"
+#~ " varied linearly over the number of"
+#~ " rows (i.e. along x). If a "
+#~ "curriculum is not used, the terrains "
+#~ "are generated randomly."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If the :obj:`cfg.flat_patch_sampling` is "
+#~ "specified for a sub-terrain, flat "
+#~ "patches are sampled on the terrain. "
+#~ "These can be used for spawning "
+#~ "robots, targets, etc. The sampled "
+#~ "patches are stored in the "
+#~ ":obj:`flat_patches` dictionary. The key "
+#~ "specifies the intention of the flat "
+#~ "patches and the value is a tensor"
+#~ " containing the flat patches for each"
+#~ " sub-terrain."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If the flag :obj:`cfg.use_cache` is set"
+#~ " to True, the terrains are cached "
+#~ "based on their sub-terrain "
+#~ "configurations. This means that if the"
+#~ " same sub-terrain configuration is "
+#~ "used multiple times, the terrain is "
+#~ "only generated once and then reused. "
+#~ "This is useful when generating complex"
+#~ " sub-terrains that take a long "
+#~ "time to generate."
+#~ msgstr ""
+
+#~ msgid "Whether to load the terrain from cache if it exists."
+#~ msgstr ""
+
+#~ msgid "Whether to load the terrain from cache if it exists. Defaults to True."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A list of 3 integers in the "
+#~ "range [0,255] representing the RGB color"
+#~ " of the mesh. Used when the "
+#~ "z-coordinates of all vertices are the"
+#~ " same."
+#~ msgstr ""
 

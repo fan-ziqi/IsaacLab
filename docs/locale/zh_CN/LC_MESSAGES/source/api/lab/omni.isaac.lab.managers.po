@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-27 02:27+0000\n"
+"POT-Creation-Date: 2024-08-07 07:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -561,6 +561,7 @@ msgstr ""
 #: omni.isaac.lab.managers.event_manager.EventManager.apply
 #: omni.isaac.lab.managers.event_manager.EventManager.get_term_cfg
 #: omni.isaac.lab.managers.event_manager.EventManager.set_term_cfg
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.__init__
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group
 #: omni.isaac.lab.managers.reward_manager.RewardManager.get_term_cfg
 #: omni.isaac.lab.managers.reward_manager.RewardManager.set_term_cfg
@@ -929,7 +930,42 @@ msgstr ""
 msgid ""
 "Each observation group should inherit from the "
 ":class:`ObservationGroupCfg` class. Within each group, each observation "
-"term should instantiate the :class:`ObservationTermCfg` class."
+"term should instantiate the :class:`ObservationTermCfg` class. Based on "
+"the configuration, the observations in a group can be concatenated into a"
+" single tensor or returned as a dictionary with keys corresponding to the"
+" term's name."
+msgstr ""
+
+#: of omni.isaac.lab.managers.observation_manager.ObservationManager:13
+msgid ""
+"If the observations in a group are concatenated, the shape of the "
+"concatenated tensor is computed based on the shapes of the individual "
+"observation terms. This information is stored in the "
+":attr:`group_obs_dim` dictionary with keys as the group names and values "
+"as the shape of the observation tensor. When the terms in a group are not"
+" concatenated, the attribute stores a list of shapes for each term in the"
+" group."
+msgstr ""
+
+#: of omni.isaac.lab.managers.observation_manager.ObservationManager:19
+msgid ""
+"When the observation terms in a group do not have the same shape, the "
+"observation terms cannot be concatenated. In this case, please set the "
+":attr:`ObservationGroupCfg.concatenate_terms` attribute in the group "
+"configuration to False."
+msgstr ""
+
+#: of omni.isaac.lab.managers.observation_manager.ObservationManager:23
+msgid ""
+"The observation manager can be used to compute observations for all the "
+"groups or for a specific group. The observations are computed by calling "
+"the registered functions for each term in the group. The functions are "
+"called in the order of the terms in the group. The functions are expected"
+" to return a tensor with shape (num_envs, ...). If a corruption/noise "
+"model is registered for a term, the function is called to corrupt the "
+"observation. The corruption function is expected to return a tensor with "
+"the same shape as the observation. The observations are clipped and "
+"scaled as per the configuration settings."
 msgstr ""
 
 #: of
@@ -1006,7 +1042,7 @@ msgstr ""
 
 #: of omni.isaac.lab.managers.ObservationManager.group_obs_dim:1
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.__init__:1:<autosummary>:1
-msgid "Shape of observation tensor in each group."
+msgid "Shape of computed observations in each group."
 msgstr ""
 
 #: of
@@ -1018,7 +1054,7 @@ msgstr ""
 
 #: of omni.isaac.lab.managers.ObservationManager.group_obs_term_dim:1
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.__init__:1:<autosummary>:1
-msgid "Shape of observation tensor for each term in each group."
+msgid "Shape of individual observation terms in each group."
 msgstr ""
 
 #: of
@@ -1030,7 +1066,7 @@ msgstr ""
 
 #: of omni.isaac.lab.managers.ObservationManager.group_obs_concatenate:1
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.__init__:1:<autosummary>:1
-msgid "Whether the observation terms are concatenated in each group."
+msgid "Whether the observation terms are concatenated in each group or not."
 msgstr ""
 
 #: of
@@ -1049,6 +1085,50 @@ msgid ""
 "ObservationGroupCfg]``)."
 msgstr ""
 
+#: of omni.isaac.lab.managers.observation_manager.ObservationManager.__init__:6
+msgid ""
+"If the shapes of the observation terms in a group are not compatible for "
+"concatenation     and the :attr:`~ObservationGroupCfg.concatenate_terms` "
+"attribute is set to True."
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationManager.active_terms:3
+msgid ""
+"The keys are the group names and the values are the list of observation "
+"term names in the group."
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationManager.group_obs_dim:3
+msgid ""
+"The key is the group name and the value is the shape of the observation "
+"tensor. If the terms in the group are concatenated, the value is a single"
+" tuple representing the shape of the concatenated observation tensor. "
+"Otherwise, the value is a list of tuples, where each tuple represents the"
+" shape of the observation tensor for a term in the group."
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationManager.group_obs_term_dim:3
+msgid ""
+"The key is the group name and the value is a list of tuples representing "
+"the shape of the observation terms in the group. The order of the tuples "
+"corresponds to the order of the terms in the group. This matches the "
+"order of the terms in the :attr:`active_terms`."
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationManager.group_obs_concatenate:3
+msgid ""
+"The key is the group name and the value is a boolean specifying whether "
+"the observation terms in the group are concatenated into a single tensor."
+" If True, the observations are concatenated along the last dimension."
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationManager.group_obs_concatenate:6
+msgid ""
+"The values are set based on the "
+":attr:`~ObservationGroupCfg.concatenate_terms` attribute in the group "
+"configuration."
+msgstr ""
+
 #: of omni.isaac.lab.managers.observation_manager.ObservationManager.compute:3
 msgid ""
 "The method computes the observations for all the groups handled by the "
@@ -1059,7 +1139,9 @@ msgstr ""
 #: of omni.isaac.lab.managers.observation_manager.ObservationManager.compute:6
 msgid ""
 "A dictionary with keys as the group names and values as the computed "
-"observations."
+"observations. The observations are either concatenated into a single "
+"tensor or returned as a dictionary with keys corresponding to the term's "
+"name."
 msgstr ""
 
 #: of
@@ -1146,6 +1228,13 @@ msgid ""
 "If true, the observation terms in the group are concatenated along the "
 "last dimension. Otherwise, they are kept separate and returned as a "
 "dictionary."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.managers.ObservationGroupCfg.concatenate_terms:6
+msgid ""
+"If the observation group contains terms of different dimensions, it must "
+"be set to False."
 msgstr ""
 
 #: ../../docstring of
@@ -1719,7 +1808,7 @@ msgstr ""
 #: of omni.isaac.lab.managers.event_manager.EventManager:1:<autosummary>:1
 msgid ""
 ":py:obj:`apply <omni.isaac.lab.managers.EventManager.apply>`\\ "
-"\\(mode\\[\\, env\\_ids\\, dt\\]\\)"
+"\\(mode\\[\\, env\\_ids\\, dt\\, global\\_env\\_step\\_count\\]\\)"
 msgstr ""
 
 #: of omni.isaac.lab.managers.event_manager.EventManager.apply:1
@@ -1836,7 +1925,13 @@ msgid ""
 "mode. Defaults to None to simplify the call for other modes."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:14
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:13
+msgid ""
+"The environment step count of the task. This is only used for the "
+"\"reset\" mode. Defaults to None to simplify the call for other modes."
+msgstr ""
+
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:16
 msgid "If the mode is ``\"interval\"`` and the time step is not provided."
 msgstr ""
 
@@ -1909,6 +2004,18 @@ msgstr ""
 msgid "Whether randomization should be tracked on a per-environment basis."
 msgstr ""
 
+#: of omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
+msgid ""
+":py:obj:`min_step_count_between_reset "
+"<omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset>`\\"
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:1
+#: omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
+msgid "The minimum number of environment steps between when term is applied."
+msgstr ""
+
 #: ../../docstring of omni.isaac.lab.managers.EventTermCfg.func:3
 msgid ""
 "This function should take the environment object, environment indices and"
@@ -1937,6 +2044,20 @@ msgstr ""
 msgid ""
 "If True, the same time for the interval is tracked for all the "
 "environments instead of tracking the time per-environment."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:3
+msgid ""
+"When mode is \"reset\", the term will not be applied on the next reset "
+"unless the number of steps since the last application of the term has "
+"exceeded this. This is useful to avoid calling this term too often and "
+"improve performance."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:7
+msgid "This is only used if the mode is ``\"reset\"``."
 msgstr ""
 
 #: ../../source/api/lab/omni.isaac.lab.managers.rst:99
@@ -2744,4 +2865,32 @@ msgid ""
 "logging purposes. If the function returns None, the curriculum state is "
 "not logged."
 msgstr ""
+
+#~ msgid ""
+#~ "Each observation group should inherit "
+#~ "from the :class:`ObservationGroupCfg` class. "
+#~ "Within each group, each observation term"
+#~ " should instantiate the "
+#~ ":class:`ObservationTermCfg` class."
+#~ msgstr ""
+
+#~ msgid "Shape of observation tensor in each group."
+#~ msgstr ""
+
+#~ msgid "Shape of observation tensor for each term in each group."
+#~ msgstr ""
+
+#~ msgid "Whether the observation terms are concatenated in each group."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A dictionary with keys as the "
+#~ "group names and values as the "
+#~ "computed observations."
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":py:obj:`apply <omni.isaac.lab.managers.EventManager.apply>`\\"
+#~ " \\(mode\\[\\, env\\_ids\\, dt\\]\\)"
+#~ msgstr ""
 

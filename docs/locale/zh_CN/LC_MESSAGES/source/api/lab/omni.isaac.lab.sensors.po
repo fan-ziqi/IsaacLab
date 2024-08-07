@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-27 02:27+0000\n"
+"POT-Creation-Date: 2024-08-07 07:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -1868,8 +1868,32 @@ msgstr ""
 #: of omni.isaac.lab.sensors.contact_sensor.contact_sensor.ContactSensor:11
 msgid ""
 "The sensor can be configured to report the contact forces on a set of "
-"bodies with a given filter pattern. Please check the documentation on "
-"`RigidContactView`_ for more details."
+"bodies with a given filter pattern using the "
+":attr:`ContactSensorCfg.filter_prim_paths_expr`. This is useful when you "
+"want to report the contact forces between the sensor bodies and a "
+"specific set of bodies in the scene. The data can be accessed using the "
+":attr:`ContactSensorData.force_matrix_w`. Please check the documentation "
+"on `RigidContactView`_ for more details."
+msgstr ""
+
+#: of omni.isaac.lab.sensors.contact_sensor.contact_sensor.ContactSensor:17
+msgid ""
+"The reporting of the filtered contact forces is only possible as one-to-"
+"many. This means that only one sensor body in an environment can be "
+"filtered against multiple bodies in that environment. If you need to "
+"filter multiple sensor bodies against multiple bodies, you need to create"
+" separate sensors for each sensor body."
+msgstr ""
+
+#: of omni.isaac.lab.sensors.contact_sensor.contact_sensor.ContactSensor:22
+msgid ""
+"As an example, suppose you want to report the contact forces for all the "
+"feet of a robot against an object exclusively. In that case, setting the "
+":attr:`ContactSensorCfg.prim_path` and "
+":attr:`ContactSensorCfg.filter_prim_paths_expr` with "
+"``{ENV_REGEX_NS}/Robot/.*_FOOT`` and ``{ENV_REGEX_NS}/Object`` "
+"respectively will not work. Instead, you need to create a separate sensor"
+" for each foot and filter it against the object."
 msgstr ""
 
 #: of
@@ -2151,7 +2175,7 @@ msgstr ""
 #: ../../docstring of omni.isaac.lab.sensors.ContactSensorData.net_forces_w:1
 #: omni.isaac.lab.sensors.ContactSensorData.net_forces_w_history:1
 #: omni.isaac.lab.sensors.ContactSensorData.pos_w:1:<autosummary>:1
-msgid "The net contact forces in world frame."
+msgid "The net normal contact forces in world frame."
 msgstr ""
 
 #: of omni.isaac.lab.sensors.ContactSensorData.pos_w:1:<autosummary>:1
@@ -2169,8 +2193,8 @@ msgstr ""
 #: ../../docstring of omni.isaac.lab.sensors.ContactSensorData.force_matrix_w:1
 #: omni.isaac.lab.sensors.ContactSensorData.pos_w:1:<autosummary>:1
 msgid ""
-"The contact forces filtered between the sensor bodies and filtered bodies"
-" in world frame."
+"The normal contact forces filtered between the sensor bodies and filtered"
+" bodies in world frame."
 msgstr ""
 
 #: of omni.isaac.lab.sensors.ContactSensorData.pos_w:1:<autosummary>:1
@@ -2228,7 +2252,7 @@ msgstr ""
 #: ../../docstring of omni.isaac.lab.sensors.ContactSensorData.pos_w:5
 #: omni.isaac.lab.sensors.ContactSensorData.quat_w:5
 msgid ""
-"If the :attr:`ContactSensorCfg.track_pose` is False, then this qunatity "
+"If the :attr:`ContactSensorCfg.track_pose` is False, then this quantity "
 "is None."
 msgstr ""
 
@@ -2241,6 +2265,14 @@ msgstr ""
 msgid ""
 "Shape is (N, B, 3), where N is the number of sensors and B is the number "
 "of bodies in each sensor."
+msgstr ""
+
+#: ../../docstring of omni.isaac.lab.sensors.ContactSensorData.net_forces_w:7
+#: omni.isaac.lab.sensors.ContactSensorData.net_forces_w_history:10
+msgid ""
+"This quantity is the sum of the normal contact forces acting on the "
+"sensor bodies. It must not be confused with the total contact forces "
+"acting on the sensor bodies (which also includes the tangential forces)."
 msgstr ""
 
 #: ../../docstring of
@@ -2391,6 +2423,17 @@ msgstr ""
 msgid ""
 "Example: ``{ENV_REGEX_NS}/Object`` will be replaced with "
 "``/World/envs/env_.*/Object``."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.sensors.ContactSensorCfg.filter_prim_paths_expr:15
+msgid ""
+"The reporting of filtered contacts only works when the sensor primitive "
+":attr:`prim_path` corresponds to a single primitive in that environment. "
+"If the sensor primitive corresponds to multiple primitives, the filtering"
+" will not work as expected. Please check "
+":class:`~omni.isaac.lab.sensors.contact_sensor.ContactSensor` for more "
+"details."
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.sensors.ContactSensorCfg.visualizer_cfg:1
@@ -3257,4 +3300,26 @@ msgid ""
 "List of sensor names/types to enable for the camera. Defaults to "
 "[\"distance_to_image_plane\"]."
 msgstr ""
+
+#~ msgid ""
+#~ "The sensor can be configured to "
+#~ "report the contact forces on a set"
+#~ " of bodies with a given filter "
+#~ "pattern. Please check the documentation "
+#~ "on `RigidContactView`_ for more details."
+#~ msgstr ""
+
+#~ msgid "The net contact forces in world frame."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The contact forces filtered between the"
+#~ " sensor bodies and filtered bodies in"
+#~ " world frame."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If the :attr:`ContactSensorCfg.track_pose` is "
+#~ "False, then this qunatity is None."
+#~ msgstr ""
 
