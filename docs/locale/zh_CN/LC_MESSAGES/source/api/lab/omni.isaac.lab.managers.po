@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-07 07:55+0000\n"
+"POT-Creation-Date: 2024-08-25 14:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: ../../source/api/lab/omni.isaac.lab.managers.rst:2
 msgid "omni.isaac.lab.managers"
@@ -961,11 +961,15 @@ msgid ""
 "groups or for a specific group. The observations are computed by calling "
 "the registered functions for each term in the group. The functions are "
 "called in the order of the terms in the group. The functions are expected"
-" to return a tensor with shape (num_envs, ...). If a corruption/noise "
-"model is registered for a term, the function is called to corrupt the "
-"observation. The corruption function is expected to return a tensor with "
-"the same shape as the observation. The observations are clipped and "
-"scaled as per the configuration settings."
+" to return a tensor with shape (num_envs, ...)."
+msgstr ""
+
+#: of omni.isaac.lab.managers.observation_manager.ObservationManager:28
+msgid ""
+"If a noise model or custom modifier is registered for a term, the "
+"function is called to corrupt the observation. The corruption function is"
+" expected to return a tensor with the same shape as the observation. The "
+"observations are clipped and scaled as per the configuration settings."
 msgstr ""
 
 #: of
@@ -1155,22 +1159,48 @@ msgstr ""
 
 #: of
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:7
+msgid "The following steps are performed for each observation term:"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:9
+msgid "Compute observation term by calling the function"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:10
 msgid ""
-"If a corruption/noise model is registered for a term, the function is "
-"called to corrupt the observation. The corruption function is expected to"
-" return a tensor with the same shape as the observation. The observations"
-" are clipped and scaled as per the configuration settings."
+"Apply custom modifiers in the order specified in "
+":attr:`ObservationTermCfg.modifiers`"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:11
+msgid "Apply corruption/noise model based on :attr:`ObservationTermCfg.noise`"
 msgstr ""
 
 #: of
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:12
-msgid ""
-"The operations are performed in the order: compute, add corruption/noise,"
-" clip, scale. By default, no scaling or clipping is applied."
+msgid "Apply clipping based on :attr:`ObservationTermCfg.clip`"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:13
+msgid "Apply scaling based on :attr:`ObservationTermCfg.scale`"
 msgstr ""
 
 #: of
 #: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:15
+msgid ""
+"We apply noise to the computed term first to maintain the integrity of "
+"how noise affects the data as it truly exists in the real world. If the "
+"noise is applied after clipping or scaling, the noise could be "
+"artificially constrained or amplified, which might misrepresent how noise"
+" naturally occurs in the data."
+msgstr ""
+
+#: of
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:20
 msgid ""
 "The name of the group for which to compute the observations. Defaults to "
 "None, in which case observations for all the groups are computed and "
@@ -1178,7 +1208,7 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:18
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:23
 msgid ""
 "Depending on the group's configuration, the tensors for individual "
 "observation terms are concatenated along the last dimension into a single"
@@ -1187,7 +1217,7 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:22
+#: omni.isaac.lab.managers.observation_manager.ObservationManager.compute_group:27
 msgid "If input ``group_name`` is not a valid group handled by the manager."
 msgstr ""
 
@@ -1265,6 +1295,16 @@ msgid "The name of the function to be called."
 msgstr ""
 
 #: of omni.isaac.lab.managers.ObservationTermCfg.func:1:<autosummary>:1
+msgid ""
+":py:obj:`modifiers "
+"<omni.isaac.lab.managers.ObservationTermCfg.modifiers>`\\"
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationTermCfg.func:1:<autosummary>:1
+msgid "The list of data modifiers to apply to the observation in order."
+msgstr ""
+
+#: of omni.isaac.lab.managers.ObservationTermCfg.func:1:<autosummary>:1
 msgid ":py:obj:`noise <omni.isaac.lab.managers.ObservationTermCfg.noise>`\\"
 msgstr ""
 
@@ -1293,6 +1333,26 @@ msgid ""
 "This function should take the environment object and any other parameters"
 " as input and return the observation signal as torch float tensors of "
 "shape (num_envs, obs_term_dim)."
+msgstr ""
+
+#: ../../docstring of omni.isaac.lab.managers.ObservationTermCfg.modifiers:1
+msgid ""
+"The list of data modifiers to apply to the observation in order. Defaults"
+" to None, in which case no modifications will be applied."
+msgstr ""
+
+#: ../../docstring of omni.isaac.lab.managers.ObservationTermCfg.modifiers:4
+msgid ""
+"Modifiers are applied in the order they are specified in the list. They "
+"can be stateless or stateful, and can be used to apply transformations to"
+" the observation data. For example, a modifier can be used to normalize "
+"the observation data or to apply a rolling average."
+msgstr ""
+
+#: ../../docstring of omni.isaac.lab.managers.ObservationTermCfg.modifiers:8
+msgid ""
+"For more information on modifiers, see the "
+":class:`~omni.isaac.lab.utils.modifiers.ModifierCfg` class."
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.managers.ObservationTermCfg.noise:1
@@ -1903,36 +1963,66 @@ msgid ""
 " terms."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:5
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:3
 msgid ""
-"For interval mode, the time step of the environment is used to determine "
-"if the event should be applied."
+"This function iterates over all the event terms in the specified mode and"
+" calls the function corresponding to the term. The function is called "
+"with the environment instance and the environment indices to apply the "
+"event to."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:8
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:7
+msgid ""
+"For the \"interval\" mode, the function is called when the time interval "
+"has passed. This requires specifying the time step of the environment."
+msgstr ""
+
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:10
+msgid ""
+"For the \"reset\" mode, the function is called when the mode is \"reset\""
+" and the total number of environment steps that have happened since the "
+"last trigger of the function is equal to its configured parameter for the"
+" number of environment steps between resets."
+msgstr ""
+
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:14
 msgid "The mode of event."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:9
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:15
 msgid ""
 "The indices of the environments to apply the event to. Defaults to None, "
-"in which case the event is applied to all environments."
+"in which case the event is applied to all environments when applicable."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:11
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:17
 msgid ""
 "The time step of the environment. This is only used for the \"interval\" "
 "mode. Defaults to None to simplify the call for other modes."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:13
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:19
 msgid ""
-"The environment step count of the task. This is only used for the "
-"\"reset\" mode. Defaults to None to simplify the call for other modes."
+"The total number of environment steps that have happened. This is only "
+"used for the \"reset\" mode. Defaults to None to simplify the call for "
+"other modes."
 msgstr ""
 
-#: of omni.isaac.lab.managers.event_manager.EventManager.apply:16
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:22
 msgid "If the mode is ``\"interval\"`` and the time step is not provided."
+msgstr ""
+
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:23
+msgid ""
+"If the mode is ``\"interval\"`` and the environment indices are provided."
+" This is an undefined     behavior as the environment indices are "
+"computed based on the time left for each environment."
+msgstr ""
+
+#: of omni.isaac.lab.managers.event_manager.EventManager.apply:24
+msgid ""
+"If the mode is ``\"reset\"`` and the total number of environment steps "
+"that have happened     is not provided."
 msgstr ""
 
 #: of omni.isaac.lab.managers.event_manager.EventManager.set_term_cfg:3
@@ -1988,8 +2078,7 @@ msgid ""
 "<omni.isaac.lab.managers.EventTermCfg.interval_range_s>`\\"
 msgstr ""
 
-#: ../../docstring of omni.isaac.lab.managers.EventTermCfg.interval_range_s:1
-#: omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
+#: of omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
 msgid "The range of time in seconds at which the term is applied."
 msgstr ""
 
@@ -1999,8 +2088,7 @@ msgid ""
 "<omni.isaac.lab.managers.EventTermCfg.is_global_time>`\\"
 msgstr ""
 
-#: ../../docstring of omni.isaac.lab.managers.EventTermCfg.is_global_time:1
-#: omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
+#: of omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
 msgid "Whether randomization should be tracked on a per-environment basis."
 msgstr ""
 
@@ -2010,10 +2098,10 @@ msgid ""
 "<omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset>`\\"
 msgstr ""
 
-#: ../../docstring of
-#: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:1
-#: omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
-msgid "The minimum number of environment steps between when term is applied."
+#: of omni.isaac.lab.managers.EventTermCfg.params:1:<autosummary>:1
+msgid ""
+"The number of environment steps after which the term is applied since its"
+" last application."
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.managers.EventTermCfg.func:3
@@ -2028,6 +2116,12 @@ msgid ""
 "manager Hence, its name is reserved and cannot be used for other modes."
 msgstr ""
 
+#: ../../docstring of omni.isaac.lab.managers.EventTermCfg.interval_range_s:1
+msgid ""
+"The range of time in seconds at which the term is applied. Defaults to "
+"None."
+msgstr ""
+
 #: ../../docstring of omni.isaac.lab.managers.EventTermCfg.interval_range_s:3
 msgid ""
 "Based on this, the interval is sampled uniformly between the specified "
@@ -2036,27 +2130,48 @@ msgid ""
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.managers.EventTermCfg.interval_range_s:7
-#: omni.isaac.lab.managers.EventTermCfg.is_global_time:6
+#: omni.isaac.lab.managers.EventTermCfg.is_global_time:7
 msgid "This is only used if the mode is ``\"interval\"``."
+msgstr ""
+
+#: ../../docstring of omni.isaac.lab.managers.EventTermCfg.is_global_time:1
+msgid ""
+"Whether randomization should be tracked on a per-environment basis. "
+"Defaults to False."
 msgstr ""
 
 #: ../../docstring of omni.isaac.lab.managers.EventTermCfg.is_global_time:3
 msgid ""
-"If True, the same time for the interval is tracked for all the "
-"environments instead of tracking the time per-environment."
+"If True, the same interval time is used for all the environment "
+"instances. If False, the interval time is sampled independently for each "
+"environment instance and the term is applied when the current time hits "
+"the interval time for that instance."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:1
+msgid ""
+"The number of environment steps after which the term is applied since its"
+" last application. Defaults to 0."
 msgstr ""
 
 #: ../../docstring of
 #: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:3
 msgid ""
-"When mode is \"reset\", the term will not be applied on the next reset "
-"unless the number of steps since the last application of the term has "
-"exceeded this. This is useful to avoid calling this term too often and "
-"improve performance."
+"When the mode is \"reset\", the term is only applied if the number of "
+"environment steps since its last application exceeds this quantity. This "
+"helps to avoid calling the term too often, thereby improving performance."
 msgstr ""
 
 #: ../../docstring of
 #: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:7
+msgid ""
+"If the value is zero, the term is applied on every call to the manager "
+"with the mode \"reset\"."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.managers.EventTermCfg.min_step_count_between_reset:9
 msgid "This is only used if the mode is ``\"reset\"``."
 msgstr ""
 
@@ -2865,4 +2980,84 @@ msgid ""
 "logging purposes. If the function returns None, the curriculum state is "
 "not logged."
 msgstr ""
+
+#~ msgid ""
+#~ "The observation manager can be used "
+#~ "to compute observations for all the "
+#~ "groups or for a specific group. "
+#~ "The observations are computed by calling"
+#~ " the registered functions for each "
+#~ "term in the group. The functions "
+#~ "are called in the order of the "
+#~ "terms in the group. The functions "
+#~ "are expected to return a tensor "
+#~ "with shape (num_envs, ...). If a "
+#~ "corruption/noise model is registered for "
+#~ "a term, the function is called to"
+#~ " corrupt the observation. The corruption"
+#~ " function is expected to return a "
+#~ "tensor with the same shape as the"
+#~ " observation. The observations are clipped"
+#~ " and scaled as per the configuration"
+#~ " settings."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If a corruption/noise model is "
+#~ "registered for a term, the function "
+#~ "is called to corrupt the observation."
+#~ " The corruption function is expected "
+#~ "to return a tensor with the same"
+#~ " shape as the observation. The "
+#~ "observations are clipped and scaled as"
+#~ " per the configuration settings."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The operations are performed in the "
+#~ "order: compute, add corruption/noise, clip,"
+#~ " scale. By default, no scaling or "
+#~ "clipping is applied."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "For interval mode, the time step "
+#~ "of the environment is used to "
+#~ "determine if the event should be "
+#~ "applied."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The indices of the environments to "
+#~ "apply the event to. Defaults to "
+#~ "None, in which case the event is"
+#~ " applied to all environments."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The environment step count of the "
+#~ "task. This is only used for the"
+#~ " \"reset\" mode. Defaults to None to"
+#~ " simplify the call for other modes."
+#~ msgstr ""
+
+#~ msgid "The minimum number of environment steps between when term is applied."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If True, the same time for the "
+#~ "interval is tracked for all the "
+#~ "environments instead of tracking the "
+#~ "time per-environment."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "When mode is \"reset\", the term "
+#~ "will not be applied on the next"
+#~ " reset unless the number of steps "
+#~ "since the last application of the "
+#~ "term has exceeded this. This is "
+#~ "useful to avoid calling this term "
+#~ "too often and improve performance."
+#~ msgstr ""
 
