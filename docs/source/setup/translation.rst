@@ -1,6 +1,8 @@
 About Translation
 =========================
 
+**本翻译项目不属于 NVIDIA 官方文档，仅供学习交流使用。**
+
 原版英文文档网站： `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__ 
 
 中文翻译文档网站： `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__ 
@@ -9,12 +11,12 @@ About Translation
 
 .. note::
 
-   随着本站用户的日渐增多，轻量服务器已经承受不住如此大的访问负载。如您认可本站的工作，可以通过下面的赞赏码打赏。收到的赞赏均用于服务器升级，如有剩余将用于水滴筹等公益救助事业，感谢您的支持！
+   随着本站用户的日渐增多，轻量服务器已经承受不住如此大的访问负载。如您认可本站的工作，可以通过下面的赞赏码打赏。收到的赞赏均用于服务器升级，如有剩余将用于公益救助事业，感谢您的支持！
 
    赞赏名单： **H\*R** 、 **\*彡** 、 **b\*k** 、 **\*涛** 、 **\*航** 、 **\*靖** 
 
    .. figure:: ../_static/thanks.png
-      :width: 500px
+      :width: 450px
       :align: center
       :alt: 赞赏码
 
@@ -58,6 +60,7 @@ About Translation
 更新日志
 -----------------------------
 
+* **2024-08-25** 多处内容更新，多处格式校正。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-08-07** 自动merge有问题，改为定期手动同步。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-30** 修复了很多格式及翻译问题，增加赞赏码。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
 * **2024-07-27** 同步文档至v1.1.0。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
