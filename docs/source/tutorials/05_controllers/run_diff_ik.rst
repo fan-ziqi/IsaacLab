@@ -140,6 +140,7 @@ previous tutorials.
 The Code Execution
 ~~~~~~~~~~~~~~~~~~
 
+
 Now that we have gone through the code, let's run the script and see the result:
 
 .. code-block:: bash
