@@ -151,19 +151,17 @@ msgstr ""
 "Isaac Lab存储库的根目录包含名为 ``docker`` 的目录，其中包含运行Isaac Lab所需的各种文件和脚本。以下是其中的一部分摘要 :"
 
 #: ../../source/deployment/docker.rst:76
-#, fuzzy
 msgid ""
 "**Dockerfile.base**: Defines the base Isaac Lab image by overlaying its "
 "dependencies onto the Isaac Sim Docker image. Dockerfiles which end with "
 "something else, (i.e. ``Dockerfile.ros2``) build an `image extension "
 "<#isaac-lab-image-extensions>`_."
 msgstr ""
-"``Dockerfile.base``: 通过将Isaac Lab的依赖项覆盖 Isaac Sim Docker "
-"镜像，定义了isaaclab镜像。以其他内容结尾的 ``Dockerfiles`` (即 ``Dockerfile.ros2`` )构建了一个 "
-"`image_extension <#isaac-lab-image-extensions>`_ 。"
+"**Dockerfile.base**: 定义了基础 Isaac Lab 镜像，通过将其依赖项叠加到 Isaac Sim Docker "
+"镜像上。以其他名称结尾的 Dockerfile（即 ``Dockerfile.ros2`` ）构建 `image extension <#isaac-"
+"lab-image-extensions>`_ 。"
 
 #: ../../source/deployment/docker.rst:78
-#, fuzzy
 msgid ""
 "**docker-compose.yaml**: Creates mounts to allow direct editing of Isaac Lab"
 " code from the host machine that runs the container. It also creates several"
@@ -171,33 +169,30 @@ msgid ""
 "resources compiled by Isaac Sim, such as shaders, and to retain logs, data, "
 "and documents."
 msgstr ""
-"``docker-compose.yaml``: 创建挂载点，允许从运行容器的主机直接编辑Isaac Lab代码。还创建了几个命名卷，如 "
-"``isaac-cache-kit`` 用于存储Isaac Sim编译的经常复用的资源，如着色器，以及保留日志、数据和文件。"
+"**docker-compose.yaml**: 创建挂载以允许从运行容器的主机直接编辑 Isaac Lab 代码。它还创建了几个命名卷，例如 "
+"``isaac-cache-kit`` ，用于存储 Isaac Sim 编译的频繁重用的资源，如着色器，并保留日志、数据和文档。"
 
 #: ../../source/deployment/docker.rst:81
-#, fuzzy
 msgid ""
 "**.env.base**: Stores environment variables required for the ``base`` build "
 "process and the container itself. ``.env`` files which end with something "
 "else (i.e. ``.env.ros2``) define these for `image extension <#isaac-lab-"
 "image-extensions>`_."
 msgstr ""
-"``base.env``: 存储需要 ``base`` 构建过程和容器本身所需的环境变量。其他以其他内容结尾的 ``.env`` 文件(即 "
-"``.env.ros2``)为 `image_extension <#isaac-lab-image-extensions>`_ 定义了这些变量。"
+"**.env.base**: 存储 ``base`` 构建过程和容器本身所需的环境变量。以其他内容结尾的 ``.env`` 文件（即 "
+"``.env.ros2`` ）为 `image extension <#isaac-lab-image-extensions>`_ 定义这些变量。"
 
 #: ../../source/deployment/docker.rst:83
-#, fuzzy
 msgid ""
 "**container.py**: A utility script that interfaces with tools in ``utils`` "
 "to configure and build the image, and run and interact with the container."
-msgstr "``container.sh``: 一个包装了 ``docker compose`` 命令的脚本，用于构建镜像和运行容器。"
+msgstr "**container.py**: 一个实用脚本，它与 ``utils`` 中的工具接口，配置和构建镜像，并运行和交互容器。"
 
 #: ../../source/deployment/docker.rst:87
 msgid "Running the Container"
 msgstr "运行容器"
 
 #: ../../source/deployment/docker.rst:91
-#, fuzzy
 msgid ""
 "The docker container copies all the files from the repository into the "
 "container at the location ``/workspace/isaaclab`` at build time. This means "
@@ -205,8 +200,9 @@ msgid ""
 "reflected in the repository after the image has been built, i.e. after "
 "``./container.py start`` is run."
 msgstr ""
-"Docker容器在构建时将存储库中的所有文件复制到位置为 ``/workspace/isaaclab`` "
-"的容器中。这意味着对容器中文件的任何更改通常在构建镜像后不会反映在存储库中，即在运行 ```./container.sh start``` 后。"
+"Docker容器在构建时将所有文件从仓库复制到容器中的 "
+"``/workspace/isaaclab`` 路径。这意味着在构建完成后，即在运行 ``./container.py start`` "
+"后，对容器中的文件所做的任何更改通常不会反映到仓库中。"
 
 #: ../../source/deployment/docker.rst:95
 msgid ""
@@ -216,45 +212,42 @@ msgid ""
 msgstr "为了使开发周期更快，我们将Isaac Lab存储库中的以下目录挂载到容器中，以便您可以从主机编辑其文件 :"
 
 #: ../../source/deployment/docker.rst:98
-#, fuzzy
 msgid ""
 "**IsaacLab/source**: This is the directory that contains the Isaac Lab "
 "source code."
-msgstr "``source``: 包含Isaac Lab源代码的目录。"
+msgstr "**IsaacLab/source**: 这是包含 Isaac Lab 源代码的目录。"
 
 #: ../../source/deployment/docker.rst:99
-#, fuzzy
 msgid ""
 "**IsaacLab/docs**: This is the directory that contains the source code for "
 "Isaac Lab documentation. This is overlaid except for the ``_build`` "
 "subdirectory where build artifacts are stored."
-msgstr "``docs``: 包含Isaac Lab文档源代码的目录。这是除了保存构建工件的 ``_build`` 子目录之外的所有东西。"
+msgstr ""
+"**IsaacLab/docs**: 这是包含 Isaac Lab 文档源代码的目录。这个目录会被覆盖，但 ``_build`` "
+"子目录除外，后者存储了构建生成的工件。"
 
 #: ../../source/deployment/docker.rst:103
-#, fuzzy
 msgid ""
 "The script ``container.py`` parallels basic ``docker compose`` commands. "
 "Each can accept an `image extension argument <#isaac-lab-image-"
 "extensions>`_, or else they will default to the ``base`` image extension. "
 "These commands are:"
 msgstr ""
-"脚本 ``container.sh`` 包围了三个基本的 ``docker compose`` 命令。每个命令都可以接受一个 "
-"`image_extension argument <#isaac-lab-image-extensions>`_ "
-"，否则它们将默认为image_extension ``base``:"
+"脚本 ``container.py`` 与基本的 ``docker compose`` 命令相对应。每个命令都可以接受一个 `image "
+"extension argument <#isaac-lab-image-extensions>`_ ，否则它们将默认为 ``base`` "
+"镜像扩展。这些命令是： "
 
 #: ../../source/deployment/docker.rst:106
-#, fuzzy
 msgid ""
 "**start**: This builds the image and brings up the container in detached "
 "mode (i.e. in the background)."
-msgstr "``start``: 这会构建镜像并在分离模式下 (即后台模式)启动容器。"
+msgstr "这会构建镜像并以分离模式（即在后台）启动容器。"
 
 #: ../../source/deployment/docker.rst:107
-#, fuzzy
 msgid ""
 "**enter**: This begins a new bash process in an existing Isaac Lab "
 "container, and which can be exited without bringing down the container."
-msgstr "``enter``: 这在现有的isaaclab容器中启动一个新的 bash 进程，退出该进程不会关闭容器。"
+msgstr "**enter**: 这会在现有的 Isaac Lab 容器中开始一个新的 bash 进程，并且可以退出而不会关闭容器。"
 
 #: ../../source/deployment/docker.rst:109
 msgid ""
@@ -262,11 +255,10 @@ msgid ""
 "inputs given to ``container.py start``. This command is useful for debugging"
 " a compose configuration."
 msgstr ""
-"**config**: 这会输出 `compose.yaml`，该文件是根据提供给 ``container.py start`` "
+"**config**: 这会输出 compose.yaml，该文件是根据提供给 ``container.py start`` "
 "的输入生成的。此命令对于调试 `compose` 配置非常有用。"
 
 #: ../../source/deployment/docker.rst:111
-#, fuzzy
 msgid ""
 "**copy**: This copies the ``logs``, ``data_storage`` and ``docs/_build`` "
 "artifacts, from the ``isaac-lab-logs``, ``isaac-lab-data`` and ``isaac-lab-"
@@ -274,14 +266,13 @@ msgid ""
 "artifacts persist between docker container instances and are shared between "
 "image extensions."
 msgstr ""
-"``copy``: 这将 ``logs``, ``data_storage`` 和 ``docs/_build`` 工件从分别的 ``isaac-"
-"lab-logs``, ``isaac-lab-data`` 和 ``isaac-lab-docs`` 卷复制到 "
-"``docker/artifacts`` 目录中。这些工件在 Docker 容器实例之间持续存在，并在镜像扩展之间共享。"
+"**copy**: 这会将 ``logs`` 、 ``data_storage`` 和 ``docs/_build`` 文件从 ``isaac-lab-"
+"logs`` 、 ``isaac-lab-data`` 和 ``isaac-lab-docs`` 卷中分别复制到 ``docker/artifacts`` "
+"目录。这些文件在 docker 容器实例之间保持不变，并在镜像扩展之间共享。"
 
 #: ../../source/deployment/docker.rst:113
-#, fuzzy
 msgid "**stop**: This brings down the container and removes it."
-msgstr "``stop``: 这会关闭容器并删除它。"
+msgstr "**stop**: 这会关闭容器并将其删除。"
 
 #: ../../source/deployment/docker.rst:115
 msgid ""
@@ -296,15 +287,14 @@ msgid ""
 msgstr "要将文件从基础容器复制到主机，您可以使用以下命令："
 
 #: ../../source/deployment/docker.rst:138
-#, fuzzy
 msgid ""
 "The script ``container.py`` provides a wrapper around this command to copy "
 "the ``logs`` , ``data_storage`` and ``docs/_build`` directories to the "
 "``docker/artifacts`` directory. This is useful for copying the logs, data "
 "and documentation:"
 msgstr ""
-"脚本 ``container.sh`` 包装了此命令以将 ``logs``, ``data_storage`` 和 ``docs/_build`` "
-"目录复制到 ``docker/artifacts`` 目录。这对于复制日志、数据和文档非常有用 :"
+"脚本 ``container.py`` 提供了一个封装此命令的方式，将 ``logs`` 、 ``data_storage`` 和 "
+"``docs/_build`` 目录复制到 ``docker/artifacts`` 目录。这对于复制日志、数据和文档非常有用："
 
 #: ../../source/deployment/docker.rst:148
 msgid "X11 forwarding"
@@ -317,16 +307,14 @@ msgid ""
 msgstr "容器支持 X11 转发，允许用户在容器中运行 GUI 应用程序，并在主机上显示它们。"
 
 #: ../../source/deployment/docker.rst:153
-#, fuzzy
 msgid ""
 "The first time a container is started with ``./docker/container.py start``, "
 "the script prompts the user whether to activate X11 forwarding. This will "
 "create a file at ``docker/.container.cfg`` to store the user's choice for "
 "future runs."
 msgstr ""
-"首次使用 ``./docker/container.sh start`` 启动容器时，脚本会提示用户是否启用 X11 转发。这将创建一个文件 "
-"``docker/.container.yaml`` 以存储用户的选择。随后，可以通过在 ``docker/.container.yaml`` 中将 "
-"``__ISAACLAB_X11_FORWARDING_ENABLED`` 更改为 0 或 1 来切换 X11 转发功能。"
+"第一次使用 ``./docker/container.py start`` 启动容器时，脚本会提示用户是否激活 X11 转发。这将创建一个位于 "
+"``docker/.container.cfg`` 的文件，以存储用户的选择以供将来使用。"
 
 #: ../../source/deployment/docker.rst:157
 msgid ""
@@ -398,7 +386,7 @@ msgstr "/isaac-sim/kit/cache"
 
 #: ../../source/deployment/docker.rst:195
 msgid "isaac-cache-ov"
-msgstr "`isaac-cache-ov`"
+msgstr "isaac-cache-ov"
 
 #: ../../source/deployment/docker.rst:196
 msgid "Stores cached OV resources"
@@ -410,7 +398,7 @@ msgstr "/root/.cache/ov"
 
 #: ../../source/deployment/docker.rst:198
 msgid "isaac-cache-pip"
-msgstr "`isaac-cache-pip`"
+msgstr "isaac-cache-pip"
 
 #: ../../source/deployment/docker.rst:199
 msgid "Stores cached pip resources"
@@ -418,11 +406,11 @@ msgstr "存储缓存的 pip 资源"
 
 #: ../../source/deployment/docker.rst:200
 msgid "/root/.cache/pip"
-msgstr "/ root/ `.cache` / pip"
+msgstr "/root/.cache/pip"
 
 #: ../../source/deployment/docker.rst:201
 msgid "isaac-cache-gl"
-msgstr "`isaac-cache-gl`"
+msgstr "isaac-cache-gl"
 
 #: ../../source/deployment/docker.rst:202
 msgid "Stores cached GLCache resources"
@@ -430,11 +418,11 @@ msgstr "存储缓存的 GLCache 资源"
 
 #: ../../source/deployment/docker.rst:203
 msgid "/root/.cache/nvidia/GLCache"
-msgstr "/ root / .cache / `nvidia` / GLCache"
+msgstr "/root/.cache/nvidia/GLCache"
 
 #: ../../source/deployment/docker.rst:204
 msgid "isaac-cache-compute"
-msgstr "`isaac-cache-compute`"
+msgstr "isaac-cache-compute"
 
 #: ../../source/deployment/docker.rst:205
 msgid "Stores cached compute resources"
@@ -442,11 +430,11 @@ msgstr "存储缓存的计算资源"
 
 #: ../../source/deployment/docker.rst:206
 msgid "/root/.nv/ComputeCache"
-msgstr "/ root / . nv / ComputeCache"
+msgstr "/root/.nv/ComputeCache"
 
 #: ../../source/deployment/docker.rst:207
 msgid "isaac-logs"
-msgstr "`isaac-logs`"
+msgstr "isaac-logs"
 
 #: ../../source/deployment/docker.rst:208
 msgid "Stores logs generated by Omniverse"
@@ -454,7 +442,7 @@ msgstr "存储由 Omniverse 生成的日志"
 
 #: ../../source/deployment/docker.rst:209
 msgid "/root/.nvidia-omniverse/logs"
-msgstr "/root/.nvidia-omniverse/日志"
+msgstr "/root/.nvidia-omniverse/logs"
 
 #: ../../source/deployment/docker.rst:210
 msgid "isaac-carb-logs"
@@ -462,7 +450,7 @@ msgstr "isaac-carb-logs"
 
 #: ../../source/deployment/docker.rst:211
 msgid "Stores logs generated by carb"
-msgstr "存储由 `carb` 生成的日志"
+msgstr "存储由 carb 生成的日志"
 
 #: ../../source/deployment/docker.rst:212
 msgid "/isaac-sim/kit/logs/Kit/Isaac-Sim"
@@ -470,7 +458,7 @@ msgstr "/isaac-sim/kit/logs/Kit/Isaac-Sim"
 
 #: ../../source/deployment/docker.rst:213
 msgid "isaac-data"
-msgstr "`isaac-data`"
+msgstr "isaac-data"
 
 #: ../../source/deployment/docker.rst:214
 msgid "Stores data generated by Omniverse"
@@ -482,7 +470,7 @@ msgstr "/root/.local/share/ov/data"
 
 #: ../../source/deployment/docker.rst:216
 msgid "isaac-docs"
-msgstr "`Isaac Docs`"
+msgstr "isaac-docs"
 
 #: ../../source/deployment/docker.rst:217
 msgid "Stores documents generated by Omniverse"
@@ -494,11 +482,11 @@ msgstr "/root/Documents"
 
 #: ../../source/deployment/docker.rst:219
 msgid "isaac-lab-docs"
-msgstr "`isaac-lab-docs`"
+msgstr "isaac-lab-docs"
 
 #: ../../source/deployment/docker.rst:220
 msgid "Stores documentation of Isaac Lab when built inside the container"
-msgstr "存储 `Isaac Lab` 的文档，当在容器内构建时"
+msgstr "存储 Isaac Lab 的文档，当在容器内构建时"
 
 #: ../../source/deployment/docker.rst:221
 msgid "/workspace/isaaclab/docs/_build"
@@ -506,26 +494,20 @@ msgstr "/workspace/isaaclab/docs/_build"
 
 #: ../../source/deployment/docker.rst:222
 msgid "isaac-lab-logs"
-msgstr "`isaac-lab-logs`"
+msgstr "isaac-lab-logs"
 
 #: ../../source/deployment/docker.rst:223
-#, fuzzy
 msgid ""
 "Stores logs generated by Isaac Lab workflows when run inside the container"
-msgstr ""
-"``isaac-lab-logs``: 该卷用于存储在容器内运行时由 Isaac Lab 工作流生成的日志。 (容器中的 "
-"``/workspace/isaaclab/logs`` )"
+msgstr "存储由 Isaac Lab 工作流生成的日志，当它们在容器内运行时"
 
 #: ../../source/deployment/docker.rst:224
 msgid "/workspace/isaaclab/logs"
-msgstr "/工作区/`Isaac Lab`/日志"
+msgstr "/workspace/isaaclab/logs"
 
 #: ../../source/deployment/docker.rst:225
 msgid "isaac-lab-data"
-msgstr ""
-"```\n"
-"isaac-lab-data\n"
-"```"
+msgstr "isaac-lab-data"
 
 #: ../../source/deployment/docker.rst:226
 msgid "Stores whatever data users may want to preserve between container runs"
@@ -542,10 +524,9 @@ msgstr "要查看这些卷的内容，您可以使用以下命令："
 
 #: ../../source/deployment/docker.rst:241
 msgid "Isaac Lab Image Extensions"
-msgstr "Isaac Lab 图像扩展"
+msgstr "Isaac Lab 镜像扩展"
 
 #: ../../source/deployment/docker.rst:243
-#, fuzzy
 msgid ""
 "The produced image depends upon the arguments passed to ``container.py "
 "start`` and ``container.py stop``. These commands accept an image extension "
@@ -555,29 +536,27 @@ msgid ""
 "produced container will be named ``isaac-lab-${profile}``, where "
 "``${profile}`` is the image extension name."
 msgstr ""
-"生成的图像取决于传递给 ``./container.sh start`` 和 ``./container.sh stop`` 的参数。这些命令接受一个 "
-"``image_extension`` 作为额外参数。 如果未传递参数，则这些命令默认为 ``base`` 。 当前，唯一有效的 "
-"``image_extension`` 参数是（ ``base`` ， ``ros2`` ）。 一次只能传递一个 ``image_extension``"
-" ，并且生成的容器将命名为 ``isaaclab`` 。"
+"生成的镜像取决于传递给 ``container.py start`` 和 ``container.py stop`` "
+"的参数。这些命令接受一个镜像扩展参数作为附加参数。如果没有传递参数，则该参数默认为 ``base`` 。目前，唯一有效的值是 (``base``, "
+"``ros2`` )。一次只能传递一个镜像扩展。生成的容器将被命名为 ``isaac-lab-${profile}`` ，其中 ``${profile}``"
+" 是镜像扩展名。"
 
 #: ../../source/deployment/docker.rst:260
-#, fuzzy
 msgid ""
 "The passed image extension argument will build the image defined in "
 "``Dockerfile.${image_extension}``, with the corresponding `profile`_ in the "
 "``docker-compose.yaml`` and the envars from ``.env.${image_extension}`` in "
 "addition to the ``.env.base``, if any."
 msgstr ""
-"传递的 ``image_extension`` 参数将构建 ``Dockerfile.${image_extension}`` 中定义的图像，该图像在 "
-"``docker-compose.yaml`` 中具有相应的 `profile`_ 和 ``.env.${image_extension}`` "
-"文件中包含的环境变量以及 ``.env.base`` 文件，如果有的话。"
+"传递的镜像扩展名参数将构建在 ``Dockerfile.${image_extension}`` 中定义的镜像，使用 ``docker-"
+"compose.yaml`` 中的对应 `profile`_ 和来自 ``.env.${image_extension}`` 的环境变量，以及 "
+"``.env.base`` ，如果有的话。"
 
 #: ../../source/deployment/docker.rst:265
 msgid "ROS2 Image Extension"
-msgstr "ROS2 图像扩展"
+msgstr "ROS2 镜像扩展"
 
 #: ../../source/deployment/docker.rst:267
-#, fuzzy
 msgid ""
 "In ``Dockerfile.ros2``, the container installs ROS2 Humble via an `apt "
 "package`_, and it is sourced in the ``.bashrc``. The exact version is "
@@ -586,11 +565,9 @@ msgid ""
 " in the ``.env.ros2`` file, including variables defining the `various "
 "middleware`_ options."
 msgstr ""
-"在 ``Dockerfile.ros2`` 中，容器通过 `apt package`_ 安装了 ROS2 Humble，并在 ``.bashrc`` "
-"中进行了源化。 具体版本由 ``.env.ros2`` 文件中的变量 ``ROS_APT_PACKAGE`` 指定， 默认为 ``ros-base`` "
-"。 ``.env.ros2`` 文件中还指定了其他相关的 ROS2 变量，包括定义 `各种中间件`_ 选项的变量。 容器默认为 ``FastRTPS``"
-" ，但也支持 ``CylconeDDS`` 。 这些中间件中的每一个都可以使用它们在 ``docker/.ros`` 下对应的 ``.xml`` "
-"文件进行 `tuned`_ 。"
+"在 ``Dockerfile.ros2`` 中，容器通过 `apt package`_ 安装 ROS2 Humble，并在 ``.bashrc`` "
+"中进行了源配置。具体版本由 ``.env.ros2`` 文件中的变量 ``ROS_APT_PACKAGE`` 指定，默认为 ``ros-"
+"base`` 。其他相关的 ROS2 变量也在 ``.env.ros2`` 文件中指定，包括定义 `various middleware`_ 选项的变量。"
 
 #: ../../source/deployment/docker.rst:272
 msgid ""
@@ -602,9 +579,8 @@ msgstr ""
 "``docker/.ros`` 下进行 `tuned`_。"
 
 #: ../../source/deployment/docker.rst
-#, fuzzy
 msgid "Parameters for ROS2 Image Extension"
-msgstr "ROS2 图像扩展"
+msgstr "ROS2 镜像扩展的参数"
 
 #: ../../source/deployment/docker.rst:284
 msgid "Known Issues"
