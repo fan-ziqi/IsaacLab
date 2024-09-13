@@ -13,7 +13,7 @@ About Translation
 
    随着本站用户的日渐增多，轻量服务器已经承受不住如此大的访问负载。如您认可本站的工作，可以通过下面的赞赏码打赏。收到的赞赏均用于服务器升级，如有剩余将用于公益救助事业，感谢您的支持！
 
-   赞赏名单： **H\*R** 、 **\*彡** 、 **b\*k** 、 **\*涛** 、 **\*航** 、 **\*靖** 、 **李\*坤** 、 **\*玉** 、 **胡\*泽**
+   赞赏名单： **H\*R** 、 **\*彡** 、 **b\*k** 、 **\*涛** 、 **\*航** 、 **\*靖** 、 **李\*坤** 、 **\*玉** 、 **胡\*泽** 、 **\*塔**
 
    .. figure:: ../_static/thanks.png
       :width: 450px
@@ -49,7 +49,7 @@ About Translation
    # make po files
    sphinx-intl update -p _build/gettext -l zh_CN
    # transtale to zh_CN
-   python po_translator.py --folder ./locale --lang zh_CN --folder-language
+   python po_translator.py --folder ./locale --lang zh_CN --folder-language --fuzzy
    # make translated html files
    make -e SPHINXOPTS="-D language='zh_CN'" html
    # open on default browser

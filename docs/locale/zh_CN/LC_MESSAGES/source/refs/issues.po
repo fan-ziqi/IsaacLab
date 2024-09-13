@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-05 06:36+0000\n"
+"POT-Creation-Date: 2024-09-13 10:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -90,65 +90,10 @@ msgid ""
 msgstr "我们已向相应的 Omniverse 团队提出了一个功能请求，以完全控制模拟应用的不同部分的步进。然而，目前尚未确定此功能请求的时间表。"
 
 #: ../../source/refs/issues.rst:40
-msgid "Non-determinism in physics simulation"
-msgstr "物理仿真中的非确定性"
-
-#: ../../source/refs/issues.rst:42
-msgid ""
-"Due to GPU work scheduling, there's a possibility that runtime changes to "
-"simulation parameters may alter the order in which operations take place. "
-"This occurs because environment updates can happen while the GPU is occupied"
-" with other tasks. Due to the inherent nature of floating-point numeric "
-"storage, any modification to the execution ordering can result in minor "
-"changes in the least significant bits of output data. These changes may lead"
-" to divergent execution over the course of simulating thousands of "
-"environments and simulation frames."
-msgstr ""
-"由于 GPU 工作调度，运行时对仿真参数的更改有可能改变操作执行顺序。这是因为当 GPU "
-"忙于其他任务时，环境更新可能会发生。由于浮点数存储的固有性质，对执行顺序的任何修改可能会导致输出数据中最不重要的位的微小变化。这些变化可能会导致在模拟数千个环境和仿真帧的过程中执行发散。"
-
-#: ../../source/refs/issues.rst:49
-msgid ""
-"An illustrative example of this issue is observed with the runtime domain "
-"randomization of object's physics materials. This process can introduce both"
-" determinancy and simulation issues when executed on the GPU due to the way "
-"these parameters are passed from the CPU to the GPU in the lower-level APIs."
-" Consequently, it is strongly advised to perform this operation only at "
-"setup time, before the environment stepping commences."
-msgstr ""
-"此问题的一个示例是观察对象物理材料的运行时域随机化。由于这些参数是通过低级 API 从 CPU 传递到 GPU "
-"的方式，这个过程可能会导致确定性和仿真问题，因此强烈建议仅在设置时间执行此操作，然后才开始环境步进。"
-
-#: ../../source/refs/issues.rst:55
-msgid ""
-"For more information, please refer to the `PhysX Determinism "
-"documentation`_."
-msgstr "要了解更多信息，请参阅 `PhysX Determinism documentation`_ 。"
-
-#: ../../source/refs/issues.rst:57
-msgid ""
-"In addition, due to floating point precision, states across different "
-"environments in the simulation may be non-deterministic when the same set of"
-" actions are applied to the same initial states. This occurs as environments"
-" are placed further apart from the world origin at (0, 0, 0). As actors get "
-"placed at different origins in the world, floating point errors may build up"
-" and result in slight variance in results even when starting from the same "
-"initial states. One possible workaround for this issue is to place all "
-"actors/environments at the world origin at (0, 0, 0) and filter out "
-"collisions between the environments. Note that this may induce a performance"
-" degradation of around 15-50%, depending on the complexity of actors and "
-"environment."
-msgstr ""
-"此外，由于浮点精度的原因，在仿真中不同环境中的状态在应用相同的一组动作到相同的初始状态时可能是非确定性的。这是因为环境被放置在世界原点 (0, 0, "
-"0) "
-"附近。由于演员被放置在世界中不同的原点，浮点错误可能会积累，并导致结果略有不同，即使从相同的初始状态开始。这个问题的一个可能解决方法是将所有演员/环境放置在世界原点"
-" (0, 0, 0) 并且过滤掉环境之间的碰撞。请注意，这可能会导致性能下降约15-50%，具体取决于演员和环境的复杂性。"
-
-#: ../../source/refs/issues.rst:69
 msgid "Blank initial frames from the camera"
 msgstr "摄像头前的空白初始帧"
 
-#: ../../source/refs/issues.rst:71
+#: ../../source/refs/issues.rst:42
 msgid ""
 "When using the :class:`omni.isaac.lab.sensors.Camera` sensor in standalone "
 "scripts, the first few frames may be blank. This is a known issue with the "
@@ -158,17 +103,17 @@ msgstr ""
 "在独立脚本中使用 :class:`~omni.isaac.lab.sensors.Camera` "
 "传感器时，前几帧可能会是空白的。这是一个已知问题，模拟器需要一些步骤来正确加载材质纹理并填充渲染目标。"
 
-#: ../../source/refs/issues.rst:75
+#: ../../source/refs/issues.rst:46
 msgid ""
 "A hack to work around this is to add the following after initializing the "
 "camera sensor and setting its pose:"
 msgstr "解决此问题的一个方法是在初始化摄像头传感器并设置姿势后添加以下内容："
 
-#: ../../source/refs/issues.rst:90
+#: ../../source/refs/issues.rst:61
 msgid "Using instanceable assets for markers"
 msgstr "使用实例化资产作为标记对象"
 
-#: ../../source/refs/issues.rst:92
+#: ../../source/refs/issues.rst:63
 msgid ""
 "When using `instanceable assets`_ for markers, the markers do not work "
 "properly, since Omniverse does not support instanceable assets when using "
@@ -178,7 +123,7 @@ msgstr ""
 "使用 `instanceable assets`_ 作为标记对象时，标记对象不起作用，因为 Omniverse 在使用 "
 ":class:`~UsdGeom.PointInstancer` 模式时不支持实例化资产。这是一个已知问题，将在将来的版本中修复。"
 
-#: ../../source/refs/issues.rst:96
+#: ../../source/refs/issues.rst:67
 msgid ""
 "If you use an instanceable assets for markers, the marker class removes all "
 "the physics properties of the asset. This is then replicated across other "
@@ -189,17 +134,17 @@ msgstr ""
 "如果使用实例化资产作为标记对象，则标记对象类会删除资产的所有物理属性。这会在相同资产的其他引用上复制，因为实例化资产的物理属性存储在实例化资产的 USD"
 " 文件中，而不是在其场景引用的 USD 文件中。"
 
-#: ../../source/refs/issues.rst:106
+#: ../../source/refs/issues.rst:76
 msgid "Exiting the process"
 msgstr "退出进程"
 
-#: ../../source/refs/issues.rst:108
+#: ../../source/refs/issues.rst:78
 msgid ""
 "When exiting a process with ``Ctrl+C``, occasionally the below error may "
 "appear:"
 msgstr "当使用 ``Ctrl+C`` 退出进程时，偶尔会出现以下错误："
 
-#: ../../source/refs/issues.rst:114
+#: ../../source/refs/issues.rst:84
 msgid ""
 "This is due to the termination occurring in the middle of a physics event "
 "call and should not affect the functionality of Isaac Lab. It is safe to "

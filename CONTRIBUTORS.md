@@ -39,6 +39,7 @@ Guidelines for modifications:
 * Brayden Zhang
 * Calvin Yu
 * Chenyu Yang
+* David Yang
 * HoJin Jeon
 * Jean Tampon
 * Jia Lin Yuan
@@ -61,6 +62,7 @@ Guidelines for modifications:
 * Yang Jin
 * Zhengyu Zhang
 * Ziqi Fan
+* Qian Wan
 
 ## Acknowledgements
 

@@ -76,6 +76,7 @@ Table of Contents
    source/features/tiled_rendering
    source/features/environments
    source/features/actuators
+   source/features/reproducibility
    .. source/features/motion_generators
 
 .. toctree::
