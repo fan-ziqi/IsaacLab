@@ -1,11 +1,11 @@
 About Translation
 =========================
 
-**本翻译项目不属于 NVIDIA 官方文档，仅供学习交流使用。**
+**本翻译项目不属于 NVIDIA 官方文档，仅供学习交流使用，禁止转载或用于商业用途。译者：范子琦**
 
-原版英文文档网站： `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__ 
+原版英文文档网站： `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__
 
-中文翻译文档网站： `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__ 
+中文翻译文档网站： `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__
 
 翻译开源在 `fan-ziqi/IsaacLab <https://github.com/fan-ziqi/IsaacLab>`__ ，译者： `github@fan-ziqi <https://github.com/fan-ziqi>`__ 。
 
@@ -60,14 +60,14 @@ About Translation
 更新日志
 -----------------------------
 
-* **2024-08-25** 多处内容更新，多处格式校正。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-08-07** 自动merge有问题，改为定期手动同步。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-07-30** 修复了很多格式及翻译问题，增加赞赏码。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-07-27** 同步文档至v1.1.0。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-07-23** 大部分格式问题均已修复，增加 **译者说** 。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-07-05** 使用正则表达式匹配特定位置并修复大部分错误格式；增加校对文档。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-07-04** 使用Github-Action实现监测官方英文文档变化并自动触发增量翻译。自动构建HTML，上传到gh-pages-zhcn分支，并触发webhook自动同步到阿里云境内服务器，保证国内用户的访问速度。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
-* **2024-07-03** 使用ChatGPT-3.5-API实现批量翻译脚本，对文档进行粗略翻译，但未翻译 ``API`` 和 ``CHANGELOG`` 。 By `fan-ziqi <https://github.com/fan-ziqi>`__ 
+* **2024-08-25** 多处内容更新，多处格式校正。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-08-07** 自动merge有问题，改为定期手动同步。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-07-30** 修复了很多格式及翻译问题，增加赞赏码。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-07-27** 同步文档至v1.1.0。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-07-23** 大部分格式问题均已修复，增加 **译者说** 。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-07-05** 使用正则表达式匹配特定位置并修复大部分错误格式；增加校对文档。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-07-04** 使用Github-Action实现监测官方英文文档变化并自动触发增量翻译。自动构建HTML，上传到gh-pages-zhcn分支，并触发webhook自动同步到阿里云境内服务器，保证国内用户的访问速度。 By `fan-ziqi <https://github.com/fan-ziqi>`__
+* **2024-07-03** 使用ChatGPT-3.5-API实现批量翻译脚本，对文档进行粗略翻译，但未翻译 ``API`` 和 ``CHANGELOG`` 。 By `fan-ziqi <https://github.com/fan-ziqi>`__
 
 译者说
 -----------------------------
@@ -81,7 +81,7 @@ Ubuntu20.04使用pip安装Isaac Sim
 
 使用pip安装Isaac Sim只支持 ``GLIBC>=2.34`` 。 `bug link <https://forums.developer.nvidia.com/t/isaac-sim-python-environment-installation-with-pip-through-conda/294913/12>`__ ，如果你使用的是Ubuntu20.04，使用 ``ldd --version`` 查看GLIBC版本，如果版本低于 ``2.34`` 则需要升级GLIBC。 请注意，升级GLIBC是一个危险操作可能会导致无法与其的问题，请谨慎升级！
 
-首先在 ``/etc/apt/sources.list`` 中添加 ``deb http://th.archive.ubuntu.com/ubuntu jammy main`` 
+首先在 ``/etc/apt/sources.list`` 中添加 ``deb http://th.archive.ubuntu.com/ubuntu jammy main``
 
 .. code-block:: bash
 
