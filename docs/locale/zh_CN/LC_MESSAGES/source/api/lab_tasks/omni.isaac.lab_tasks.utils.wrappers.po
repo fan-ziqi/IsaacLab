@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-05 06:36+0000\n"
+"POT-Creation-Date: 2024-09-27 20:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -62,8 +62,8 @@ msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.rl_games:1
 msgid ""
-"Wrapper to configure an :class:`ManagerBasedRLEnv` instance to RL-Games "
-"vectorized environment."
+"Wrapper to configure a :class:`ManagerBasedRLEnv` or :class:`DirectRlEnv`"
+" instance to RL-Games vectorized environment."
 msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.rl_games:3
@@ -126,13 +126,13 @@ msgstr ""
 #: of omni.isaac.lab_tasks.utils.wrappers.rl_games.RlGamesVecEnvWrapper:12
 msgid ""
 "To use asymmetric actor-critic, the environment observations from "
-":class:`ManagerBasedRLEnv` must have the key or group name \"critic\". "
-"The observation group is used to set the :attr:`num_states` (int) and "
-":attr:`state_space` (:obj:`gym.spaces.Box`). These are used by the "
-"learning agent in RL-Games to allocate buffers in the trajectory memory. "
-"Since this is optional for some environments, the wrapper checks if these"
-" attributes exist. If they don't then the wrapper defaults to zero as "
-"number of privileged observations."
+":class:`ManagerBasedRLEnv` or :class:`DirectRLEnv` must have the key or "
+"group name \"critic\". The observation group is used to set the "
+":attr:`num_states` (int) and :attr:`state_space` (:obj:`gym.spaces.Box`)."
+" These are used by the learning agent in RL-Games to allocate buffers in "
+"the trajectory memory. Since this is optional for some environments, the "
+"wrapper checks if these attributes exist. If they don't then the wrapper "
+"defaults to zero as number of privileged observations."
 msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.rl_games.RlGamesVecEnvWrapper:21
@@ -148,7 +148,7 @@ msgstr ""
 #: omni.isaac.lab_tasks.utils.wrappers.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:16
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper:39
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg:7
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:14
+#: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:16
 msgid "Reference:"
 msgstr ""
 
@@ -341,7 +341,6 @@ msgstr ""
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper.__init__
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg
 #: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg
 msgid "Parameters"
 msgstr ""
 
@@ -373,13 +372,14 @@ msgstr ""
 #: omni.isaac.lab_tasks.utils.wrappers.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper.__init__
 #: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg
 msgid "Raises"
 msgstr ""
 
 #: of
 #: omni.isaac.lab_tasks.utils.wrappers.rl_games.RlGamesVecEnvWrapper.__init__:8
-msgid "The environment is not inherited from :class:`ManagerBasedRLEnv`."
+msgid ""
+"The environment is not inherited from :class:`ManagerBasedRLEnv` or "
+":class:`DirectRLEnv`."
 msgstr ""
 
 #: of
@@ -450,7 +450,6 @@ msgstr ""
 #: of omni.isaac.lab_tasks.utils.wrappers.rl_games.RlGamesGpuEnv.get_env_info
 #: omni.isaac.lab_tasks.utils.wrappers.rl_games.RlGamesGpuEnv.get_number_of_agents
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg
 msgid "Returns"
 msgstr ""
 
@@ -1251,8 +1250,9 @@ msgstr ""
 #: of
 #: omni.isaac.lab_tasks.utils.wrappers.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:7
 #: omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper.__init__:5
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:11
-msgid "When the environment is not an instance of :class:`ManagerBasedRLEnv`."
+msgid ""
+"When the environment is not an instance of :class:`ManagerBasedRLEnv` or "
+":class:`DirectRLEnv`."
 msgstr ""
 
 #: ../../source/api/lab_tasks/omni.isaac.lab_tasks.utils.wrappers.rst:22
@@ -1261,7 +1261,7 @@ msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.skrl:1
 msgid ""
-"Wrapper to configure an :class:`ManagerBasedRLEnv` instance to skrl "
+"Wrapper to configure an Isaac Lab environment instance to skrl "
 "environment."
 msgstr ""
 
@@ -1274,61 +1274,49 @@ msgid "Or, equivalently, by directly calling the skrl library API as follows:"
 msgstr ""
 
 #: of
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:1:<autosummary>:1
-msgid ""
-":py:obj:`process_skrl_cfg "
-"<omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg>`\\ "
-"\\(cfg\\[\\, ml\\_framework\\]\\)"
-msgstr ""
-
-#: of omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:1
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:1:<autosummary>:1
-msgid "Convert simple YAML types to skrl classes/components."
-msgstr ""
-
-#: of
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:1:<autosummary>:1
+#: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:1:<autosummary>:1
 msgid ""
 ":py:obj:`SkrlVecEnvWrapper "
 "<omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper>`\\ "
-"\\(env\\[\\, ml\\_framework\\]\\)"
+"\\(env\\[\\, ml\\_framework\\, wrapper\\]\\)"
 msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:1
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:1:<autosummary>:1
+#: omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:1:<autosummary>:1
 msgid "Wraps around Isaac Lab environment for skrl."
-msgstr ""
-
-#: of omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg:3
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:3
-msgid "A configuration dictionary."
-msgstr ""
-
-#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:9
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:4
-msgid "The ML framework to use for the wrapper. Defaults to \"torch\"."
-msgstr ""
-
-#: of omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg:5
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:6
-msgid "A dictionary containing the converted configuration."
-msgstr ""
-
-#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:12
-#: omni.isaac.lab_tasks.utils.wrappers.skrl.process_skrl_cfg:8
-msgid "If the specified ML framework is not valid."
 msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:3
 msgid ""
-"This function wraps around the Isaac Lab environment. Since the "
-":class:`ManagerBasedRLEnv` environment wrapping functionality is defined "
-"within the skrl library itself, this implementation is maintained for "
-"compatibility with the structure of the extension that contains it. "
-"Internally it calls the :func:`wrap_env` from the skrl library API."
+"This function wraps around the Isaac Lab environment. Since the wrapping "
+"functionality is defined within the skrl library itself, this "
+"implementation is maintained for compatibility with the structure of the "
+"extension that contains it. Internally it calls the :func:`wrap_env` from"
+" the skrl library API."
 msgstr ""
 
-#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:15
+#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:9
+msgid "The ML framework to use for the wrapper. Defaults to \"torch\"."
+msgstr ""
+
+#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:10
+msgid ""
+"The wrapper to use. Defaults to \"isaaclab\": leave it to skrl to "
+"determine if the environment will be wrapped as single-agent or multi-"
+"agent."
+msgstr ""
+
+#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:13
+msgid ""
+"When the environment is not an instance of any Isaac Lab environment "
+"interface."
+msgstr ""
+
+#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:14
+msgid "If the specified ML framework is not valid."
+msgstr ""
+
+#: of omni.isaac.lab_tasks.utils.wrappers.skrl.SkrlVecEnvWrapper:17
 msgid "https://skrl.readthedocs.io/en/latest/api/envs/wrapping.html"
 msgstr ""
 
@@ -1338,8 +1326,8 @@ msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.sb3:1
 msgid ""
-"Wrapper to configure an :class:`ManagerBasedRLEnv` instance to Stable-"
-"Baselines3 vectorized environment."
+"Wrapper to configure a :class:`ManagerBasedRLEnv` or :class:`DirectRLEnv`"
+" instance to Stable-Baselines3 vectorized environment."
 msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.sb3:3
@@ -1370,6 +1358,14 @@ msgstr ""
 msgid "Wraps around Isaac Lab environment for Stable Baselines3."
 msgstr ""
 
+#: of omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg:3
+msgid "A configuration dictionary."
+msgstr ""
+
+#: of omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg:5
+msgid "A dictionary containing the converted configuration."
+msgstr ""
+
 #: of omni.isaac.lab_tasks.utils.wrappers.sb3.process_sb3_cfg:8
 msgid ""
 "https://github.com/DLR-RM/rl-"
@@ -1387,7 +1383,7 @@ msgid ""
 "tries to wrap around it using the :class:`DummyVecEnv`. This is only done"
 " if the environment is not inheriting from their :class:`VecEnv`. Thus, "
 "this class thinly wraps over the environment from "
-":class:`ManagerBasedRLEnv`."
+":class:`ManagerBasedRLEnv` or :class:`DirectRLEnv`."
 msgstr ""
 
 #: of omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper:11
@@ -1497,4 +1493,3 @@ msgid ""
 ":py:obj:`unwrapped "
 "<omni.isaac.lab_tasks.utils.wrappers.sb3.Sb3VecEnvWrapper.unwrapped>`\\"
 msgstr ""
-

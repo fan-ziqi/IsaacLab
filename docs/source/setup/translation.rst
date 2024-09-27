@@ -49,7 +49,7 @@ About Translation
    # make po files
    sphinx-intl update -p _build/gettext -l zh_CN
    # transtale to zh_CN
-   python po_translator.py --folder ./locale --lang zh_CN --folder-language --fuzzy
+   python po_translator.py --folder ./locale --lang zh_CN --folder-language --bulk --fuzzy
    # make translated html files
    make -e SPHINXOPTS="-D language='zh_CN'" html
    # open on default browser

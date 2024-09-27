@@ -53,8 +53,12 @@ Classic environments that are based on IsaacGymEnvs implementation of MuJoCo-sty
     |                  |                             |                                                                         |
     |                  | |cartpole-direct-link|      |                                                                         |
     +------------------+-----------------------------+-------------------------------------------------------------------------+
-    | |cartpole|       | |cartpole-camera-rgb-link|  | Move the cart to keep the pole upwards in the classic cartpole control  |
+    | |cartpole|       | |manager-camera-rgb-link|   | Move the cart to keep the pole upwards in the classic cartpole control  |
     |                  |                             | and perceptive inputs                                                   |
+    |                  | |manager-camera-dpt-link|   |                                                                         |
+    |                  |                             |                                                                         |
+    |                  | |cartpole-camera-rgb-link|  |                                                                         |
+    |                  |                             |                                                                         |
     |                  | |cartpole-camera-dpt-link|  |                                                                         |
     +------------------+-----------------------------+-------------------------------------------------------------------------+
 
@@ -68,10 +72,13 @@ Classic environments that are based on IsaacGymEnvs implementation of MuJoCo-sty
 
 .. |humanoid-direct-link| replace:: `Isaac-Humanoid-Direct-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/humanoid/humanoid_env.py>`__
 .. |ant-direct-link| replace:: `Isaac-Ant-Direct-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/ant/ant_env.py>`__
+.. |manager-camera-rgb-link| replace:: `Isaac-Cartpole-RGB-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/classic/cartpole/cartpole_camera_env_cfg.py>`__
+.. |manager-camera-dpt-link| replace:: `Isaac-Cartpole-Depth-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/classic/cartpole/cartpole_camera_env_cfg.py>`__
 .. |cartpole-direct-link| replace:: `Isaac-Cartpole-Direct-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/cartpole/cartpole_env.py>`__
+.. |manager-camera-rgb-link| replace:: `Isaac-Cartpole-RGB-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/classic/cartpole/cartpole_camera_env_cfg.py>`__
+.. |manager-camera-dpt-link| replace:: `Isaac-Cartpole-Depth-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/classic/cartpole/cartpole_camera_env_cfg.py>`__
 .. |cartpole-camera-rgb-link| replace:: `Isaac-Cartpole-RGB-Camera-Direct-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/cartpole/cartpole_camera_env.py>`__
 .. |cartpole-camera-dpt-link| replace:: `Isaac-Cartpole-Depth-Camera-Direct-v0 <https://github.com/isaac-sim/IsaacLab/blob/main/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/cartpole/cartpole_camera_env.py>`__
-
 
 Manipulation
 ~~~~~~~~~~~~
@@ -111,7 +118,7 @@ for the reach environment:
     |                    |                         |                                                                             |
     |                    | |cube-shadow-lstm-link| |                                                                             |
     +--------------------+-------------------------+-----------------------------------------------------------------------------+
-    | |cube-shadow|      | |cube-shadow-vis-link|  | In-hand reorientation of a cube using Shadow hand and perceptive inputs     |
+    | |cube-shadow|      | |cube-shadow-vis-link|  | In-hand reorientation of a cube using Shadow hand using perceptive inputs   |
     +--------------------+-------------------------+-----------------------------------------------------------------------------+
 
 .. |reach-franka| image:: ../_static/tasks/manipulation/franka_reach.jpg
