@@ -6,7 +6,7 @@ Overview
    :alt: H1 Humanoid example using Isaac Lab
 
 
-**注意** 本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由范子琦提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。详情请查看`关于翻译 <source/setup/translation>`_ 章节。
+**注意:** 本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由范子琦提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。详情请查看`关于翻译 <source/setup/translation.html>`_ 章节。
 
 **Isaac Lab** is a unified and modular framework for robot learning that aims to simplify common workflows
 in robotics research (such as reinforcement learning, learning from demonstrations, and motion planning). It is built upon
