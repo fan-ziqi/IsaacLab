@@ -92,12 +92,31 @@ Ubuntu20.04使用pip安装Isaac Sim
 
 最后从 ``/etc/apt/sources.list`` 中删除 ``deb http://th.archive.ubuntu.com/ubuntu jammy main`` ，升级完成，可继续使用Pip进行安装。
 
-No module named 'xxx'
+如何更新？
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-如遇到IsaacLab/IsaacSim更新后无法找到某些包，pull最新的IsaacLab重新执行下述步骤即可解决。（仅限pip安装的Isaac系列）
+如IsaacLab/IsaacSim有更新，pull最新的IsaacLab执行下述步骤即可解决。（仅限pip安装的Isaac系列）
 
 .. code-block:: bash
 
    pip install --upgrade isaacsim-rl isaacsim-replicator isaacsim-extscache-physics isaacsim-extscache-kit-sdk isaacsim-extscache-kit isaacsim-app --extra-index-url https://pypi.nvidia.com
    ./isaaclab.sh --install
+
+
+通过pip安装的isaacsim打开后报错
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+报错类似如下：
+
+.. code-block:: bash
+
+   [omni.isaac.sim.python-x.x.x] dependency: 'omni.isaac.xxx' = { version='^' } can't be satisfied.
+
+这是因为Isaac Lab只安装RL所需的“Isaac Sim - Python packages”。安装完整版本的“Isaac Sim - Python packages”即可解决，这样您将安装所有扩展（与Isaac Lab 100%兼容）。
+
+.. code-block:: bash
+
+   pip install isaacsim --extra-index-url https://pypi.nvidia.com
+
+需要升级的话加上 ``--upgrade`` 即可。
+
