@@ -56,9 +56,6 @@
 
 绝大部分报错都可以在 `Linux Troubleshooting <https://docs.omniverse.nvidia.com/dev-guide/latest/linux-troubleshooting.html>`__ 中找到解决方案。下面补充一些官方文档中没有的解决方案：
 
-Ubuntu20.04使用pip安装Isaac Sim
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 如何更新？
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -68,6 +65,10 @@ Ubuntu20.04使用pip安装Isaac Sim
 
    pip install --upgrade isaacsim-rl isaacsim-replicator isaacsim-extscache-physics isaacsim-extscache-kit-sdk isaacsim-extscache-kit isaacsim-app --extra-index-url https://pypi.nvidia.com
    ./isaaclab.sh --install
+
+
+Ubuntu20.04使用pip安装Isaac Sim
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 使用pip安装Isaac Sim只支持 ``GLIBC>=2.34`` 。 `bug link <https://forums.developer.nvidia.com/t/isaac-sim-python-environment-installation-with-pip-through-conda/294913/12>`__ ，如果你使用的是Ubuntu20.04，使用 ``ldd --version`` 查看GLIBC版本，如果版本低于 ``2.34`` 则需要升级GLIBC。 请注意，升级GLIBC是一个危险操作可能会导致无法与其的问题，请谨慎升级！
 
