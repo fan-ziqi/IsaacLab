@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-27 20:01+0800\n"
+"POT-Creation-Date: 2024-10-07 10:47+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -2464,29 +2464,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.sensors.frame_transformer.frame_transformer.FrameTransformer:23
-msgid ""
-"Currently, this implementation only handles frames within an "
-"articulation. This is because the frame regex expressions are resolved "
-"based on their parent prim path. This can be extended to handle frames "
-"outside of articulation by using the frame prim path instead. However, "
-"this would require additional checks to ensure that the user-specified "
-"frames are valid which is not currently implemented."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.sensors.frame_transformer.frame_transformer.FrameTransformer:30
-msgid ""
-"The implementation assumes that the parent body of a target frame is not "
-"the same as that of the source frame (i.e. "
-":attr:`FrameTransformerCfg.prim_path`). While a corner case, this can "
-"occur if the user specifies the same prim path for both the source frame "
-"and target frame. In this case, the target frame will be ignored and not "
-"reported. This is a limitation of the current implementation and will be "
-"fixed in a future release."
-msgstr ""
-
-#: of
 #: omni.isaac.lab.sensors.frame_transformer.frame_transformer.FrameTransformer:1:<autosummary>:1
 msgid ":py:obj:`cfg <omni.isaac.lab.sensors.FrameTransformer.cfg>`\\"
 msgstr ""
@@ -2649,9 +2626,9 @@ msgstr ""
 #: omni.isaac.lab.sensors.FrameTransformerData.target_frame_names:3
 msgid ""
 "The frame names are resolved from the "
-":attr:`FrameTransformerCfg.FrameCfg.name` field. This usually follows the"
-" order in which the frames are defined in the config. However, in the "
-"case of regex matching, the order may be different."
+":attr:`FrameTransformerCfg.FrameCfg.name` field. This does not "
+"necessarily follow the order in which the frames are defined in the "
+"config due to the regex matching."
 msgstr ""
 
 #: ../../docstring of
@@ -2746,7 +2723,7 @@ msgstr ""
 #: ../../docstring of
 #: omni.isaac.lab.sensors.FrameTransformerCfg.FrameCfg.prim_path:1
 #: omni.isaac.lab.sensors.FrameTransformerCfg.FrameCfg.prim_path:1:<autosummary>:1
-msgid "The prim path corresponding to the parent rigid body."
+msgid "The prim path corresponding to a rigid body."
 msgstr ""
 
 #: of
@@ -2777,8 +2754,19 @@ msgstr ""
 #: ../../docstring of
 #: omni.isaac.lab.sensors.FrameTransformerCfg.FrameCfg.prim_path:3
 msgid ""
-"This prim should be part of the same articulation as "
-":attr:`FrameTransformerCfg.prim_path`."
+"This can be a regex pattern to match multiple prims. For example, "
+"\"/Robot/.*\" will match all prims under \"/Robot\"."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.sensors.FrameTransformerCfg.FrameCfg.prim_path:5
+msgid ""
+"This means that if the source :attr:`FrameTransformerCfg.prim_path` is "
+"\"/Robot/base\", and the target "
+":attr:`FrameTransformerCfg.FrameCfg.prim_path` is \"/Robot/.*\", then the"
+" frame transformer will track the poses of all the prims under "
+"\"/Robot\", including \"/Robot/base\" (even though this will result in an"
+" identity pose w.r.t. the source frame)."
 msgstr ""
 
 #: ../../docstring of
@@ -3286,3 +3274,4 @@ msgid ""
 "List of sensor names/types to enable for the camera. Defaults to "
 "[\"distance_to_image_plane\"]."
 msgstr ""
+

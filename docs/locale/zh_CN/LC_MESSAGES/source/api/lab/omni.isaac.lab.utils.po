@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-27 20:01+0800\n"
+"POT-Creation-Date: 2024-10-07 10:47+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -247,14 +247,15 @@ msgstr ""
 #: omni.isaac.lab.utils.math.axis_angle_from_quat
 #: omni.isaac.lab.utils.math.combine_frame_transforms
 #: omni.isaac.lab.utils.math.compute_pose_error
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth
 #: omni.isaac.lab.utils.math.convert_quat omni.isaac.lab.utils.math.copysign
 #: omni.isaac.lab.utils.math.default_orientation
 #: omni.isaac.lab.utils.math.euler_xyz_from_quat
 #: omni.isaac.lab.utils.math.is_identity_pose
 #: omni.isaac.lab.utils.math.matrix_from_euler
 #: omni.isaac.lab.utils.math.matrix_from_quat
-#: omni.isaac.lab.utils.math.normalize omni.isaac.lab.utils.math.project_points
+#: omni.isaac.lab.utils.math.normalize
+#: omni.isaac.lab.utils.math.orthogonalize_perspective_depth
+#: omni.isaac.lab.utils.math.project_points
 #: omni.isaac.lab.utils.math.quat_apply
 #: omni.isaac.lab.utils.math.quat_apply_yaw
 #: omni.isaac.lab.utils.math.quat_box_minus
@@ -336,14 +337,15 @@ msgstr ""
 #: omni.isaac.lab.utils.math.axis_angle_from_quat
 #: omni.isaac.lab.utils.math.combine_frame_transforms
 #: omni.isaac.lab.utils.math.compute_pose_error
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth
 #: omni.isaac.lab.utils.math.convert_quat omni.isaac.lab.utils.math.copysign
 #: omni.isaac.lab.utils.math.default_orientation
 #: omni.isaac.lab.utils.math.euler_xyz_from_quat
 #: omni.isaac.lab.utils.math.is_identity_pose
 #: omni.isaac.lab.utils.math.matrix_from_euler
 #: omni.isaac.lab.utils.math.matrix_from_quat
-#: omni.isaac.lab.utils.math.normalize omni.isaac.lab.utils.math.project_points
+#: omni.isaac.lab.utils.math.normalize
+#: omni.isaac.lab.utils.math.orthogonalize_perspective_depth
+#: omni.isaac.lab.utils.math.project_points
 #: omni.isaac.lab.utils.math.quat_apply
 #: omni.isaac.lab.utils.math.quat_apply_yaw
 #: omni.isaac.lab.utils.math.quat_box_minus
@@ -469,8 +471,9 @@ msgstr ""
 #: omni.isaac.lab.utils.io.pkl.load_pickle
 #: omni.isaac.lab.utils.io.yaml.load_yaml
 #: omni.isaac.lab.utils.math.compute_pose_error
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth
-#: omni.isaac.lab.utils.math.convert_quat omni.isaac.lab.utils.math.quat_mul
+#: omni.isaac.lab.utils.math.convert_quat
+#: omni.isaac.lab.utils.math.orthogonalize_perspective_depth
+#: omni.isaac.lab.utils.math.quat_mul
 #: omni.isaac.lab.utils.math.skew_symmetric_matrix
 #: omni.isaac.lab.utils.math.transform_points
 #: omni.isaac.lab.utils.math.unproject_depth
@@ -1958,26 +1961,23 @@ msgid "Transform input points in a given frame to a target frame."
 msgstr ""
 
 #: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
+msgid ""
+":py:obj:`orthogonalize_perspective_depth "
+"<omni.isaac.lab.utils.math.orthogonalize_perspective_depth>`\\"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:1
+#: omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
+msgid "Converts perspective depth image to orthogonal depth image."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
 msgid ":py:obj:`unproject_depth <omni.isaac.lab.utils.math.unproject_depth>`\\"
 msgstr ""
 
 #: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
-msgid "Unproject depth image into a pointcloud."
-msgstr ""
-
-#: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
-msgid ""
-":py:obj:`convert_perspective_depth_to_orthogonal_depth "
-"<omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth>`\\"
-msgstr ""
-
-#: of omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:1
-#: omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
-msgid ""
-"Provided depth image(s) where depth is provided as the distance to the "
-"principal point of the camera (perspective depth), this function converts"
-" it so that depth is provided as the distance to the camera's image plane"
-" (orthogonal depth)."
+#: omni.isaac.lab.utils.math.unproject_depth:1
+msgid "Un-project depth image into a pointcloud."
 msgstr ""
 
 #: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
@@ -2631,125 +2631,102 @@ msgstr ""
 msgid "If the inputs `quat` is not of shape (N, 4) or (4,)."
 msgstr ""
 
-#: of omni.isaac.lab.utils.math.unproject_depth:1
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:3
 msgid ""
-"Unproject depth image into a pointcloud. This method assumes that depth "
-"is provided orthogonally relative to the image plane, as opposed to "
-"absolutely relative to the camera's principal point (perspective depth). "
-"To unproject a perspective depth image, use "
-":meth:`convert_perspective_depth_to_orthogonal_depth` to convert to an "
-"orthogonal depth image prior to calling this method. Otherwise, the "
-"created point cloud will be distorted, especially around the edges."
+"Perspective depth images contain distances measured from the camera's "
+"optical center. Meanwhile, orthogonal depth images provide the distance "
+"from the camera's image plane. This method uses the camera geometry to "
+"convert perspective depth to orthogonal depth image."
 msgstr ""
 
-#: of omni.isaac.lab.utils.math.unproject_depth:8
-msgid ""
-"This function converts depth images into points given the calibration "
-"matrix of the camera."
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:7
+msgid "The function assumes that the width and height are both greater than 1."
 msgstr ""
 
-#: of omni.isaac.lab.utils.math.unproject_depth:10
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:9
+msgid ""
+"The perspective depth images. Shape is (H, W) or or (H, W, 1) or (N, H, "
+"W) or (N, H, W, 1)."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:10
+#: omni.isaac.lab.utils.math.unproject_depth:20
+msgid ""
+"The camera's calibration matrix. If a single matrix is provided, the same"
+" calibration matrix is used across all the depth images in the batch. "
+"Shape is (3, 3) or (N, 3, 3)."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:14
+msgid ""
+"The orthogonal depth images. Shape matches the input shape of depth "
+"images."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:16
+#: omni.isaac.lab.utils.math.unproject_depth:30
+msgid ""
+"When depth is not of shape (H, W) or (H, W, 1) or (N, H, W) or (N, H, W, "
+"1)."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.orthogonalize_perspective_depth:17
+#: omni.isaac.lab.utils.math.unproject_depth:31
+msgid "When intrinsics is not of shape (3, 3) or (N, 3, 3)."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.unproject_depth:3
+msgid ""
+"This function converts orthogonal or perspective depth images into points"
+" given the calibration matrix of the camera. It uses the following "
+"transformation based on camera geometry:"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.unproject_depth:6
 msgid ""
 "p_{3D} = K^{-1} \\times [u, v, 1]^T \\times d\n"
 "\n"
 msgstr ""
 
-#: of omni.isaac.lab.utils.math.unproject_depth:13
+#: of omni.isaac.lab.utils.math.unproject_depth:9
 msgid ""
-"where :math:`p_{3D}` is the 3D point, :math:`d` is the depth value, "
-":math:`u` and :math:`v` are the pixel coordinates and :math:`K` is the "
-"intrinsic matrix."
+"where :math:`p_{3D}` is the 3D point, :math:`d` is the depth value "
+"(measured from the image plane), :math:`u` and :math:`v` are the pixel "
+"coordinates and :math:`K` is the intrinsic matrix."
 msgstr ""
 
-#: of omni.isaac.lab.utils.math.unproject_depth:16
-msgid ""
-"If `depth` is a batch of depth images and `intrinsics` is a single "
-"intrinsic matrix, the same calibration matrix is applied to all depth "
-"images in the batch."
-msgstr ""
-
-#: of omni.isaac.lab.utils.math.unproject_depth:19
+#: of omni.isaac.lab.utils.math.unproject_depth:12
 msgid ""
 "The function assumes that the width and height are both greater than 1. "
 "This makes the function deal with many possible shapes of depth images "
 "and intrinsics matrices."
 msgstr ""
 
-#: of omni.isaac.lab.utils.math.unproject_depth:22
+#: of omni.isaac.lab.utils.math.unproject_depth:16
+msgid ""
+"If :attr:`is_ortho` is False, the input depth images are transformed to "
+"orthogonal depth images by using the "
+":meth:`orthogonalize_perspective_depth` method."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.unproject_depth:19
 msgid ""
 "The depth measurement. Shape is (H, W) or or (H, W, 1) or (N, H, W) or "
 "(N, H, W, 1)."
 msgstr ""
 
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:15
-#: omni.isaac.lab.utils.math.unproject_depth:23
+#: of omni.isaac.lab.utils.math.unproject_depth:23
 msgid ""
-"A tensor providing camera's calibration matrix. Shape is (3, 3) or (N, 3,"
-" 3)."
+"Whether the input depth image is orthogonal or perspective depth image. "
+"If True, the input depth image is considered as the *orthogonal* type, "
+"where the measurements are from the camera's image plane. If False, the "
+"depth image is considered as the *perspective* type, where the "
+"measurements are from the camera's optical center. Defaults to True."
 msgstr ""
 
 #: of omni.isaac.lab.utils.math.project_points:20
-#: omni.isaac.lab.utils.math.unproject_depth:25
-msgid "The 3D coordinates of points. Shape is (P, 3) or (N, P, 3)."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:22
-#: omni.isaac.lab.utils.math.unproject_depth:27
-msgid ""
-"When depth is not of shape (H, W) or (H, W, 1) or (N, H, W) or (N, H, W, "
-"1)."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:23
 #: omni.isaac.lab.utils.math.unproject_depth:28
-msgid "When intrinsics is not of shape (3, 3) or (N, 3, 3)."
-msgstr ""
-
-#: of omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:5
-msgid ""
-"This is helpful because `unproject_depth` assumes that depth is expressed"
-" in the orthogonal depth format."
-msgstr ""
-
-#: of omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:8
-msgid ""
-"If `perspective_depth` is a batch of depth images and `intrinsics` is a "
-"single intrinsic matrix, the same calibration matrix is applied to all "
-"depth images in the batch."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:11
-msgid "The function assumes that the width and height are both greater than 1."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:13
-msgid ""
-"The depth measurement obtained with the distance_to_camera replicator. "
-"Shape is (H, W) or or (H, W, 1) or (N, H, W) or (N, H, W, 1)."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:17
-msgid ""
-"The depth image as if obtained by the distance_to_image_plane replicator."
-" Shape     matches the input shape of depth"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:20
-msgid ""
-"The depth image as if obtained by the distance_to_image_plane replicator."
-" Shape"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.utils.math.convert_perspective_depth_to_orthogonal_depth:20
-msgid "matches the input shape of depth"
+msgid "The 3D coordinates of points. Shape is (P, 3) or (N, P, 3)."
 msgstr ""
 
 #: of omni.isaac.lab.utils.math.project_points:3

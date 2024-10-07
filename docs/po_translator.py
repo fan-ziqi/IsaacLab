@@ -119,20 +119,20 @@ class TranslationService:
     def scan_and_process_po_files(self, input_folder, languages):
         """Scans and processes .po files in the given input folder."""
         po_files = []
-        
+
         # First, collect all .po files, excluding the 'api' folder and 'changelog.po' file
         for root, dirs, files in os.walk(input_folder):
             # Exclude 'api' folder
             dirs[:] = [d for d in dirs if d != 'api']
             # Collect .po files excluding 'changelog.po'
             po_files.extend([os.path.join(root, file) for file in files if file.endswith(".po") and file not in ['changelog.po', 'translation.po']])
-        
+
         total_files = len(po_files)
-        
+
         for idx, po_file_path in enumerate(po_files, start=1):
             logging.info("Discovered .po file: %s", po_file_path)  # Log each discovered file
             self.process_po_file(po_file_path, languages)
-            
+
             # Log progress as completed/total
             logging.info("Progress: %d/%d", idx, total_files)
 
@@ -281,8 +281,8 @@ def process_po_file(file_path):
     content = re.sub(r'([\u4e00-\u9fa5])([<_`.,!?;:])', r'\1 \2', content)
     content = re.sub(r'([<_`.,!?;:])([\u4e00-\u9fa5])', r'\1 \2', content)
     # 中文标点与英文标点之间加空格
-    content = re.sub(r'([：，。（）])([_`.,!?;:()])', r'\1 \2', content)
-    content = re.sub(r'([_`.,!?;:()])([：，。（）])', r'\1 \2', content)
+    content = re.sub(r'([: ，。（）])([_`.,!?;:()])', r'\1 \2', content)
+    content = re.sub(r'([_`.,!?;:()])([: ，。（）])', r'\1 \2', content)
     # 删除<前面的空格
     content = re.sub(r'` (\S+) <', r'`\1 <', content)
     # 匹配`_并排除`__，删除前面的空格
