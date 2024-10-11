@@ -77,6 +77,7 @@ Table of Contents
    :maxdepth: 2
    :caption: Getting Started
 
+   source/setup/wechat
    source/setup/translation
    source/setup/installation/index
    source/setup/faq
