@@ -1,0 +1,39 @@
+name: gh-pages-zhcn
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  gh-pages-zhcn:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout user's repo (main branch)
+      uses: actions/checkout@v2
+      with:
+        repository: fan-ziqi/IsaacLab
+        ref: main
+
+    - name: Configure git user
+      run: |
+        git config --global user.name 'fan-ziqi'
+        git config --global user.email 'fanziqi614@gmail.com'
+
+    - name: Copy generated HTML files to temporary Path
+      run: |
+        mkdir -p temp_html
+        cp -r docs/_build/html/* temp_html/
+
+    - name: Commit and push changes to gh-pages-zhcn branch
+      run: |
+        git checkout --orphan gh-pages-zhcn
+        git rm -rf .
+        rm -rf docs source
+        cp -r temp_html/* .
+        rm -rf temp_html
+        git add .
+        git commit -m "Update translated documentation"
+        git push origin gh-pages-zhcn --force

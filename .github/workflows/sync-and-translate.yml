@@ -1,9 +1,9 @@
 name: Sync and Translate Documentation
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
   # schedule:
   #   - cron: '0 0 * * *'
   workflow_dispatch:
@@ -46,7 +46,7 @@ jobs:
     - name: Generate gettext
       run: |
         pushd docs
-        make -i gettext
+        make gettext
         popd
 
     - name: Update translations
@@ -64,7 +64,7 @@ jobs:
     - name: Build HTML with translations
       run: |
         pushd docs
-        make -i SPHINXOPTS="-D language='zh_CN'" html
+        make -e SPHINXOPTS="-D language='zh_CN'" html
         popd
 
     - name: Copy generated HTML files to temporary Path

@@ -1,0 +1,1818 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>从OmniIsaacGymEnvs迁移 &#8212; Isaac Lab documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/home/ubuntu/anaconda3/envs/isaaclab/lib/python3.10/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="/home/ubuntu/anaconda3/envs/isaaclab/lib/python3.10/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/translations.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/migration/migrating_from_omniisaacgymenvs';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="从Orbit迁移" href="migrating_from_orbit.html" />
+    <link rel="prev" title="从IsaacGymEnvs迁移" href="migrating_from_isaacgymenvs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2024 年 10 月 15 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-4.2.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">关于翻译</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/installation/index.html">安装指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/pip_installation.html">选项1: 使用Isaac Sim pip进行安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/binaries_installation.html">选项2: 使用Isaac Sim二进制文件进行安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/cloud_installation.html">在云中运行Isaac Lab</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/faq.html">常见问题</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/development.html">应用开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/template.html">构建您自己的项目</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/actuators.html">执行器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_existing_scripts.html">强化学习包装器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/teleop_imitation.html">遥操作和模仿学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/showroom.html">展厅演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/tiled_rendering.html">平铺相机渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../how-to/index.html">“如何”指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/make_fixed_prim.html">使模拟中的物理基元固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_animation.html">录制模拟动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">Cluster 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.app.html">omni.isaac.lab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.actuators.html">omni.isaac.lab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html">omni.isaac.lab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.controllers.html">omni.isaac.lab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.devices.html">omni.isaac.lab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html">omni.isaac.lab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.managers.html">omni.isaac.lab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.markers.html">omni.isaac.lab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html">omni.isaac.lab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sensors.html">omni.isaac.lab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html">omni.isaac.lab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.terrains.html">omni.isaac.lab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html">omni.isaac.lab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.envs.mdp.html">omni.isaac.lab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.envs.ui.html">omni.isaac.lab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sensors.patterns.html">omni.isaac.lab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.converters.html">omni.isaac.lab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.schemas.html">omni.isaac.lab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/omni.isaac.lab.sim.spawners.html">omni.isaac.lab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/omni.isaac.lab_tasks.utils.html">omni.isaac.lab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/omni.isaac.lab_tasks.utils.wrappers.html">omni.isaac.lab_tasks.utils.wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/omni.isaac.lab_tasks.utils.data_collector.html">omni.isaac.lab_tasks.utils.data_collector</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.omniverse.nvidia.com/isaacsim/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/source/migration/migrating_from_omniisaacgymenvs.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/migration/migrating_from_omniisaacgymenvs.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/migration/migrating_from_omniisaacgymenvs.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>从OmniIsaacGymEnvs迁移</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-config-setup">任务配置设置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-config">模拟配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-config">场景配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-config">任务配置</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-config-setup">RL配置设置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-creation">环境创建</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ground-plane">地面</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actors">角色</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-states-from-simulation">从模拟中获取状态</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-new-environment">创建一个新环境</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-logic">任务逻辑</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">将所有内容组合在一起</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">任务配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-setup">任务设置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-setup">场景设置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-physics-step">预物理步骤</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dones-and-resets">完成和重置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rewards">奖励</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observations">观察</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-randomization">域随机化</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action-and-observation-noise">动作和观察噪声</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-training">启动训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-inferencing">启动推理</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="from-omniisaacgymenvs">
+<span id="migrating-from-omniisaacgymenvs"></span><h1>从OmniIsaacGymEnvs迁移<a class="headerlink" href="#from-omniisaacgymenvs" title="此标题的永久链接">#</a></h1>
+<p><a class="reference external" href="https://github.com/isaac-sim/OmniIsaacGymEnvs">OmniIsaacGymEnvs</a> 是一个使用 Isaac Sim 平台的强化学习框架。来自 OmniIsaacGymEnvs 的功能已经整合到 Isaac Lab 框架中。我们已经更新了 OmniIsaacGymEnvs 到 Isaac Sim 版本 4.0.0，以支持迁移到 Isaac Lab 的过程。今后，OmniIsaacGymEnvs 将被弃用，未来的开发将继续在 Isaac Lab 中进行。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>以下更改针对于 Isaac Lab 1.0 发布版本。请参考 <a class="reference external" href="https://github.com/isaac-sim/IsaacLab/releases">release notes</a> 以获取未来发布版本的任何更改信息。</p>
+</div>
+<section id="task-config-setup">
+<h2>任务配置设置<a class="headerlink" href="#task-config-setup" title="此标题的永久链接">#</a></h2>
+<p>在 OmniIsaacGymEnvs中，任务配置文件是以 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> 格式定义的。而使用 Isaac Lab，配置现在使用专门的 Python 类 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 来指定。 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块提供了对 Python 的 <code class="docutils literal notranslate"><span class="pre">dataclasses</span></code> 模块的包装。每个环境都应该指定自己的配置类，配置类使用 <code class="docutils literal notranslate"><span class="pre">&#64;configclass</span></code> 注释，并继承自 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.html#omni.isaac.lab.envs.DirectRLEnvCfg" title="omni.isaac.lab.envs.DirectRLEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRLEnvCfg</span></code></a> 类，其中可以包括模拟参数、环境场景参数、机器人参数和特定于任务的参数。</p>
+<p>下面是任务配置类的示例骨架:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">omni.isaac.lab.envs</span> <span class="kn">import</span> <span class="n">DirectRLEnvCfg</span>
+<span class="kn">from</span> <span class="nn">omni.isaac.lab.scene</span> <span class="kn">import</span> <span class="n">InteractiveSceneCfg</span>
+<span class="kn">from</span> <span class="nn">omni.isaac.lab.sim</span> <span class="kn">import</span> <span class="n">SimulationCfg</span>
+
+<span class="nd">@configclass</span>
+<span class="k">class</span> <span class="nc">MyEnvCfg</span><span class="p">(</span><span class="n">DirectRLEnvCfg</span><span class="p">):</span>
+   <span class="c1"># simulation</span>
+   <span class="n">sim</span><span class="p">:</span> <span class="n">SimulationCfg</span> <span class="o">=</span> <span class="n">SimulationCfg</span><span class="p">()</span>
+   <span class="c1"># robot</span>
+   <span class="n">robot_cfg</span><span class="p">:</span> <span class="n">ArticulationCfg</span> <span class="o">=</span> <span class="n">ArticulationCfg</span><span class="p">()</span>
+   <span class="c1"># scene</span>
+   <span class="n">scene</span><span class="p">:</span> <span class="n">InteractiveSceneCfg</span> <span class="o">=</span> <span class="n">InteractiveSceneCfg</span><span class="p">()</span>
+   <span class="c1"># env</span>
+   <span class="n">decimation</span> <span class="o">=</span> <span class="mi">2</span>
+   <span class="n">episode_length_s</span> <span class="o">=</span> <span class="mf">5.0</span>
+   <span class="n">num_actions</span> <span class="o">=</span> <span class="mi">1</span>
+   <span class="n">num_observations</span> <span class="o">=</span> <span class="mi">4</span>
+   <span class="n">num_states</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="c1"># task-specific parameters</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
+<section id="simulation-config">
+<h3>模拟配置<a class="headerlink" href="#simulation-config" title="此标题的永久链接">#</a></h3>
+<p>与模拟相关的参数是作为 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.SimulationCfg" title="omni.isaac.lab.sim.SimulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationCfg</span></code></a> 类的一部分进行定义的，这是一个 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块，包含模拟参数，如 <code class="docutils literal notranslate"><span class="pre">dt</span></code> ， <code class="docutils literal notranslate"><span class="pre">device</span></code> 和 <code class="docutils literal notranslate"><span class="pre">gravity</span></code> 。每个任务配置必须定义一个名为 <code class="docutils literal notranslate"><span class="pre">sim</span></code> 的变量，它包含类型 <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.SimulationCfg" title="omni.isaac.lab.sim.SimulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationCfg</span></code></a> 。</p>
+<p>关节和刚体的仿真参数，例如 <code class="docutils literal notranslate"><span class="pre">num_position_iterations</span></code> 、 <code class="docutils literal notranslate"><span class="pre">num_velocity_iterations</span></code> 、 <code class="docutils literal notranslate"><span class="pre">contact_offset</span></code> 、 <code class="docutils literal notranslate"><span class="pre">rest_offset</span></code> 、 <code class="docutils literal notranslate"><span class="pre">bounce_threshold_velocity</span></code> 和 <code class="docutils literal notranslate"><span class="pre">max_depenetration_velocity</span></code> ，可以在每个单独的关节和刚体的配置类中以每个角色为基础进行指定。</p>
+<p>在使用 GPU 运行仿真时，PhysX 中的缓冲区需要预先分配，用于计算和存储诸如接触、碰撞和聚合对等信息。这些缓冲区可能需要根据环境复杂性、预期接触和碰撞数量以及环境中的演员数量进行调整。<a class="reference internal" href="../api/lab/omni.isaac.lab.sim.html#omni.isaac.lab.sim.PhysxCfg" title="omni.isaac.lab.sim.PhysxCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysxCfg</span></code></a> 类提供了设置 GPU 缓冲区尺寸的访问功能。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># OmniIsaacGymEnvs</span>
+<span class="nt">sim</span><span class="p">:</span>
+
+<span class="w">  </span><span class="nt">dt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0083</span><span class="w"> </span><span class="c1"># 1/120 s</span>
+<span class="w">  </span><span class="nt">use_gpu_pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${eq:${...pipeline},&quot;gpu&quot;}</span>
+<span class="w">  </span><span class="nt">use_fabric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">enable_scene_query_support</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">disable_contact_processing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">gravity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-9.81</span><span class="p p-Indicator">]</span>
+
+<span class="w">  </span><span class="nt">default_physics_material</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">static_friction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">dynamic_friction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">restitution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+
+<span class="w">  </span><span class="nt">physx</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">worker_thread_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${....num_threads}</span>
+<span class="w">    </span><span class="nt">solver_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${....solver_type}</span>
+<span class="w">    </span><span class="nt">use_gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${contains:&quot;cuda&quot;,${....sim_device}}</span>
+<span class="w">    </span><span class="nt">solver_position_iteration_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">solver_velocity_iteration_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">contact_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.02</span>
+<span class="w">    </span><span class="nt">rest_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+<span class="w">    </span><span class="nt">bounce_threshold_velocity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
+<span class="w">    </span><span class="nt">friction_offset_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.04</span>
+<span class="w">    </span><span class="nt">friction_correlation_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.025</span>
+<span class="w">    </span><span class="nt">enable_sleeping</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">enable_stabilization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">max_depenetration_velocity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span>
+
+<span class="w">    </span><span class="nt">gpu_max_rigid_contact_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">524288</span>
+<span class="w">    </span><span class="nt">gpu_max_rigid_patch_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">81920</span>
+<span class="w">    </span><span class="nt">gpu_found_lost_pairs_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">gpu_found_lost_aggregate_pairs_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">262144</span>
+<span class="w">    </span><span class="nt">gpu_total_aggregate_pairs_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">gpu_heap_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">67108864</span>
+<span class="w">    </span><span class="nt">gpu_temp_buffer_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16777216</span>
+<span class="w">    </span><span class="nt">gpu_max_num_partitions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">    </span><span class="nt">gpu_max_soft_body_contacts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1048576</span>
+<span class="w">    </span><span class="nt">gpu_max_particle_contacts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1048576</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># IsaacLab</span>
+<span class="n">sim</span><span class="p">:</span> <span class="n">SimulationCfg</span> <span class="o">=</span> <span class="n">SimulationCfg</span><span class="p">(</span>
+   <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda:0&quot;</span> <span class="c1"># can be &quot;cpu&quot;, &quot;cuda&quot;, &quot;cuda:&lt;device_id&gt;&quot;</span>
+   <span class="n">dt</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">120</span><span class="p">,</span>
+   <span class="c1"># use_gpu_pipeline is deduced from the device</span>
+   <span class="n">use_fabric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+   <span class="n">enable_scene_query_support</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+   <span class="n">disable_contact_processing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+   <span class="n">gravity</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.81</span><span class="p">),</span>
+
+   <span class="n">physics_material</span><span class="o">=</span><span class="n">RigidBodyMaterialCfg</span><span class="p">(</span>
+       <span class="n">static_friction</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+       <span class="n">dynamic_friction</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+       <span class="n">restitution</span><span class="o">=</span><span class="mf">0.0</span>
+   <span class="p">)</span>
+   <span class="n">physx</span><span class="p">:</span> <span class="n">PhysxCfg</span> <span class="o">=</span> <span class="n">PhysxCfg</span><span class="p">(</span>
+       <span class="c1"># worker_thread_count is no longer needed</span>
+       <span class="n">solver_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+       <span class="c1"># use_gpu is deduced from the device</span>
+       <span class="n">max_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+       <span class="n">max_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+       <span class="c1"># moved to actor config</span>
+       <span class="c1"># moved to actor config</span>
+       <span class="n">bounce_threshold_velocity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+       <span class="n">friction_offset_threshold</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>
+       <span class="n">friction_correlation_distance</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+       <span class="c1"># enable_sleeping is no longer needed</span>
+       <span class="n">enable_stabilization</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+       <span class="c1"># moved to RigidBodyPropertiesCfg</span>
+
+       <span class="n">gpu_max_rigid_contact_count</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">23</span><span class="p">,</span>
+       <span class="n">gpu_max_rigid_patch_count</span><span class="o">=</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">15</span><span class="p">,</span>
+       <span class="n">gpu_found_lost_pairs_capacity</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">21</span><span class="p">,</span>
+       <span class="n">gpu_found_lost_aggregate_pairs_capacity</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">25</span><span class="p">,</span>
+       <span class="n">gpu_total_aggregate_pairs_capacity</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">21</span><span class="p">,</span>
+       <span class="n">gpu_heap_capacity</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">26</span><span class="p">,</span>
+       <span class="n">gpu_temp_buffer_capacity</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">24</span><span class="p">,</span>
+       <span class="n">gpu_max_num_partitions</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+       <span class="n">gpu_max_soft_body_contacts</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span>
+       <span class="n">gpu_max_particle_contacts</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span>
+   <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以下参数，如 <code class="docutils literal notranslate"><span class="pre">add_ground_plane</span></code> 和 <code class="docutils literal notranslate"><span class="pre">add_distant_light</span></code>，现在在创建场景时已成为任务逻辑的一部分。<code class="docutils literal notranslate"><span class="pre">enable_cameras</span></code> 现在作为命令行参数 <code class="docutils literal notranslate"><span class="pre">--enable_cameras</span></code> 存在，可以直接传递给训练脚本。</p>
+</section>
+<section id="scene-config">
+<h3>场景配置<a class="headerlink" href="#scene-config" title="此标题的永久链接">#</a></h3>
+<p><a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveSceneCfg</span></code></a> 类可用于指定与场景相关的参数，比如环境数量和环境之间的间距。每个任务配置必须定义一个名为 <code class="docutils literal notranslate"><span class="pre">scene</span></code> 的变量，其中包含类型 <a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveSceneCfg" title="omni.isaac.lab.scene.InteractiveSceneCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveSceneCfg</span></code></a> 。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># OmniIsaacGymEnvs</span>
+<span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">numEnvs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${resolve_default:512,${...num_envs}}</span>
+<span class="w">  </span><span class="nt">envSpacing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4.0</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># IsaacLab</span>
+<span class="n">scene</span><span class="p">:</span> <span class="n">InteractiveSceneCfg</span> <span class="o">=</span> <span class="n">InteractiveSceneCfg</span><span class="p">(</span>
+   <span class="n">num_envs</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+   <span class="n">env_spacing</span><span class="o">=</span><span class="mf">4.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="task-config">
+<h3>任务配置<a class="headerlink" href="#task-config" title="此标题的永久链接">#</a></h3>
+<p>每个环境都应该指定自己的配置类，该类包含特定于任务的参数，比如观察和行动缓冲区的维度。奖励项缩放参数也可以在配置类中进行指定。</p>
+<p>在Isaac Lab中， <code class="docutils literal notranslate"><span class="pre">controlFrequencyInv</span></code> 参数已更名为 <code class="docutils literal notranslate"><span class="pre">decimation</span></code> ，必须在配置类中作为参数进行指定。</p>
+<p>此外，最大的episode长度参数（现在是 <code class="docutils literal notranslate"><span class="pre">episode_length_s</span></code> ）以秒为单位，而不是作为在OmniIsaacGymEnvs中的步数。要在步数和秒数之间转换，使用以下方程:<code class="docutils literal notranslate"><span class="pre">episode_length_s</span> <span class="pre">=</span> <span class="pre">dt</span> <span class="pre">*</span> <span class="pre">decimation</span> <span class="pre">*</span> <span class="pre">num_steps</span></code> 。</p>
+<p>下面的参数必须为每个环境配置设置:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">decimation</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">episode_length_s</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">num_actions</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">num_observations</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">num_states</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="rl-config-setup">
+<h2>RL配置设置<a class="headerlink" href="#rl-config-setup" title="此标题的永久链接">#</a></h2>
+<p>RL游戏库的rl配置文件在Isaac Lab中可以继续使用 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> 文件进行定义。配置文件的大部分内容可以直接从OmniIsaacGymEnvs中复制。请注意，在Isaac Lab中，我们不使用hydra来解析配置文件中的相对路径。请用参数的实际值替换任何相对路径，如 <code class="docutils literal notranslate"><span class="pre">${....device}</span></code> 。</p>
+<p>此外，观察和行动裁剪范围已经移到RL配置文件中。对于在IsaacGymEnvs任务配置文件中定义的 <code class="docutils literal notranslate"><span class="pre">clipObservations</span></code> 和 <code class="docutils literal notranslate"><span class="pre">clipActions</span></code> 参数，它们应该被移到Isaac Lab的RL配置文件中。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>IsaacGymEnvs任务配置</p></td>
+<td><p>Isaac Lab RL配置</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># OmniIsaacGymEnvs</span>
+<span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">clipObservations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">  </span><span class="nt">clipActions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># IsaacLab</span>
+<span class="nt">params</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">clip_observations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">    </span><span class="nt">clip_actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="environment-creation">
+<h2>环境创建<a class="headerlink" href="#environment-creation" title="此标题的永久链接">#</a></h2>
+<p>在OmniIsaacGymEnvs中，环境创建通常发生在 <code class="docutils literal notranslate"><span class="pre">set_up_scene()</span></code> API中，其中涉及创建初始环境、克隆环境、过滤碰撞、添加地面和光线，并创建角色的 <code class="docutils literal notranslate"><span class="pre">View</span></code> 类。</p>
+<p>在Isaac Lab中，类似的功能在 <code class="docutils literal notranslate"><span class="pre">_setup_scene()</span></code> API中执行。主要区别在于基类 <code class="docutils literal notranslate"><span class="pre">_setup_scene()</span></code> 不再执行克隆环境和添加地面和光线的操作。相反，现在这些操作应该在各个任务的 <code class="docutils literal notranslate"><span class="pre">_setup_scene</span></code> 实现中进行，以提供更灵活的场景设置过程。</p>
+<p>还要注意的是，通过定义 <code class="docutils literal notranslate"><span class="pre">Articulation</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RigidObject</span></code> 对象，将根据角色配置中的 <code class="docutils literal notranslate"><span class="pre">spawn</span></code> 参数将角色添加到场景中，并且 <code class="docutils literal notranslate"><span class="pre">View</span></code> 类将自动为角色创建。这样可以避免需要单独为角色定义 <code class="docutils literal notranslate"><span class="pre">ArticulationView</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RigidPrimView</span></code> 对象。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_up_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">get_cartpole</span><span class="p">()</span>
+  <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_up_scene</span><span class="p">(</span><span class="n">scene</span><span class="p">)</span>
+
+  <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span> <span class="o">=</span> <span class="n">ArticulationView</span><span class="p">(</span>
+               <span class="n">prim_paths_expr</span><span class="o">=</span><span class="s2">&quot;/World/envs/.*/Cartpole&quot;</span><span class="p">,</span>
+               <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cartpole_view&quot;</span><span class="p">,</span> <span class="n">reset_xform_properties</span><span class="o">=</span><span class="kc">False</span>
+  <span class="p">)</span>
+  <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_setup_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span> <span class="o">=</span> <span class="n">Articulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">robot_cfg</span><span class="p">)</span>
+  <span class="c1"># add ground plane</span>
+  <span class="n">spawn_ground_plane</span><span class="p">(</span><span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/ground&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="n">GroundPlaneCfg</span><span class="p">()</span>
+  <span class="c1"># clone, filter, and replicate</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clone_environments</span><span class="p">(</span><span class="n">copy_from_source</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">filter_collisions</span><span class="p">(</span><span class="n">global_prim_paths</span><span class="o">=</span><span class="p">[])</span>
+  <span class="c1"># add articultion to scene</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">articulations</span><span class="p">[</span><span class="s2">&quot;cartpole&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span>
+  <span class="c1"># add lights</span>
+  <span class="n">light_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">DomeLightCfg</span><span class="p">(</span><span class="n">intensity</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">)</span>
+  <span class="n">light_cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Light&quot;</span><span class="p">,</span> <span class="n">light_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="ground-plane">
+<h3>地面<a class="headerlink" href="#ground-plane" title="此标题的永久链接">#</a></h3>
+<p>除了以上示例外，还可以使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.terrains.html#omni.isaac.lab.terrains.TerrainImporterCfg" title="omni.isaac.lab.terrains.TerrainImporterCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">TerrainImporterCfg</span></code></a> 类定义更复杂的地面。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">omni.isaac.lab.terrains</span> <span class="kn">import</span> <span class="n">TerrainImporterCfg</span>
+
+<span class="n">terrain</span> <span class="o">=</span> <span class="n">TerrainImporterCfg</span><span class="p">(</span>
+     <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/ground&quot;</span><span class="p">,</span>
+     <span class="n">terrain_type</span><span class="o">=</span><span class="s2">&quot;plane&quot;</span><span class="p">,</span>
+     <span class="n">collision_group</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+     <span class="n">physics_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyMaterialCfg</span><span class="p">(</span>
+         <span class="n">friction_combine_mode</span><span class="o">=</span><span class="s2">&quot;multiply&quot;</span><span class="p">,</span>
+         <span class="n">restitution_combine_mode</span><span class="o">=</span><span class="s2">&quot;multiply&quot;</span><span class="p">,</span>
+         <span class="n">static_friction</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+         <span class="n">dynamic_friction</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+         <span class="n">restitution</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+     <span class="p">),</span>
+ <span class="p">)</span>
+</pre></div>
+</div>
+<p>然后，在 <code class="docutils literal notranslate"><span class="pre">_setup_scene(self)</span></code> 中，通过引用 <code class="docutils literal notranslate"><span class="pre">TerrainImporterCfg</span></code> 对象将地形添加到场景中:</p>
+</section>
+<section id="actors">
+<h3>角色<a class="headerlink" href="#actors" title="此标题的永久链接">#</a></h3>
+<p>在Isaac Lab中，每个关节和刚体角色都可以有自己的配置类。 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 类可用于定义关节角色的参数，包括文件路径、模拟参数、执行器属性和初始状态。</p>
+<p>在 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 中， <code class="docutils literal notranslate"><span class="pre">spawn</span></code> 属性可用于通过指定机器人文件的路径将机器人添加到场景中。此外， <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.schemas.html#omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg" title="omni.isaac.lab.sim.schemas.RigidBodyPropertiesCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidBodyPropertiesCfg</span></code></a> 类可用于为关节中的刚体指定模拟属性。同样， <a class="reference internal" href="../api/lab/omni.isaac.lab.sim.schemas.html#omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg" title="omni.isaac.lab.sim.schemas.ArticulationRootPropertiesCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationRootPropertiesCfg</span></code></a> 类可用于指定关节的模拟属性。使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.actuators.html#omni.isaac.lab.actuators.ImplicitActuatorCfg" title="omni.isaac.lab.actuators.ImplicitActuatorCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImplicitActuatorCfg</span></code></a> ，关节属性现在作为 <code class="docutils literal notranslate"><span class="pre">actuators</span></code> 字典的一部分进行指定。具有相同属性的关节可以被分组成正则表达式或提供为名称或表达式的列表。</p>
+<p>角色是通过简单地调用 <code class="docutils literal notranslate"><span class="pre">self.cartpole</span> <span class="pre">=</span> <span class="pre">Articulation(self.cfg.robot_cfg)</span></code> 进行添加到场景的，其中 <code class="docutils literal notranslate"><span class="pre">self.cfg.robot_cfg</span></code> 是一个 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 对象。初始化后，它们也应该被添加到 <a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code></a> 中，通过调用 <code class="docutils literal notranslate"><span class="pre">self.scene.articulations[&quot;cartpole&quot;]</span> <span class="pre">=</span> <span class="pre">self.cartpole</span></code> ，以便 <a class="reference internal" href="../api/lab/omni.isaac.lab.scene.html#omni.isaac.lab.scene.InteractiveScene" title="omni.isaac.lab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code></a> 可以遍历场景中的角色，以便向模拟写入值并进行重置。</p>
+</section>
+</section>
+<section id="accessing-states-from-simulation">
+<h2>从模拟中获取状态<a class="headerlink" href="#accessing-states-from-simulation" title="此标题的永久链接">#</a></h2>
+<p>在Isaac Lab中，访问物理状态的API需要创建一个 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation" title="omni.isaac.lab.assets.Articulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Articulation</span></code></a> 或 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObject" title="omni.isaac.lab.assets.RigidObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObject</span></code></a> 对象。可以通过定义相应的 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationCfg" title="omni.isaac.lab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 或 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObjectCfg" title="omni.isaac.lab.assets.RigidObjectCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectCfg</span></code></a> 配置来为场景中的不同关节或刚体初始化多个对象，就像在上面的部分中所述的。这取代了以前在OmniIsaacGymEnvs中使用的 <a class="reference external" href="https://docs.omniverse.nvidia.com/py/isaacsim/source/extensions/omni.isaac.core/docs/index.html#omni.isaac.core.articulations.ArticulationView" title="（在 isaac_sim）"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationView</span></code></a> 和 <a class="reference external" href="https://docs.omniverse.nvidia.com/py/isaacsim/source/extensions/omni.isaac.core/docs/index.html#omni.isaac.core.prims.RigidPrimView" title="（在 isaac_sim）"><code class="xref py py-class docutils literal notranslate"><span class="pre">omni.isaac.core.prims.RigidPrimView</span></code></a> 类。</p>
+<p>然而，这些类之间的功能是类似的:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dof_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">(</span><span class="n">clone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">dof_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">get_joint_velocities</span><span class="p">(</span><span class="n">clone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">joint_pos</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">joint_vel</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在Isaac Lab中， <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.Articulation" title="omni.isaac.lab.assets.Articulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Articulation</span></code></a> 和 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObject" title="omni.isaac.lab.assets.RigidObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObject</span></code></a> 类都有一个 <code class="docutils literal notranslate"><span class="pre">data</span></code> 类。数据类（ <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.ArticulationData" title="omni.isaac.lab.assets.ArticulationData"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationData</span></code></a> 和 <a class="reference internal" href="../api/lab/omni.isaac.lab.assets.html#omni.isaac.lab.assets.RigidObjectData" title="omni.isaac.lab.assets.RigidObjectData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectData</span></code></a> ）包含用于保存关节和刚体状态的缓冲区，并提供了一种更高效的方式从角色获取状态。</p>
+<p>除了一些API的重命名外，设置角色状态的功能在OmniIsaacGymEnvs和Isaac Lab之间也可以进行类似的操作。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">env_ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">set_joint_positions</span><span class="p">(</span><span class="n">dof_pos</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">set_joint_velocities</span><span class="p">(</span><span class="n">dof_vel</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">_robot</span><span class="o">.</span><span class="n">write_joint_state_to_sim</span><span class="p">(</span><span class="n">joint_pos</span><span class="p">,</span> <span class="n">joint_vel</span><span class="p">,</span>
+                                 <span class="n">joint_ids</span><span class="p">,</span> <span class="n">env_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在Isaac Lab中， <code class="docutils literal notranslate"><span class="pre">root_pose</span></code> 和 <code class="docutils literal notranslate"><span class="pre">root_velocity</span></code> 已合并为单个缓冲区，并且不再分割为 <code class="docutils literal notranslate"><span class="pre">root_position</span></code> ， <code class="docutils literal notranslate"><span class="pre">root_orientation</span></code> ， <code class="docutils literal notranslate"><span class="pre">root_linear_velocity</span></code> 和 <code class="docutils literal notranslate"><span class="pre">root_angular_velocity</span></code> 。</p>
+</section>
+<section id="creating-a-new-environment">
+<h2>创建一个新环境<a class="headerlink" href="#creating-a-new-environment" title="此标题的永久链接">#</a></h2>
+<p>Isaac Lab中的每个环境应该在自己的目录中，遵循以下结构:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>my_environment/
+    - agents/
+        - __init__.py
+        - rl_games_ppo_cfg.py
+    - __init__.py
+    my_env.py
+</pre></div>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_environment</span></code> 是任务的根目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_environment/agents</span></code> 是包含任务的所有RL配置文件的目录。Isaac Lab支持多个RL库，每个库可以有自己的配置文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_environment/__init__.py</span></code> 是通过Gymnasium接口将环境注册到Gymnasium接口的主文件。这允许训练和推断脚本通过名称找到任务。此文件的内容应该是如下所示:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">agents</span>
+<span class="kn">from</span> <span class="nn">.cartpole_env</span> <span class="kn">import</span> <span class="n">CartpoleEnv</span><span class="p">,</span> <span class="n">CartpoleEnvCfg</span>
+
+<span class="c1">##</span>
+<span class="c1"># Register Gym environments.</span>
+<span class="c1">##</span>
+
+<span class="n">gym</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Isaac-Cartpole-Direct-v0&quot;</span><span class="p">,</span>
+    <span class="n">entry_point</span><span class="o">=</span><span class="s2">&quot;omni.isaac.lab_tasks.direct_workflow.cartpole:CartpoleEnv&quot;</span><span class="p">,</span>
+    <span class="n">disable_env_checker</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;env_cfg_entry_point&quot;</span><span class="p">:</span> <span class="n">CartpoleEnvCfg</span><span class="p">,</span>
+        <span class="s2">&quot;rl_games_cfg_entry_point&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">agents</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:rl_games_ppo_cfg.yaml&quot;</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_environment/my_env.py</span></code> 是实现任务逻辑和环境的任务配置类的主要python脚本。</p></li>
+</ul>
+</section>
+<section id="task-logic">
+<h2>任务逻辑<a class="headerlink" href="#task-logic" title="此标题的永久链接">#</a></h2>
+<p>在Isaac Lab中，不再需要 <code class="docutils literal notranslate"><span class="pre">post_reset</span></code> API。以前在 <code class="docutils literal notranslate"><span class="pre">post_reset</span></code> 中完成的所有操作都可以在执行基类的 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法后在 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法中完成。此时，模拟已经开始。</p>
+<p>在OmniIsaacGymEnvs中，由于GPU API的限制，不能根据当前步骤的状态进行重置。所以，重置必须在下一个时间步骤的开始时执行。在Isaac Lab中，这个限制被消除了，因此这些任务可以按照正确的工作流程进行操作，包括应用动作、模拟步进、收集状态、计算完成标志、计算奖励、执行重置，最后计算观察。这个工作流程可以被框架自动执行，因此任务不需要 <code class="docutils literal notranslate"><span class="pre">post_physics_step</span></code> API。但是，各个任务可以覆盖 <code class="docutils literal notranslate"><span class="pre">step()</span></code> API以控制工作流程。</p>
+<p>在 Isaac Lab 中，我们还将 <code class="docutils literal notranslate"><span class="pre">pre_physics_step</span></code> API 与 <code class="docutils literal notranslate"><span class="pre">apply_action</span></code> API 分开，用于处理来自策略的动作，后者将动作设置到仿真中。这样可以更灵活地控制在使用 <code class="docutils literal notranslate"><span class="pre">decimation</span></code> 时何时将动作写入仿真。 <code class="docutils literal notranslate"><span class="pre">pre_physics_step</span></code> 方法将在每个步骤之前调用一次，在仿真步骤之前。 <code class="docutils literal notranslate"><span class="pre">apply_actions</span></code> 方法将在每个 RL 步骤中调用 <code class="docutils literal notranslate"><span class="pre">decimation</span></code> 次，即在每个仿真步骤调用之前各一次。</p>
+<p>调用的顺序如下:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pre_physics_step
+  |-- reset_idx()
+  |-- apply_action
+
+post_physics_step
+  |-- get_observations()
+  |-- calculate_metrics()
+  |-- is_done()
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pre_physics_step
+  |-- _pre_physics_step(action)
+  |-- _apply_action()
+
+post_physics_step
+  |-- _get_dones()
+  |-- _get_rewards()
+  |-- _reset_idx()
+  |-- _get_observations()
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>通过这种方法，重置是基于当前步骤的动作而不是上一个步骤执行的。观察还将根据重置后的正确状态进行计算。</p>
+<p>我们还进行了一些API的重命名:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">set_up_scene(self,</span> <span class="pre">scene)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_setup_scene(self)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">post_reset(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">__init__(...)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pre_physics_step(self,</span> <span class="pre">actions)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_pre_physics_step(self,</span> <span class="pre">actions)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_apply_action(self)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset_idx(self,</span> <span class="pre">env_ids)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_reset_idx(self,</span> <span class="pre">env_ids)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_observations(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_observations(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_observations()</span></code> 现在应该返回一个字典 <code class="docutils literal notranslate"><span class="pre">{&quot;policy&quot;:</span> <span class="pre">obs}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calculate_metrics(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_rewards(self)</span></code> - <code class="docutils literal notranslate"><span class="pre">_get_rewards()</span></code> 现在应该返回奖励缓冲区</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_done(self)</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">_get_dones(self)</span></code> - 现在 <code class="docutils literal notranslate"><span class="pre">_get_dones()</span></code> 应该返回 2 个缓冲区:<code class="docutils literal notranslate"><span class="pre">reset</span></code> 和 <code class="docutils literal notranslate"><span class="pre">time_out</span></code> 缓冲区</p></li>
+</ul>
+</section>
+<section id="putting-it-all-together">
+<h2>将所有内容组合在一起<a class="headerlink" href="#putting-it-all-together" title="此标题的永久链接">#</a></h2>
+<p>Cartpole 环境在这里被完整展示，以充分展示 OmniIsaacGymEnvs 实现和 Isaac Lab 实现之间的比较。</p>
+<section id="id1">
+<h3>任务配置<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h3>
+<p>在 Isaac Lab 中，任务配置可以分为主要任务配置类和用于actor的单独配置对象。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># used to create the object</span>
+
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cartpole</span>
+
+<span class="nt">physics_engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${..physics_engine}</span>
+
+<span class="c1"># if given, will override the device setting in gym.</span>
+<span class="nt">env</span><span class="p">:</span>
+
+<span class="w">  </span><span class="nt">numEnvs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${resolve_default:512,${...num_envs}}</span>
+<span class="w">  </span><span class="nt">envSpacing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4.0</span>
+<span class="w">  </span><span class="nt">resetDist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0</span>
+<span class="w">  </span><span class="nt">maxEffort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">400.0</span>
+
+<span class="w">  </span><span class="nt">clipObservations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">  </span><span class="nt">clipActions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">  </span><span class="nt">controlFrequencyInv</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># 60 Hz</span>
+
+<span class="nt">sim</span><span class="p">:</span>
+
+<span class="w">  </span><span class="nt">dt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0083</span><span class="w"> </span><span class="c1"># 1/120 s</span>
+<span class="w">  </span><span class="nt">use_gpu_pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${eq:${...pipeline},&quot;gpu&quot;}</span>
+<span class="w">  </span><span class="nt">gravity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-9.81</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">add_ground_plane</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">add_distant_light</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">use_fabric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">enable_scene_query_support</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">disable_contact_processing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+
+<span class="w">  </span><span class="nt">enable_cameras</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+
+<span class="w">  </span><span class="nt">default_physics_material</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">static_friction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">dynamic_friction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">restitution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+
+<span class="w">  </span><span class="nt">physx</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">worker_thread_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${....num_threads}</span>
+<span class="w">    </span><span class="nt">solver_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${....solver_type}</span>
+<span class="w">    </span><span class="nt">use_gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${eq:${....sim_device},&quot;gpu&quot;}</span><span class="w"> </span><span class="c1"># set to False to...</span>
+<span class="w">    </span><span class="nt">solver_position_iteration_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">solver_velocity_iteration_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">contact_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.02</span>
+<span class="w">    </span><span class="nt">rest_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+<span class="w">    </span><span class="nt">bounce_threshold_velocity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
+<span class="w">    </span><span class="nt">friction_offset_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.04</span>
+<span class="w">    </span><span class="nt">friction_correlation_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.025</span>
+<span class="w">    </span><span class="nt">enable_sleeping</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">enable_stabilization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">max_depenetration_velocity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span>
+
+<span class="w">    </span><span class="c1"># GPU buffers</span>
+<span class="w">    </span><span class="nt">gpu_max_rigid_contact_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">524288</span>
+<span class="w">    </span><span class="nt">gpu_max_rigid_patch_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">81920</span>
+<span class="w">    </span><span class="nt">gpu_found_lost_pairs_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">gpu_found_lost_aggregate_pairs_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">262144</span>
+<span class="w">    </span><span class="nt">gpu_total_aggregate_pairs_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">gpu_max_soft_body_contacts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1048576</span>
+<span class="w">    </span><span class="nt">gpu_max_particle_contacts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1048576</span>
+<span class="w">    </span><span class="nt">gpu_heap_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">67108864</span>
+<span class="w">    </span><span class="nt">gpu_temp_buffer_capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16777216</span>
+<span class="w">    </span><span class="nt">gpu_max_num_partitions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+
+<span class="w">    </span><span class="nt">Cartpole</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">override_usd_defaults</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">      </span><span class="nt">enable_self_collisions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">      </span><span class="nt">enable_gyroscopic_forces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">      </span><span class="nt">solver_position_iteration_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">      </span><span class="nt">solver_velocity_iteration_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">      </span><span class="nt">sleep_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.005</span>
+<span class="w">      </span><span class="nt">stabilization_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+<span class="w">      </span><span class="nt">density</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">      </span><span class="nt">max_depenetration_velocity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span>
+<span class="w">      </span><span class="nt">contact_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.02</span>
+<span class="w">      </span><span class="nt">rest_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
+<span class="k">class</span> <span class="nc">CartpoleEnvCfg</span><span class="p">(</span><span class="n">DirectRLEnvCfg</span><span class="p">):</span>
+
+    <span class="c1"># simulation</span>
+    <span class="n">sim</span><span class="p">:</span> <span class="n">SimulationCfg</span> <span class="o">=</span> <span class="n">SimulationCfg</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">120</span><span class="p">)</span>
+    <span class="c1"># robot</span>
+    <span class="n">robot_cfg</span><span class="p">:</span> <span class="n">ArticulationCfg</span> <span class="o">=</span> <span class="n">CARTPOLE_CFG</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Robot&quot;</span><span class="p">)</span>
+    <span class="n">cart_dof_name</span> <span class="o">=</span> <span class="s2">&quot;slider_to_cart&quot;</span>
+    <span class="n">pole_dof_name</span> <span class="o">=</span> <span class="s2">&quot;cart_to_pole&quot;</span>
+    <span class="c1"># scene</span>
+    <span class="n">scene</span><span class="p">:</span> <span class="n">InteractiveSceneCfg</span> <span class="o">=</span> <span class="n">InteractiveSceneCfg</span><span class="p">(</span>
+      <span class="n">num_envs</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">env_spacing</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">replicate_physics</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># env</span>
+    <span class="n">decimation</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">episode_length_s</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">action_scale</span> <span class="o">=</span> <span class="mf">100.0</span>  <span class="c1"># [N]</span>
+    <span class="n">num_actions</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">num_observations</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">num_states</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># reset</span>
+    <span class="n">max_cart_pos</span> <span class="o">=</span> <span class="mf">3.0</span>
+    <span class="n">initial_pole_angle_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">]</span>
+    <span class="c1"># reward scales</span>
+    <span class="n">rew_scale_alive</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">rew_scale_terminated</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>
+    <span class="n">rew_scale_pole_pos</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="n">rew_scale_cart_vel</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span>
+    <span class="n">rew_scale_pole_vel</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span>
+
+
+<span class="n">CARTPOLE_CFG</span> <span class="o">=</span> <span class="n">ArticulationCfg</span><span class="p">(</span>
+  <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">UsdFileCfg</span><span class="p">(</span>
+    <span class="n">usd_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ISAACLAB_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/.../cartpole.usd&quot;</span><span class="p">,</span>
+    <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+      <span class="n">rigid_body_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+      <span class="n">max_linear_velocity</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+      <span class="n">max_angular_velocity</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+      <span class="n">max_depenetration_velocity</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+      <span class="n">enable_gyroscopic_forces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">articulation_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">ArticulationRootPropertiesCfg</span><span class="p">(</span>
+      <span class="n">enabled_self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+      <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">sleep_threshold</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+      <span class="n">stabilization_threshold</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="p">),</span>
+  <span class="p">),</span>
+  <span class="n">init_state</span><span class="o">=</span><span class="n">ArticulationCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span>
+    <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+    <span class="n">joint_pos</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;slider_to_cart&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;cart_to_pole&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+  <span class="p">),</span>
+  <span class="n">actuators</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;cart_actuator&quot;</span><span class="p">:</span> <span class="n">ImplicitActuatorCfg</span><span class="p">(</span>
+       <span class="n">joint_names_expr</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;slider_to_cart&quot;</span><span class="p">],</span>
+       <span class="n">effort_limit</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+       <span class="n">velocity_limit</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+       <span class="n">stiffness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+       <span class="n">damping</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;pole_actuator&quot;</span><span class="p">:</span> <span class="n">ImplicitActuatorCfg</span><span class="p">(</span>
+       <span class="n">joint_names_expr</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cart_to_pole&quot;</span><span class="p">],</span> <span class="n">effort_limit</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+       <span class="n">velocity_limit</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">stiffness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">),</span>
+  <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="task-setup">
+<h3>任务设置<a class="headerlink" href="#task-setup" title="此标题的永久链接">#</a></h3>
+<p>在Isaac Lab中，不再需要 <code class="docutils literal notranslate"><span class="pre">post_reset</span></code> API。以前在 <code class="docutils literal notranslate"><span class="pre">post_reset</span></code> 中完成的所有操作都可以在执行基类的 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法后在 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 方法中完成。此时，模拟已经开始。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CartpoleTask</span><span class="p">(</span><span class="n">RLTask</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sim_config</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_config</span><span class="p">(</span><span class="n">sim_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_episode_length</span> <span class="o">=</span> <span class="mi">500</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_observations</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_actions</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">RLTask</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_config</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sim_config</span> <span class="o">=</span> <span class="n">sim_config</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">sim_config</span><span class="o">.</span><span class="n">config</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_task_cfg</span> <span class="o">=</span> <span class="n">sim_config</span><span class="o">.</span>
+            <span class="n">task_config</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_envs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_cfg</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">][</span><span class="s2">&quot;numEnvs&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env_spacing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_cfg</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">][</span><span class="s2">&quot;envSpacing&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cartpole_positions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_cfg</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">][</span><span class="s2">&quot;resetDist&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_push_effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_cfg</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">][</span><span class="s2">&quot;maxEffort&quot;</span><span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">post_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">get_dof_index</span><span class="p">(</span>
+                <span class="s2">&quot;cartJoint&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">get_dof_index</span><span class="p">(</span>
+                <span class="s2">&quot;poleJoint&quot;</span><span class="p">)</span>
+            <span class="c1"># randomize all envs</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset_idx</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CartpoleEnv</span><span class="p">(</span><span class="n">DirectRLEnv</span><span class="p">):</span>
+    <span class="n">cfg</span><span class="p">:</span> <span class="n">CartpoleEnvCfg</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">CartpoleEnvCfg</span><span class="p">,</span>
+             <span class="n">render_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">render_mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">find_joints</span><span class="p">(</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">cart_dof_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">find_joints</span><span class="p">(</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">pole_dof_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">action_scale</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">joint_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">joint_vel</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="scene-setup">
+<h3>场景设置<a class="headerlink" href="#scene-setup" title="此标题的永久链接">#</a></h3>
+<p>在 OmniIsaacGymEnvs 中， <code class="docutils literal notranslate"><span class="pre">set_up_scene</span></code> 方法已被 Isaac Lab 中任务类中的 <code class="docutils literal notranslate"><span class="pre">_setup_scene</span></code> API 替换。此外，还提供了场景克隆和碰撞过滤作为任务类在必要时调用的 API。同样，添加地平面和光源也应在任务类中处理。向场景添加actor已被替换为 <code class="docutils literal notranslate"><span class="pre">self.scene.articulations[&quot;cartpole&quot;]</span> <span class="pre">=</span> <span class="pre">self.cartpole</span></code> 。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_up_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_cartpole</span><span class="p">()</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_up_scene</span><span class="p">(</span><span class="n">scene</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span> <span class="o">=</span> <span class="n">ArticulationView</span><span class="p">(</span>
+        <span class="n">prim_paths_expr</span><span class="o">=</span><span class="s2">&quot;/World/envs/.*/Cartpole&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cartpole_view&quot;</span><span class="p">,</span>
+        <span class="n">reset_xform_properties</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">get_cartpole</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">cartpole</span> <span class="o">=</span> <span class="n">Cartpole</span><span class="p">(</span>
+        <span class="n">prim_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_zero_env_path</span><span class="o">+</span><span class="s2">&quot;/Cartpole&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Cartpole&quot;</span><span class="p">,</span>
+        <span class="n">translation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartpole_positions</span>
+    <span class="p">)</span>
+    <span class="c1"># applies articulation settings from the</span>
+    <span class="c1"># task configuration yaml file</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_sim_config</span><span class="o">.</span><span class="n">apply_articulation_settings</span><span class="p">(</span>
+        <span class="s2">&quot;Cartpole&quot;</span><span class="p">,</span> <span class="n">get_prim_at_path</span><span class="p">(</span><span class="n">cartpole</span><span class="o">.</span><span class="n">prim_path</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_config</span><span class="o">.</span><span class="n">parse_actor_config</span><span class="p">(</span><span class="s2">&quot;Cartpole&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_setup_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span> <span class="o">=</span> <span class="n">Articulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">robot_cfg</span><span class="p">)</span>
+    <span class="c1"># add ground plane</span>
+    <span class="n">spawn_ground_plane</span><span class="p">(</span><span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/ground&quot;</span><span class="p">,</span>
+        <span class="n">cfg</span><span class="o">=</span><span class="n">GroundPlaneCfg</span><span class="p">())</span>
+    <span class="c1"># clone, filter, and replicate</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clone_environments</span><span class="p">(</span>
+        <span class="n">copy_from_source</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">filter_collisions</span><span class="p">(</span>
+        <span class="n">global_prim_paths</span><span class="o">=</span><span class="p">[])</span>
+    <span class="c1"># add articultion to scene</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">articulations</span><span class="p">[</span><span class="s2">&quot;cartpole&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span>
+
+    <span class="c1"># add lights</span>
+    <span class="n">light_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">DomeLightCfg</span><span class="p">(</span>
+        <span class="n">intensity</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">))</span>
+    <span class="n">light_cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Light&quot;</span><span class="p">,</span> <span class="n">light_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pre-physics-step">
+<h3>预物理步骤<a class="headerlink" href="#pre-physics-step" title="此标题的永久链接">#</a></h3>
+<p>请注意，重置不再在 <code class="docutils literal notranslate"><span class="pre">pre_physics_step</span></code> API 中执行。此外， <code class="docutils literal notranslate"><span class="pre">_pre_physics_step</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_apply_action</span></code> 方法的分离允许更灵活地处理动作缓冲区并将动作设置到仿真中。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>IsaacLab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pre_physics_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">is_playing</span><span class="p">():</span>
+        <span class="k">return</span>
+
+    <span class="n">reset_env_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_buf</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span>
+        <span class="n">as_tuple</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reset_env_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_idx</span><span class="p">(</span><span class="n">reset_env_ids</span><span class="p">)</span>
+
+    <span class="n">actions</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+
+    <span class="n">forces</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">num_dof</span><span class="p">),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+    <span class="n">forces</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">]</span> <span class="o">=</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_push_effort</span> <span class="o">*</span> <span class="n">actions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">set_joint_efforts</span><span class="p">(</span>
+        <span class="n">forces</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_pre_physics_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+        <span class="n">actions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_scale</span> <span class="o">*</span> <span class="n">actions</span>
+
+<span class="k">def</span> <span class="nf">_apply_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">set_joint_effort_target</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">,</span> <span class="n">joint_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="dones-and-resets">
+<h3>完成和重置<a class="headerlink" href="#dones-and-resets" title="此标题的永久链接">#</a></h3>
+<p>在 Isaac Lab 中， <code class="docutils literal notranslate"><span class="pre">dones</span></code> 是在 <code class="docutils literal notranslate"><span class="pre">_get_dones()</span></code> 方法中计算的，应该返回两个变量:<code class="docutils literal notranslate"><span class="pre">resets</span></code> 和 <code class="docutils literal notranslate"><span class="pre">time_out</span></code> 。 <code class="docutils literal notranslate"><span class="pre">_reset_idx()</span></code> 方法也在仿真后而不是在 OmniIsaacGymEnvs 中之前调用。 <code class="docutils literal notranslate"><span class="pre">progress_buf</span></code> 张量在 Isaac Lab 中已更名为 <code class="docutils literal notranslate"><span class="pre">episode_length_buf</span></code> ，框架现在会自动处理记录。任务实现不再需要递增或重置 <code class="docutils literal notranslate"><span class="pre">episode_length_buf</span></code> 。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+  <span class="n">resets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cart_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_dist</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="n">resets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pole_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">resets</span><span class="p">)</span>
+  <span class="n">resets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">progress_buf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_episode_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">resets</span><span class="p">)</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">reset_buf</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">resets</span>
+
+
+
+
+
+<span class="k">def</span> <span class="nf">reset_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env_ids</span><span class="p">):</span>
+  <span class="n">num_resets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">env_ids</span><span class="p">)</span>
+
+  <span class="c1"># randomize DOF positions</span>
+  <span class="n">dof_pos</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_resets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">num_dof</span><span class="p">),</span>
+      <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+  <span class="n">dof_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span>
+      <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_resets</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">))</span>
+  <span class="n">dof_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span>
+      <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_resets</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">))</span>
+
+  <span class="c1"># randomize DOF velocities</span>
+  <span class="n">dof_vel</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_resets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">num_dof</span><span class="p">),</span>
+      <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+  <span class="n">dof_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+      <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_resets</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">))</span>
+  <span class="n">dof_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span>
+      <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_resets</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">))</span>
+
+  <span class="c1"># apply resets</span>
+  <span class="n">indices</span> <span class="o">=</span> <span class="n">env_ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">set_joint_positions</span><span class="p">(</span><span class="n">dof_pos</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">)</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">set_joint_velocities</span><span class="p">(</span><span class="n">dof_vel</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">)</span>
+
+  <span class="c1"># bookkeeping</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">reset_buf</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">progress_buf</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_get_dones</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">joint_pos</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">joint_vel</span>
+
+    <span class="n">time_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">episode_length_buf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_episode_length</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">out_of_bounds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">])</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">max_cart_pos</span><span class="p">,</span>
+        <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">out_of_bounds</span> <span class="o">=</span> <span class="n">out_of_bounds</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out_of_bounds</span><span class="p">,</span> <span class="n">time_out</span>
+
+<span class="k">def</span> <span class="nf">_reset_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env_ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">env_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">env_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">_ALL_INDICES</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_reset_idx</span><span class="p">(</span><span class="n">env_ids</span><span class="p">)</span>
+
+    <span class="n">joint_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_pos</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span>
+    <span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sample_uniform</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">initial_pole_angle_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">initial_pole_angle_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+        <span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+        <span class="n">joint_pos</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">joint_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_vel</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span>
+
+    <span class="n">default_root_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_root_state</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span>
+    <span class="n">default_root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">env_origins</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span> <span class="o">=</span> <span class="n">joint_pos</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span> <span class="o">=</span> <span class="n">joint_vel</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">write_root_pose_to_sim</span><span class="p">(</span>
+        <span class="n">default_root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="n">env_ids</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">write_root_velocity_to_sim</span><span class="p">(</span>
+        <span class="n">default_root_state</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">:],</span> <span class="n">env_ids</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cartpole</span><span class="o">.</span><span class="n">write_joint_state_to_sim</span><span class="p">(</span>
+        <span class="n">joint_pos</span><span class="p">,</span> <span class="n">joint_vel</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">env_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="rewards">
+<h3>奖励<a class="headerlink" href="#rewards" title="此标题的永久链接">#</a></h3>
+<p>在 Isaac Lab 中，奖励是在 <code class="docutils literal notranslate"><span class="pre">_get_rewards</span></code> API 中实现的，应该返回奖励缓冲区，而不是直接赋值给 <code class="docutils literal notranslate"><span class="pre">self.rew_buf</span></code> 。还可以使用 PyTorch jit 通过定义带有 <code class="docutils literal notranslate"><span class="pre">&#64;torch.jit.script</span></code> 注释的函数来执行奖励函数的计算。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pole_pos</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pole_pos</span>
+        <span class="o">-</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cart_vel</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.005</span>
+        <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pole_vel</span><span class="p">))</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cart_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_dist</span><span class="p">,</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">reward</span><span class="p">)</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pole_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">reward</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">rew_buf</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">reward</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_get_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="n">total_reward</span> <span class="o">=</span> <span class="n">compute_rewards</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">rew_scale_alive</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">rew_scale_terminated</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">rew_scale_pole_pos</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">rew_scale_cart_vel</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">rew_scale_pole_vel</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_terminated</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_reward</span>
+
+<span class="nd">@torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span>
+<span class="k">def</span> <span class="nf">compute_rewards</span><span class="p">(</span>
+    <span class="n">rew_scale_alive</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">rew_scale_terminated</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">rew_scale_pole_pos</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">rew_scale_cart_vel</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">rew_scale_pole_vel</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">pole_pos</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">pole_vel</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">cart_pos</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">cart_vel</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">reset_terminated</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">rew_alive</span> <span class="o">=</span> <span class="n">rew_scale_alive</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">reset_terminated</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">rew_termination</span> <span class="o">=</span> <span class="n">rew_scale_terminated</span> <span class="o">*</span> <span class="n">reset_terminated</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+    <span class="n">rew_pole_pos</span> <span class="o">=</span> <span class="n">rew_scale_pole_pos</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">pole_pos</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rew_cart_vel</span> <span class="o">=</span> <span class="n">rew_scale_cart_vel</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cart_vel</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rew_pole_vel</span> <span class="o">=</span> <span class="n">rew_scale_pole_vel</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pole_vel</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">total_reward</span> <span class="o">=</span> <span class="p">(</span><span class="n">rew_alive</span> <span class="o">+</span> <span class="n">rew_termination</span>
+        <span class="o">+</span> <span class="n">rew_pole_pos</span> <span class="o">+</span> <span class="n">rew_cart_vel</span> <span class="o">+</span> <span class="n">rew_pole_vel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_reward</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="observations">
+<h3>观察<a class="headerlink" href="#observations" title="此标题的永久链接">#</a></h3>
+<p>在 Isaac Lab 中， <code class="docutils literal notranslate"><span class="pre">_get_observations()</span></code> API 必须返回一个带有键 <code class="docutils literal notranslate"><span class="pre">policy</span></code> 且值为观察缓冲区的字典。当使用非对称的actor-critic状态时，评论者的状态应该有键 <code class="docutils literal notranslate"><span class="pre">critic</span></code> ，并与观察缓冲区一起返回在同一个字典中。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>OmniIsaacGymEnvs</p></td>
+<td><p>Isaac Lab</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">dof_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">(</span><span class="n">clone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dof_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">get_joint_velocities</span><span class="p">(</span><span class="n">clone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cart_pos</span> <span class="o">=</span> <span class="n">dof_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cart_vel</span> <span class="o">=</span> <span class="n">dof_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pole_pos</span> <span class="o">=</span> <span class="n">dof_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pole_vel</span> <span class="o">=</span> <span class="n">dof_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">obs_buf</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cart_pos</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">obs_buf</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cart_vel</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">obs_buf</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pole_pos</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">obs_buf</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pole_vel</span>
+
+    <span class="n">observations</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cartpoles</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="p">{</span><span class="s2">&quot;obs_buf&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_buf</span><span class="p">}}</span>
+    <span class="k">return</span> <span class="n">observations</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_get_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                 <span class="p">(</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pole_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">joint_pos</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">joint_vel</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cart_dof_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">),</span>
+        <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">observations</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;policy&quot;</span><span class="p">:</span> <span class="n">obs</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">observations</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="domain-randomization">
+<h2>域随机化<a class="headerlink" href="#domain-randomization" title="此标题的永久链接">#</a></h2>
+<p>在 OmniIsaacGymEnvs 中，域随机化是通过任务的 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> 配置文件指定的。而在 Isaac Lab 中，域随机化配置使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块来指定一个由 <a class="reference internal" href="../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventTermCfg" title="omni.isaac.lab.managers.EventTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventTermCfg</span></code></a> 变量组成的配置类。</p>
+<p>以下是一个域随机化的配置类示例:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
+<span class="k">class</span> <span class="nc">EventCfg</span><span class="p">:</span>
+  <span class="n">robot_physics_material</span> <span class="o">=</span> <span class="n">EventTerm</span><span class="p">(</span>
+      <span class="n">func</span><span class="o">=</span><span class="n">mdp</span><span class="o">.</span><span class="n">randomize_rigid_body_material</span><span class="p">,</span>
+      <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reset&quot;</span><span class="p">,</span>
+      <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+          <span class="s2">&quot;asset_cfg&quot;</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">(</span><span class="s2">&quot;robot&quot;</span><span class="p">,</span> <span class="n">body_names</span><span class="o">=</span><span class="s2">&quot;.*&quot;</span><span class="p">),</span>
+          <span class="s2">&quot;static_friction_range&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">),</span>
+          <span class="s2">&quot;dynamic_friction_range&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+          <span class="s2">&quot;restitution_range&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+          <span class="s2">&quot;num_buckets&quot;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+      <span class="p">},</span>
+  <span class="p">)</span>
+  <span class="n">robot_joint_stiffness_and_damping</span> <span class="o">=</span> <span class="n">EventTerm</span><span class="p">(</span>
+      <span class="n">func</span><span class="o">=</span><span class="n">mdp</span><span class="o">.</span><span class="n">randomize_actuator_gains</span><span class="p">,</span>
+      <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reset&quot;</span><span class="p">,</span>
+      <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+          <span class="s2">&quot;asset_cfg&quot;</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">(</span><span class="s2">&quot;robot&quot;</span><span class="p">,</span> <span class="n">joint_names</span><span class="o">=</span><span class="s2">&quot;.*&quot;</span><span class="p">),</span>
+          <span class="s2">&quot;stiffness_distribution_params&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span>
+          <span class="s2">&quot;damping_distribution_params&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+          <span class="s2">&quot;operation&quot;</span><span class="p">:</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;distribution&quot;</span><span class="p">:</span> <span class="s2">&quot;log_uniform&quot;</span><span class="p">,</span>
+      <span class="p">},</span>
+  <span class="p">)</span>
+  <span class="n">reset_gravity</span> <span class="o">=</span> <span class="n">EventTerm</span><span class="p">(</span>
+      <span class="n">func</span><span class="o">=</span><span class="n">mdp</span><span class="o">.</span><span class="n">randomize_physics_scene_gravity</span><span class="p">,</span>
+      <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
+      <span class="n">is_global_time</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+      <span class="n">interval_range_s</span><span class="o">=</span><span class="p">(</span><span class="mf">36.0</span><span class="p">,</span> <span class="mf">36.0</span><span class="p">),</span>  <span class="c1"># time_s = num_steps * (decimation * dt)</span>
+      <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+          <span class="s2">&quot;gravity_distribution_params&quot;</span><span class="p">:</span> <span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]),</span>
+          <span class="s2">&quot;operation&quot;</span><span class="p">:</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;distribution&quot;</span><span class="p">:</span> <span class="s2">&quot;gaussian&quot;</span><span class="p">,</span>
+      <span class="p">},</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+<p>每个 <code class="docutils literal notranslate"><span class="pre">EventTerm</span></code> 对象都是 <a class="reference internal" href="../api/lab/omni.isaac.lab.managers.html#omni.isaac.lab.managers.EventTermCfg" title="omni.isaac.lab.managers.EventTermCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventTermCfg</span></code></a> 类的实例，并使用 <code class="docutils literal notranslate"><span class="pre">func</span></code> 参数来指定在随机化期间调用的函数，使用 <code class="docutils literal notranslate"><span class="pre">mode</span></code> 参数来指定 <code class="docutils literal notranslate"><span class="pre">startup</span></code>、<code class="docutils literal notranslate"><span class="pre">reset</span></code> 或 <code class="docutils literal notranslate"><span class="pre">interval</span></code> 。 <code class="docutils literal notranslate"><span class="pre">params</span></code> 字典应提供给函数的必要参数，这些函数作为 <code class="docutils literal notranslate"><span class="pre">EventTerm</span></code> 的 <code class="docutils literal notranslate"><span class="pre">func</span></code> 参数在 <a class="reference internal" href="../api/lab/omni.isaac.lab.envs.mdp.html#module-omni.isaac.lab.envs.mdp.events" title="omni.isaac.lab.envs.mdp.events"><code class="xref py py-class docutils literal notranslate"><span class="pre">events</span></code></a> 模块中找到。</p>
+<p>请注意，在 <code class="docutils literal notranslate"><span class="pre">&quot;asset_cfg&quot;:</span> <span class="pre">SceneEntityCfg(&quot;robot&quot;,</span> <span class="pre">body_names=&quot;.*&quot;)</span></code> 参数中，提供了actor <code class="docutils literal notranslate"><span class="pre">&quot;robot&quot;</span></code> 的名称，以及作为正则表达式表达的主体或关节名称，这些将是将随机化应用于的actor和主体/关节。</p>
+<p>与 OmniIsaacGymEnvs 的一个区别是，现在 <code class="docutils literal notranslate"><span class="pre">interval</span></code> 随机化是以秒而不是步数指定的。当 <code class="docutils literal notranslate"><span class="pre">mode=&quot;interval&quot;</span></code> 时，还必须提供 <code class="docutils literal notranslate"><span class="pre">interval_range_s</span></code> 参数，该参数指定应用随机化的秒数范围。然后将随机选择此范围，以确定下一个术语的特定时间。要将步长转换为秒，请使用等式 <code class="docutils literal notranslate"><span class="pre">time_s</span> <span class="pre">=</span> <span class="pre">num_steps</span> <span class="pre">*</span> <span class="pre">(decimation</span> <span class="pre">*</span> <span class="pre">dt)</span></code> 。</p>
+<p>与 OmniIsaacGymEnvs 类似，随机化 API 可用于随机化关节刚度和阻尼、关节限制、刚体材料、固定肌腱属性以及质量和刚体材料等刚体属性。物理场景重力的随机化也受支持。请注意，Isaac Lab 目前不支持scale的随机化。要随机化scale，请以每种环境以不同scale容纳actor的方式设置场景。</p>
+<p>一旦设置了随机化术语的 <code class="docutils literal notranslate"><span class="pre">configclass</span></code> 类，该类必须添加到任务的基本配置类中，并分配给变量 <code class="docutils literal notranslate"><span class="pre">events</span></code> 。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
+<span class="k">class</span> <span class="nc">MyTaskConfig</span><span class="p">:</span>
+  <span class="n">events</span><span class="p">:</span> <span class="n">EventCfg</span> <span class="o">=</span> <span class="n">EventCfg</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="action-and-observation-noise">
+<h3>动作和观察噪声<a class="headerlink" href="#action-and-observation-noise" title="此标题的永久链接">#</a></h3>
+<p>使用 <a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#module-omni.isaac.lab.utils.configclass" title="omni.isaac.lab.utils.configclass"><code class="xref py py-class docutils literal notranslate"><span class="pre">configclass</span></code></a> 模块也可以添加动作和观察噪声。必须将动作和观察噪声配置添加到主要任务配置中，使用 <code class="docutils literal notranslate"><span class="pre">action_noise_model</span></code> 和 <code class="docutils literal notranslate"><span class="pre">observation_noise_model</span></code> 变量:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
+<span class="k">class</span> <span class="nc">MyTaskConfig</span><span class="p">:</span>
+    <span class="c1"># at every time-step add gaussian noise + bias. The bias is a gaussian sampled at reset</span>
+    <span class="n">action_noise_model</span><span class="p">:</span> <span class="n">NoiseModelWithAdditiveBiasCfg</span> <span class="o">=</span> <span class="n">NoiseModelWithAdditiveBiasCfg</span><span class="p">(</span>
+      <span class="n">noise_cfg</span><span class="o">=</span><span class="n">GaussianNoiseCfg</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">),</span>
+      <span class="n">bias_noise_cfg</span><span class="o">=</span><span class="n">GaussianNoiseCfg</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;abs&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="c1"># at every time-step add gaussian noise + bias. The bias is a gaussian sampled at reset</span>
+    <span class="n">observation_noise_model</span><span class="p">:</span> <span class="n">NoiseModelWithAdditiveBiasCfg</span> <span class="o">=</span> <span class="n">NoiseModelWithAdditiveBiasCfg</span><span class="p">(</span>
+      <span class="n">noise_cfg</span><span class="o">=</span><span class="n">GaussianNoiseCfg</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">),</span>
+      <span class="n">bias_noise_cfg</span><span class="o">=</span><span class="n">GaussianNoiseCfg</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;abs&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../api/lab/omni.isaac.lab.utils.html#omni.isaac.lab.utils.noise.NoiseModelWithAdditiveBiasCfg" title="omni.isaac.lab.utils.noise.NoiseModelWithAdditiveBiasCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseModelWithAdditiveBiasCfg</span></code></a> 可以用于每个步骤产生不相关的噪声，以及在重置时重新采样的相关噪声。 <code class="docutils literal notranslate"><span class="pre">noise_cfg</span></code> 术语指定将在每个步骤为所有环境采样的高斯分布。此噪声将在每一步添加到相应的动作和观察缓冲区中。 <code class="docutils literal notranslate"><span class="pre">bias_noise_cfg</span></code> 术语指定在被重置的环境的重置时间采样的相关噪声的高斯分布。相同的噪声将在剩余的剧集每一步应用，并在下一次重置时重新采样。</p>
+<p>这取代了 OmniIsaacGymEnvs 中的以下设置:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">domain_randomization</span><span class="p">:</span>
+<span class="nt">randomize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="nt">randomization_params</span><span class="p">:</span>
+<span class="w"> </span><span class="nt">observations</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">on_reset</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;additive&quot;</span>
+<span class="w">     </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gaussian&quot;</span>
+<span class="w">     </span><span class="nt">distribution_parameters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.0001</span><span class="p p-Indicator">]</span>
+<span class="w">   </span><span class="nt">on_interval</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">frequency_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">     </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;additive&quot;</span>
+<span class="w">     </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gaussian&quot;</span>
+<span class="w">     </span><span class="nt">distribution_parameters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.002</span><span class="p p-Indicator">]</span>
+<span class="w"> </span><span class="nt">actions</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">on_reset</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;additive&quot;</span>
+<span class="w">     </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gaussian&quot;</span>
+<span class="w">     </span><span class="nt">distribution_parameters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.015</span><span class="p p-Indicator">]</span>
+<span class="w">   </span><span class="nt">on_interval</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">frequency_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">     </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;additive&quot;</span>
+<span class="w">     </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gaussian&quot;</span>
+<span class="w">     </span><span class="nt">distribution_parameters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.05</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="launching-training">
+<h2>启动训练<a class="headerlink" href="#launching-training" title="此标题的永久链接">#</a></h2>
+<p>要在 Isaac Lab 中启动训练，使用该命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>source/standalone/workflows/rl_games/train.py<span class="w"> </span>--task<span class="o">=</span>Isaac-Cartpole-Direct-v0<span class="w"> </span>--headless
+</pre></div>
+</div>
+</section>
+<section id="launching-inferencing">
+<h2>启动推理<a class="headerlink" href="#launching-inferencing" title="此标题的永久链接">#</a></h2>
+<p>要在 Isaac Lab 中启动推理，使用该命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>source/standalone/workflows/rl_games/play.py<span class="w"> </span>--task<span class="o">=</span>Isaac-Cartpole-Direct-v0<span class="w"> </span>--num_envs<span class="o">=</span><span class="m">25</span><span class="w"> </span>--checkpoint<span class="o">=</span>&lt;path/to/checkpoint&gt;
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="migrating_from_isaacgymenvs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">从IsaacGymEnvs迁移</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="migrating_from_orbit.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">从Orbit迁移</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-config-setup">任务配置设置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-config">模拟配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-config">场景配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-config">任务配置</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-config-setup">RL配置设置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-creation">环境创建</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ground-plane">地面</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actors">角色</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-states-from-simulation">从模拟中获取状态</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-new-environment">创建一个新环境</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-logic">任务逻辑</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">将所有内容组合在一起</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">任务配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-setup">任务设置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-setup">场景设置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-physics-step">预物理步骤</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dones-and-resets">完成和重置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rewards">奖励</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observations">观察</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-randomization">域随机化</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action-and-observation-noise">动作和观察噪声</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-training">启动训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-inferencing">启动推理</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2024 年 10 月 15 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
