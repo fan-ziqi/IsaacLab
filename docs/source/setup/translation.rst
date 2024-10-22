@@ -1,19 +1,23 @@
 关于翻译
 =========================
 
-.. attention:: 本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由 `范子琦 <https://github.com/fan-ziqi>`__ 提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。
+.. attention::
 
-原版英文文档网站:`https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__
+    本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由 `范子琦 <https://github.com/fan-ziqi>`__ 提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。
 
-中文翻译文档网站:`https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__
+    官方文档引入了版本系统，可以查看历史版本的文档。译者精力有限，故不提供历史版本翻译，本站只同步更新main分支的文档。
 
-所有翻译均开源在 `fan-ziqi/IsaacLab <https://github.com/fan-ziqi/IsaacLab>`__ ，译者:`github@fan-ziqi <https://github.com/fan-ziqi>`__ 。如果你对此翻译项目有疑问，请通过 fanziqi614@gmail.com 联系译者。
+原版英文文档网站: `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__
+
+中文翻译文档网站: `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__
+
+所有翻译均开源在 `fan-ziqi/IsaacLab <https://github.com/fan-ziqi/IsaacLab>`__ ，译者: `github@fan-ziqi <https://github.com/fan-ziqi>`__ 。如果你对此翻译项目有疑问，请通过 fanziqi614@gmail.com 联系译者。
 
 .. note::
 
    随着本站用户的增多，轻量服务器访问负载日渐增加。如果您认可本站的工作，可以通过下面的赞赏码打赏。收到的赞赏用于服务器升级，感谢您的支持！
 
-   赞赏名单: **H\*R** 、 **\*彡** 、 **b\*k** 、 **\*涛** 、 **\*航** 、 **\*靖** 、 **李\*坤** 、 **\*玉** 、 **胡\*泽** 、 **\*塔** 、 **王\*辉**
+   赞赏名单: **H\*R** 、 **\*彡** 、 **b\*k** 、 **\*涛** 、 **\*航** 、 **\*靖** 、 **李\*坤** 、 **\*玉** 、 **胡\*泽** 、 **\*塔** 、 **王\*辉** 、 **\*崇**
 
    .. figure:: ../_static/thanks.png
       :width: 450px
@@ -36,19 +40,19 @@
    git fetch upstream
    git merge upstream/main --strategy-option ours --allow-unrelated-histories --verbose
    # make pot files
-   make gettext
+   sphinx-build -M gettext . _build
    # make po files
    sphinx-intl update -p _build/gettext -l zh_CN
    # transtale to zh_CN
    python po_translator.py --folder ./locale --lang zh_CN --folder-language --bulk --fuzzy
    # make translated html files
-   make -e SPHINXOPTS="-D language='zh_CN'" html
+   sphinx-build -M html . _build -D language='zh_CN'
    # open on default browser
    xdg-open _build/html/index.html
 
 过程中还需要:
 
-* 使用正则表达式 ``(?<!#\n)#, fuzzy`` 找到变动的地方，校对后删除 ``#, fuzzy`` 行。
+* 使用搜索 ``#, fuzzy`` 找到变动的地方，校对后删除 ``#, fuzzy`` 标志。
 * 通过搜索 ``#~`` 找到并删除已废弃的翻译。
 
 译者说

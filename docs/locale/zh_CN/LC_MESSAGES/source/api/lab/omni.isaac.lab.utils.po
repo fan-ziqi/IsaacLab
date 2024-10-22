@@ -2,13 +2,11 @@
 # Copyright (C) 2022-2024, The Isaac Lab Project Developers.
 # This file is distributed under the same license as the Isaac Lab package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-15 11:18+0800\n"
+"POT-Creation-Date: 2024-10-22 14:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -247,7 +245,9 @@ msgstr ""
 #: omni.isaac.lab.utils.math.axis_angle_from_quat
 #: omni.isaac.lab.utils.math.combine_frame_transforms
 #: omni.isaac.lab.utils.math.compute_pose_error
+#: omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention
 #: omni.isaac.lab.utils.math.convert_quat omni.isaac.lab.utils.math.copysign
+#: omni.isaac.lab.utils.math.create_rotation_matrix_from_view
 #: omni.isaac.lab.utils.math.default_orientation
 #: omni.isaac.lab.utils.math.euler_xyz_from_quat
 #: omni.isaac.lab.utils.math.is_identity_pose
@@ -340,7 +340,9 @@ msgstr ""
 #: omni.isaac.lab.utils.math.axis_angle_from_quat
 #: omni.isaac.lab.utils.math.combine_frame_transforms
 #: omni.isaac.lab.utils.math.compute_pose_error
+#: omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention
 #: omni.isaac.lab.utils.math.convert_quat omni.isaac.lab.utils.math.copysign
+#: omni.isaac.lab.utils.math.create_rotation_matrix_from_view
 #: omni.isaac.lab.utils.math.default_orientation
 #: omni.isaac.lab.utils.math.euler_xyz_from_quat
 #: omni.isaac.lab.utils.math.is_identity_pose
@@ -2084,6 +2086,32 @@ msgstr ""
 msgid "Sample 3D points uniformly on a cylinder's surface."
 msgstr ""
 
+#: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
+msgid ""
+":py:obj:`convert_camera_frame_orientation_convention "
+"<omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention>`\\"
+" \\(...\\)"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:1
+#: omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
+msgid ""
+"Converts a quaternion representing a rotation from one convention to "
+"another."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
+msgid ""
+":py:obj:`create_rotation_matrix_from_view "
+"<omni.isaac.lab.utils.math.create_rotation_matrix_from_view>`\\ "
+"\\(eyes\\, targets\\)"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:1
+#: omni.isaac.lab.utils.math.scale_transform:1:<autosummary>:1
+msgid "Compute the rotation matrix from world to view coordinates."
+msgstr ""
+
 #: of omni.isaac.lab.utils.math.saturate:3
 #: omni.isaac.lab.utils.math.scale_transform:4
 #: omni.isaac.lab.utils.math.unscale_transform:4
@@ -2883,6 +2911,136 @@ msgstr ""
 
 #: of omni.isaac.lab.utils.math.sample_cylinder:14
 msgid "Sampled tensor. Shape is :obj:`(*size, 3)`."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:3
+msgid ""
+"In USD, the camera follows the ``\"opengl\"`` convention. Thus, it is "
+"always in **Y up** convention. This means that the camera is looking down"
+" the -Z axis with the +Y axis pointing up , and +X axis pointing right. "
+"However, in ROS, the camera is looking down the +Z axis with the +Y axis "
+"pointing down, and +X axis pointing right. Thus, the camera needs to be "
+"rotated by :math:`180^{\\circ}` around the X axis to follow the ROS "
+"convention."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:8
+msgid ""
+"T_{ROS} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & -1 & 0 & 0 \\\\ 0 & 0 &"
+" -1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix} T_{USD}"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:12
+msgid ""
+"On the other hand, the typical world coordinate system is with +X "
+"pointing forward, +Y pointing left, and +Z pointing up. The camera can "
+"also be set in this convention by rotating the camera by "
+":math:`90^{\\circ}` around the X axis and :math:`-90^{\\circ}` around the"
+" Y axis."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:16
+msgid ""
+"T_{WORLD} = \\begin{bmatrix} 0 & 0 & -1 & 0 \\\\ -1 & 0 & 0 & 0 \\\\ 0 & "
+"1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix} T_{USD}"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:20
+msgid ""
+"Thus, based on their application, cameras follow different conventions "
+"for their orientation. This function converts a quaternion from one "
+"convention to another."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:23
+msgid "Possible conventions are:"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:25
+msgid ""
+":obj:`\"opengl\"` - forward axis: -Z - up axis +Y - Offset is applied in "
+"the OpenGL (Usd.Camera) convention"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:26
+msgid ""
+":obj:`\"ros\"`    - forward axis: +Z - up axis -Y - Offset is applied in "
+"the ROS convention"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:27
+msgid ""
+":obj:`\"world\"`  - forward axis: +X - up axis +Z - Offset is applied in "
+"the World Frame convention"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:29
+msgid ""
+"Quaternion of form `(w, x, y, z)` with shape (..., 4) in source "
+"convention."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:30
+msgid "Convention to convert from. Defaults to \"opengl\"."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:31
+msgid "Convention to convert to. Defaults to \"ros\"."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.convert_camera_frame_orientation_convention:33
+msgid "Quaternion of form `(w, x, y, z)` with shape (..., 4) in target convention"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:3
+msgid ""
+"This function takes a vector ''eyes'' which specifies the location of the"
+" camera in world coordinates and the vector ''targets'' which indicate "
+"the position of the object. The output is a rotation matrix representing "
+"the transformation from world coordinates -> view coordinates."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:9
+msgid ""
+"The inputs eyes and targets can each be a - 3 element tuple/list - torch "
+"tensor of shape (1, 3) - torch tensor of shape (N, 3)"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:14
+msgid "Position of the camera in world coordinates."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:15
+msgid "Position of the object in world coordinates."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:16
+msgid "The up axis of the camera. Defaults to \"Z\"."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:17
+msgid "The device to create torch tensors on. Defaults to \"cpu\"."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:19
+msgid ""
+"The vectors are broadcast against each other so they all have shape (N, "
+"3)."
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:21
+msgid "(N, 3, 3) batched rotation matrices"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view
+#: omni.isaac.lab.utils.string.string_to_callable
+msgid "Return type"
+msgstr ""
+
+#: of omni.isaac.lab.utils.math.create_rotation_matrix_from_view:24
+msgid ""
+"Reference: Based on PyTorch3D "
+"(https://github.com/facebookresearch/pytorch3d/blob/eaf0709d6af0025fe94d1ee7cec454bc3054826a/pytorch3d/renderer/cameras.py#L1635-L1685)"
 msgstr ""
 
 #: ../../source/api/lab/omni.isaac.lab.utils.rst:92
@@ -4025,10 +4183,6 @@ msgstr ""
 
 #: of omni.isaac.lab.utils.string.string_to_callable:9
 msgid "The function loaded from the module."
-msgstr ""
-
-#: of omni.isaac.lab.utils.string.string_to_callable
-msgid "Return type"
 msgstr ""
 
 #: of omni.isaac.lab.utils.string.resolve_matching_names:3

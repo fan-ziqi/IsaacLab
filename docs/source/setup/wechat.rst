@@ -5,9 +5,9 @@
 
 由于微信群扫码入群有200人上限，故满200人后只能通过邀请进群。现开启二群：
 
-.. figure:: ../_static/wechat-group2-1019.jpg
-   :width: 300px
+.. figure:: ../_static/wechat-group2-1022.jpg
+   :width: 500px
    :align: center
    :alt: 微信交流群
 
-更新日期：2024.10.19
+更新日期：2024.10.22

@@ -41,12 +41,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install setuptools polib==1.2.0 openai==v1.3.6 python-dotenv==1.0.0 pytest==8.2.2 sphinx-intl sphinx-book-theme==1.0.1 myst-parser sphinxcontrib-bibtex==2.5.0 autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium
+        pip install setuptools polib==1.2.0 openai==v1.3.6 python-dotenv==1.0.0 pytest==8.2.2 sphinx-intl sphinx-book-theme==1.0.1 myst-parser sphinxcontrib-bibtex==2.5.0 autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium sphinx-multiversion sphinx-tabs
 
     - name: Generate gettext
       run: |
         pushd docs
-        make gettext
+        sphinx-build -M gettext . _build
         popd
 
     - name: Update translations
@@ -64,7 +64,7 @@ jobs:
     - name: Build HTML with translations
       run: |
         pushd docs
-        make -e SPHINXOPTS="-D language='zh_CN'" html
+        sphinx-build -M html . _build -D language='zh_CN'
         popd
 
     - name: Copy generated HTML files to temporary Path
