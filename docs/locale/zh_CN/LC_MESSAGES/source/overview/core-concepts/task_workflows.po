@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-21 01:38+0000\n"
+"POT-Creation-Date: 2024-11-06 14:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: ../../source/overview/core-concepts/task_workflows.rst:5
 msgid "Task Design Workflows"
@@ -67,7 +67,7 @@ msgid ""
 "environment directly without the need for separate managers. This class is "
 "responsible for computing observations, applying actions, and computing "
 "rewards."
-msgstr "**直接**: 用户定义一个单一类，该类直接实现整个环境，而无需单独的管理器。这个类负责计算观察、应用动作和计算奖励。"
+msgstr "**直接式**: 用户定义一个单一类，该类直接实现整个环境，而无需单独的管理器。这个类负责计算观察、应用动作和计算奖励。"
 
 #: ../../source/overview/core-concepts/task_workflows.rst:29
 msgid ""
@@ -80,7 +80,7 @@ msgid ""
 "environment for performance or when implementing complex logic that is "
 "difficult to decompose into separate components."
 msgstr ""
-"两个工作流程各有优缺点。基于管理器的工作流程更具模块化，允许环境的不同组件轻松更换。这在原型环境和实验不同配置时非常有用。另一方面，直接工作流程更高效，允许对环境逻辑进行更细粒度的控制。这在优化环境性能或实现复杂逻辑时非常有用，而这些复杂逻辑难以拆分为独立组件。"
+"两个工作流程各有优缺点。基于管理器的工作流程更具模块化，允许环境的不同组件轻松更换。这在原型环境和实验不同配置时非常有用。另一方面，直接式工作流程更高效，允许对环境逻辑进行更细粒度的控制。这在优化环境性能或实现复杂逻辑时非常有用，而这些复杂逻辑难以拆分为独立组件。"
 
 #: ../../source/overview/core-concepts/task_workflows.rst:37
 msgid "Manager-Based Environments"
@@ -101,7 +101,11 @@ msgid ""
 msgstr ""
 "大多数环境实现遵循类似的结构。环境处理输入动作，经过仿真步骤，计算观察值和奖励信号，应用随机化，并重置终止的环境。基于此，环境可以被分解为处理每个任务的单独组件。例如，观察管理器负责计算观察值，奖励管理器负责计算奖励，终止管理器负责计算终止信号。这种方法在框架中被称为基于管理器的环境设计。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:46
+#: ../../source/overview/core-concepts/task_workflows.rst:-1
+msgid "Manager-based Task Workflow"
+msgstr "基于管理器的任务工作流"
+
+#: ../../source/overview/core-concepts/task_workflows.rst:56
 msgid ""
 "Manager-based environments promote modular implementations of tasks by "
 "decomposing the task into individual components that are managed by separate"
@@ -113,7 +117,7 @@ msgid ""
 msgstr ""
 "基于管理器的环境通过将任务分解为由独立类管理的各个组件，促进任务的模块化实现。任务的每个组件，例如奖励、观察、终止，都可以指定为独立的配置类，然后传递给相应的管理器类。管理器负责解析配置并处理其配置中指定的内容。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:52
+#: ../../source/overview/core-concepts/task_workflows.rst:62
 msgid ""
 "The coordination between the different managers is orchestrated by the class"
 " :class:`envs.ManagerBasedRLEnv`. It takes in a task configuration class "
@@ -127,7 +131,7 @@ msgstr ""
 ":class:`envs.ManagerBasedRLEnvCfg` )，其中包含任务各个组件的配置。 根据配置，设置场景并初始化任务。 "
 "然后，通过环境进行步进时，依次调用所有管理器执行必要的操作。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:58
+#: ../../source/overview/core-concepts/task_workflows.rst:68
 msgid ""
 "For their own tasks, we expect the user to mainly define the task "
 "configuration class and use the existing :class:`envs.ManagerBasedRLEnv` "
@@ -147,7 +151,7 @@ msgid ""
 "manager-style"
 msgstr "用于使用管理器样式定义Cartpole任务的奖励函数的示例"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:66
+#: ../../source/overview/core-concepts/task_workflows.rst:76
 msgid ""
 "The following class is a part of the Cartpole environment configuration "
 "class. The :class:`RewardsCfg` class defines individual terms that compose "
@@ -159,7 +163,7 @@ msgstr ""
 "以下类是 Cartpole 环境配置类的一部分。:class:`RewardsCfg` "
 "类定义了构成奖励函数的各个项。每个奖励项由其函数实现、权重和要传递给函数的附加参数定义。用户可以定义多个奖励项及其权重，以用于奖励函数。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:76
+#: ../../source/overview/core-concepts/task_workflows.rst:86
 msgid ""
 "Through this approach, it is possible to easily vary the implementations of "
 "the task by switching some components while leaving the remaining of the "
@@ -171,18 +175,18 @@ msgid ""
 msgstr ""
 "通过这种方法，可以轻松地通过切换某些组件而保持其余代码不变来改变任务的实现。这种灵活性在原型设计环境和尝试不同配置时是非常可取的。它还允许与他人轻松合作实现一个环境，因为贡献者可以选择为他们自己的任务规范使用不同组合的配置。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:84
+#: ../../source/overview/core-concepts/task_workflows.rst:94
 msgid ""
 "We provide a more detailed tutorial for setting up an environment using the "
 "manager-based workflow at :ref:`tutorial-create-manager-rl-env`."
 msgstr ""
 "我们为使用基于管理器的工作流设置环境提供了更详细的教程，位于 :ref:`tutorial-create-manager-rl-env` 。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:89
+#: ../../source/overview/core-concepts/task_workflows.rst:99
 msgid "Direct Environments"
-msgstr "直接的环境"
+msgstr "直接式的环境"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:91
+#: ../../source/overview/core-concepts/task_workflows.rst:101
 msgid ""
 "The direct-style environment aligns more closely with traditional "
 "implementations of environments, where a single script directly implements "
@@ -193,11 +197,15 @@ msgid ""
 ":class:`envs.DirectMARLEnv`. For users migrating from the `IsaacGymEnvs`_ "
 "and `OmniIsaacGymEnvs`_ framework, this workflow may be more familiar."
 msgstr ""
-"直接样式环境更符合传统环境实现，其中单个脚本直接实现奖励函数、观测函数、重置和环境的所有其他组件。这种方法不需要管理类。相反，用户可以通过基类 "
+"直接式的环境更符合传统环境实现，其中单个脚本直接实现奖励函数、观测函数、重置和环境的所有其他组件。这种方法不需要管理类。相反，用户可以通过基类 "
 ":class:`envs.DirectRLEnv` 或 :class:`envs.DirectMARLEnv` 的API自由实现他们的任务。对于从 "
 "`IsaacGymEnvs`_ 和 `OmniIsaacGymEnvs`_ 框架迁移的用户，这种工作流程可能更为熟悉。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:97
+#: ../../source/overview/core-concepts/task_workflows.rst:-1
+msgid "Direct-based Task Workflow"
+msgstr "直接式的任务工作流"
+
+#: ../../source/overview/core-concepts/task_workflows.rst:117
 msgid ""
 "When defining an environment with the direct-style implementation, we expect"
 " the user define a single class that implements the entire environment. The "
@@ -208,30 +216,30 @@ msgid ""
 "for setting up the scene, processing the actions, computing the rewards, "
 "observations, resets, and termination signals."
 msgstr ""
-"在使用直接样式实现定义环境时，我们期望用户定义一个实现整个环境的单个类。任务类应该继承自基类 :class:`envs.DirectRLEnv` 或 "
+"在使用直接式实现定义环境时，我们期望用户定义一个实现整个环境的单个类。任务类应该继承自基类 :class:`envs.DirectRLEnv` 或 "
 ":class:`envs.DirectMARLEnv`，并且应该有其相应的配置类，该配置类分别继承自 "
-":class:`envs.DirectRLEnvCfg` 或 "
-":class:`envs.DirectMARLEnvCfg`。任务类负责设置场景、处理动作、计算奖励、观测、重置和终止信号。"
+":class:`envs.DirectRLEnvCfg` 或 :class:`envs.DirectMARLEnvCfg` "
+"。任务类负责设置场景、处理动作、计算奖励、观测、重置和终止信号。"
 
 #: ../../source/overview/core-concepts/task_workflows.rst
 msgid ""
 "Example for defining the reward function for the Cartpole task using the "
 "direct-style"
-msgstr "为 Cartpole 任务定义奖励函数的示例，使用直接风格"
+msgstr "为 Cartpole 任务定义奖励函数的示例，使用直接式风格"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:106
+#: ../../source/overview/core-concepts/task_workflows.rst:126
 msgid ""
 "The following function is a part of the Cartpole environment class and is "
 "responsible for computing the rewards."
 msgstr "以下函数是Cartpole环境类的一部分，负责计算奖励。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:113
+#: ../../source/overview/core-concepts/task_workflows.rst:133
 msgid ""
 "It calls the :meth:`compute_rewards` function which is Torch JIT compiled "
 "for performance benefits."
-msgstr "它调用了 `compute_rewards`_ 函数，该函数经过Torch JIT编译以获得性能优势。"
+msgstr "它调用了 :meth:`compute_rewards` 函数，该函数经过Torch JIT编译以获得性能优势。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:119
+#: ../../source/overview/core-concepts/task_workflows.rst:139
 msgid ""
 "This approach provides more transparency in the implementations of the "
 "environments, as logic is defined within the task class instead of "
@@ -243,12 +251,12 @@ msgid ""
 " This may be valuable when scaling up training tremendously which requires "
 "optimizing individual operations in the environment."
 msgstr ""
-"这种方法提供了更高的透明度，因为逻辑在任务类中定义，而不是通过管理器进行抽象。当实现复杂的逻辑时，这可能是有益的，因为这些逻辑难以分解成独立的组件。此外，直接风格的实现可能会为环境带来更多的性能收益，因为它允许使用优化框架，如"
+"这种方法提供了更高的透明度，因为逻辑在任务类中定义，而不是通过管理器进行抽象。当实现复杂的逻辑时，这可能是有益的，因为这些逻辑难以分解成独立的组件。此外，直接式风格的实现可能会为环境带来更多的性能收益，因为它允许使用优化框架，如"
 " `PyTorch JIT`_ 或 `Warp`_ 来实现大量逻辑。当需要大规模训练并优化环境中的单个操作时，这可能是有价值的。"
 
-#: ../../source/overview/core-concepts/task_workflows.rst:128
+#: ../../source/overview/core-concepts/task_workflows.rst:148
 msgid ""
 "We provide a more detailed tutorial for setting up a RL environment using "
 "the direct workflow at :ref:`tutorial-create-direct-rl-env`."
 msgstr ""
-"我们为使用直接工作流程设置强化学习环境提供了更详细的教程，可参考 :ref:`tutorial-create-direct-rl-env`。"
+"我们为使用直接式工作流程设置强化学习环境提供了更详细的教程，可参考 :ref:`tutorial-create-direct-rl-env` 。"

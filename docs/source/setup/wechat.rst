@@ -5,9 +5,9 @@
 
 为保证群聊质量，进入大群后请按照 **单位-姓名或昵称-研究方向** 修改备注。
 
-.. figure:: ../_static/wechat-group2-1030.jpg
+.. figure:: ../_static/wechat-group2-1106.jpg
    :width: 500px
    :align: center
    :alt: 微信交流群中转群二维码
 
-更新日期：2024.10.22
+更新日期：2024.11.06

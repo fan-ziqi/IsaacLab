@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-30 08:28+0000\n"
+"POT-Creation-Date: 2024-11-06 14:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: ../../source/api/lab/omni.isaac.lab.envs.mdp.rst:2
 msgid "omni.isaac.lab.envs.mdp"
@@ -244,7 +244,7 @@ msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.imu_orientation:1
 #: omni.isaac.lab.envs.mdp.observations:1:<autosummary>:1
-msgid "Imu sensor orientation w.r.t the env.scene.origin."
+msgid "Imu sensor orientation in the simulation world frame."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations:1:<autosummary>:1
@@ -384,7 +384,9 @@ msgstr ""
 #: of omni.isaac.lab.envs.mdp.curriculums.modify_reward_weight
 #: omni.isaac.lab.envs.mdp.events.randomize_rigid_body_material.__init__
 #: omni.isaac.lab.envs.mdp.observations.image
+#: omni.isaac.lab.envs.mdp.observations.image_features
 #: omni.isaac.lab.envs.mdp.observations.image_features.__init__
+#: omni.isaac.lab.envs.mdp.observations.image_features.reset
 #: omni.isaac.lab.envs.mdp.observations.imu_ang_vel
 #: omni.isaac.lab.envs.mdp.observations.imu_lin_acc
 #: omni.isaac.lab.envs.mdp.observations.imu_orientation
@@ -402,10 +404,13 @@ msgstr ""
 #: of omni.isaac.lab.envs.mdp.observations.imu_ang_vel:4
 #: omni.isaac.lab.envs.mdp.observations.imu_lin_acc:4
 #: omni.isaac.lab.envs.mdp.observations.imu_orientation:4
-msgid "The SceneEntity associated with an Imu sensor."
+msgid ""
+"The SceneEntity associated with an IMU sensor. Defaults to "
+"SceneEntityCfg(\"imu\")."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.image
+#: omni.isaac.lab.envs.mdp.observations.image_features
 #: omni.isaac.lab.envs.mdp.observations.imu_ang_vel
 #: omni.isaac.lab.envs.mdp.observations.imu_lin_acc
 #: omni.isaac.lab.envs.mdp.observations.imu_orientation
@@ -413,27 +418,31 @@ msgid "Returns"
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.imu_orientation:6
-msgid "Orientation quaternion (wxyz), shape of torch.tensor is (num_env,4)."
+msgid ""
+"Orientation in the world frame in (w, x, y, z) quaternion form. Shape is "
+"(num_envs, 4)."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.imu_ang_vel:1
 msgid ""
-"Imu sensor angular velocity w.r.t. env.scene.origin expressed in the "
+"Imu sensor angular velocity w.r.t. environment origin expressed in the "
 "sensor frame."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.imu_ang_vel:6
-msgid "Angular velocity (rad/s), shape of torch.tensor is (num_env,3)."
+msgid "The angular velocity (rad/s) in the sensor frame. Shape is (num_envs, 3)."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.imu_lin_acc:1
 msgid ""
-"Imu sensor linear acceleration w.r.t. env.scene.origin expressed in "
-"sensor frame."
+"Imu sensor linear acceleration w.r.t. the environment origin expressed in"
+" sensor frame."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.imu_lin_acc:6
-msgid "linear acceleration (m/s^2), shape of torch.tensor is (num_env,3)."
+msgid ""
+"The linear acceleration (m/s^2) in the sensor frame. Shape is (num_envs, "
+"3)."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.image:3
@@ -469,6 +478,7 @@ msgid "The data type to pull from the desired camera. Defaults to \"rgb\"."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.image:12
+#: omni.isaac.lab.envs.mdp.observations.image_features:23
 msgid ""
 "Whether to orthogonalize perspective depth images. This is used only when"
 " the data type is \"distance_to_camera\". Defaults to False."
@@ -486,8 +496,104 @@ msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.image_features:3
 msgid ""
-"This method calls the :meth:`image` function to retrieve images, and then"
-" performs inference on those images."
+"This term uses models from the model zoo in PyTorch and extracts features"
+" from the images."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:5
+msgid ""
+"It calls the :func:`image` function to get the images and then processes "
+"them using the model zoo."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:7
+msgid ""
+"A user can provide their own model zoo configuration to use different "
+"models for feature extraction. The model zoo configuration should be a "
+"dictionary that maps different model names to a dictionary that defines "
+"the model, preprocess and inference functions. The dictionary should have"
+" the following entries:"
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:12
+msgid ""
+"\"model\": A callable that returns the model when invoked without "
+"arguments."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:13
+msgid ""
+"\"reset\": A callable that resets the model. This is useful when the "
+"model has a state that needs to be reset."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:14
+msgid ""
+"\"inference\": A callable that, when given the model and the images, "
+"returns the extracted features."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:16
+msgid ""
+"If the model zoo configuration is not provided, the default model zoo "
+"configurations are used. The default model zoo configurations include the"
+" models from Theia :cite:`shang2024theia` and ResNet :cite:`he2016deep`. "
+"These models are loaded from `Hugging-Face transformers "
+"<https://huggingface.co/docs/transformers/index>`_ and `PyTorch "
+"torchvision <https://pytorch.org/vision/stable/models.html>`_ "
+"respectively."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:21
+msgid ""
+"The sensor configuration to poll. Defaults to "
+"SceneEntityCfg(\"tiled_camera\")."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:22
+msgid "The sensor data type. Defaults to \"rgb\"."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:25
+msgid ""
+"A user-defined dictionary that maps different model names to their "
+"respective configurations. Defaults to None. If None, the default model "
+"zoo configurations are used."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:27
+msgid "The name of the model to use for inference. Defaults to \"resnet18\"."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:28
+msgid ""
+"The device to store and infer the model on. This is useful when "
+"offloading the computation from the environment simulation device. "
+"Defaults to the environment device."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:30
+msgid ""
+"Additional keyword arguments to pass to the inference function. Defaults "
+"to None, which means no additional arguments are passed."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:33
+msgid "The extracted features tensor. Shape is (num_envs, feature_dim)."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.events.randomize_rigid_body_material.__init__
+#: omni.isaac.lab.envs.mdp.events.reset_root_state_from_terrain
+#: omni.isaac.lab.envs.mdp.observations.image_features
+msgid "Raises"
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:35
+msgid "When the model name is not found in the provided model zoo configuration."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features:36
+msgid "When the model name is not found in the default model zoo configuration."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.events.randomize_rigid_body_material:1
@@ -511,6 +617,20 @@ msgstr ""
 msgid "Initialize the manager term."
 msgstr ""
 
+#: of
+#: omni.isaac.lab.envs.mdp.observations.image_features.__init__:1:<autosummary>:1
+msgid ""
+":py:obj:`reset "
+"<omni.isaac.lab.envs.mdp.observations.image_features.reset>`\\ "
+"\\(\\[env\\_ids\\]\\)"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.observations.image_features.__init__:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.observations.image_features.reset:1
+msgid "Resets the manager term."
+msgstr ""
+
 #: of omni.isaac.lab.envs.mdp.observations.image_features.__init__:3
 #: omni.isaac.lab.envs.mdp.rewards.is_terminated_term.__init__:3
 msgid "The configuration object."
@@ -520,6 +640,12 @@ msgstr ""
 #: omni.isaac.lab.envs.mdp.observations.image_features.__init__:4
 #: omni.isaac.lab.envs.mdp.rewards.is_terminated_term.__init__:4
 msgid "The environment instance."
+msgstr ""
+
+#: of omni.isaac.lab.envs.mdp.observations.image_features.reset:3
+msgid ""
+"The environment ids. Defaults to None, in which case all environments are"
+" considered."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.observations.last_action:3
@@ -707,13 +833,10 @@ msgid "See :class:`JointAction` for more details."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.OffsetCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg:1
@@ -721,7 +844,6 @@ msgstr ""
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.Ranges:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.Ranges:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1
@@ -743,26 +865,19 @@ msgstr ""
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.joint_names:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.joint_names:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.joint_names:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.joint_names:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.joint_names:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.joint_names:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.joint_names:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.joint_names:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
 msgid ""
 "List of joint names or regex expressions that the action will be mapped "
 "to."
@@ -776,13 +891,8 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
 msgid "Scale factor for the action (float or dict of regex expressions)."
 msgstr ""
 
@@ -795,10 +905,6 @@ msgstr ""
 
 #: of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
 msgid "Offset factor for the action (float or dict of regex expressions)."
 msgstr ""
 
@@ -811,75 +917,7 @@ msgstr ""
 
 #: of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
 msgid "Whether to preserve the order of the joint names in the action output."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.asset_name>`\\"
-msgstr ""
-
-#: ../../docstring of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid "The name of the scene entity."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.resampling_time_range:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
-msgid "Whether to visualize debug information."
 msgstr ""
 
 #: ../../docstring of
@@ -915,6 +953,22 @@ msgstr ""
 msgid ""
 "Whether to preserve the order of the joint names in the action output. "
 "Defaults to False."
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.asset_name:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.asset_name:1
+msgid "The name of the scene entity."
 msgstr ""
 
 #: ../../docstring of
@@ -984,48 +1038,6 @@ msgid ""
 "asset as offset."
 msgstr ""
 
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`scale "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.scale>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`offset "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.offset>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`preserve_order "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.preserve_order>`\\"
-msgstr ""
-
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionActionCfg.use_default_offset:1
 msgid ""
@@ -1055,48 +1067,6 @@ msgstr ""
 #: of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
 msgid "Whether to ignore the offset defined in articulation asset."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`scale "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.scale>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`offset "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.offset>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.use_zero_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`preserve_order "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.RelativeJointPositionActionCfg.preserve_order>`\\"
 msgstr ""
 
 #: ../../docstring of
@@ -1131,48 +1101,6 @@ msgid ""
 "asset as offset."
 msgstr ""
 
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`scale "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.scale>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`offset "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.offset>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1:<autosummary>:1
-msgid ""
-":py:obj:`preserve_order "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.preserve_order>`\\"
-msgstr ""
-
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointVelocityActionCfg.use_default_offset:1
 msgid ""
@@ -1187,48 +1115,6 @@ msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg:3
 msgid "See :class:`JointEffortAction` for more details."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`scale "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.scale>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`offset "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.offset>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`preserve_order "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointEffortActionCfg.preserve_order>`\\"
 msgstr ""
 
 #: of
@@ -1258,23 +1144,8 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
 msgid "Whether to rescale the action to the joint limits."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.joint_names:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.JointPositionToLimitsActionCfg.debug_vis>`\\"
 msgstr ""
 
 #: ../../docstring of
@@ -1322,41 +1193,6 @@ msgstr ""
 msgid "The weight for the moving average (float or dict of regex expressions)."
 msgstr ""
 
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-msgid ""
-":py:obj:`scale "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.scale>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1:<autosummary>:1
-msgid ""
-":py:obj:`rescale_to_limits "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.rescale_to_limits>`\\"
-msgstr ""
-
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.EMAJointPositionToLimitsActionCfg.alpha:1
 msgid ""
@@ -1392,9 +1228,7 @@ msgstr ""
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.open_command_expr:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.open_command_expr:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.open_command_expr:1
 msgid "The joint command to move to *open* configuration."
 msgstr ""
@@ -1409,25 +1243,9 @@ msgstr ""
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.close_command_expr:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.close_command_expr:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.close_command_expr:1
 msgid "The joint command to move to *close* configuration."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.joint_names:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointActionCfg.debug_vis>`\\"
 msgstr ""
 
 #: of
@@ -1444,78 +1262,8 @@ msgid "See :class:`BinaryJointPositionAction` for more details."
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`open_command_expr "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.open_command_expr>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`close_command_expr "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointPositionActionCfg.close_command_expr>`\\"
-msgstr ""
-
-#: of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg:3
 msgid "See :class:`BinaryJointVelocityAction` for more details."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`open_command_expr "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.open_command_expr>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.asset_name:1:<autosummary>:1
-msgid ""
-":py:obj:`close_command_expr "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.BinaryJointVelocityActionCfg.close_command_expr>`\\"
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg:3
@@ -1533,20 +1281,6 @@ msgstr ""
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1:<autosummary>:1
 msgid "Name of the body which has the dummy mechanism connected to."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.debug_vis>`\\"
 msgstr ""
 
 #: of
@@ -1596,7 +1330,7 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.NonHolonomicActionCfg.body_name:1:<autosummary>:1
 msgid "Scale factor for the action."
 msgstr ""
@@ -1631,80 +1365,66 @@ msgstr ""
 #: of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
 msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`joint_names "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.joint_names>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`body_name "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.body_name>`\\"
-msgstr ""
-
-#: ../../docstring of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.body_name:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid "Name of the body or frame for which IK is performed."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`body_offset "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.body_offset>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid "Offset of target frame w.r.t."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`scale "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.scale>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`controller "
-"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.controller>`\\"
-msgstr ""
-
-#: ../../docstring of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.controller:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
-msgid "The configuration for the differential IK controller."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
-msgid ""
 ":py:obj:`OffsetCfg "
 "<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.OffsetCfg>`\\"
 msgstr ""
 
 #: of
 #: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.OffsetCfg:1
-#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg:1:<autosummary>:1
 msgid "The offset pose from parent frame to child frame."
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+msgid ""
+":py:obj:`joint_names "
+"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.joint_names>`\\"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+msgid ""
+":py:obj:`body_name "
+"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.body_name>`\\"
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.body_name:1
+msgid "Name of the body or frame for which IK is performed."
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+msgid ""
+":py:obj:`body_offset "
+"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.body_offset>`\\"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+msgid "Offset of target frame w.r.t."
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+msgid ""
+":py:obj:`scale "
+"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.scale>`\\"
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+msgid ""
+":py:obj:`controller "
+"<omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.controller>`\\"
+msgstr ""
+
+#: ../../docstring of
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.asset_name:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.actions.actions_cfg.DifferentialInverseKinematicsActionCfg.controller:1
+msgid "The configuration for the differential IK controller."
 msgstr ""
 
 #: of
@@ -2081,12 +1801,6 @@ msgstr ""
 msgid "The configuration of the event term."
 msgstr ""
 
-#: of omni.isaac.lab.envs.mdp.events.randomize_actuator_gains
-#: omni.isaac.lab.envs.mdp.events.randomize_rigid_body_material.__init__
-#: omni.isaac.lab.envs.mdp.events.reset_root_state_from_terrain
-msgid "Raises"
-msgstr ""
-
 #: of omni.isaac.lab.envs.mdp.events.randomize_rigid_body_material.__init__:6
 msgid "If the asset is not a RigidObject or an Articulation."
 msgstr ""
@@ -2158,12 +1872,6 @@ msgid ""
 "For implicit actuators, this function uses CPU tensors to assign the "
 "actuator gains into the simulation. In such cases, it is recommended to "
 "use this function only during the initialization of the environment."
-msgstr ""
-
-#: of omni.isaac.lab.envs.mdp.events.randomize_actuator_gains:13
-msgid ""
-"If the joint indices are in explicit motor mode. This operation is "
-"currently     not supported for explicit actuator models."
 msgstr ""
 
 #: of omni.isaac.lab.envs.mdp.events.randomize_joint_parameters:3
@@ -2455,34 +2163,14 @@ msgid ""
 ":py:class:`~omni.isaac.lab.managers.manager_term_cfg.CommandTermCfg`"
 msgstr ""
 
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.resampling_time_range:1:<autosummary>:1
-msgid ""
-":py:obj:`resampling_time_range "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.resampling_time_range>`\\"
-msgstr ""
-
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.resampling_time_range:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.resampling_time_range:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.resampling_time_range:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.resampling_time_range:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.resampling_time_range:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg.resampling_time_range:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg.resampling_time_range:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "Time before commands are changed [s]."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.resampling_time_range:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NullCommandCfg.debug_vis>`\\"
 msgstr ""
 
 #: of
@@ -2494,9 +2182,7 @@ msgstr ""
 
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.asset_name:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.asset_name:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg.asset_name:1
@@ -2514,7 +2200,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "Whether to use heading command or angular velocity command."
 msgstr ""
@@ -2527,7 +2212,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "Scale factor to convert the heading error to angular velocity command."
 msgstr ""
@@ -2540,7 +2224,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "The sampled probability of environments that should be standing still."
 msgstr ""
@@ -2553,7 +2236,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid ""
 "The sampled probability of environments where the robots follow the "
@@ -2569,8 +2251,8 @@ msgid ""
 msgstr ""
 
 #: ../../docstring of
+#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.heading_command:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.ranges:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg.ranges:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "Distribution ranges for the velocity commands."
@@ -2584,7 +2266,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "The configuration for the goal velocity visualization marker."
 msgstr ""
@@ -2597,23 +2278,8 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
 msgid "The configuration for the current velocity visualization marker."
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`resampling_time_range "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg.resampling_time_range>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformVelocityCommandCfg.debug_vis>`\\"
 msgstr ""
 
 #: of
@@ -2766,84 +2432,21 @@ msgstr ""
 #: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 msgid ""
-":py:obj:`heading_command "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.heading_command>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`ranges "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.ranges>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`resampling_time_range "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.resampling_time_range>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`heading_control_stiffness "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.heading_control_stiffness>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`rel_standing_envs "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.rel_standing_envs>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`rel_heading_envs "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.rel_heading_envs>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`goal_vel_visualizer_cfg "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.goal_vel_visualizer_cfg>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`current_vel_visualizer_cfg "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.current_vel_visualizer_cfg>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.heading_command:1:<autosummary>:1
-msgid ""
 ":py:obj:`Ranges "
 "<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.Ranges>`\\"
 msgstr ""
 
 #: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.Ranges:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.heading_command:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg:1:<autosummary>:1
 msgid "Normal distribution ranges for the velocity commands."
+msgstr ""
+
+#: of
+#: omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.heading_command:1:<autosummary>:1
+msgid ""
+":py:obj:`ranges "
+"<omni.isaac.lab.envs.mdp.commands.commands_cfg.NormalVelocityCommandCfg.ranges>`\\"
 msgstr ""
 
 #: of
@@ -2939,20 +2542,6 @@ msgstr ""
 #: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg:1:<autosummary>:1
 msgid ""
-":py:obj:`resampling_time_range "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg.resampling_time_range>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg:1:<autosummary>:1
-msgid ""
 ":py:obj:`ranges "
 "<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg.ranges>`\\"
 msgstr ""
@@ -2971,7 +2560,6 @@ msgid ""
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPoseCommandCfg:1:<autosummary>:1
 msgid "The configuration for the goal pose visualization marker."
@@ -3113,20 +2701,6 @@ msgstr ""
 #: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
 msgid ""
-":py:obj:`resampling_time_range "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.resampling_time_range>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
-msgid ""
 ":py:obj:`asset_name "
 "<omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.asset_name>`\\"
 msgstr ""
@@ -3140,7 +2714,6 @@ msgstr ""
 
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.simple_heading:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.simple_heading:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg:1:<autosummary>:1
 msgid "Whether to use simple heading or not."
@@ -3175,7 +2748,7 @@ msgstr ""
 
 #: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.Ranges:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.resampling_time_range:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.Ranges:1
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.UniformPose2dCommandCfg.resampling_time_range:1:<autosummary>:1
 msgid "Uniform distribution ranges for the position commands."
@@ -3240,40 +2813,12 @@ msgstr ""
 #: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
 msgid ""
-":py:obj:`resampling_time_range "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.resampling_time_range>`\\"
+":py:obj:`Ranges "
+"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.Ranges>`\\"
 msgstr ""
 
 #: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`debug_vis "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.debug_vis>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`asset_name "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.asset_name>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`simple_heading "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.simple_heading>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
-msgid ""
-":py:obj:`goal_pose_visualizer_cfg "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.goal_pose_visualizer_cfg>`\\"
-msgstr ""
-
-#: of
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
+#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.resampling_time_range:1:<autosummary>:1
 msgid ""
 ":py:obj:`ranges "
 "<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.ranges>`\\"
@@ -3281,15 +2826,8 @@ msgstr ""
 
 #: ../../docstring of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.ranges:1
-#: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg:1:<autosummary>:1
-msgid "Distribution ranges for the sampled commands."
-msgstr ""
-
-#: of
 #: omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.resampling_time_range:1:<autosummary>:1
-msgid ""
-":py:obj:`Ranges "
-"<omni.isaac.lab.envs.mdp.commands.commands_cfg.TerrainBasedPose2dCommandCfg.Ranges>`\\"
+msgid "Distribution ranges for the sampled commands."
 msgstr ""
 
 #: of

@@ -7,9 +7,11 @@
 
     官方文档引入了版本系统，可以查看历史版本的文档。译者精力有限，故不提供历史版本翻译，本站只同步更新main分支的文档。
 
-原版英文文档网站: `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__
+IsaacLab原版英文文档网站: `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__
 
-中文翻译文档网站: `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__
+IsaacLab中文翻译文档网站: `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__
+
+IsaacSim中文文档网站（API自动翻译）: `https://docs.robotsfan.com/isaacsim <https://docs.robotsfan.com/isaacsim>`__
 
 所有翻译均开源在 `fan-ziqi/IsaacLab <https://github.com/fan-ziqi/IsaacLab>`__ ，译者: `github@fan-ziqi <https://github.com/fan-ziqi>`__ 。如果你对此翻译项目有疑问，请通过 fanziqi614@gmail.com 联系译者。
 
