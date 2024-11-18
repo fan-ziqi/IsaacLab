@@ -85,6 +85,7 @@ Table of Contents
    source/setup/wechat
    source/setup/translation
    source/setup/installation/index
+   source/setup/installation/cloud_installation
    source/setup/faq
 
 .. toctree::
