@@ -3,7 +3,7 @@
 
 一群已满，现开启二群。为保证群聊质量，进群后请按照 **单位-姓名或昵称-研究方向** 修改备注。
 
-.. figure:: ../_static/wechat-group2-1132.jpg
+.. figure:: ../_static/wechat-group2-1121.jpg
    :width: 500px
    :align: center
    :alt: 微信交流群二维码
