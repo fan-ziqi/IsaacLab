@@ -3,5 +3,6 @@
 
 .. code-block:: bash
 
-   wget https://docs.robotsfan.com/install_isaaclab.sh -O install_isaaclab.sh && . install_isaaclab.sh
+   wget https://docs.robotsfan.com/install_isaaclab.sh -O install_isaaclab.sh && bash install_isaaclab.sh
+
 
