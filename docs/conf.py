@@ -186,13 +186,13 @@ suppress_warnings = [
 # -- Internationalization ----------------------------------------------------
 
 # specifying the natural language populates some key tags
-language = "en"
+language = "zh_CN"
 
 # -- Options for HTML output -------------------------------------------------
 
 import sphinx_book_theme
 
-html_title = "Isaac Lab Documentation"
+html_title = "Isaac Lab 文档"
 html_theme_path = [sphinx_book_theme.get_html_theme_path()]
 html_theme = "sphinx_book_theme"
 html_favicon = "source/_static/favicon.ico"
@@ -215,7 +215,7 @@ html_theme_options = {
     "show_toc_level": 1,
     "use_sidenotes": True,
     "logo": {
-        "text": "Isaac Lab Documentation",
+        "text": "Isaac Lab 文档",
         "image_light": "source/_static/NVIDIA-logo-white.png",
         "image_dark": "source/_static/NVIDIA-logo-black.png",
     },
