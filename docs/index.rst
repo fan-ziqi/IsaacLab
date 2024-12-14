@@ -82,9 +82,9 @@ Table of Contents
    :maxdepth: 2
    :caption: Getting Started
 
-   source/setup/wechat
    source/setup/translation
-   source/setup/install
+   source/setup/wechat
+   source/setup/oneclick_installation
    source/setup/ecosystem
    source/setup/installation/index
    source/setup/installation/cloud_installation
