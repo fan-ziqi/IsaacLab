@@ -1,0 +1,541 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 1.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-14 10:37+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../source/features/ray.rst:3
+msgid "Ray Job Dispatch and Tuning"
+msgstr "Ray作业调度和调优"
+
+#: ../../source/features/ray.rst:7
+msgid ""
+"Isaac Lab supports `Ray <https://docs.ray.io/en/latest/index.html>`_ for "
+"streamlining dispatching multiple training jobs (in parallel and in series),"
+" and hyperparameter tuning, both on local and remote configurations."
+msgstr ""
+"Isaac Lab 支持 `Ray "
+"<https://docs.ray.io/en/latest/index.html>`_，用于简化多个训练任务的调度（包括并行和串行），以及超参数调优，适用于本地和远程配置。"
+
+#: ../../source/features/ray.rst:10
+msgid ""
+"This `independent community contributed walkthrough video "
+"<https://youtu.be/z7MDgSga2Ho?feature=shared>`_ demonstrates some of the "
+"core functionality of the Ray integration covered in this overview. Although"
+" there may be some differences in the codebase (such as file names being "
+"shortened) since the creation of the video, the general workflow is the "
+"same."
+msgstr ""
+"这个 `独立社区贡献的操作视频 "
+"<https://youtu.be/z7MDgSga2Ho?feature=shared>`_ 演示了本概述中介绍的 Ray "
+"集成功能的一些核心内容。尽管自视频制作以来，代码库中可能存在一些差异（例如文件名被简化），但总体工作流程是相同的。"
+
+#: ../../source/features/ray.rst:17
+msgid "This functionality is experimental, and has been tested only on Linux."
+msgstr "此功能为实验性功能，仅在 Linux 上进行过测试。"
+
+#: ../../source/features/ray.rst:21
+msgid "Table of Contents"
+msgstr "目录"
+
+#: ../../source/features/ray.rst:24
+msgid "Overview"
+msgstr "概述"
+
+#: ../../source/features/ray.rst:26
+msgid "The Ray integration is useful for the following:"
+msgstr "Ray 集成对于以下内容非常有用："
+
+#: ../../source/features/ray.rst:28
+msgid ""
+"Dispatching several training jobs in parallel or sequentially with minimal "
+"interaction"
+msgstr "以最小的交互并行或顺序调度多个训练作业"
+
+#: ../../source/features/ray.rst:29
+msgid ""
+"Tuning hyperparameters; in parallel or sequentially with support for "
+"multiple GPUs and/or multiple GPU Nodes"
+msgstr "调优超参数；支持多 GPU 和/或多个 GPU 节点的并行或顺序调优"
+
+#: ../../source/features/ray.rst:30
+msgid ""
+"Using the same training setup everywhere (on cloud and local) with minimal "
+"overhead"
+msgstr "在各个环境中使用相同的训练设置（云端和本地），并尽量减少开销"
+
+#: ../../source/features/ray.rst:31
+msgid "Resource Isolation for training jobs"
+msgstr "训练任务的资源隔离"
+
+#: ../../source/features/ray.rst:33
+msgid ""
+"The core functionality of the Ray workflow consists of two main scripts that"
+" enable the orchestration of resource-wrapped and tuning aggregate jobs. "
+"These scripts facilitate the decomposition of aggregate jobs (overarching "
+"experiments) into individual jobs, which are discrete commands executed on "
+"the cluster. An aggregate job can include multiple individual jobs. For "
+"clarity, this guide refers to the jobs one layer below the topmost aggregate"
+" level as sub-jobs."
+msgstr ""
+"Ray "
+"工作流的核心功能包括两个主要脚本，这些脚本能够实现资源封装和调优聚合作业的协调。这些脚本促进了将聚合作业（总实验）分解为单独的作业，单独的作业是在集群上执行的离散命令。一个聚合作业可以包含多个单独的作业。为了清晰起见，本指南将位于最顶层聚合级别下一层的作业称为子作业。"
+
+#: ../../source/features/ray.rst:39
+msgid ""
+"Both resource-wrapped and tuning aggregate jobs dispatch individual jobs to "
+"a designated Ray cluster, which leverages the cluster's resources (e.g., a "
+"single workstation node or multiple nodes) to execute these jobs with "
+"workers in parallel and/or sequentially. By default, aggregate jobs use all "
+"\\ available resources on each available GPU-enabled node for each sub-job "
+"worker. This can be changed through specifying the ``--num_workers`` "
+"argument, especially critical for parallel aggregate job processing on local"
+" or virtual multi-GPU machines"
+msgstr ""
+"资源包装作业和调优聚合作业将单独的作业调度到指定的 Ray "
+"集群，该集群利用集群的资源（例如单个工作站节点或多个节点）与工作线程并行和/或顺序执行这些作业。默认情况下，聚合作业在每个可用的 GPU "
+"启用节点上为每个子作业工作线程使用所有可用资源。这可以通过指定 ``--num_workers`` 参数来更改，特别是在本地或虚拟多 GPU "
+"机器上进行并行聚合作业处理时至关重要。"
+
+#: ../../source/features/ray.rst:46
+msgid ""
+"In resource-wrapped aggregate jobs, each sub-job and its resource "
+"requirements are defined manually, enabling resource isolation. For tuning "
+"aggregate jobs, individual jobs are generated automatically based on a "
+"hyperparameter sweep configuration. This assumes homogeneous node resource "
+"composition for nodes with GPUs."
+msgstr ""
+"在资源包装的聚合作业中，每个子作业及其资源需求是手动定义的，从而实现资源隔离。为了调优聚合作业，基于超参数搜索配置自动生成单独的作业。这假设具有 GPU"
+" 的节点在资源组成上是同质的。"
+
+#: ../../source/features/ray.rst
+msgid "source/standalone/workflows/ray/wrap_resources.py"
+msgstr "source/standalone/workflows/ray/wrap_resources.py"
+
+#: ../../source/features/ray.rst
+msgid "source/standalone/workflows/ray/tuner.py"
+msgstr "source/standalone/workflows/ray/tuner.py"
+
+#: ../../source/features/ray.rst:66
+msgid ""
+"The following script can be used to submit aggregate jobs to one or more Ray"
+" cluster(s), which can be used for running jobs on a remote cluster or "
+"simultaneous jobs with heterogeneous resource requirements:"
+msgstr "以下脚本可用于向一个或多个 Ray 集群提交聚合任务，这些任务可用于在远程集群上运行作业或同时运行具有异构资源要求的作业："
+
+#: ../../source/features/ray.rst
+msgid "source/standalone/workflows/ray/submit_job.py"
+msgstr "source/standalone/workflows/ray/submit_job.py"
+
+#: ../../source/features/ray.rst:78
+msgid ""
+"The following script can be used to extract KubeRay Cluster information for "
+"aggregate job submission."
+msgstr "以下脚本可用于提取 KubeRay 集群信息，以便进行聚合作业提交。"
+
+#: ../../source/features/ray.rst
+msgid "source/standalone/workflows/ray/grok_cluster_with_kubectl.py"
+msgstr "source/standalone/workflows/ray/grok_cluster_with_kubectl.py"
+
+#: ../../source/features/ray.rst:87
+msgid ""
+"The following script can be used to easily create clusters on Google GKE."
+msgstr "以下脚本可以用来轻松在 Google GKE 上创建集群。"
+
+#: ../../source/features/ray.rst
+msgid "source/standalone/workflows/ray/launch.py"
+msgstr "source/standalone/workflows/ray/launch.py"
+
+#: ../../source/features/ray.rst:97
+msgid "**Installation**"
+msgstr "**安装**"
+
+#: ../../source/features/ray.rst:99
+msgid "The Ray functionality requires additional dependencies be installed."
+msgstr "Ray 功能需要安装额外的依赖项。"
+
+#: ../../source/features/ray.rst:101
+msgid ""
+"To use Ray without Kubernetes, like on a local computer or VM, ``kubectl`` "
+"is not required. For use on Kubernetes clusters with KubeRay, such as Google"
+" Kubernetes Engine or Amazon Elastic Kubernetes Service, ``kubectl`` is "
+"required, and can be installed via the `Kubernetes website "
+"<https://kubernetes.io/docs/tasks/tools/>`_"
+msgstr ""
+"要在没有 Kubernetes 的情况下使用 Ray，例如在本地计算机或虚拟机上，``kubectl`` 并不是必需的。对于使用 KubeRay 的 "
+"Kubernetes 集群，如 Google Kubernetes Engine 或 Amazon Elastic Kubernetes "
+"Service，``kubectl`` 是必需的，并且可以通过 `Kubernetes website "
+"<https://kubernetes.io/docs/tasks/tools/>`_ 安装。"
+
+#: ../../source/features/ray.rst:106
+msgid "The pythonic dependencies can be installed with:"
+msgstr "pythonic 依赖项可以通过以下方式安装："
+
+#: ../../source/features/ray.rst:118
+msgid ""
+"If using KubeRay clusters on Google GKE with the batteries-included cluster "
+"launch file, the following dependencies are also needed."
+msgstr "如果在 Google GKE 上使用 KubeRay 集群，并且使用自带集群启动文件，则还需要以下依赖项。"
+
+#: ../../source/features/ray.rst:126
+msgid "**Setup Overview: Cluster Configuration**"
+msgstr "**设置概述：集群配置**"
+
+#: ../../source/features/ray.rst:128
+msgid ""
+"Select one of the following methods to create a Ray Cluster to accept and "
+"execute dispatched jobs."
+msgstr "选择以下方法之一来创建 Ray 集群，以接收和执行调度的任务。"
+
+#: ../../source/features/ray.rst:131
+msgid "Single-Node Ray Cluster (Recommended for Beginners)"
+msgstr "单节点 Ray 集群 （推荐给初学者）"
+
+#: ../../source/features/ray.rst:132
+msgid ""
+"For use on a single machine (node) such as a local computer or VM, the "
+"following command can be used start a ray server. This is compatible with "
+"multiple-GPU machines. This Ray server will run indefinitely until it is "
+"stopped with ``CTRL + C``"
+msgstr ""
+"对于在单台机器（节点）上使用，例如本地计算机或虚拟机，可以使用以下命令启动一个 Ray 服务器。此命令兼容多 GPU 机器。此 Ray "
+"服务器将无限期运行，直到使用 ``CTRL + C`` 停止。"
+
+#: ../../source/features/ray.rst:141
+msgid "KubeRay Clusters"
+msgstr "KubeRay 集群"
+
+#: ../../source/features/ray.rst:143
+msgid ""
+"The ``ray`` command should be modified to use Isaac python, which could be "
+"achieved in a fashion similar to ``sed -i \"1i $(echo "
+"\"#!/workspace/isaaclab/_isaac_sim/python.sh\")\" \\ /isaac-"
+"sim/kit/python/bin/ray && ln -s /isaac-sim/kit/python/bin/ray "
+"/usr/local/bin/ray``."
+msgstr ""
+"``ray`` 命令应该修改为使用 Isaac python，这可以通过类似于 ``sed -i \"1i $(echo "
+"\"#!/workspace/isaaclab/_isaac_sim/python.sh\")\" \\ /isaac-"
+"sim/kit/python/bin/ray && ln -s /isaac-sim/kit/python/bin/ray "
+"/usr/local/bin/ray`` 的方式来实现。"
+
+#: ../../source/features/ray.rst:147
+msgid ""
+"Google Cloud is currently the only platform tested, although any cloud "
+"provider should work if one configures the following:"
+msgstr "Google Cloud 目前是唯一经过测试的平台，尽管任何云服务提供商只要配置以下内容也应当可以使用："
+
+#: ../../source/features/ray.rst:150
+msgid ""
+"An container registry (NGC, GCS artifact registry, AWS ECR, etc) with an "
+"Isaac Lab image configured to support Ray. See "
+"``cluster_configs/Dockerfile`` to see how to modify the ``isaac-lab-base`` "
+"container for Ray compatibility. Ray should use the isaac sim python "
+"shebang, and ``nvidia-smi`` should work within the container. Be careful "
+"with the setup here as paths need to be configured correctly for everything "
+"to work. It's likely that the example dockerfile will work out of the box "
+"and can be pushed to the registry, as long as the base image has already "
+"been built as in the container guide"
+msgstr ""
+"一个配置了支持 Ray 的 Isaac Lab 镜像的容器注册表（NGC、GCS artifact registry、AWS ECR 等）。查看 "
+"``cluster_configs/Dockerfile`` 了解如何修改 ``isaac-lab-base`` 容器以兼容 Ray。Ray 应该使用 "
+"isaac sim 的 python shebang，并且 ``nvidia-smi`` "
+"应该在容器内正常工作。这里的设置需要小心，因为路径必须正确配置才能正常工作。例子的 dockerfile "
+"很可能开箱即用，并可以推送到注册表，只要基础镜像已经按照容器指南中的方式构建完成。"
+
+#: ../../source/features/ray.rst:157
+msgid ""
+"A Kubernetes setup with available NVIDIA RTX (likely ``l4`` or ``l40`` or "
+"``tesla-t4`` or ``a10``) GPU-passthrough node-pool resources, that has "
+"access to your container registry/storage bucket and has the Ray operator "
+"enabled with correct IAM permissions. This can be easily achieved with "
+"services such as Google GKE or AWS EKS, provided that your account or "
+"organization has been granted a GPU-budget. It is recommended to use manual "
+"kubernetes services as opposed to \"autopilot\" services for cost-effective "
+"experimentation as this way clusters can be completely shut down when not in"
+" use, although this may require installing the `Nvidia GPU Operator "
+"<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/google-"
+"gke.html>`_"
+msgstr ""
+"一个包含可用 NVIDIA RTX（可能是 ``l4``、``l40``、``tesla-t4`` 或 ``a10``）GPU直通节点池资源的 "
+"Kubernetes 设置，能够访问您的容器注册表/存储桶，并启用了 Ray 操作符且具有正确的 IAM 权限。通过像 Google GKE 或 AWS"
+" EKS 等服务可以轻松实现，前提是您的账户或组织已被授予 GPU 预算。建议使用手动 Kubernetes "
+"服务，而非“自动驾驶”服务进行成本效益高的实验，因为这种方式可以在不使用时完全关闭集群，尽管这可能需要安装 `Nvidia GPU Operator "
+"<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/google-"
+"gke.html>`_"
+
+#: ../../source/features/ray.rst:164
+msgid "An MLFlow server that your cluster has access to."
+msgstr "一个您的集群可以访问的 MLFlow 服务器。"
+
+#: ../../source/features/ray.rst:165
+msgid ""
+"A ``kuberay.yaml.ninja`` file that describes how to allocate resources "
+"(already included for Google Cloud, which can be referenced for the format "
+"and MLFlow integration)"
+msgstr ""
+"一个 ``kuberay.yaml.ninja`` 文件，描述了如何分配资源（已经为 Google Cloud 包含，可以参考该格式和 MLFlow "
+"集成）。"
+
+#: ../../source/features/ray.rst:169
+msgid "Ray Clusters (Without Kubernetes)"
+msgstr "Ray 集群（不使用 Kubernetes）"
+
+#: ../../source/features/ray.rst:171
+msgid ""
+"Modify the Ray command to use Isaac Python like in KubeRay Clusters, and "
+"follow the same steps for creating an image/cluster permissions/bucket "
+"access."
+msgstr ""
+"修改 Ray 命令以使用 Isaac Python，如同在 KubeRay 集群中一样，并按照相同的步骤创建镜像/集群权限/存储桶访问权限。"
+
+#: ../../source/features/ray.rst:174
+msgid ""
+"See the `Ray Clusters Overview "
+"<https://docs.ray.io/en/latest/cluster/getting-started.html>`_ or `Anyscale "
+"<https://www.anyscale.com/product>`_ for more information"
+msgstr ""
+"请参阅 `Ray 集群概述 <https://docs.ray.io/en/latest/cluster/getting-"
+"started.html>`_ 或 `Anyscale <https://www.anyscale.com/product>`_ 以获取更多信息。"
+
+#: ../../source/features/ray.rst:179
+msgid "**Dispatching Jobs and Tuning**"
+msgstr "**调度作业和调优**"
+
+#: ../../source/features/ray.rst:181
+msgid ""
+"Select one of the following guides that matches your desired Cluster "
+"configuration."
+msgstr "请选择以下与您所需的集群配置匹配的指南之一。"
+
+#: ../../source/features/ray.rst:184
+msgid "Simple Ray Cluster (Local/VM)"
+msgstr "简单的 Ray 集群（本地/虚拟机）"
+
+#: ../../source/features/ray.rst:186
+msgid ""
+"This guide assumes that there is a Ray cluster already running, and that "
+"this script is run locally on the cluster, or that the cluster job "
+"submission address is known."
+msgstr "本指南假定已经有一个 Ray 集群正在运行，并且该脚本是在集群上本地运行，或者已知集群作业提交地址。"
+
+#: ../../source/features/ray.rst:189
+msgid "1.) Testing that the cluster works can be done as follows."
+msgstr "1.) 测试集群是否正常工作可以按如下方式进行。"
+
+#: ../../source/features/ray.rst:195
+msgid ""
+"2.) Submitting resource-wrapped sub-jobs can be done as described in the "
+"following file:"
+msgstr "2.) 提交资源封装的子作业可以按照以下文件中描述的方式进行："
+
+#: ../../source/features/ray.rst:204
+msgid ""
+"3.) For tuning jobs, specify the hyperparameter sweep similar to the "
+"following two files."
+msgstr "3.) 对于调优任务，指定类似以下两个文件的超参数搜索。"
+
+#: ../../source/features/ray.rst
+msgid "source/standalone/workflows/ray/hyperparameter_tuning/vision_cfg.py"
+msgstr "source/standalone/workflows/ray/hyperparameter_tuning/vision_cfg.py"
+
+#: ../../source/features/ray.rst
+msgid ""
+"source/standalone/workflows/ray/hyperparameter_tuning/vision_cartpole_cfg.py"
+msgstr ""
+"source/standalone/workflows/ray/hyperparameter_tuning/vision_cartpole_cfg.py"
+
+#: ../../source/features/ray.rst:218
+msgid ""
+"Then, see the local examples in the following file to see how to start a "
+"tuning run."
+msgstr "然后，查看以下文件中的本地示例，以了解如何开始调整运行。"
+
+#: ../../source/features/ray.rst:229
+msgid ""
+"To view the logs, simply run ``tensorboard "
+"--logdir=<LOCAL_STORAGE_PATH_READ_FROM_OUTPUT>``"
+msgstr ""
+"要查看日志，只需运行 ``tensorboard --logdir=<LOCAL_STORAGE_PATH_READ_FROM_OUTPUT>``"
+
+#: ../../source/features/ray.rst:232
+msgid "Remote Ray Cluster Setup and Use"
+msgstr "远程 Ray 集群设置与使用"
+
+#: ../../source/features/ray.rst:233
+msgid ""
+"This guide assumes that one desires to create a cluster on a remote host or "
+"server. This guide includes shared steps, and KubeRay or Ray specific steps."
+" Follow all shared steps (part I and II), and then only the KubeRay or Ray "
+"steps depending on your desired configuration, in order of shared steps part"
+" I, then the configuration specific steps, then shared steps part II."
+msgstr ""
+"本指南假设用户希望在远程主机或服务器上创建一个集群。此指南包括共享步骤和 KubeRay 或 Ray 特定步骤。按照所有共享步骤（第 I 部分和第 II"
+" 部分），然后根据所需的配置，选择 KubeRay 或 Ray 步骤，顺序为共享步骤第 I 部分，然后是特定配置步骤，再然后是共享步骤第 II 部分。"
+
+#: ../../source/features/ray.rst:239
+msgid "Shared Steps Between KubeRay and Pure Ray Part I"
+msgstr "KubeRay 和纯 Ray 之间的共享步骤 第 I 部分"
+
+#: ../../source/features/ray.rst:241
+msgid ""
+"1.) Build the Isaac Ray image, and upload it to your container registry of "
+"choice."
+msgstr "1.) 构建 Isaac Ray 镜像，并将其上传到您选择的容器注册表。"
+
+#: ../../source/features/ray.rst:253
+msgid "KubeRay Specific"
+msgstr "KubeRay 细节"
+
+#: ../../source/features/ray.rst:254
+msgid ""
+"`k9s <https://github.com/derailed/k9s>`_ is a great tool for monitoring your"
+" clusters that can easily be installed with ``snap install k9s --devmode``."
+msgstr ""
+"`k9s <https://github.com/derailed/k9s>`_ 是一个很好的工具，用于监控您的集群，可以通过 ``snap "
+"install k9s --devmode`` 简单安装。"
+
+#: ../../source/features/ray.rst:257
+msgid ""
+"1.) Verify cluster access, and that the correct operators are installed."
+msgstr "1.) 验证集群访问权限，并确保正确的操作符已安装。"
+
+#: ../../source/features/ray.rst:273
+msgid ""
+"2.) Create the KubeRay cluster and an MLFlow server for receiving logs that "
+"your cluster has access to. This can be done automatically for Google GKE, "
+"where instructions are included in the following creation file. More than "
+"once cluster can be created at once. Each cluster can have heterogeneous "
+"resources if so desired, although only For other cloud services, the "
+"``kuberay.yaml.ninja`` will be similar to that of Google's."
+msgstr ""
+"2.) 创建 KubeRay 集群和用于接收日志的 MLFlow 服务器，该集群可以访问该服务器。对于 Google "
+"GKE，可以自动执行此操作，相关说明已包含在以下创建文件中。可以一次创建多个集群。如果需要，可以为每个集群配置异构资源，不过对于其他云服务，``kuberay.yaml.ninja``"
+" 文件将与 Google 的文件类似。"
+
+#: ../../source/features/ray.rst:289
+msgid ""
+"3.) Fetch the KubeRay cluster IP addresses, and the MLFLow Server IP. This "
+"can be done automatically for KubeRay clusters, where instructions are "
+"included in the following fetching file. The KubeRay clusters are saved to a"
+" file, but the MLFLow Server IP is printed."
+msgstr ""
+"3.) 获取 KubeRay 集群的 IP 地址以及 MLFlow 服务器的 IP。对于 KubeRay "
+"集群，可以自动执行此操作，相关说明已包含在以下获取文件中。KubeRay 集群会被保存到文件中，但 MLFlow 服务器 IP 会被打印出来。"
+
+#: ../../source/features/ray.rst:303
+msgid "Ray Specific"
+msgstr "Ray 细节"
+
+#: ../../source/features/ray.rst:306
+msgid "1.) Verify cluster access."
+msgstr "1.) 验证集群访问权限。"
+
+#: ../../source/features/ray.rst:308
+msgid ""
+"2.) Create a ``~/.cluster_config`` file, where ``name: <NAME> address: "
+"http://<IP>:<PORT>`` is on a new line for each unique cluster. For one "
+"cluster, there should only be one line in this file."
+msgstr ""
+"2.) 创建 ``~/.cluster_config`` 文件，其中 ``name: <NAME> address: "
+"http://<IP>:<PORT>`` 每个唯一集群在新的一行中。对于一个集群，文件中应该只有一行。"
+
+#: ../../source/features/ray.rst:311
+msgid ""
+"3.) Start an MLFLow Server to receive the logs that the ray cluster has "
+"access to, and determine the server URI."
+msgstr "3.) 启动 MLFlow 服务器来接收 Ray 集群访问的日志，并确定服务器 URI。"
+
+#: ../../source/features/ray.rst:315
+msgid "Shared Steps Between KubeRay and Pure Ray Part II"
+msgstr "KubeRay 和纯 Ray 之间的共享步骤 第 II 部分"
+
+#: ../../source/features/ray.rst:316
+msgid "1.) Test that your cluster is operational with the following."
+msgstr "1.) 测试您的集群是否正常运行，方法如下。"
+
+#: ../../source/features/ray.rst:324
+msgid ""
+"2.) Submitting Jobs can be done in the following manner, with the following "
+"script."
+msgstr "2.) 提交作业可以通过以下方式进行，使用以下脚本。"
+
+#: ../../source/features/ray.rst:333
+msgid ""
+"3.) For tuning jobs, specify the hyperparameter sweep similar to "
+":class:`RLGamesCameraJobCfg` in the following file:"
+msgstr "3.) 对于调整作业，指定超参数搜索，类似于 :class:`RLGamesCameraJobCfg` 在以下文件中："
+
+#: ../../source/features/ray.rst:342
+msgid "For example, see the Cartpole Example configurations."
+msgstr "例如，请参阅 Cartpole 示例配置。"
+
+#: ../../source/features/ray.rst:351
+msgid "Tuning jobs can also be submitted via ``submit_job.py``"
+msgstr "调整作业也可以通过 ``submit_job.py`` 提交。"
+
+#: ../../source/features/ray.rst:353
+msgid ""
+"To view the tuning results, view the MLFlow dashboard of the server that you"
+" created. For KubeRay, this can be done through port forwarding the MLFlow "
+"dashboard, with"
+msgstr ""
+"要查看调整结果，请查看您创建的服务器的 MLFlow 仪表盘。对于 KubeRay，可以通过端口转发 MLFlow 仪表盘来实现，方法如下："
+
+#: ../../source/features/ray.rst:356
+msgid "``kubectl port-forward service/isaacray-mlflow 5000:5000``"
+msgstr "``kubectl port-forward service/isaacray-mlflow 5000:5000``"
+
+#: ../../source/features/ray.rst:358
+msgid "and visiting the following address in a browser."
+msgstr "然后在浏览器中访问以下地址。"
+
+#: ../../source/features/ray.rst:360
+msgid "``localhost:5000``"
+msgstr "``localhost:5000``"
+
+#: ../../source/features/ray.rst:362
+msgid ""
+"If the MLFlow port is forwarded like above, it can be converted into "
+"tensorboard logs with this following command."
+msgstr "如果如上所述转发了 MLFlow 端口，则可以使用以下命令将其转换为 TensorBoard 日志。"
+
+#: ../../source/features/ray.rst:365
+msgid ""
+"``./isaaclab.sh -p "
+"source/standalone/workflows/ray/mlflow_to_local_tensorboard.py \\ --uri "
+"http://localhost:5000 --experiment-name IsaacRay-<CLASS_JOB_CFG>-tune "
+"--download-dir test``"
+msgstr ""
+"``./isaaclab.sh -p "
+"source/standalone/workflows/ray/mlflow_to_local_tensorboard.py \\ --uri "
+"http://localhost:5000 --experiment-name IsaacRay-<CLASS_JOB_CFG>-tune "
+"--download-dir test``"
+
+#: ../../source/features/ray.rst:370
+msgid "**Cluster Cleanup**"
+msgstr "**集群清理**"
+
+#: ../../source/features/ray.rst:372
+msgid ""
+"For the sake of conserving resources, and potentially freeing precious GPU "
+"resources for other people to use on shared compute platforms, please "
+"destroy the Ray cluster after use. They can be easily recreated! For KubeRay"
+" clusters, this can be done as follows."
+msgstr ""
+"为了节省资源，并可能为其他人在共享计算平台上使用宝贵的 GPU 资源，请在使用后销毁 Ray 集群。它们可以轻松地重新创建！对于 KubeRay "
+"集群，可以按照以下方法进行。"
