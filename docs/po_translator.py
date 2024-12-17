@@ -309,7 +309,7 @@ def main():
     parser.add_argument("--fuzzy", action="store_true", help="Remove fuzzy entries")
     parser.add_argument("--bulk", action="store_true", help="Use bulk translation mode")
     parser.add_argument("--bulksize", type=int, default=50, help="Batch size for bulk translation")
-    parser.add_argument("--model", default="gpt-3.5-turbo-1106", help="OpenAI model to use for translations")
+    parser.add_argument("--model", default="gpt-3.5-turbo", help="OpenAI model to use for translations")
     parser.add_argument("--api_key", help="OpenAI API key")
     parser.add_argument("--folder-language", action="store_true", help="Set language from directory structure")
 
