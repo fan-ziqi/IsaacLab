@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 10:42+0800\n"
+"POT-Creation-Date: 2024-12-21 15:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -210,46 +210,75 @@ msgstr "如果希望在操作空间指令中包含重力补偿，则应将 ``gra
 
 #: ../../source/tutorials/05_controllers/run_osc.rst:89
 msgid ""
+"A final consideration regarding the operational space control is what to do "
+"with the null-space of redundant robots. The null-space is the subspace of "
+"the joint space that does not affect the task space coordinates. If nothing "
+"is done to control the null-space, the robot joints will float without "
+"moving the end-effector. This might be undesired (e.g., the robot joints "
+"might get close to their limits), and one might want to control the robot "
+"behaviour within its null-space. One way to do is to set "
+"``nullspace_control`` to ``\"position\"`` (by default it is ``\"none\"``) "
+"which integrates a null-space PD controller to attract the robot joints to "
+"desired targets without affecting the task space. The behaviour of this "
+"null-space controller can be defined using the ``nullspace_stiffness`` and "
+"``nullspace_damping_ratio`` arguments. Please note that theoretical "
+"decoupling of the null-space and task space accelerations is only possible "
+"when ``inertial_dynamics_decoupling`` is set to ``True`` and "
+"``partial_inertial_dynamics_decoupling`` is set to ``False``."
+msgstr ""
+"关于操作空间控制的一个最终考虑是如何处理冗余机器人运动学中的零空间。零空间是关节空间的子空间，它不会影响任务空间坐标。如果没有采取措施来控制零空间，机器人关节将会浮动而不移动末端执行器。这可能是不可取的（例如，机器人关节可能会接近它们的极限），因此可能希望在零空间内控制机器人的行为。一个方法是将"
+" ``nullspace_control`` 设置为 ``\"position\"``（默认值为 ``\"none\"`` ），这将集成一个零空间 PD "
+"控制器，将机器人关节吸引到期望目标，而不影响任务空间。此零空间控制器的行为可以通过 ``nullspace_stiffness`` 和 "
+"``nullspace_damping_ratio`` 参数来定义。请注意，零空间和任务空间加速度的理论解耦只有在 "
+"``inertial_dynamics_decoupling`` 设置为 ``True`` 且 "
+"``partial_inertial_dynamics_decoupling`` 设置为 ``False`` 时才可能。"
+
+#: ../../source/tutorials/05_controllers/run_osc.rst:100
+msgid ""
 "The included OSC implementation performs the computation in a batched format"
 " and uses PyTorch operations."
 msgstr "包含的 OSC 实现以批处理格式进行计算，并使用 PyTorch 操作。"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:91
+#: ../../source/tutorials/05_controllers/run_osc.rst:102
 msgid ""
 "In this tutorial, we will use ``\"pose_abs\"`` for controlling the motion in"
 " all axes except the z-axis and ``\"wrench_abs\"`` for controlling the force"
 " in the z-axis. Moreover, we will include the full inertia decoupling in the"
 " motion control and not include the gravity compensation, as the gravity is "
-"disabled from the robot configuration. Finally, we set the impedance mode to"
-" ``\"variable_kp\"`` to dynamically change the stiffness values "
+"disabled from the robot configuration. We set the impedance mode to "
+"``\"variable_kp\"`` to dynamically change the stiffness values "
 "(``motion_damping_ratio_task`` is set to ``1``: the kd values adapt "
-"according to kp values to maintain a critically damped response)."
+"according to kp values to maintain a critically damped response). Finally, "
+"``nullspace_control`` is set to use ``\"position\"`` where the joint set "
+"points are provided to be the center of the joint position limits."
 msgstr ""
 "在本教程中，我们将使用 ``\"pose_abs\"`` 控制除 z 轴以外的所有轴的运动，使用 ``\"wrench_abs\"`` 控制 z "
-"轴上的力。此外，我们将在运动控制中包括完整的惯性解耦，并且不包括重力补偿，因为机器人配置中禁用了重力。最后，我们将将阻抗模式设置为 "
+"轴上的力。此外，我们将在运动控制中包括完整的惯性解耦，并且不包括重力补偿，因为机器人配置中禁用了重力。我们将将阻抗模式设置为 "
 "``\"variable_kp\"`` ，以动态更改刚度值（ ``motion_damping_ratio_task`` 设置为 ``1`` ：kd "
-"值会根据 kp 值自适应以保持过阻尼响应）。"
+"值会根据 kp 值自适应以保持过阻尼响应）。最后，将 ``nullspace_control`` 设置为使用 ``\"position\"`` "
+"，其中关节设定点被设置为关节位置限制的中心。"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:104
+#: ../../source/tutorials/05_controllers/run_osc.rst:116
 msgid "Updating the states of the robot"
 msgstr "更新机器人的状态"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:106
+#: ../../source/tutorials/05_controllers/run_osc.rst:118
 msgid ""
 "The OSC implementation is a computation-only class. Thus, it expects the "
 "user to provide the necessary information about the robot. This includes the"
 " robot's Jacobian matrix, mass/inertia matrix, end-effector pose, velocity, "
-"and contact force, all in the root frame. Moreover, the user should provide "
-"gravity compensation vector, if desired."
+"contact force (all in the root frame), and finally, the joint positions and "
+"velocities. Moreover, the user should provide gravity compensation vector "
+"and null-space joint position targets if required."
 msgstr ""
 "OSC "
-"实现是一个纯计算类。因此，它期望用户提供有关机器人的必要信息。这包括机器人的雅可比矩阵、质量/惯性矩阵、末端执行器姿态、速度和接触力，均在根帧中。此外，用户应提供重力补偿向量（如有需要）。"
+"实现是一个纯计算类。因此，它期望用户提供有关机器人的必要信息。这包括机器人的雅可比矩阵、质量/惯性矩阵、末端执行器姿态、速度和接触力，均在根坐标系中，最后是关节位置和速度。此外，如果需要，用户应提供重力补偿矢量和零空间关节位置目标。"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:117
+#: ../../source/tutorials/05_controllers/run_osc.rst:130
 msgid "Computing robot command"
 msgstr "计算机器人命令"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:119
+#: ../../source/tutorials/05_controllers/run_osc.rst:132
 msgid ""
 "The OSC separates the operation of setting the desired command and computing"
 " the desired joint positions. To set the desired command, the user should "
@@ -264,14 +293,14 @@ msgstr ""
 "``target_types`` 参数中出现的顺序）以及如果 impedance_mode 设置为 ``\"variable_kp\"`` 或 "
 "``\"variable\"`` 时的期望刚度和阻尼比值。它们应该都在与任务框架相同的坐标系中（例如，用 ``_task`` 下标表示）并连接在一起。"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:126
+#: ../../source/tutorials/05_controllers/run_osc.rst:139
 msgid ""
 "In this tutorial, the desired wrench is already defined w.r.t. the task "
 "frame, and the desired pose is transformed to the task frame as the "
 "following:"
 msgstr "在本教程中，期望的力矩已经相对于任务框架进行了定义，并且期望的姿势被转换到任务框架中，如下所示："
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:134
+#: ../../source/tutorials/05_controllers/run_osc.rst:147
 msgid ""
 "The OSC command is set with the command vector in the task frame, the end-"
 "effector pose in the base frame, and the task (reference) frame pose in the "
@@ -281,26 +310,26 @@ msgstr ""
 "OSC "
 "命令是使用任务坐标系中的命令向量设置的，基坐标系中的末端执行器姿势和基坐标系中的任务（参考）坐标系姿势如下。这些信息是必要的，因为内部计算是在基坐标系中完成的。"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:143
+#: ../../source/tutorials/05_controllers/run_osc.rst:156
 msgid ""
 "The joint effort/torque values are computed using the provided robot states "
 "and the desired command as the following:"
 msgstr "使用提供的机器人状态和所需命令计算关节力/扭矩值，如下所示："
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:151
+#: ../../source/tutorials/05_controllers/run_osc.rst:164
 msgid ""
 "The computed joint effort/torque targets can then be applied on the robot."
 msgstr "计算得出的关节努力/力矩目标随后可以应用于机器人中。"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:160
+#: ../../source/tutorials/05_controllers/run_osc.rst:173
 msgid "The Code Execution"
 msgstr "代码执行"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:162
+#: ../../source/tutorials/05_controllers/run_osc.rst:175
 msgid "You can now run the script and see the result:"
 msgstr "你现在可以运行脚本并查看结果："
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:168
+#: ../../source/tutorials/05_controllers/run_osc.rst:181
 msgid ""
 "The script will start a simulation with 128 robots. The robots will be "
 "controlled using the OSC. The current and desired end-effector poses should "
@@ -311,10 +340,10 @@ msgstr ""
 "该脚本将启动一个包含128个机器人的仿真。将使用OSC进行机器人的控制。当前和期望的末端执行器姿势应该使用框架标记显示，除了红色倾斜墙之外。您应该看到机器人在施加垂直于墙面的恒定力的同时到达期望姿势。"
 
 #: ../../source/tutorials/05_controllers/run_osc.rst:-1
-msgid "result of run_osc.py"
+msgid "run_osc.py 的结果"
 msgstr "run_osc.py 的结果"
 
-#: ../../source/tutorials/05_controllers/run_osc.rst:178
+#: ../../source/tutorials/05_controllers/run_osc.rst:191
 msgid ""
 "To stop the simulation, you can either close the window or press ``Ctrl+C`` "
 "in the terminal."
