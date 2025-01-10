@@ -36,7 +36,7 @@ IsaacSim中文文档网站（API自动翻译）: `https://docs.robotsfan.com/isa
 .. code-block:: bash
 
    # install python packages
-   pip install setuptools polib==1.2.0 openai==v1.3.6 python-dotenv==1.0.0 pytest==8.2.2 sphinx-intl sphinx-book-theme==1.0.1 myst-parser sphinxcontrib-bibtex==2.5.0 autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium sphinx-tabs sphinx-multiversion==0.2.4
+   pip install setuptools polib==1.2.0 openai==v1.3.6 python-dotenv==1.0.0 pytest==8.2.2 sphinx-intl sphinx-book-theme==1.0.1 myst-parser sphinxcontrib-bibtex==2.5.0 autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium sphinx-tabs sphinx-multiversion==0.2.4 httpx[socks]==0.27.2
    # merge upstream changes
    git remote add upstream https://github.com/isaac-sim/IsaacLab.git
    git fetch upstream
@@ -76,7 +76,7 @@ IsaacSim中文文档网站（API自动翻译）: `https://docs.robotsfan.com/isa
 Ubuntu20.04使用pip安装Isaac Sim
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-使用pip安装Isaac Sim只支持 ``GLIBC>=2.34`` 。 `bug link <https://forums.developer.nvidia.com/t/isaac-sim-python-environment-installation-with-pip-through-conda/294913/12>`__ ，如果你使用的是Ubuntu20.04，使用 ``ldd --version`` 查看GLIBC版本，如果版本低于 ``2.34`` 则需要升级GLIBC。 请注意，升级GLIBC是一个危险操作可能会导致无法与其的问题，请谨慎升级！
+使用pip安装Isaac Sim只支持 ``GLIBC>=2.34`` 。 `bug link <https://forums.developer.nvidia.com/t/isaac-sim-python-environment-installation-with-pip-through-conda/294913/12>`__ ，如果你使用的是Ubuntu20.04，使用 ``ldd --version`` 查看GLIBC版本，如果版本低于 ``2.34`` 则需要升级GLIBC。 请注意，升级GLIBC是一个危险操作可能会导致无法预期的问题，请谨慎升级！
 
 首先在 ``/etc/apt/sources.list`` 中添加 ``deb http://th.archive.ubuntu.com/ubuntu jammy main``
 
@@ -88,6 +88,21 @@ Ubuntu20.04使用pip安装Isaac Sim
 然后使用 ``ldd --version`` 查看升级后的GLIBC版本。
 
 最后从 ``/etc/apt/sources.list`` 中删除 ``deb http://th.archive.ubuntu.com/ubuntu jammy main`` ，升级完成，可继续使用Pip进行安装。
+
+
+升级glibc后, 若编译时提示缺少libpthread.so, 报错类似如下
+
+.. code-block:: bash
+
+   make[2]: *** 没有规则可制作目标“/usr/lib/x86_64-linux-gnu/libpthread.so”，由“/home/ubuntu/workspaces/catkin_ws/devel/.private/xxx/lib/libxxx.so” 需求。 停止。
+
+
+可以通过软链接解决
+
+.. code-block:: bash
+
+   sudo ln -s /lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
+
 
 通过pip安装的isaacsim打开后报错
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
