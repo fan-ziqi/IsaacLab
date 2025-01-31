@@ -120,4 +120,3 @@ Ubuntu20.04使用pip安装Isaac Sim
    pip install isaacsim --extra-index-url https://pypi.nvidia.com
 
 需要升级的话加上 ``--upgrade`` 即可。
-

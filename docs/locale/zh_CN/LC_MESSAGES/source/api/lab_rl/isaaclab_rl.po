@@ -1,0 +1,1315 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-31 19:21+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../source/api/lab_rl/isaaclab_rl.rst:2
+msgid "isaaclab_rl"
+msgstr ""
+
+#: isaaclab_rl:1 of
+msgid "Module for environment wrappers to different learning frameworks."
+msgstr ""
+
+#: isaaclab_rl:3 of
+msgid ""
+"Wrappers allow you to modify the behavior of an environment without "
+"modifying the environment itself. This is useful for modifying the "
+"observation space, action space, or reward function. Additionally, they "
+"can be used to cast a given environment into the respective environment "
+"class definition used by different learning frameworks. This operation "
+"may include handling of asymmetric actor-critic observations, casting the"
+" data between different backends such `numpy` and `pytorch`, or "
+"organizing the returned data into the expected data structure by the "
+"learning framework."
+msgstr ""
+
+#: isaaclab_rl:10 of
+msgid ""
+"All wrappers work similar to the :class:`gymnasium.Wrapper` class. Using "
+"a wrapper is as simple as passing the initialized environment instance to"
+" the wrapper constructor. However, since learning frameworks expect "
+"different input and output data structures, their wrapper classes are not"
+" compatible with each other. Thus, they should always be used in "
+"conjunction with the respective learning framework."
+msgstr ""
+
+#: isaaclab_rl:15 of
+msgid ""
+"For instance, to wrap an environment in the `Stable-Baselines3`_ wrapper,"
+" you can do the following:"
+msgstr ""
+
+#: ../../source/api/lab_rl/isaaclab_rl.rst:7
+msgid "RL-Games Wrapper"
+msgstr ""
+
+#: isaaclab_rl.rl_games:1 of
+msgid ""
+"Wrapper to configure a :class:`ManagerBasedRLEnv` or :class:`DirectRlEnv`"
+" instance to RL-Games vectorized environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games:3 of
+msgid ""
+"The following example shows how to wrap an environment for RL-Games and "
+"register the environment construction for RL-Games :class:`Runner` class:"
+msgstr ""
+
+#: isaaclab_rl.rl_games:1 isaaclab_rl.rsl_rl:1 isaaclab_rl.sb3:1 of
+msgid "**Classes:**"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`RlGamesVecEnvWrapper "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid "Wraps around Isaac Lab environment for RL-Games."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ":py:obj:`RlGamesGpuEnv <isaaclab_rl.rl_games.RlGamesGpuEnv>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid "Thin wrapper to create instance of the environment to fit RL-Games runner."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1 of
+msgid "基类：:py:class:`~rl_games.common.vecenv.IVecEnv`"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:3 of
+msgid ""
+"This class wraps around the Isaac Lab environment. Since RL-Games works "
+"directly on GPU buffers, the wrapper handles moving of buffers from the "
+"simulation environment to the same device as the learning agent. "
+"Additionally, it performs clipping of observations and actions."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:8 of
+msgid ""
+"For algorithms like asymmetric actor-critic, RL-Games expects a "
+"dictionary for observations. This dictionary contains \"obs\" and "
+"\"states\" which typically correspond to the actor and critic "
+"observations respectively."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:12 of
+msgid ""
+"To use asymmetric actor-critic, the environment observations from "
+":class:`ManagerBasedRLEnv` or :class:`DirectRLEnv` must have the key or "
+"group name \"critic\". The observation group is used to set the "
+":attr:`num_states` (int) and :attr:`state_space` (:obj:`gym.spaces.Box`)."
+" These are used by the learning agent in RL-Games to allocate buffers in "
+"the trajectory memory. Since this is optional for some environments, the "
+"wrapper checks if these attributes exist. If they don't then the wrapper "
+"defaults to zero as number of privileged observations."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:21
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:11
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:35 of
+msgid ""
+"This class must be the last wrapper in the wrapper chain. This is because"
+" the wrapper does not follow the :class:`gym.Wrapper` interface. Any "
+"subsequent wrappers will need to be modified to work with this wrapper."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:28
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:16
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:39 isaaclab_rl.sb3.process_sb3_cfg:7
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:16 of
+msgid "Reference:"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:27 of
+msgid ""
+"https://github.com/Denys88/rl_games/blob/master/rl_games/common/ivecenv.py"
+" https://github.com/NVIDIA-Omniverse/IsaacGymEnvs"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1 of
+msgid "**Methods:**"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__>`\\"
+" \\(env\\, rl\\_device\\, clip\\_obs\\, clip\\_actions\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid "Initializes the wrapper instance."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`class_name "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.class_name>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.class_name:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.class_name:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1:<autosummary>:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.class_name:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid "Returns the class name of the wrapper."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_number_of_agents "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.get_number_of_agents>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.get_number_of_agents:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid "Returns number of actors in the environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_env_info "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.get_env_info>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.get_env_info:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid "Returns the Gym spaces for the environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1 of
+msgid "**Attributes:**"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`render_mode "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.render_mode>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.render_mode:1
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.render_mode:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid "Returns the :attr:`Env` :attr:`render_mode`."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`observation_space "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.observation_space>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.observation_space:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.state_space:1
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.observation_space:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid "Returns the :attr:`Env` :attr:`observation_space`."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`action_space "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.action_space>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.action_space:1
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.action_space:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid "Returns the :attr:`Env` :attr:`action_space`."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`unwrapped "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.unwrapped>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.unwrapped:1
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.unwrapped:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.unwrapped:1 of
+msgid "Returns the base environment of the wrapper."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`num_envs <isaaclab_rl.rl_games.RlGamesVecEnvWrapper.num_envs>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.num_envs:1 of
+msgid "Returns the number of sub-environment instances."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`device <isaaclab_rl.rl_games.RlGamesVecEnvWrapper.device>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.device:1 of
+msgid "Returns the base environment simulation device."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`state_space "
+"<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.state_space>`\\"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__ isaaclab_rl.sb3.process_sb3_cfg
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper of
+msgid "参数"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:3
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:5
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__:3
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:8 of
+msgid "The environment to wrap around."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:4 of
+msgid "The device on which agent computations are performed."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:5 of
+msgid "The clipping value for observations."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:6 of
+msgid "The clipping value for actions."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__ isaaclab_rl.skrl.SkrlVecEnvWrapper
+#: of
+msgid "抛出"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:8 of
+msgid ""
+"The environment is not inherited from :class:`ManagerBasedRLEnv` or "
+":class:`DirectRLEnv`."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:9 of
+msgid ""
+"If specified, the privileged observations (critic) are not of type "
+":obj:`gym.spaces.Box`."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.unwrapped:3
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.unwrapped:3
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.unwrapped:3 of
+msgid ""
+"This will be the bare :class:`gymnasium.Env` environment, underneath all "
+"layers of wrappers."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rl_games.RlGamesGpuEnv.__init__>`\\ "
+"\\(config\\_name\\, num\\_actors\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1 of
+msgid "Initialize the environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_number_of_agents "
+"<isaaclab_rl.rl_games.RlGamesGpuEnv.get_number_of_agents>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.get_number_of_agents:1 of
+msgid "Get number of agents in the environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_env_info "
+"<isaaclab_rl.rl_games.RlGamesGpuEnv.get_env_info>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.get_env_info:1 of
+msgid "Get the Gym spaces for the environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:3 of
+msgid "The name of the environment configuration."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:4 of
+msgid "The number of actors in the environment. This is not used in this wrapper."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.get_env_info
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.get_number_of_agents
+#: isaaclab_rl.sb3.process_sb3_cfg of
+msgid "返回"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.get_number_of_agents:3 of
+msgid "The number of agents in the environment."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesGpuEnv.get_env_info:3 of
+msgid "The Gym spaces for the environment."
+msgstr ""
+
+#: ../../source/api/lab_rl/isaaclab_rl.rst:14
+msgid "RSL-RL Wrapper"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl:1 of
+msgid ""
+"Wrappers and utilities to configure an :class:`ManagerBasedRLEnv` for "
+"RSL-RL library."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl:1 isaaclab_rl.sb3:1 isaaclab_rl.skrl:1 of
+msgid "**Functions:**"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl:1:<autosummary>:1 of
+msgid ""
+":py:obj:`export_policy_as_jit "
+"<isaaclab_rl.rsl_rl.export_policy_as_jit>`\\ \\(actor\\_critic\\, "
+"...\\[\\, ...\\]\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1
+#: isaaclab_rl.rsl_rl:1:<autosummary>:1 of
+msgid "Export policy into a Torch JIT file."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl:1:<autosummary>:1 of
+msgid ""
+":py:obj:`export_policy_as_onnx "
+"<isaaclab_rl.rsl_rl.export_policy_as_onnx>`\\ \\(actor\\_critic\\, "
+"path\\[\\, ...\\]\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx:1
+#: isaaclab_rl.rsl_rl:1:<autosummary>:1 of
+msgid "Export policy into a Torch ONNX file."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid ""
+":py:obj:`RslRlOnPolicyRunnerCfg "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1 of
+msgid "Configuration of the runner for on-policy algorithms."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid ""
+":py:obj:`RslRlPpoActorCriticCfg "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1 of
+msgid "Configuration for the PPO actor-critic networks."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid ":py:obj:`RslRlPpoAlgorithmCfg <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1 of
+msgid "Configuration for the PPO algorithm."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid ":py:obj:`RslRlVecEnvWrapper <isaaclab_rl.rsl_rl.RslRlVecEnvWrapper>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1 of
+msgid "Wraps around Isaac Lab environment for RSL-RL library"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:3
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx:3 of
+msgid "The actor-critic torch module."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:4
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx:4 of
+msgid "The empirical normalizer module. If None, Identity is used."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:5
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx:5 of
+msgid "The path to the saving directory."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:6 of
+msgid "The name of exported JIT file. Defaults to \"policy.pt\"."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx:6 of
+msgid "The name of exported ONNX file. Defaults to \"policy.onnx\"."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_onnx:7 of
+msgid "Whether to print the model summary. Defaults to False."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1 of
+msgid "基类：:py:class:`object`"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.__init__>`\\"
+" \\(\\[seed\\, device\\, num\\_steps\\_per\\_env\\, ...\\]\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`seed <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.seed>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The seed for the experiment."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`device <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`num_steps_per_env "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.num_steps_per_env>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.num_steps_per_env:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The number of steps per environment per update."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`max_iterations "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.max_iterations>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.max_iterations:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The maximum number of iterations."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`empirical_normalization "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.empirical_normalization>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.empirical_normalization:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "Whether to use empirical normalization."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`policy <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.policy>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.policy:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The policy configuration."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`algorithm "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.algorithm>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.algorithm:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The algorithm configuration."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`save_interval "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.save_interval>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.save_interval:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The number of iterations between saves."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`experiment_name "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.experiment_name>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.experiment_name:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The experiment name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`run_name <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The run name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`logger <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.logger>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The logger to use."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`neptune_project "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.neptune_project>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The neptune project name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`wandb_project "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.wandb_project>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The wandb project name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`resume <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.resume>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "Whether to resume."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`load_run <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The run directory to load."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`load_checkpoint "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The checkpoint file to load."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.seed:1 of
+msgid "The seed for the experiment. Default is 42."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device of
+msgid "type"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device:7 of
+msgid "The device for the rl-agent. Default is cuda"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name:1 of
+msgid "The run name. Default is empty string."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name:3 of
+msgid ""
+"The name of the run directory is typically the time-stamp at execution. "
+"If the run name is not empty, then it is appended to the run directory's "
+"name, i.e. the logging directory's name will become ``{time-"
+"stamp}_{run_name}``."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.logger:1 of
+msgid "The logger to use. Default is tensorboard."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.neptune_project:1
+#: of
+msgid "The neptune project name. Default is \"isaaclab\"."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.wandb_project:1 of
+msgid "The wandb project name. Default is \"isaaclab\"."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.resume:1 of
+msgid "Whether to resume. Default is False."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run:1 of
+msgid "The run directory to load. Default is \".*\" (all)."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run:3 of
+msgid ""
+"If regex expression, the latest (alphabetical order) matching run will be"
+" loaded."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint:1
+#: of
+msgid "The checkpoint file to load. Default is ``\"model_.*.pt\"`` (all)."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint:3
+#: of
+msgid ""
+"If regex expression, the latest (alphabetical order) matching file will "
+"be loaded."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`class_name "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.class_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid "The policy class name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`init_noise_std "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.init_noise_std>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.init_noise_std:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid "The initial noise standard deviation for the policy."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`actor_hidden_dims "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.actor_hidden_dims>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.actor_hidden_dims:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid "The hidden dimensions of the actor network."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`critic_hidden_dims "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.critic_hidden_dims>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.critic_hidden_dims:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid "The hidden dimensions of the critic network."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`activation "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.activation>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.activation:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid "The activation function for the actor and critic networks."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.class_name:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.__init__>`\\"
+" \\(\\[class\\_name\\, init\\_noise\\_std\\, ...\\]\\)"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.class_name:1 of
+msgid "The policy class name. Default is ActorCritic."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`class_name "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.class_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The algorithm class name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`value_loss_coef "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.value_loss_coef>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.value_loss_coef:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The coefficient for the value loss."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`use_clipped_value_loss "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.use_clipped_value_loss>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.use_clipped_value_loss:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "Whether to use clipped value loss."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`clip_param "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.clip_param>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.clip_param:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The clipping parameter for the policy."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`entropy_coef "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.entropy_coef>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.entropy_coef:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The coefficient for the entropy loss."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`num_learning_epochs "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.num_learning_epochs>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.num_learning_epochs:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The number of learning epochs per update."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`num_mini_batches "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.num_mini_batches>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.num_mini_batches:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The number of mini-batches per update."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`learning_rate "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.learning_rate>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.learning_rate:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The learning rate for the policy."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ":py:obj:`schedule <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.schedule>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.schedule:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The learning rate schedule."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ":py:obj:`gamma <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.gamma>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.gamma:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The discount factor."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ":py:obj:`lam <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.lam>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.lam:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The lambda parameter for Generalized Advantage Estimation (GAE)."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`desired_kl "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.desired_kl>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.desired_kl:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The desired KL divergence."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`max_grad_norm "
+"<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.max_grad_norm>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.max_grad_norm:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The maximum gradient norm."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.class_name:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.__init__>`\\ "
+"\\(\\[class\\_name\\, value\\_loss\\_coef\\, ...\\]\\)"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.class_name:1 of
+msgid "The algorithm class name. Default is PPO."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1 of
+msgid "基类：:py:class:`~rsl_rl.env.VecEnv`"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:3 of
+msgid ""
+"To use asymmetric actor-critic, the environment instance must have the "
+"attributes :attr:`num_privileged_obs` (int). This is used by the learning"
+" agent to allocate buffers in the trajectory memory. Additionally, the "
+"returned observations should have the key \"critic\" which corresponds to"
+" the privileged observations. Since this is optional for some "
+"environments, the wrapper checks if these attributes exist. If they don't"
+" then the wrapper defaults to zero as number of privileged observations."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:16 of
+msgid "https://github.com/leggedrobotics/rsl_rl/blob/master/rsl_rl/env/vec_env.py"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.__init__>`\\ "
+"\\(env\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1:<autosummary>:1 of
+msgid "Initializes the wrapper."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`class_name <isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.class_name>`\\"
+" \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_observations "
+"<isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.get_observations>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.get_observations:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1:<autosummary>:1 of
+msgid "Returns the current observations of the environment."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`cfg <isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.cfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.cfg:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid "Returns the configuration class instance of the environment."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`render_mode "
+"<isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.render_mode>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`observation_space "
+"<isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.observation_space>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`action_space "
+"<isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.action_space>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`unwrapped <isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.unwrapped>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`episode_length_buf "
+"<isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.episode_length_buf>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.episode_length_buf:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid "The episode length buffer."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:3 of
+msgid ""
+"The wrapper calls :meth:`reset` at the start since the RSL-RL runner does"
+" not call reset."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:7
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__:5 of
+msgid ""
+"When the environment is not an instance of :class:`ManagerBasedRLEnv` or "
+":class:`DirectRLEnv`."
+msgstr ""
+
+#: ../../source/api/lab_rl/isaaclab_rl.rst:22
+msgid "SKRL Wrapper"
+msgstr ""
+
+#: isaaclab_rl.skrl:1 of
+msgid ""
+"Wrapper to configure an Isaac Lab environment instance to skrl "
+"environment."
+msgstr ""
+
+#: isaaclab_rl.skrl:3 of
+msgid "The following example shows how to wrap an environment for skrl:"
+msgstr ""
+
+#: isaaclab_rl.skrl:11 of
+msgid "Or, equivalently, by directly calling the skrl library API as follows:"
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`SkrlVecEnvWrapper <isaaclab_rl.skrl.SkrlVecEnvWrapper>`\\ "
+"\\(env\\[\\, ml\\_framework\\, wrapper\\]\\)"
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:1
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:1:<autosummary>:1 of
+msgid "Wraps around Isaac Lab environment for skrl."
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:3 of
+msgid ""
+"This function wraps around the Isaac Lab environment. Since the wrapping "
+"functionality is defined within the skrl library itself, this "
+"implementation is maintained for compatibility with the structure of the "
+"extension that contains it. Internally it calls the :func:`wrap_env` from"
+" the skrl library API."
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:9 of
+msgid "The ML framework to use for the wrapper. Defaults to \"torch\"."
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:10 of
+msgid ""
+"The wrapper to use. Defaults to \"isaaclab\": leave it to skrl to "
+"determine if the environment will be wrapped as single-agent or multi-"
+"agent."
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:13 of
+msgid ""
+"When the environment is not an instance of any Isaac Lab environment "
+"interface."
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:14 of
+msgid "If the specified ML framework is not valid."
+msgstr ""
+
+#: isaaclab_rl.skrl.SkrlVecEnvWrapper:17 of
+msgid "https://skrl.readthedocs.io/en/latest/api/envs/wrapping.html"
+msgstr ""
+
+#: ../../source/api/lab_rl/isaaclab_rl.rst:29
+msgid "Stable-Baselines3 Wrapper"
+msgstr ""
+
+#: isaaclab_rl.sb3:1 of
+msgid ""
+"Wrapper to configure a :class:`ManagerBasedRLEnv` or :class:`DirectRLEnv`"
+" instance to Stable-Baselines3 vectorized environment."
+msgstr ""
+
+#: isaaclab_rl.sb3:3 of
+msgid ""
+"The following example shows how to wrap an environment for Stable-"
+"Baselines3:"
+msgstr ""
+
+#: isaaclab_rl.sb3:1:<autosummary>:1 of
+msgid ":py:obj:`process_sb3_cfg <isaaclab_rl.sb3.process_sb3_cfg>`\\ \\(cfg\\)"
+msgstr ""
+
+#: isaaclab_rl.sb3.process_sb3_cfg:1 isaaclab_rl.sb3:1:<autosummary>:1 of
+msgid "Convert simple YAML types to Stable-Baselines classes/components."
+msgstr ""
+
+#: isaaclab_rl.sb3.process_sb3_cfg:1:<autosummary>:1 of
+msgid ":py:obj:`Sb3VecEnvWrapper <isaaclab_rl.sb3.Sb3VecEnvWrapper>`\\"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1
+#: isaaclab_rl.sb3.process_sb3_cfg:1:<autosummary>:1 of
+msgid "Wraps around Isaac Lab environment for Stable Baselines3."
+msgstr ""
+
+#: isaaclab_rl.sb3.process_sb3_cfg:3 of
+msgid "A configuration dictionary."
+msgstr ""
+
+#: isaaclab_rl.sb3.process_sb3_cfg:5 of
+msgid "A dictionary containing the converted configuration."
+msgstr ""
+
+#: isaaclab_rl.sb3.process_sb3_cfg:8 of
+msgid ""
+"https://github.com/DLR-RM/rl-"
+"baselines3-zoo/blob/0e5eb145faefa33e7d79c7f8c179788574b20da5/utils/exp_manager.py#L358"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1 of
+msgid "基类：:py:class:`~stable_baselines3.common.vec_env.base_vec_env.VecEnv`"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:3 of
+msgid ""
+"Isaac Sim internally implements a vectorized environment. However, since "
+"it is still considered a single environment instance, Stable Baselines "
+"tries to wrap around it using the :class:`DummyVecEnv`. This is only done"
+" if the environment is not inheriting from their :class:`VecEnv`. Thus, "
+"this class thinly wraps over the environment from "
+":class:`ManagerBasedRLEnv` or :class:`DirectRLEnv`."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:11 of
+msgid ""
+"While Stable-Baselines3 supports Gym 0.26+ API, their vectorized "
+"environment still uses the old API (i.e. it is closer to Gym 0.21). Thus,"
+" we implement the old API for the vectorized environment."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:15 of
+msgid ""
+"We also add monitoring functionality that computes the un-discounted "
+"episode return and length. This information is added to the info dicts "
+"under key `episode`."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:18 of
+msgid ""
+"In contrast to the Isaac Lab environment, stable-baselines expect the "
+"following:"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:20 of
+msgid "numpy datatype for MDP signals"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:21 of
+msgid "a list of info dicts for each sub-environment (instead of a dict)"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:22 of
+msgid ""
+"when environment has terminated, the observations from the environment "
+"should correspond to the one after reset. The \"real\" final observation "
+"is passed using the info dicts under the key ``terminal_observation``."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:28 of
+msgid ""
+"By the nature of physics stepping in Isaac Sim, it is not possible to "
+"forward the simulation buffers without performing a physics step. Thus, "
+"reset is performed inside the :meth:`step()` function after the actual "
+"physics step is taken. Thus, the returned observations for terminated "
+"environments is the one after the reset."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:41 of
+msgid "https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:42 of
+msgid "https://stable-baselines3.readthedocs.io/en/master/common/monitor.html"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid ":py:obj:`__init__ <isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__>`\\ \\(env\\)"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid "Initialize the wrapper."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`class_name <isaaclab_rl.sb3.Sb3VecEnvWrapper.class_name>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_episode_rewards "
+"<isaaclab_rl.sb3.Sb3VecEnvWrapper.get_episode_rewards>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.get_episode_rewards:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid "Returns the rewards of all the episodes."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`get_episode_lengths "
+"<isaaclab_rl.sb3.Sb3VecEnvWrapper.get_episode_lengths>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.get_episode_lengths:1
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper:1:<autosummary>:1 of
+msgid "Returns the number of time-steps of all the episodes."
+msgstr ""
+
+#: isaaclab_rl.sb3.Sb3VecEnvWrapper.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`unwrapped <isaaclab_rl.sb3.Sb3VecEnvWrapper.unwrapped>`\\"
+msgstr ""

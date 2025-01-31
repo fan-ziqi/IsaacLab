@@ -1,0 +1,252 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-31 19:21+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:2
+msgid "Debugging and Training Guide"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:4
+msgid ""
+"In this tutorial, we'll guide developers working with Isaac Lab to "
+"understand the impact of various parameters on training time, GPU "
+"utilization, and memory usage. This is especially helpful for addressing "
+"Out of Memory (OOM) errors that commonly occur during reinforcement "
+"learning (RL) training. We will touch on common errors seen during RL "
+"training in Isaac Lab and provide some guidance on troubleshooting steps."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:12
+msgid "Training with Parallel Environments"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:14
+msgid ""
+"The key RL paradigm of Isaac Lab is to train with many environments in "
+"parallel. Here, we define an environment as an instance of a robot or "
+"multiple robots interacting with other robots or objects in simulation. "
+"By creating multiple environments in parallel, we generate multiple "
+"copies of the environment such that the robots in each environment can "
+"explore the world independently of other environments. The number of "
+"environments thus becomes an important hyperparameter for training. In "
+"general, the more environments we have running in parallel, the more data"
+" we can collect during rollout, which in turn, provides more data for RL "
+"training and allows for faster training since the RL agent can learn from"
+" parallel experiences."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:22
+msgid ""
+"However, the number of environments can also be bounded by other factors."
+" Memory can often be a hard constraint on the number of environments we "
+"can run in parallel. When more environments are added to the world, the "
+"simulation also requires more memory to represent and simulate each "
+"object in the scene. The number of environments we can simulate in "
+"parallel thus often depend on the amount of memory resources available on"
+" the machine. In addition, different forms of simulation can also consume"
+" various amounts of memory. For example, objects with high fidelity "
+"visual and collision meshes will consume more memory than simple "
+"primitive shapes. Deformable simulation will also likely require more "
+"memory to simulate than rigid bodies."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:30
+msgid ""
+"Training with rendering often consumes much higher memory than running "
+"with only physics simulation. This is especially true when rendering at "
+"relatively large resolutions. Additionally, when training RL policies "
+"with image observations, we often also require more memory to hold the "
+"rollout trajectories of image buffers and larger networks for the "
+"policies. Both of these components will also impact the amount of memory "
+"available for the simulation."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:32
+msgid ""
+"To reduce memory consumption, one method is to simplify collision meshes "
+"of the assets where possible to keep only bare minimum collision shapes "
+"required for correct simulation of contacts. Additionally, we recommend "
+"only running with the viewport when debugging with a small number of "
+"environments. When training with larger number of environments in "
+"parallel, it is recommended to run in headless mode to avoid any "
+"rendering overhead. If the RL pipeline requires rendering in the loop, "
+"make sure to reduce the number of environments, taking into consideration"
+" for the dimensions of the image buffers and the size of the policy "
+"networks. When hitting out of memory errors, the simplest solution may be"
+" to reduce the number of environments."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:39
+msgid "Hyperparameter Tuning"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:41
+msgid ""
+"Although in many cases, simulating more environments in parallel can "
+"yield faster training and better results, there are also cases where "
+"diminishing returns are observed when the number of environments reaches "
+"certain thresholds. This threshold will vary depending on the complexity "
+"of the environment, task, policy setup, and RL algorithm. When more "
+"environments are simulated in parallel, each simulation step requires "
+"more time to simulate, which will impact the overall training time. When "
+"the number of environments is small, this increase in per-step simulation"
+" time is often insignificant compared to the increase in training "
+"performance from more experiences collected. However, when the number of "
+"environments reaches a point, the benefits from having even more "
+"experiences for the RL algorithm may start to saturate, and the amount of"
+" increased simulation time can outweigh the benefits in training "
+"performance."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:47
+msgid ""
+"In contrast to diminishing returns on number of environments that are too"
+" large, training with low number of environments can also be challenging."
+" This is often due to the RL policies not getting enough experiences to "
+"learn from. To address this issue, it may be helpful to increase the "
+"batch size or the horizon length to accommodate for the smaller amount of"
+" data collected from lower number of parallel environments. When the "
+"number of environments is constrained by available resources, running "
+"with parallel GPUs or training across multiple nodes can also help "
+"alleviate issues due to limited rollouts."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:54
+msgid "Debugging NaNs during Training"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:56
+msgid ""
+"One common error seen during RL training is the appearance of NaNs in the"
+" observation buffers, which often get propagated into the policy networks"
+" and cause crashes in the downstream training pipeline. In most cases, "
+"the appearance of NaNs occur when the simulation becomes unstable. This "
+"could be due to drastic actions being applied to the robots that exceed "
+"the limits of the simulation, or resets of the assets into invalid "
+"states. Some helpful tips to reduce the occurrence of NaNs include proper"
+" tuning of the physics parameters for the assets to ensure that joint, "
+"velocity, and force limits are within reasonable ranges and the gains are"
+" correctly tuned for the robot. It is also a good idea to check that "
+"actions applied to the robots are reasonable and will not impose large "
+"forces or impulses on the objects. Reducing the timestep of the physics "
+"simulation can also help improve accuracy and stability of the "
+"simulation, in addition to increasing the solver iterations."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:65
+msgid "Understanding Training Outputs"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:67
+msgid ""
+"Each RL library produces its own output data during training. Some "
+"libraries are more verbose and generate logs that contain more detailed "
+"information on the training process, while others are more compact. In "
+"this section, we will explain the common outputs from the RL libraries."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:73
+msgid "RL-Games"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:75
+msgid ""
+"For each iteration, RL-Games prints statistics of the data collection, "
+"inference, and training performance."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:81
+msgid ""
+"``fps step`` refers to the environment step FPS, which includes the "
+"applying actions, computing observations, rewards, dones, and resets, as "
+"well as stepping simulation."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:83
+msgid ""
+"``step and policy inference`` measure everything in ``fps step`` along "
+"with the time it takes for the policy inference to compute the actions."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:85
+msgid ""
+"``fps total`` measure the above and the time it takes for the training "
+"iteration."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:87
+msgid ""
+"At specified intervals, it will also log the current best reward and the "
+"path of the intermmediate checkpoints saved to file."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:96
+msgid "RSL RL"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:98
+msgid "For each iteration, RSL RL provides the following output:"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:117
+msgid ""
+"This output encapsulates the total FPS for data collection, inference, "
+"and learning, along with the per-step breakdown for collection and "
+"learning time per step. In addition, statistics for the training losses "
+"are provided, along with the current average reward and episode length."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:120
+msgid ""
+"In the bottom section, it logs the total number of steps completed so "
+"far, the total ieration time for the current ieration, the total overall "
+"training time, and the estimated training time to complete the full "
+"number of iterations."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:124
+msgid "SKRL"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:126
+msgid ""
+"SKRL provides a very simplistic output showing the training progress as a"
+" percentage of the total number of timesteps (divided by the number of "
+"environments). It also includes the total elapsed time so far and the "
+"estimated time to complete training."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:134
+msgid "Stable-Baselines3"
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:136
+msgid ""
+"Stable-Baselines3 provides a detailed output, outlining the rollout "
+"statistics, timing, and policy data."
+msgstr ""
+
+#: ../../source/overview/reinforcement-learning/training_guide.rst:163
+msgid ""
+"Under the ``rollout/`` section, average episode length and reward are "
+"logged for the iteration. Under ``time/``, data for the total FPS, number"
+" of iterations, total time elapsed, and the total number of timesteps are"
+" provided. Finally, under ``train/``, statistics of the training "
+"parameters are logged, such as KL, losses, learning rates, and more."
+msgstr ""

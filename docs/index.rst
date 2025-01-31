@@ -8,11 +8,6 @@ Welcome to Isaac Lab!
 
 .. attention::
 
-    过年了，翻译计划暂停，年后继续，进群加好友的通过时间也会变长。祝大家新年快乐！
-
-
-.. attention::
-
     本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由 `范子琦 <https://github.com/fan-ziqi>`__ 提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。详情请查看 `关于翻译 <source/setup/translation.html>`_ 章节。
 
     官方文档引入了版本系统，可以查看历史版本的文档。译者精力有限，故不提供历史版本翻译，本站只同步更新main分支的文档。
