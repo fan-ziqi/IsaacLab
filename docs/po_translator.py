@@ -125,7 +125,7 @@ class TranslationService:
             # Exclude 'api' folder
             dirs[:] = [d for d in dirs if d != 'api']
             # Collect .po files excluding 'changelog.po'
-            po_files.extend([os.path.join(root, file) for file in files if file.endswith(".po") and file not in ['changelog.po', 'translation.po', 'wechat.po', 'install.po']])
+            po_files.extend([os.path.join(root, file) for file in files if file.endswith(".po") and file not in ['changelog.po', 'translation.po', 'wechat.po', 'install.po', 'release_notes.po']])
 
         total_files = len(po_files)
 
@@ -285,7 +285,7 @@ def process_po_file(file_path):
     content = re.sub(r'([_`.,!?;:()])([: ，。（）])', r'\1 \2', content)
     # 删除<前面的空格
     content = re.sub(r'` (\S+) <', r'`\1 <', content)
-    # 匹配`_并排除`__，删除前面的空格
+    # 匹配`_并排除`__ ，删除前面的空格
     content = re.sub(r' `_(?!_)', '`_', content)
 
     with open(file_path, 'w', encoding='utf-8') as file:
