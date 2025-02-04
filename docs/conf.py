@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.abspath("../source/isaaclab_mimic/isaaclab_mimic"))
 # -- Project information -----------------------------------------------------
 
 project = "Isaac Lab"
-copyright = "2022-2024, The Isaac Lab Project Developers."
+copyright = "2022-2025, The Isaac Lab Project Developers."
 author = "The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)"
 
 # Read version from the package
