@@ -12,6 +12,8 @@ Welcome to Isaac Lab!
 
     官方文档引入了版本系统，可以查看历史版本的文档。译者精力有限，故不提供历史版本翻译，本站只同步更新main分支的文档。
 
+    由于1.4.0与2.0.0API差异较大，故本站保留1.4.0版本的文档，可以通过 `https://docs.robotsfan.com/isaaclab_v1 <https://docs.robotsfan.com/isaaclab_v1>`__ 访问。
+
 
 **Isaac Lab** is a unified and modular framework for robot learning that aims to simplify common workflows
 in robotics research (such as reinforcement learning, learning from demonstrations, and motion planning). It is built on
