@@ -71,7 +71,7 @@ IsaacSim中文文档网站（API自动翻译）: `https://docs.robotsfan.com/isa
 
 .. code-block:: bash
 
-   pip install --upgrade isaacsim-rl isaacsim-replicator isaacsim-extscache-physics isaacsim-extscache-kit-sdk isaacsim-extscache-kit isaacsim-app --extra-index-url https://pypi.nvidia.com
+   pip install --upgrade 'isaacsim[all,extscache]==4.5.0' --extra-index-url https://pypi.nvidia.com
    ./isaaclab.sh --install
 
 
@@ -92,7 +92,7 @@ Ubuntu20.04使用pip安装Isaac Sim
 最后从 ``/etc/apt/sources.list`` 中删除 ``deb http://th.archive.ubuntu.com/ubuntu jammy main`` ，升级完成，可继续使用Pip进行安装。
 
 
-升级glibc后, 若编译时提示缺少libpthread.so, 报错类似如下
+升级glibc后, 若编译其他项目（如catkin编译ROS功能包）时提示缺少libpthread.so, 报错类似如下
 
 .. code-block:: bash
 
@@ -104,21 +104,3 @@ Ubuntu20.04使用pip安装Isaac Sim
 .. code-block:: bash
 
    sudo ln -s /lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
-
-
-通过pip安装的isaacsim打开后报错
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-报错类似如下:
-
-.. code-block::
-
-   [omni.isaac.sim.python-x.x.x] dependency: 'omni.isaac.xxx' = { version='^' } can't be satisfied.
-
-这是因为Isaac Lab只安装RL所需的“Isaac Sim - Python packages”。安装完整版本的“Isaac Sim - Python packages”即可解决，这样您将安装所有扩展（与Isaac Lab 100%兼容）。
-
-.. code-block:: bash
-
-   pip install isaacsim --extra-index-url https://pypi.nvidia.com
-
-需要升级的话加上 ``--upgrade`` 即可。
