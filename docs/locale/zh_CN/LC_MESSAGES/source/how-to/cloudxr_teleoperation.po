@@ -1,0 +1,927 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-26 11:51+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:4
+msgid "Setting up CloudXR Teleoperation"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:8
+msgid ""
+"`NVIDIA CloudXR`_ enables seamless, high-fidelity immersive streaming to "
+"extended reality (XR) devices over any network."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:11
+msgid ""
+"Isaac Lab developers can use CloudXR with Isaac Lab to build "
+"teleoperation workflows that require immersive XR rendering for increased"
+" spatial acuity and/or hand tracking for teleoperation of dextrous "
+"robots."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:15
+msgid ""
+"In these workflows, Isaac Lab renders and submits stereo views of the "
+"robot simulation to CloudXR, which then encodes and streams the rendered "
+"views to a compatible XR device in realtime using a low-latency, GPU-"
+"accelerated pipeline. Control inputs such as hand tracking data are sent "
+"from the XR device back to Isaac Lab through CloudXR, where they can be "
+"used to control the robot."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:20
+msgid ""
+"This guide explains how to use CloudXR and `Apple Vision Pro`_ for "
+"immersive streaming and teleoperation in Isaac Lab."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:25
+msgid "Support for additional devices is planned for future releases."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:29
+msgid "Overview"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:31
+msgid "Using CloudXR with Isaac Lab involves the following components:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:33
+msgid ""
+"**Isaac Lab** is used to simulate the robot environment and apply control"
+" data received from the teleoperator."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:36
+msgid ""
+"The **NVIDIA CloudXR Runtime** runs on the Isaac Lab workstation in a "
+"Docker container, and streams the virtual simulation from Isaac Lab to "
+"compatible XR devices."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:39
+msgid ""
+"The **Isaac XR Teleop Sample Client** is a sample app for Apple Vision "
+"Pro which enables immersive streaming and teleoperation of an Isaac Lab "
+"simulation using CloudXR."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:42
+msgid "This guide will walk you through how to:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:44
+msgid ":ref:`run-isaac-lab-with-the-cloudxr-runtime`"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:46
+msgid ""
+":ref:`use-apple-vision-pro`, including how to :ref:`build-apple-vision-"
+"pro` and :ref:`teleoperate-apple-vision-pro`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:49
+msgid ""
+":ref:`develop-xr-isaac-lab`, including how to :ref:`run-isaac-lab-with-"
+"xr`, :ref:`configure-scene-placement`, and :ref:`optimize-xr-"
+"performance`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:52
+msgid ""
+":ref:`control-robot-with-xr`, including the :ref:`openxr-device-"
+"architecture`, :ref:`control-robot-with-xr-retargeters`, and how to "
+"implement :ref:`control-robot-with-xr-callbacks`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:55
+msgid "As well as :ref:`xr-known-issues`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:59
+msgid "System Requirements"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:61
+msgid ""
+"Prior to using CloudXR with Isaac Lab, please review the following system"
+" requirements:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:63
+msgid "Isaac Lab workstation (Linux)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:65
+msgid "Ubuntu 22.04"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:66
+msgid ""
+"`Docker`_ 26.0.0+, `Docker Compose`_ 2.25.0+, and the `NVIDIA Container "
+"Toolkit`_. Refer to the Isaac Lab :ref:`deployment-docker` for how to "
+"install."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:68
+msgid "NVIDIA Driver version 550 or greater"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:69
+msgid ""
+"Required for best performance: 16 cores Intel Core i9, X-series or higher"
+" AMD Ryzen 9, Threadripper or higher"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:71
+msgid "Required for best performance: 64GB RAM"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:72
+msgid "Required for best performance: 2x RTX 6000 Ada GPUs (or equivalent)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:74
+msgid "Apple Vision Pro"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:76
+msgid "visionOS 2.0+"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:77
+msgid ""
+"Apple M3 Pro chip with an 11-core CPU with at least 5 performance cores "
+"and 6 efficiency cores"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:78
+msgid "16GB unified memory"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:79
+msgid "256 GB SSD"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:81
+msgid ""
+"Apple Silicon based Mac (for building the Isaac XR Teleop Sample Client "
+"App for Apple Vision Pro with Xcode)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:84
+msgid "macOS Sonoma 14.5 or later"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:86
+msgid "Wifi 6 capable router"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:88
+msgid ""
+"A strong wireless connection is essential for a high-quality streaming "
+"experience"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:89
+msgid ""
+"We recommend using a dedicated router, as concurrent usage will degrade "
+"quality"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:90
+msgid ""
+"The Apple Vision Pro and Isaac Lab workstation must be IP-reachable from "
+"one another (note: many institutional wireless networks will prevent "
+"devices from reaching each other, resulting in the Apple Vision Pro being"
+" unable to find the Isaac Lab workstation on the network)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:98
+msgid "Run Isaac Lab with the CloudXR Runtime"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:100
+msgid ""
+"The CloudXR Runtime runs in a Docker container on your Isaac Lab "
+"workstation, and is responsible for streaming the Isaac Lab simulation to"
+" a compatible XR device."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:103
+msgid ""
+"Ensure that `Docker`_, `Docker Compose`_, and the `NVIDIA Container "
+"Toolkit`_ are installed on your Isaac Lab workstation as described in the"
+" Isaac Lab :ref:`deployment-docker`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:106
+msgid ""
+"Also ensure that your firewall allows connections to the ports used by "
+"CloudXR by running:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:113
+msgid "There are two options to run the CloudXR Runtime Docker container:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid ""
+"Option 1 (Recommended): Use Docker Compose to run the Isaac Lab and "
+"CloudXR Runtime            containers together"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:119
+#: ../../source/how-to/cloudxr_teleoperation.rst:173
+#: ../../source/how-to/cloudxr_teleoperation.rst:280
+msgid "On your Isaac Lab workstation:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:121
+msgid ""
+"From the root of the Isaac Lab repository, start the Isaac Lab and "
+"CloudXR Runtime containers using the Isaac Lab ``container.py`` script"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:130
+msgid ""
+"If prompted, elect to activate X11 forwarding, which is necessary to see "
+"the Isaac Lab UI."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:134
+msgid ""
+"The ``container.py`` script is a thin wrapper around Docker Compose. The "
+"additional ``--files`` and ``--env-file`` arguments augment the base "
+"Docker Compose configuration to additionally run the CloudXR Runtime"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:138
+msgid ""
+"For more details on ``container.py`` and running Isaac Lab with Docker "
+"Compose, see the :ref:`deployment-docker`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:141
+msgid "Enter the Isaac Lab base container with:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:147
+msgid ""
+"From within the Isaac Lab base container, you can run Isaac Lab scripts "
+"that use XR."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:149
+#: ../../source/how-to/cloudxr_teleoperation.rst:210
+msgid "Run an example teleop task with:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:158
+msgid ""
+"You'll want to leave the container running for the next steps. But once "
+"you are finished, you can stop the containers with:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid ""
+"Option 2: Run Isaac Lab as a local process and CloudXR Runtime container "
+"with Docker"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:169
+msgid ""
+"Isaac Lab can be run as a local process that connects to the CloudXR "
+"Runtime Docker container. However, this method requires manually "
+"specifying a shared directory for communication between the Isaac Lab "
+"instance and the CloudXR Runtime."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:175
+msgid ""
+"From the root of the Isaac Lab repository, create a local folder for "
+"temporary cache files:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:181
+msgid ""
+"Start the CloudXR Runtime, mounting the directory created above to the "
+"``/openxr`` directory in the container:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:200
+msgid ""
+"In a new terminal where you intend to run Isaac Lab, export the following"
+" environment variables, which reference the directory created above:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:208
+msgid "You can now run Isaac Lab scripts that use XR."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:219
+msgid "With Isaac Lab and the CloudXR Runtime running:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:221
+msgid "In the Isaac Lab UI: locate the Panel named **AR**."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid "Isaac Lab UI: AR Panel"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:228
+msgid "Click **Start AR**."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:230
+msgid ""
+"The Viewport should show two eyes being rendered, and you should see the "
+"status \"AR profile is active\"."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:-1
+msgid "Isaac Lab viewport rendering two eyes"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:238
+msgid ""
+"Isaac Lab is now ready to receive connections from a CloudXR client. The "
+"next sections will walk you through building and connecting a CloudXR "
+"client."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:241
+#: ../../source/how-to/cloudxr_teleoperation.rst:366
+msgid "Learn More about Teleoperation and Imitation Learning in Isaac Lab"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:243
+msgid ""
+"To learn more about the Isaac Lab teleoperation scripts, and how to build"
+" new teleoperation and imitation learning workflows in Isaac Lab, see "
+":ref:`teleoperation-imitation-learning`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:250
+msgid "Use Apple Vision Pro for Teleoperation"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:252
+msgid ""
+"This section will walk you through building and installing the Isaac XR "
+"Teleop Sample Client for Apple Vision Pro, connecting to Isaac Lab, and "
+"teleoperating a simulated robot."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:259
+msgid ""
+"Build and Install the Isaac XR Teleop Sample Client App for Apple Vision "
+"Pro"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:261
+msgid "On your Mac:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:263
+msgid "Clone the `Isaac XR Teleop Sample Client`_ GitHub repository:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:269
+msgid ""
+"Follow the README in the repository to build and install the app on your "
+"Apple Vision Pro."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:275
+msgid "Teleoperate an Isaac Lab Robot with Apple Vision Pro"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:277
+msgid ""
+"With the Isaac XR Teleop Sample Client installed on your Apple Vision "
+"Pro, you are ready to connect to Isaac Lab."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:282
+msgid ""
+"Ensure that Isaac Lab and CloudXR are both running as described in :ref"
+":`run-isaac-lab-with-the-cloudxr-runtime`, including starting Isaac Lab "
+"with a script that supports teleoperation. For example:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:294
+msgid ""
+"Recall that the script above should either be run within the Isaac Lab "
+"Docker container (Option 1, recommended), or with environment variables "
+"configured to a directory shared by a running CloudXR Runtime Docker "
+"container (Option 2)."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:298
+msgid "Locate the Panel named **AR**."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:300
+msgid ""
+"Click **Start AR** and ensure that the Viewport shows two eyes being "
+"rendered."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:302
+msgid "Back on your Apple Vision Pro:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:304
+msgid "Open the Isaac XR Teleop Sample Client. You should see a UI window:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid "Isaacl Lab UI: AR Panel"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:311
+msgid "Enter the IP address of your Isaac Lab workstation."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:314
+msgid ""
+"The Apple Vision Pro and Isaac Lab machine must be IP-reachable from one "
+"another."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:316
+msgid ""
+"We recommend using a dedicated Wifi 6 router for this process, as many "
+"institutional wireless networks will prevent devices from reaching each "
+"other, resulting in the Apple Vision Pro being unable to find the Isaac "
+"Lab workstation on the network."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:320
+msgid "Click **Connect**."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:322
+msgid ""
+"The first time you attempt to connect, you may need to allow the "
+"application access to permissions such as hand tracking and local network"
+" usage, and then connect again."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:325
+msgid ""
+"After a brief period, you should see the Isaac Lab simulation rendered in"
+" the Apple Vision Pro, as well as a set of controls for teleoperation."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:333
+msgid ""
+"Click **Play** to begin teleoperating the simulated robot. The robot "
+"motion should now be directed by your hand movements."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:336
+msgid ""
+"You may repeatedly **Play**, **Stop**, and **Reset** the teleoperation "
+"session using the UI controls."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:340
+msgid ""
+"For teleoperation tasks that require bimanual manipulation, visionOS "
+"accessibility features can be used to control teleoperation without the "
+"use of hand gestures. For example, in order to enable voice control of "
+"the UI:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:344
+msgid ""
+"In **Settings** > **Accessibility** > **Voice Control**, Turn on **Voice "
+"Control**"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:346
+msgid ""
+"In **Settings** > **Accessibility** > **Voice Control** > **Commands** > "
+"**Basic Navigation** > Turn on **<item name>**"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:349
+msgid ""
+"Now you can say \"Play\", \"Stop\", and \"Reset\" to control "
+"teleoperation while the app is connected."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:352
+msgid "Teleoperate the simulated robot by moving your hands."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid "Isaac Lab teleoperation of a bimanual dexterous robot with CloudXR"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:360
+msgid ""
+"The dots represent the tracked position of the hand joints. Latency or "
+"offset between the motion of the dots and the robot may be caused by the "
+"limits of the robot joints and/or robot controller."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:364
+msgid ""
+"When you are finished with the example, click **Disconnect** to "
+"disconnect from Isaac Lab."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:368
+msgid ""
+"See :ref:`teleoperation-imitation-learning` to learn how to record "
+"teleoperated demonstrations and build teleoperation and imitation "
+"learning workflows with Isaac Lab."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:375
+msgid "Develop for XR in Isaac Lab"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:377
+msgid ""
+"This section will walk you through how to develop XR environments in "
+"Isaac Lab for building teleoperation workflows."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:384
+msgid "Run Isaac Lab with XR Extensions Enabled"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:386
+msgid ""
+"In order to enable extensions necessary for XR, and to see the AR Panel "
+"in the UI, Isaac Lab must be loaded with an XR experience file. This can "
+"be done automatically by passing the ``--xr`` flag to any Isaac Lab "
+"script that uses :class:`app.AppLauncher`."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:390
+msgid ""
+"For example: you can enable and use XR in any of the :ref:`tutorials` by "
+"invoking them with the additional ``--xr`` flag."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:397
+msgid "Configure XR Scene Placement"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:399
+msgid ""
+"Placement of the robot simulation within the XR device's local coordinate"
+" frame can be achieved using an XR anchor, and is configurable using the "
+"``xr`` field (type :class:`openxr.XrCfg`) in the environment "
+"configuration."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:403
+msgid ""
+"Specifically: the pose specified by the ``anchor_pos`` and ``anchor_rot``"
+" fields of the :class:`openxr.XrCfg` will appear at the origin of the XR "
+"device's local coordinate frame, which should be on the floor."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:409
+msgid ""
+"On Apple Vision Pro, the local coordinate frame can be reset to a point "
+"on the floor beneath the user by holding the digital crown."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:412
+msgid ""
+"For example: if a robot should appear at the position of the user, the "
+"``anchor_pos`` and ``anchor_rot`` properties should be set to a pose on "
+"the floor directly beneath the robot."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:417
+msgid ""
+"The XR anchor configuration is applied in :class:`openxr.OpenXRDevice` by"
+" creating a prim at the position of the anchor, and modifying the "
+"``xr/profile/ar/anchorMode`` and ``/xrstage/profile/ar/customAnchor`` "
+"settings."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:421
+msgid ""
+"If you are running a script that does not use "
+":class:`openxr.OpenXRDevice`, you will need to do this explicitly."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:428
+msgid "Optimize XR Performance"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid "Configure the physics and render time step"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:433
+msgid ""
+"In order to provide a high-fidelity immersive experience, it is "
+"recommended to ensure that the simulation render time step roughly "
+"matches the XR device display time step."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:436
+msgid ""
+"It is also important to ensure that this time step can be simulated and "
+"rendered in real time."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:438
+msgid ""
+"The Apple Vision Pro display runs at 90Hz, but many Isaac Lab simulations"
+" will not achieve 90Hz performance when rendering stereo views for XR; so"
+" for best experience on Apple Vision Pro, we suggest running with a "
+"simulation dt of 90Hz and a render interval of 2, meaning that the "
+"simulation is rendered once for every two simulation steps, or at 45Hz, "
+"if performance allows."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:443
+msgid ""
+"You can still set the simulation dt lower or higher depending on your "
+"requirements, but this may result in the simulation appearing faster or "
+"slower when rendered in XR."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:446
+msgid ""
+"Overriding the time step configuration for an environment can be done by "
+"modifying the :class:`sim.SimulationCfg` in the environment's "
+"``__post_init__`` function. For instance:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:458
+msgid ""
+"Also note that by default the CloudXR Runtime attempts to dynamically "
+"adjust its pacing based on how long Isaac Lab takes to render. If render "
+"times are highly variable, this can lead to the simulation appearing to "
+"speed up or slow down when rendered in XR. If this is an issue, the "
+"CloudXR Runtime can be configured to use a fixed time step by setting the"
+" environment variable ``NV_PACER_FIXED_TIME_STEP_MS`` to an integer "
+"quantity when starting the CloudXR Runtime Docker containere."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid "Try running physics on CPU"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:469
+msgid ""
+"It is currently recommended to try running Isaac Lab teleoperation "
+"scripts with the ``--device cpu`` flag. This will cause Physics "
+"calculations to be done on the CPU, which may be reduce latency when only"
+" a single environment is present in the simulation."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:477
+msgid "Control the Robot with XR Device Inputs"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:479
+msgid ""
+"Isaac Lab provides a flexible architecture for using XR tracking data to "
+"control simulated robots. This section explains the components of this "
+"architecture and how they work together."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:485
+msgid "OpenXR Device"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:487
+msgid ""
+"The :class:`isaaclab.devices.OpenXRDevice` is the core component that "
+"enables XR-based teleoperation in Isaac Lab. This device interfaces with "
+"CloudXR to receive tracking data from the XR headset and transform it "
+"into robot control commands."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:491
+msgid ""
+"At its heart, XR teleoperation requires mapping (or \"retargeting\") user"
+" inputs, such as hand movements and poses, into robot control signals. "
+"Isaac Lab makes this straightforward through its OpenXRDevice and "
+"Retargeter architecture. The OpenXRDevice captures hand tracking data via"
+" Isaac Sim's OpenXR API, then passes this data through one or more "
+"Retargeters that convert it into robot actions."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:496
+msgid ""
+"The OpenXRDevice also integrates with the XR device's user interface when"
+" using CloudXR, allowing users to trigger simulation events directly from"
+" their XR environment."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:502
+msgid "Retargeting Architecture"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:504
+msgid ""
+"Retargeters are specialized components that convert raw tracking data "
+"into meaningful control signals for robots. They implement the "
+":class:`isaaclab.devices.RetargeterBase` interface and are passed to the "
+"OpenXRDevice during initialization."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:508
+msgid "Isaac Lab provides three main retargeters for hand tracking:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid ""
+"Se3RelRetargeter "
+"(:class:`isaaclab.devices.openxr.retargeters.Se3RelRetargeter`)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:512
+msgid "Generates incremental robot commands from relative hand movements"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:513
+msgid "Best for precise manipulation tasks"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid ""
+"Se3AbsRetargeter "
+"(:class:`isaaclab.devices.openxr.retargeters.Se3AbsRetargeter`)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:517
+msgid "Maps hand position directly to robot end-effector position"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:518
+msgid "Enables 1:1 spatial control"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid ""
+"GripperRetargeter "
+"(:class:`isaaclab.devices.openxr.retargeters.GripperRetargeter`)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:522
+msgid "Controls gripper state based on thumb-index finger distance"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:523
+msgid "Used alongside position retargeters for full robot control"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst
+msgid ""
+"GR1T2Retargeter "
+"(:class:`isaaclab.devices.openxr.retargeters.GR1T2Retargeter`)"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:527
+msgid "Retargets OpenXR hand tracking data to GR1T2 hand end-effector commands"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:528
+msgid ""
+"Handles both left and right hands, converting hand poses to joint angles "
+"for the GR1T2 robot's hands"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:529
+msgid "Supports visualization of tracked hand joints"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:531
+msgid ""
+"Retargeters can be combined to control different robot functions "
+"simultaneously."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:534
+msgid "Using Retargeters with Hand Tracking"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:536
+msgid "Here's an example of setting up hand tracking:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:572
+msgid "Extending the Retargeting System"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:574
+msgid ""
+"The retargeting system is designed to be extensible. You can create "
+"custom retargeters by extending the "
+":class:`isaaclab.devices.RetargeterBase` class and implementing the "
+"``retarget`` method that processes the incoming tracking data:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:600
+msgid ""
+"As the OpenXR capabilities expand beyond hand tracking to include head "
+"tracking and other features, additional retargeters can be developed to "
+"map this data to various robot control paradigms."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:606
+msgid "Adding Callbacks for XR UI Events"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:608
+msgid ""
+"The OpenXRDevice can handle events triggered by user interactions with XR"
+" UI elements like buttons and menus. When a user interacts with these "
+"elements, the device triggers registered callback functions:"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:618
+msgid ""
+"When the user interacts with the XR UI, these callbacks will be triggered"
+" to control the simulation or recording process. You can also add custom "
+"messages from the client side using custom keys that will trigger these "
+"callbacks, allowing for programmatic control of the simulation alongside "
+"direct user interaction. The custom keys can be any string value that "
+"matches the callback registration."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:627
+msgid "Known Issues"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:629
+msgid ""
+"``[omni.kit.xr.system.openxr.plugin] Message received from CloudXR does "
+"not have a field called 'type'``"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:631
+msgid ""
+"This error message can be safely ignored. It is caused by a deprecated, "
+"non-backwards-compatible data message sent by the CloudXR Framework from "
+"Apple Vision Pro, and will be fixed in future CloudXR Framework versions."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:635
+msgid ""
+"``XR_ERROR_VALIDATION_FAILURE: xrWaitFrame(frameState->type == 0)`` when "
+"stopping AR Mode"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:637
+msgid ""
+"This error message can be safely ignored. It is caused by a race "
+"condition in the exit handler for AR Mode."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:640
+msgid "``[omni.usd] TF_PYTHON_EXCEPTION`` when starting/stopping AR Mode"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:642
+msgid ""
+"This error message can be safely ignored. It is caused by a race "
+"condition in the enter/exit handler for AR Mode."
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:645
+msgid "``Invalid version string in _ParseVersionString``"
+msgstr ""
+
+#: ../../source/how-to/cloudxr_teleoperation.rst:647
+msgid ""
+"This error message can be caused by shader assets authored with older "
+"versions of USD, and can typically be ignored."
+msgstr ""
+
