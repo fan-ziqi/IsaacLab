@@ -90,6 +90,7 @@ Table of Contents
    source/setup/wechat
    source/setup/oneclick_installation
    source/setup/ecosystem
+   source/setup/quickstart
    source/setup/installation/index
    source/setup/installation/cloud_installation
 
@@ -124,6 +125,7 @@ Table of Contents
    source/tutorials/index
    source/how-to/index
    source/deployment/index
+   source/policy_deployment/index
 
 .. toctree::
    :maxdepth: 1
