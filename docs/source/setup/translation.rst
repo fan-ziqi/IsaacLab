@@ -9,6 +9,10 @@
 
     由于1.x.x与2.0.0API差异较大，故本站保留了一版1.x.x版本的文档(不一定是最新的1.4.1，但不会差很多)，可以通过 `https://docs.robotsfan.com/isaaclab_v1 <https://docs.robotsfan.com/isaaclab_v1>`__ 访问。
 
+    如果您需要基于IsaacLab开发您自己的独立拓展项目，请参考 `robot_lab <https://github.com/fan-ziqi/robot_lab>`__ 项目。
+
+    如果您想将IsaacLab训练的模型部署到实际机器人上或在Gazebo中仿真，请参考 `rl_sar <https://github.com/fan-ziqi/rl_sar>`__ 项目。
+
 IsaacLab原版英文文档网站: `https://isaac-sim.github.io/IsaacLab <https://isaac-sim.github.io/IsaacLab>`__
 
 IsaacLab中文翻译文档网站: `https://docs.robotsfan.com/isaaclab <https://docs.robotsfan.com/isaaclab>`__
