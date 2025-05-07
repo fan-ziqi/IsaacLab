@@ -92,6 +92,7 @@ Guidelines for modifications:
 * Qian Wan
 * Qinxi Yu
 * Rafael Wiltz
+* Renaud Poncelet
 * René Zurbrügg
 * Ritvik Singh
 * Rosario Scalise
@@ -105,6 +106,7 @@ Guidelines for modifications:
 * Wei Yang
 * Xavier Nal
 * Yang Jin
+* Yanzi Zhu
 * Yujian Zhang
 * Zhengyu Zhang
 * Ziqi Fan
