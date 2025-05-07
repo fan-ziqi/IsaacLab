@@ -208,7 +208,7 @@ suppress_warnings = [
 # -- Internationalization ----------------------------------------------------
 
 # specifying the natural language populates some key tags
-language = "zh_CN"
+language = "en"
 
 # -- Options for HTML output -------------------------------------------------
 
