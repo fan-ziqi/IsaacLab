@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-07 20:28+0800\n"
+"POT-Creation-Date: 2025-06-05 20:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -866,6 +866,7 @@ msgstr ""
 #: isaaclab.managers.action_manager.ActionManager.get_active_iterable_terms
 #: isaaclab.managers.action_manager.ActionManager.get_term
 #: isaaclab.managers.action_manager.ActionManager.reset
+#: isaaclab.managers.action_manager.ActionManager.serialize
 #: isaaclab.managers.action_manager.ActionManager.set_debug_vis
 #: isaaclab.managers.action_manager.ActionTerm.set_debug_vis
 #: isaaclab.managers.command_manager.CommandManager.get_active_iterable_terms
@@ -886,6 +887,7 @@ msgstr ""
 #: isaaclab.managers.observation_manager.ObservationManager.compute_group
 #: isaaclab.managers.observation_manager.ObservationManager.get_active_iterable_terms
 #: isaaclab.managers.observation_manager.ObservationManager.reset
+#: isaaclab.managers.observation_manager.ObservationManager.serialize
 #: isaaclab.managers.recorder_manager.RecorderManager.get_episode
 #: isaaclab.managers.recorder_manager.RecorderManager.reset
 #: isaaclab.managers.reward_manager.RewardManager.compute
@@ -997,6 +999,15 @@ msgstr ""
 msgid "Resets the manager term."
 msgstr ""
 
+#: isaaclab.managers.manager_base.ManagerTermBase:1:<autosummary>:1 of
+msgid ":py:obj:`serialize <isaaclab.managers.ManagerTermBase.serialize>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab.managers.action_manager.ActionTerm:1:<autosummary>:1
+#: isaaclab.managers.manager_base.ManagerTermBase:1:<autosummary>:1 of
+msgid "General serialization call."
+msgstr ""
+
 #: isaaclab.managers.manager_base.ManagerTermBase.__init__:1:<autosummary>:1 of
 msgid ":py:obj:`num_envs <isaaclab.managers.ManagerTermBase.num_envs>`\\"
 msgstr ""
@@ -1020,6 +1031,10 @@ msgstr ""
 msgid ""
 "The environment ids. Defaults to None, in which case all environments are"
 " considered."
+msgstr ""
+
+#: isaaclab.managers.manager_base.ManagerTermBase.serialize:1 of
+msgid "General serialization call. Includes the configuration dict."
 msgstr ""
 
 #: isaaclab.managers.ManagerTermBaseCfg.func:1:<autosummary>:1 of
@@ -1211,6 +1226,19 @@ msgstr ""
 #: isaaclab.managers.observation_manager.ObservationManager:1:<autosummary>:1
 #: of
 msgid "Computes the observations for a given group."
+msgstr ""
+
+#: isaaclab.managers.observation_manager.ObservationManager:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`serialize <isaaclab.managers.ObservationManager.serialize>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: isaaclab.managers.observation_manager.ObservationManager.serialize:1
+#: isaaclab.managers.observation_manager.ObservationManager:1:<autosummary>:1
+#: of
+msgid "Serialize the observation term configurations for all active groups."
 msgstr ""
 
 #: isaaclab.managers.observation_manager.ObservationManager:1:<autosummary>:1
@@ -1424,6 +1452,12 @@ msgstr ""
 msgid "If input ``group_name`` is not a valid group handled by the manager."
 msgstr ""
 
+#: isaaclab.managers.observation_manager.ObservationManager.serialize:3 of
+msgid ""
+"A dictionary where each group name maps to its serialized observation "
+"term configurations."
+msgstr ""
+
 #: isaaclab.managers.ObservationGroupCfg.concatenate_terms:1:<autosummary>:1 of
 msgid ""
 ":py:obj:`concatenate_terms "
@@ -1432,6 +1466,16 @@ msgstr ""
 
 #: isaaclab.managers.ObservationGroupCfg.concatenate_terms:1:<autosummary>:1 of
 msgid "Whether to concatenate the observation terms in the group."
+msgstr ""
+
+#: isaaclab.managers.ObservationGroupCfg.concatenate_terms:1:<autosummary>:1 of
+msgid ""
+":py:obj:`concatenate_dim "
+"<isaaclab.managers.ObservationGroupCfg.concatenate_dim>`\\"
+msgstr ""
+
+#: isaaclab.managers.ObservationGroupCfg.concatenate_terms:1:<autosummary>:1 of
+msgid "Dimension along to concatenate the different observation terms."
 msgstr ""
 
 #: isaaclab.managers.ObservationGroupCfg.concatenate_terms:1:<autosummary>:1 of
@@ -1479,14 +1523,31 @@ msgstr ""
 #: ../../docstring isaaclab.managers.ObservationGroupCfg.concatenate_terms:3 of
 msgid ""
 "If true, the observation terms in the group are concatenated along the "
-"last dimension. Otherwise, they are kept separate and returned as a "
-"dictionary."
+"dimension specified through :attr:`concatenate_dim`. Otherwise, they are "
+"kept separate and returned as a dictionary."
 msgstr ""
 
 #: ../../docstring isaaclab.managers.ObservationGroupCfg.concatenate_terms:6 of
 msgid ""
 "If the observation group contains terms of different dimensions, it must "
 "be set to False."
+msgstr ""
+
+#: ../../docstring isaaclab.managers.ObservationGroupCfg.concatenate_dim:1 of
+msgid ""
+"Dimension along to concatenate the different observation terms. Defaults "
+"to -1, which means the last dimension of the observation terms."
+msgstr ""
+
+#: ../../docstring isaaclab.managers.ObservationGroupCfg.concatenate_dim:4 of
+msgid ""
+"If :attr:`concatenate_terms` is True, this parameter specifies the "
+"dimension along which the observation terms are concatenated. The "
+"indicated dimension depends on the shape of the observations. For "
+"instance, for a 2D RGB image of shape (H, W, C), the dimension 0 means "
+"concatenating along the height, 1 along the width, and 2 along the "
+"channels. The offset due to the batched environment is handled "
+"automatically."
 msgstr ""
 
 #: ../../docstring isaaclab.managers.ObservationGroupCfg.enable_corruption:1 of
@@ -1580,10 +1641,6 @@ msgid "Number of past observations to store in the observation buffers."
 msgstr ""
 
 #: isaaclab.managers.ObservationTermCfg.func:1:<autosummary>:1 of
-msgid ":py:obj:`params <isaaclab.managers.ObservationTermCfg.params>`\\"
-msgstr ""
-
-#: isaaclab.managers.ObservationTermCfg.func:1:<autosummary>:1 of
 msgid ""
 ":py:obj:`flatten_history_dim "
 "<isaaclab.managers.ObservationTermCfg.flatten_history_dim>`\\"
@@ -1593,6 +1650,10 @@ msgstr ""
 msgid ""
 "Whether or not the observation manager should flatten history-based "
 "observation terms to a 2D (N, D) tensor."
+msgstr ""
+
+#: isaaclab.managers.ObservationTermCfg.func:1:<autosummary>:1 of
+msgid ":py:obj:`params <isaaclab.managers.ObservationTermCfg.params>`\\"
 msgstr ""
 
 #: ../../docstring isaaclab.managers.ObservationTermCfg.func:3 of
@@ -1772,6 +1833,15 @@ msgid "Returns the action term with the specified name."
 msgstr ""
 
 #: isaaclab.managers.action_manager.ActionManager:1:<autosummary>:1 of
+msgid ":py:obj:`serialize <isaaclab.managers.ActionManager.serialize>`\\ \\(\\)"
+msgstr ""
+
+#: isaaclab.managers.action_manager.ActionManager.serialize:1
+#: isaaclab.managers.action_manager.ActionManager:1:<autosummary>:1 of
+msgid "Serialize the action manager configuration."
+msgstr ""
+
+#: isaaclab.managers.action_manager.ActionManager:1:<autosummary>:1 of
 msgid ""
 ":py:obj:`find_terms <isaaclab.managers.ActionManager.find_terms>`\\ "
 "\\(name\\_keys\\)"
@@ -1900,6 +1970,10 @@ msgstr ""
 msgid "The action term with the specified name."
 msgstr ""
 
+#: isaaclab.managers.action_manager.ActionManager.serialize:3 of
+msgid "A dictionary of serialized action term configurations."
+msgstr ""
+
 #: isaaclab.managers.action_manager.ActionTerm:1 of
 msgid "Bases: :py:class:`~isaaclab.managers.manager_base.ManagerTermBase`"
 msgstr ""
@@ -1967,6 +2041,10 @@ msgstr ""
 msgid ""
 ":py:obj:`reset <isaaclab.managers.ActionTerm.reset>`\\ "
 "\\(\\[env\\_ids\\]\\)"
+msgstr ""
+
+#: isaaclab.managers.action_manager.ActionTerm:1:<autosummary>:1 of
+msgid ":py:obj:`serialize <isaaclab.managers.ActionTerm.serialize>`\\ \\(\\)"
 msgstr ""
 
 #: isaaclab.managers.action_manager.ActionTerm.__init__:1:<autosummary>:1 of
@@ -3554,9 +3632,5 @@ msgid ""
 "The class should inherit from "
 ":class:`isaaclab.managers.action_manager.RecorderTerm`."
 msgstr ""
-
-
-
-
 
 
