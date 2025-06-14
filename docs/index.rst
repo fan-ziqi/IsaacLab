@@ -88,22 +88,35 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started
+   :caption: Isaac Lab
 
    source/setup/translation
    source/setup/wechat
    source/setup/oneclick_installation
    source/setup/ecosystem
-   source/setup/quickstart
    source/setup/installation/index
    source/setup/installation/cloud_installation
+   source/refs/reference_architecture/index
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+   :titlesonly:
+
+   source/setup/quickstart
+   source/setup/walkthrough/index
+   source/tutorials/index
+   source/how-to/index
+   source/overview/developer-guide/index
+
 
 .. toctree::
    :maxdepth: 3
    :caption: Overview
    :titlesonly:
 
-   source/overview/developer-guide/index
+
    source/overview/core-concepts/index
    source/overview/environments
    source/overview/reinforcement-learning/index
@@ -126,8 +139,6 @@ Table of Contents
    :caption: Resources
    :titlesonly:
 
-   source/tutorials/index
-   source/how-to/index
    source/deployment/index
    source/policy_deployment/index
 
@@ -150,7 +161,7 @@ Table of Contents
    :maxdepth: 1
    :caption: References
 
-   source/refs/reference_architecture/index
+
    source/refs/additional_resources
    source/refs/contributing
    source/refs/troubleshooting
