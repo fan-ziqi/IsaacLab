@@ -1,0 +1,242 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-14 10:59+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:4
+msgid "Training the Jetbot: Ground Truth"
+msgstr "训练 Jetbot: 基准真相"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:6
+msgid ""
+"With the environment defined, we can now start modifying our observations "
+"and rewards in order to train a policy to act as a controller for the "
+"Jetbot. As a user, we would like to be able to specify the desired direction"
+" for the Jetbot to drive, and have the wheels turn such that the robot "
+"drives in that specified direction as fast as possible. How do we achieve "
+"this with Reinforcement Learning (RL)? If you want to cut to the end and "
+"checkout the result of this stage of the walk through, checkout `this branch"
+" of the tutorial repository <https://github.com/isaac-"
+"sim/IsaacLabTutorial/tree/jetbot-intro-1-2>`_!"
+msgstr ""
+"有了定义的环境，我们现在可以开始修改我们的观察和奖励，以训练一个策略来充当 Jetbot 的控制器。作为用户，我们希望能够指定 Jetbot "
+"驾驶的期望方向，并使车轮转动，使机器人以尽可能快的速度驾驶在指定的方向上。我们如何使用强化学习（RL）来实现这一点？如果您想直接查看此阶段的结果，请查看本教程存储库的"
+" `此分支 <https://github.com/isaac-sim/IsaacLabTutorial/tree/jetbot-"
+"intro-1-2>`_!"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:13
+msgid "Expanding the Environment"
+msgstr "扩展环境"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:15
+msgid ""
+"The very first thing we need to do is create the logic for setting commands "
+"for each Jetbot on the stage. Each command will be a unit vector, and we "
+"need one for every clone of the robot on the stage, which means a tensor of "
+"shape ``[num_envs, 3]``. Even though the Jetbot only navigates in the 2D "
+"plane, by working with 3D vectors we get to make use of all the math "
+"utilities provided by Isaac Lab."
+msgstr ""
+"我们需要做的第一件事是为舞台上的每个 Jetbot "
+"创建设置指令的逻辑。每个指令将是一个单位向量，我们需要为舞台上机器人的每个克隆都需要一个，这意味着一个形状为 ``[num_envs, 3]`` "
+"的张量。尽管 Jetbot 只在二维平面中导航，但通过使用三维向量，我们可以利用 Isaac Lab 提供的所有数学工具。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:19
+msgid ""
+"It would also be a good idea to setup visualizations, so we can more easily "
+"tell what the policy is doing during training and inference. In this case, "
+"we will define two arrow ``VisualizationMarkers``: one to represent the "
+"\"forward\" direction of the robot, and one to represent the command "
+"direction.  When the policy is fully trained, these arrows should be "
+"aligned! Having these visualizations in place early helps us avoid \"silent "
+"bugs\": issues in the code that do not cause it to crash."
+msgstr ""
+"设置可视化也是一个好主意，这样我们在训练和推断过程中更容易了解策略的行为。在这种情况下，我们将定义两个箭头 "
+"``VisualizationMarkers`` : 一个表示机器人的 \"前进\" "
+"方向，另一个表示指令方向。当策略完全训练好时，这些箭头应该对齐！在早期设置这些可视化有助于我们避免 \"潜在错误\" : 代码中的问题不会导致崩溃。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:24
+msgid ""
+"To begin, we need to define the marker config and then instantiate the "
+"markers with that config. Add the following to the global scope of "
+"``isaac_lab_tutorial_env.py``"
+msgstr ""
+"首先，我们需要定义标志配置，然后使用该配置实例化标志。将以下内容添加到 ``isaac_lab_tutorial_env.py`` 的全局范围内"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:51
+msgid ""
+"The ``VisualizationMarkersCfg`` defines USD prims to serve as the "
+"\"marker\".  Any prim will do, but generally you want to keep markers as "
+"simple as possible because the cloning of markers occurs at runtime on every"
+" time step. This is because the purpose of these markers is for *debug "
+"visualization only* and not to be a part of the simulation: the user has "
+"full control over how many markers to draw when and where. NVIDIA provides "
+"several simple meshes on our public nucleus server, located at "
+"``ISAAC_NUCLEUS_DIR``, and for obvious reasons we choose to use "
+"``arrow_x.usd``."
+msgstr ""
+"``VisualizationMarkersCfg`` 定义 USD 原语来充当 \"标志\" 。 "
+"任何原语都可以，但通常您希望尽可能简化标志，因为在每个时间步骤运行时会对标志进行克隆。这是因为这些标志的目的仅用于 *调试可视化* "
+"，并不是模拟的一部分: 用户完全可以控制何时在何处绘制多少标志。NVIDIA在我们的公共nucleus服务器上提供了几个简单的网格，位于 "
+"``ISAAC_NUCLEUS_DIR`` ，出于明显的原因，我们选择使用 ``arrow_x.usd`` 。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:55
+msgid ""
+"For a more detailed example of using ``VisualizationMarkers`` checkout the "
+"``markers.py`` demo!"
+msgstr "有关使用 ``VisualizationMarkers`` 的更详细示例，请查看 ``markers.py`` 演示！"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst
+msgid "Code for the markers.py demo"
+msgstr "markers.py 演示的代码"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:64
+msgid ""
+"Next, we need to expand the initialization and setup steps to construct the "
+"data we need for tracking the commands as well as the marker positions and "
+"rotations. Replace the contents of ``_setup_scene`` with the following"
+msgstr ""
+"接下来，我们需要扩展初始化和设置步骤，以构建我们需要用于跟踪命令以及标志位置和旋转的数据。将 ``_setup_scene`` 的内容替换为以下内容"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:105
+msgid ""
+"Most of this is setting up the book keeping for the commands and markers, "
+"but the command initialization and the yaw calculations are worth diving "
+"into. The commands are sampled from a multivariate normal distribution via "
+"``torch.randn`` with the z component fixed to zero and then normalized to "
+"unit length. In order to point our command markers along these vectors, we "
+"need to rotate the base arrow mesh appropriately. This means we need to "
+"define a `quaternion <https://en.wikipedia.org/wiki/Quaternion>`_` that will"
+" rotate the arrow prim about the z axis by some angle defined by the "
+"command. By convention, rotations about the z axis are called a \"yaw\" "
+"rotation (akin to roll and pitch)."
+msgstr ""
+"大部分是为命令和标志设置记录，但命令初始化和航向计算值得深入研究。命令通过 ``torch.randn`` 从一个多变量正态分布采样，其中 z "
+"分量固定为零，然后归一化为单位长度。为了让我们的命令标志沿着这些向量指向，我们需要适当旋转基本箭头网格。这意味着我们需要定义一个 `四元数 "
+"<https://en.wikipedia.org/wiki/Quaternion>`_ ，这个四元数将使箭头原语绕 z 轴旋转一定角度。按照惯例，绕 "
+"z 轴的旋转称为 \"yaw\" 旋转（类似于roll和pitch）。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:110
+msgid ""
+"Luckily for us, Isaac Lab provides a utility to generate a quaternion from "
+"an axis of rotation and an angle: "
+":func:`isaaclab.utils.math.quat_from_axis_angle`, so the only tricky part "
+"now is determining that angle."
+msgstr ""
+"幸运的是，Isaac Lab 提供了一个从旋转轴和角度生成四元数的实用程序: "
+":func:`isaaclab.utils.math.quat_from_axis_angle` ，现在唯一棘手的部分是确定那个角度。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:-1
+msgid "Useful vector definitions for training"
+msgstr "用于训练的有用向量定义"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:118
+msgid ""
+"The yaw is defined about the z axis, with a yaw of 0 aligning with the x "
+"axis and positive angles opening counterclockwise. The x and y components of"
+" the command vector define the tangent of this angle, and so we need the "
+"*arctangent* of that ratio to get the yaw."
+msgstr ""
+"yaw是围绕 z 轴定义的，yaw为 0 与 x 轴对齐，并且正角度逆时针打开。命令向量的 x 和 y 分量定义了这个角的切线，因此我们需要这个比率的 "
+"*反正切* 来获得yaw。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:121
+msgid ""
+"Now, consider two commands: Command A is in quadrant 2 at (-x, y), while "
+"command B is in quadrant 4 at (x, -y). The ratio of the y component to the x"
+" component is identical for both A and B. If we do not account for this, "
+"then some of our command arrows will be pointing in the opposite direction "
+"of the command! Essentially, our commands are defined on ``[-pi, pi]`` but "
+"``arctangent`` is only defined on ``[-pi/2, pi/2]``."
+msgstr ""
+"现在考虑两个命令: 命令 A 在第二象限处 (-x，y)，而命令 B 在第四象限处 (x，-y)。对于 A 和 B，y 分量与 x "
+"分量的比率是相同的。如果我们不考虑这一点，那么一些命令箭头将指向与命令相反的方向！本质上，我们的命令是定义在 ``[-pi, pi]`` 上的，但 "
+"``反正切`` 仅在 ``[-pi/2, pi/2]`` 上定义。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:126
+msgid ""
+"To remedy this, we add or subtract ``pi`` from the yaw depending on the "
+"quadrant of the command."
+msgstr "为了纠正这一点，根据命令所在象限添加或减去 ``pi`` 来确定yaw。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:138
+msgid ""
+"Boolean expressions involving tensors can have ambiguous definitions and "
+"pytorch will throw errors regarding this. Pytorch provides various methods "
+"to make the definitions explicit. The method ``torch.where`` produces a "
+"tensor with the same shape as the input with each element of the output is "
+"determined by the evaluation of that expression on only that element. A "
+"reliable way to handle boolean operations with tensors is to simply produce "
+"boolean indexing tensors and then represent the operation algebraically, "
+"with ``AND`` as multiplication and ``OR`` as addition, which is what we do "
+"above.  This is equivalent to the pseudocode:"
+msgstr ""
+"涉及张量的布尔表达式可能具有模糊的定义，pytorch 将抛出与此相关的错误。 Pytorch 提供了各种方法使定义明确化。方法 "
+"``torch.where`` "
+"生成一个与输入形状相同的张量，输出的每个元素都是根据该元素的评估而确定的。处理张量的布尔运算的一个可靠方法是简单地生成布尔索引张量，然后用代数方式表示操作，将"
+" ``AND`` 表示为乘法， ``OR`` 表示为加法，这就是我们在上面所做的。 这等同于伪代码: "
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:150
+msgid ""
+"Next we have the method for actually visualizing the markers. Remember, "
+"these markers aren't scene entities! We need to \"draw\" them whenever we "
+"want to see them."
+msgstr "接下来是实际可视化标志的方法。记住，这些标志不是场景实体！我们需要在想看到它们时 \"绘制\" 它们。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:171
+msgid ""
+"The ``visualize`` method of ``VisualizationMarkers`` is  like this \"draw\" "
+"function. It accepts tensors for the spatial transformations of the markers,"
+" and a ``marker_indices`` tensor to specify which marker prototype to use "
+"for each marker. So long as the first dimension of all of these tensors "
+"match, this function will draw those markers with the specified "
+"transformations. This is why we stack the locations, rotations, and indices."
+msgstr ""
+"``VisualizationMarkers`` 的 ``visualize`` 方法类似于这个 \"draw\" "
+"函数。它接受用于标志的空间变换的张量，以及一个 ``marker_indices`` 张量，用于指定每个标志原型用于每个标志。 "
+"只要所有这些张量的第一个维度匹配，此函数将使用指定的转换绘制这些标志。 这就是我们堆叠位置、旋转和索引的原因。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:176
+msgid ""
+"Now we just need to call ``_visualize_markers`` on the pre physics step to "
+"make the arrows visible. Replace ``_pre_physics_step`` with the following"
+msgstr ""
+"现在，我们只需要在预物理步骤上调用 ``_visualize_markers`` 来使箭头可见。将 ``_pre_physics_step`` "
+"替换为以下内容"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:184
+msgid ""
+"The last major modification before we dig into the RL training is to update "
+"the ``_reset_idx`` method to account for the commands and markers. Whenever "
+"we reset an environment, we need to generate a new command and reset the "
+"markers. The logic for this is already covered above. Replace the contents "
+"of ``_reset_idx`` with the following:"
+msgstr ""
+"进入 RL 训练之前的最后一项主要修改是更新 ``_reset_idx`` 方法以考虑命令和标志。每当重置环境时，我们都需要生成一个新的命令并重置标志。"
+" 这方面的逻辑已经在上面讨论过。将 ``_reset_idx`` 的内容替换为以下内容: "
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:216
+msgid ""
+"And that's it! We now generate commands and can visualize it the heading of "
+"the Jetbot. We are ready to start tinkering with the observations and "
+"rewards."
+msgstr "就是这样！我们现在生成命令并可以可视化 Jetbot 的航向了。我们准备开始调整观察和奖励。"
+
+#: ../../source/setup/walkthrough/training_jetbot_gt.rst:-1
+msgid "Visualization of the command markers"
+msgstr "命令标志的可视化"
