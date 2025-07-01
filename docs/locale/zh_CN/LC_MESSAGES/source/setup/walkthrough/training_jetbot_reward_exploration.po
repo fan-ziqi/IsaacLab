@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-14 10:59+0800\n"
+"POT-Creation-Date: 2025-07-01 19:20+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -109,6 +109,14 @@ msgstr ""
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:78
 msgid ""
+"We also need to **edit the ``IsaacLabTutorialEnvCfg`` to set the observation"
+" space back to 3** which includes the dot product, the z component of the "
+"cross product, and the forward speed."
+msgstr ""
+"我们还需要 **修改 ``IsaacLabTutorialEnvCfg`` 以将观测空间设置回3** ，这包括点积、叉积的z分量和前向速度。"
+
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:80
+msgid ""
 "The dot or inner product tells us how aligned two vectors are as a single "
 "scalar quantity.  If they are very aligned and pointed in the same "
 "direction, then the inner product will be large and positive, but if they "
@@ -120,7 +128,7 @@ msgid ""
 msgstr ""
 "点积或内积告诉我们两个向量对齐程度的单一标量量。如果它们非常对齐并指向相同方向，那么内积将很大且为正，但如果它们对齐且方向相反，则内积将很大且为负。如果两个向量垂直，内积为零。这意味着前进向量和命令向量之间的内积可以告诉我们朝向命令还是背离命令的程度，但不能告诉我们需要向哪个方向转动以改善对齐。"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:83
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:85
 #, python-brace-format
 msgid ""
 "The cross product also tells us how aligned two vectors are, but it "
@@ -138,7 +146,7 @@ msgstr ""
 " 2D 中操作的事实，只需要检查 :math:`\\vec{forward} \\times \\vec{command}` 的结果的 z "
 "分量。如果向量共线，这一分量将为零，如果命令向量位于前方，则为正，如果命令向量位于前方的右侧，则为负。"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:89
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:91
 msgid ""
 "Finally, the x component of the center of mass linear velocity tells us our "
 "forward speed, with positive being forward and negative being backwards. We "
@@ -152,13 +160,13 @@ msgstr ""
 msgid "Improved results"
 msgstr "改进的结果"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:98
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:100
 msgid ""
 "It seems to qualitatively train better, and the Jetbots are somewhat inching"
 " forward... Surely we can do better still!"
 msgstr "在质量上训练效果更好，Jetbots 有些许向前移动... 我们肯定还可以做得更好！"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:100
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:102
 msgid ""
 "Another rule of thumb for training is to reduce and simplify the reward "
 "function as much as possible.  Terms in the reward behave similarly to the "
@@ -173,7 +181,7 @@ msgstr ""
 "运算。在我们的情况下，我们通过将它们相加来奖励前进和对齐命令，这样我们的智能体就可以获得同等奖励来前进或对齐命令。为了强迫智能体学会朝着命令的方向前进，我们应该仅奖励智能体前进且对齐。逻辑的"
 " AND 意味着乘法，因此下面是奖励函数: "
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:113
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:115
 msgid ""
 "Now we will only get rewarded for driving forward if our alignment reward is"
 " non zero.  Let's see what kind of result this produces!"
@@ -183,7 +191,7 @@ msgstr "现在我们只有在对齐奖励为非零时才会因前进而获得奖
 msgid "Tuned results"
 msgstr "调整后的结果"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:120
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:122
 msgid ""
 "It definitely trains faster, but the Jetbots have learned to drive in "
 "reverse if the command is pointed behind them. This may be desirable in our "
@@ -203,7 +211,7 @@ msgstr ""
 "驾驶前进并与命令对齐时奖励最大化，但如果 Jetbot 在倒车，那么前进项为负数，如果它朝着命令后退，那么对齐项 **也为负数** "
 "，这意味着奖励是正数！当您设计自己的环境时，您会遇到像这样的退化解，并且大量奖励工程任务就是通过修改奖励函数来抑制或支持这些行为。"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:127
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:129
 msgid ""
 "Let's say, in our case, we don't want this behavior. In our case, the "
 "alignment term has a domain of ``[-1, 1]``, but we would much prefer it to "
@@ -215,7 +223,7 @@ msgstr ""
 "假设在我们的情况下，我们不希望出现这种行为。在我们的情况中，对齐项的定义域是 ``[-1, 1]`` ，但我们更希望它仅映射到正值。我们不希望 *消除*"
 " 对齐项上的符号，相反，我们希望大负值接近零，这样当我们不对齐时就不会得到奖励。指数函数可以实现这一点！"
 
-#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:139
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:141
 msgid ""
 "Now when we train, the Jetbots will turn to always drive towards the command"
 " in the forward direction!"
