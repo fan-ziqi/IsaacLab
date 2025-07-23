@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-07 20:28+0800\n"
+"POT-Creation-Date: 2025-07-23 23:22+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -2098,6 +2098,10 @@ msgstr ""
 msgid "DC Motor Actuator"
 msgstr ""
 
+#: ../../source/api/lab/isaaclab.actuators.rst:-1
+msgid "The effort clipping as a function of joint velocity for a linear DC Motor."
+msgstr ""
+
 #: isaaclab.actuators.actuator_pd.DCMotor:1
 #: isaaclab.actuators.actuator_pd.DelayedPDActuator:1 of
 msgid "Bases: :py:class:`~isaaclab.actuators.actuator_pd.IdealPDActuator`"
@@ -2105,9 +2109,9 @@ msgstr ""
 
 #: isaaclab.actuators.actuator_pd.DCMotor:3 of
 msgid ""
-"It uses the same model as the :class:`IdealActuator` for computing the "
+"It uses the same model as the :class:`IdealPDActuator` for computing the "
 "torques from input commands. However, it implements a saturation model "
-"defined by DC motor characteristics."
+"defined by a linear four quadrant DC motor torque-speed curve."
 msgstr ""
 
 #: isaaclab.actuators.actuator_pd.DCMotor:6 of
@@ -2127,65 +2131,90 @@ msgstr ""
 #: isaaclab.actuators.actuator_pd.DCMotor:13 of
 #, python-brace-format
 msgid ""
-"Continuous-rated speed (:math:`\\dot{q}_{motor, max}`) : The maximum-"
-"rated speed of the motor."
+"No-load speed (:math:`\\dot{q}_{motor, max}`) : The maximum-rated speed "
+"of the motor at 0 Torque (:attr:`velocity_limit`)."
 msgstr ""
 
 #: isaaclab.actuators.actuator_pd.DCMotor:14 of
 #, python-brace-format
 msgid ""
-"Continuous-stall torque (:math:`\\tau_{motor, max}`): The maximum-rated "
-"torque produced at 0 speed."
+"Stall torque (:math:`\\tau_{motor, stall}`): The maximum-rated torque "
+"produced at 0 speed (:attr:`saturation_effort`)."
 msgstr ""
 
 #: isaaclab.actuators.actuator_pd.DCMotor:15 of
 #, python-brace-format
 msgid ""
-"Saturation torque (:math:`\\tau_{motor, sat}`): The maximum torque that "
-"can be outputted for a short period."
+"Continuous torque (:math:`\\tau_{motor, con}`): The maximum torque that "
+"can be outputted for a short period. This is often enforced on the "
+"current drives for a DC motor to limit overheating, prevent mechanical "
+"damage, or enforced by electrical limitations.(:attr:`effort_limit`)."
 msgstr ""
 
-#: isaaclab.actuators.actuator_pd.DCMotor:17 of
+#: isaaclab.actuators.actuator_pd.DCMotor:18 of
+#, python-brace-format
 msgid ""
-"Based on these parameters, the instantaneous minimum and maximum torques "
+"Corner velocity (:math:`V_{c}`): The velocity where the torque-speed "
+"curve intersects with continuous torque. Based on these parameters, the "
+"instantaneous minimum and maximum torques for velocities between corner "
+"velocities (where torque-speed curve intersects with continuous torque) "
 "are defined as follows:"
 msgstr ""
 
-#: isaaclab.actuators.actuator_pd.DCMotor:19 of
+#: isaaclab.actuators.actuator_pd.DCMotor:22 of
 msgid ""
-"\\tau_{j, max}(\\dot{q}) & = clip \\left (\\tau_{j, sat} \\times \\left(1"
-" -\n"
-"    \\frac{\\dot{q}}{\\dot{q}_{j, max}}\\right), 0.0, \\tau_{j, max} "
+"Based on these parameters, the instantaneous minimum and maximum torques "
+"for velocities are defined as follows:"
+msgstr ""
+
+#: isaaclab.actuators.actuator_pd.DCMotor:24 of
+msgid ""
+"\\tau_{j, max}(\\dot{q}) & = clip \\left (\\tau_{j, stall} \\times "
+"\\left(1 -\n"
+"    \\frac{\\dot{q}}{\\dot{q}_{j, max}}\\right), -∞, \\tau_{j, con} "
 "\\right) \\\\\n"
-"\\tau_{j, min}(\\dot{q}) & = clip \\left (\\tau_{j, sat} \\times \\left( "
-"-1 -\n"
-"    \\frac{\\dot{q}}{\\dot{q}_{j, max}}\\right), - \\tau_{j, max}, 0.0 "
+"\\tau_{j, min}(\\dot{q}) & = clip \\left (\\tau_{j, stall} \\times "
+"\\left( -1 -\n"
+"    \\frac{\\dot{q}}{\\dot{q}_{j, max}}\\right), - \\tau_{j, con}, ∞ "
 "\\right)"
 msgstr ""
 
-#: isaaclab.actuators.actuator_pd.DCMotor:26 of
+#: isaaclab.actuators.actuator_pd.DCMotor:31 of
 #, python-brace-format
 msgid ""
 "where :math:`\\gamma` is the gear ratio of the gear box connecting the "
 "motor and the actuated joint ends, :math:`\\dot{q}_{j, max} = "
-"\\gamma^{-1} \\times  \\dot{q}_{motor, max}`, :math:`\\tau_{j, max} = "
-"\\gamma \\times \\tau_{motor, max}` and :math:`\\tau_{j, peak} = \\gamma "
-"\\times \\tau_{motor, peak}` are the maximum joint velocity, maximum "
-"joint torque and peak torque, respectively. These parameters are read "
+"\\gamma^{-1} \\times  \\dot{q}_{motor, max}`, :math:`\\tau_{j, con} = "
+"\\gamma \\times \\tau_{motor, con}` and :math:`\\tau_{j, stall} = \\gamma"
+" \\times \\tau_{motor, stall}` are the maximum joint velocity, continuous"
+" joint torque and stall torque, respectively. These parameters are read "
 "from the configuration instance passed to the class."
 msgstr ""
 
-#: isaaclab.actuators.actuator_pd.DCMotor:32 of
+#: isaaclab.actuators.actuator_pd.DCMotor:37 of
 msgid ""
 "Using these values, the computed torques are clipped to the minimum and "
 "maximum values based on the instantaneous joint velocity:"
 msgstr ""
 
-#: isaaclab.actuators.actuator_pd.DCMotor:35 of
+#: isaaclab.actuators.actuator_pd.DCMotor:40 of
 #, python-brace-format
 msgid ""
 "\\tau_{j, applied} = clip(\\tau_{computed}, \\tau_{j, min}(\\dot{q}), "
 "\\tau_{j, max}(\\dot{q}))"
+msgstr ""
+
+#: isaaclab.actuators.actuator_pd.DCMotor:44 of
+msgid ""
+"If the velocity of the joint is outside corner velocities (this would be "
+"due to external forces) the applied output torque will be driven to the "
+"Continuous Torque (`effort_limit`)."
+msgstr ""
+
+#: isaaclab.actuators.actuator_pd.DCMotor:47 of
+msgid ""
+"The figure below demonstrates the clipping action for example (velocity, "
+"torque) pairs."
 msgstr ""
 
 #: isaaclab.actuators.actuator_pd.DCMotor:1:<autosummary>:1 of
@@ -2330,7 +2359,7 @@ msgstr ""
 msgid ":py:obj:`friction <isaaclab.actuators.DCMotorCfg.friction>`\\"
 msgstr ""
 
-#: ../../source/api/lab/isaaclab.actuators.rst:82
+#: ../../source/api/lab/isaaclab.actuators.rst:87
 msgid "Delayed PD Actuator"
 msgstr ""
 
@@ -2541,7 +2570,7 @@ msgid ""
 "be delayed. Defaults to 0."
 msgstr ""
 
-#: ../../source/api/lab/isaaclab.actuators.rst:96
+#: ../../source/api/lab/isaaclab.actuators.rst:101
 msgid "Remotized PD Actuator"
 msgstr ""
 
@@ -2783,7 +2812,7 @@ msgid ""
 "used to interpolate the output torque based on the joint angle."
 msgstr ""
 
-#: ../../source/api/lab/isaaclab.actuators.rst:110
+#: ../../source/api/lab/isaaclab.actuators.rst:115
 msgid "MLP Network Actuator"
 msgstr ""
 
@@ -3045,7 +3074,7 @@ msgid ""
 "`max(input_idx) + 1`."
 msgstr ""
 
-#: ../../source/api/lab/isaaclab.actuators.rst:124
+#: ../../source/api/lab/isaaclab.actuators.rst:129
 msgid "LSTM Network Actuator"
 msgstr ""
 
@@ -3207,9 +3236,6 @@ msgid ""
 ":py:obj:`saturation_effort "
 "<isaaclab.actuators.ActuatorNetLSTMCfg.saturation_effort>`\\"
 msgstr ""
-
-
-
 
 
 
