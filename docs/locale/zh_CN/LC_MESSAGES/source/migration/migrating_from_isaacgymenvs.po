@@ -59,7 +59,7 @@ msgstr ""
 ":class:`~isaaclab.utils.configclass` 来指定配置。 "
 ":class:`~isaaclab.utils.configclass` 模块提供了一个包装器，位于 Python 的 ``dataclasses`` "
 "模块之上。每个环境应指定其自己的配置类，该类被 ``@configclass`` 注释，其继承自 "
-":class:`~envs.DirectRLEnvCfg` ，其中可以包括模拟参数、环境场景参数、机器人参数和任务特定参数。"
+":class:`~envs.DirectRLEnvCfg` ，其中可以包括仿真参数、环境场景参数、机器人参数和任务特定参数。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:29
 msgid "Below is an example skeleton of a task config class:"
@@ -67,7 +67,7 @@ msgstr "以下是一个任务配置类的示例骨架: "
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:55
 msgid "Simulation Config"
-msgstr "模拟配置"
+msgstr "仿真配置"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:57
 msgid ""
@@ -78,9 +78,9 @@ msgid ""
 "variable named ``sim`` defined that holds the type "
 ":class:`~isaaclab.sim.SimulationCfg`."
 msgstr ""
-"与模拟有关的参数被定义为 :class:`~isaaclab.sim.SimulationCfg` 类的一部分，这是一个 "
+"与仿真有关的参数被定义为 :class:`~isaaclab.sim.SimulationCfg` 类的一部分，这是一个 "
 ":class:`~isaaclab.utils.configclass` 模块，包含诸如 ``dt``、``device`` 和 ``gravity``"
-" 等模拟参数。每个任务配置都必须有一个名为 ``sim`` 的变量，其类型为 :class:`~isaaclab.sim.SimulationCfg` "
+" 等仿真参数。每个任务配置都必须有一个名为 ``sim`` 的变量，其类型为 :class:`~isaaclab.sim.SimulationCfg` "
 "。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:62
@@ -94,10 +94,10 @@ msgid ""
 " ``controlFrequencyInv`` parameter in IsaacGymEnvs. Thus, the same setup in "
 "Isaac Lab will become ``dt=1/120`` and ``decimation=2``."
 msgstr ""
-"在 Isaac Lab 中， ``substeps`` 的使用已被模拟 ``dt`` 和 ``decimation`` 参数的组合取代。例如，在 "
+"在 Isaac Lab 中， ``substeps`` 的使用已被仿真 ``dt`` 和 ``decimation`` 参数的组合取代。例如，在 "
 "IsaacGymEnvs 中，具有 ``dt=1/60`` 和 ``substeps=2`` 等效于使用 ``dt=1/120`` 进行 2 "
-"次模拟步骤，但在 ``1/60`` 秒运行任务步骤。 ``decimation`` 参数是一个任务参数，控制每个任务（或 "
-"RL）步骤所需的模拟步骤数量，取代了 IsaacGymEnvs 中的 ``controlFrequencyInv`` 参数。因此，在 Isaac Lab"
+"次仿真步骤，但在 ``1/60`` 秒运行任务步骤。 ``decimation`` 参数是一个任务参数，控制每个任务（或 "
+"RL）步骤所需的仿真步骤数量，取代了 IsaacGymEnvs 中的 ``controlFrequencyInv`` 参数。因此，在 Isaac Lab"
 " 中，相同的设置将变为 ``dt=1/120`` 和 ``decimation=2`` 。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:69
@@ -109,9 +109,9 @@ msgid ""
 "These parameters have been moved from the physx simulation config to each "
 "individual articulation and rigid body config."
 msgstr ""
-"在 Isaac Sim 中，物理模拟参数，例如 "
+"在 Isaac Sim 中，物理仿真参数，例如 "
 "``num_position_iterations``、``num_velocity_iterations``、``contact_offset``、``rest_offset``、``bounce_threshold_velocity``、``max_depenetration_velocity``"
-" 等都可以针对每个角色进行指定。这些参数已从 physx 模拟配置移到每个单独的关节和刚体配置中。"
+" 等都可以针对每个角色进行指定。这些参数已从 physx 仿真配置移到每个单独的关节和刚体配置中。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:74
 msgid ""
@@ -123,7 +123,7 @@ msgid ""
 ":class:`~isaaclab.sim.PhysxCfg` class provides access for setting the GPU "
 "buffer dimensions."
 msgstr ""
-"当在 GPU 上运行模拟时，PhysX "
+"当在 GPU 上运行仿真时，PhysX "
 "中的缓冲区需要预先分配以计算和存储诸如接触、碰撞和汇总对等信息。这些缓冲区可能需要根据环境的复杂性、预期接触和碰撞数量以及环境中的角色数量进行调整。 "
 ":class:`~isaaclab.sim.PhysxCfg` 类提供了访问设置 GPU 缓冲区维度的功能。"
 
@@ -217,7 +217,7 @@ msgid ""
 "environments."
 msgstr ""
 "在 IsaacGymEnvs 中，环境创建通常包括四个组件: 使用 ``create_sim()`` 创建 sim 对象，创建地面平面，从 MJCF 或"
-" URDF 文件导入资产，最后通过循环遍历每个环境并将演员添加到环境中创建环境。"
+" URDF 文件导入资产，最后通过循环遍历每个环境并将actors添加到环境中创建环境。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:179
 msgid ""
@@ -237,7 +237,7 @@ msgid ""
 "any other optional objects into the scene, such as lights."
 msgstr ""
 "在 Isaac Lab 中，可以通过实现 ``_setup_scene()`` 方法来替代 ``create_sim()`` "
-"。这种方法可用于向场景中添加演员、添加地面平面、克隆演员，并添加任何其他可选对象到场景中，如灯光。"
+"。这种方法可用于向场景中添加actors、添加地面平面、克隆actors，并添加任何其他可选对象到场景中，如灯光。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:188
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:405
@@ -292,7 +292,7 @@ msgstr ""
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:243
 msgid "Actors"
-msgstr "演员"
+msgstr "Actors"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:245
 msgid ""
@@ -314,8 +314,8 @@ msgid ""
 "parameters for articulation actors, including file path, simulation "
 "parameters, actuator properties, and initial states."
 msgstr ""
-"每个关节和刚体演员都可以有自己的配置类。 :class:`~isaaclab.assets.ArticulationCfg` "
-"类可用于定义关节演员的参数，包括文件路径、模拟参数、执行器属性和初始状态。"
+"每个关节和刚体actors都可以有自己的配置类。 :class:`~isaaclab.assets.ArticulationCfg` "
+"类可用于定义关节actors的参数，包括文件路径、仿真参数、执行器属性和初始状态。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:293
 msgid ""
@@ -334,9 +334,9 @@ msgstr ""
 "在 :class:`~assets.ArticulationCfg` 中，可以使用 ``spawn`` "
 "属性通过指定机器人文件的路径将机器人添加到场景中。此外，可以使用 "
 ":class:`~isaaclab.sim.schemas.RigidBodyPropertiesCfg` "
-"来为关节中的刚体指定模拟属性。类似地，可以使用 "
+"来为关节中的刚体指定仿真属性。类似地，可以使用 "
 ":class:`~isaaclab.sim.schemas.ArticulationRootPropertiesCfg` "
-"类为关节指定模拟属性。关节属性现在作为 ``actuators`` 字典的一部分进行指定，其中使用 "
+"类为关节指定仿真属性。关节属性现在作为 ``actuators`` 字典的一部分进行指定，其中使用 "
 ":class:`~actuators.ImplicitActuatorCfg` 。具有相同属性的关节可以分组为正则表达式或作为名称或表达式列表提供。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:301
@@ -349,15 +349,15 @@ msgid ""
 ":class:`~scene.InteractiveScene` can traverse through actors in the scene "
 "for writing values to the simulation and resetting."
 msgstr ""
-"通过简单调用 ``self.cartpole = Articulation(self.cfg.robot_cfg)`` 将演员添加到场景，其中 "
+"通过简单调用 ``self.cartpole = Articulation(self.cfg.robot_cfg)`` 将actors添加到场景，其中 "
 "``self.cfg.robot_cfg`` 是一个 :class:`~assets.ArticulationCfg` 对象。初始化后，还应通过调用 "
 "``self.scene.articulations[\"cartpole\"] = self.cartpole`` 将其添加到 "
 ":class:`~scene.InteractiveScene` 中，以便 :class:`~scene.InteractiveScene` "
-"可以在场景中遍历演员以向仿真写入值并重置。"
+"可以在场景中遍历actors以向仿真写入值并重置。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:308
 msgid "Simulation Parameters for Actors"
-msgstr "演员的模拟参数"
+msgstr "Actors的仿真参数"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:310
 msgid ""
@@ -366,7 +366,7 @@ msgid ""
 "Sim. It may be helpful to double check the USD assets to ensure that the "
 "default values are applicable for the asset."
 msgstr ""
-"在 Isaac Gym 预览版和 Isaac Sim 之间，与刚体和关节相关的一些模拟参数可能具有不同的默认值。建议确保 USD "
+"在 Isaac Gym 预览版和 Isaac Sim 之间，与刚体和关节相关的一些仿真参数可能具有不同的默认值。建议确保 USD "
 "资产的默认值适用于资产。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:315
@@ -488,7 +488,7 @@ msgid ""
 "by using the ``Cloner`` APIs. The scene creation process is as follow:"
 msgstr ""
 "Isaac Sim引入了 ``克隆器`` "
-"概念，这是一个专为在场景创建过程中复制而设计的类。在IsaacGymEnvs中，必须通过循环遍历环境的数量来创建场景。在每次迭代中，将演员添加到每个环境中，并需要缓存它们的句柄。Isaac"
+"概念，这是一个专为在场景创建过程中复制而设计的类。在IsaacGymEnvs中，必须通过循环遍历环境的数量来创建场景。在每次迭代中，将actors添加到每个环境中，并需要缓存它们的句柄。Isaac"
 " Lab通过使用 ``克隆器`` API来消除循环遍历环境的需求。场景创建过程如下: "
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:367
@@ -509,7 +509,7 @@ msgstr "调用 ``filter_collisions()`` 来过滤环境之间的碰撞（如果�
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:383
 msgid "Accessing States from Simulation"
-msgstr "从模拟中访问状态"
+msgstr "从仿真中访问状态"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:385
 msgid ""
@@ -593,7 +593,7 @@ msgid ""
 "tree. This means that indexing joints based on their ordering may be "
 "different in IsaacGymEnvs and Isaac Lab."
 msgstr ""
-"Isaac Sim和Isaac Lab中的物理模拟假定给定运动树中关节的顺序是广度优先顺序。然而，Isaac Gym Preview "
+"Isaac Sim和Isaac Lab中的物理仿真假定给定运动树中关节的顺序是广度优先顺序。然而，Isaac Gym Preview "
 "Release中假定关节运动树中关节的顺序是深度优先顺序。这意味着根据它们的顺序对关节进行索引在IsaacGymEnvs和Isaac Lab中可能不同。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:452
@@ -671,7 +671,7 @@ msgid ""
 "for each RL step, once before each simulation step call."
 msgstr ""
 "在Isaac Lab中，我们还将 ``pre_physics_step`` API与从策略中处理操作的 ``apply_action`` "
-"API分开，后者将操作设置到模拟中。当使用 ``decimation`` 时，这样可以更灵活地控制何时将操作写入模拟。每步之前将调用一次 "
+"API分开，后者将操作设置到仿真中。当使用 ``decimation`` 时，这样可以更灵活地控制何时将操作写入仿真。每步之前将调用一次 "
 "``pre_physics_step`` 来处理每个RL步骤， ``apply_actions`` 将在每个仿真步骤调用 ``decimation`` "
 "次。"
 
@@ -781,7 +781,7 @@ msgid ""
 "tasks can override the ``step()`` API to control the workflow."
 msgstr ""
 "在IsaacGymEnvs中，由于GPU API的限制，当环境执行重置时，观测数据变得陈旧。在Isaac "
-"Lab中消除了这一限制，因此，任务遵循正确的工作流程，即应用行动、模拟步进、收集状态、计算结束、计算奖励、执行重置，最后计算观测。这个工作流程由框架自动完成，因此任务中不需要"
+"Lab中消除了这一限制，因此，任务遵循正确的工作流程，即应用行动、仿真步进、收集状态、计算结束、计算奖励、执行重置，最后计算观测。这个工作流程由框架自动完成，因此任务中不需要"
 " ``post_physics_step`` API。但是，单个任务可以重写 ``step()`` API以控制工作流程。"
 
 #: ../../source/migration/migrating_from_isaacgymenvs.rst:746

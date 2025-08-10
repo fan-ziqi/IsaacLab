@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-01 19:20+0800\n"
+"POT-Creation-Date: 2025-08-10 09:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -35,9 +35,9 @@ msgid ""
 "total."
 msgstr ""
 "Jetbot "
-"的命令是一个单位向量，用来指定期望的驾驶方向，我们必须以某种方式使智能体感知到这一点，以便根据情况调整操作。有许多可能的方法可以做到这一点，简单的方法是改变观测空间，将该命令包含在其中。首先，"
+"的控制命令是一个单位向量，用来指定期望的驾驶方向，我们必须以某种方式使智能体感知到这一点，以便根据情况调整操作。有许多可能的方法可以做到这一点，简单的方法是改变观测空间，将该控制命令包含在其中。首先，"
 " **编辑 ``IsaacLabTutorialEnvCfg`` 将观测空间设置为 9** : 世界速度向量包含机器人的线性和角速度，这是 6 "
-"维，如果我们将命令附加到这个向量中，那就是观测空间总共有 9 维。"
+"维，如果我们将控制命令附加到这个向量中，那就是观测空间总共有 9 维。"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:11
 msgid ""
@@ -51,6 +51,10 @@ msgstr ""
 "``root_link_quat_w`` 应用于 ``[1,0,0]`` 以获得世界坐标系中的前进向量。将 ``_get_observations`` "
 "方法替换为以下内容: "
 
+#: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:23
+msgid "So now what should the reward be?"
+msgstr "那么现在应该奖励什么呢？"
+
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:25
 msgid ""
 "When the robot is behaving as desired, it will be driving at full speed in "
@@ -58,8 +62,8 @@ msgid ""
 "\"alignment to the command\", then maximizing that combined signal should "
 "result in driving to the command... right?"
 msgstr ""
-"当机器人表现如期望的那样时，它将全速朝着命令的方向行驶。如果我们奖励 \"前进\" 和 \"与命令对齐\" "
-"，那么最大化这两者的组合信号应该导致机器人朝着命令前进... 对吗？"
+"当机器人表现如期望的那样时，它将全速朝着控制命令的方向行驶。如果我们奖励 \"前进\" 和 \"与控制命令对齐\" "
+"，那么最大化这两者的组合信号应该导致机器人朝着控制命令前进... 对吗？"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:28
 msgid ""
@@ -79,7 +83,7 @@ msgid ""
 "see what happens!"
 msgstr ""
 "``forward_reward`` 是机器人质心线性速度在机体坐标系中的 x 分量。我们知道 x "
-"方向是资产的前进方向，因此这应等同于前进向量与世界坐标系中线性速度的内积。对齐项是前进向量与命令向量的内积: 当它们指向同一方向时，这一项将为 "
+"方向是资产的前进方向，因此这应等同于前进向量与世界坐标系中线性速度的内积。对齐项是前进向量与控制命令向量的内积: 当它们指向同一方向时，这一项将为 "
 "1，但指向相反方向时，它将为 -1。将它们相加以获得组合奖励，最后我们可以开始训练了！让我们看看会发生什么！"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:-1
@@ -104,7 +108,7 @@ msgid ""
 "exploit the dot and cross products from linear algebra! Replace the contents"
 " of ``_get_observations`` with the following:"
 msgstr ""
-"当为训练调整环境时，一个经验法则是尽可能保持观测空间尽可能小。这是为了减少模型中的参数数量（奥卡姆剃刀的字面解释），从而改善训练时间。在这种情况下，我们需要以某种方式对与命令的对齐和前进速度进行编码。一种方法是利用线性代数中的点积和叉积！用以下内容替换"
+"当为训练调整环境时，一个经验法则是尽可能保持观测空间尽可能小。这是为了减少模型中的参数数量（奥卡姆剃刀的字面解释），从而改善训练时间。在这种情况下，我们需要以某种方式对与控制命令的对齐和前进速度进行编码。一种方法是利用线性代数中的点积和叉积！用以下内容替换"
 " ``_get_observations`` 的内容: "
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:78
@@ -126,7 +130,7 @@ msgid ""
 " us how much we are facing towards or away from the command, but not which "
 "direction we need to turn to improve alignment."
 msgstr ""
-"点积或内积告诉我们两个向量对齐程度的单一标量量。如果它们非常对齐并指向相同方向，那么内积将很大且为正，但如果它们对齐且方向相反，则内积将很大且为负。如果两个向量垂直，内积为零。这意味着前进向量和命令向量之间的内积可以告诉我们朝向命令还是背离命令的程度，但不能告诉我们需要向哪个方向转动以改善对齐。"
+"点积或内积告诉我们两个向量对齐程度的单一标量量。如果它们非常对齐并指向相同方向，那么内积将很大且为正，但如果它们对齐且方向相反，则内积将很大且为负。如果两个向量垂直，内积为零。这意味着前进向量和控制命令向量之间的内积可以告诉我们朝向控制命令还是背离控制命令的程度，但不能告诉我们需要向哪个方向转动以改善对齐。"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:85
 #, python-brace-format
@@ -144,7 +148,7 @@ msgid ""
 msgstr ""
 "叉乘也告诉我们两个向量的对齐程度，不过它将这种关系表示为向量。任意两个向量之间的叉乘定义了一个垂直于包含两个参数向量的平面的轴，其中结果向量沿此轴的方向由坐标系的手征性（维度排序或右手性）确定。在我们的情况中，我们可以利用我们在"
 " 2D 中操作的事实，只需要检查 :math:`\\vec{forward} \\times \\vec{command}` 的结果的 z "
-"分量。如果向量共线，这一分量将为零，如果命令向量位于前方，则为正，如果命令向量位于前方的右侧，则为负。"
+"分量。如果向量共线，这一分量将为零，如果控制命令向量位于前方，则为正，如果控制命令向量位于前方的右侧，则为负。"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:91
 msgid ""
@@ -178,7 +182,7 @@ msgid ""
 "multiplication and therefore the following reward function:"
 msgstr ""
 "训练的另一个经验法则是尽可能减少和简化奖励函数。奖励函数中的术语类似于逻辑的 \"OR\" "
-"运算。在我们的情况下，我们通过将它们相加来奖励前进和对齐命令，这样我们的智能体就可以获得同等奖励来前进或对齐命令。为了强迫智能体学会朝着命令的方向前进，我们应该仅奖励智能体前进且对齐。逻辑的"
+"运算。在我们的情况下，我们通过将它们相加来奖励前进和对齐控制命令，这样我们的智能体就可以获得同等奖励来前进或对齐控制命令。为了强迫智能体学会朝着控制命令的方向前进，我们应该仅奖励智能体前进且对齐。逻辑的"
 " AND 意味着乘法，因此下面是奖励函数: "
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:115
@@ -206,9 +210,9 @@ msgid ""
 "devoted to suppressing or supporting these behaviors by modifying the reward"
 " function."
 msgstr ""
-"训练速度确实更快了，但如果命令指向它们后面，Jetbots "
+"训练速度确实更快了，但如果控制命令指向它们后面，Jetbots "
 "已经学会后退驾驶。在我们的情况中，这可能是令人满意的，但这也展示了政策行为如何高度取决于奖励函数。在这种情况下，我们的奖励函数存在 **退化解** : "
-"驾驶前进并与命令对齐时奖励最大化，但如果 Jetbot 在倒车，那么前进项为负数，如果它朝着命令后退，那么对齐项 **也为负数** "
+"驾驶前进并与控制命令对齐时奖励最大化，但如果 Jetbot 在倒车，那么前进项为负数，如果它朝着控制命令后退，那么对齐项 **也为负数** "
 "，这意味着奖励是正数！当您设计自己的环境时，您会遇到像这样的退化解，并且大量奖励工程任务就是通过修改奖励函数来抑制或支持这些行为。"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:129
@@ -227,7 +231,7 @@ msgstr ""
 msgid ""
 "Now when we train, the Jetbots will turn to always drive towards the command"
 " in the forward direction!"
-msgstr "现在当我们进行训练时，Jetbots 将始终朝着命令以前进方向前进！"
+msgstr "现在当我们进行训练时，Jetbots 将始终朝着控制命令以前进方向前进！"
 
 #: ../../source/setup/walkthrough/training_jetbot_reward_exploration.rst:-1
 msgid "Directed results"

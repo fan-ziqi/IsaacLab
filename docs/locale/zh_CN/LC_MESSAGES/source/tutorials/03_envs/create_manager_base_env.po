@@ -33,7 +33,7 @@ msgid ""
 " The :class:`envs.ManagerBasedEnv` class is useful for traditional robot "
 "control and doesn't contain rewards and terminations."
 msgstr ""
-"环境将模拟的不同方面，如场景、观测和行动空间、重置事件等集合在一起，为各种应用程序创建一个连贯的接口。在Isaac Lab中，基于管理器的环境被实现为:"
+"环境将仿真的不同方面，如场景、观测和行动空间、重置事件等集合在一起，为各种应用程序创建一个连贯的接口。在Isaac Lab中，基于管理器的环境被实现为:"
 "  :class:`envs.ManagerBasedEnv` 和 :class:`envs.ManagerBasedRLEnv` "
 "类。这两个类非常相似，但 :class:`envs.ManagerBasedRLEnv` 对强化学习任务很有用，并包含奖励、中止、课程表和命令生成。 "
 ":class:`envs.ManagerBasedEnv` 类适用于传统的机器人控制，不包含奖励和中止条件。"
@@ -78,12 +78,12 @@ msgid ""
 "components:"
 msgstr ""
 ":class:`envs.ManagerBasedEnv` "
-"基类包含了模拟交互的许多复杂性，并为用户提供了一个简单的接口来运行模拟并与其交互。它由以下组件组成: "
+"基类包含了仿真交互的许多复杂性，并为用户提供了一个简单的接口来运行仿真并与其交互。它由以下组件组成: "
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:46
 msgid ""
 ":class:`scene.InteractiveScene` - The scene that is used for the simulation."
-msgstr ":class:`scene.InteractiveScene` - 用于模拟的场景。"
+msgstr ":class:`scene.InteractiveScene` - 用于仿真的场景。"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:47
 msgid ":class:`managers.ActionManager` - The manager that handles actions."
@@ -101,7 +101,7 @@ msgid ""
 " as domain randomization) at specified simulation events. For instance, at "
 "startup, on resets, or periodic intervals."
 msgstr ""
-":class:`managers.EventManager` - 安排操作（例如域随机化）在指定的模拟事件上执行。例如，启动时，重置时或定期间隔。"
+":class:`managers.EventManager` - 安排操作（例如域随机化）在指定的仿真事件上执行。例如，启动时，重置时或定期间隔。"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:52
 msgid ""
@@ -241,7 +241,7 @@ msgid ""
 "class that performs the event."
 msgstr ""
 ":class:`managers.EventManager` "
-"类负责对应于模拟状态的更改的事件。这包括重置（或随机化）场景、随机化物理特性（如质量、摩擦等）以及改变视觉特性（如颜色、纹理等）。每个事件都通过 "
+"类负责对应于仿真状态的更改的事件。这包括重置（或随机化）场景、随机化物理特性（如质量、摩擦等）以及改变视觉特性（如颜色、纹理等）。每个事件都通过 "
 ":class:`managers.EventTermCfg` 类来指定，该类采用 :attr:`managers.EventTermCfg.func` "
 "来指定执行事件的函数或可调用类。"
 
@@ -308,7 +308,7 @@ msgstr ""
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:161
 msgid "Running the simulation"
-msgstr "运行模拟"
+msgstr "运行仿真"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:163
 msgid ""
@@ -320,7 +320,7 @@ msgid ""
 " info dictionary which may contain additional information provided by the "
 "environment. These can be used by an agent for decision-making."
 msgstr ""
-"最后，我们再次访问模拟执行循环。现在，这非常简单，因为我们已经抽象出大部分细节到环境配置中。我们只需要调用 "
+"最后，我们再次访问仿真执行循环。现在，这非常简单，因为我们已经抽象出大部分细节到环境配置中。我们只需要调用 "
 ":meth:`envs.ManagerBasedEnv.reset` 方法来重置环境，以及在 "
 ":meth:`envs.ManagerBasedEnv.step` "
 "方法中步进环境。这两个函数都会返回观测和信息字典，后者可能包含环境提供的其他信息。智能体可以使用这些信息做决策。"
@@ -333,7 +333,7 @@ msgid ""
 "environment. In this tutorial, we reset the simulation at regular intervals."
 msgstr ""
 ":class:`envs.ManagerBasedEnv` "
-"类没有任何中止概念，因为该概念对于周期性任务是特定的。因此，用户需要负责为环境定义终止条件。在本教程中，我们定期重置模拟。"
+"类没有任何中止概念，因为该概念对于周期性任务是特定的。因此，用户需要负责为环境定义终止条件。在本教程中，我们定期重置仿真。"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:178
 msgid ""
@@ -344,8 +344,8 @@ msgid ""
 "PyTorch's autograd engine and gradients are not computed for the simulation "
 "operations."
 msgstr ""
-"上面需要注意的一个重要事项是整个模拟循环包含在 :meth:`torch.inference_mode` "
-"上下文管理器中。这是因为环境在幕后使用PyTorch操作，我们希望确保模拟不会因PyTorch的自动求导引擎的开销而变慢，也不会为模拟操作计算梯度。"
+"上面需要注意的一个重要事项是整个仿真循环包含在 :meth:`torch.inference_mode` "
+"上下文管理器中。这是因为环境在幕后使用PyTorch操作，我们希望确保仿真不会因PyTorch的自动求导引擎的开销而变慢，也不会为仿真操作计算梯度。"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:185
 msgid "The Code Execution"
@@ -365,7 +365,7 @@ msgid ""
 "named ``\"Isaac Lab\"``. This window contains different UI elements that can"
 " be used for debugging and visualization."
 msgstr ""
-"这会打开一个具有地平面、光源和cartpoles的场景。模拟应该正在进行中，并对cartpole进行随机动作。此外，它还在屏幕右下角打开一个名为 "
+"这会打开一个具有地平面、光源和cartpoles的场景。仿真应该正在进行中，并对cartpole进行随机动作。此外，它还在屏幕右下角打开一个名为 "
 "``\"Isaac Lab\"`` 的UI窗口。此窗口包含不同的UI元素，可用于调试和可视化。"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:-1
@@ -376,7 +376,7 @@ msgstr "create_cartpole_base_env.py的结果"
 msgid ""
 "To stop the simulation, you can either close the window, or press ``Ctrl+C``"
 " in the terminal where you started the simulation."
-msgstr "要停止模拟，可以关闭窗口，或在启动模拟的终端中按 ``Ctrl+C`` 。"
+msgstr "要停止仿真，可以关闭窗口，或在启动仿真的终端中按 ``Ctrl+C`` 。"
 
 #: ../../source/tutorials/03_envs/create_manager_base_env.rst:207
 msgid ""

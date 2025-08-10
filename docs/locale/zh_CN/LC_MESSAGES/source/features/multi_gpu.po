@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-03 13:58+0800\n"
+"POT-Creation-Date: 2025-08-10 09:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -43,45 +43,172 @@ msgid "Multi-GPU Training"
 msgstr "多GPU训练"
 
 #: ../../source/features/multi_gpu.rst:19
-msgid ""
-"For complex reinforcement learning environments, it may be desirable to "
-"scale up training across multiple GPUs. This is possible in Isaac Lab "
-"through the use of the `PyTorch distributed "
-"<https://pytorch.org/docs/stable/distributed.html>`_ framework or the `JAX "
-"distributed <https://jax.readthedocs.io/en/latest/jax.distributed.html>`_ "
-"module respectively."
-msgstr ""
-"对于复杂的强化学习环境，可能希望跨多个GPU扩展训练。在Isaac Lab中可以通过分别使用 `PyTorch分布式 "
-"<https://pytorch.org/docs/stable/distributed.html>`_ 框架或者 `JAX distributed "
-"<https://jax.readthedocs.io/en/latest/jax.distributed.html>`_ 模块来实现这一点。"
+msgid "Isaac Lab supports the following multi-GPU training frameworks:"
+msgstr "Isaac Lab 支持以下多GPU训练框架: "
 
-#: ../../source/features/multi_gpu.rst:24
+#: ../../source/features/multi_gpu.rst:21
 msgid ""
-"In PyTorch, the :meth:`torch.distributed` API is used to launch multiple "
-"processes of training, where the number of processes must be equal to or "
-"less than the number of GPUs available. Each process runs on a dedicated GPU"
-" and launches its own instance of Isaac Sim and the Isaac Lab environment. "
-"Each process collects its own rollouts during the training process and has "
-"its own copy of the policy network. During training, gradients are "
-"aggregated across the processes and broadcasted back to the process at the "
-"end of the epoch."
+"`Torchrun <https://docs.pytorch.org/docs/stable/elastic/run.html>`_ through "
+"`PyTorch distributed <https://pytorch.org/docs/stable/distributed.html>`_"
 msgstr ""
-":meth:`torch.distributed` "
-"在PyTorch中，API用于启动多个训练进程，其中进程的数量必须等于或小于可用的GPU数量。每个进程在专用GPU上运行，并启动其自己的Isaac "
-"Sim和Isaac Lab环境实例。在训练过程中，梯度在进程之间汇总，并在周期结束时广播回进程。"
+"`Torchrun <https://docs.pytorch.org/docs/stable/elastic/run.html>`_ 通过 "
+"`PyTorch distributed <https://pytorch.org/docs/stable/distributed.html>`_"
+
+#: ../../source/features/multi_gpu.rst:22
+msgid ""
+"`JAX distributed "
+"<https://jax.readthedocs.io/en/latest/jax.distributed.html>`_"
+msgstr ""
+"`JAX distributed "
+"<https://jax.readthedocs.io/en/latest/jax.distributed.html>`_"
+
+#: ../../source/features/multi_gpu.rst:25
+msgid "Pytorch Torchrun Implementation"
+msgstr "Pytorch Torchrun 实现"
+
+#: ../../source/features/multi_gpu.rst:27
+msgid ""
+"We are using `Pytorch Torchrun "
+"<https://docs.pytorch.org/docs/stable/elastic/run.html>`_ to manage multi-"
+"GPU training. Torchrun manages the distributed training by:"
+msgstr ""
+"我们正在使用 `PyTorch Torchrun "
+"<https://docs.pytorch.org/docs/stable/elastic/run.html>`_ 来管理多GPU训练。Torchrun"
+" 通过以下方式管理分布式训练: "
+
+#: ../../source/features/multi_gpu.rst:30
+msgid ""
+"**Process Management**: Launching one process per GPU, where each process is"
+" assigned to a specific GPU."
+msgstr "**进程管理**: 为每个GPU启动一个进程，其中每个进程分配给特定的GPU。"
 
 #: ../../source/features/multi_gpu.rst:31
 msgid ""
-"In JAX, since the ML framework doesn't automatically start multiple "
-"processes from a single program invocation, the skrl library provides a "
-"module to start them."
-msgstr "在JAX中，由于机器学习框架不会自动从单个程序调用中启动多个进程，skrl库提供了一个模块来启动它们。"
+"**Script Execution**: Running the same training script (e.g., RL Games "
+"trainer) on each process."
+msgstr "**脚本执行**: 在每个进程上运行相同的训练脚本（例如，RL Games 训练器）。"
+
+#: ../../source/features/multi_gpu.rst:32
+msgid ""
+"**Environment Instances**: Each process creates its own instance of the "
+"Isaac Lab environment."
+msgstr "**环境实例**: 每个进程都会创建自己的 Isaac Lab 环境实例。"
+
+#: ../../source/features/multi_gpu.rst:33
+msgid ""
+"**Gradient Synchronization**: Aggregating gradients across all processes and"
+" broadcasting the synchronized gradients back to each process after each "
+"training step."
+msgstr "**梯度同步**: 在每个训练步骤后聚合所有进程的梯度，并将同步的梯度广播回每个进程。"
+
+#: ../../source/features/multi_gpu.rst:37
+msgid ""
+"Check out this `3 minute youtube video from PyTorch "
+"<https://www.youtube.com/watch?v=Cvdhwx-"
+"OBBo&list=PL_lsbAsL_o2CSuhUhJIiW0IkdT5C2wGWj&index=2>`_ to understand how "
+"Torchrun works."
+msgstr ""
+"请查看这个 `PyTorch 的 3 分钟 YouTube 视频 <https://www.youtube.com/watch?v=Cvdhwx-"
+"OBBo&list=PL_lsbAsL_o2CSuhUhJIiW0IkdT5C2wGWj&index=2>`_ ，了解 Torchrun 的工作原理。"
+
+#: ../../source/features/multi_gpu.rst:40
+msgid "The key components in this setup are:"
+msgstr "这个设置中的关键组件是: "
+
+#: ../../source/features/multi_gpu.rst:42
+msgid ""
+"**Torchrun**: Handles process spawning, communication, and gradient "
+"synchronization."
+msgstr "**Torchrun**: 处理进程生成、通信和梯度同步。"
+
+#: ../../source/features/multi_gpu.rst:43
+msgid ""
+"**RL Library**: The reinforcement learning library that runs the actual "
+"training algorithm."
+msgstr "**RL 库**: 运行实际训练算法的强化学习库。"
+
+#: ../../source/features/multi_gpu.rst:44
+msgid ""
+"**Isaac Lab**: Provides the simulation environment that each process "
+"instantiates independently."
+msgstr "**Isaac Lab**: 提供每个过程独立实例化的仿真环境。"
+
+#: ../../source/features/multi_gpu.rst:46
+msgid ""
+"Under the hood, Torchrun uses the `DistributedDataParallel "
+"<https://docs.pytorch.org/docs/2.7/notes/ddp.html#internal-design>`_ module "
+"to manage the distributed training. When training with multiple GPUs using "
+"Torchrun, the following happens:"
+msgstr ""
+"在幕后，Torchrun 使用 `DistributedDataParallel "
+"<https://docs.pytorch.org/docs/2.7/notes/ddp.html#internal-design>`_ "
+"模块来管理分布式训练。使用 Torchrun 在多个 GPU 上训练时，会出现以下情况: "
+
+#: ../../source/features/multi_gpu.rst:49
+msgid "Each GPU runs an independent process"
+msgstr "每个 GPU 运行独立的进程。"
+
+#: ../../source/features/multi_gpu.rst:50
+msgid "Each process executes the full training script"
+msgstr "每个进程执行完整训练脚本"
+
+#: ../../source/features/multi_gpu.rst:51
+msgid "Each process maintains its own:"
+msgstr "每个进程都保持自己的: "
+
+#: ../../source/features/multi_gpu.rst:53
+msgid "Isaac Lab environment instance (with *n* parallel environments)"
+msgstr "Isaac Lab 环境实例（具有 *n* 个并行环境）"
+
+#: ../../source/features/multi_gpu.rst:54
+msgid "Policy network copy"
+msgstr "策略网络复制"
+
+#: ../../source/features/multi_gpu.rst:55
+msgid "Experience buffer for rollout collection"
+msgstr "用于rollout收集的经验缓冲区"
+
+#: ../../source/features/multi_gpu.rst:57
+msgid "All processes synchronize only for gradient updates"
+msgstr "所有进程仅在梯度更新时进行同步"
+
+#: ../../source/features/multi_gpu.rst:59
+msgid ""
+"For a deeper dive into how Torchrun works, checkout `PyTorch Docs: "
+"DistributedDataParallel - Internal Design "
+"<https://pytorch.org/docs/stable/notes/ddp.html#internal-design>`_."
+msgstr ""
+"要深入了解 Torchrun 的工作原理，请查看 `PyTorch Docs: DistributedDataParallel - Internal "
+"Design <https://pytorch.org/docs/stable/notes/ddp.html#internal-design>`_ 。"
+
+#: ../../source/features/multi_gpu.rst:63
+msgid "Jax Implementation"
+msgstr "Jax 实现"
+
+#: ../../source/features/multi_gpu.rst:66
+msgid "JAX is only supported with the skrl library."
+msgstr "JAX 仅支持 skrl 库。"
+
+#: ../../source/features/multi_gpu.rst:68
+msgid ""
+"With JAX, we are using `skrl.utils.distributed.jax "
+"<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ Since "
+"the ML framework doesn't automatically start multiple processes from a "
+"single program invocation, the skrl library provides a module to start them."
+msgstr ""
+"使用 JAX，我们正在使用 `skrl.utils.distributed.jax "
+"<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ "
+"。由于机器学习框架不会自动从单个程序调用启动多个进程，所以 skrl 库提供了一个模块来启动它们。"
 
 #: ../../source/features/multi_gpu.rst:-1
 msgid "Multi-GPU training paradigm"
 msgstr "多GPU训练范式"
 
-#: ../../source/features/multi_gpu.rst:48
+#: ../../source/features/multi_gpu.rst:87
+msgid "Running Multi-GPU Training"
+msgstr "运行多GPU训练"
+
+#: ../../source/features/multi_gpu.rst:89
 msgid ""
 "To train with multiple GPUs, use the following command, where "
 "``--nproc_per_node`` represents the number of available GPUs:"
@@ -107,18 +234,18 @@ msgstr "PyTorch"
 msgid "JAX"
 msgstr "JAX"
 
-#: ../../source/features/multi_gpu.rst:87
+#: ../../source/features/multi_gpu.rst:128
 msgid "Multi-Node Training"
 msgstr "多节点训练"
 
-#: ../../source/features/multi_gpu.rst:89
+#: ../../source/features/multi_gpu.rst:130
 msgid ""
 "To scale up training beyond multiple GPUs on a single machine, it is also "
 "possible to train across multiple nodes. To train across multiple "
 "nodes/machines, it is required to launch an individual process on each node."
 msgstr "要在单台计算机上跨多个GPU扩展训练，还可以在多个节点上训练。要在多个节点/机器上训练，需要在每个节点上启动一个单独的进程。"
 
-#: ../../source/features/multi_gpu.rst:92
+#: ../../source/features/multi_gpu.rst:133
 msgid ""
 "For the master node, use the following command, where ``--nproc_per_node`` "
 "represents the number of available GPUs, and ``--nnodes`` represents the "
@@ -126,18 +253,18 @@ msgid ""
 msgstr ""
 "对于主节点，请使用以下命令，其中 ``--nproc_per_node`` 表示可用的GPU数量， ``--nnodes`` 表示节点的数量: "
 
-#: ../../source/features/multi_gpu.rst:131
+#: ../../source/features/multi_gpu.rst:172
 msgid ""
 "Note that the port (``5555``) can be replaced with any other available port."
 msgstr "注意，端口（ ``5555`` ）可以更换为任何其他可用端口。"
 
-#: ../../source/features/multi_gpu.rst:133
+#: ../../source/features/multi_gpu.rst:174
 msgid ""
 "For non-master nodes, use the following command, replacing ``--node_rank`` "
 "with the index of each machine:"
 msgstr "对于非主节点，请使用以下命令，将 ``--node_rank`` 替换为每台机器的索引: "
 
-#: ../../source/features/multi_gpu.rst:171
+#: ../../source/features/multi_gpu.rst:212
 msgid ""
 "For more details on multi-node training with PyTorch, please visit the "
 "`PyTorch documentation "
@@ -154,7 +281,7 @@ msgstr ""
 "<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ 和 `JAX "
 "文档 <https://jax.readthedocs.io/en/latest/multi_process.html>`_ 。"
 
-#: ../../source/features/multi_gpu.rst:179
+#: ../../source/features/multi_gpu.rst:220
 msgid ""
 "As mentioned in the PyTorch documentation, \"multi-node training is "
 "bottlenecked by inter-node communication latencies\". When this latency is "

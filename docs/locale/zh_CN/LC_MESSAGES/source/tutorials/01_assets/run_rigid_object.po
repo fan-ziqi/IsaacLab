@@ -30,7 +30,7 @@ msgid ""
 " in Isaac Lab."
 msgstr ""
 "在以前的教程中，我们学习了独立脚本的基本工作原理以及如何将不同的对象（或 *对象* "
-"）生成到模拟中。本教程展示了如何创建和与刚性物体交互。为此，我们将使用 Isaac Lab 中提供的 "
+"）生成到仿真中。本教程展示了如何创建和与刚性物体交互。为此，我们将使用 Isaac Lab 中提供的 "
 ":class:`assets.RigidObject` 类。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:14
@@ -57,7 +57,7 @@ msgid ""
 "In this script, we split the ``main`` function into two separate functions, "
 "which highlight the two main steps of setting up any simulation in the "
 "simulator:"
-msgstr "在此脚本中，我们将 ``main`` 函数拆分为两个单独的函数，这两个函数强调了在模拟器中设置任何模拟的两个主要步骤: "
+msgstr "在此脚本中，我们将 ``main`` 函数拆分为两个单独的函数，这两个函数强调了在仿真器中设置任何仿真的两个主要步骤: "
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:33
 msgid ""
@@ -70,7 +70,7 @@ msgid ""
 "**Run simulation**: This part is responsible for stepping the simulator, "
 "interacting with the prims in the scene, e.g., changing their poses, and "
 "applying any commands to them."
-msgstr "**运行模拟**: 这部分负责推进模拟器，与场景中的对象交互，例如改变它们的姿势，并对其施加任何命令。"
+msgstr "**运行仿真**: 这部分负责推进仿真器，与场景中的对象交互，例如改变它们的姿势，并对其施加任何命令。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:37
 msgid ""
@@ -81,7 +81,7 @@ msgid ""
 "unexpected behaviors. However, the prims can be interacted with through "
 "their respective handles."
 msgstr ""
-"这两个步骤之间的区别是必需的，因为只有在第一步完成并且模拟器被重置后，第二步才会发生。一旦模拟器被重置（自动播放模拟），就不应该再向场景中添加新的（带有物理效果）对象，因为这可能会导致意外行为。但是，可以通过它们各自的句柄与对象进行交互。"
+"这两个步骤之间的区别是必需的，因为只有在第一步完成并且仿真器被重置后，第二步才会发生。一旦仿真器被重置（自动播放仿真），就不应该再向场景中添加新的（带有物理效果）对象，因为这可能会导致意外行为。但是，可以通过它们各自的句柄与对象进行交互。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:44
 msgid "Designing the scene"
@@ -112,7 +112,7 @@ msgstr ""
 "在本教程中，我们使用与 :ref:`Spawn Objects <tutorial-spawn-prims>` "
 "教程中刚性锥体类似的生成配置创建一个圆锥形刚性物体。唯一的区别是现在我们将生成配置封装到 :class:`assets.RigidObjectCfg` "
 "类中。该类包含有关资产生成策略、默认初始状态和其他元信息的信息。当将此类传递给 :class:`assets.RigidObject` "
-"类时，当播放模拟时，它会生成对象并初始化相应的物理句柄。"
+"类时，当播放仿真时，它会生成对象并初始化相应的物理句柄。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:57
 #, python-brace-format
@@ -140,12 +140,12 @@ msgid ""
 "convenient way to handle multiple scene entities using the "
 ":class:`scene.InteractiveScene` class."
 msgstr ""
-"因为我们想要与刚性物体交互，我们将此实体传递回主函数。然后，该实体用于在模拟循环中与刚性物体交互。在后续教程中，我们将看到如何使用 "
+"因为我们想要与刚性物体交互，我们将此实体传递回主函数。然后，该实体用于在仿真循环中与刚性物体交互。在后续教程中，我们将看到如何使用 "
 ":class:`scene.InteractiveScene` 类更方便地处理多个场景实体。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:80
 msgid "Running the simulation loop"
-msgstr "运行模拟循环"
+msgstr "运行仿真循环"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:82
 msgid ""
@@ -155,11 +155,11 @@ msgid ""
 "the convenience of this tutorial, we extract the rigid object's entity from "
 "the scene dictionary and store it in a variable."
 msgstr ""
-"我们修改了模拟循环以与刚性物体交互，包括三个步骤——在固定间隔重置模拟状态，推进模拟，以及更新刚性物体的内部缓冲区。为了方便本教程，我们从场景字典中提取刚性物体的实体并将其存储在一个变量中。"
+"我们修改了仿真循环以与刚性物体交互，包括三个步骤——在固定间隔重置仿真状态，推进仿真，以及更新刚性物体的内部缓冲区。为了方便本教程，我们从场景字典中提取刚性物体的实体并将其存储在一个变量中。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:88
 msgid "Resetting the simulation state"
-msgstr "重置模拟状态"
+msgstr "重置仿真状态"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:90
 msgid ""
@@ -171,8 +171,8 @@ msgid ""
 "parent Xform prim's frame. Thus, we need to transform desired state of the "
 "rigid object prim into the world frame before setting it."
 msgstr ""
-"为了重置生成的刚性物体对象的模拟状态，我们需要设置其姿势和速度。它们共同定义了生成的刚性物体对象的根状态。重要的是要注意，此状态定义在 "
-"**模拟世界坐标系** 中，而不是它们父级 Xform 对象的坐标系。这是因为物理引擎只能理解世界坐标系，而不能理解父级 Xform "
+"为了重置生成的刚性物体对象的仿真状态，我们需要设置其姿势和速度。它们共同定义了生成的刚性物体对象的根状态。重要的是要注意，此状态定义在 "
+"**仿真世界坐标系** 中，而不是它们父级 Xform 对象的坐标系。这是因为物理引擎只能理解世界坐标系，而不能理解父级 Xform "
 "对象的坐标系。因此，在设置之前，我们需要将刚性物体对象的期望状态转换为世界坐标系。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:96
@@ -192,11 +192,11 @@ msgstr ""
 "属性中配置，我们在本教程中将其保留为单位状态。然后，我们随机化根状态的平移，并使用 "
 ":meth:`assets.RigidObject.write_root_pose_to_sim` 和 "
 ":meth:`assets.RigidObject.write_root_velocity_to_sim` "
-"方法设置刚性物体对象的期望状态。顾名思义，此方法将刚性物体对象的根状态写入模拟缓冲区。"
+"方法设置刚性物体对象的期望状态。顾名思义，此方法将刚性物体对象的根状态写入仿真缓冲区。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:108
 msgid "Stepping the simulation"
-msgstr "推进模拟"
+msgstr "推进仿真"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:110
 msgid ""
@@ -206,8 +206,8 @@ msgid ""
 "tutorial, we do not apply any external forces to the rigid object, so this "
 "method is not necessary. However, it is included for completeness."
 msgstr ""
-"在推进模拟之前，我们执行 :meth:`assets.RigidObject.write_data_to_sim` "
-"方法。此方法将其他数据，例如外部力，写入模拟缓冲区。在本教程中，我们没有对刚性物体施加任何外部力，因此此方法不是必需的。但是，为了完整性，我们还是加入了它。"
+"在推进仿真之前，我们执行 :meth:`assets.RigidObject.write_data_to_sim` "
+"方法。此方法将其他数据，例如外部力，写入仿真缓冲区。在本教程中，我们没有对刚性物体施加任何外部力，因此此方法不是必需的。但是，为了完整性，我们还是加入了它。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:120
 msgid "Updating the state"
@@ -220,7 +220,7 @@ msgid ""
 ":class:`assets.RigidObject.data` attribute. This is done using the "
 ":meth:`assets.RigidObject.update` method."
 msgstr ""
-"在推进模拟后，我们使用 :meth:`assets.RigidObject.update` 方法更新刚性物体对象的内部缓冲区，以反映其在 "
+"在推进仿真后，我们使用 :meth:`assets.RigidObject.update` 方法更新刚性物体对象的内部缓冲区，以反映其在 "
 ":class:`assets.RigidObject.data` 属性中的新状态。"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:132
@@ -240,7 +240,7 @@ msgid ""
 "the ground. To stop the simulation, you can either close the window, or "
 "press the ``STOP`` button in the UI, or press ``Ctrl+C`` in the terminal"
 msgstr ""
-"这应该打开一个场景，上面有一个地面平面、灯光和几个绿色圆锥体。圆锥体应该从一个随机高度掉落并落到地面上。要停止模拟，你可以关闭窗口，或者在 UI 中按下"
+"这应该打开一个场景，上面有一个地面平面、灯光和几个绿色圆锥体。圆锥体应该从一个随机高度掉落并落到地面上。要停止仿真，你可以关闭窗口，或者在 UI 中按下"
 " ``STOP`` 按钮，或者在终端中按下 ``Ctrl+C``"
 
 #: ../../source/tutorials/01_assets/run_rigid_object.rst:-1

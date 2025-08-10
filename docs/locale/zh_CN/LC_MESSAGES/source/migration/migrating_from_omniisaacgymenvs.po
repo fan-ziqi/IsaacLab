@@ -60,7 +60,7 @@ msgstr ""
 "类 :class:`~isaaclab.utils.configclass` 来指定。 "
 ":class:`~isaaclab.utils.configclass` 模块提供了对 Python 的 ``dataclasses`` "
 "模块的包装。每个环境都应该指定自己的配置类，配置类使用 ``@configclass`` 注释，并继承自 "
-":class:`~envs.DirectRLEnvCfg` 类，其中可以包括模拟参数、环境场景参数、机器人参数和特定于任务的参数。"
+":class:`~envs.DirectRLEnvCfg` 类，其中可以包括仿真参数、环境场景参数、机器人参数和特定于任务的参数。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:30
 msgid "Below is an example skeleton of a task config class:"
@@ -68,7 +68,7 @@ msgstr "下面是任务配置类的示例骨架: "
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:56
 msgid "Simulation Config"
-msgstr "模拟配置"
+msgstr "仿真配置"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:58
 msgid ""
@@ -79,8 +79,8 @@ msgid ""
 "variable named ``sim`` defined that holds the type "
 ":class:`~isaaclab.sim.SimulationCfg`."
 msgstr ""
-"与模拟相关的参数是作为 :class:`~isaaclab.sim.SimulationCfg` 类的一部分进行定义的，这是一个 "
-":class:`~isaaclab.utils.configclass` 模块，包含模拟参数，如 ``dt`` ， ``device`` 和 "
+"与仿真相关的参数是作为 :class:`~isaaclab.sim.SimulationCfg` 类的一部分进行定义的，这是一个 "
+":class:`~isaaclab.utils.configclass` 模块，包含仿真参数，如 ``dt`` ， ``device`` 和 "
 "``gravity`` 。每个任务配置必须定义一个名为 ``sim`` 的变量，它包含类型 "
 ":class:`~isaaclab.sim.SimulationCfg` 。"
 
@@ -107,8 +107,8 @@ msgid ""
 "buffer dimensions."
 msgstr ""
 "在使用 GPU 运行仿真时，PhysX "
-"中的缓冲区需要预先分配，用于计算和存储诸如接触、碰撞和聚合对等信息。这些缓冲区可能需要根据环境复杂性、预期接触和碰撞数量以及环境中的演员数量进行调整。 "
-":class:`~isaaclab.sim.PhysxCfg` 类提供了设置 GPU 缓冲区尺寸的访问功能。"
+"中的缓冲区需要预先分配，用于计算和存储诸如接触、碰撞和聚合对等信息。这些缓冲区可能需要根据环境复杂性、预期接触和碰撞数量以及环境中的actors数量进行调整。"
+" :class:`~isaaclab.sim.PhysxCfg` 类提供了设置 GPU 缓冲区尺寸的访问功能。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst
 msgid "# OmniIsaacGymEnvs"
@@ -593,7 +593,7 @@ msgid ""
 "parameters, actuator properties, and initial states."
 msgstr ""
 "在Isaac Lab中，每个关节和刚体角色都可以有自己的配置类。 :class:`~isaaclab.assets.ArticulationCfg` "
-"类可用于定义关节角色的参数，包括文件路径、模拟参数、执行器属性和初始状态。"
+"类可用于定义关节角色的参数，包括文件路径、仿真参数、执行器属性和初始状态。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:309
 msgid ""
@@ -611,9 +611,9 @@ msgid ""
 msgstr ""
 "在 :class:`~assets.ArticulationCfg` 中， ``spawn`` "
 "属性可用于通过指定机器人文件的路径将机器人添加到场景中。此外， "
-":class:`~isaaclab.sim.schemas.RigidBodyPropertiesCfg` 类可用于为关节中的刚体指定模拟属性。同样， "
+":class:`~isaaclab.sim.schemas.RigidBodyPropertiesCfg` 类可用于为关节中的刚体指定仿真属性。同样， "
 ":class:`~isaaclab.sim.schemas.ArticulationRootPropertiesCfg` "
-"类可用于指定关节的模拟属性。使用 :class:`~actuators.ImplicitActuatorCfg` ，关节属性现在作为 "
+"类可用于指定关节的仿真属性。使用 :class:`~actuators.ImplicitActuatorCfg` ，关节属性现在作为 "
 "``actuators`` 字典的一部分进行指定。具有相同属性的关节可以被分组成正则表达式或提供为名称或表达式的列表。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:317
@@ -630,11 +630,11 @@ msgstr ""
 "``self.cfg.robot_cfg`` 是一个 :class:`~assets.ArticulationCfg` "
 "对象。初始化后，它们也应该被添加到 :class:`~scene.InteractiveScene` 中，通过调用 "
 "``self.scene.articulations[\"cartpole\"] = self.cartpole`` ，以便 "
-":class:`~scene.InteractiveScene` 可以遍历场景中的角色，以便向模拟写入值并进行重置。"
+":class:`~scene.InteractiveScene` 可以遍历场景中的角色，以便向仿真写入值并进行重置。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:325
 msgid "Accessing States from Simulation"
-msgstr "从模拟中获取状态"
+msgstr "从仿真中获取状态"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:327
 msgid ""
@@ -739,7 +739,7 @@ msgid ""
 "this point, simulation has already started."
 msgstr ""
 "在Isaac Lab中，不再需要 ``post_reset`` API。以前在 ``post_reset`` 中完成的所有操作都可以在执行基类的 "
-"``__init__`` 方法后在 ``__init__`` 方法中完成。此时，模拟已经开始。"
+"``__init__`` 方法后在 ``__init__`` 方法中完成。此时，仿真已经开始。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:423
 msgid ""
@@ -755,7 +755,7 @@ msgid ""
 msgstr ""
 "在OmniIsaacGymEnvs中，由于GPU API的限制，不能根据当前步骤的状态进行重置。所以，重置必须在下一个时间步骤的开始时执行。在Isaac"
 " "
-"Lab中，这个限制被消除了，因此这些任务可以按照正确的工作流程进行操作，包括应用动作、模拟步进、收集状态、计算完成标志、计算奖励、执行重置，最后计算观察。这个工作流程可以被框架自动执行，因此任务不需要"
+"Lab中，这个限制被消除了，因此这些任务可以按照正确的工作流程进行操作，包括应用动作、仿真步进、收集状态、计算完成标志、计算奖励、执行重置，最后计算观察。这个工作流程可以被框架自动执行，因此任务不需要"
 " ``post_physics_step`` API。但是，各个任务可以覆盖 ``step()`` API以控制工作流程。"
 
 #: ../../source/migration/migrating_from_omniisaacgymenvs.rst:430

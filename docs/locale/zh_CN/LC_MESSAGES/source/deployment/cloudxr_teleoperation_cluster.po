@@ -1,0 +1,236 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-10 09:49+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:4
+msgid "Deploying CloudXR Teleoperation on Kubernetes"
+msgstr "在 Kubernetes 上部署 CloudXR 远程操作"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:8
+msgid ""
+"This section explains how to deploy CloudXR Teleoperation for Isaac Lab on a"
+" Kubernetes (K8s) cluster."
+msgstr "本节将解释如何在 Kubernetes（K8s）集群上为 Isaac Lab 部署 CloudXR 远程操作。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:13
+msgid "System Requirements"
+msgstr "系统要求"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:15
+msgid ""
+"**Minimum requirement**: Kubernetes cluster with a node that has at least 1 "
+"NVIDIA RTX PRO 6000 / L40 GPU or equivalent"
+msgstr "**最低要求**: 具有至少1个NVIDIA RTX PRO 6000 / L40 GPU或等效的节点的Kubernetes集群"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:16
+msgid ""
+"**Recommended requirement**: Kubernetes cluster with a node that has at "
+"least 2 RTX PRO 6000 / L40 GPUs or equivalent"
+msgstr "**推荐要求**: Kubernetes 集群中至少有一个节点带有至少 2 个 RTX PRO 6000 / L40 GPU 或等效设备"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:19
+msgid "Software Dependencies"
+msgstr "软件依赖"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:21
+msgid "``kubectl`` on your host computer"
+msgstr "您宿主机上的 ``kubectl``"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:23
+msgid "If you use MicroK8s, you already have ``microk8s kubectl``"
+msgstr "如果您使用 MicroK8s，您已经安装了 ``microk8s kubectl``"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:24
+msgid ""
+"Otherwise follow the `official kubectl installation guide "
+"<https://kubernetes.io/docs/tasks/tools/#kubectl>`_"
+msgstr ""
+"否则请按照 `官方 kubectl 安装指南 <https://kubernetes.io/docs/tasks/tools/#kubectl>`_ 。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:26
+msgid "``helm`` on your host computer"
+msgstr "您宿主机上的 ``helm``"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:28
+msgid "If you use MicroK8s, you already have ``microk8s helm``"
+msgstr "如果您使用 MicroK8s，则已经拥有 ``microk8s helm`` 。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:29
+msgid ""
+"Otherwise follow the `official Helm installation guide "
+"<https://helm.sh/docs/intro/install/>`_"
+msgstr "否则按照 `官方Helm安装指南 <https://helm.sh/docs/intro/install/>`_ 进行操作。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:31
+msgid ""
+"Access to NGC public registry from your Kubernetes cluster, in particular "
+"these container images:"
+msgstr "从您的Kubernetes集群访问NGC公共注册表，特别是这些容器镜像: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:33
+msgid "``https://catalog.ngc.nvidia.com/orgs/nvidia/containers/isaac-lab``"
+msgstr "``https://catalog.ngc.nvidia.com/orgs/nvidia/containers/isaac-lab``"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:34
+msgid ""
+"``https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cloudxr-runtime``"
+msgstr ""
+"``https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cloudxr-runtime``"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:36
+msgid ""
+"NVIDIA GPU Operator or equivalent installed in your Kubernetes cluster to "
+"expose NVIDIA GPUs"
+msgstr "在您的Kubernetes集群中安装了NVIDIA GPU Operator或等效程序，以暴露NVIDIA GPUs。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:37
+msgid ""
+"NVIDIA Container Toolkit installed on the nodes of your Kubernetes cluster"
+msgstr "在您的 Kubernetes 集群节点上安装了 NVIDIA 容器工具包"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:40
+msgid "Preparation"
+msgstr "准备"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:42
+msgid ""
+"On your host computer, you should have already configured ``kubectl`` to "
+"access your Kubernetes cluster. To validate, run the following command and "
+"verify it returns your nodes correctly:"
+msgstr ""
+"在您的主机计算机上，您应该已经配置了 ``kubectl`` 来访问您的 Kubernetes 集群。要验证，运行以下命令并验证其正确返回您的节点: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:48
+msgid ""
+"If you are installing this to your own Kubernetes cluster instead of using "
+"the setup described in the :ref:`k8s-appendix`, your role in the K8s cluster"
+" should have at least the following RBAC permissions:"
+msgstr ""
+"如果您将其安装到自己的 Kubernetes 集群中，而不是使用 :ref:`k8s-appendix` 中描述的设置，请确保您在 K8s "
+"集群中的角色至少具有以下 RBAC 权限: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:69
+msgid "Installation"
+msgstr "安装"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:73
+msgid ""
+"The following steps are verified on a MicroK8s cluster with GPU Operator "
+"installed (see configurations in the :ref:`k8s-appendix`). You can configure"
+" your own K8s cluster accordingly if you encounter issues."
+msgstr ""
+"以下步骤已在安装了 GPU 运算符的 MicroK8s 集群上验证确认（请参见 :ref:`k8s-appendix` "
+"中的配置）。如果遇到问题，您可以相应地配置您自己的 K8s 集群。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:75
+msgid ""
+"Download the Helm chart from NGC (get your NGC API key based on the `public "
+"guide <https://docs.nvidia.com/ngc/ngc-overview/index.html#generating-api-"
+"key>`_):"
+msgstr ""
+"从 NGC 下载 Helm 图表（根据 `public guide <https://docs.nvidia.com/ngc/ngc-"
+"overview/index.html#generating-api-key>`_ 获取您的 NGC API 密钥）: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:83
+msgid ""
+"Install and run the CloudXR Teleoperation for Isaac Lab pod in the default "
+"namespace, consuming all host GPUs:"
+msgstr "安装并在默认命名空间中运行CloudXR Teleoperation for Isaac Lab pod，消耗所有主机GPUs: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:93
+msgid ""
+"You can remove the need for host network by creating an external "
+"LoadBalancer VIP (e.g., with MetalLB), and setting the environment variable "
+"``NV_CXR_ENDPOINT_IP`` when deploying the Helm chart:"
+msgstr ""
+"您可以通过创建外部LoadBalancer VIP（例如使用MetalLB）并在部署Helm chart时设置环境变量 "
+"``NV_CXR_ENDPOINT_IP`` 来消除对主机网络的需要。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:112
+msgid "Verify the deployment is completed:"
+msgstr "验证部署已完成: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:119
+msgid ""
+"After the pod is running, it might take approximately 5-8 minutes to "
+"complete loading assets and start streaming."
+msgstr "在 pod 运行后，可能需要大约 5-8 分钟来完成加载资产并开始流媒体。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:122
+msgid "Uninstallation"
+msgstr "卸载"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:124
+msgid "You can uninstall by simply running:"
+msgstr "您可以通过简单的运行来卸载: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:133
+msgid "Appendix: Setting Up a Local K8s Cluster with MicroK8s"
+msgstr "附录: 使用 MicroK8s 设置本地 K8s 集群"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:135
+msgid ""
+"Your local workstation should have the NVIDIA Container Toolkit and its "
+"dependencies installed. Otherwise, the following setup will not work."
+msgstr "您本地的工作站应该安装了 NVIDIA Container Toolkit 及其依赖项。否则，以下的设置将无法正常工作。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:138
+msgid "Cleaning Up Existing Installations (Optional)"
+msgstr "清理现有安装（可选）"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:150
+msgid "Installing MicroK8s"
+msgstr "安装 MicroK8s"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:157
+msgid "Installing NVIDIA GPU Operator"
+msgstr "安装 NVIDIA GPU Operator"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:177
+msgid ""
+"If you have configured the GPU operator to use volume mounts for "
+"``DEVICE_LIST_STRATEGY`` on the device plugin and disabled "
+"``ACCEPT_NVIDIA_VISIBLE_DEVICES_ENVVAR_WHEN_UNPRIVILEGED`` on the toolkit, "
+"this configuration is currently unsupported, as there is no method to ensure"
+" the assigned GPU resource is consistently shared between containers of the "
+"same pod."
+msgstr ""
+"如果您已经配置GPU运算符以在设备插件上使用卷挂载作为 ``DEVICE_LIST_STRATEGY`` ，并在工具包上禁用了 "
+"``ACCEPT_NVIDIA_VISIBLE_DEVICES_ENVVAR_WHEN_UNPRIVILEGED`` "
+"，则此配置当前不受支持，因为没有确保分配的GPU资源在同一Pod容器之间始终共享的方法。"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:180
+msgid "Verifying Installation"
+msgstr "验证安装"
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:182
+msgid ""
+"Run the following command to verify that all pods are running correctly:"
+msgstr "运行以下命令来验证所有的 pods 是否运行正确: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:188
+msgid "You should see output similar to:"
+msgstr "你应该看到类似的输出: "
+
+#: ../../source/deployment/cloudxr_teleoperation_cluster.rst:204
+msgid ""
+"Once all pods are running, you can proceed to the :ref:`k8s-installation` "
+"section."
+msgstr "一旦所有的Pod都在运行，您可以继续进入 :ref:`k8s-installation` 部分。"
