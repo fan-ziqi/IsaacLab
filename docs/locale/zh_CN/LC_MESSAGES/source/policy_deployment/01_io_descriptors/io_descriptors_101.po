@@ -67,21 +67,21 @@ msgid ""
 "exact same order as they appear in the managers. Making it easy to "
 "reconstruct them from the YAML file."
 msgstr ""
-"除此之外，IO描述符提供以下信息： - 所有关节的参数在关节中的关节。 - 一些仿真参数，包括仿真时间步长和策略时间步长。 - "
-"对于一些动作和观察项，它提供与动作/观察项中出现的关节名称或身体名称相同的顺序。 - 对于观察和动作项，它以与管理器中出现的完全相同的顺序提供这些项。 "
+"除此之外，IO描述符提供以下信息： - articulation中所有关节的参数。 - 一些仿真参数，包括仿真时间步长和策略时间步长。 - "
+"对于一些动作和观察项，它提供与动作/观察项中出现的关节名称或身体名称相同的顺序。 - 对于观察和动作项，它提供的项的顺序与管理器中出现的顺序完全一致。 "
 "使得可以轻松从YAML文件中重建它们。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:27
 msgid ""
 "Here is an example of what the action part of the YAML generated from the IO"
 " descriptors looks like for the Anymal-D robot:"
-msgstr "以下是从IO描述符生成的YAML文件中Anymal-D机器人动作部分的示例："
+msgstr "以下是Anymal-D机器人根据IO描述符生成的YAML文件中动作部分的示例："
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:33
 msgid ""
 "Here is an example of what a portion of the observation part of the YAML "
 "generated from the IO descriptors looks like for the Anymal-D robot:"
-msgstr "以下是从 IO 描述符生成的 YAML 中观察部分的示例，展示了 Anymal-D 机器人的外观："
+msgstr "以下是Anymal-D机器人根据IO描述符生成的YAML文件中观测部分的示例片段："
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:43
 msgid ""
@@ -91,7 +91,7 @@ msgid ""
 "the action or observation term, the users need to look for the ``name`` key "
 "in the dictionaries."
 msgstr ""
-"这里需要注意的是，动作和观察项都以字典列表的形式返回，而不是字典字典的形式。这样做是为了确保项的顺序被保留。因此，要检索动作或观察项，用户需要在字典中查找 ``name`` 键。"
+"需要特别说明的是：动作和观测术语均以字典列表的形式返回，而非字典的字典。这种设计可确保术语顺序的严格保留。因此，用户需要通过字典中的 ``name`` 键来检索特定动作或观测术语。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:47
 msgid ""
@@ -160,7 +160,7 @@ msgid ""
 " descriptor to this term. The IO descriptor is defined using the "
 "``@generic_io_descriptor`` decorator."
 msgstr ""
-"在这里，我们正在定义一个自定义观测项，称为 ``base_lin_vel`` ，用于计算机器人的根线速度。我们还将IO描述符附加到此项上。使用 ``@generic_io_descriptor`` 装饰器定义IO描述符。"
+"在这里，我们正在定义一个自定义观测项，称为 ``base_lin_vel`` ，用于计算机器人的root线速度。我们还将IO描述符附加到此项上。使用 ``@generic_io_descriptor`` 装饰器定义IO描述符。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:108
 msgid ""
@@ -170,7 +170,7 @@ msgid ""
 "provide extra information that could be useful for the end user:"
 msgstr ""
 "``@generic_io_descriptor`` 装饰器是一个特殊的装饰器，用于将 IO "
-"描述符附加到自定义观测项。它接受任意参数，用于描述观测项，在这种情况下，我们提供额外信息，可能对最终用户有用："
+"描述符附加到自定义观测项。它接受任意参数，用于描述观测项，在这种情况下，我们提供了可能对最终用户有用的额外信息。："
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:112
 msgid "``units``: The units of the observation term."
@@ -178,7 +178,7 @@ msgstr "``单位``: 观测项的单位。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:113
 msgid "``axes``: The axes of the observation term."
-msgstr "``axes``: 观测项的轴。"
+msgstr "``axes``: 观测项的坐标轴。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:114
 msgid "``observation_type``: The type of the observation term."
@@ -193,7 +193,7 @@ msgid ""
 "the observation term."
 msgstr ""
 "您还会注意到提供了 ``on_inspect`` 参数。 这是用于检查观测项的函数列表。 "
-"在这种情况下，我们使用 ``record_shape`` 和 ``record_dtype`` 函数来记录观测项输出的形状和数据类型。"
+"在本例中，我们使用 ``record_shape`` 和 ``record_dtype`` 函数来记录观测项输出的形状和数据类型。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:119
 msgid "These functions are defined like so:"
@@ -210,7 +210,7 @@ msgid ""
 "not change the signature of the observation term, so it can be used safely "
 "with the observation manager!"
 msgstr ""
-"他们始终将观测项的输出张量作为第一个参数，并将描述符作为第二个参数。在 ``kwargs`` 中提供了观测项所有的输入。除了 "
+"这些函数始终将观测项的输出张量作为第一个参数，描述符作为第二个参数。在 ``kwargs`` 中提供了观测项所有的输入。除了 "
 "``on_inspect`` 函数外，装饰器还会在后台调用一些函数来收集观测项的 ``name`` 、 ``description`` 和 "
 "``full_path`` 。请注意，添加这个装饰器不会改变观测项的签名，因此可以安全地与观测管理器一起使用！"
 
@@ -250,7 +250,7 @@ msgid ""
 " own custom observation terms! However, before we close this tutorial, let's"
 " take a look at how we can attach an IO descriptor to a custom action term."
 msgstr ""
-"有了这个想法，您现在应该能够将一个IO描述符附加到您自定义的观测项中!但是，在我们结束本教程之前，让我们看一下如何将IO描述符附加到自定义动作项中。"
+"有了这个想法，您现在应该能够将一个IO描述符附加到您自定义的观测项中! 但是，在我们结束本教程之前，让我们看一下如何将IO描述符附加到自定义动作项中。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:218
 msgid "Attaching IO Descriptors to Custom Action Terms"
@@ -284,7 +284,7 @@ msgid ""
 ":meth:`ActionTerm.IO_descriptor` property. Let's take a look at an example "
 "on how to add the joint names, scale, offset, and clip to the descriptor."
 msgstr ""
-"为了向描述符添加更多信息，我们需要重写 :meth:`ActionTerm.IO_descriptor` 属性。让我们看一个示例，了解如何向描述符添加关节名称、比例、偏移和裁剪。"
+"为了向描述符添加更多信息，我们需要重写 :meth:`ActionTerm.IO_descriptor` 属性。让我们看一个示例，了解如何向描述符添加关节名称、scale、offset和clip。"
 
 #: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:281
 msgid ""
