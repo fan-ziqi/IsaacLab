@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 21:53+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:2
+msgid "IO Descriptors 101"
+msgstr "IO 描述符 101"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:6
+msgid ""
+"In this tutorial, we will learn about IO descriptors, what they are, how to "
+"export them, and how to add them to your environments. We will use the "
+"Anymal-D robot as an example to demonstrate how to export IO descriptors "
+"from an environment, and use our own terms to demonstrate how to attach IO "
+"descriptors to custom action and observation terms."
+msgstr ""
+"在本教程中，我们将学习关于IO描述符的内容，它们是什么，如何导出它们，以及如何将它们添加到您的环境中。我们将以Anymal-"
+"D机器人为例进行演示，演示如何从环境中导出IO描述符，并使用我们自己的项演示如何将IO描述符附加到自定义动作和观测项。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:12
+msgid "What are IO Descriptors?"
+msgstr "什么是IO Descriptors？"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:14
+msgid ""
+"Before we dive into IO descriptors, let's first understand what they are and"
+" how they can be useful."
+msgstr "在深入研究IO描述符之前，让我们先了解它们是什么，以及它们如何有用。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:16
+msgid ""
+"IO descriptors are a way to describe the inputs and outputs of a policy "
+"trained using the ManagerBasedRLEnv in Isaac Lab. In other words, they "
+"describe the action and observation terms of a policy. This description is "
+"used to generate a YAML file that can be loaded in an external tool to run "
+"the policies without having to manually input the configuration of the "
+"action and observation terms."
+msgstr ""
+"IO 描述符是一种描述在 Isaac Lab 中使用 ManagerBasedRLEnv "
+"训练的策略的输入和输出的方法。换句话说，它们描述了策略的动作和观测项。该描述用于生成一个 YAML "
+"文件，可以在外部工具中加载，以便运行这些策略，而无需手动输入动作和观测项的配置。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:21
+msgid ""
+"In addition to this the IO Descriptors provide the following information: - "
+"The parameters of all the joints in the articulation. - Some simulation "
+"parameters including the simulation time step, and the policy time step. - "
+"For some action and observation terms, it provides the joint names or body "
+"names in the same order as they appear in the action/observation terms. - "
+"For both the observation and action terms, it provides the terms in the "
+"exact same order as they appear in the managers. Making it easy to "
+"reconstruct them from the YAML file."
+msgstr ""
+"除此之外，IO描述符提供以下信息： - 所有关节的参数在关节中的关节。 - 一些仿真参数，包括仿真时间步长和策略时间步长。 - "
+"对于一些动作和观察项，它提供与动作/观察项中出现的关节名称或身体名称相同的顺序。 - 对于观察和动作项，它以与管理器中出现的完全相同的顺序提供这些项。 "
+"使得可以轻松从YAML文件中重建它们。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:27
+msgid ""
+"Here is an example of what the action part of the YAML generated from the IO"
+" descriptors looks like for the Anymal-D robot:"
+msgstr "以下是从IO描述符生成的YAML文件中Anymal-D机器人动作部分的示例："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:33
+msgid ""
+"Here is an example of what a portion of the observation part of the YAML "
+"generated from the IO descriptors looks like for the Anymal-D robot:"
+msgstr "以下是从 IO 描述符生成的 YAML 中观察部分的示例，展示了 Anymal-D 机器人的外观："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:43
+msgid ""
+"Something to note here is that both the action and observation terms are "
+"returned as list of dictionaries, and not a dictionary of dictionaries. This"
+" is done to ensure the order of the terms is preserved. Hence, to retrieve "
+"the action or observation term, the users need to look for the ``name`` key "
+"in the dictionaries."
+msgstr ""
+"这里需要注意的是，动作和观察项都以字典列表的形式返回，而不是字典字典的形式。这样做是为了确保项的顺序被保留。因此，要检索动作或观察项，用户需要在字典中查找 ``name`` 键。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:47
+msgid ""
+"For example, in the following snippet, we are looking at the "
+"``projected_gravity`` observation term. The ``name`` key is used to identify"
+" the term. The ``full_path`` key is used to provide an explicit path to the "
+"function in Isaac Lab's source code that is used to compute this term. Some "
+"flags like ``mdp_type`` and ``observation_type`` are also provided, these "
+"don't have any functional impact. They are here to inform the user that this"
+" is the category this term belongs to."
+msgstr ""
+"例如，在以下代码段中，我们正在查看 ``projected_gravity`` 观测项。 ``name`` 键用于标识该项。 "
+"``full_path`` 键用于提供到Isaac "
+"Lab源代码中用于计算该项的函数的明确路径。还提供了一些标志，如 ``mdp_type`` 和 ``observation_type`` ，它们不具有任何功能影响。它们在这里是为了向用户通知此项属于哪个类别。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:59
+msgid "Exporting IO Descriptors from an Environment"
+msgstr "从环境中导出IO描述符"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:61
+msgid ""
+"In this section, we will cover how to export IO descriptors from an "
+"environment. Keep in mind that this feature is only available to the manager"
+" based RL environments."
+msgstr "在这一节中，我们将讨论如何从环境中导出IO描述符。请记住，此功能仅适用于基于管理器的RL环境。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:64
+msgid ""
+"If a policy has already been trained using a given configuration, then the "
+"IO descriptors can be exported using:"
+msgstr "如果已经使用给定配置对策略进行了训练，那么可以使用以下方法导出IO描述符："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:70
+msgid ""
+"For example, if we want to export the IO descriptors for the Anymal-D robot,"
+" we can run:"
+msgstr "例如，如果我们想要导出 Anymal-D 机器人的 IO 描述符，我们可以运行："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:76
+msgid ""
+"When training a policy, it is also possible to request the IO descriptors to"
+" be exported at the beginning of the training. This can be done by setting "
+"the ``export_io_descriptors`` flag in the command line."
+msgstr "在训练策略时，也可以在训练开始时请求导出IO描述符。这可以通过在命令行中设置 ``export_io_descriptors`` 标志来实现。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:88
+msgid "Attaching IO Descriptors to Custom Observation Terms"
+msgstr "将IO描述符附加到自定义观察项"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:90
+msgid ""
+"In this section, we will cover how to attach IO descriptors to custom "
+"observation terms."
+msgstr "在这个部分，我们将讨论如何将IO描述符附加到自定义观察项。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:92
+msgid ""
+"Let's take a look at how we can attach an IO descriptor to a simple "
+"observation term:"
+msgstr "让我们看看如何将IO描述符附加到一个简单的观察项中："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:105
+msgid ""
+"Here, we are defining a custom observation term called ``base_lin_vel`` that"
+" computes the root linear velocity of the robot. We are also attaching an IO"
+" descriptor to this term. The IO descriptor is defined using the "
+"``@generic_io_descriptor`` decorator."
+msgstr ""
+"在这里，我们正在定义一个自定义观测项，称为 ``base_lin_vel`` ，用于计算机器人的根线速度。我们还将IO描述符附加到此项上。使用 ``@generic_io_descriptor`` 装饰器定义IO描述符。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:108
+msgid ""
+"The ``@generic_io_descriptor`` decorator is a special decorator that is used"
+" to attach an IO descriptor to a custom observation term. It takes arbitrary"
+" arguments that are used to describe the observation term, in this case we "
+"provide extra information that could be useful for the end user:"
+msgstr ""
+"``@generic_io_descriptor`` 装饰器是一个特殊的装饰器，用于将 IO "
+"描述符附加到自定义观测项。它接受任意参数，用于描述观测项，在这种情况下，我们提供额外信息，可能对最终用户有用："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:112
+msgid "``units``: The units of the observation term."
+msgstr "``单位``: 观测项的单位。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:113
+msgid "``axes``: The axes of the observation term."
+msgstr "``axes``: 观测项的轴。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:114
+msgid "``observation_type``: The type of the observation term."
+msgstr "``observation_type``: 观测项的类型。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:116
+msgid ""
+"You'll also notice that there is an ``on_inspect`` argument that is "
+"provided. This is a list of functions that are used to inspect the "
+"observation term. In this case, we are using the ``record_shape`` and "
+"``record_dtype`` functions to record the shape and dtype of the output of "
+"the observation term."
+msgstr ""
+"您还会注意到提供了 ``on_inspect`` 参数。 这是用于检查观测项的函数列表。 "
+"在这种情况下，我们使用 ``record_shape`` 和 ``record_dtype`` 函数来记录观测项输出的形状和数据类型。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:119
+msgid "These functions are defined like so:"
+msgstr "这些函数的定义如下:"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:144
+msgid ""
+"They always take the output tensor of the observation term as the first "
+"argument, and the descriptor as the second argument. In the ``kwargs`` all "
+"the inputs of the observation term are provided. In addition to the "
+"``on_inspect`` functions, the decorator will also call call some functions "
+"in the background to collect the ``name``, the ``description``, and the "
+"``full_path`` of the observation term. Note that adding this decorator does "
+"not change the signature of the observation term, so it can be used safely "
+"with the observation manager!"
+msgstr ""
+"他们始终将观测项的输出张量作为第一个参数，并将描述符作为第二个参数。在 ``kwargs`` 中提供了观测项所有的输入。除了 "
+"``on_inspect`` 函数外，装饰器还会在后台调用一些函数来收集观测项的 ``name`` 、 ``description`` 和 "
+"``full_path`` 。请注意，添加这个装饰器不会改变观测项的签名，因此可以安全地与观测管理器一起使用！"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:150
+msgid ""
+"Let us now take a look at a more complex example: getting the relative joint"
+" positions of the robot."
+msgstr "让我们现在来看一个更复杂的例子: 获取机器人的相对关节位置。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:168
+msgid ""
+"Similarly to the previous example, we are adding an IO descriptor to a "
+"custom observation term with a set of functions that probe the observation "
+"term."
+msgstr "与上一个示例类似，我们正在向自定义观测项添加一个IO描述符，其中包含一组函数，用于检查观测项。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:170
+msgid "To get the name of the joints we can write the following function:"
+msgstr "要获取关节的名称，我们可以编写以下函数:"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:190
+msgid ""
+"Note that we can access all the inputs of the observation term in the "
+"``kwargs`` dictionary. Hence we can access the ``asset_cfg``, which contains"
+" the configuration of the articulation that the observation term is computed"
+" on."
+msgstr ""
+"请注意，我们可以通过 ``kwargs`` 字典访问观测项的所有输入。因此，我们可以访问包含计算观测项的关节配置的 ``asset_cfg`` 。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:193
+msgid "To get the offsets, we can write the following function:"
+msgstr "要获得偏移量，我们可以编写以下函数："
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:213
+msgid ""
+"With this in mind, you should now be able to attach an IO descriptor to your"
+" own custom observation terms! However, before we close this tutorial, let's"
+" take a look at how we can attach an IO descriptor to a custom action term."
+msgstr ""
+"有了这个想法，您现在应该能够将一个IO描述符附加到您自定义的观测项中!但是，在我们结束本教程之前，让我们看一下如何将IO描述符附加到自定义动作项中。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:218
+msgid "Attaching IO Descriptors to Custom Action Terms"
+msgstr "将IO描述符附加到自定义操作项。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:220
+msgid ""
+"In this section, we will cover how to attach IO descriptors to custom action"
+" terms. Action terms are classes that inherit from the "
+":class:`managers.ActionTerm` class. To add an IO descriptor to an action "
+"term, we need to expand upon its :meth:`ActionTerm.IO_descriptor` property."
+msgstr ""
+"在这个部分中，我们将介绍如何将IO描述符附加到自定义操作项中。操作项是从 :class:`managers.ActionTerm` "
+"类继承的类。要将IO描述符添加到操作项中，我们需要扩展其 :meth:`ActionTerm.IO_descriptor` 属性。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:224
+msgid ""
+"By default, the :meth:`ActionTerm.IO_descriptor` property returns the base "
+"descriptor and fills the following fields: - ``name``: The name of the "
+"action term. - ``full_path``: The full path of the action term. - "
+"``description``: The description of the action term. - ``export``: Whether "
+"to export the action term."
+msgstr ""
+"默认情况下， :meth:`ActionTerm.IO_descriptor` 属性返回基本描述符，并填充以下字段: - ``name``: "
+"动作项的名称。 - ``full_path``: 动作项的完整路径。 - ``description``: 动作项的描述。 - "
+"``export``: 是否导出动作项。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:241
+msgid ""
+"To add more information to the descriptor, we need to override the "
+":meth:`ActionTerm.IO_descriptor` property. Let's take a look at an example "
+"on how to add the joint names, scale, offset, and clip to the descriptor."
+msgstr ""
+"为了向描述符添加更多信息，我们需要重写 :meth:`ActionTerm.IO_descriptor` 属性。让我们看一个示例，了解如何向描述符添加关节名称、比例、偏移和裁剪。"
+
+#: ../../source/policy_deployment/01_io_descriptors/io_descriptors_101.rst:281
+msgid ""
+"This is it! You should now be able to attach an IO descriptor to your own "
+"custom action terms which concludes this tutorial."
+msgstr "这就是了！您现在应该能够将IO描述符附加到自定义动作项上，这样就完成了本教程。"

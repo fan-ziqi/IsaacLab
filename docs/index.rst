@@ -10,6 +10,8 @@ Welcome to Isaac Lab!
 
     本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由 `范子琦 <https://github.com/fan-ziqi>`__ 提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。详情请查看 `关于翻译 <source/setup/translation.html>`_ 章节。
 
+    **重要！！！本站将于9月中旬进行停机维护，恢复时间将在群内通知！！！**
+
     官方文档引入了版本系统，可以查看历史版本的文档。译者精力有限，故不提供历史版本翻译，本站只同步更新main分支的文档。
 
     由于1.x.x与2.2.xAPI差异较大，故本站保留了一版1.x.x版本的文档(不一定是最新的1.4.1，但不会差很多)，可以通过 `https://docs.robotsfan.com/isaaclab_v1 <https://docs.robotsfan.com/isaaclab_v1>`__ 访问。
