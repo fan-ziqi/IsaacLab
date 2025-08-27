@@ -1,0 +1,141 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-27 09:50+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:2
+msgid "Solver Transitioning"
+msgstr "求解器过渡"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:4
+msgid ""
+"Transitioning to the Newton physics engine introduces new physics solvers "
+"that handle simulation using different numerical approaches. While Newton "
+"supports several different solvers, our initial focus for Isaac Lab is on "
+"using the MuJoCo-Warp solver from Google DeepMind."
+msgstr ""
+"过渡到 Newton 物理引擎引入了使用不同数值方法处理模拟的新物理求解器。尽管 Newton 支持几种不同的求解器，但我们在 Isaac Lab "
+"中的最初关注点是使用 Google DeepMind 的 MuJoCo-Warp 求解器。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:7
+msgid ""
+"The way the physics scene itself is defined does not change - we continue to"
+" use USD as the primary way to set basic parameters of objects and robots in"
+" the scene, and for current environments, the exact same USD files used for "
+"the PhysX-based Isaac Lab are used. In the future, that may change, as new "
+"USD schemas are under development that capture additional physics "
+"parameters."
+msgstr ""
+"物理场景本身的定义方式不会改变 - 我们继续使用 USD 作为设置场景中对象和机器人基本参数的主要方式，并且对于目前的环境，使用与基于 PhysX 的 "
+"Isaac Lab 使用的完全相同的 USD 文件。未来可能会发生变化，因为正在开发捕获额外物理参数的新 USD 模式。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:11
+msgid ""
+"What does require change is the way that some solver-specific settings are "
+"configured. Tuning these parameters can have a significant impact on both "
+"simulation performance and behaviour."
+msgstr "需要更改的是某些特定求解器设置的配置方式。调整这些参数对模拟性能和行为都可能产生重大影响。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:14
+msgid ""
+"For now, we will show an example of setting these parameters to help provide"
+" a feel for these changes. Note that the :class:`~isaaclab.sim.NewtonCfg` "
+"replaces the :class:`~isaaclab.sim.PhysxCfg` and is used to set everything "
+"related to the physical simulation parameters except for the ``dt``:"
+msgstr ""
+"目前，我们将展示设置这些参数的示例，以帮助了解这些变化。请注意， :class:`~isaaclab.sim.NewtonCfg` 代替了 "
+":class:`~isaaclab.sim.PhysxCfg` 并且用于设置与物理模拟参数相关的所有内容，除了 ``dt`` 之外："
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:37
+msgid "Here is a very brief explanation of some of the key parameters above:"
+msgstr "这里是上述一些关键参数的非常简要解释："
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:39
+msgid ""
+"``nefc_per_env``: This is the size of the buffer constraints we want MuJoCo "
+"warp to pre-allocate for a given environment. A large value will slow down "
+"the simulation, while a too small value may lead to some contacts being "
+"missed."
+msgstr ""
+"``nefc_per_env``: 这是我们希望 MuJoCo warp "
+"为给定环境预先分配的约束缓冲区的大小。较大的值会降低模拟速度，而过小的值可能导致一些接触被忽略。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:43
+msgid ""
+"``ls_iterations``: The number of line searches performed by the MuJoCo Warp "
+"solver. Line searches are used to find an optimal step size, and for each "
+"solver step, at most ``ls_iterations`` line searches will be performed. "
+"Keeping this number low is important for performance. This number is also an"
+" upper bound when ``ls_parallel`` is not set."
+msgstr ""
+"``ls_iterations``: MuJoCo Warp "
+"求解器执行的线搜索次数。线搜索用于找到最佳步长，在每次求解器步长时，最多会执行 ``ls_iterations`` 次线搜索。将此数字保持较低对于性能是重要的。当未设置 ``ls_parallel`` 时，此数字也是一个上限。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:49
+msgid ""
+"``cone``: This parameter provides a choice between pyramidal and elliptic "
+"approximations for the friction cone used in contact handling. Please see "
+"the MuJoCo documentation for additional information on contact: "
+"https://mujoco.readthedocs.io/en/stable/computation/index.html#contact"
+msgstr ""
+"``cone``: 此参数提供了在接触处理中使用的摩擦锥的金字塔形和椭圆形逼近之间的选择。请查看 MuJoCo "
+"文档以获取有关接触的额外信息：https://mujoco.readthedocs.io/en/stable/computation/index.html#contact"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:54
+#, python-format
+msgid ""
+"``ls_parallel``: This switches line searches from iterative to parallel "
+"execution. Enabling ``ls_parallel`` provides a performance boost, but at the"
+" cost of some simulation stability. To ensure good simulation behaviour when"
+" enabled, a higher ``ls_iterations`` setting is required. Usually an "
+"increase of approximately 50% is best over the ``ls_iterations`` setting "
+"when ``ls_parallel`` is disabled."
+msgstr ""
+"``ls_parallel``: "
+"将线搜索从迭代执行切换到并行执行。启用 ``ls_parallel`` 可以提供性能提升，但会牺牲一些模拟稳定性。在启用 ``ls_parallel`` 时，需要较高的 ``ls_iterations`` 设置以确保良好的模拟行为。通常在禁用 ``ls_parallel`` 时，最好将 ``ls_iterations`` 设置增加约50%。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:60
+msgid ""
+"``impratio``: This is the frictional-to-normal constraint impedance ratio "
+"that enables finer-grained control of the significance of the tangential "
+"forces compared to the normal forces. Larger values signify more emphasis on"
+" harder frictional constraints to avoid slip. More on how to tune this "
+"parameter (and cone) can be found in the MuJoCo documentation here: "
+"https://mujoco.readthedocs.io/en/stable/XMLreference.html#option-impratio"
+msgstr ""
+"``impratio``: 这是摩擦到法向约束阻抗比率，可实现对切向力与法向力重要性的更精细控制。更多关于如何调整此参数（和 cone）的信息可以在 "
+"MuJoCo "
+"文档中找到: https://mujoco.readthedocs.io/en/stable/XMLreference.html#option-"
+"impratio"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:67
+msgid ""
+"``num_substeps``: The number of substeps to perform when running the "
+"simulation. Setting this to a number larger than one allows to decimate the "
+"simulation without requiring Isaac Lab to process data between two substeps."
+" This can be of value when using implicit actuators, for example."
+msgstr ""
+"``num_substeps``: 运行模拟时执行的子步数。将其设置为大于1的数字允许在两个子步之间不需要 Isaac Lab "
+"处理数据进行模拟。例如，在使用隐式执行器时，这可能很有价值。"
+
+#: ../../source/experimental-features/newton-physics-integration/solver-transitioning.rst:73
+msgid ""
+"A more detailed transition guide covering the full set of available "
+"parameters and describing tuning approaches will follow in an upcoming "
+"release."
+msgstr "一个更详细的过渡指南，涵盖所有可用参数并描述调整方法，将在即将发布的版本中提供。"

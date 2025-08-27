@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-27 09:50+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:4
+msgid "Sim-to-Sim Policy Transfer"
+msgstr "Sim-to-Sim 策略转移"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:5
+msgid ""
+"This section provides examples of sim-to-sim policy transfer using the "
+"Newton backend. Sim-to-sim transfer is an essential step before real robot "
+"deployment because it verifies that policies work across different "
+"simulators. Policies that pass sim-to-sim verification are much more likely "
+"to succeed on real robots."
+msgstr ""
+"本节提供了使用 Newton 后端进行 sim-to-sim 策略转移的示例。在将策略部署到真实机器人之前，sim-to-sim "
+"转移是一个必不可少的步骤，因为它可以验证策略在不同仿真器上的工作情况。通过 sim-to-sim 验证的策略更有可能在真实机器人上成功。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:9
+msgid "Overview"
+msgstr "概览"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:11
+msgid ""
+"This guide shows how to run a PhysX-trained policy on the Newton backend. "
+"While the method works for any robot and physics engine, it has only been "
+"tested with Unitree G1, Unitree H1, and ANYmal-D robots using PhysX-trained "
+"policies."
+msgstr ""
+"本指南展示了如何在 Newton 后端上运行经过 PhysX 训练的策略。虽然该方法适用于任何机器人和物理引擎，但只在使用 PhysX 训练策略的 "
+"Unitree G1、Unitree H1 和 ANYmal-D 机器人上进行过测试。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:13
+msgid ""
+"PhysX-trained policies expect joints and links in a specific order "
+"determined by how PhysX parses the robot model. However, Newton may parse "
+"the same robot with different joint and link ordering."
+msgstr ""
+"PhysX 训练的策略希望关节和连杆按照 PhysX 解析机器人模型的特定顺序进行。然而，Newton 可能会以不同的关节和连杆顺序解析相同的机器人。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:15
+msgid ""
+"In the future, we plan to solve this using **robot schema** that "
+"standardizes joint and link ordering across different backends."
+msgstr "在未来，我们计划使用 **robot schema** 来解决这个问题，该模式标准化了不同后端之间的关节和链接顺序。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:17
+msgid ""
+"Currently, we solve this by remapping observations and actions using joint "
+"mappings defined in YAML files. These files specify joint names in both "
+"PhysX order (source) and Newton order (target). During policy execution, we "
+"use this mapping to reorder observations and actions so they work correctly "
+"with Newton."
+msgstr ""
+"目前，我们通过在 YAML 文件中定义的关节映射重新映射观测和动作来解决这个问题。这些文件指定了 PhysX 顺序（源）和 Newton "
+"顺序（目标）中的关节名称。在策略执行期间，我们使用此映射来重新排列观测和动作，以便与 Newton 正确配合。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:21
+msgid "What you need"
+msgstr "所需材料"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:23
+msgid "A policy checkpoint trained with PhysX (RSL-RL)."
+msgstr "通过 PhysX（RSL-RL）训练的策略checkpoint。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:24
+msgid ""
+"A joint mapping YAML for your robot under "
+"``scripts/newton_sim2sim/mappings/``."
+msgstr "位于 ``scripts/newton_sim2sim/mappings/`` 下的机器人关节映射 YAML 文件。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:25
+msgid ""
+"The provided player script: ``scripts/newton_sim2sim/rsl_rl_transfer.py``."
+msgstr "提供的player脚本： ``scripts/newton_sim2sim/rsl_rl_transfer.py`` 。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:27
+msgid ""
+"To add a new robot, create a YAML file with two lists where each joint name "
+"appears exactly once in both:"
+msgstr "要添加新的机器人，请创建一个包含两个列表的 YAML 文件，其中每个关节名称在两个列表中都只出现一次："
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:41
+msgid ""
+"The script automatically computes the necessary mappings for locomotion "
+"tasks."
+msgstr "该脚本自动计算locomotion任务所需的映射。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:45
+msgid "How to run"
+msgstr "如何运行"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:47
+msgid "Use this command template to run a PhysX-trained policy with Newton:"
+msgstr "使用此命令模板通过 Newton 运行 PhysX 训练的策略："
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:57
+msgid "Here are examples for different robots:"
+msgstr "以下是不同机器人的示例："
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:59
+msgid "Unitree G1"
+msgstr "Unitree G1"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:70
+msgid "Unitree H1"
+msgstr "Unitree H1"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:82
+msgid "ANYmal-D"
+msgstr "ANYmal-D"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:95
+msgid "Notes and limitations"
+msgstr "注意和限制"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:97
+msgid ""
+"This transfer method has only been tested with Unitree G1, Unitree H1, and "
+"ANYmal-D using PhysX-trained policies."
+msgstr "此转移方法仅在使用 PhysX 训练策略的 Unitree G1、Unitree H1 和 ANYmal-D 机器人上经过测试。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:98
+msgid ""
+"The observation remapping assumes a locomotion layout with base observations"
+" followed by joint observations. For different observation layouts, you'll "
+"need to modify ``scripts/newton_sim2sim/policy_mapping.py``."
+msgstr ""
+"观测重新映射假设一个以基本观测开头，后跟关节观测的定位布局。对于不同的观测布局，您需要修改 ``scripts/newton_sim2sim/policy_mapping.py`` 。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-sim.rst:99
+msgid ""
+"When adding new robots or backends, make sure both source and target have "
+"identical joint names, and that the YAML lists reflect how each backend "
+"orders these joints."
+msgstr "当添加新的机器人或后端时，请确保源和目标具有相同的关节名称，并且 YAML 列表反映每个后端如何对这些关节进行排序。"

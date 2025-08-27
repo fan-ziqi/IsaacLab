@@ -77,7 +77,7 @@ IsaacSim中文文档网站（API自动翻译）: `https://docs.robotsfan.com/isa
 
 .. code-block:: bash
 
-   pip install --upgrade 'isaacsim[all,extscache]==4.5.0' --extra-index-url https://pypi.nvidia.com
+   pip install --upgrade 'isaacsim[all,extscache]==5.0.0' --extra-index-url https://pypi.nvidia.com
    ./isaaclab.sh --install
 
 

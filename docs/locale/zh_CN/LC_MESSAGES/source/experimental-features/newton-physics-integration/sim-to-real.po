@@ -1,0 +1,207 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-27 09:50+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:4
+msgid "Sim-to-Real Policy Transfer"
+msgstr "Sim-to-Real 策略转移"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:5
+msgid ""
+"Deploying policies from simulation to real robots involves important nuances"
+" that must be addressed. This section provides a high-level guide for "
+"training policies that can be deployed on a real Unitree G1 robot. The key "
+"challenge is that not all observations available in simulation can be "
+"directly measured by real robot sensors. This means RL-trained policies "
+"cannot be directly deployed unless they use only sensor-available "
+"observations. For example, while real robot IMU sensors provide angular "
+"acceleration (which can be integrated to get angular velocity), they cannot "
+"directly measure linear velocity. Therefore, if a policy relies on base "
+"linear velocity during training, this information must be removed before "
+"real robot deployment."
+msgstr ""
+"从模拟到真实的机器人部署策略涉及必须解决的重要细微差别。本节提供了一个针对真实Unitree "
+"G1机器人部署训练策略的高级指南。关键挑战在于并非所有模拟中可用的observations都可以通过真实机器人传感器直接测量。这意味着经过RL训练的策略在没有使用仅传感器可用的observations时不能直接部署。例如，虽然真实机器人的IMU传感器提供了角加速度（可以被积分以获得角速度），但它们不能直接测量线速度。因此，如果一个策略在训练期间依赖基本线速度，那么在真实机器人部署之前必须将该信息删除。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:12
+msgid "Requirements"
+msgstr "要求"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:14
+msgid ""
+"We assume that policies from this workflow are first verified through sim-"
+"to-sim transfer before real robot deployment. Please see :ref:`here "
+"<sim2sim>` for more information."
+msgstr ""
+"我们假设该工作流程中的策略首先通过sim-to-sim转移进行验证，然后再部署到真实机器人上。请查看 :ref:`这里 <sim2sim>` 获取更多信息。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:19
+msgid "Overview"
+msgstr "Overview"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:21
+msgid ""
+"This section demonstrates a sim-to-real workflow using teacher–student "
+"distillation for the Unitree G1 velocity-tracking task with the Newton "
+"backend."
+msgstr "本节演示了使用Newton后端为Unitree G1速度跟踪任务进行教师-学生蒸馏的sim-to-real工作流程。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:24
+msgid "The teacher–student distillation workflow consists of three stages:"
+msgstr "教师-学生蒸馏工作流程包括三个阶段："
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:26
+msgid ""
+"Train a teacher policy with privileged observations that are not available "
+"in real-world sensors."
+msgstr "使用非真实世界传感器可用的特权观测结果训练一名教师策略。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:27
+msgid ""
+"Distill a student policy that excludes privileged terms (e.g., root linear "
+"velocity) by behavior cloning from the teacher policy."
+msgstr "通过从教师策略行为克隆（behavior cloning）来排除特权项（例如root线速度）以蒸馏一名学生策略。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:28
+msgid ""
+"Fine-tune the student policy with RL using only real-sensor observations."
+msgstr "使用仅真实传感器观测结果通过RL对学生策略进行微调。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:30
+msgid ""
+"The teacher and student observation groups are implemented in the velocity "
+"task configuration. See the following source for details:"
+msgstr "教师和学生的观测组在速度任务配置中实施。有关详细信息，请参阅以下源码："
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:32
+msgid ""
+"Teacher observations: ``PolicyCfg(ObsGroup)`` in `velocity_env_cfg.py "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/main/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/velocity_env_cfg.py>`__"
+msgstr ""
+"教师观测: `velocity_env_cfg.py "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/main/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/velocity_env_cfg.py>`__"
+" 中的 ``PolicyCfg(ObsGroup)``"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:33
+msgid ""
+"Student observations: ``StudentPolicyCfg(ObsGroup)`` in `velocity_env_cfg.py"
+" <https://github.com/isaac-"
+"sim/IsaacLab/blob/main/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/velocity_env_cfg.py>`__"
+msgstr ""
+"学生观测: `velocity_env_cfg.py "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/main/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/velocity_env_cfg.py>`__"
+" 中的 ``StudentPolicyCfg(ObsGroup)``"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:37
+msgid "1. Train the teacher policy"
+msgstr "1. 训练教师策略"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:39
+msgid ""
+"Train the teacher policy for the G1 velocity task using the Newton backend. "
+"The task ID is ``Isaac-Velocity-Flat-G1-v1``"
+msgstr "使用Newton后端训练G1速度任务的教师策略。任务ID是 ``Isaac-Velocity-Flat-G1-v1``"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:45
+msgid ""
+"The teacher policy includes privileged observations (e.g., root linear "
+"velocity) defined in ``PolicyCfg(ObsGroup)``."
+msgstr "教师策略包括在 ``PolicyCfg(ObsGroup)`` 中定义的特权观测（例如根线速度）。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:49
+msgid "2. Distill the student policy (remove privileged terms)"
+msgstr "2. 蒸馏学生策略 (移除特权项)"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:51
+#, python-brace-format
+msgid ""
+"During distillation, the student policy learns to mimic the teacher through "
+"behavior cloning by minimizing the mean squared error between their actions:"
+" :math:`loss = MSE(\\pi(O_{teacher}), \\pi(O_{student}))`."
+msgstr ""
+"在蒸馏过程中，学生策略通过最小化其行为之间的均方误差，学习通过行为克隆来模仿教师: :math:`loss = "
+"MSE(\\pi(O_{teacher}), \\pi(O_{student}))`."
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:54
+msgid ""
+"The student policy only uses observations available from real sensors (see "
+"``StudentPolicyCfg(ObsGroup)`` in `velocity_env_cfg.py "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/main/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/velocity_env_cfg.py>`__)."
+" Specifically: **Root angular velocity** and **Projected gravity** come from"
+" the IMU sensor, **Joint positions and velocities** come from joint "
+"encoders, and **Actions** are the joint torques applied by the controller."
+msgstr ""
+"学生策略仅使用来自真实传感器的观测结果（请参见 `velocity_env_cfg.py <https://github.com/isaac-"
+"sim/IsaacLab/blob/main/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/velocity_env_cfg.py>`__"
+" 中的 ``StudentPolicyCfg(ObsGroup)`` ）。具体来说: **root角速度** 和 **重力投影** "
+"来自IMU传感器，**关节位置和速度** 来自关节编码器，以及 **动作** 是控制器施加的关节力矩。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:58
+msgid ""
+"Run the student distillation task ``Velocity-G1-Distillation-v1`` using "
+"``--load_run`` and ``--checkpoint`` to specify the teacher policy you want "
+"to distill from."
+msgstr ""
+"使用 ``--load_run`` 和 ``--checkpoint`` 运行学生蒸馏任务 "
+"``Velocity-G1-Distillation-v1`` ，以指定您要从中进行蒸馏的教师策略。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:66
+msgid ""
+"Use the correct ``--load_run`` and ``--checkpoint`` to ensure you distill "
+"from the intended teacher policy."
+msgstr "确保使用正确的 ``--load_run`` 和 ``--checkpoint`` 以确保您从预期的教师策略进行蒸馏。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:70
+msgid "3. Fine-tune the student policy with RL"
+msgstr "3. 使用 RL 微调学生策略"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:72
+msgid ""
+"Fine-tune the distilled student policy using RL with the "
+"``Velocity-G1-Student-Finetune-v1`` task. Use ``--load_run`` and "
+"``--checkpoint`` to initialize from the distilled policy."
+msgstr ""
+"使用 ``Velocity-G1-Student-Finetune-v1`` 任务对蒸馏后的学生策略进行RL微调。使用 ``--load_run`` 和"
+" ``--checkpoint`` 以从蒸馏策略初始化。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:79
+msgid ""
+"This starts from the distilled student policy and improves it further with "
+"RL training."
+msgstr "这将从蒸馏后的学生策略开始，并通过RL训练进一步改进。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:83
+msgid ""
+"Make sure ``--load_run`` and ``--checkpoint`` point to the correct initial "
+"policy (usually the latest checkpoint from the distillation step)."
+msgstr "确保 ``--load_run`` 和 ``--checkpoint`` 指向正确的初始策略（通常为蒸馏步骤的最新检查点）。"
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:85
+msgid "You can replay the student policy via:"
+msgstr "您可以通过以下方式replay学生策略："
+
+#: ../../source/experimental-features/newton-physics-integration/sim-to-real.rst:92
+msgid ""
+"This exports the policy as ``.pt`` and ``.onnx`` files in the run's export "
+"directory, ready for real robot deployment."
+msgstr "这会将策略导出为运行的导出目录中的 ``.pt`` 和 ``.onnx`` 文件，准备好进行真实机器人部署。"
