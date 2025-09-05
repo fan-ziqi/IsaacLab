@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-01 19:20+0800\n"
+"POT-Creation-Date: 2025-09-05 16:15+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../source/api/lab_rl/isaaclab_rl.rst:2
+#: ../../source/api/lab_rl/isaaclab_rl.rst:4
 msgid "isaaclab_rl"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgid ""
 "conjunction with the respective learning framework."
 msgstr ""
 
-#: ../../source/api/lab_rl/isaaclab_rl.rst:7
+#: ../../source/api/lab_rl/isaaclab_rl.rst:9
 msgid "RL-Games Wrapper"
 msgstr ""
 
@@ -69,24 +69,40 @@ msgstr ""
 msgid "**Classes:**"
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+#: isaaclab_rl.rl_games:1:<autosummary>:1 of
 msgid ""
 ":py:obj:`RlGamesVecEnvWrapper "
 "<isaaclab_rl.rl_games.RlGamesVecEnvWrapper>`\\"
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+#: isaaclab_rl.rl_games:1:<autosummary>:1 of
 msgid "Wraps around Isaac Lab environment for RL-Games."
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+#: isaaclab_rl.rl_games:1:<autosummary>:1 of
 msgid ":py:obj:`RlGamesGpuEnv <isaaclab_rl.rl_games.RlGamesGpuEnv>`\\"
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesGpuEnv:1
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+#: isaaclab_rl.rl_games.RlGamesGpuEnv:1 isaaclab_rl.rl_games:1:<autosummary>:1
+#: of
 msgid "Thin wrapper to create instance of the environment to fit RL-Games runner."
+msgstr ""
+
+#: isaaclab_rl.rl_games:1 isaaclab_rl.rsl_rl:1 isaaclab_rl.sb3:1
+#: isaaclab_rl.skrl:1 of
+msgid "**Functions:**"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1 of
+msgid ""
+":py:obj:`make_concat_plan <isaaclab_rl.rl_games.make_concat_plan>`\\ "
+"\\(shapes\\)"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1:<autosummary>:1
+#: isaaclab_rl.rl_games.make_concat_plan:3 of
+msgid "Given per-sample shapes (no batch dim), return:"
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesGpuEnv:1
@@ -112,18 +128,31 @@ msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:12 of
 msgid ""
-"To use asymmetric actor-critic, the environment observations from "
-":class:`ManagerBasedRLEnv` or :class:`DirectRLEnv` must have the key or "
-"group name \"critic\". The observation group is used to set the "
-":attr:`num_states` (int) and :attr:`state_space` (:obj:`gym.spaces.Box`)."
-" These are used by the learning agent in RL-Games to allocate buffers in "
-"the trajectory memory. Since this is optional for some environments, the "
-"wrapper checks if these attributes exist. If they don't then the wrapper "
-"defaults to zero as number of privileged observations."
+"To use asymmetric actor-critic, map privileged observation groups under "
+"``\"states\"`` (e.g. ``[\"critic\"]``)."
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:21
-#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:11
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:14 of
+#, python-brace-format
+msgid ""
+"The wrapper supports **either** concatenated tensors (default) **or** "
+"Dict inputs: when wrapper is concate mode, rl-games sees {\"obs\": "
+"Tensor, (optional)\"states\": Tensor} when wrapper is not concate mode, "
+"rl-games sees {\"obs\": dict[str, Tensor], (optional)\"states\": "
+"dict[str, Tensor]} - Concatenated mode (``concate_obs_group=True``): "
+"``observation_space``/``state_space`` are ``gym.spaces.Box``. - Dict mode"
+" (``concate_obs_group=False``): ``observation_space``/``state_space`` are"
+" ``gym.spaces.Dict`` keyed by"
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:19 of
+msgid ""
+"the requested groups. When no ``\"states\"`` groups are provided, the "
+"states Dict is omitted at runtime."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:23
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:4
 #: isaaclab_rl.sb3.Sb3VecEnvWrapper:35 of
 msgid ""
 "This class must be the last wrapper in the wrapper chain. This is because"
@@ -131,14 +160,14 @@ msgid ""
 "subsequent wrappers will need to be modified to work with this wrapper."
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:28
-#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:16
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:30
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:9
 #: isaaclab_rl.sb3.Sb3VecEnvWrapper:39 isaaclab_rl.sb3.process_sb3_cfg:8
 #: isaaclab_rl.skrl.SkrlVecEnvWrapper:16 of
 msgid "Reference:"
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:27 of
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:29 of
 msgid ""
 "https://github.com/Denys88/rl_games/blob/master/rl_games/common/ivecenv.py"
 " https://github.com/NVIDIA-Omniverse/IsaacGymEnvs"
@@ -147,8 +176,10 @@ msgstr ""
 #: isaaclab_rl.rl_games.RlGamesGpuEnv:1
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1
@@ -214,8 +245,10 @@ msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1
@@ -251,12 +284,10 @@ msgid ""
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.observation_space:1
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.state_space:1
-#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.observation_space:1
-#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
-#: of
-msgid "Returns the :attr:`Env` :attr:`observation_space`."
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.observation_space:1 of
+msgid ""
+"Returns the :attr:`Env` :attr:`observation_space` (``Box`` if "
+"concatenated, otherwise ``Dict``)."
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1 of
@@ -312,6 +343,13 @@ msgid ""
 "<isaaclab_rl.rl_games.RlGamesVecEnvWrapper.state_space>`\\"
 msgstr ""
 
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:1:<autosummary>:1
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.state_space:1 of
+msgid ""
+"Returns the privileged observation space for the critic (``Box`` if "
+"concatenated, otherwise ``Dict``)."
+msgstr ""
+
 #: isaaclab.utils.configclass.configclass
 #: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__
@@ -340,9 +378,23 @@ msgid "The clipping value for observations."
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:6
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
 msgid "The clipping value for actions."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:7 of
+msgid ""
+"The remapping from isaaclab observation to rl-games, default to None for "
+"backward compatible."
+msgstr ""
+
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:8 of
+msgid ""
+"The boolean value indicates if input to rl-games network is dict or "
+"tensor. Default to True for backward compatible."
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__
@@ -352,13 +404,13 @@ msgstr ""
 msgid "Raises"
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:8 of
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:11 of
 msgid ""
 "The environment is not inherited from :class:`ManagerBasedRLEnv` or "
 ":class:`DirectRLEnv`."
 msgstr ""
 
-#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:9 of
+#: isaaclab_rl.rl_games.RlGamesVecEnvWrapper.__init__:12 of
 msgid ""
 "If specified, the privileged observations (critic) are not of type "
 ":obj:`gym.spaces.Box`."
@@ -370,6 +422,33 @@ msgstr ""
 msgid ""
 "This will be the bare :class:`gymnasium.Env` environment, underneath all "
 "layers of wrappers."
+msgstr ""
+
+#: isaaclab_rl.rl_games.make_concat_plan:2 of
+msgid "the concatenated per-sample shape"
+msgstr ""
+
+#: isaaclab_rl.rl_games.make_concat_plan:3 of
+msgid "a function that concatenates a list of batch tensors accordingly."
+msgstr ""
+
+#: isaaclab_rl.rl_games.make_concat_plan:9 of
+msgid "Rules:"
+msgstr ""
+
+#: isaaclab_rl.rl_games.make_concat_plan:6 of
+msgid "Empty -> (0,), No-op"
+msgstr ""
+
+#: isaaclab_rl.rl_games.make_concat_plan:7 of
+msgid "All 1D -> concat features (dim=1)."
+msgstr ""
+
+#: isaaclab_rl.rl_games.make_concat_plan:8 of
+msgid ""
+"Same rank > 1: 2a) If all s[:-1] equal -> concat along last dim "
+"(channels-last, dim=-1). 2b) If all s[1:] equal  -> concat along first "
+"dim (channels-first, dim=1)."
 msgstr ""
 
 #: isaaclab_rl.rl_games.RlGamesGpuEnv.__init__:1:<autosummary>:1 of
@@ -429,7 +508,7 @@ msgstr ""
 msgid "The Gym spaces for the environment."
 msgstr ""
 
-#: ../../source/api/lab_rl/isaaclab_rl.rst:14
+#: ../../source/api/lab_rl/isaaclab_rl.rst:16
 msgid "RSL-RL Wrapper"
 msgstr ""
 
@@ -439,10 +518,6 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl:3 of
 msgid "The following example shows how to wrap an environment for RSL-RL:"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl:1 isaaclab_rl.sb3:1 isaaclab_rl.skrl:1 of
-msgid "**Functions:**"
 msgstr ""
 
 #: isaaclab_rl.rsl_rl:1:<autosummary>:1 of
@@ -501,6 +576,15 @@ msgid "Configuration for the symmetry-augmentation in the training."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid ":py:obj:`RslRlBaseRunnerCfg <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg:1 of
+msgid "Base configuration of the runner."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
 msgid ""
 ":py:obj:`RslRlDistillationAlgorithmCfg "
 "<isaaclab_rl.rsl_rl.RslRlDistillationAlgorithmCfg>`\\"
@@ -509,6 +593,17 @@ msgstr ""
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg:1
 #: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
 msgid "Configuration for the distillation algorithm."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid ""
+":py:obj:`RslRlDistillationRunnerCfg "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg:1
+#: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
+msgid "Configuration of the runner for distillation algorithms."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1 of
@@ -581,7 +676,7 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:1:<autosummary>:1
 #: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1 of
-msgid "Wraps around Isaac Lab environment for RSL-RL library"
+msgid "Wraps around Isaac Lab environment for the RSL-RL library"
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.exporter.export_policy_as_jit:3
@@ -613,7 +708,7 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg:1
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1
 #: isaaclab_rl.rsl_rl.rnd_cfg.RslRlRndCfg:1
@@ -1044,7 +1139,7 @@ msgstr ""
 
 #: ../../docstring isaaclab_rl.rsl_rl.RslRlSymmetryCfg.data_augmentation_func:7
 #: of
-msgid "The observation tensor. If None, the observation is not used."
+msgid "The observation tensor dictionary. If None, the observation is not used."
 msgstr ""
 
 #: ../../docstring isaaclab_rl.rsl_rl.RslRlSymmetryCfg.data_augmentation_func:9
@@ -1053,21 +1148,366 @@ msgid "The action tensor. If None, the action is not used."
 msgstr ""
 
 #: ../../docstring
-#: isaaclab_rl.rsl_rl.RslRlSymmetryCfg.data_augmentation_func:11 of
+#: isaaclab_rl.rsl_rl.RslRlSymmetryCfg.data_augmentation_func:12 of
 msgid ""
-"The name of the observation type. Defaults to \"policy\". This is useful "
-"when handling augmentation for different observation groups."
-msgstr ""
-
-#: ../../docstring
-#: isaaclab_rl.rsl_rl.RslRlSymmetryCfg.data_augmentation_func:15 of
-msgid ""
-"A tuple containing the augmented observation and action tensors. The "
-"tensors can be None, if their respective inputs are None."
+"A tuple containing the augmented observation dictionary and action "
+"tensors. The tensors can be None, if their respective inputs are None."
 msgstr ""
 
 #: ../../docstring isaaclab_rl.rsl_rl.RslRlSymmetryCfg.mirror_loss_coeff:1 of
 msgid "The weight for the symmetry-mirror loss. Default is 0.0."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`__init__ <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.__init__>`\\ "
+"\\(\\[seed\\, device\\, num\\_steps\\_per\\_env\\, ...\\]\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`seed <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.seed>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The seed for the experiment."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`device <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.device>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`num_steps_per_env "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.num_steps_per_env>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.num_steps_per_env:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.num_steps_per_env:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.num_steps_per_env:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The number of steps per environment per update."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`max_iterations "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.max_iterations>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.max_iterations:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.max_iterations:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.max_iterations:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The maximum number of iterations."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`empirical_normalization "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.empirical_normalization>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.empirical_normalization:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.empirical_normalization:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.empirical_normalization:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "This parameter is deprecated and will be removed in the future."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`obs_groups <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.obs_groups>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.obs_groups:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.obs_groups:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.obs_groups:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "A mapping from observation groups to observation sets."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`clip_actions "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.clip_actions>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`save_interval "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.save_interval>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.save_interval:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.save_interval:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.save_interval:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The number of iterations between saves."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`experiment_name "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.experiment_name>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.experiment_name:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.experiment_name:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.experiment_name:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The experiment name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`run_name <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.run_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The run name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`logger <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.logger>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The logger to use."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`neptune_project "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.neptune_project>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The neptune project name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`wandb_project "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.wandb_project>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The wandb project name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`resume <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.resume>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "Whether to resume a previous training."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ":py:obj:`load_run <isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.load_run>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The run directory to load."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1 of
+msgid ""
+":py:obj:`load_checkpoint "
+"<isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.load_checkpoint>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The checkpoint file to load."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.seed:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.seed:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.seed:1 of
+msgid "The seed for the experiment. Default is 42."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.device
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.device
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device of
+msgid "type"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.device:7
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.device:7
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device:7 of
+msgid "The device for the rl-agent. Default is cuda"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.empirical_normalization:3
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.empirical_normalization:3
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.empirical_normalization:3 of
+msgid "Use `actor_obs_normalization` and `critic_obs_normalization` instead."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.obs_groups:3
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.obs_groups:3
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.obs_groups:3 of
+msgid ""
+"The keys of the dictionary are predefined observation sets used by the "
+"underlying algorithm and values are lists of observation groups provided "
+"by the environment."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.obs_groups:6
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.obs_groups:6
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.obs_groups:6 of
+msgid ""
+"For instance, if the environment provides a dictionary of observations "
+"with groups \"policy\", \"images\", and \"privileged\", these can be "
+"mapped to algorithmic observation sets as follows:"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.obs_groups:16
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.obs_groups:16
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.obs_groups:16 of
+msgid ""
+"This way, the policy will receive the \"policy\" and \"images\" "
+"observations, and the critic will receive the \"policy\" and "
+"\"privileged\" observations."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.obs_groups:19
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.obs_groups:19
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.obs_groups:19 of
+msgid "For more details, please check ``vec_env.py`` in the rsl_rl library."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.clip_actions:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.clip_actions:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.clip_actions:1 of
+msgid ""
+"The clipping value for actions. If None, then no clipping is done. "
+"Defaults to None."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.clip_actions:4
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.clip_actions:4
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.clip_actions:4 of
+msgid "This clipping is performed inside the :class:`RslRlVecEnvWrapper` wrapper."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.run_name:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.run_name:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name:1 of
+msgid "The run name. Default is empty string."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.run_name:3
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.run_name:3
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name:3 of
+#, python-brace-format
+msgid ""
+"The name of the run directory is typically the time-stamp at execution. "
+"If the run name is not empty, then it is appended to the run directory's "
+"name, i.e. the logging directory's name will become ``{time-"
+"stamp}_{run_name}``."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.logger:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.logger:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.logger:1 of
+msgid "The logger to use. Default is tensorboard."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.neptune_project:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.neptune_project:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.neptune_project:1 of
+msgid "The neptune project name. Default is \"isaaclab\"."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.wandb_project:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.wandb_project:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.wandb_project:1 of
+msgid "The wandb project name. Default is \"isaaclab\"."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.resume:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.resume:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.resume:1 of
+msgid "Whether to resume a previous training. Default is False."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.resume:3
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.resume:3
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.resume:3 of
+msgid "This flag will be ignored for distillation."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.load_run:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.load_run:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run:1 of
+msgid "The run directory to load. Default is \".*\" (all)."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.load_run:3
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.load_run:3
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run:3 of
+msgid ""
+"If regex expression, the latest (alphabetical order) matching run will be"
+" loaded."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.load_checkpoint:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.load_checkpoint:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint:1 of
+msgid "The checkpoint file to load. Default is ``\"model_.*.pt\"`` (all)."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlBaseRunnerCfg.load_checkpoint:3
+#: isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.load_checkpoint:3
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint:3 of
+msgid ""
+"If regex expression, the latest (alphabetical order) matching file will "
+"be loaded."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg:1:<autosummary>:1
@@ -1146,9 +1586,198 @@ msgstr ""
 msgid "The maximum norm the gradient is clipped to."
 msgstr ""
 
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`optimizer "
+"<isaaclab_rl.rsl_rl.RslRlDistillationAlgorithmCfg.optimizer>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlDistillationAlgorithmCfg.optimizer:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The optimizer to use for the student policy."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`loss_type "
+"<isaaclab_rl.rsl_rl.RslRlDistillationAlgorithmCfg.loss_type>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlDistillationAlgorithmCfg.loss_type:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationAlgorithmCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The loss type to use for the student policy."
+msgstr ""
+
 #: ../../docstring
 #: isaaclab_rl.rsl_rl.RslRlDistillationAlgorithmCfg.class_name:1 of
 msgid "The algorithm class name. Default is Distillation."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg:1 of
+msgid "Bases: :py:class:`~isaaclab_rl.rsl_rl.rl_cfg.RslRlBaseRunnerCfg`"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`__init__ "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.__init__>`\\ \\(\\[seed\\,"
+" device\\, num\\_steps\\_per\\_env\\, ...\\]\\)"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`seed <isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.seed>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`device <isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.device>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`num_steps_per_env "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.num_steps_per_env>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`max_iterations "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.max_iterations>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`empirical_normalization "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.empirical_normalization>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`obs_groups "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.obs_groups>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`clip_actions "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.clip_actions>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`save_interval "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.save_interval>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`experiment_name "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.experiment_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`run_name "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.run_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`logger <isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.logger>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`neptune_project "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.neptune_project>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`wandb_project "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.wandb_project>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`resume <isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.resume>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`load_run "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.load_run>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`load_checkpoint "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.load_checkpoint>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`class_name "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.class_name>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The runner class name."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ":py:obj:`policy <isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.policy>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.policy:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.policy:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The policy configuration."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`algorithm "
+"<isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.algorithm>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.algorithm:1
+#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.algorithm:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationRunnerCfg.__init__:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
+#: of
+msgid "The algorithm configuration."
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlDistillationRunnerCfg.class_name:1
+#: of
+msgid "The runner class name. Default is DistillationRunner."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1:<autosummary>:1
@@ -1195,6 +1824,38 @@ msgstr ""
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1:<autosummary>:1
 #: of
 msgid "The type of noise standard deviation for the policy."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`student_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherCfg.student_obs_normalization>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherCfg.student_obs_normalization:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.student_obs_normalization:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid "Whether to normalize the observation for the student network."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`teacher_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherCfg.teacher_obs_normalization>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherCfg.teacher_obs_normalization:1
+#: isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.teacher_obs_normalization:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid "Whether to normalize the observation for the teacher network."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherCfg:1:<autosummary>:1
@@ -1295,41 +1956,6 @@ msgstr ""
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
 #: of
 msgid ""
-":py:obj:`init_noise_std "
-"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.init_noise_std>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
-#: of
-msgid ""
-":py:obj:`noise_std_type "
-"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.noise_std_type>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
-#: of
-msgid ""
-":py:obj:`student_hidden_dims "
-"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.student_hidden_dims>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
-#: of
-msgid ""
-":py:obj:`teacher_hidden_dims "
-"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.teacher_hidden_dims>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
-#: of
-msgid ""
-":py:obj:`activation "
-"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.activation>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
-#: of
-msgid ""
 ":py:obj:`rnn_hidden_dim "
 "<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.rnn_hidden_dim>`\\"
 msgstr ""
@@ -1353,6 +1979,55 @@ msgstr ""
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
 #: of
 msgid "The number of layers of the RNN network."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`init_noise_std "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.init_noise_std>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`noise_std_type "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.noise_std_type>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`student_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.student_obs_normalization>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`teacher_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.teacher_obs_normalization>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`student_hidden_dims "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.student_hidden_dims>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`teacher_hidden_dims "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.teacher_hidden_dims>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`activation "
+"<isaaclab_rl.rsl_rl.RslRlDistillationStudentTeacherRecurrentCfg.activation>`\\"
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.distillation_cfg.RslRlDistillationStudentTeacherRecurrentCfg:1:<autosummary>:1
@@ -1401,11 +2076,6 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
-msgid "The seed for the experiment."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
 msgid ":py:obj:`device <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device>`\\"
 msgstr ""
 
@@ -1416,24 +2086,11 @@ msgid ""
 "<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.num_steps_per_env>`\\"
 msgstr ""
 
-#: ../../docstring
-#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.num_steps_per_env:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The number of steps per environment per update."
-msgstr ""
-
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
 msgid ""
 ":py:obj:`max_iterations "
 "<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.max_iterations>`\\"
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.max_iterations:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The maximum number of iterations."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
@@ -1443,35 +2100,11 @@ msgid ""
 "<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.empirical_normalization>`\\"
 msgstr ""
 
-#: ../../docstring
-#: isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.empirical_normalization:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "Whether to use empirical normalization."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid ":py:obj:`policy <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.policy>`\\"
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.policy:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The policy configuration."
-msgstr ""
-
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
 msgid ""
-":py:obj:`algorithm "
-"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.algorithm>`\\"
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.algorithm:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The algorithm configuration."
+":py:obj:`obs_groups "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.obs_groups>`\\"
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
@@ -1488,23 +2121,11 @@ msgid ""
 "<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.save_interval>`\\"
 msgstr ""
 
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.save_interval:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The number of iterations between saves."
-msgstr ""
-
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
 msgid ""
 ":py:obj:`experiment_name "
 "<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.experiment_name>`\\"
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.experiment_name:1
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The experiment name."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
@@ -1514,17 +2135,7 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
-msgid "The run name."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
 msgid ":py:obj:`logger <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.logger>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The logger to use."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
@@ -1536,19 +2147,9 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
-msgid "The neptune project name."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
 msgid ""
 ":py:obj:`wandb_project "
 "<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.wandb_project>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The wandb project name."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
@@ -1558,17 +2159,7 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
-msgid "Whether to resume."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
 msgid ":py:obj:`load_run <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
-#: of
-msgid "The run directory to load."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
@@ -1580,80 +2171,25 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
-msgid "The checkpoint file to load."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.seed:1 of
-msgid "The seed for the experiment. Default is 42."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device of
-msgid "type"
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.device:7 of
-msgid "The device for the rl-agent. Default is cuda"
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.clip_actions:1
-#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:6 of
-msgid "The clipping value for actions. If ``None``, then no clipping is done."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.clip_actions:4 of
-msgid "This clipping is performed inside the :class:`RslRlVecEnvWrapper` wrapper."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name:1 of
-msgid "The run name. Default is empty string."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.run_name:3 of
-#, python-brace-format
 msgid ""
-"The name of the run directory is typically the time-stamp at execution. "
-"If the run name is not empty, then it is appended to the run directory's "
-"name, i.e. the logging directory's name will become ``{time-"
-"stamp}_{run_name}``."
+":py:obj:`class_name "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.class_name>`\\"
 msgstr ""
 
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.logger:1 of
-msgid "The logger to use. Default is tensorboard."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.neptune_project:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
-msgid "The neptune project name. Default is \"isaaclab\"."
+msgid ":py:obj:`policy <isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.policy>`\\"
 msgstr ""
 
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.wandb_project:1 of
-msgid "The wandb project name. Default is \"isaaclab\"."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.resume:1 of
-msgid "Whether to resume. Default is False."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run:1 of
-msgid "The run directory to load. Default is \".*\" (all)."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_run:3 of
-msgid ""
-"If regex expression, the latest (alphabetical order) matching run will be"
-" loaded."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint:1
-#: of
-msgid "The checkpoint file to load. Default is ``\"model_.*.pt\"`` (all)."
-msgstr ""
-
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.load_checkpoint:3
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlOnPolicyRunnerCfg.__init__:1:<autosummary>:1
 #: of
 msgid ""
-"If regex expression, the latest (alphabetical order) matching file will "
-"be loaded."
+":py:obj:`algorithm "
+"<isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.algorithm>`\\"
+msgstr ""
+
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlOnPolicyRunnerCfg.class_name:1 of
+msgid "The runner class name. Default is OnPolicyRunner."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
@@ -1680,6 +2216,36 @@ msgstr ""
 msgid ""
 ":py:obj:`noise_std_type "
 "<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.noise_std_type>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`actor_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.actor_obs_normalization>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.actor_obs_normalization:1
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticRecurrentCfg.actor_obs_normalization:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1:<autosummary>:1
+#: of
+msgid "Whether to normalize the observation for the actor network."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
+msgid ""
+":py:obj:`critic_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.critic_obs_normalization>`\\"
+msgstr ""
+
+#: ../../docstring
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticCfg.critic_obs_normalization:1
+#: isaaclab_rl.rsl_rl.RslRlPpoActorCriticRecurrentCfg.critic_obs_normalization:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1:<autosummary>:1
+#: of
+msgid "Whether to normalize the observation for the critic network."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticCfg:1:<autosummary>:1 of
@@ -1799,6 +2365,20 @@ msgstr ""
 msgid ""
 ":py:obj:`noise_std_type "
 "<isaaclab_rl.rsl_rl.RslRlPpoActorCriticRecurrentCfg.noise_std_type>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`actor_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticRecurrentCfg.actor_obs_normalization>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1:<autosummary>:1
+#: of
+msgid ""
+":py:obj:`critic_obs_normalization "
+"<isaaclab_rl.rsl_rl.RslRlPpoActorCriticRecurrentCfg.critic_obs_normalization>`\\"
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoActorCriticRecurrentCfg:1:<autosummary>:1
@@ -1985,6 +2565,14 @@ msgid "Whether to normalize the advantage per mini-batch."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid ":py:obj:`rnd_cfg <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.rnd_cfg>`\\"
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
+msgid "The RND configuration."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
 msgid ""
 ":py:obj:`symmetry_cfg "
 "<isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.symmetry_cfg>`\\"
@@ -1992,14 +2580,6 @@ msgstr ""
 
 #: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
 msgid "The symmetry configuration."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
-msgid ":py:obj:`rnd_cfg <isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.rnd_cfg>`\\"
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.rl_cfg.RslRlPpoAlgorithmCfg:1:<autosummary>:1 of
-msgid "The configuration for the Random Network Distillation (RND) module."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.class_name:1:<autosummary>:1 of
@@ -2027,34 +2607,21 @@ msgid ""
 "trajectories."
 msgstr ""
 
+#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.rnd_cfg:1 of
+msgid "The RND configuration. Default is None, in which case RND is not used."
+msgstr ""
+
 #: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.symmetry_cfg:1 of
 msgid ""
 "The symmetry configuration. Default is None, in which case symmetry is "
 "not used."
 msgstr ""
 
-#: ../../docstring isaaclab_rl.rsl_rl.RslRlPpoAlgorithmCfg.rnd_cfg:1 of
-msgid ""
-"The configuration for the Random Network Distillation (RND) module. "
-"Default is None, in which case RND is not used."
-msgstr ""
-
 #: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:1 of
 msgid "Bases: :py:class:`~rsl_rl.env.VecEnv`"
 msgstr ""
 
-#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:3 of
-msgid ""
-"To use asymmetric actor-critic, the environment instance must have the "
-"attributes :attr:`num_privileged_obs` (int). This is used by the learning"
-" agent to allocate buffers in the trajectory memory. Additionally, the "
-"returned observations should have the key \"critic\" which corresponds to"
-" the privileged observations. Since this is optional for some "
-"environments, the wrapper checks if these attributes exist. If they don't"
-" then the wrapper defaults to zero as number of privileged observations."
-msgstr ""
-
-#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:16 of
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper:9 of
 msgid "https://github.com/leggedrobotics/rsl_rl/blob/master/rsl_rl/env/vec_env.py"
 msgstr ""
 
@@ -2111,6 +2678,12 @@ msgid ""
 "<isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.observation_space>`\\"
 msgstr ""
 
+#: isaaclab_rl.rsl_rl.RslRlVecEnvWrapper.observation_space:1
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
+#: of
+msgid "Returns the :attr:`Env` :attr:`observation_space`."
+msgstr ""
+
 #: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:1:<autosummary>:1
 #: of
 msgid ""
@@ -2140,6 +2713,10 @@ msgstr ""
 msgid ""
 "The wrapper calls :meth:`reset` at the start since the RSL-RL runner does"
 " not call reset."
+msgstr ""
+
+#: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:6 of
+msgid "The clipping value for actions. If ``None``, then no clipping is done."
 msgstr ""
 
 #: isaaclab_rl.rsl_rl.vecenv_wrapper.RslRlVecEnvWrapper.__init__:8
@@ -2189,7 +2766,7 @@ msgstr ""
 msgid "The wrapped class."
 msgstr ""
 
-#: ../../source/api/lab_rl/isaaclab_rl.rst:22
+#: ../../source/api/lab_rl/isaaclab_rl.rst:24
 msgid "SKRL Wrapper"
 msgstr ""
 
@@ -2250,7 +2827,7 @@ msgstr ""
 msgid "https://skrl.readthedocs.io/en/latest/api/envs/wrapping.html"
 msgstr ""
 
-#: ../../source/api/lab_rl/isaaclab_rl.rst:29
+#: ../../source/api/lab_rl/isaaclab_rl.rst:31
 msgid "Stable-Baselines3 Wrapper"
 msgstr ""
 
@@ -2420,6 +2997,77 @@ msgid ""
 "truncation info are included)"
 msgstr ""
 
+#~ msgid ""
+#~ "To use asymmetric actor-critic, the "
+#~ "environment observations from "
+#~ ":class:`ManagerBasedRLEnv` or :class:`DirectRLEnv` "
+#~ "must have the key or group name"
+#~ " \"critic\". The observation group is "
+#~ "used to set the :attr:`num_states` (int)"
+#~ " and :attr:`state_space` (:obj:`gym.spaces.Box`). "
+#~ "These are used by the learning "
+#~ "agent in RL-Games to allocate "
+#~ "buffers in the trajectory memory. Since"
+#~ " this is optional for some "
+#~ "environments, the wrapper checks if "
+#~ "these attributes exist. If they don't"
+#~ " then the wrapper defaults to zero"
+#~ " as number of privileged observations."
+#~ msgstr ""
 
+#~ msgid "Wraps around Isaac Lab environment for RSL-RL library"
+#~ msgstr ""
 
+#~ msgid "The observation tensor. If None, the observation is not used."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The name of the observation type. "
+#~ "Defaults to \"policy\". This is useful"
+#~ " when handling augmentation for different"
+#~ " observation groups."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A tuple containing the augmented "
+#~ "observation and action tensors. The "
+#~ "tensors can be None, if their "
+#~ "respective inputs are None."
+#~ msgstr ""
+
+#~ msgid "Whether to use empirical normalization."
+#~ msgstr ""
+
+#~ msgid "Whether to resume."
+#~ msgstr ""
+
+#~ msgid "Whether to resume. Default is False."
+#~ msgstr ""
+
+#~ msgid "The configuration for the Random Network Distillation (RND) module."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The configuration for the Random Network"
+#~ " Distillation (RND) module. Default is "
+#~ "None, in which case RND is not "
+#~ "used."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "To use asymmetric actor-critic, the "
+#~ "environment instance must have the "
+#~ "attributes :attr:`num_privileged_obs` (int). This"
+#~ " is used by the learning agent "
+#~ "to allocate buffers in the trajectory"
+#~ " memory. Additionally, the returned "
+#~ "observations should have the key "
+#~ "\"critic\" which corresponds to the "
+#~ "privileged observations. Since this is "
+#~ "optional for some environments, the "
+#~ "wrapper checks if these attributes "
+#~ "exist. If they don't then the "
+#~ "wrapper defaults to zero as number "
+#~ "of privileged observations."
+#~ msgstr ""
 
