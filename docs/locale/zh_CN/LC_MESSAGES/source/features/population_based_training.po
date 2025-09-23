@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 11:46+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/features/population_based_training.rst:2
+msgid "Population Based Training"
+msgstr "基于人群的训练"
+
+#: ../../source/features/population_based_training.rst:5
+msgid "What PBT Does"
+msgstr "PBT 的作用"
+
+#: ../../source/features/population_based_training.rst:7
+msgid "Trains *N* policies in parallel (a \"population\") on the **same task**."
+msgstr "在 **同一任务** 上并行训练 *N* 个策略（即 \"人群\" ）。"
+
+#: ../../source/features/population_based_training.rst:8
+msgid "Every ``interval_steps``:"
+msgstr "每个 ``interval_steps``:"
+
+#: ../../source/features/population_based_training.rst:10
+msgid "Save each policy's checkpoint and objective."
+msgstr "保存每个策略的检查点和目标。"
+
+#: ../../source/features/population_based_training.rst:11
+msgid "Score the population and identify **leaders** and **underperformers**."
+msgstr "对人群进行评分并识别 **领导者** 和 **表现不佳者** 。"
+
+#: ../../source/features/population_based_training.rst:12
+msgid ""
+"For underperformers, replace weights from a random leader and **mutate** "
+"selected hyperparameters."
+msgstr "对表现不佳者，用来自随机领导者的权重替换，并 **突变** 选定的超参数。"
+
+#: ../../source/features/population_based_training.rst:13
+msgid "Restart that process with the new weights/params automatically."
+msgstr "自动使用新的权重/参数重新启动该过程。"
+
+#: ../../source/features/population_based_training.rst:16
+msgid "Leader / Underperformer Selection"
+msgstr "领导者/表现不佳者选择"
+
+#: ../../source/features/population_based_training.rst:18
+msgid ""
+"Let ``o_i`` be each initialized policy's objective, with mean ``μ`` and std "
+"``σ``."
+msgstr "设 ``o_i`` 为每个初始化策略的目标，其均值为 ``μ`` ，标准差为 ``σ`` 。"
+
+#: ../../source/features/population_based_training.rst:20
+msgid "Upper and lower performance cuts are::"
+msgstr "上限和下限性能截点为："
+
+#: ../../source/features/population_based_training.rst:25
+msgid "**Leaders**: ``o_i > upper_cut``"
+msgstr "**领导者**: ``o_i > upper_cut``"
+
+#: ../../source/features/population_based_training.rst:26
+msgid "**Underperformers**: ``o_i < lower_cut``"
+msgstr "**表现不佳者**: ``o_i < lower_cut``"
+
+#: ../../source/features/population_based_training.rst:28
+msgid "The \"Natural-Selection\" rules:"
+msgstr "\"自然选择\" 规则: "
+
+#: ../../source/features/population_based_training.rst:30
+msgid "Only underperformers are acted on (mutated or replaced)."
+msgstr "只有表现不佳者会被处理（突变或替换）。"
+
+#: ../../source/features/population_based_training.rst:31
+msgid ""
+"If leaders exist, replace an underperformer with a random leader; otherwise,"
+" self-mutate."
+msgstr "如果存在领导者，则用随机领导者替换表现不佳者；否则，自我突变。"
+
+#: ../../source/features/population_based_training.rst:34
+msgid "Mutation (Hyperparameters)"
+msgstr "突变（超参数）"
+
+#: ../../source/features/population_based_training.rst:36
+msgid ""
+"Each param has a mutation function (e.g., ``mutate_float``, "
+"``mutate_discount``, etc.)."
+msgstr "每个参数都有一个突变函数（例如， ``mutate_float`` ， ``mutate_discount`` 等）。"
+
+#: ../../source/features/population_based_training.rst:37
+msgid "A param is mutated with probability ``mutation_rate``."
+msgstr "以 ``mutation_rate`` 的概率突变参数。"
+
+#: ../../source/features/population_based_training.rst:38
+msgid ""
+"When mutated, its value is perturbed within ``change_range = (min, max)``."
+msgstr "突变时，其值在 ``change_range = (min, max)`` 之间扰动。"
+
+#: ../../source/features/population_based_training.rst:39
+msgid "Only whitelisted keys (from the PBT config) are considered."
+msgstr "只考虑来自PBT配置的白名单键。"
+
+#: ../../source/features/population_based_training.rst:42
+msgid "Example Config"
+msgstr "示例配置"
+
+#: ../../source/features/population_based_training.rst:69
+msgid ""
+"``objective: episode.Curriculum/difficulty_level`` is the dotted expression "
+"that uses ``infos[\"episode\"][\"Curriculum/difficulty_level\"]`` as the "
+"scalar to **rank policies** (higher is better). With ``num_policies: 8``, "
+"launch eight processes sharing the same ``workspace`` and unique "
+"``policy_idx`` (0-7)."
+msgstr ""
+"``objective: episode.Curriculum/difficulty_level`` 是使用 "
+"``infos[\"episode\"][\"Curriculum/difficulty_level\"]`` 作为标量来 **对策略进行排序** "
+"（值越大越好）的点表达式。 带有 ``num_policies: 8`` ，启动八个共享相同 ``workspace`` 和唯一 "
+"``policy_idx`` （0-7）的进程。"
+
+#: ../../source/features/population_based_training.rst:75
+msgid "Launching PBT"
+msgstr "启动PBT"
+
+#: ../../source/features/population_based_training.rst:77
+msgid ""
+"You must start **one process per policy** and point them to the **same "
+"workspace**. Set a unique ``policy_idx`` for each process and the common "
+"``num_policies``."
+msgstr ""
+"您必须为 **每个策略启动一个进程** ，并将它们指向 **相同的workspace** 。 为每个进程设置一个唯一的 ``policy_idx`` "
+"和共同的 ``num_policies`` 。"
+
+#: ../../source/features/population_based_training.rst:80
+msgid "Minimal flags you need:"
+msgstr "您需要的最小标志："
+
+#: ../../source/features/population_based_training.rst:82
+msgid "``agent.pbt.enabled=True``"
+msgstr "``agent.pbt.enabled=True``"
+
+#: ../../source/features/population_based_training.rst:83
+msgid "``agent.pbt.workspace=<path/to/shared_folder>``"
+msgstr "``agent.pbt.workspace=<path/to/shared_folder>``"
+
+#: ../../source/features/population_based_training.rst:84
+msgid "``agent.pbt.policy_idx=<0..num_policies-1>``"
+msgstr "``agent.pbt.policy_idx=<0..num_policies-1>``"
+
+#: ../../source/features/population_based_training.rst:85
+msgid "``agent.pbt.num_policies=<N>``"
+msgstr "``agent.pbt.num_policies=<N>``"
+
+#: ../../source/features/population_based_training.rst:88
+msgid ""
+"All processes must use the same ``agent.pbt.workspace`` so they can see each"
+" other's checkpoints."
+msgstr "所有进程必须使用相同的 ``agent.pbt.workspace`` ，以便它们可以看到彼此的检查点。"
+
+#: ../../source/features/population_based_training.rst:91
+msgid ""
+"PBT is currently supported **only** with the **rl_games** library. Other RL "
+"libraries are not supported yet."
+msgstr "PBT目前仅受 **rl_games** 库支持。其他RL库暂不支持。"
+
+#: ../../source/features/population_based_training.rst:94
+msgid "Tips"
+msgstr "提示"
+
+#: ../../source/features/population_based_training.rst:96
+msgid ""
+"Keep checkpoints fast: reduce ``interval_steps`` only if you really need "
+"tighter PBT cadence."
+msgstr "保持检查点快速：仅在确实需要更紧密的PBT节奏时减少 ``interval_steps`` 。"
+
+#: ../../source/features/population_based_training.rst:97
+msgid "It is recommended to run 6+ workers to see benefit of pbt"
+msgstr "建议运行6个或更多工作进程以获得PBT的好处"
+
+#: ../../source/features/population_based_training.rst:101
+msgid "References"
+msgstr "参考文献"
+
+#: ../../source/features/population_based_training.rst:103
+msgid ""
+"This PBT implementation reimplements and is inspired by *Dexpbt: Scaling up "
+"dexterous manipulation for hand-arm systems with population based training* "
+"(Petrenko et al., 2023)."
+msgstr ""
+"本PBT实现是根据 *Dexpbt: Scaling up dexterous manipulation for hand-arm systems "
+"with population based training* (Petrenko et al., 2023). 重新实现并受到启发。"
