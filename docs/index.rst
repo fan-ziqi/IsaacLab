@@ -16,7 +16,7 @@ Welcome to Isaac Lab!
 
     如果您需要基于IsaacLab开发您自己的独立拓展项目，请参考 `robot_lab <https://github.com/fan-ziqi/robot_lab>`__ 项目。
 
-    如果您想将IsaacLab训练的模型部署到实际机器人上或在Gazebo中仿真，请参考 `rl_sar <https://github.com/fan-ziqi/rl_sar>`__ 项目。
+    如果您想将IsaacLab训练的模型部署到实际机器人上或在Gazebo/MuJoCo中仿真，请参考 `rl_sar <https://github.com/fan-ziqi/rl_sar>`__ 项目。
 
 
 **Isaac Lab** is a unified and modular framework for robot learning that aims to simplify common workflows
