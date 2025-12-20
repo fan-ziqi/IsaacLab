@@ -1,0 +1,895 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>环境设计 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/setup/walkthrough/technical_env_design';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="训练 Jetbot: 基准真相" href="training_jetbot_gt.html" />
+    <link rel="prev" title="类和配置" href="api_env_design.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">演练</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_env_design.html">类和配置</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-to/index.html">操作指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/setup/walkthrough/technical_env_design.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/setup/walkthrough/technical_env_design.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/setup/walkthrough/technical_env_design.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>环境设计</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-robot">定义机器人</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-configuration">环境配置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-of-the-clones">克隆的攻击</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="environment-design">
+<span id="walkthrough-technical-env-design"></span><h1>环境设计<a class="headerlink" href="#environment-design" title="Link to this heading">#</a></h1>
+<p>凭借我们对项目及其结构的理解，我们准备开始修改代码以适应我们的 Jetbot 训练需求。我们的模板设置为 <strong>直接</strong> 工作流程，这意味着环境类将集中管理所有这些细节。我们需要编写代码来...</p>
+<ol class="arabic simple">
+<li><p>定义机器人</p></li>
+<li><p>定义训练仿真并管理克隆</p></li>
+<li><p>将智能体的动作应用于机器人</p></li>
+<li><p>计算并返回奖励和观测</p></li>
+<li><p>管理重置和终止状态</p></li>
+</ol>
+<p>作为第一步，我们的目标将是让环境训练流程加载并运行。在本教程的这一部分，我们将使用一个虚假的奖励信号。你可以在 <a class="reference external" href="https://github.com/isaac-sim/IsaacLabTutorial/tree/jetbot-intro-1-1">这里</a> 找到这些修改的代码!</p>
+<section id="define-the-robot">
+<h2>定义机器人<a class="headerlink" href="#define-the-robot" title="Link to this heading">#</a></h2>
+<p>随着我们项目的壮大，我们可能会有许多想要训练的机器人。我们预谋添加一个名为 <code class="docutils literal notranslate"><span class="pre">robots</span></code> 的新 <code class="docutils literal notranslate"><span class="pre">module</span></code> 到我们的教程 <code class="docutils literal notranslate"><span class="pre">extension</span></code> 中，我们将在其中保留机器人的定义作为单独的 python 脚本。导航到 <code class="docutils literal notranslate"><span class="pre">isaac_lab_tutorial/source/isaac_lab_tutorial/isaac_lab_tutorial</span></code> ，创建一个名为 <code class="docutils literal notranslate"><span class="pre">robots</span></code> 的新文件夹。在此文件夹中创建两个文件: <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> 和 <code class="docutils literal notranslate"><span class="pre">jetbot.py</span></code> 。 <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> 文件将该目录标记为 python 模块，我们将能够以常规方式导入 <code class="docutils literal notranslate"><span class="pre">jetbot.py</span></code> 的内容。</p>
+<p><code class="docutils literal notranslate"><span class="pre">jetbot.py</span></code> 的内容非常简单</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArticulationCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.actuators</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImplicitActuatorCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.utils.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ISAAC_NUCLEUS_DIR</span>
+
+<span class="n">JETBOT_CONFIG</span> <span class="o">=</span> <span class="n">ArticulationCfg</span><span class="p">(</span>
+    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">UsdFileCfg</span><span class="p">(</span><span class="n">usd_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ISAAC_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/Robots/NVIDIA/Jetbot/jetbot.usd&quot;</span><span class="p">),</span>
+    <span class="n">actuators</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wheel_acts&quot;</span><span class="p">:</span> <span class="n">ImplicitActuatorCfg</span><span class="p">(</span><span class="n">joint_names_expr</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.*&quot;</span><span class="p">],</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stiffness</span><span class="o">=</span><span class="kc">None</span><span class="p">)},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>此文件的唯一目的是定义一个唯一的范围，用来保存我们的配置。有关机器人配置的详细信息可以在 <a class="reference internal" href="../../tutorials/01_assets/add_new_robot.html#tutorial-add-new-robot"><span class="std std-ref">这个教程</span></a> 中探索，但对于本教程而言，最值得关注的是 <code class="docutils literal notranslate"><span class="pre">ArticulationCfg</span></code> 中 <code class="docutils literal notranslate"><span class="pre">spawn</span></code> 参数的 <code class="docutils literal notranslate"><span class="pre">usd_path</span></code> 。 <code class="docutils literal notranslate"><span class="pre">Jetbot</span></code> 资源可通过托管的nucleus服务器公开获得，并且该路径由 <code class="docutils literal notranslate"><span class="pre">ISAAC_NUCLEUS_DIR</span></code> 定义，但任何到 USD 文件的路径都是有效的，包括本地路径!</p>
+</section>
+<section id="environment-configuration">
+<h2>环境配置<a class="headerlink" href="#environment-configuration" title="Link to this heading">#</a></h2>
+<p>导航到环境配置， <code class="docutils literal notranslate"><span class="pre">isaac_lab_tutorial/source/isaac_lab_tutorial/isaac_lab_tutorial/tasks/direct/isaac_lab_tutorial/isaac_lab_tutorial_env_cfg.py</span></code> ，并用以下内容替换其内容</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaac_lab_tutorial.robots.jetbot</span><span class="w"> </span><span class="kn">import</span> <span class="n">JETBOT_CONFIG</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArticulationCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.envs</span><span class="w"> </span><span class="kn">import</span> <span class="n">DirectRLEnvCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractiveSceneCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimulationCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">configclass</span>
+
+<span class="nd">@configclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IsaacLabTutorialEnvCfg</span><span class="p">(</span><span class="n">DirectRLEnvCfg</span><span class="p">):</span>
+    <span class="c1"># env</span>
+    <span class="n">decimation</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">episode_length_s</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="c1"># - spaces definition</span>
+    <span class="n">action_space</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">observation_space</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">state_space</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># simulation</span>
+    <span class="n">sim</span><span class="p">:</span> <span class="n">SimulationCfg</span> <span class="o">=</span> <span class="n">SimulationCfg</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">120</span><span class="p">,</span> <span class="n">render_interval</span><span class="o">=</span><span class="n">decimation</span><span class="p">)</span>
+    <span class="c1"># robot(s)</span>
+    <span class="n">robot_cfg</span><span class="p">:</span> <span class="n">ArticulationCfg</span> <span class="o">=</span> <span class="n">JETBOT_CONFIG</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Robot&quot;</span><span class="p">)</span>
+    <span class="c1"># scene</span>
+    <span class="n">scene</span><span class="p">:</span> <span class="n">InteractiveSceneCfg</span> <span class="o">=</span> <span class="n">InteractiveSceneCfg</span><span class="p">(</span><span class="n">num_envs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">env_spacing</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">replicate_physics</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">dof_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;left_wheel_joint&quot;</span><span class="p">,</span> <span class="s2">&quot;right_wheel_joint&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>这里，我们实际上有与之前相同的环境配置，但是使用 Jetbot 替换了 cartpole。参数 <code class="docutils literal notranslate"><span class="pre">decimation</span></code> 、 <code class="docutils literal notranslate"><span class="pre">episode_length_s</span></code> 、 <code class="docutils literal notranslate"><span class="pre">action_space</span></code> 、 <code class="docutils literal notranslate"><span class="pre">observation_space</span></code> 和 <code class="docutils literal notranslate"><span class="pre">state_space</span></code> 都是基类 <code class="docutils literal notranslate"><span class="pre">DirectRLEnvCfg</span></code> 的成员，并且必须为每个 <code class="docutils literal notranslate"><span class="pre">DirectRLEnv</span></code> 进行定义。空间参数被解释为给定整数维度的向量，但也可以定义为 <a class="reference external" href="https://gymnasium.farama.org/api/spaces/">gymnasium spaces</a>!</p>
+<p>请注意动作和观测空间的差异。作为环境的设计者，我们可以选择这些。对于 Jetbot，我们希望直接控制机器人的关节，其中只有两个被驱动（因此动作空间为两个）。观测空间选择为 3，因为我们现在只是要将 Jetbot 的线速度提供给智能体。随着环境的发展，稍后我们会更改这些。我们的策略不需要维护内部状态，所以我们的状态空间为零。</p>
+</section>
+<section id="attack-of-the-clones">
+<h2>克隆的攻击<a class="headerlink" href="#attack-of-the-clones" title="Link to this heading">#</a></h2>
+<p>配置定义完成后，是时候填写环境的细节，从初始化和设置开始。导航到环境定义， <code class="docutils literal notranslate"><span class="pre">isaac_lab_tutorial/source/isaac_lab_tutorial/isaac_lab_tutorial/tasks/direct/isaac_lab_tutorial/isaac_lab_tutorial_env.py</span></code> ，并用以下内容替换 <code class="docutils literal notranslate"><span class="pre">__init__</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_setup_scene</span></code> 方法的内容。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">IsaacLabTutorialEnv</span><span class="p">(</span><span class="n">DirectRLEnv</span><span class="p">):</span>
+    <span class="n">cfg</span><span class="p">:</span> <span class="n">IsaacLabTutorialEnvCfg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">IsaacLabTutorialEnvCfg</span><span class="p">,</span> <span class="n">render_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">render_mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dof_idx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">find_joints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">dof_names</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">Articulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">robot_cfg</span><span class="p">)</span>
+        <span class="c1"># add ground plane</span>
+        <span class="n">spawn_ground_plane</span><span class="p">(</span><span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/ground&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="n">GroundPlaneCfg</span><span class="p">())</span>
+        <span class="c1"># clone and replicate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clone_environments</span><span class="p">(</span><span class="n">copy_from_source</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># add articulation to scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">articulations</span><span class="p">[</span><span class="s2">&quot;robot&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span>
+        <span class="c1"># add lights</span>
+        <span class="n">light_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">DomeLightCfg</span><span class="p">(</span><span class="n">intensity</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">))</span>
+        <span class="n">light_cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Light&quot;</span><span class="p">,</span> <span class="n">light_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>请注意， <code class="docutils literal notranslate"><span class="pre">_setup_scene</span></code> 方法没有变化，而 <code class="docutils literal notranslate"><span class="pre">_init__</span></code> 方法只是从机器人获取关节索引（记住，setup 是在 super 中调用的）。</p>
+<p>我们的环境需要的下一步是处理动作、观测和奖励的定义。首先，用以下内容替换 <code class="docutils literal notranslate"><span class="pre">_pre_physics_step</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_apply_action</span></code> 的内容。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_pre_physics_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">set_joint_velocity_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">,</span> <span class="n">joint_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dof_idx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这里将将动作应用于环境中的机器人分为两步: <code class="docutils literal notranslate"><span class="pre">_pre_physics_step</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_apply_action</span></code> 。物理仿真相对于查询用于动作的策略被降低，这意味着在策略采取的每个动作之间可能发生多次物理步骤。 <code class="docutils literal notranslate"><span class="pre">_pre_physics_step</span></code> 方法在实际仿真步骤发生之前调用，让我们分离出从正在训练的策略获取数据并应用更新到物理仿真的过程。 <code class="docutils literal notranslate"><span class="pre">_apply_action</span></code> 方法是将这些动作应用于场景中的机器人的地方，之后仿真会向前推进时间。</p>
+<p>接下来是观测和奖励，这将取决于 Jetbot 在机器人本体坐标系中的线速度。用以下内容替换 <code class="docutils literal notranslate"><span class="pre">_get_observations</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_get_rewards</span></code> 的内容。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_get_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_com_lin_vel_b</span>
+    <span class="n">observations</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;policy&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">observations</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="n">total_reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_reward</span>
+</pre></div>
+</div>
+<p>机器人在 Isaac Lab API 中是作为 Articulation 对象存在的。该对象包含一个数据类，即 <code class="docutils literal notranslate"><span class="pre">ArticulationData</span></code> ，其中包含场景上 <strong>特定</strong> 机器人的所有数据。当我们谈论一个像机器人这样的场景实体时，我们可以是广义上的讨论每个场景中存在的机器人实体，也可以是描述场景上特定单个机器人的。 <code class="docutils literal notranslate"><span class="pre">ArticulationData</span></code> 包含这些单个克隆的数据。这包括诸如各种运动学向量（如 <code class="docutils literal notranslate"><span class="pre">root_com_lin_vel_b</span></code> ）和参考向量（如 <code class="docutils literal notranslate"><span class="pre">robot.data.FORWARD_VEC_B</span></code> ）等。</p>
+<p>请注意，在 <code class="docutils literal notranslate"><span class="pre">_apply_action</span></code> 方法中，我们调用了 <code class="docutils literal notranslate"><span class="pre">self.robot</span></code> 的方法，这是 <code class="docutils literal notranslate"><span class="pre">Articulation</span></code> 的一个方法。被应用的动作以 <code class="docutils literal notranslate"><span class="pre">[num_envs,</span> <span class="pre">num_actions]</span></code> 形状的 2D 张量的形式存在。我们同时将动作应用于 <strong>所有</strong> 场景上的机器人!在这里，当我们需要获取观测时，我们需要所有场景上机器人的本体系速度，因此访问 <code class="docutils literal notranslate"><span class="pre">self.robot.data</span></code> 以获取这些信息。 <code class="docutils literal notranslate"><span class="pre">root_com_lin_vel_b</span></code> 是 <code class="docutils literal notranslate"><span class="pre">ArticulationData</span></code> 的一个属性，处理了质心线性速度从世界坐标系到本体坐标系的转换。最后，Isaac Lab 期望观测以字典形式返回，其中 <code class="docutils literal notranslate"><span class="pre">policy</span></code> 为策略模型定义观测， <code class="docutils literal notranslate"><span class="pre">critic</span></code> 为评论模型定义观测（在非对称的 actor critic 训练中）。由于我们不执行非对称的 actor critic，我们只需要定义 <code class="docutils literal notranslate"><span class="pre">policy</span></code> 。</p>
+<p>奖励则更为直接。对于每个场景的克隆，我们需要计算一个奖励值，并将其作为形状为 <code class="docutils literal notranslate"><span class="pre">[num_envs,</span> <span class="pre">1]</span></code> 的张量返回。作为占位符，我们将将奖励设定为 Jetbot 在本体坐标系中的线性速度的大小。有了这个奖励和观测空间，智能体应该会学会在训练开始后不久就随机确定方向，将 Jetbot 往前或往后驱动。</p>
+<p>最后，我们可以编写环境的部分来处理终止和重置。 用以下内容替换 <code class="docutils literal notranslate"><span class="pre">_get_dones</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_reset_idx</span></code> 的内容。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_get_dones</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+    <span class="n">time_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">episode_length_buf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_episode_length</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">time_out</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_reset_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env_ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">env_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">env_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_ALL_INDICES</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_reset_idx</span><span class="p">(</span><span class="n">env_ids</span><span class="p">)</span>
+
+    <span class="n">default_root_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_root_state</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span>
+    <span class="n">default_root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">env_origins</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">write_root_state_to_sim</span><span class="p">(</span><span class="n">default_root_state</span><span class="p">,</span> <span class="n">env_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>与动作类似，终止和重置是分成两部分进行处理的。首先是 <code class="docutils literal notranslate"><span class="pre">_get_dones</span></code> 方法，其目标仅仅是标记哪些环境需要重置以及原因。传统上，在强化学习中，一个 &quot;episode&quot; 以两种方式结束: 要么是智能体达到一个终止状态，要么是达到最大持续时间。Isaac Lab 对我们很好，因为它在幕后管理所有这些周期长度跟踪。配置参数 <code class="docutils literal notranslate"><span class="pre">episode_length_s</span></code> 定义了这个最大的 episode 长度（以秒为单位），参数 <code class="docutils literal notranslate"><span class="pre">episode_length_buff</span></code> 和 <code class="docutils literal notranslate"><span class="pre">max_episode_length</span></code> 包含单个场景所采取的步数（允许环境异步运行）以及从 <code class="docutils literal notranslate"><span class="pre">episode_length_s</span></code> 转换过来的最大 episode 长度。计算 <code class="docutils literal notranslate"><span class="pre">time_out</span></code> 的布尔运算仅仅比较当前缓冲区大小和最大值，如果大于最大值，则返回 true，从而指示哪些场景达到了 episode 长度限制。由于我们当前的环境是一个虚拟的环境，我们没有定义终止状态，所以对于第一个张量返回 <code class="docutils literal notranslate"><span class="pre">False</span></code> （PyTorch 的强大之处使其自动转换成正确的形状）。</p>
+<p>最后， <code class="docutils literal notranslate"><span class="pre">_reset_idx</span></code> 方法接受一个指示哪些场景需要重置的布尔张量，并对它们进行重置。请注意，这是 <code class="docutils literal notranslate"><span class="pre">DirectRLEnv</span></code> 的仅存在的另一个直接调用 <code class="docutils literal notranslate"><span class="pre">super</span></code> 的方法，这样做是为了管理与 episode 长度相关的内部缓冲。对于 <code class="docutils literal notranslate"><span class="pre">env_ids</span></code> 指示的环境，我们获取根默认状态，并将机器人重置到该状态，同时根据对应场景的原点偏移每个机器人的位置。这是克隆过程的一个结果，该过程从世界坐标系中定义的单个机器人和单个默认状态开始。不要忘记为您自己的自定义环境执行此步骤!</p>
+<p>完成这些更改后，当您使用模板 <code class="docutils literal notranslate"><span class="pre">train.py</span></code> 脚本启动任务时，您应该会看到 Jetbot 慢慢学会向前驾驶。</p>
+<figure class="align-center" style="width: 100%">
+<img alt="Jetbot 入侵开始!" src="../../../_images/walkthrough_1_1_result.jpg" />
+</figure>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="api_env_design.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">类和配置</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="training_jetbot_gt.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">训练 Jetbot: 基准真相</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-robot">定义机器人</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-configuration">环境配置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-of-the-clones">克隆的攻击</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

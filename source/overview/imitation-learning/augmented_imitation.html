@@ -1,0 +1,1267 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>增强模仿学习 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/overview/imitation-learning/augmented_imitation';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="自动生成演示的SkillGen" href="skillgen.html" />
+    <link rel="prev" title="​​Isaac Lab Mimic 中的遥操作与模仿学习​" href="teleop_imitation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/01_assets/run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-to/index.html">操作指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">模仿学习</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/overview/imitation-learning/augmented_imitation.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/overview/imitation-learning/augmented_imitation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/overview/imitation-learning/augmented_imitation.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>增强模仿学习</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-demonstrations">生成演示</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmos-augmentation">Cosmos 增强</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hdf5-to-mp4-conversion">HDF5 到 MP4 转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-cosmos-for-visual-augmentation">运行 Cosmos 用于视觉增强</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mp4-to-hdf5-conversion">MP4 到 HDF5 转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-generated-dataset">预生成的数据集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-datasets">合并数据集</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training-and-evaluation">模型训练和评估</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#robomimic-setup">Robomimic 设置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-an-agent">训练一个智能体</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">评估</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="augmented-imitation-learning">
+<span id="id1"></span><h1>增强模仿学习<a class="headerlink" href="#augmented-imitation-learning" title="Link to this heading">#</a></h1>
+<p>本节描述了如何使用 Isaac Lab 的模仿学习功能，结合 <a class="reference external" href="https://www.nvidia.com/en-us/ai/cosmos/">Cosmos</a> 模型的视觉增强功能，以生成大规模演示以训练对抗视觉变化的视觉动作策略。</p>
+<section id="generating-demonstrations">
+<h2>生成演示<a class="headerlink" href="#generating-demonstrations" title="Link to this heading">#</a></h2>
+<p>我们使用 Isaac Lab Mimic 功能，该功能允许从少数标注的演示中自动生成额外演示。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>本节假设您已经有一个收集到的演示数据集。如果没有，您可以按照 <a class="reference internal" href="teleop_imitation.html#teleoperation-imitation-learning"><span class="std std-ref">​​Isaac Lab Mimic 中的遥操作与模仿学习​</span></a> 中的说明来收集和标注您自己的演示。</p>
+</div>
+<p>在以下示例中，我们将向您展示如何使用 Isaac Lab Mimic 生成额外的演示，这些演示可直接用于训练视觉运动策略，或者可以使用 Cosmos 进行视觉变化增强（使用 <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0</span></code> 环境）。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0</span></code> 环境类似于标准的视觉动作环境（ <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Mimic-v0</span></code> ），但在生成的数据集中添加了分割蒙版、深度图和法线图。这些额外的模态是使用 Cosmos 进行视觉增强时获得最佳结果所必需的。</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/generate_dataset.py<span class="w"> </span><span class="se">\</span>
+--device<span class="w"> </span>cpu<span class="w"> </span>--enable_cameras<span class="w"> </span>--headless<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">10</span><span class="w"> </span>--generation_num_trials<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/annotated_dataset.hdf5<span class="w"> </span>--output_file<span class="w"> </span>./datasets/mimic_dataset_1k.hdf5<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0<span class="w"> </span><span class="se">\</span>
+--rendering_mode<span class="w"> </span>performance
+</pre></div>
+</div>
+<p>演示次数可以增加或减少，已经证明展示1000次可以为这个任务提供良好的训练结果。</p>
+<p>另外，可以调整 <code class="docutils literal notranslate"><span class="pre">--num_envs</span></code> 参数中环境的数量以加快数据生成。建议的数量为10，可以在一般笔记本电脑CPU上运行。在性能更强的台式机上，可以使用更多环境以显著加快此步骤。</p>
+</section>
+<section id="cosmos-augmentation">
+<h2>Cosmos 增强<a class="headerlink" href="#cosmos-augmentation" title="Link to this heading">#</a></h2>
+<section id="hdf5-to-mp4-conversion">
+<h3>HDF5 到 MP4 转换<a class="headerlink" href="#hdf5-to-mp4-conversion" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">hdf5_to_mp4.py</span></code> 脚本将存储在 HDF5 示范文件中的摄像头帧转换为 MP4 视频。它支持多种摄像头模式，包括 RGB、分割、深度和法线图。使用 Cosmos 进行视觉增强时，此转换是必要的，因为它仅适用于视频文件而不是 HDF5 数据。</p>
+<p class="rubric">必需参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--input_file</span></code></p></td>
+<td><p>输入HDF5文件的路径。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--output_dir</span></code></p></td>
+<td><p>保存输出MP4文件的目录。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">可选参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--input_keys</span></code></p></td>
+<td><p>从 HDF5 文件中处理的输入键列表。 (默认值: [&quot;table_cam&quot;, &quot;wrist_cam&quot;, &quot;table_cam_segmentation&quot;, &quot;table_cam_normals&quot;, &quot;table_cam_shaded_segmentation&quot;, &quot;table_cam_depth&quot;])</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--video_height</span></code></p></td>
+<td><p>输出视频的高度，以像素为单位。 (默认值: 704)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--video_width</span></code></p></td>
+<td><p>输出视频的宽度（以像素为单位）。（默认值: 1280）</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--framerate</span></code></p></td>
+<td><p>输出视频的帧率。 (默认值: 30)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>默认输入键覆盖所有相机模式，按照 <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0</span></code> 环境中遵循的命名约定。我们包括一个额外的模式 &quot;table_cam_shaded_segmentation&quot; ，这不是从HDF5数据文件中通过仿真生成的模式的一部分。相反，它是由该脚本自动生成的，使用分割和法线贴图的组合来获取一个伪纹理分割视频，以更好地控制Cosmos增强。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>我们建议使用上面给出的默认值来获得与Cosmos增强最佳效果的输出视频高度、宽度和帧速率。</p>
+</div>
+<p>立方体堆叠任务的示例用法:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/tools/hdf5_to_mp4.py<span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>datasets/mimic_dataset_1k.hdf5<span class="w"> </span><span class="se">\</span>
+--output_dir<span class="w"> </span>datasets/mimic_dataset_1k_mp4
+</pre></div>
+</div>
+</section>
+<section id="running-cosmos-for-visual-augmentation">
+<span id="running-cosmos"></span><h3>运行 Cosmos 用于视觉增强<a class="headerlink" href="#running-cosmos-for-visual-augmentation" title="Link to this heading">#</a></h3>
+<p>将示范转换为 MP4 格式后，您可以使用 <a class="reference external" href="https://www.nvidia.com/en-us/ai/cosmos/">Cosmos</a> 模型对视频进行视觉增强。请参考 Cosmos 文档以了解增强过程的详细信息。视觉增强可以包括对光照、纹理、背景和其他视觉元素的更改，同时保留基本的任务相关特征。</p>
+<p>我们将上一步的 RGB、深度和阴影分割视频作为输入，输入到 Cosmos 模型中，如下所示:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cosmos_inputs.gif"><img alt="RGB、深度和分割控制输入到 Cosmos" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cosmos_inputs.gif" style="width: 100%;" />
+</a>
+</figure>
+<p>我们在下面提供了来自 <a class="reference external" href="https://github.com/nvidia-cosmos/cosmos-transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a">Cosmos Transfer1</a> 的示例增强输出:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cosmos_output.gif"><img alt="Cosmos Transfer1 增强输出" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cosmos_output.gif" style="width: 100%;" />
+</a>
+</figure>
+<p>我们建议使用 <a class="reference external" href="https://github.com/nvidia-cosmos/cosmos-transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a">Cosmos Transfer1</a> 模型进行视觉增强，因为我们发现它能够产生最佳结果，即高度多样化的数据集和广泛的视觉变化范围。您可以参考 <a class="reference external" href="https://github.com/nvidia-cosmos/cosmos-transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/INSTALL.md#environment-setup">安装说明</a> ， <a class="reference external" href="https://github.com/nvidia-cosmos/cosmos-transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/examples/inference_cosmos_transfer1_7b.md#download-checkpoints">下载检查点的说明</a> 和 <a class="reference external" href="https://github.com/nvidia-cosmos/cosmos-transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/examples/inference_cosmos_transfer1_7b.md#example-2-multimodal-control">这个例子</a> 以了解如何在这种用例中使用Transfer1。我们进一步建议在这个任务中使用Transfer1模型的以下设置：</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>此工作流程已使用 Cosmos Transfer1 存储库的提交 <code class="docutils literal notranslate"><span class="pre">e4055e39ee9c53165e85275bdab84ed20909714a</span></code> 进行测试，这是推荐使用的版本。克隆 Cosmos Transfer1 存储库后，通过运行 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">e4055e39ee9c53165e85275bdab84ed20909714a</span></code> 切换到此特定提交。</p>
+</div>
+<p class="rubric">超参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">negative_prompt</span></code></p></td>
+<td><p>&quot;The video captures a game playing, with bad crappy graphics and cartoonish frames. It represents a recording of old outdated games. The images are very pixelated and of poor CG quality. There are many subtitles in the footage. Overall, the video is unrealistic and appears cg. Plane background.&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sigma_max</span></code></p></td>
+<td><p>50</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">control_weight</span></code></p></td>
+<td><p>&quot;0.3,0.3,0.6,0.7&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hint_key</span></code></p></td>
+<td><p>&quot;blur,canny,depth,segmentation&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>另一个关键方面是获取良好的增强的关键是用于控制Cosmos生成的prompts集。我们提供了一个脚本， <code class="docutils literal notranslate"><span class="pre">cosmos_prompt_gen.py</span></code> ，用于从一组精心选择的模板中构建prompts，处理增强过程的各个方面。</p>
+<p class="rubric">必需参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--templates_path</span></code></p></td>
+<td><p>包含prompts模板的文件路径。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">可选参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--num_prompts</span></code></p></td>
+<td><p>生成prompts数量（默认值: 1）。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--output_path</span></code></p></td>
+<td><p>生成prompts写入的输出文件路径。 (默认值: prompts.txt)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/tools/cosmos/cosmos_prompt_gen.py<span class="w"> </span><span class="se">\</span>
+--templates_path<span class="w"> </span>scripts/tools/cosmos/transfer1_templates.json<span class="w"> </span><span class="se">\</span>
+--num_prompts<span class="w"> </span><span class="m">10</span><span class="w"> </span>--output_path<span class="w"> </span>prompts.txt
+</pre></div>
+</div>
+<p>如果您想要创建自己的prompts，则建议您参考以下准则:</p>
+<ol class="arabic simple">
+<li><p>尽量详细地保留prompts。最好对生成过程中每个可见对象/感兴趣区域都有一些指导。例如，我们提供的prompts涵盖了桌子、灯光、背景、机械臂、立方体和整体布景的细节。</p></li>
+<li><p>尽量使增强指令尽可能地真实和连贯。模型在保留输入控制视频的关键特征方面做得越不真实或不传统，它的表现就越糟糕。</p></li>
+<li><p>保持每个方面的增强指令同步。我们的意思是，所有对象/感兴趣区域的增强应该在彼此之间是连贯和传统的。例如，最好是有一个prompts，例如 &quot;The table is of old dark wood with faded polish and food stains and the background consists of a suburban home&quot; ，而不是像 &quot;The table is of old dark wood with faded polish and food stains and the background consists of a spaceship hurtling through space&quot; 。</p></li>
+<li><p>在输入控制视频的关键方面，必须包括应保留或保持不变的细节。在我们的prompts中，我们非常明确地提到立方体的颜色应保持不变，使得底部立方体是蓝色，中间是红色，顶部是绿色。请注意，我们不仅提到了应该保持不变的内容，还详细说明了该方面当前的形式。</p></li>
+</ol>
+<p>示例命令，用于在此用例中使用 Cosmos Transfer1 模型:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="p">:=0</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CHECKPOINT_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHECKPOINT_DIR</span><span class="p">:=./checkpoints</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NUM_GPU</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NUM_GPU</span><span class="p">:=1</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="nv">$NUM_GPU</span><span class="w"> </span>--nnodes<span class="o">=</span><span class="m">1</span><span class="w"> </span>--node_rank<span class="o">=</span><span class="m">0</span><span class="w"> </span>cosmos_transfer1/diffusion/inference/transfer.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--checkpoint_dir<span class="w"> </span><span class="nv">$CHECKPOINT_DIR</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--video_save_folder<span class="w"> </span>outputs/cosmos_dataset_1k_mp4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--controlnet_specs<span class="w"> </span>./controlnet_specs/demo_0.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--offload_text_encoder_model<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--offload_guardrail_models<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num_gpus<span class="w"> </span><span class="nv">$NUM_GPU</span>
+</pre></div>
+</div>
+<p>示例 <code class="docutils literal notranslate"><span class="pre">./controlnet_specs/demo_0.json</span></code> json 文件可用于上述命令:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A robotic arm is picking up and stacking cubes inside a foggy industrial scrapyard at dawn, surrounded by piles of old robotic parts and twisted metal. The background includes large magnetic cranes, rusted conveyor belts, and flickering yellow floodlights struggling to penetrate the fog. The robot arm is bright teal with a glossy surface and silver stripes on the outer edges; the joints rotate smoothly and the pistons reflect a pale cyan hue. The robot arm is mounted on a table that is light oak wood with a natural grain pattern and a glossy varnish that reflects overhead lights softly; small burn marks dot one corner. The arm is connected to the base mounted on the table. The bottom cube is deep blue, the second cube is bright red, and the top cube is vivid green, maintaining their correct order after stacking. Sunlight pouring in from a large, open window bathes the table and robotic arm in a warm golden light. The shadows are soft, and the scene feels natural and inviting with a slight contrast between light and shadow.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;negative_prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The video captures a game playing, with bad crappy graphics and cartoonish frames. It represents a recording of old outdated games. The images are very pixelated and of poor CG quality. There are many subtitles in the footage. Overall, the video is unrealistic and appears cg. Plane background.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;input_video_path&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mimic_dataset_1k_mp4/demo_0_table_cam.mp4&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sigma_max&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vis&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;input_control&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mimic_dataset_1k_mp4/demo_0_table_cam.mp4&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;control_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;edge&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;control_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;depth&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;input_control&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mimic_dataset_1k_mp4/demo_0_table_cam_depth.mp4&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;control_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;seg&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;input_control&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mimic_dataset_1k_mp4/demo_0_table_cam_shaded_segmentation.mp4&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;control_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mp4-to-hdf5-conversion">
+<h3>MP4 到 HDF5 转换<a class="headerlink" href="#mp4-to-hdf5-conversion" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">mp4_to_hdf5.py</span></code> 脚本将经过视觉增强的MP4视频转换回HDF5格式，用于训练。这一步非常关键，因为它确保了增强的视觉数据以正确格式用于在Isaac Lab中训练视觉动作策略，并将视频与原始数据集中相应的演示数据配对。</p>
+<p class="rubric">必需参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--input_file</span></code></p></td>
+<td><p>包含原始演示的输入 HDF5 文件的路径。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--videos_dir</span></code></p></td>
+<td><p>包含视觉增强的MP4视频的目录。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--output_file</span></code></p></td>
+<td><p>保存新的带有增强视频的HDF5文件的路径。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>输入 HDF5 文件用于保留非视觉数据（例如机器人状态和动作），同时用增强版本替换视觉数据。</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>视觉增强的 MP4 文件必须遵循命名约定 <code class="docutils literal notranslate"><span class="pre">demo_{demo_id}_*.mp4</span></code> ，其中:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">demo_id</span></code> 匹配原始 MP4 文件中的演示ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> 表示文件名可以根据用户的偏好从此处开始。</p></li>
+</ul>
+<p>这种命名惯例是为了让脚本能够正确地将增强视频与相应的演示配对。</p>
+</div>
+<p>立方体堆叠任务的示例用法:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/tools/mp4_to_hdf5.py<span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>datasets/mimic_dataset_1k.hdf5<span class="w"> </span><span class="se">\</span>
+--videos_dir<span class="w"> </span>datasets/cosmos_dataset_1k_mp4<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>datasets/cosmos_dataset_1k.hdf5
+</pre></div>
+</div>
+</section>
+<section id="pre-generated-dataset">
+<h3>预生成的数据集<a class="headerlink" href="#pre-generated-dataset" title="Link to this heading">#</a></h3>
+<p>我们提供了一个预先生成的数据集，其中包含了用于立方体堆叠任务的视觉增强演示，格式为HDF5。 如果您不希望在本地运行Cosmos来生成自己的增强数据，可以使用此数据集。 该数据集位于 <a class="reference external" href="https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-Manipulation-Augmented">Hugging Face</a> ，包含原始和增强演示（作为单独的数据集文件），可用于训练视觉动作策略。</p>
+</section>
+<section id="merging-datasets">
+<h3>合并数据集<a class="headerlink" href="#merging-datasets" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">merge_hdf5_datasets.py</span></code> 脚本将多个 HDF5 数据集合并为单个文件。当您希望将原始演示与增强演示合并以创建更大、更多样化的训练数据集时，这将非常有用。</p>
+<p class="rubric">必需参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--input_files</span></code></p></td>
+<td><p>将要合并的HDF5文件路径列表。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">可选参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--output_file</span></code></p></td>
+<td><p>合并输出的文件路径。（默认值: merged_dataset.hdf5）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>合并数据集可以通过在训练过程中使模型接触原始和增强的视觉条件，从而帮助提高政策的稳健性。</p>
+</div>
+<p>立方体堆叠任务的示例用法:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/tools/merge_hdf5_datasets.py<span class="w"> </span><span class="se">\</span>
+--input_files<span class="w"> </span>datasets/mimic_dataset_1k.hdf5<span class="w"> </span>datasets/cosmos_dataset_1k.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>datasets/mimic_cosmos_dataset.hdf5
+</pre></div>
+</div>
+</section>
+</section>
+<section id="model-training-and-evaluation">
+<h2>模型训练和评估<a class="headerlink" href="#model-training-and-evaluation" title="Link to this heading">#</a></h2>
+<section id="robomimic-setup">
+<h3>Robomimic 设置<a class="headerlink" href="#robomimic-setup" title="Link to this heading">#</a></h3>
+<p>作为一个示例，我们将训练一个在 <a class="reference external" href="https://robomimic.github.io/">Robomimic</a> 中实现的 BC 智能体来训练一个策略。可以使用任何其他框架或训练方法。</p>
+<p>要安装robomimic框架，请使用以下命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install the dependencies</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>cmake<span class="w"> </span>build-essential
+<span class="c1"># install python module (for robomimic)</span>
+./isaaclab.sh<span class="w"> </span>-i<span class="w"> </span>robomimic
+</pre></div>
+</div>
+</section>
+<section id="training-an-agent">
+<h3>训练一个智能体<a class="headerlink" href="#training-an-agent" title="Link to this heading">#</a></h3>
+<p>使用生成的数据，现在我们可以为 <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-v0</span></code> 训练一个视觉-运动 BC 智能体。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/imitation_learning/robomimic/train.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-v0<span class="w"> </span>--algo<span class="w"> </span>bc<span class="w"> </span><span class="se">\</span>
+--dataset<span class="w"> </span>./datasets/mimic_cosmos_dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--name<span class="w"> </span>bc_rnn_image_franka_stack_mimic_cosmos
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>默认情况下，训练模型和日志将保存到 <code class="docutils literal notranslate"><span class="pre">IssacLab/logs/robomimic</span></code> 。</p>
+</div>
+</section>
+<section id="evaluation">
+<h3>评估<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">robust_eval.py</span></code> 脚本在仿真环境中评估经过训练的视觉动作策略。这种评估有助于评估策略在不同视觉变化下的泛化能力，以及视觉增强数据是否提高了策略的稳健性。</p>
+<p>以下是用于评估的不同设置的解释:</p>
+<p class="rubric">评估设置</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vanilla</span></code></p></td>
+<td><p>与生成Mimic数据时使用的完全相同设置。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Light</span> <span class="pre">Intensity</span></code></p></td>
+<td><p>光强/亮度变化，其他方面保持不变。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Light</span> <span class="pre">Color</span></code></p></td>
+<td><p>浅色变化，其他方面保持不变。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Light</span> <span class="pre">Texture</span> <span class="pre">(Background)</span></code></p></td>
+<td><p>轻质纹理/背景多样化，所有其他方面保持不变。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Table</span> <span class="pre">Texture</span></code></p></td>
+<td><p>桌子的视觉质感多种多样，其他方面保持不变。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Arm</span> <span class="pre">Texture</span></code></p></td>
+<td><p>机器人手臂的视觉纹理是多样的，其他所有方面保持不变。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">必需参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--task</span></code></p></td>
+<td><p>环境名称。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--input_dir</span></code></p></td>
+<td><p>包含要评估的模型检查点的目录。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">可选参数</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--start_epoch</span></code></p></td>
+<td><p>开始评估的检查点纪元。(默认值: 100)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--horizon</span></code></p></td>
+<td><p>每次执行的步骤范围。 (默认值: 400)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--num_rollouts</span></code></p></td>
+<td><p>每个模型每个设置的 rollout 次数。 (默认值: 15)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--num_seeds</span></code></p></td>
+<td><p>要评估的随机种子数量。 （默认值: 3）</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--seeds</span></code></p></td>
+<td><p>替代随机种子使用的特定种子列表。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--log_dir</span></code></p></td>
+<td><p>写入结果的目录。 (默认: /tmp/policy_evaluation_results)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--log_file</span></code></p></td>
+<td><p>输出文件的名称。 (默认: results)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--norm_factor_min</span></code></p></td>
+<td><p>动作空间归一化因子的最小值。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--norm_factor_max</span></code></p></td>
+<td><p>动作空间归一化因子的最大值。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable_fabric</span></code></p></td>
+<td><p>是否禁用 fabric 并使用 USD I/O 操作。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable_pinocchio</span></code></p></td>
+<td><p>是否启用 IK 控制器的 Pinocchio。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>评估结果将帮助您了解视觉增强是否提高了策略的性能和鲁棒性。将这些结果与在原始数据集上的评估结果进行比较，以衡量增强的影响。</p>
+</div>
+<p>立方体堆叠任务的示例用法:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/imitation_learning/robomimic/robust_eval.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-v0<span class="w"> </span><span class="se">\</span>
+--input_dir<span class="w"> </span>logs/robomimic/Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-v0/bc_rnn_image_franka_stack_mimic_cosmos/*/models<span class="w"> </span><span class="se">\</span>
+--log_dir<span class="w"> </span>robust_results/bc_rnn_image_franka_stack_mimic_cosmos<span class="w"> </span><span class="se">\</span>
+--log_file<span class="w"> </span>result<span class="w"> </span><span class="se">\</span>
+--enable_cameras<span class="w"> </span><span class="se">\</span>
+--seeds<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+--num_rollouts<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="se">\</span>
+--rendering_mode<span class="w"> </span>performance
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>这个脚本可能需要一天甚至更长的时间才能运行（取决于使用的硬件）。这种行为是正常的。</p>
+</div>
+<p>我们使用上述脚本来比较分别经过1000次Mimic生成的演示、2000次Mimic生成的演示和2000次Cosmos-Mimic生成的演示（1000个原始mimic + 1000个Cosmos增强）训练的模型。我们对这三个模型使用相同的种子（0、1000和5000），并提供以下度量指标（在每个种子的最佳检查点上进行平均）:</p>
+<p class="rubric">模型比较</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>评估设置</strong></p></td>
+<td><p><strong>Mimic 1k Baseline</strong></p></td>
+<td><p><strong>Mimic 2k Baseline</strong></p></td>
+<td><p><strong>Cosmos-Mimic 2k</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vanilla</span></code></p></td>
+<td><p>62%</p></td>
+<td><p>96.6%</p></td>
+<td><p>86.6%</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Light</span> <span class="pre">Intensity</span></code></p></td>
+<td><p>11.1%</p></td>
+<td><p>20%</p></td>
+<td><p>62.2%</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Light</span> <span class="pre">Color</span></code></p></td>
+<td><p>24.6%</p></td>
+<td><p>30%</p></td>
+<td><p>77.7%</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Light</span> <span class="pre">Texture</span> <span class="pre">(Background)</span></code></p></td>
+<td><p>16.6%</p></td>
+<td><p>20%</p></td>
+<td><p>68.8%</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Table</span> <span class="pre">Texture</span></code></p></td>
+<td><p>0%</p></td>
+<td><p>0%</p></td>
+<td><p>20%</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Arm</span> <span class="pre">Texture</span></code></p></td>
+<td><p>0%</p></td>
+<td><p>0%</p></td>
+<td><p>4.4%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上训练模型的检查点可以通过 <a class="reference external" href="https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-Manipulation-Augmented/tree/main/robomimic_bc_rnn_visuomotor_models">这里</a> 进行访问，以便直接使用模型。</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="teleop_imitation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">​​Isaac Lab Mimic 中的遥操作与模仿学习​</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="skillgen.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">自动生成演示的SkillGen</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-demonstrations">生成演示</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmos-augmentation">Cosmos 增强</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hdf5-to-mp4-conversion">HDF5 到 MP4 转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-cosmos-for-visual-augmentation">运行 Cosmos 用于视觉增强</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mp4-to-hdf5-conversion">MP4 到 HDF5 转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-generated-dataset">预生成的数据集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-datasets">合并数据集</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training-and-evaluation">模型训练和评估</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#robomimic-setup">Robomimic 设置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-an-agent">训练一个智能体</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">评估</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

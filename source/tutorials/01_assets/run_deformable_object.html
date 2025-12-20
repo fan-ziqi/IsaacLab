@@ -1,0 +1,1078 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>与可变形对象交互 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/tutorials/01_assets/run_deformable_object';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="与表面夹爪互动" href="run_surface_gripper.html" />
+    <link rel="prev" title="与关节交互" href="run_articulation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">教程</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-to/index.html">操作指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/tutorials/01_assets/run_deformable_object.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/tutorials/01_assets/run_deformable_object.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/tutorials/01_assets/run_deformable_object.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>与可变形对象交互</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code">代码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-explained">代码解释</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-the-scene">设计场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-simulation-loop">运行仿真循环</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#resetting-the-simulation-state">重置仿真状态</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stepping-the-simulation">逐步仿真</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-the-state">更新状态</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="interacting-with-a-deformable-object">
+<span id="tutorial-interact-deformable-object"></span><h1>与可变形对象交互<a class="headerlink" href="#interacting-with-a-deformable-object" title="Link to this heading">#</a></h1>
+<p>虽然可变形物体有时指的是一个更广泛的物体类别，如衣物、流体和软体，但在 <cite>PhysX</cite> 中，可变形物体在语法上对应于软体。与刚体不同，软体在外部力量和碰撞下可以变形。</p>
+<p>软体通过 Finite Element Method (FEM) 在 PhysX 中进行仿真。软体由两个四面体网格组成 -- 一个仿真网格和一个碰撞网格。仿真网格用于仿真软体的变形，而碰撞网格用于检测与场景中其他物体的碰撞。有关更多细节，请查看 <a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/docs/SoftBodies.html">PhysX documentation</a> 。</p>
+<p>本教程展示了如何在仿真中与可变形对象进行交互。我们将生成一组软体立方体，并了解如何设置它们的节点位置和速度，以及如何对网格节点应用运动学命令以移动软体。</p>
+<section id="the-code">
+<h2>代码<a class="headerlink" href="#the-code" title="Link to this heading">#</a></h2>
+<p>该教程对应于 <code class="docutils literal notranslate"><span class="pre">run_deformable_object.py</span></code> 脚本，在 <code class="docutils literal notranslate"><span class="pre">scripts/tutorials/01_assets</span></code> 目录中。</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text"><cite>run_deformable_object.py</cite> 的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).</span>
+<span class="linenos">  2</span><span class="c1"># All rights reserved.</span>
+<span class="linenos">  3</span><span class="c1">#</span>
+<span class="linenos">  4</span><span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">  7</span><span class="sd">This script demonstrates how to work with the deformable object and interact with it.</span>
+<span class="linenos">  8</span>
+<span class="linenos">  9</span><span class="sd">.. code-block:: bash</span>
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span><span class="sd">    # Usage</span>
+<span class="linenos"> 12</span><span class="sd">    ./isaaclab.sh -p scripts/tutorials/01_assets/run_deformable_object.py</span>
+<span class="linenos"> 13</span>
+<span class="linenos"> 14</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 15</span>
+<span class="linenos"> 16</span><span class="sd">&quot;&quot;&quot;Launch Isaac Sim Simulator first.&quot;&quot;&quot;</span>
+<span class="linenos"> 17</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="linenos"> 20</span>
+<span class="linenos"> 21</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.app</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLauncher</span>
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span><span class="c1"># add argparse arguments</span>
+<span class="linenos"> 24</span><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tutorial on interacting with a deformable object.&quot;</span><span class="p">)</span>
+<span class="linenos"> 25</span><span class="c1"># append AppLauncher cli args</span>
+<span class="linenos"> 26</span><span class="n">AppLauncher</span><span class="o">.</span><span class="n">add_app_launcher_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+<span class="linenos"> 27</span><span class="c1"># parse the arguments</span>
+<span class="linenos"> 28</span><span class="n">args_cli</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="linenos"> 29</span>
+<span class="linenos"> 30</span><span class="c1"># launch omniverse app</span>
+<span class="linenos"> 31</span><span class="n">app_launcher</span> <span class="o">=</span> <span class="n">AppLauncher</span><span class="p">(</span><span class="n">args_cli</span><span class="p">)</span>
+<span class="linenos"> 32</span><span class="n">simulation_app</span> <span class="o">=</span> <span class="n">app_launcher</span><span class="o">.</span><span class="n">app</span>
+<span class="linenos"> 33</span>
+<span class="linenos"> 34</span><span class="sd">&quot;&quot;&quot;Rest everything follows.&quot;&quot;&quot;</span>
+<span class="linenos"> 35</span>
+<span class="linenos"> 36</span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="linenos"> 37</span>
+<span class="linenos"> 38</span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="linenos"> 39</span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim.utils.prims</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prim_utils</span>
+<span class="linenos"> 40</span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.utils.math</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">math_utils</span>
+<span class="linenos"> 41</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeformableObject</span><span class="p">,</span> <span class="n">DeformableObjectCfg</span>
+<span class="linenos"> 42</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimulationContext</span>
+<span class="linenos"> 43</span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span><span class="k">def</span><span class="w"> </span><span class="nf">design_scene</span><span class="p">():</span>
+<span class="linenos"> 46</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Designs the scene.&quot;&quot;&quot;</span>
+<span class="linenos"> 47</span>    <span class="c1"># Ground-plane</span>
+<span class="linenos"> 48</span>    <span class="n">cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">GroundPlaneCfg</span><span class="p">()</span>
+<span class="linenos"> 49</span>    <span class="n">cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/defaultGroundPlane&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="linenos"> 50</span>    <span class="c1"># Lights</span>
+<span class="linenos"> 51</span>    <span class="n">cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">DomeLightCfg</span><span class="p">(</span><span class="n">intensity</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">))</span>
+<span class="linenos"> 52</span>    <span class="n">cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Light&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="linenos"> 53</span>
+<span class="linenos"> 54</span>    <span class="c1"># Create separate groups called &quot;Origin1&quot;, &quot;Origin2&quot;, &quot;Origin3&quot;</span>
+<span class="linenos"> 55</span>    <span class="c1"># Each group will have a robot in it</span>
+<span class="linenos"> 56</span>    <span class="n">origins</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
+<span class="linenos"> 57</span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">origin</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">origins</span><span class="p">):</span>
+<span class="linenos"> 58</span>        <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/World/Origin</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
+<span class="linenos"> 59</span>
+<span class="linenos"> 60</span>    <span class="c1"># Deformable Object</span>
+<span class="hll"><span class="linenos"> 61</span>    <span class="n">cfg</span> <span class="o">=</span> <span class="n">DeformableObjectCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos"> 62</span>        <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/Origin.*/Cube&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos"> 63</span>        <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MeshCuboidCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos"> 64</span>            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos"> 65</span>            <span class="n">deformable_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">DeformableBodyPropertiesCfg</span><span class="p">(</span><span class="n">rest_offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">contact_offset</span><span class="o">=</span><span class="mf">0.001</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos"> 66</span>            <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
+</span><span class="hll"><span class="linenos"> 67</span>            <span class="n">physics_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">DeformableBodyMaterialCfg</span><span class="p">(</span><span class="n">poissons_ratio</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">youngs_modulus</span><span class="o">=</span><span class="mf">1e5</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos"> 68</span>        <span class="p">),</span>
+</span><span class="hll"><span class="linenos"> 69</span>        <span class="n">init_state</span><span class="o">=</span><span class="n">DeformableObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+</span><span class="hll"><span class="linenos"> 70</span>        <span class="n">debug_vis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos"> 71</span>    <span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 72</span>    <span class="n">cube_object</span> <span class="o">=</span> <span class="n">DeformableObject</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="n">cfg</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 73</span>
+</span><span class="linenos"> 74</span>    <span class="c1"># return the scene information</span>
+<span class="hll"><span class="linenos"> 75</span>    <span class="n">scene_entities</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cube_object&quot;</span><span class="p">:</span> <span class="n">cube_object</span><span class="p">}</span>
+</span><span class="hll"><span class="linenos"> 76</span>    <span class="k">return</span> <span class="n">scene_entities</span><span class="p">,</span> <span class="n">origins</span>
+</span><span class="hll"><span class="linenos"> 77</span>
+</span><span class="linenos"> 78</span>
+<span class="linenos"> 79</span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulator</span><span class="p">(</span><span class="n">sim</span><span class="p">:</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationContext</span><span class="p">,</span> <span class="n">entities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DeformableObject</span><span class="p">],</span> <span class="n">origins</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="linenos"> 80</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs the simulation loop.&quot;&quot;&quot;</span>
+<span class="linenos"> 81</span>    <span class="c1"># Extract scene entities</span>
+<span class="linenos"> 82</span>    <span class="c1"># note: we only do this here for readability. In general, it is better to access the entities directly from</span>
+<span class="linenos"> 83</span>    <span class="c1">#   the dictionary. This dictionary is replaced by the InteractiveScene class in the next tutorial.</span>
+<span class="linenos"> 84</span>    <span class="n">cube_object</span> <span class="o">=</span> <span class="n">entities</span><span class="p">[</span><span class="s2">&quot;cube_object&quot;</span><span class="p">]</span>
+<span class="linenos"> 85</span>    <span class="c1"># Define simulation stepping</span>
+<span class="linenos"> 86</span>    <span class="n">sim_dt</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span>
+<span class="linenos"> 87</span>    <span class="n">sim_time</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="linenos"> 88</span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 89</span>
+<span class="linenos"> 90</span>    <span class="c1"># Nodal kinematic targets of the deformable bodies</span>
+<span class="linenos"> 91</span>    <span class="n">nodal_kinematic_target</span> <span class="o">=</span> <span class="n">cube_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nodal_kinematic_target</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>    <span class="c1"># Simulate physics</span>
+<span class="linenos"> 94</span>    <span class="k">while</span> <span class="n">simulation_app</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span>
+<span class="linenos"> 95</span>        <span class="c1"># reset</span>
+<span class="linenos"> 96</span>        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">250</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 97</span>            <span class="c1"># reset counters</span>
+<span class="linenos"> 98</span>            <span class="n">sim_time</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="linenos"> 99</span>            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">100</span>
+<span class="linenos">101</span>            <span class="c1"># reset the nodal state of the object</span>
+<span class="hll"><span class="linenos">102</span>            <span class="n">nodal_state</span> <span class="o">=</span> <span class="n">cube_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_nodal_state_w</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos">103</span>            <span class="c1"># apply random pose to the object</span>
+</span><span class="hll"><span class="linenos">104</span>            <span class="n">pos_w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">cube_object</span><span class="o">.</span><span class="n">num_instances</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="n">origins</span>
+</span><span class="hll"><span class="linenos">105</span>            <span class="n">quat_w</span> <span class="o">=</span> <span class="n">math_utils</span><span class="o">.</span><span class="n">random_orientation</span><span class="p">(</span><span class="n">cube_object</span><span class="o">.</span><span class="n">num_instances</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">106</span>            <span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cube_object</span><span class="o">.</span><span class="n">transform_nodal_pos</span><span class="p">(</span><span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">pos_w</span><span class="p">,</span> <span class="n">quat_w</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">107</span>
+</span><span class="hll"><span class="linenos">108</span>            <span class="c1"># write nodal state to simulation</span>
+</span><span class="hll"><span class="linenos">109</span>            <span class="n">cube_object</span><span class="o">.</span><span class="n">write_nodal_state_to_sim</span><span class="p">(</span><span class="n">nodal_state</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">110</span>
+</span><span class="linenos">111</span>            <span class="c1"># Write the nodal state to the kinematic target and free all vertices</span>
+<span class="hll"><span class="linenos">112</span>            <span class="n">nodal_kinematic_target</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</span><span class="hll"><span class="linenos">113</span>            <span class="n">nodal_kinematic_target</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+</span><span class="hll"><span class="linenos">114</span>            <span class="n">cube_object</span><span class="o">.</span><span class="n">write_nodal_kinematic_target_to_sim</span><span class="p">(</span><span class="n">nodal_kinematic_target</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">115</span>
+</span><span class="linenos">116</span>            <span class="c1"># reset buffers</span>
+<span class="hll"><span class="linenos">117</span>            <span class="n">cube_object</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos">118</span>
+</span><span class="linenos">119</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----------------------------------------&quot;</span><span class="p">)</span>
+<span class="linenos">120</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Resetting object state...&quot;</span><span class="p">)</span>
+<span class="linenos">121</span>
+<span class="linenos">122</span>        <span class="c1"># update the kinematic target for cubes at index 0 and 3</span>
+<span class="hll"><span class="linenos">123</span>        <span class="c1"># we slightly move the cube in the z-direction by picking the vertex at index 0</span>
+</span><span class="hll"><span class="linenos">124</span>        <span class="n">nodal_kinematic_target</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.001</span>
+</span><span class="hll"><span class="linenos">125</span>        <span class="c1"># set vertex at index 0 to be kinematically constrained</span>
+</span><span class="hll"><span class="linenos">126</span>        <span class="c1"># 0: constrained, 1: free</span>
+</span><span class="hll"><span class="linenos">127</span>        <span class="n">nodal_kinematic_target</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span class="hll"><span class="linenos">128</span>        <span class="c1"># write kinematic target to simulation</span>
+</span><span class="hll"><span class="linenos">129</span>        <span class="n">cube_object</span><span class="o">.</span><span class="n">write_nodal_kinematic_target_to_sim</span><span class="p">(</span><span class="n">nodal_kinematic_target</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">130</span>
+</span><span class="linenos">131</span>        <span class="c1"># write internal data to simulation</span>
+<span class="hll"><span class="linenos">132</span>        <span class="n">cube_object</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos">133</span>        <span class="c1"># perform step</span>
+</span><span class="linenos">134</span>        <span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="linenos">135</span>        <span class="c1"># update sim-time</span>
+<span class="linenos">136</span>        <span class="n">sim_time</span> <span class="o">+=</span> <span class="n">sim_dt</span>
+<span class="linenos">137</span>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">138</span>        <span class="c1"># update buffers</span>
+<span class="hll"><span class="linenos">139</span>        <span class="n">cube_object</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sim_dt</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">140</span>        <span class="c1"># print the root position</span>
+</span><span class="linenos">141</span>        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">142</span>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Root position (in world): </span><span class="si">{</span><span class="n">cube_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_pos_w</span><span class="p">[:,</span><span class="w"> </span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">143</span>
+<span class="linenos">144</span>
+<span class="linenos">145</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">146</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span>
+<span class="linenos">147</span>    <span class="c1"># Load kit helper</span>
+<span class="linenos">148</span>    <span class="n">sim_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationCfg</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">args_cli</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">149</span>    <span class="n">sim</span> <span class="o">=</span> <span class="n">SimulationContext</span><span class="p">(</span><span class="n">sim_cfg</span><span class="p">)</span>
+<span class="linenos">150</span>    <span class="c1"># Set main camera</span>
+<span class="linenos">151</span>    <span class="n">sim</span><span class="o">.</span><span class="n">set_camera_view</span><span class="p">(</span><span class="n">eye</span><span class="o">=</span><span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="linenos">152</span>    <span class="c1"># Design scene</span>
+<span class="linenos">153</span>    <span class="n">scene_entities</span><span class="p">,</span> <span class="n">scene_origins</span> <span class="o">=</span> <span class="n">design_scene</span><span class="p">()</span>
+<span class="linenos">154</span>    <span class="n">scene_origins</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">scene_origins</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">155</span>    <span class="c1"># Play the simulator</span>
+<span class="linenos">156</span>    <span class="n">sim</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos">157</span>    <span class="c1"># Now we are ready!</span>
+<span class="linenos">158</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Setup complete...&quot;</span><span class="p">)</span>
+<span class="linenos">159</span>    <span class="c1"># Run the simulator</span>
+<span class="linenos">160</span>    <span class="n">run_simulator</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">scene_entities</span><span class="p">,</span> <span class="n">scene_origins</span><span class="p">)</span>
+<span class="linenos">161</span>
+<span class="linenos">162</span>
+<span class="linenos">163</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">164</span>    <span class="c1"># run the main function</span>
+<span class="linenos">165</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">166</span>    <span class="c1"># close sim app</span>
+<span class="linenos">167</span>    <span class="n">simulation_app</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="the-code-explained">
+<h2>代码解释<a class="headerlink" href="#the-code-explained" title="Link to this heading">#</a></h2>
+<section id="designing-the-scene">
+<h3>设计场景<a class="headerlink" href="#designing-the-scene" title="Link to this heading">#</a></h3>
+<p>类似于 <a class="reference internal" href="run_rigid_object.html#tutorial-interact-rigid-object"><span class="std std-ref">与刚性物体交互</span></a> 教程，我们用一个地面平面和一个光源填充场景。此外，我们使用 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject" title="isaaclab.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.DeformableObject</span></code></a> 类向场景中添加一个可变形对象。该类负责在输入路径处生成原始物体，并初始化它们相应的可变形物体物理句柄。</p>
+<p>在本教程中，我们使用与 <a class="reference internal" href="../00_sim/spawn_prims.html#tutorial-spawn-prims"><span class="std std-ref">Spawn Objects</span></a> 教程中的可变立方体类似的 spawn 配置来创建一个立方体软体对象。唯一的区别是我们现在将 spawn 配置包装到 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObjectCfg" title="isaaclab.assets.DeformableObjectCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.DeformableObjectCfg</span></code></a> 类中。这个类包含有关资产的 spawn 策略和默认初始状态的信息。当这个类传递给 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject" title="isaaclab.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.DeformableObject</span></code></a> 类时，它会在仿真播放时生成对象并初始化相应的物理句柄。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>可变形对象仅在 GPU 仿真中受支持，并且需要一个网格对象来生成，且该网格对象上必须具有可变形体物理属性。</p>
+</div>
+<p>如在刚体教程中所见，我们可以通过创建 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject" title="isaaclab.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.DeformableObject</span></code></a> 类的实例，并将配置对象传递给其构造函数，以类似的方式将可变形对象生成到场景中。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Create separate groups called &quot;Origin1&quot;, &quot;Origin2&quot;, &quot;Origin3&quot;</span>
+    <span class="c1"># Each group will have a robot in it</span>
+    <span class="n">origins</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">origin</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">origins</span><span class="p">):</span>
+        <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/World/Origin</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
+
+    <span class="c1"># Deformable Object</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">DeformableObjectCfg</span><span class="p">(</span>
+        <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/Origin.*/Cube&quot;</span><span class="p">,</span>
+        <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MeshCuboidCfg</span><span class="p">(</span>
+            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+            <span class="n">deformable_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">DeformableBodyPropertiesCfg</span><span class="p">(</span><span class="n">rest_offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">contact_offset</span><span class="o">=</span><span class="mf">0.001</span><span class="p">),</span>
+            <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
+            <span class="n">physics_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">DeformableBodyMaterialCfg</span><span class="p">(</span><span class="n">poissons_ratio</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">youngs_modulus</span><span class="o">=</span><span class="mf">1e5</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">init_state</span><span class="o">=</span><span class="n">DeformableObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">debug_vis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">cube_object</span> <span class="o">=</span> <span class="n">DeformableObject</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-the-simulation-loop">
+<h3>运行仿真循环<a class="headerlink" href="#running-the-simulation-loop" title="Link to this heading">#</a></h3>
+<p>继续刚体教程，我们在定期间隔内重置仿真，对可变形物体应用运动学命令，推进仿真，并更新可变形对象的内部缓冲区。</p>
+<section id="resetting-the-simulation-state">
+<h4>重置仿真状态<a class="headerlink" href="#resetting-the-simulation-state" title="Link to this heading">#</a></h4>
+<p>与刚体和关节不同，可变形物体具有不同的状态表示。可变形物体的状态由网格的节点位置和速度定义。节点位置和速度定义在 <strong>simulation world frame</strong> 中，并存储在 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.data" title="isaaclab.assets.DeformableObject.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">assets.DeformableObject.data</span></code></a> 属性中。</p>
+<p>我们使用 <code class="xref py py-attr docutils literal notranslate"><span class="pre">assets.DeformableObject.data.default_nodal_state_w</span></code> 属性来获取生成的对象 prims 的默认节点状态。这个默认状态可以通过 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObjectCfg.init_state" title="isaaclab.assets.DeformableObjectCfg.init_state"><code class="xref py py-attr docutils literal notranslate"><span class="pre">assets.DeformableObjectCfg.init_state</span></code></a> 属性进行配置，在本教程中我们将其保持为身份。</p>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>配置中的初始状态 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObjectCfg" title="isaaclab.assets.DeformableObjectCfg"><code class="xref py py-attr docutils literal notranslate"><span class="pre">assets.DeformableObjectCfg</span></code></a> 指定了在生成时变形对象的姿态。根据这个初始状态，当仿真第一次播放时，会得到默认的节点状态。</p>
+</div>
+<p>我们对节点位置应用变换，以随机化可变形物体的初始状态。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>            <span class="c1"># reset the nodal state of the object</span>
+            <span class="n">nodal_state</span> <span class="o">=</span> <span class="n">cube_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_nodal_state_w</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="c1"># apply random pose to the object</span>
+            <span class="n">pos_w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">cube_object</span><span class="o">.</span><span class="n">num_instances</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="n">origins</span>
+            <span class="n">quat_w</span> <span class="o">=</span> <span class="n">math_utils</span><span class="o">.</span><span class="n">random_orientation</span><span class="p">(</span><span class="n">cube_object</span><span class="o">.</span><span class="n">num_instances</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cube_object</span><span class="o">.</span><span class="n">transform_nodal_pos</span><span class="p">(</span><span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">pos_w</span><span class="p">,</span> <span class="n">quat_w</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要重置可变形对象，我们首先通过调用 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.write_nodal_state_to_sim" title="isaaclab.assets.DeformableObject.write_nodal_state_to_sim"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.DeformableObject.write_nodal_state_to_sim()</span></code></a> 方法来设置节点状态。此方法将可变形对象原始的节点状态写入仿真缓冲区。此外，我们通过调用 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.write_nodal_kinematic_target_to_sim" title="isaaclab.assets.DeformableObject.write_nodal_kinematic_target_to_sim"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.DeformableObject.write_nodal_kinematic_target_to_sim()</span></code></a> 方法来释放在上一个仿真步骤中为节点设置的所有运动学目标。我们将在下一节中解释运动学目标。</p>
+<p>最后，我们调用 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.reset" title="isaaclab.assets.DeformableObject.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.DeformableObject.reset()</span></code></a> 方法来重置任何内部缓冲区和缓存。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>            <span class="c1"># write nodal state to simulation</span>
+            <span class="n">cube_object</span><span class="o">.</span><span class="n">write_nodal_state_to_sim</span><span class="p">(</span><span class="n">nodal_state</span><span class="p">)</span>
+
+            <span class="c1"># Write the nodal state to the kinematic target and free all vertices</span>
+            <span class="n">nodal_kinematic_target</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">nodal_kinematic_target</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">cube_object</span><span class="o">.</span><span class="n">write_nodal_kinematic_target_to_sim</span><span class="p">(</span><span class="n">nodal_kinematic_target</span><span class="p">)</span>
+
+            <span class="c1"># reset buffers</span>
+            <span class="n">cube_object</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="stepping-the-simulation">
+<h4>逐步仿真<a class="headerlink" href="#stepping-the-simulation" title="Link to this heading">#</a></h4>
+<p>可变形体支持用户驱动的运动学控制，其中用户可以为一些网格节点指定位置目标，而其余节点则通过 FEM 求解器进行仿真。这种 <a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/docs/SoftBodies.html#kinematic-soft-bodies">partial kinematic</a> 控制对于用户希望以受控方式与可变形对象交互的应用程序非常有用。</p>
+<p>在本教程中，我们将运动学命令应用于场景中的四个立方体中的两个。我们设置索引为 0（左下角）的节点的位置目标，使立方体沿 z 轴移动。</p>
+<p>在每一步中，我们通过一个小值来增加节点的运动学位置目标。此外，我们设置标志以指示该目标是仿真缓冲区中该节点的运动学目标。这些设置通过调用 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.write_nodal_kinematic_target_to_sim" title="isaaclab.assets.DeformableObject.write_nodal_kinematic_target_to_sim"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.DeformableObject.write_nodal_kinematic_target_to_sim()</span></code></a> 方法来写入仿真缓冲区。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="c1"># update the kinematic target for cubes at index 0 and 3</span>
+        <span class="c1"># we slightly move the cube in the z-direction by picking the vertex at index 0</span>
+        <span class="n">nodal_kinematic_target</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.001</span>
+        <span class="c1"># set vertex at index 0 to be kinematically constrained</span>
+        <span class="c1"># 0: constrained, 1: free</span>
+        <span class="n">nodal_kinematic_target</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1"># write kinematic target to simulation</span>
+        <span class="n">cube_object</span><span class="o">.</span><span class="n">write_nodal_kinematic_target_to_sim</span><span class="p">(</span><span class="n">nodal_kinematic_target</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>类似于刚体和关节，我们在进行仿真步进之前执行 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.write_data_to_sim" title="isaaclab.assets.DeformableObject.write_data_to_sim"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.DeformableObject.write_data_to_sim()</span></code></a> 方法。对于可变形对象，此方法不会对对象施加任何外部力。然而，我们保留此方法以便于完整性和未来扩展。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="c1"># write internal data to simulation</span>
+        <span class="n">cube_object</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="updating-the-state">
+<h4>更新状态<a class="headerlink" href="#updating-the-state" title="Link to this heading">#</a></h4>
+<p>在运行仿真后，我们更新可变对象 prims 的内部缓冲区，以反映它们在 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.data" title="isaaclab.assets.DeformableObject.data"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.DeformableObject.data</span></code></a> 属性中的新状态。这是通过 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.update" title="isaaclab.assets.DeformableObject.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.DeformableObject.update()</span></code></a> 方法完成的。</p>
+<p>在固定的间隔下，我们将可变形物体的根位置打印到终端。如前所述，对于可变形物体来说，没有根状态的概念。然而，我们计算根位置的方法是所有网格节点的平均位置。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="c1"># update buffers</span>
+        <span class="n">cube_object</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sim_dt</span><span class="p">)</span>
+        <span class="c1"># print the root position</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Root position (in world): </span><span class="si">{</span><span class="n">cube_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_pos_w</span><span class="p">[:,</span><span class="w"> </span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="the-code-execution">
+<h2>代码执行<a class="headerlink" href="#the-code-execution" title="Link to this heading">#</a></h2>
+<p>现在我们已经浏览了代码，接下来运行脚本并查看结果:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/tutorials/01_assets/run_deformable_object.py
+</pre></div>
+</div>
+<p>这应该会打开一个包含地面、灯光和几个绿色立方体的场景。其中两个立方体必须从高度上落下并落在地面上。同时，另外两个立方体必须沿 <cite>z</cite> 轴移动。你应该会看到一个标记，显示位于立方体左下角的节点的运动学目标位置。要停止仿真，你可以关闭窗口，或在终端中按 <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> 。</p>
+<figure class="align-center" style="width: 100%">
+<img alt="run_deformable_object.py 的结果" src="../../../_images/tutorial_run_deformable_object.jpg" />
+</figure>
+<p>本教程展示了如何生成可变形物体并将它们包裹在一个 <code class="xref py py-class docutils literal notranslate"><span class="pre">DeformableObject</span></code> 类中，以初始化它们的物理处理器，从而允许设置和获取它们的状态。我们还看到了如何对可变形物体应用运动指令，以控制方式移动网格节点。在接下来的教程中，我们将看到如何使用 <code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code> 类创建场景。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="run_articulation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">与关节交互</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="run_surface_gripper.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">与表面夹爪互动</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code">代码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-explained">代码解释</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-the-scene">设计场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-simulation-loop">运行仿真循环</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#resetting-the-simulation-state">重置仿真状态</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stepping-the-simulation">逐步仿真</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-the-state">更新状态</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

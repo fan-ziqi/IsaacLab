@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>技巧和故障排除 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/refs/troubleshooting';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="迁移指南（Isaac Sim）" href="migration.html" />
+    <link rel="prev" title="贡献指南" href="contributing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../how-to/index.html">操作指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">贡献指南</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/refs/troubleshooting.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/refs/troubleshooting.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/refs/troubleshooting.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>技巧和故障排除</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-physics-simulation-stability-issues">调试物理仿真稳定性问题</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-the-internal-logs-from-the-simulator">从仿真器的内部日志中检查</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-logging-channel-levels-for-the-simulator">更改仿真器的日志记录通道级别</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observing-long-load-times-at-the-start-of-the-simulation">观察仿真开始时的长加载时间</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#receiving-a-physx-error-when-running-simulation-on-gpu">在 GPU 上运行仿真时收到 “PhysX error”</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preventing-memory-leaks-in-the-simulator">预防仿真器中的内存泄漏</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-error-logs-from-crashes">理解崩溃产生的错误日志</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tricks-and-troubleshooting">
+<h1>技巧和故障排除<a class="headerlink" href="#tricks-and-troubleshooting" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>以下列出了我们在日常工作流程中使用的一些常见技巧和故障排除方法。请同时查看 <a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/kit-manual/latest/guide/linux_troubleshooting.html">Omniverse 上的故障排除页面</a> 以获取更多帮助。</p>
+</div>
+<section id="debugging-physics-simulation-stability-issues">
+<h2>调试物理仿真稳定性问题<a class="headerlink" href="#debugging-physics-simulation-stability-issues" title="Link to this heading">#</a></h2>
+<p>当将新机器人导入到 Isaac Lab 或设置新环境时，如果资产没有通过合理的仿真参数进行调优，仿真不稳定性往往会出现。在强化学习场景中，这通常会导致由于仿真中的无效状态，NaN 在学习流程中传播。</p>
+<p>如果发生这种情况，我们建议参考 <a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/dev_guide/guides/articulation_stability_guide.html">关节和机器人仿真稳定性指南</a> ，该指南推荐了各种仿真参数和最佳实践，以实现机器人仿真中的更好稳定性。</p>
+<p>此外， <a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/extensions/ux/source/omni.physx.pvd/docs/dev_guide/physx_visual_debugger.html">Omniverse PhysX 可视化调试器</a> 允许记录 PhysX 仿真数据，这通常有助于解决仿真问题并辅助调试过程。</p>
+<p>要在 Isaac Lab 中启用 OmniPVD 捕获，在启动 Isaac Lab 进程时，将相关的 kit 参数添加到命令行提示符中。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/demos/bipeds.py<span class="w"> </span>--kit_args<span class="w"> </span><span class="s2">&quot;--/persistent/physics/omniPvdOvdRecordingDirectory=/tmp/ --/physics/omniPvdOutputEnabled=true&quot;</span><span class="w"> </span>--headless
+</pre></div>
+</div>
+</section>
+<section id="checking-the-internal-logs-from-the-simulator">
+<h2>从仿真器的内部日志中检查<a class="headerlink" href="#checking-the-internal-logs-from-the-simulator" title="Link to this heading">#</a></h2>
+<p>在从独立脚本运行仿真器时，它会将警告和错误记录到终端。同时，它还会将内部消息记录到文件中。这些对于调试和了解仿真器的内部状态很有帮助。根据您的系统，日志文件可以在列出的位置找到 <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/installation/install_faq.html#common-path-locations">这里</a> 。</p>
+<p>要获取日志文件的确切位置，您需要检查运行独立脚本时终端输出的前几行。日志文件位置会在终端输出开始时打印出来。例如:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>INFO<span class="o">]</span><span class="w"> </span>Using<span class="w"> </span>python<span class="w"> </span>from:<span class="w"> </span>/home/<span class="si">${</span><span class="nv">USER</span><span class="si">}</span>/git/IsaacLab/_isaac_sim/python.sh
+...
+Passing<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>args<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>base<span class="w"> </span>kit<span class="w"> </span>application:<span class="w">  </span><span class="o">[]</span>
+Loading<span class="w"> </span>user<span class="w"> </span>config<span class="w"> </span>located<span class="w"> </span>at:<span class="w"> </span><span class="s1">&#39;.../data/Kit/Isaac-Sim/2023.1/user.config.json&#39;</span>
+<span class="o">[</span>Info<span class="o">]</span><span class="w"> </span><span class="o">[</span>carb<span class="o">]</span><span class="w"> </span>Logging<span class="w"> </span>to<span class="w"> </span>file:<span class="w"> </span><span class="s1">&#39;.../logs/Kit/Isaac-Sim/2023.1/kit_20240328_183346.log&#39;</span>
+</pre></div>
+</div>
+<p>在上面的示例中，日志文件位于 <code class="docutils literal notranslate"><span class="pre">.../logs/Kit/Isaac-Sim/2023.1/kit_20240328_183346.log</span></code> ， <code class="docutils literal notranslate"><span class="pre">...</span></code> 是用户日志目录的路径。日志文件名为 <code class="docutils literal notranslate"><span class="pre">kit_20240328_183346.log</span></code></p>
+<p>您可以打开此文件以查看仿真器的内部日志。此外，在报告问题时，请包括此日志文件以帮助我们调试问题。</p>
+</section>
+<section id="changing-logging-channel-levels-for-the-simulator">
+<h2>更改仿真器的日志记录通道级别<a class="headerlink" href="#changing-logging-channel-levels-for-the-simulator" title="Link to this heading">#</a></h2>
+<p>默认情况下，仿真器在终端上记录 <code class="docutils literal notranslate"><span class="pre">WARN</span></code> 级别及以上的消息。您可以更改日志通道级别以获得更详细的日志。日志通道级别可以通过 Omniverse 的日志系统进行设置。</p>
+<p>要获取更详细的日志，您可以使用以下标志运行应用程序:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--info</span></code>: 此标志记录 <code class="docutils literal notranslate"><span class="pre">INFO</span></code> 级别及以上的消息。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code>: 此标志记录 <code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code> 级别及以上的消息。</p></li>
+</ul>
+<p>例如，要以详细记录方式运行独立脚本，可以使用以下命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the standalone script with info logging</span>
+./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/tutorials/00_sim/create_empty.py<span class="w"> </span>--headless<span class="w"> </span>--info
+</pre></div>
+</div>
+<p>要进行更精细的控制，您可以通过 <code class="docutils literal notranslate"><span class="pre">logger</span></code> 模块修改日志通道。有关更多信息，请参阅其 <a class="reference external" href="https://docs.python.org/3/library/logging.html">文档</a> 。</p>
+</section>
+<section id="observing-long-load-times-at-the-start-of-the-simulation">
+<h2>观察仿真开始时的长加载时间<a class="headerlink" href="#observing-long-load-times-at-the-start-of-the-simulation" title="Link to this heading">#</a></h2>
+<p>第一次运行仿真器时，启动需要很长时间。这是因为仿真器正在编译着色器和加载资源。后续运行应该会更快启动，但可能仍需要一些时间。</p>
+<p>请注意，一旦 Isaac Sim 应用加载，环境创建时间可能会随着环境数量线性增加。如果运行数千个环境或每个环境包含较多资产，则请期待更长的加载时间。我们一直在努力改进所需的时间。</p>
+<p>当一个 Isaac Sim 实例已经在运行时，在不同进程中启动另一个 Isaac Sim 实例可能会在首次启动时出现挂起的情况。请耐心等待一段时间，因为第二个进程启动时间会较长，由于着色器编译较慢。</p>
+</section>
+<section id="receiving-a-physx-error-when-running-simulation-on-gpu">
+<h2>在 GPU 上运行仿真时收到 “PhysX error”<a class="headerlink" href="#receiving-a-physx-error-when-running-simulation-on-gpu" title="Link to this heading">#</a></h2>
+<p>使用 GPU pipeline 时，用于物理仿真的缓冲区仅在仿真开始时在 GPU 上分配一次。这意味着它们在场景中的碰撞或对象数量发生变化时不会动态增长。如果场景中的碰撞或对象数量超过缓冲区的大小，仿真将失败，并显示如下错误:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PhysX<span class="w"> </span>error:<span class="w"> </span>the<span class="w"> </span>application<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>increase<span class="w"> </span>the<span class="w"> </span>PxgDynamicsMemoryConfig::foundLostPairsCapacity
+parameter<span class="w"> </span>to<span class="w"> </span><span class="m">3072</span>,<span class="w"> </span>otherwise<span class="w"> </span>the<span class="w"> </span>simulation<span class="w"> </span>will<span class="w"> </span>miss<span class="w"> </span>interactions
+</pre></div>
+</div>
+<p>在这种情况下，您需要增加传递给 <a class="reference internal" href="../api/lab/isaaclab.sim.html#isaaclab.sim.SimulationContext" title="isaaclab.sim.SimulationContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationContext</span></code></a> 类的缓冲区大小。可以通过设置 <a class="reference internal" href="../api/lab/isaaclab.sim.html#isaaclab.sim.PhysxCfg" title="isaaclab.sim.PhysxCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysxCfg</span></code></a> 类中的 <a class="reference internal" href="../api/lab/isaaclab.sim.html#isaaclab.sim.PhysxCfg.gpu_found_lost_pairs_capacity" title="isaaclab.sim.PhysxCfg.gpu_found_lost_pairs_capacity"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gpu_found_lost_pairs_capacity</span></code></a> 参数来增加缓冲区的大小。例如，为了将缓冲区的大小增加到 4096，您可以使用以下代码:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+
+<span class="n">sim_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationConfig</span><span class="p">()</span>
+<span class="n">sim_cfg</span><span class="o">.</span><span class="n">physx</span><span class="o">.</span><span class="n">gpu_found_lost_pairs_capacity</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">SimulationContext</span><span class="p">(</span><span class="n">sim_params</span><span class="o">=</span><span class="n">sim_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>请查看 <a class="reference internal" href="../api/lab/isaaclab.sim.html#isaaclab.sim.SimulationCfg" title="isaaclab.sim.SimulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationCfg</span></code></a> 的文档，了解可用于配置仿真的参数的更多详细信息。</p>
+</section>
+<section id="preventing-memory-leaks-in-the-simulator">
+<h2>预防仿真器中的内存泄漏<a class="headerlink" href="#preventing-memory-leaks-in-the-simulator" title="Link to this heading">#</a></h2>
+<p>当在 Python 对象中注册 C++ 回调时，Isaac Sim 仿真器中可能会发生内存泄漏。当类中的回调函数与其关联的 Python 对象保持引用时会发生这种情况。结果是，Python 的垃圾回收无法回收与这些对象相关联的内存，从而阻止了相应的 C++ 对象被销毁。随着时间的推移，这可能导致内存泄漏和资源使用量增加。</p>
+<p>为了防止 Isaac Sim 仿真器中的内存泄漏，务必在向仿真器注册回调时使用弱引用。这可以确保在不再需要时可以对 Python 对象进行垃圾回收，从而避免内存泄漏。Python 标准库中的 <a class="reference external" href="https://docs.python.org/3/library/weakref.html">weakref</a> 模块可用于此目的。</p>
+<p>例如，考虑一个具有需要向仿真器注册的回调函数 <code class="docutils literal notranslate"><span class="pre">on_event_callback</span></code> 的类。如果在传递回调时对 <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> 对象使用强引用，则会增加 <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> 对象的引用计数。这会防止在不再需要时对 <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> 对象进行垃圾回收，即不会调用 <code class="docutils literal notranslate"><span class="pre">__del__</span></code> 析构函数。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">omni.kit</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">app_interface</span> <span class="o">=</span> <span class="n">omni</span><span class="o">.</span><span class="n">kit</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_app_interface</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span> <span class="o">=</span> <span class="n">app_interface</span><span class="o">.</span><span class="n">get_post_update_event_stream</span><span class="p">()</span><span class="o">.</span><span class="n">create_subscription_to_pop</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_event_callback</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span><span class="o">.</span><span class="n">unsubscribe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_event_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># do something with the message</span>
+</pre></div>
+</div>
+<p>要解决此问题，关键是在注册回调时使用弱引用。虽然这种方法会使代码变得冗长，但它确保在不再使用时可以对 <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> 对象进行垃圾回收。以下是修改后的代码:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">omni.kit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">weakref</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">app_interface</span> <span class="o">=</span> <span class="n">omni</span><span class="o">.</span><span class="n">kit</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_app_interface</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span> <span class="o">=</span> <span class="n">app_interface</span><span class="o">.</span><span class="n">get_post_update_event_stream</span><span class="p">()</span><span class="o">.</span><span class="n">create_subscription_to_pop</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="n">weakref</span><span class="o">.</span><span class="n">proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">obj</span><span class="o">.</span><span class="n">on_event_callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span><span class="o">.</span><span class="n">unsubscribe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_event_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># do something with the message</span>
+</pre></div>
+</div>
+<p>在这个修改后的代码中，当注册回调时使用弱引用 <code class="docutils literal notranslate"><span class="pre">weakref.proxy(self)</span></code> ，使得 <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> 对象可以被正确地垃圾回收。</p>
+<p>通过遵循这种模式，您可以防止内存泄漏，并保持更高效和稳定的仿真。</p>
+</section>
+<section id="understanding-the-error-logs-from-crashes">
+<h2>理解崩溃产生的错误日志<a class="headerlink" href="#understanding-the-error-logs-from-crashes" title="Link to this heading">#</a></h2>
+<p>许多情况下，仿真器由于实现中的错误而崩溃。这会导致终端输出异常，其中一些异常来自 Python 解释器调用 <code class="docutils literal notranslate"><span class="pre">__del__()</span></code> 析构函数仿真应用程序。通常看起来如下:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>...
+
+<span class="o">[</span>INFO<span class="o">]</span>:<span class="w"> </span>Completed<span class="w"> </span>setting<span class="w"> </span>up<span class="w"> </span>the<span class="w"> </span>environment...
+
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+File<span class="w"> </span><span class="s2">&quot;scripts/imitation_learning/robomimic/collect_demonstrations.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">166</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
+<span class="w">    </span>main<span class="o">()</span>
+File<span class="w"> </span><span class="s2">&quot;scripts/imitation_learning/robomimic/collect_demonstrations.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">126</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>main
+<span class="w">    </span><span class="nv">actions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>pre_process_actions<span class="o">(</span>delta_pose,<span class="w"> </span>gripper_command<span class="o">)</span>
+File<span class="w"> </span><span class="s2">&quot;scripts/imitation_learning/robomimic/collect_demonstrations.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">57</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>pre_process_actions
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>torch.concat<span class="o">([</span>delta_pose,<span class="w"> </span>gripper_vel<span class="o">]</span>,<span class="w"> </span><span class="nv">dim</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+TypeError:<span class="w"> </span>expected<span class="w"> </span>Tensor<span class="w"> </span>as<span class="w"> </span>element<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>argument<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>but<span class="w"> </span>got<span class="w"> </span>int
+Exception<span class="w"> </span>ignored<span class="w"> </span><span class="k">in</span>:<span class="w"> </span>&lt;<span class="k">function</span><span class="w"> </span>_make_registry.&lt;locals&gt;._Registry.__del__<span class="w"> </span>at<span class="w"> </span>0x7f94ac097f80&gt;
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/kit/extscore/omni.kit.viewport.registry/omni/kit/viewport/registry/registry.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">103</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>__del__
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/kit/extscore/omni.kit.viewport.registry/omni/kit/viewport/registry/registry.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">98</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>destroy
+TypeError:<span class="w"> </span><span class="s1">&#39;NoneType&#39;</span><span class="w"> </span>object<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>callable
+Exception<span class="w"> </span>ignored<span class="w"> </span><span class="k">in</span>:<span class="w"> </span>&lt;<span class="k">function</span><span class="w"> </span>_make_registry.&lt;locals&gt;._Registry.__del__<span class="w"> </span>at<span class="w"> </span>0x7f94ac097f80&gt;
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/kit/extscore/omni.kit.viewport.registry/omni/kit/viewport/registry/registry.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">103</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>__del__
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/kit/extscore/omni.kit.viewport.registry/omni/kit/viewport/registry/registry.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">98</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>destroy
+TypeError:<span class="w"> </span><span class="s1">&#39;NoneType&#39;</span><span class="w"> </span>object<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>callable
+Exception<span class="w"> </span>ignored<span class="w"> </span><span class="k">in</span>:<span class="w"> </span>&lt;<span class="k">function</span><span class="w"> </span>SettingChangeSubscription.__del__<span class="w"> </span>at<span class="w"> </span>0x7fa2ea173e60&gt;
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/kit/kernel/py/omni/kit/app/_impl/__init__.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">114</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>__del__
+AttributeError:<span class="w"> </span><span class="s1">&#39;NoneType&#39;</span><span class="w"> </span>object<span class="w"> </span>has<span class="w"> </span>no<span class="w"> </span>attribute<span class="w"> </span><span class="s1">&#39;get_settings&#39;</span>
+Exception<span class="w"> </span>ignored<span class="w"> </span><span class="k">in</span>:<span class="w"> </span>&lt;<span class="k">function</span><span class="w"> </span>RegisteredActions.__del__<span class="w"> </span>at<span class="w"> </span>0x7f935f5cae60&gt;
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/extscache/omni.kit.viewport.menubar.lighting-104.0.7/omni/kit/viewport/menubar/lighting/actions.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">345</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>__del__
+File<span class="w"> </span><span class="s2">&quot;../IsaacLab/_isaac_sim/extscache/omni.kit.viewport.menubar.lighting-104.0.7/omni/kit/viewport/menubar/lighting/actions.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">350</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>destroy
+TypeError:<span class="w"> </span><span class="s1">&#39;NoneType&#39;</span><span class="w"> </span>object<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>callable
+<span class="m">2022</span>-12-02<span class="w"> </span><span class="m">15</span>:41:54<span class="w"> </span><span class="o">[</span><span class="m">18</span>,514ms<span class="o">]</span><span class="w"> </span><span class="o">[</span>Warning<span class="o">]</span><span class="w"> </span><span class="o">[</span>carb.audio.context<span class="o">]</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>contexts<span class="w"> </span>were<span class="w"> </span>leaked
+../IsaacLab/_isaac_sim/python.sh:<span class="w"> </span>line<span class="w"> </span><span class="m">41</span>:<span class="w"> </span><span class="m">414372</span><span class="w"> </span>Segmentation<span class="w"> </span>fault<span class="w">      </span><span class="o">(</span>core<span class="w"> </span>dumped<span class="o">)</span><span class="w"> </span><span class="nv">$python_exe</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span><span class="w"> </span><span class="nv">$args</span>
+There<span class="w"> </span>was<span class="w"> </span>an<span class="w"> </span>error<span class="w"> </span>running<span class="w"> </span>python
+</pre></div>
+</div>
+<p>这是使用 Isaac Sim 仿真器运行独立脚本时出现的已知错误。请向上滚动异常抛出的 <code class="docutils literal notranslate"><span class="pre">registry</span></code> 以查看实际错误日志。</p>
+<p>在上述情况中，实际错误是:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+File<span class="w"> </span><span class="s2">&quot;scripts/imitation_learning/robomimic/tools/collect_demonstrations.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">166</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
+<span class="w">    </span>main<span class="o">()</span>
+File<span class="w"> </span><span class="s2">&quot;scripts/imitation_learning/robomimic/tools/collect_demonstrations.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">126</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>main
+<span class="w">    </span><span class="nv">actions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>pre_process_actions<span class="o">(</span>delta_pose,<span class="w"> </span>gripper_command<span class="o">)</span>
+File<span class="w"> </span><span class="s2">&quot;scripts/imitation_learning/robomimic/tools/collect_demonstrations.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">57</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>pre_process_actions
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>torch.concat<span class="o">([</span>delta_pose,<span class="w"> </span>gripper_vel<span class="o">]</span>,<span class="w"> </span><span class="nv">dim</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+TypeError:<span class="w"> </span>expected<span class="w"> </span>Tensor<span class="w"> </span>as<span class="w"> </span>element<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>argument<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>but<span class="w"> </span>got<span class="w"> </span>int
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="contributing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">贡献指南</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="migration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">迁移指南（Isaac Sim）</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-physics-simulation-stability-issues">调试物理仿真稳定性问题</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-the-internal-logs-from-the-simulator">从仿真器的内部日志中检查</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-logging-channel-levels-for-the-simulator">更改仿真器的日志记录通道级别</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observing-long-load-times-at-the-start-of-the-simulation">观察仿真开始时的长加载时间</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#receiving-a-physx-error-when-running-simulation-on-gpu">在 GPU 上运行仿真时收到 “PhysX error”</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preventing-memory-leaks-in-the-simulator">预防仿真器中的内存泄漏</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-error-logs-from-crashes">理解崩溃产生的错误日志</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

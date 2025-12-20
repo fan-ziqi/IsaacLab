@@ -1,0 +1,1680 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>设置 CloudXR 远程操作 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/how-to/cloudxr_teleoperation';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="设置 Haply 远程操作" href="haply_teleoperation.html" />
+    <link rel="prev" title="掌握机器人的 Omniverse" href="master_omniverse.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">操作指南</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/how-to/cloudxr_teleoperation.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/how-to/cloudxr_teleoperation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/how-to/cloudxr_teleoperation.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>设置 CloudXR 远程操作</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">概述</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-requirements">系统要求</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-isaac-lab-with-the-cloudxr-runtime">使用 CloudXR 运行 Isaac Lab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-apple-vision-pro-for-teleoperation">使用Apple Vision Pro进行远程操作</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-and-install-the-isaac-xr-teleop-sample-client-app-for-apple-vision-pro">为Apple Vision Pro构建和安装Isaac XR远程操作示例客户端应用程序</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teleoperate-an-isaac-lab-robot-with-apple-vision-pro">使用Apple Vision Pro远程操作Isaac Lab机器人</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manus-vive-hand-tracking">Manus + Vive 手部跟踪</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#develop-for-xr-in-isaac-lab">在Isaac Lab中为XR进行开发</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-isaac-lab-with-xr-extensions-enabled">使用启用了 XR 扩展的 Isaac Lab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-xr-scene-placement">配置 XR 场景放置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-xr-performance">优化 XR 性能</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#control-the-robot-with-xr-device-inputs">使用 XR 设备输入控制机器人</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#openxr-device">OpenXR 设备</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#retargeting-architecture">重映射架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-retargeters-with-hand-tracking">使用带有手部跟踪的 Retargeters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-callbacks-for-xr-ui-events">为 XR UI 事件添加回调</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#teleop-environment-configuration">远程操控环境配置</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#teleop-device-factory">遥控设备工厂</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-retargeting-system">扩展 Retargeting 系统</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-custom-teleop-devices">创建自定义遥控设备</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">已知问题</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-deployment">Kubernetes 部署</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="setting-up-cloudxr-teleoperation">
+<span id="cloudxr-teleoperation"></span><h1>设置 CloudXR 远程操作<a class="headerlink" href="#setting-up-cloudxr-teleoperation" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://developer.nvidia.com/cloudxr-sdk">NVIDIA CloudXR</a> 可以实现在任何网络上向扩展现实（XR）设备流畅、高保真地进行沉浸式流媒体传输。</p>
+<p>Isaac Lab 开发人员可以使用 CloudXR 与 Isaac Lab 一起构建需要沉浸式 XR 渲染以提高空间准确性和/或需要手部追踪以进行灵巧机器人远程操作的远程操作工作流程。</p>
+<p>在这些工作流程中，Isaac Lab 渲染并提交机器人仿真的立体视图给 CloudXR，然后 CloudXR 对渲染视图进行编码并通过低延迟、GPU 加速的管道实时将渲染视图传送到兼容的 XR 设备上。来自 XR 设备的手部追踪等控制输入通过 CloudXR 从 XR 设备返回到 Isaac Lab，可以用来控制机器人。</p>
+<p>本指南解释了如何在 Isaac Lab 中使用 CloudXR 和 <a class="reference external" href="https://www.apple.com/apple-vision-pro/">Apple Vision Pro</a> 进行沉浸式流媒体和远程操作。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>有关支持的手部跟踪外围设备的更多信息，请参阅 <a class="reference internal" href="#manus-vive-handtracking"><span class="std std-ref">Manus + Vive 手部跟踪</span></a> 。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>Meta Quest 3 and Pico 4 Ultra Support (Early Access)</strong></p>
+<p>Meta Quest 3 and Pico 4 Ultra are now supported via the <a class="reference external" href="https://developer.nvidia.com/cloudxr-sdk-early-access-program/join">CloudXR Early Access program</a>.
+Join the program by mentioning isaac use cases. Once approved, you'll receive email to set up NGC,
+then download <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/resources/cloudxr-js-early-access?version=6.0.0-beta">CloudXR.js with Isaac Teleop samples</a> and follow its guide.
+Pico 4 Ultra must use HTTPS mode (see NGC documentation for details). General availability
+will be provided in a future version of Isaac Lab.</p>
+</div>
+<section id="overview">
+<h2>概述<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>使用 CloudXR 与 Isaac Lab 包括以下组件:</p>
+<ul class="simple">
+<li><p><strong>Isaac Lab</strong> 用于仿真机器人环境并应用从远程操作员接收的控制数据。</p></li>
+<li><p><strong>NVIDIA CloudXR Runtime</strong> 在 Isaac Lab 工作站上以 Docker 容器运行，并将虚拟仿真从 Isaac Lab 流式传输到兼容的 XR 设备。</p></li>
+<li><p><strong>Isaac XR 远程操控示例客户端</strong> 是一个用于 Apple Vision Pro 的示例应用程序，可以使用 CloudXR 沉浸式流媒体和远程操作 Isaac Lab 仿真。</p></li>
+</ul>
+<p>本指南将为您介绍如何:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#run-isaac-lab-with-the-cloudxr-runtime"><span class="std std-ref">使用 CloudXR 运行 Isaac Lab</span></a></p></li>
+<li><p><a class="reference internal" href="#use-apple-vision-pro"><span class="std std-ref">使用Apple Vision Pro进行远程操作</span></a> ，包括如何 <a class="reference internal" href="#build-apple-vision-pro"><span class="std std-ref">为Apple Vision Pro构建和安装Isaac XR远程操作示例客户端应用程序</span></a> 、 <a class="reference internal" href="#teleoperate-apple-vision-pro"><span class="std std-ref">使用Apple Vision Pro远程操作Isaac Lab机器人</span></a> 以及 <a class="reference internal" href="#manus-vive-handtracking"><span class="std std-ref">Manus + Vive 手部跟踪</span></a> 。</p></li>
+<li><p><a class="reference internal" href="#develop-xr-isaac-lab"><span class="std std-ref">在Isaac Lab中为XR进行开发</span></a> ，包括如何 <a class="reference internal" href="#run-isaac-lab-with-xr"><span class="std std-ref">使用启用了 XR 扩展的 Isaac Lab</span></a> ， <a class="reference internal" href="#configure-scene-placement"><span class="std std-ref">配置 XR 场景放置</span></a> 和 <a class="reference internal" href="#optimize-xr-performance"><span class="std std-ref">优化 XR 性能</span></a> 。</p></li>
+<li><p><a class="reference internal" href="#control-robot-with-xr"><span class="std std-ref">使用 XR 设备输入控制机器人</span></a> ，包括 <a class="reference internal" href="#openxr-device-architecture"><span class="std std-ref">OpenXR 设备</span></a> ， <a class="reference internal" href="#control-robot-with-xr-retargeters"><span class="std std-ref">重映射架构</span></a> 以及如何实现 <a class="reference internal" href="#control-robot-with-xr-callbacks"><span class="std std-ref">为 XR UI 事件添加回调</span></a> 。</p></li>
+</ul>
+<p>以及 <a class="reference internal" href="#xr-known-issues"><span class="std std-ref">已知问题</span></a> 。</p>
+</section>
+<section id="system-requirements">
+<h2>系统要求<a class="headerlink" href="#system-requirements" title="Link to this heading">#</a></h2>
+<p>在使用 CloudXR 与 Isaac Lab 之前，请查看以下系统要求:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Isaac Lab 工作站</p>
+<ul>
+<li><p>Ubuntu 22.04 或 Ubuntu 24.04</p></li>
+<li><dl class="simple">
+<dt>以 120Hz 物理模拟维持 45 FPS 的硬件要求:</dt><dd><ul>
+<li><p>CPU: 16 核 AMD Ryzen Threadripper Pro 5955WX 或更高</p></li>
+<li><p>Memory: 64GB RAM</p></li>
+<li><p>GPU: 1x RTX PRO 6000 GPU（或等效型号，例如 1x RTX 5090）或更高</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>有关驱动程序要求的详细信息，请参阅 <a class="reference external" href="https://docs.omniverse.nvidia.com/materials-and-rendering/latest/common/technical-requirements.html">Technical Requirements</a> 指南。</p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/desktop/install/linux-install/">Docker</a> 26.0.0+， <a class="reference external" href="https://docs.docker.com/compose/install/linux/#install-using-the-repository">Docker Compose</a> 2.25.0+ 和 <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit">NVIDIA Container Toolkit</a> 。有关如何安装，请参阅 Isaac Lab <a class="reference internal" href="../deployment/docker.html#deployment-docker"><span class="std std-ref">Docker 指南</span></a> 。</p></li>
+</ul>
+</li>
+<li><p>Apple Vision Pro</p>
+<ul>
+<li><p>visionOS 26</p></li>
+<li><p>Apple M3 Pro 芯片，配备 11 核 CPU，至少 5 个性能核心和 6 个效率核心</p></li>
+<li><p>16GB 统一内存</p></li>
+<li><p>256 GB 固态硬盘</p></li>
+</ul>
+</li>
+<li><p>基于 Apple Silicon 的 Mac（用于使用 Xcode 为 Apple Vision Pro 构建 Isaac XR 远程操控示例客户端应用程序）</p>
+<ul>
+<li><p>macOS Sequoia 15.6 或更高版本</p></li>
+<li><p>Xcode 26.0</p></li>
+</ul>
+</li>
+<li><p>Wifi 6 能力路由器</p>
+<ul>
+<li><p>强大的无线连接对于高质量的流媒体体验至关重要。请参阅 <a class="reference external" href="https://docs.omniverse.nvidia.com/avp/latest/setup-network.html">Omniverse Spatial Streaming</a> 的要求以获取更多详细信息。</p></li>
+<li><p>我们建议使用专用路由器，因为并发使用会降低质量</p></li>
+<li><p>Apple Vision Pro 和 Isaac Lab 工作站必须能够相互实现 IP 可达性（注意: 很多机构网络将会阻止设备互相访问，导致 Apple Vision Pro 找不到 Isaac Lab 工作站于网络中）</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果您使用的是 DGX Spark，请查看 <a class="reference external" href="https://isaac-sim.github.io/IsaacLab/release/2.3.0/source/setup/installation/index.html#dgx-spark-details-and-limitations">DGX Spark 限制</a> 了解兼容性信息。</p>
+</div>
+</section>
+<section id="run-isaac-lab-with-the-cloudxr-runtime">
+<span id="id1"></span><h2>使用 CloudXR 运行 Isaac Lab<a class="headerlink" href="#run-isaac-lab-with-the-cloudxr-runtime" title="Link to this heading">#</a></h2>
+<p>CloudXR Runtime 在您的 Isaac Lab 工作站上的 Docker 容器中运行，并负责将 Isaac Lab 仿真流式传输到兼容的 XR 设备。</p>
+<p>确保已在您的 Isaac Lab 工作站上安装 <a class="reference external" href="https://docs.docker.com/desktop/install/linux-install/">Docker</a> ， <a class="reference external" href="https://docs.docker.com/compose/install/linux/#install-using-the-repository">Docker Compose</a> 和 <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit">NVIDIA Container Toolkit</a> ，如 Isaac Lab <a class="reference internal" href="../deployment/docker.html#deployment-docker"><span class="std std-ref">Docker 指南</span></a> 中所描述。</p>
+<p>还要确保您的防火墙允许通过运行的 CloudXR 使用的端口进行连接:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">47998</span>:48000,48005,48008,48012/udp
+sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">48010</span>/tcp
+</pre></div>
+</div>
+<p>有两种选项可运行 CloudXR Runtime Docker 容器:</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">选项1（推荐）: 使用 Docker Compose 同时运行 Isaac Lab 和 CloudXR Runtime容器</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">在您的 Isaac Lab 工作站上:</p>
+<ol class="arabic">
+<li><p class="sd-card-text">从 Isaac Lab 仓库的根目录开始，使用 Isaac Lab 的 <code class="docutils literal notranslate"><span class="pre">container.py</span></code> 脚本启动 Isaac Lab 和 CloudXR Runtime容器</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/container.py<span class="w"> </span>start<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--files<span class="w"> </span>docker-compose.cloudxr-runtime.patch.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env-file<span class="w"> </span>.env.cloudxr-runtime
+</pre></div>
+</div>
+<p class="sd-card-text">如果提示，选择激活 X11 转发，这对于查看 Isaac Sim UI 是必要的。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">container.py</span></code> 脚本是 Docker Compose 的一个薄包装器。额外的 <code class="docutils literal notranslate"><span class="pre">--files</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--env-file</span></code> 参数会增强基础 Docker Compose 配置，以额外运行 CloudXR Runtime</p>
+<p class="sd-card-text">有关 <code class="docutils literal notranslate"><span class="pre">container.py</span></code> 和使用 Docker Compose 运行 Isaac Lab 的更多详细信息，请参阅 <a class="reference internal" href="../deployment/docker.html#deployment-docker"><span class="std std-ref">Docker 指南</span></a> 。</p>
+</div>
+</li>
+<li><p class="sd-card-text">使用以下命令进入 Isaac Lab 基础容器:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/container.py<span class="w"> </span>enter<span class="w"> </span>base
+</pre></div>
+</div>
+<p class="sd-card-text">从 Isaac Lab 基础容器内部，您可以运行使用 XR 的 Isaac Lab 脚本。</p>
+</li>
+<li><p class="sd-card-text">使用示例遥操作任务运行:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/environments/teleoperation/teleop_se3_agent.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--task<span class="w"> </span>Isaac-PickPlace-GR1T2-Abs-v0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--teleop_device<span class="w"> </span>handtracking<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable_pinocchio
+</pre></div>
+</div>
+</li>
+<li><p class="sd-card-text">在下一步骤中，您将希望保留容器运行。 但是一旦完成，您可以停止容器:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/container.py<span class="w"> </span>stop<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--files<span class="w"> </span>docker-compose.cloudxr-runtime.patch.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env-file<span class="w"> </span>.env.cloudxr-runtime
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p class="sd-card-text">如果重启时遇到问题，您可以运行以下命令清理孤立容器:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>system<span class="w"> </span>prune<span class="w"> </span>-f
+</pre></div>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">选项2: 使用 Docker 作为本地进程运行 Isaac Lab 和 CloudXR Runtime 容器</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Isaac Lab 可以作为连接到 CloudXR Runtime Docker 容器的本地进程运行。但是，此方法需要手动指定用于 Isaac Lab 实例和 CloudXR Runtime 之间通信的共享目录。</p>
+<p class="sd-card-text">在您的 Isaac Lab 工作站上:</p>
+<ol class="arabic">
+<li><p class="sd-card-text">从Isaac Lab存储库的根目录中为临时缓存文件创建一个本地文件夹:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/openxr
+</pre></div>
+</div>
+</li>
+<li><p class="sd-card-text">启动CloudXR Runtime，将上面创建的目录挂载到容器中的 <code class="docutils literal notranslate"><span class="pre">/openxr</span></code> 目录中:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>--name<span class="w"> </span>cloudxr-runtime<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--user<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="s2">&quot;ACCEPT_EULA=Y&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--mount<span class="w"> </span><span class="nv">type</span><span class="o">=</span>bind,src<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/openxr,dst<span class="o">=</span>/openxr<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">48010</span>:48010<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">47998</span>:47998/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">47999</span>:47999/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">48000</span>:48000/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">48005</span>:48005/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">48008</span>:48008/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">48012</span>:48012/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>nvcr.io/nvidia/cloudxr-runtime:5.0.1
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p class="sd-card-text">如果你选择一个特定的GPU而不是 <code class="docutils literal notranslate"><span class="pre">all</span></code> ，你需要确保Isaac Lab也在该GPU上运行。</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p class="sd-card-text">如果运行 cloudxr-runtime 容器时遇到问题，您可以运行以下命令清理孤立容器:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>stop<span class="w"> </span>cloudxr-runtime
+docker<span class="w"> </span>rm<span class="w"> </span>cloudxr-runtime
+</pre></div>
+</div>
+</div>
+</li>
+<li><p class="sd-card-text">在打算运行Isaac Lab的新终端中，导出以下环境变量，这些环境变量引用了上面创建的目录:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">XDG_RUNTIME_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/openxr/run
+<span class="nb">export</span><span class="w"> </span><span class="nv">XR_RUNTIME_JSON</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/openxr/share/openxr/1/openxr_cloudxr.json
+</pre></div>
+</div>
+<p class="sd-card-text">现在您可以运行使用XR的Isaac Lab脚本。</p>
+</li>
+<li><p class="sd-card-text">使用示例遥操作任务运行:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/environments/teleoperation/teleop_se3_agent.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--task<span class="w"> </span>Isaac-PickPlace-GR1T2-Abs-v0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--teleop_device<span class="w"> </span>handtracking<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable_pinocchio
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</details><p>随着Isaac Lab和CloudXR Runtime的运行:</p>
+<ol class="arabic">
+<li><p>在 Isaac Sim UI 中: 找到名为 <strong>AR</strong> 的面板并选择以下选项:</p>
+<ul class="simple">
+<li><p>选择的输出插件: <strong>OpenXR</strong></p></li>
+<li><p>OpenXR 运行时: <strong>System OpenXR Runtime</strong></p></li>
+</ul>
+<figure class="align-center" style="width: 50%">
+<img alt="Isaac Sim UI: AR 面板" src="../../_images/cloudxr_ar_panel.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Isaac Sim 允许您从多个 OpenXR 运行时选项中进行选择:</p>
+<ul class="simple">
+<li><p><strong>System OpenXR Runtime</strong>: 使用在 Isaac Lab 外部安装的运行时，例如本教程中通过 Docker 设置的 CloudXR Runtime。</p></li>
+<li><p><strong>CloudXR Runtime (5.0)</strong>: 使用内置的 CloudXR Runtime。</p></li>
+<li><p><strong>Custom</strong>: 允许您指定并运行您选择的任何自定义 OpenXR Runtime。</p></li>
+</ul>
+</div>
+</li>
+<li><p>单击 <strong>Start AR</strong> 。</p></li>
+</ol>
+<p>视口应显示正在渲染的两只眼睛，并且您应该看到状态 &quot;AR profile is active&quot; 。</p>
+<figure class="align-center" style="width: 100%">
+<img alt="Isaac Lab视口渲染两只眼睛" src="../../_images/cloudxr_viewport.jpg" />
+</figure>
+<p>Isaac Lab现在准备好从CloudXR客户端接收连接。 接下来的部分将指导您构建并连接CloudXR客户端。</p>
+<div class="admonition-learn-more-about-teleoperation-and-imitation-learning-in-isaac-lab admonition">
+<p class="admonition-title">在Isaac Lab中了解有关远程操作和仿真学习的更多信息</p>
+<p>要了解有关Isaac Lab远程操作脚本以及如何在Isaac Lab中构建新的远程操作和仿真学习工作流的更多信息，请参阅 <a class="reference internal" href="../overview/imitation-learning/teleop_imitation.html#teleoperation-imitation-learning"><span class="std std-ref">​​Isaac Lab Mimic 中的遥操作与模仿学习​</span></a> 。</p>
+</div>
+</section>
+<section id="use-apple-vision-pro-for-teleoperation">
+<span id="use-apple-vision-pro"></span><h2>使用Apple Vision Pro进行远程操作<a class="headerlink" href="#use-apple-vision-pro-for-teleoperation" title="Link to this heading">#</a></h2>
+<p>本节将带您了解如何为Apple Vision Pro构建和安装Isaac XR远程操作示例客户端，连接到Isaac Lab并远程操作虚拟机器人。</p>
+<section id="build-and-install-the-isaac-xr-teleop-sample-client-app-for-apple-vision-pro">
+<span id="build-apple-vision-pro"></span><h3>为Apple Vision Pro构建和安装Isaac XR远程操作示例客户端应用程序<a class="headerlink" href="#build-and-install-the-isaac-xr-teleop-sample-client-app-for-apple-vision-pro" title="Link to this heading">#</a></h3>
+<p>在您的Mac上:</p>
+<ol class="arabic">
+<li><p>克隆 <a class="reference external" href="https://github.com/isaac-sim/isaac-xr-teleop-sample-client-apple">Isaac XR 远程操作示例客户端</a> GitHub存储库:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:isaac-sim/isaac-xr-teleop-sample-client-apple.git
+</pre></div>
+</div>
+</li>
+<li><p>切换到与您的 Isaac Lab 版本匹配的应用程序版本:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Isaac Lab 版本</p></td>
+<td><p>客户端应用程序版本</p></td>
+</tr>
+<tr class="row-even"><td><p>2.3</p></td>
+<td><p>v2.3.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.2</p></td>
+<td><p>v2.2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>2.1</p></td>
+<td><p>v1.0.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>&lt;client_app_version&gt;
+</pre></div>
+</div>
+</li>
+<li><p>按照存储库中的README构建并安装应用程序到您的Apple Vision Pro上。</p></li>
+</ol>
+</section>
+<section id="teleoperate-an-isaac-lab-robot-with-apple-vision-pro">
+<span id="teleoperate-apple-vision-pro"></span><h3>使用Apple Vision Pro远程操作Isaac Lab机器人<a class="headerlink" href="#teleoperate-an-isaac-lab-robot-with-apple-vision-pro" title="Link to this heading">#</a></h3>
+<p>在您的Apple Vision Pro上安装了Isaac XR远程操作示例客户端后，您现在可以连接到Isaac Lab了。</p>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p><strong>在佩戴头显之前</strong> ，您可以先从 Mac 验证连接性:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test signaling port (replace &lt;isaac-lab-ip&gt; with your workstation IP)</span>
+nc<span class="w"> </span>-vz<span class="w"> </span>&lt;isaac-lab-ip&gt;<span class="w"> </span><span class="m">48010</span>
+</pre></div>
+</div>
+<p>预期输出: <code class="docutils literal notranslate"><span class="pre">Connection</span> <span class="pre">to</span> <span class="pre">&lt;ip&gt;</span> <span class="pre">port</span> <span class="pre">48010</span> <span class="pre">[tcp/*]</span> <span class="pre">succeeded!</span></code></p>
+<p>如果连接失败，请检查运行时容器是否正在运行（ <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> ）以及是否有过时的运行时容器阻塞端口。</p>
+</div>
+<p>在您的 Isaac Lab 工作站上:</p>
+<ol class="arabic">
+<li><p>确保Isaac Lab和CloudXR像 <a class="reference internal" href="#run-isaac-lab-with-the-cloudxr-runtime"><span class="std std-ref">使用 CloudXR 运行 Isaac Lab</span></a> 中描述的那样都在运行，包括使用支持远程操作的脚本启动Isaac Lab。 例如:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/environments/teleoperation/teleop_se3_agent.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--task<span class="w"> </span>Isaac-PickPlace-GR1T2-Abs-v0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--teleop_device<span class="w"> </span>handtracking<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable_pinocchio
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请记住，上面的脚本应在Isaac Lab Docker容器内部运行（选项1，推荐），或使用环境变量配置为由运行中的CloudXR Runtime Docker容器共享的目录（选项2）。</p>
+</div>
+</li>
+<li><p>定位名为 <strong>AR</strong> 的面板。</p></li>
+<li><p>单击 <strong>Start AR</strong> ，并确保视口显示正在渲染的两只眼睛。</p></li>
+</ol>
+<p>返回到您的Apple Vision Pro:</p>
+<ol class="arabic">
+<li><p>打开Isaac XR远程操作示例客户端。 您应该看到一个UI窗口:</p>
+<figure class="align-center" style="width: 50%">
+<img alt="Isaac Sim UI: AR 面板" src="../../_images/cloudxr_avp_connect_ui.jpg" />
+</figure>
+</li>
+<li><p>输入您的Isaac Lab工作站的IP地址。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Apple Vision Pro和Isaac Lab机器必须可以相互访问IP。</p>
+<p>我们建议在此过程中使用专用的Wifi 6路由器，因为许多机构无线网络将阻止设备相互访问，使得Apple Vision Pro无法在网络上找到Isaac Lab工作站。</p>
+</div>
+</li>
+<li><p>单击 <strong>连接</strong> 。</p>
+<p>第一次尝试连接时，您可能需要允许应用程序访问权限，比如手部跟踪和本地网络使用，然后再次连接。</p>
+</li>
+<li><p>经过一段时间后，您应该可以在Apple Vision Pro上看到Isaac Lab仿真，以及用于远程操作的控件。</p>
+<figure class="align-center" style="width: 50%">
+<img alt="Isaac Sim UI: AR 面板" src="../../_images/cloudxr_avp_teleop_ui.jpg" />
+</figure>
+</li>
+<li><p>单击 <strong>播放</strong> 开始远程操作虚拟机器人。 现在，机器人的运动应该由您的手动作指导。</p>
+<p>您可以重复使用UI控件 <strong>播放</strong> ， <strong>停止</strong> 和 <strong>重置</strong> 远程操作会话。</p>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>对于需要双手操纵的远程操作任务，可以使用visionOS辅助功能来控制远程操作，而无需使用手势。 例如，为了启用对UI的语音控制:</p>
+<ol class="arabic simple">
+<li><p>在 <strong>Settings</strong> &gt; <strong>Accessibility</strong> &gt; <strong>Voice Control</strong> 中，打开 <strong>Voice Control</strong></p></li>
+<li><p>在 <strong>Settings</strong> &gt; <strong>Accessibility</strong> &gt; <strong>Voice Control</strong> &gt; <strong>Commands</strong> &gt; <strong>Basic Navigation</strong> 中，打开 <strong>&lt;item name&gt;</strong></p></li>
+<li><p>现在，您可以在应用程序连接时说 &quot;播放&quot; ， &quot;停止&quot; 和 &quot;重置&quot; 来控制远程操作。</p></li>
+</ol>
+</div>
+</li>
+<li><p>通过移动双手远程操作虚拟机器人。</p>
+<figure class="align-center">
+<img alt="Isaac Lab使用CloudXR进行手工灵巧机器人的远程操作" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cloudxr_bimanual_teleop.gif" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>红点表示手部关节的跟踪位置。点的运动与机器人之间的延迟或偏移可能是由机器人关节和/或机器人控制器的限制引起的。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>当逆运动学求解器无法找到有效解时，XR 设备显示屏将出现错误消息。要从这种状态恢复，请单击 <strong>重置</strong> 按钮将机器人恢复到原始姿势，并继续远程操作。</p>
+<figure class="align-center" style="width: 80%">
+<img alt="XR 设备中的 IK 错误消息显示" src="../../_images/cloudxr_avp_ik_error.jpg" />
+</figure>
+</div>
+</li>
+<li><p>完成示例后，单击 <strong>断开连接</strong> 以断开与Isaac Lab的连接。</p></li>
+</ol>
+<div class="admonition-learn-more-about-teleoperation-and-imitation-learning-in-isaac-lab admonition">
+<p class="admonition-title">在Isaac Lab中了解有关远程操作和仿真学习的更多信息</p>
+<p>请参阅 <a class="reference internal" href="../overview/imitation-learning/teleop_imitation.html#teleoperation-imitation-learning"><span class="std std-ref">​​Isaac Lab Mimic 中的遥操作与模仿学习​</span></a> 了解如何记录远程操作演示并使用Isaac Lab构建远程操作和仿真学习工作流。</p>
+</div>
+</section>
+<section id="manus-vive-hand-tracking">
+<span id="manus-vive-handtracking"></span><h3>Manus + Vive 手部跟踪<a class="headerlink" href="#manus-vive-hand-tracking" title="Link to this heading">#</a></h3>
+<p>当头戴式设备的光学手部跟踪被遮挡时，Manus 手套和 HTC Vive 追踪器可以提供手部跟踪。此设置需要具有 Manus SDK 许可证的 Manus 手套以及连接到手套的 Vive 追踪器。需要 Isaac Sim 5.1 或更高版本。</p>
+<p>使用 Manus + Vive 追踪运行远程操作示例：</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">安装说明</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Vive 追踪器集成通过 libsurvive 库提供。</p>
+<p class="sd-card-text">要安装，请克隆存储库，构建 python 包，并安装所需的 udev 规则。在您的 Isaac Lab 虚拟环境中，运行以下命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/collabora/libsurvive.git
+<span class="nb">cd</span><span class="w"> </span>libsurvive
+pip<span class="w"> </span>install<span class="w"> </span>scikit-build
+python<span class="w"> </span>setup.py<span class="w"> </span>install
+
+sudo<span class="w"> </span>cp<span class="w"> </span>./useful_files/81-vive.rules<span class="w"> </span>/etc/udev/rules.d/
+sudo<span class="w"> </span>udevadm<span class="w"> </span>control<span class="w"> </span>--reload-rules<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>udevadm<span class="w"> </span>trigger
+</pre></div>
+</div>
+<p class="sd-card-text">Manus 集成通过 Isaac Sim 远程操作输入插件框架提供。请按照 <a class="reference external" href="https://github.com/isaac-sim/isaac-teleop-device-plugins">isaac-teleop-device-plugins</a> 中的构建和安装步骤安装插件。</p>
+</div>
+</details><p>在将要启动 Isaac Lab 的同一终端中，设置:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ISAACSIM_HANDTRACKER_LIB</span><span class="o">=</span>&lt;path<span class="w"> </span>to<span class="w"> </span>isaac-teleop-device-plugins&gt;/build-manus-default/lib/libIsaacSimManusHandTracking.so
+</pre></div>
+</div>
+<p>安装插件后，运行远程操作示例:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/environments/teleoperation/teleop_se3_agent.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--task<span class="w"> </span>Isaac-PickPlace-GR1T2-Abs-v0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--teleop_device<span class="w"> </span>manusvive<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--xr<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable_pinocchio
+</pre></div>
+</div>
+<p>推荐的工作流程是启动 Isaac Lab，单击 <strong>Start AR</strong> ，然后戴上 Manus 手套、Vive 追踪器和头显。准备好开始会话后，使用语音命令启动 Isaac XR 远程操作示例客户端并连接到 Isaac Lab。</p>
+<p>Isaac Lab 在会话的初始帧期间使用来自 Apple Vision Pro 的腕部姿态数据自动校准 Vive 追踪器。如果校准失败，例如红点没有准确跟随操作员的手，请重新启动 Isaac Lab 并以手掌向上的姿势开始，以提高校准可靠性。</p>
+<p>为获得最佳性能，将灯塔放置在手部上方，略微向下倾斜。确保灯塔保持稳定；建议使用支架以防止摇晃。</p>
+<p>确保在远程操作任务时，手部始终保持稳定并对灯塔可见。请参阅: <a class="reference external" href="https://www.vive.com/us/support/vive/category_howto/installing-the-base-stations.html">安装基站</a> 和 <a class="reference external" href="https://www.vive.com/us/support/vive/category_howto/tips-for-setting-up-the-base-stations.html">设置基站的提示</a></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>首次启动 Manus Vive 设备时，Vive 灯塔可能需要几秒钟进行校准。在此期间保持 Vive 追踪器稳定并对灯塔可见。如果灯塔移动或跟踪失败或不稳定，可以通过删除校准文件来强制校准: <code class="docutils literal notranslate"><span class="pre">$XDG_RUNTIME_DIR/libsurvive/config.json</span></code> 。如果未设置 XDG_RUNTIME_DIR，默认目录为 <code class="docutils literal notranslate"><span class="pre">~/.config/libsurvive</span></code> 。</p>
+<p>有关更多信息，请查阅 libsurvive 文档: <a class="reference external" href="https://github.com/collabora/libsurvive">libsurvive</a> 。</p>
+</div>
+<p>为获得最佳性能，将灯塔放置在手部上方，略微向下倾斜。如果两只手都可见，一个灯塔就足够了。确保灯塔保持稳定；建议使用支架以防止摇晃。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>为避免资源争用和崩溃，请确保 Manus 和 Vive 设备连接到不同的 USB 控制器/总线。使用 <code class="docutils literal notranslate"><span class="pre">lsusb</span> <span class="pre">-t</span></code> 来识别不同的总线并连接设备。</p>
+<p>Vive 追踪器会自动计算映射到从稳定的 OpenXR 手部跟踪腕部姿态获得的左右腕关节。此自动映射计算支持最多 2 个 Vive 追踪器；如果检测到超过 2 个 Vive 追踪器，则使用检测到的前两个追踪器进行校准，这可能不正确。</p>
+</div>
+</section>
+</section>
+<section id="develop-for-xr-in-isaac-lab">
+<span id="develop-xr-isaac-lab"></span><h2>在Isaac Lab中为XR进行开发<a class="headerlink" href="#develop-for-xr-in-isaac-lab" title="Link to this heading">#</a></h2>
+<p>本节将指导您如何在 Isaac Lab 中开发 XR 环境，用于构建远程操作工作流程。</p>
+<section id="run-isaac-lab-with-xr-extensions-enabled">
+<span id="run-isaac-lab-with-xr"></span><h3>使用启用了 XR 扩展的 Isaac Lab<a class="headerlink" href="#run-isaac-lab-with-xr-extensions-enabled" title="Link to this heading">#</a></h3>
+<p>为了启用 XR 所需的扩展，并在 UI 中看到 AR 面板，必须通过向使用 <a class="reference internal" href="../api/lab/isaaclab.app.html#isaaclab.app.AppLauncher" title="isaaclab.app.AppLauncher"><code class="xref py py-class docutils literal notranslate"><span class="pre">app.AppLauncher</span></code></a> 的任何 Isaac Lab 脚本传递 <code class="docutils literal notranslate"><span class="pre">--xr</span></code> 标志来加载带有 XR 体验文件的 Isaac Lab。</p>
+<p>例如: 您可以通过使用额外的 <code class="docutils literal notranslate"><span class="pre">--xr</span></code> 标志来调用任何 <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">教程</span></a> 中启用和使用 XR。</p>
+</section>
+<section id="configure-xr-scene-placement">
+<span id="configure-scene-placement"></span><h3>配置 XR 场景放置<a class="headerlink" href="#configure-xr-scene-placement" title="Link to this heading">#</a></h3>
+<p>可以使用 XR 锚点在 XR 设备的本地坐标系内放置机器人仿真，并可通过环境配置中的 <code class="docutils literal notranslate"><span class="pre">xr</span></code> 字段（类型为 <code class="xref py py-class docutils literal notranslate"><span class="pre">openxr.XrCfg</span></code> ）进行配置。</p>
+<p>具体来说: 由 <code class="xref py py-class docutils literal notranslate"><span class="pre">openxr.XrCfg</span></code> 的 <code class="docutils literal notranslate"><span class="pre">anchor_pos</span></code> 和 <code class="docutils literal notranslate"><span class="pre">anchor_rot</span></code> 字段指定的姿势将出现在 XR 设备的本地坐标系原点上，这应该在地板上。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在 Apple Vision Pro 上，本地坐标系可以通过按住数字表冠重置到用户下方的地板上的位置。</p>
+</div>
+<p>例如: 如果机器人应该出现在用户的位置，则 <code class="docutils literal notranslate"><span class="pre">anchor_pos</span></code> 和 <code class="docutils literal notranslate"><span class="pre">anchor_rot</span></code> 属性应设置为机器人正下方地板上的姿势。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>通过在位置的 anchor 处创建一个 primitive，并修改 <code class="docutils literal notranslate"><span class="pre">xr/profile/ar/anchorMode</span></code> 和 <code class="docutils literal notranslate"><span class="pre">/xrstage/profile/ar/customAnchor</span></code> 设置， <code class="xref py py-class docutils literal notranslate"><span class="pre">openxr.OpenXRDevice</span></code> 中应用 XR 锚点配置。</p>
+<p>如果正在运行的脚本不使用 <code class="xref py py-class docutils literal notranslate"><span class="pre">openxr.OpenXRDevice</span></code> ，则需要显式执行这一步骤。</p>
+</div>
+</section>
+<section id="optimize-xr-performance">
+<span id="id2"></span><h3>优化 XR 性能<a class="headerlink" href="#optimize-xr-performance" title="Link to this heading">#</a></h3>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">配置物理和渲染时间步</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">为了提供高保真的沉浸式体验，建议确保仿真渲染时间步大致与 XR 设备显示时间步匹配。</p>
+<p class="sd-card-text">还要确保此时间步可以实时进行仿真和渲染。</p>
+<p class="sd-card-text">Apple Vision Pro 显示器运行在 90Hz，但许多 Isaac Lab 仿真在为 XR 渲染立体视图时无法实现90Hz性能；因此，为了在 Apple Vision Pro 上获得最佳体验，我们建议以90Hz的仿真 dt 和2的渲染间隔运行，这意味着仿真每两个仿真步骤渲染一次，或者如果性能允许，则以45Hz运行。</p>
+<p class="sd-card-text">您仍然可以根据需要设置较低或较高的仿真 dt，但这可能导致在 XR 中渲染时仿真速度快或慢。</p>
+<p class="sd-card-text">通过修改环境的 <code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> 函数中的 <a class="reference internal" href="../api/lab/isaaclab.sim.html#isaaclab.sim.SimulationCfg" title="isaaclab.sim.SimulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">sim.SimulationCfg</span></code></a> 来覆盖环境的时间步配置。例如:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@configclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">XrTeleopEnvCfg</span><span class="p">(</span><span class="n">ManagerBasedRLEnvCfg</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">90</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">render_interval</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p class="sd-card-text">还要注意，默认情况下，CloudXR 试图根据 Isaac Lab 的渲染时间来动态调整其节奏。如果渲染时间变化很大，这可能导致在 XR 渲染时仿真看起来加速或减速。如果出现此问题，CloudXR 可以通过在启动 CloudXR Runtime Docker 容器时将环境变量 <code class="docutils literal notranslate"><span class="pre">NV_PACER_FIXED_TIME_STEP_MS</span></code> 设置为整数来配置使用固定时间步。</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">尝试在 CPU 上运行物理计算</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">目前建议尝试使用 <code class="docutils literal notranslate"><span class="pre">--device</span> <span class="pre">cpu</span></code> 标志在 Isaac Lab 远程操作脚本上运行。这将导致物理计算在 CPU 上进行，当仿真中只有一个环境时可能会降低延迟。</p>
+</div>
+</details></section>
+<section id="control-the-robot-with-xr-device-inputs">
+<span id="control-robot-with-xr"></span><h3>使用 XR 设备输入控制机器人<a class="headerlink" href="#control-the-robot-with-xr-device-inputs" title="Link to this heading">#</a></h3>
+<p>Isaac Lab 提供了一个灵活的架构，用于使用 XR 跟踪数据来控制仿真机器人。本节解释了这种架构的组件以及它们如何相互配合。</p>
+<section id="openxr-device">
+<span id="openxr-device-architecture"></span><h4>OpenXR 设备<a class="headerlink" href="#openxr-device" title="Link to this heading">#</a></h4>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.OpenXRDevice</span></code> 是 Isaac Lab 中启用基于 XR 的远程操作的核心组件。该设备与 CloudXR 接口，从 XR 头显接收跟踪数据并将其转换为机器人控制命令。</p>
+<p>在本质上，XR 远程操作需要将用户输入（如手部移动和姿势）映射（或 &quot;重映射&quot; ）为机器人控制信号。Isaac Lab 通过其 OpenXRDevice 和 Retargeter 架构使其变得简单。OpenXRDevice 通过 Isaac Sim 的 OpenXR API 捕获手部跟踪数据，然后通过一个或多个 Retargeters 将其转换为机器人动作。</p>
+<p>在使用 CloudXR 时，OpenXRDevice 还与 XR 设备的用户界面集成，允许用户直接从他们的 XR 环境触发仿真事件。</p>
+</section>
+<section id="retargeting-architecture">
+<span id="control-robot-with-xr-retargeters"></span><h4>重映射架构<a class="headerlink" href="#retargeting-architecture" title="Link to this heading">#</a></h4>
+<p>Retargeters 是将原始跟踪数据转换为有意义的机器人控制信号的专业组件。它们实现了 <a class="reference internal" href="../api/lab/isaaclab.devices.html#isaaclab.devices.RetargeterBase" title="isaaclab.devices.RetargeterBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.RetargeterBase</span></code></a> 接口，并在初始化期间传递给 OpenXRDevice。</p>
+<p>Isaac Lab 提供了三种主要的手部跟踪 retargeters:</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Se3RelRetargeter (<code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.openxr.retargeters.Se3RelRetargeter</span></code>)</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text">从相对手部运动生成增量机器人命令</p></li>
+<li><p class="sd-card-text">适用于精确操纵任务</p></li>
+</ul>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Se3AbsRetargeter (<code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.openxr.retargeters.Se3AbsRetargeter</span></code>)</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text">将手部位置直接映射到机器人末端执行器位置</p></li>
+<li><p class="sd-card-text">实现了1:1的空间控制</p></li>
+</ul>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">GripperRetargeter (<code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.openxr.retargeters.GripperRetargeter</span></code>)</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text">根据拇指-食指距离控制夹具状态</p></li>
+<li><p class="sd-card-text">与位置 retargeters 一起用于完整的机器人控制</p></li>
+</ul>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">GR1T2Retargeter (<code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.openxr.retargeters.GR1T2Retargeter</span></code>)</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text">将 OpenXR 手部跟踪数据重新定位到 GR1T2 手部末端执行器命令</p></li>
+<li><p class="sd-card-text">处理左手和右手，将手部姿势转换为 GR1T2 机器人手的关节角度</p></li>
+<li><p class="sd-card-text">支持跟踪手部关节的可视化</p></li>
+</ul>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">UnitreeG1Retargeter (<code class="xref py py-class docutils literal notranslate"><span class="pre">isaaclab.devices.openxr.retargeters.UnitreeG1Retargeter</span></code>)</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text">使用 Inspire 5 指手部末端执行器命令将 OpenXR 手部跟踪数据重定向到 Unitree G1</p></li>
+<li><p class="sd-card-text">处理左手和右手，将手部姿态转换为 G1 机器人手部的关节角度</p></li>
+<li><p class="sd-card-text">支持跟踪手部关节的可视化</p></li>
+</ul>
+</div>
+</details><p>可以组合 retargeters 以同时控制不同的机器人功能。</p>
+</section>
+<section id="using-retargeters-with-hand-tracking">
+<h4>使用带有手部跟踪的 Retargeters<a class="headerlink" href="#using-retargeters-with-hand-tracking" title="Link to this heading">#</a></h4>
+<p>以下是设置手部跟踪的示例:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenXRDevice</span><span class="p">,</span> <span class="n">OpenXRDeviceCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.openxr.retargeters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Se3AbsRetargeter</span><span class="p">,</span> <span class="n">GripperRetargeter</span>
+
+<span class="c1"># Create retargeters</span>
+<span class="n">position_retargeter</span> <span class="o">=</span> <span class="n">Se3AbsRetargeter</span><span class="p">(</span>
+    <span class="n">bound_hand</span><span class="o">=</span><span class="n">DeviceBase</span><span class="o">.</span><span class="n">TrackingTarget</span><span class="o">.</span><span class="n">HAND_RIGHT</span><span class="p">,</span>
+    <span class="n">zero_out_xy_rotation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">use_wrist_position</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Use pinch position (thumb-index midpoint) instead of wrist</span>
+<span class="p">)</span>
+<span class="n">gripper_retargeter</span> <span class="o">=</span> <span class="n">GripperRetargeter</span><span class="p">(</span><span class="n">bound_hand</span><span class="o">=</span><span class="n">DeviceBase</span><span class="o">.</span><span class="n">TrackingTarget</span><span class="o">.</span><span class="n">HAND_RIGHT</span><span class="p">)</span>
+
+<span class="c1"># Create OpenXR device with hand tracking and both retargeters</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">OpenXRDevice</span><span class="p">(</span>
+    <span class="n">OpenXRDeviceCfg</span><span class="p">(</span><span class="n">xr_cfg</span><span class="o">=</span><span class="n">env_cfg</span><span class="o">.</span><span class="n">xr</span><span class="p">),</span>
+    <span class="n">retargeters</span><span class="o">=</span><span class="p">[</span><span class="n">position_retargeter</span><span class="p">,</span> <span class="n">gripper_retargeter</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Main control loop</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1"># Get the latest commands from the XR device</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">advance</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">commands</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="c1"># Apply the commands to the environment</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p>这是用于人形机器人远程操作的数据流和算法图。使用 Apple Vision Pro，我们为每只手收集 26 个关键点。腕部关键点用于控制手部末端执行器，而其余的手部关键点用于手部重定向。</p>
+<figure class="align-center" style="width: 80%">
+<img alt="teleop_diagram" src="../../_images/teleop_diagram.jpg" />
+</figure>
+<p>对于灵巧手重定向，我们目前使用 Dexpilot 优化器，它依赖于五个指尖和手掌进行重定向。用于重定向的链接必须准确地定义在指尖处——而不是手指中间——以确保准确的优化。请参考下面的图像进行手部资产选择，找到合适的手部资产，或根据需要在 IsaacLab 中添加指尖链接。</p>
+<figure class="align-center" style="width: 60%">
+<img alt="hand_asset" src="../../_images/hand_asset.jpg" />
+</figure>
+</section>
+<section id="adding-callbacks-for-xr-ui-events">
+<span id="control-robot-with-xr-callbacks"></span><h4>为 XR UI 事件添加回调<a class="headerlink" href="#adding-callbacks-for-xr-ui-events" title="Link to this heading">#</a></h4>
+<p>The OpenXRDevice 可以处理由用户与 XR UI 元素（如按钮和菜单）互动触发的事件。当用户与这些元素交互时，设备会触发已注册的回调函数:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Register callbacks for teleop control events</span>
+<span class="n">device</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s2">&quot;RESET&quot;</span><span class="p">,</span> <span class="n">reset_callback</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s2">&quot;START&quot;</span><span class="p">,</span> <span class="n">start_callback</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s2">&quot;STOP&quot;</span><span class="p">,</span> <span class="n">stop_callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>当用户与 XR UI 交互时，这些回调将被触发以控制仿真或录制过程。您还可以使用客户端自定义键添加自定义消息，这些消息将触发这些回调，从而允许通过直接用户互动的编程方式控制仿真。自定义键可以是与回调注册匹配的任何字符串值。</p>
+</section>
+<section id="teleop-environment-configuration">
+<h4>远程操控环境配置<a class="headerlink" href="#teleop-environment-configuration" title="Link to this heading">#</a></h4>
+<p>基于 XR 的远程操作可以通过在您的环境配置中使用 <code class="docutils literal notranslate"><span class="pre">teleop_devices</span></code> 字段集成到 Isaac Lab 的环境配置系统中:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.envs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ManagerBasedEnvCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">DevicesCfg</span><span class="p">,</span> <span class="n">OpenXRDeviceCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.openxr</span><span class="w"> </span><span class="kn">import</span> <span class="n">XrCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.openxr.retargeters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Se3AbsRetargeterCfg</span><span class="p">,</span> <span class="n">GripperRetargeterCfg</span>
+
+<span class="nd">@configclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyEnvironmentCfg</span><span class="p">(</span><span class="n">ManagerBasedEnvCfg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for a teleoperation-enabled environment.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Add XR configuration with custom anchor position</span>
+    <span class="n">xr</span><span class="p">:</span> <span class="n">XrCfg</span> <span class="o">=</span> <span class="n">XrCfg</span><span class="p">(</span>
+        <span class="n">anchor_pos</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="n">anchor_rot</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Define teleoperation devices</span>
+    <span class="n">teleop_devices</span><span class="p">:</span> <span class="n">DevicesCfg</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DevicesCfg</span><span class="p">(</span>
+        <span class="c1"># Configuration for hand tracking with absolute position control</span>
+        <span class="n">handtracking</span><span class="o">=</span><span class="n">OpenXRDeviceCfg</span><span class="p">(</span>
+            <span class="n">xr_cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Will use environment&#39;s xr config</span>
+            <span class="n">retargeters</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">Se3AbsRetargeterCfg</span><span class="p">(</span>
+                    <span class="n">bound_hand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># HAND_LEFT enum value</span>
+                    <span class="n">zero_out_xy_rotation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">use_wrist_position</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">GripperRetargeterCfg</span><span class="p">(</span><span class="n">bound_hand</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="c1"># Add other device configurations as needed</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="teleop-device-factory">
+<h4>遥控设备工厂<a class="headerlink" href="#teleop-device-factory" title="Link to this heading">#</a></h4>
+<p>要从您的环境配置中创建远程操作设备，请使用 <code class="docutils literal notranslate"><span class="pre">create_teleop_device</span></code> 工厂函数:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_teleop_device</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.envs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ManagerBasedEnv</span>
+
+<span class="c1"># Create environment from configuration</span>
+<span class="n">env_cfg</span> <span class="o">=</span> <span class="n">MyEnvironmentCfg</span><span class="p">()</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">ManagerBasedEnv</span><span class="p">(</span><span class="n">env_cfg</span><span class="p">)</span>
+
+<span class="c1"># Define callbacks for teleop events</span>
+<span class="n">callbacks</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;RESET&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reset simulation&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;START&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start teleoperation&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;STOP&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stop teleoperation&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="c1"># Create teleop device from configuration with callbacks</span>
+<span class="n">device_name</span> <span class="o">=</span> <span class="s2">&quot;handtracking&quot;</span>  <span class="c1"># Must match a key in teleop_devices</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">create_teleop_device</span><span class="p">(</span>
+    <span class="n">device_name</span><span class="p">,</span>
+    <span class="n">env_cfg</span><span class="o">.</span><span class="n">teleop_devices</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span>
+<span class="p">)</span>
+
+<span class="c1"># Use device in control loop</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1"># Get the latest commands from the device</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">advance</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">commands</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="c1"># Apply commands to environment</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="extending-the-retargeting-system">
+<h4>扩展 Retargeting 系统<a class="headerlink" href="#extending-the-retargeting-system" title="Link to this heading">#</a></h4>
+<p>重定向系统被设计为可扩展的。您可以按照以下步骤创建自定义的重定向器:</p>
+<ol class="arabic simple">
+<li><p>为您的重新定位者创建一个配置数据类:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.retargeter_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RetargeterCfg</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomRetargeterCfg</span><span class="p">(</span><span class="n">RetargeterCfg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for my custom retargeter.&quot;&quot;&quot;</span>
+    <span class="n">scaling_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">filter_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="c1"># Add any other configuration parameters your retargeter needs</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>通过扩展 RetargeterBase 类来实现您的 retargeter 类:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.retargeter_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RetargeterBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenXRDevice</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomRetargeter</span><span class="p">(</span><span class="n">RetargeterBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A custom retargeter that processes OpenXR tracking data.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">MyCustomRetargeterCfg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize retargeter with configuration.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cfg: Configuration object for retargeter settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaling_factor</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">scaling_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_strength</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">filter_strength</span>
+        <span class="c1"># Initialize any other required attributes</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">retarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform raw tracking data into robot control commands.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: Dictionary containing tracking data from OpenXRDevice.</span>
+<span class="sd">                Keys are TrackingTarget enum values, values are joint pose dictionaries.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: The transformed control commands for the robot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Access hand tracking data using TrackingTarget enum</span>
+        <span class="n">right_hand_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">DeviceBase</span><span class="o">.</span><span class="n">TrackingTarget</span><span class="o">.</span><span class="n">HAND_RIGHT</span><span class="p">]</span>
+
+        <span class="c1"># Extract specific joint positions and orientations</span>
+        <span class="n">wrist_pose</span> <span class="o">=</span> <span class="n">right_hand_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wrist&quot;</span><span class="p">)</span>
+        <span class="n">thumb_tip_pose</span> <span class="o">=</span> <span class="n">right_hand_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;thumb_tip&quot;</span><span class="p">)</span>
+        <span class="n">index_tip_pose</span> <span class="o">=</span> <span class="n">right_hand_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;index_tip&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Access head tracking data</span>
+        <span class="n">head_pose</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">DeviceBase</span><span class="o">.</span><span class="n">TrackingTarget</span><span class="o">.</span><span class="n">HEAD</span><span class="p">]</span>
+
+        <span class="c1"># Process the tracking data and apply your custom logic</span>
+        <span class="c1"># ...</span>
+
+        <span class="c1"># Return control commands in appropriate format</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>  <span class="c1"># Example output</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>通过在配置类上设置 <code class="docutils literal notranslate"><span class="pre">retargeter_type</span></code> 来注册您的重定向器：</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import your retargeter at the top of your module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_package.retargeters</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyCustomRetargeter</span><span class="p">,</span> <span class="n">MyCustomRetargeterCfg</span>
+
+<span class="c1"># Link the config to the implementation for factory construction</span>
+<span class="n">MyCustomRetargeterCfg</span><span class="o">.</span><span class="n">retargeter_type</span> <span class="o">=</span> <span class="n">MyCustomRetargeter</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>现在您可以在 teleop 设备配置中使用自定义的 retargeter:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenXRDeviceCfg</span><span class="p">,</span> <span class="n">DevicesCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.openxr</span><span class="w"> </span><span class="kn">import</span> <span class="n">XrCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_package.retargeters</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyCustomRetargeterCfg</span>
+
+<span class="c1"># Create XR configuration for proper scene placement</span>
+<span class="n">xr_config</span> <span class="o">=</span> <span class="n">XrCfg</span><span class="p">(</span><span class="n">anchor_pos</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">anchor_rot</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="c1"># Define teleop devices with custom retargeter</span>
+<span class="n">teleop_devices</span> <span class="o">=</span> <span class="n">DevicesCfg</span><span class="p">(</span>
+    <span class="n">handtracking</span><span class="o">=</span><span class="n">OpenXRDeviceCfg</span><span class="p">(</span>
+        <span class="n">xr_cfg</span><span class="o">=</span><span class="n">xr_config</span><span class="p">,</span>
+        <span class="n">retargeters</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">MyCustomRetargeterCfg</span><span class="p">(</span>
+                <span class="n">scaling_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">filter_strength</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>随着 OpenXR 能力的扩展超出手部跟踪以涵盖头部跟踪和其他功能，可以开发额外的 retargeters 将这些数据映射到各种机器人控制范式。</p>
+</section>
+<section id="creating-custom-teleop-devices">
+<h4>创建自定义遥控设备<a class="headerlink" href="#creating-custom-teleop-devices" title="Link to this heading">#</a></h4>
+<p>您可以按照以下步骤创建并注册自定义遥操作设备:</p>
+<ol class="arabic simple">
+<li><p>创建一个用于您的设备的配置数据类:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceCfg</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomDeviceCfg</span><span class="p">(</span><span class="n">DeviceCfg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for my custom device.&quot;&quot;&quot;</span>
+    <span class="n">sensitivity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">invert_controls</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Add any other configuration parameters your device needs</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>通过继承 DeviceBase 类来实现您的设备类:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceBase</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomDevice</span><span class="p">(</span><span class="n">DeviceBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A custom teleoperation device.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">MyCustomDeviceCfg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the device with configuration.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cfg: Configuration object for device settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensitivity</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">sensitivity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invert_controls</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">invert_controls</span>
+        <span class="c1"># Initialize any other required attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>  <span class="c1"># Example: 6D pose + gripper</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the device state.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device_input</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+        <span class="c1"># Reset any other state variables</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add callback function for a button/event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key: Button or event name.</span>
+<span class="sd">            func: Callback function to be called when event occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Implement callback registration</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the latest commands from the device.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Control commands (e.g., delta pose + gripper).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Update internal state based on device input</span>
+        <span class="c1"># Return command tensor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device_input</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>将您的设备注册到远程操作设备工厂，方法是将其添加到 <code class="docutils literal notranslate"><span class="pre">DEVICE_MAP</span></code> :</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import your device at the top of your module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_package.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyCustomDevice</span><span class="p">,</span> <span class="n">MyCustomDeviceCfg</span>
+
+<span class="c1"># Add your device to the factory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices.teleop_device_factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEVICE_MAP</span>
+
+<span class="c1"># Register your device type with its constructor</span>
+<span class="n">DEVICE_MAP</span><span class="p">[</span><span class="n">MyCustomDeviceCfg</span><span class="p">]</span> <span class="o">=</span> <span class="n">MyCustomDevice</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>现在您可以在环境配置中使用您的自定义设备:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.envs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ManagerBasedEnvCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">DevicesCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_package.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">MyCustomDeviceCfg</span>
+
+<span class="nd">@configclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyEnvironmentCfg</span><span class="p">(</span><span class="n">ManagerBasedEnvCfg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment configuration with custom teleop device.&quot;&quot;&quot;</span>
+
+    <span class="n">teleop_devices</span><span class="p">:</span> <span class="n">DevicesCfg</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DevicesCfg</span><span class="p">(</span>
+        <span class="n">my_custom_device</span><span class="o">=</span><span class="n">MyCustomDeviceCfg</span><span class="p">(</span>
+            <span class="n">sensitivity</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="n">invert_controls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="known-issues">
+<span id="xr-known-issues"></span><h2>已知问题<a class="headerlink" href="#known-issues" title="Link to this heading">#</a></h2>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">XR_ERROR_VALIDATION_FAILURE:</span> <span class="pre">xrWaitFrame(frameState-&gt;type</span> <span class="pre">==</span> <span class="pre">0)</span></code> when stopping AR Mode</p>
+<p>此错误消息可以安全地忽略。这是由 AR 模式的退出处理程序中的竞争条件引起的。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XR_ERROR_INSTANCE_LOST</span> <span class="pre">in</span> <span class="pre">xrPollEvent:</span> <span class="pre">Call</span> <span class="pre">to</span> <span class="pre">&quot;xrt_session_poll_events&quot;</span> <span class="pre">failed</span></code></p>
+<p>如果 CloudXR 运行时在 Isaac Lab 之前退出，可能会发生此错误。重新启动 CloudXR 运行时以恢复远程操作。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[omni.usd]</span> <span class="pre">TF_PYTHON_EXCEPTION</span></code> when starting/stopping AR Mode</p>
+<p>此错误消息可以安全地忽略。这是由 AR 模式的进入/退出处理程序中的竞争条件引起的。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Invalid</span> <span class="pre">version</span> <span class="pre">string</span> <span class="pre">in</span> <span class="pre">_ParseVersionString</span></code></p>
+<p>这个错误消息可能是由使用较旧版本的 USD 创作的着色器资产引起的，通常可以忽略。</p>
+</li>
+<li><p>XR 设备成功连接，但未显示视频，即使 Isaac Lab 视口响应跟踪。</p>
+<p>当主机和容器之间的 GPU 索引不同时，会发生此错误，导致 CUDA 加载到错误的 GPU 上。要解决此问题，请在运行时容器中将 <code class="docutils literal notranslate"><span class="pre">NV_GPU_INDEX</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 、 <code class="docutils literal notranslate"><span class="pre">1</span></code> 或 <code class="docutils literal notranslate"><span class="pre">2</span></code> ，以确保 CUDA 选择的 GPU 与主机匹配。</p>
+</li>
+</ul>
+</section>
+<section id="kubernetes-deployment">
+<h2>Kubernetes 部署<a class="headerlink" href="#kubernetes-deployment" title="Link to this heading">#</a></h2>
+<p>有关在 Kubernetes 集群上部署用于 Isaac Lab 的 XR Teleop 的信息，请参阅 <a class="reference internal" href="../deployment/cloudxr_teleoperation_cluster.html#cloudxr-teleoperation-cluster"><span class="std std-ref">在 Kubernetes 上部署 CloudXR 远程操作</span></a> 。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="master_omniverse.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">掌握机器人的 Omniverse</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="haply_teleoperation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">设置 Haply 远程操作</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">概述</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-requirements">系统要求</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-isaac-lab-with-the-cloudxr-runtime">使用 CloudXR 运行 Isaac Lab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-apple-vision-pro-for-teleoperation">使用Apple Vision Pro进行远程操作</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-and-install-the-isaac-xr-teleop-sample-client-app-for-apple-vision-pro">为Apple Vision Pro构建和安装Isaac XR远程操作示例客户端应用程序</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teleoperate-an-isaac-lab-robot-with-apple-vision-pro">使用Apple Vision Pro远程操作Isaac Lab机器人</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manus-vive-hand-tracking">Manus + Vive 手部跟踪</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#develop-for-xr-in-isaac-lab">在Isaac Lab中为XR进行开发</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-isaac-lab-with-xr-extensions-enabled">使用启用了 XR 扩展的 Isaac Lab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-xr-scene-placement">配置 XR 场景放置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-xr-performance">优化 XR 性能</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#control-the-robot-with-xr-device-inputs">使用 XR 设备输入控制机器人</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#openxr-device">OpenXR 设备</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#retargeting-architecture">重映射架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-retargeters-with-hand-tracking">使用带有手部跟踪的 Retargeters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-callbacks-for-xr-ui-events">为 XR UI 事件添加回调</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#teleop-environment-configuration">远程操控环境配置</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#teleop-device-factory">遥控设备工厂</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-retargeting-system">扩展 Retargeting 系统</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-custom-teleop-devices">创建自定义遥控设备</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">已知问题</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-deployment">Kubernetes 部署</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

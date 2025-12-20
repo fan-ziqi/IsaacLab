@@ -1,0 +1,1259 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>生成多个资产 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/how-to/multi_asset_spawning';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="保存渲染图像和3D重投影" href="save_camera_output.html" />
+    <link rel="prev" title="使仿真中的物理基本体固定" href="make_fixed_prim.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">操作指南</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/how-to/multi_asset_spawning.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/how-to/multi_asset_spawning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/how-to/multi_asset_spawning.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>生成多个资产</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rigid-object-collections">刚性物体集合</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spawning-different-assets-under-the-same-prim-path">在同一 prim 路径下生成不同的资产</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#things-to-note">需要注意的事项</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#similar-asset-structuring">相似的资产结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-physics-replication-in-interactive-scene">在交互式场景中禁用物理复制</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="spawning-multiple-assets">
+<h1>生成多个资产<a class="headerlink" href="#spawning-multiple-assets" title="Link to this heading">#</a></h1>
+<p>典型的生成配置（在 <a class="reference internal" href="../tutorials/00_sim/spawn_prims.html#tutorial-spawn-prims"><span class="std std-ref">生成基本物体到场景中</span></a> 教程中介绍）复制相同的资产（或 USD 基本体）到不同的已解析的基本体路径表达式中。例如，如果用户指定要在 &quot;/World/Table_.*/Object&quot; 生成资产，则相同的资产将在路径 &quot;/World/Table_0/Object&quot; 、 &quot;/World/Table_1/Object&quot; 等处创建。</p>
+<p>然而，我们还支持使用两种机制进行多资产生成:</p>
+<ol class="arabic simple">
+<li><p>刚性物体集合。这允许用户在每个环境中生成多个刚性物体，并使用统一的API访问/修改它们，从而提高性能。</p></li>
+<li><p>在同一 prim 路径下生成不同的资产。这允许用户创建各种不同的仿真，其中每个环境都有不同的资产。</p></li>
+</ol>
+<p>本指南描述了如何使用这两种机制。</p>
+<p>示例脚本 <code class="docutils literal notranslate"><span class="pre">multi_asset.py</span></code> 用作参考，位于 <code class="docutils literal notranslate"><span class="pre">IsaacLab/scripts/demos</span></code> 目录中。</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">multi_asset.py 的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).</span>
+<span class="linenos">  2</span><span class="c1"># All rights reserved.</span>
+<span class="linenos">  3</span><span class="c1">#</span>
+<span class="linenos">  4</span><span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span><span class="sd">&quot;&quot;&quot;This script demonstrates how to spawn multiple objects in multiple environments.</span>
+<span class="linenos">  7</span>
+<span class="linenos">  8</span><span class="sd">.. code-block:: bash</span>
+<span class="linenos">  9</span>
+<span class="linenos"> 10</span><span class="sd">    # Usage</span>
+<span class="linenos"> 11</span><span class="sd">    ./isaaclab.sh -p scripts/demos/multi_asset.py --num_envs 2048</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="linenos"> 16</span>
+<span class="linenos"> 17</span><span class="sd">&quot;&quot;&quot;Launch Isaac Sim Simulator first.&quot;&quot;&quot;</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span>
+<span class="linenos"> 20</span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="linenos"> 21</span>
+<span class="linenos"> 22</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.app</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLauncher</span>
+<span class="linenos"> 23</span>
+<span class="linenos"> 24</span><span class="c1"># add argparse arguments</span>
+<span class="linenos"> 25</span><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Demo on spawning different objects in multiple environments.&quot;</span><span class="p">)</span>
+<span class="linenos"> 26</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_envs&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of environments to spawn.&quot;</span><span class="p">)</span>
+<span class="linenos"> 27</span><span class="c1"># append AppLauncher cli args</span>
+<span class="linenos"> 28</span><span class="n">AppLauncher</span><span class="o">.</span><span class="n">add_app_launcher_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+<span class="linenos"> 29</span><span class="c1"># parse the arguments</span>
+<span class="linenos"> 30</span><span class="n">args_cli</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="linenos"> 31</span>
+<span class="linenos"> 32</span><span class="c1"># launch omniverse app</span>
+<span class="linenos"> 33</span><span class="n">app_launcher</span> <span class="o">=</span> <span class="n">AppLauncher</span><span class="p">(</span><span class="n">args_cli</span><span class="p">)</span>
+<span class="linenos"> 34</span><span class="n">simulation_app</span> <span class="o">=</span> <span class="n">app_launcher</span><span class="o">.</span><span class="n">app</span>
+<span class="linenos"> 35</span>
+<span class="linenos"> 36</span><span class="sd">&quot;&quot;&quot;Rest everything follows.&quot;&quot;&quot;</span>
+<span class="linenos"> 37</span>
+<span class="linenos"> 38</span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="linenos"> 39</span>
+<span class="linenos"> 40</span><span class="kn">from</span><span class="w"> </span><span class="nn">pxr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gf</span><span class="p">,</span> <span class="n">Sdf</span>
+<span class="linenos"> 41</span>
+<span class="linenos"> 42</span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="linenos"> 43</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="linenos"> 44</span>    <span class="n">Articulation</span><span class="p">,</span>
+<span class="linenos"> 45</span>    <span class="n">ArticulationCfg</span><span class="p">,</span>
+<span class="linenos"> 46</span>    <span class="n">AssetBaseCfg</span><span class="p">,</span>
+<span class="linenos"> 47</span>    <span class="n">RigidObject</span><span class="p">,</span>
+<span class="linenos"> 48</span>    <span class="n">RigidObjectCfg</span><span class="p">,</span>
+<span class="linenos"> 49</span>    <span class="n">RigidObjectCollection</span><span class="p">,</span>
+<span class="linenos"> 50</span>    <span class="n">RigidObjectCollectionCfg</span><span class="p">,</span>
+<span class="linenos"> 51</span><span class="p">)</span>
+<span class="linenos"> 52</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractiveScene</span><span class="p">,</span> <span class="n">InteractiveSceneCfg</span>
+<span class="linenos"> 53</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimulationContext</span>
+<span class="linenos"> 54</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.sim.utils.stage</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_current_stage</span>
+<span class="linenos"> 55</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">configclass</span>
+<span class="linenos"> 56</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.utils.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ISAACLAB_NUCLEUS_DIR</span>
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span><span class="c1">##</span>
+<span class="linenos"> 59</span><span class="c1"># Pre-defined Configuration</span>
+<span class="linenos"> 60</span><span class="c1">##</span>
+<span class="linenos"> 61</span>
+<span class="linenos"> 62</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_assets.robots.anymal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ANYDRIVE_3_LSTM_ACTUATOR_CFG</span>  <span class="c1"># isort: skip</span>
+<span class="linenos"> 63</span>
+<span class="linenos"> 64</span>
+<span class="linenos"> 65</span><span class="c1">##</span>
+<span class="linenos"> 66</span><span class="c1"># Randomization events.</span>
+<span class="linenos"> 67</span><span class="c1">##</span>
+<span class="linenos"> 68</span>
+<span class="linenos"> 69</span>
+<span class="linenos"> 70</span><span class="k">def</span><span class="w"> </span><span class="nf">randomize_shape_color</span><span class="p">(</span><span class="n">prim_path_expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="linenos"> 71</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Randomize the color of the geometry.&quot;&quot;&quot;</span>
+<span class="linenos"> 72</span>    <span class="c1"># get stage handle</span>
+<span class="linenos"> 73</span>    <span class="n">stage</span> <span class="o">=</span> <span class="n">get_current_stage</span><span class="p">()</span>
+<span class="linenos"> 74</span>    <span class="c1"># resolve prim paths for spawning and cloning</span>
+<span class="linenos"> 75</span>    <span class="n">prim_paths</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">find_matching_prim_paths</span><span class="p">(</span><span class="n">prim_path_expr</span><span class="p">)</span>
+<span class="linenos"> 76</span>    <span class="c1"># manually clone prims if the source prim path is a regex expression</span>
+<span class="linenos"> 77</span>    <span class="k">with</span> <span class="n">Sdf</span><span class="o">.</span><span class="n">ChangeBlock</span><span class="p">():</span>
+<span class="linenos"> 78</span>        <span class="k">for</span> <span class="n">prim_path</span> <span class="ow">in</span> <span class="n">prim_paths</span><span class="p">:</span>
+<span class="linenos"> 79</span>            <span class="c1"># spawn single instance</span>
+<span class="linenos"> 80</span>            <span class="n">prim_spec</span> <span class="o">=</span> <span class="n">Sdf</span><span class="o">.</span><span class="n">CreatePrimInLayer</span><span class="p">(</span><span class="n">stage</span><span class="o">.</span><span class="n">GetRootLayer</span><span class="p">(),</span> <span class="n">prim_path</span><span class="p">)</span>
+<span class="linenos"> 81</span>
+<span class="linenos"> 82</span>            <span class="c1"># DO YOUR OWN OTHER KIND OF RANDOMIZATION HERE!</span>
+<span class="linenos"> 83</span>            <span class="c1"># Note: Just need to acquire the right attribute about the property you want to set</span>
+<span class="linenos"> 84</span>            <span class="c1"># Here is an example on setting color randomly</span>
+<span class="linenos"> 85</span>            <span class="n">color_spec</span> <span class="o">=</span> <span class="n">prim_spec</span><span class="o">.</span><span class="n">GetAttributeAtPath</span><span class="p">(</span><span class="n">prim_path</span> <span class="o">+</span> <span class="s2">&quot;/geometry/material/Shader.inputs:diffuseColor&quot;</span><span class="p">)</span>
+<span class="linenos"> 86</span>            <span class="n">color_spec</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">Gf</span><span class="o">.</span><span class="n">Vec3f</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span><span class="c1">##</span>
+<span class="linenos"> 90</span><span class="c1"># Scene Configuration</span>
+<span class="linenos"> 91</span><span class="c1">##</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>
+<span class="linenos"> 94</span><span class="nd">@configclass</span>
+<span class="linenos"> 95</span><span class="k">class</span><span class="w"> </span><span class="nc">MultiObjectSceneCfg</span><span class="p">(</span><span class="n">InteractiveSceneCfg</span><span class="p">):</span>
+<span class="linenos"> 96</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for a multi-object scene.&quot;&quot;&quot;</span>
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>    <span class="c1"># ground plane</span>
+<span class="linenos"> 99</span>    <span class="n">ground</span> <span class="o">=</span> <span class="n">AssetBaseCfg</span><span class="p">(</span><span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/defaultGroundPlane&quot;</span><span class="p">,</span> <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">GroundPlaneCfg</span><span class="p">())</span>
+<span class="linenos">100</span>
+<span class="linenos">101</span>    <span class="c1"># lights</span>
+<span class="linenos">102</span>    <span class="n">dome_light</span> <span class="o">=</span> <span class="n">AssetBaseCfg</span><span class="p">(</span>
+<span class="linenos">103</span>        <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/Light&quot;</span><span class="p">,</span> <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">DomeLightCfg</span><span class="p">(</span><span class="n">intensity</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">))</span>
+<span class="linenos">104</span>    <span class="p">)</span>
+<span class="linenos">105</span>
+<span class="linenos">106</span>    <span class="c1"># rigid object</span>
+<span class="linenos">107</span>    <span class="nb">object</span><span class="p">:</span> <span class="n">RigidObjectCfg</span> <span class="o">=</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+<span class="linenos">108</span>        <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object&quot;</span><span class="p">,</span>
+<span class="hll"><span class="linenos">109</span>        <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MultiAssetSpawnerCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">110</span>            <span class="n">assets_cfg</span><span class="o">=</span><span class="p">[</span>
+</span><span class="hll"><span class="linenos">111</span>                <span class="n">sim_utils</span><span class="o">.</span><span class="n">ConeCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">112</span>                    <span class="n">radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">113</span>                    <span class="n">height</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">114</span>                    <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">115</span>                <span class="p">),</span>
+</span><span class="hll"><span class="linenos">116</span>                <span class="n">sim_utils</span><span class="o">.</span><span class="n">CuboidCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">117</span>                    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">118</span>                    <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">119</span>                <span class="p">),</span>
+</span><span class="hll"><span class="linenos">120</span>                <span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">121</span>                    <span class="n">radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">122</span>                    <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">123</span>                <span class="p">),</span>
+</span><span class="hll"><span class="linenos">124</span>            <span class="p">],</span>
+</span><span class="hll"><span class="linenos">125</span>            <span class="n">random_choice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">126</span>            <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">127</span>                <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+</span><span class="hll"><span class="linenos">128</span>            <span class="p">),</span>
+</span><span class="hll"><span class="linenos">129</span>            <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">130</span>            <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+</span><span class="hll"><span class="linenos">131</span>        <span class="p">),</span>
+</span><span class="linenos">132</span>        <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+<span class="linenos">133</span>    <span class="p">)</span>
+<span class="linenos">134</span>
+<span class="hll"><span class="linenos">135</span>    <span class="c1"># object collection</span>
+</span><span class="hll"><span class="linenos">136</span>    <span class="n">object_collection</span><span class="p">:</span> <span class="n">RigidObjectCollectionCfg</span> <span class="o">=</span> <span class="n">RigidObjectCollectionCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">137</span>        <span class="n">rigid_objects</span><span class="o">=</span><span class="p">{</span>
+</span><span class="hll"><span class="linenos">138</span>            <span class="s2">&quot;object_A&quot;</span><span class="p">:</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">139</span>                <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object_A&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">140</span>                <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">141</span>                    <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">142</span>                    <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">143</span>                    <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">144</span>                        <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+</span><span class="hll"><span class="linenos">145</span>                    <span class="p">),</span>
+</span><span class="hll"><span class="linenos">146</span>                    <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">147</span>                    <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+</span><span class="hll"><span class="linenos">148</span>                <span class="p">),</span>
+</span><span class="hll"><span class="linenos">149</span>                <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+</span><span class="hll"><span class="linenos">150</span>            <span class="p">),</span>
+</span><span class="hll"><span class="linenos">151</span>            <span class="s2">&quot;object_B&quot;</span><span class="p">:</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">152</span>                <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object_B&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">153</span>                <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CuboidCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">154</span>                    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">155</span>                    <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">156</span>                    <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">157</span>                        <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+</span><span class="hll"><span class="linenos">158</span>                    <span class="p">),</span>
+</span><span class="hll"><span class="linenos">159</span>                    <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">160</span>                    <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+</span><span class="hll"><span class="linenos">161</span>                <span class="p">),</span>
+</span><span class="hll"><span class="linenos">162</span>                <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+</span><span class="hll"><span class="linenos">163</span>            <span class="p">),</span>
+</span><span class="hll"><span class="linenos">164</span>            <span class="s2">&quot;object_C&quot;</span><span class="p">:</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">165</span>                <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object_C&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">166</span>                <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">ConeCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">167</span>                    <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">168</span>                    <span class="n">height</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">169</span>                    <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">170</span>                    <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">171</span>                        <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+</span><span class="hll"><span class="linenos">172</span>                    <span class="p">),</span>
+</span><span class="hll"><span class="linenos">173</span>                    <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+</span><span class="hll"><span class="linenos">174</span>                    <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+</span><span class="hll"><span class="linenos">175</span>                <span class="p">),</span>
+</span><span class="hll"><span class="linenos">176</span>                <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+</span><span class="hll"><span class="linenos">177</span>            <span class="p">),</span>
+</span><span class="hll"><span class="linenos">178</span>        <span class="p">}</span>
+</span><span class="hll"><span class="linenos">179</span>    <span class="p">)</span>
+</span><span class="linenos">180</span>
+<span class="linenos">181</span>    <span class="c1"># articulation</span>
+<span class="linenos">182</span>    <span class="n">robot</span><span class="p">:</span> <span class="n">ArticulationCfg</span> <span class="o">=</span> <span class="n">ArticulationCfg</span><span class="p">(</span>
+<span class="linenos">183</span>        <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Robot&quot;</span><span class="p">,</span>
+<span class="hll"><span class="linenos">184</span>        <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MultiUsdFileCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">185</span>            <span class="n">usd_path</span><span class="o">=</span><span class="p">[</span>
+</span><span class="hll"><span class="linenos">186</span>                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ISAACLAB_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/Robots/ANYbotics/ANYmal-C/anymal_c.usd&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">187</span>                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ISAACLAB_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/Robots/ANYbotics/ANYmal-D/anymal_d.usd&quot;</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">188</span>            <span class="p">],</span>
+</span><span class="hll"><span class="linenos">189</span>            <span class="n">random_choice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">190</span>            <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">191</span>                <span class="n">disable_gravity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">192</span>                <span class="n">retain_accelerations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">193</span>                <span class="n">linear_damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">194</span>                <span class="n">angular_damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">195</span>                <span class="n">max_linear_velocity</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">196</span>                <span class="n">max_angular_velocity</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">197</span>                <span class="n">max_depenetration_velocity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">198</span>            <span class="p">),</span>
+</span><span class="hll"><span class="linenos">199</span>            <span class="n">articulation_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">ArticulationRootPropertiesCfg</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">200</span>                <span class="n">enabled_self_collisions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+</span><span class="hll"><span class="linenos">201</span>            <span class="p">),</span>
+</span><span class="hll"><span class="linenos">202</span>            <span class="n">activate_contact_sensors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span class="hll"><span class="linenos">203</span>        <span class="p">),</span>
+</span><span class="linenos">204</span>        <span class="n">init_state</span><span class="o">=</span><span class="n">ArticulationCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span>
+<span class="linenos">205</span>            <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span>
+<span class="linenos">206</span>            <span class="n">joint_pos</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">207</span>                <span class="s2">&quot;.*HAA&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># all HAA</span>
+<span class="linenos">208</span>                <span class="s2">&quot;.*F_HFE&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="c1"># both front HFE</span>
+<span class="linenos">209</span>                <span class="s2">&quot;.*H_HFE&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span>  <span class="c1"># both hind HFE</span>
+<span class="linenos">210</span>                <span class="s2">&quot;.*F_KFE&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># both front KFE</span>
+<span class="linenos">211</span>                <span class="s2">&quot;.*H_KFE&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># both hind KFE</span>
+<span class="linenos">212</span>            <span class="p">},</span>
+<span class="linenos">213</span>        <span class="p">),</span>
+<span class="linenos">214</span>        <span class="n">actuators</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;legs&quot;</span><span class="p">:</span> <span class="n">ANYDRIVE_3_LSTM_ACTUATOR_CFG</span><span class="p">},</span>
+<span class="linenos">215</span>    <span class="p">)</span>
+<span class="linenos">216</span>
+<span class="linenos">217</span>
+<span class="linenos">218</span><span class="c1">##</span>
+<span class="linenos">219</span><span class="c1"># Simulation Loop</span>
+<span class="linenos">220</span><span class="c1">##</span>
+<span class="linenos">221</span>
+<span class="linenos">222</span>
+<span class="linenos">223</span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulator</span><span class="p">(</span><span class="n">sim</span><span class="p">:</span> <span class="n">SimulationContext</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span> <span class="n">InteractiveScene</span><span class="p">):</span>
+<span class="linenos">224</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs the simulation loop.&quot;&quot;&quot;</span>
+<span class="linenos">225</span>    <span class="c1"># Extract scene entities</span>
+<span class="linenos">226</span>    <span class="c1"># note: we only do this here for readability.</span>
+<span class="linenos">227</span>    <span class="n">rigid_object</span><span class="p">:</span> <span class="n">RigidObject</span> <span class="o">=</span> <span class="n">scene</span><span class="p">[</span><span class="s2">&quot;object&quot;</span><span class="p">]</span>
+<span class="linenos">228</span>    <span class="n">rigid_object_collection</span><span class="p">:</span> <span class="n">RigidObjectCollection</span> <span class="o">=</span> <span class="n">scene</span><span class="p">[</span><span class="s2">&quot;object_collection&quot;</span><span class="p">]</span>
+<span class="linenos">229</span>    <span class="n">robot</span><span class="p">:</span> <span class="n">Articulation</span> <span class="o">=</span> <span class="n">scene</span><span class="p">[</span><span class="s2">&quot;robot&quot;</span><span class="p">]</span>
+<span class="linenos">230</span>    <span class="c1"># Define simulation stepping</span>
+<span class="linenos">231</span>    <span class="n">sim_dt</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span>
+<span class="linenos">232</span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">233</span>    <span class="c1"># Simulation loop</span>
+<span class="linenos">234</span>    <span class="k">while</span> <span class="n">simulation_app</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span>
+<span class="linenos">235</span>        <span class="c1"># Reset</span>
+<span class="linenos">236</span>        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">250</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">237</span>            <span class="c1"># reset counter</span>
+<span class="linenos">238</span>            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">239</span>            <span class="c1"># reset the scene entities</span>
+<span class="linenos">240</span>            <span class="c1"># object</span>
+<span class="linenos">241</span>            <span class="n">root_state</span> <span class="o">=</span> <span class="n">rigid_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_root_state</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos">242</span>            <span class="n">root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">scene</span><span class="o">.</span><span class="n">env_origins</span>
+<span class="linenos">243</span>            <span class="n">rigid_object</span><span class="o">.</span><span class="n">write_root_pose_to_sim</span><span class="p">(</span><span class="n">root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="linenos">244</span>            <span class="n">rigid_object</span><span class="o">.</span><span class="n">write_root_velocity_to_sim</span><span class="p">(</span><span class="n">root_state</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">:])</span>
+<span class="linenos">245</span>            <span class="c1"># object collection</span>
+<span class="linenos">246</span>            <span class="n">object_state</span> <span class="o">=</span> <span class="n">rigid_object_collection</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_object_state</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos">247</span>            <span class="n">object_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">scene</span><span class="o">.</span><span class="n">env_origins</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">248</span>            <span class="n">rigid_object_collection</span><span class="o">.</span><span class="n">write_object_link_pose_to_sim</span><span class="p">(</span><span class="n">object_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="linenos">249</span>            <span class="n">rigid_object_collection</span><span class="o">.</span><span class="n">write_object_com_velocity_to_sim</span><span class="p">(</span><span class="n">object_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">7</span><span class="p">:])</span>
+<span class="linenos">250</span>            <span class="c1"># robot</span>
+<span class="linenos">251</span>            <span class="c1"># -- root state</span>
+<span class="linenos">252</span>            <span class="n">root_state</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_root_state</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos">253</span>            <span class="n">root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">scene</span><span class="o">.</span><span class="n">env_origins</span>
+<span class="linenos">254</span>            <span class="n">robot</span><span class="o">.</span><span class="n">write_root_pose_to_sim</span><span class="p">(</span><span class="n">root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="linenos">255</span>            <span class="n">robot</span><span class="o">.</span><span class="n">write_root_velocity_to_sim</span><span class="p">(</span><span class="n">root_state</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">:])</span>
+<span class="linenos">256</span>            <span class="c1"># -- joint state</span>
+<span class="linenos">257</span>            <span class="n">joint_pos</span><span class="p">,</span> <span class="n">joint_vel</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_pos</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_vel</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos">258</span>            <span class="n">robot</span><span class="o">.</span><span class="n">write_joint_state_to_sim</span><span class="p">(</span><span class="n">joint_pos</span><span class="p">,</span> <span class="n">joint_vel</span><span class="p">)</span>
+<span class="linenos">259</span>            <span class="c1"># clear internal buffers</span>
+<span class="linenos">260</span>            <span class="n">scene</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos">261</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Resetting scene state...&quot;</span><span class="p">)</span>
+<span class="linenos">262</span>
+<span class="linenos">263</span>        <span class="c1"># Apply action to robot</span>
+<span class="linenos">264</span>        <span class="n">robot</span><span class="o">.</span><span class="n">set_joint_position_target</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_pos</span><span class="p">)</span>
+<span class="linenos">265</span>        <span class="c1"># Write data to sim</span>
+<span class="linenos">266</span>        <span class="n">scene</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+<span class="linenos">267</span>        <span class="c1"># Perform step</span>
+<span class="linenos">268</span>        <span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="linenos">269</span>        <span class="c1"># Increment counter</span>
+<span class="linenos">270</span>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">271</span>        <span class="c1"># Update buffers</span>
+<span class="linenos">272</span>        <span class="n">scene</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sim_dt</span><span class="p">)</span>
+<span class="linenos">273</span>
+<span class="linenos">274</span>
+<span class="linenos">275</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">276</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span>
+<span class="linenos">277</span>    <span class="c1"># Load kit helper</span>
+<span class="linenos">278</span>    <span class="n">sim_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationCfg</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">args_cli</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">279</span>    <span class="n">sim</span> <span class="o">=</span> <span class="n">SimulationContext</span><span class="p">(</span><span class="n">sim_cfg</span><span class="p">)</span>
+<span class="linenos">280</span>    <span class="c1"># Set main camera</span>
+<span class="linenos">281</span>    <span class="n">sim</span><span class="o">.</span><span class="n">set_camera_view</span><span class="p">([</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="linenos">282</span>
+<span class="linenos">283</span>    <span class="c1"># Design scene</span>
+<span class="linenos">284</span>    <span class="n">scene_cfg</span> <span class="o">=</span> <span class="n">MultiObjectSceneCfg</span><span class="p">(</span><span class="n">num_envs</span><span class="o">=</span><span class="n">args_cli</span><span class="o">.</span><span class="n">num_envs</span><span class="p">,</span> <span class="n">env_spacing</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">replicate_physics</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">285</span>    <span class="k">with</span> <span class="n">Timer</span><span class="p">(</span><span class="s2">&quot;[INFO] Time to create scene: &quot;</span><span class="p">):</span>
+<span class="linenos">286</span>        <span class="n">scene</span> <span class="o">=</span> <span class="n">InteractiveScene</span><span class="p">(</span><span class="n">scene_cfg</span><span class="p">)</span>
+<span class="linenos">287</span>
+<span class="linenos">288</span>    <span class="k">with</span> <span class="n">Timer</span><span class="p">(</span><span class="s2">&quot;[INFO] Time to randomize scene: &quot;</span><span class="p">):</span>
+<span class="linenos">289</span>        <span class="c1"># DO YOUR OWN OTHER KIND OF RANDOMIZATION HERE!</span>
+<span class="linenos">290</span>        <span class="c1"># Note: Just need to acquire the right attribute about the property you want to set</span>
+<span class="linenos">291</span>        <span class="c1"># Here is an example on setting color randomly</span>
+<span class="linenos">292</span>        <span class="n">randomize_shape_color</span><span class="p">(</span><span class="n">scene_cfg</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">prim_path</span><span class="p">)</span>
+<span class="linenos">293</span>
+<span class="linenos">294</span>    <span class="c1"># Play the simulator</span>
+<span class="linenos">295</span>    <span class="n">sim</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos">296</span>    <span class="c1"># Now we are ready!</span>
+<span class="linenos">297</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Setup complete...&quot;</span><span class="p">)</span>
+<span class="linenos">298</span>    <span class="c1"># Run the simulator</span>
+<span class="linenos">299</span>    <span class="n">run_simulator</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">scene</span><span class="p">)</span>
+<span class="linenos">300</span>
+<span class="linenos">301</span>
+<span class="linenos">302</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">303</span>    <span class="c1"># run the main execution</span>
+<span class="linenos">304</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">305</span>    <span class="c1"># close sim app</span>
+<span class="linenos">306</span>    <span class="n">simulation_app</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details><p>此脚本创建了多个环境，每个环境都包括:</p>
+<ul class="simple">
+<li><p>一个包含圆锥体、立方体和球体的刚性物体集合</p></li>
+<li><p>一个随机选择为圆锥体、立方体或球体的刚性物体</p></li>
+<li><p>一个随机选择为 ANYmal-C 或 ANYmal-D 机器人的关节</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/multi_asset.jpg"><img alt="multi_asset.py 的结果" src="../../_images/multi_asset.jpg" style="width: 100%;" />
+</a>
+<section id="rigid-object-collections">
+<h2>刚性物体集合<a class="headerlink" href="#rigid-object-collections" title="Link to this heading">#</a></h2>
+<p>可以在每个环境中生成多个刚性物体，并使用统一的 <code class="docutils literal notranslate"><span class="pre">(env_ids,</span> <span class="pre">obj_ids)</span></code> API 进行访问/修改。虽然用户也可以通过分别生成它们来创建多个刚性物体，但该API更加用户友好且高效，因为它在底层使用单个物理视图来处理所有物体。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># object collection</span>
+<span class="n">object_collection</span><span class="p">:</span> <span class="n">RigidObjectCollectionCfg</span> <span class="o">=</span> <span class="n">RigidObjectCollectionCfg</span><span class="p">(</span>
+    <span class="n">rigid_objects</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;object_A&quot;</span><span class="p">:</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+            <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object_A&quot;</span><span class="p">,</span>
+            <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
+                <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+                    <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">),</span>
+                <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+                <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+            <span class="p">),</span>
+            <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;object_B&quot;</span><span class="p">:</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+            <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object_B&quot;</span><span class="p">,</span>
+            <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CuboidCfg</span><span class="p">(</span>
+                <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+                <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+                    <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">),</span>
+                <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+                <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+            <span class="p">),</span>
+            <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;object_C&quot;</span><span class="p">:</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+            <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object_C&quot;</span><span class="p">,</span>
+            <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">ConeCfg</span><span class="p">(</span>
+                <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">height</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+                    <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">),</span>
+                <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+                <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+            <span class="p">),</span>
+            <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>配置 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.RigidObjectCollectionCfg" title="isaaclab.assets.RigidObjectCollectionCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectCollectionCfg</span></code></a> 用于创建集合。它的属性 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.RigidObjectCollectionCfg.rigid_objects" title="isaaclab.assets.RigidObjectCollectionCfg.rigid_objects"><code class="xref py py-attr docutils literal notranslate"><span class="pre">rigid_objects</span></code></a> 是包含 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.RigidObjectCfg" title="isaaclab.assets.RigidObjectCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectCfg</span></code></a> 对象的字典。键作为集合中每个刚性物体的唯一标识符。</p>
+</section>
+<section id="spawning-different-assets-under-the-same-prim-path">
+<h2>在同一 prim 路径下生成不同的资产<a class="headerlink" href="#spawning-different-assets-under-the-same-prim-path" title="Link to this heading">#</a></h2>
+<p>在每个环境中，可以使用生成器 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.wrappers.MultiAssetSpawnerCfg" title="isaaclab.sim.spawners.wrappers.MultiAssetSpawnerCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiAssetSpawnerCfg</span></code></a> 和 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.wrappers.MultiUsdFileCfg" title="isaaclab.sim.spawners.wrappers.MultiUsdFileCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiUsdFileCfg</span></code></a> 在相同的prim路径下生成不同的资产和USD:</p>
+<ul>
+<li><p>我们将 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.RigidObjectCfg" title="isaaclab.assets.RigidObjectCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">RigidObjectCfg</span></code></a> 中的生成配置设置为 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.wrappers.MultiAssetSpawnerCfg" title="isaaclab.sim.spawners.wrappers.MultiAssetSpawnerCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiAssetSpawnerCfg</span></code></a> :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">object</span><span class="p">:</span> <span class="n">RigidObjectCfg</span> <span class="o">=</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Object&quot;</span><span class="p">,</span>
+    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MultiAssetSpawnerCfg</span><span class="p">(</span>
+        <span class="n">assets_cfg</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">sim_utils</span><span class="o">.</span><span class="n">ConeCfg</span><span class="p">(</span>
+                <span class="n">radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                <span class="n">height</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+                <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">sim_utils</span><span class="o">.</span><span class="n">CuboidCfg</span><span class="p">(</span>
+                <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+                <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
+                <span class="n">radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">metallic</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">random_choice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+            <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+        <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+    <span class="p">),</span>
+    <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>此函数允许您定义可以作为刚性对象生成的不同资产的列表。当 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.wrappers.MultiAssetSpawnerCfg.random_choice" title="isaaclab.sim.spawners.wrappers.MultiAssetSpawnerCfg.random_choice"><code class="xref py py-attr docutils literal notranslate"><span class="pre">random_choice</span></code></a> 设置为 True 时，将从列表中随机选择一个资产，并在指定的基本体路径上生成它。</p>
+</li>
+<li><p>类似地，我们将 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.ArticulationCfg" title="isaaclab.assets.ArticulationCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArticulationCfg</span></code></a> 中的生成配置设置为 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.wrappers.MultiUsdFileCfg" title="isaaclab.sim.spawners.wrappers.MultiUsdFileCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiUsdFileCfg</span></code></a> :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">robot</span><span class="p">:</span> <span class="n">ArticulationCfg</span> <span class="o">=</span> <span class="n">ArticulationCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">&quot;/World/envs/env_.*/Robot&quot;</span><span class="p">,</span>
+    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MultiUsdFileCfg</span><span class="p">(</span>
+        <span class="n">usd_path</span><span class="o">=</span><span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ISAACLAB_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/Robots/ANYbotics/ANYmal-C/anymal_c.usd&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ISAACLAB_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/Robots/ANYbotics/ANYmal-D/anymal_d.usd&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">random_choice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">rigid_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">RigidBodyPropertiesCfg</span><span class="p">(</span>
+            <span class="n">disable_gravity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">retain_accelerations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">linear_damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">angular_damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">max_linear_velocity</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+            <span class="n">max_angular_velocity</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+            <span class="n">max_depenetration_velocity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">articulation_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">ArticulationRootPropertiesCfg</span><span class="p">(</span>
+            <span class="n">enabled_self_collisions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">solver_position_iteration_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">solver_velocity_iteration_count</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">activate_contact_sensors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">init_state</span><span class="o">=</span><span class="n">ArticulationCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span>
+        <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span>
+        <span class="n">joint_pos</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;.*HAA&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># all HAA</span>
+            <span class="s2">&quot;.*F_HFE&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="c1"># both front HFE</span>
+            <span class="s2">&quot;.*H_HFE&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span>  <span class="c1"># both hind HFE</span>
+            <span class="s2">&quot;.*F_KFE&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># both front KFE</span>
+            <span class="s2">&quot;.*H_KFE&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># both hind KFE</span>
+        <span class="p">},</span>
+    <span class="p">),</span>
+    <span class="n">actuators</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;legs&quot;</span><span class="p">:</span> <span class="n">ANYDRIVE_3_LSTM_ACTUATOR_CFG</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>与之前类似，此配置允许选择代表关节资产的不同 USD 文件。</p>
+</li>
+</ul>
+<section id="things-to-note">
+<h3>需要注意的事项<a class="headerlink" href="#things-to-note" title="Link to this heading">#</a></h3>
+</section>
+<section id="similar-asset-structuring">
+<h3>相似的资产结构<a class="headerlink" href="#similar-asset-structuring" title="Link to this heading">#</a></h3>
+<p>在使用相同的物理接口（刚性对象或关节类）生成和处理多个资产时，必须确保所有基本体路径上的资产遵循相似的结构。对于关节来说，这意味着它们都必须具有相同数量的链接和关节、相同数量的碰撞体，以及相同的名称。如果不是这种情况，基本体的物理解析可能会受到影响并且失败。</p>
+<p>此功能的主要目的是使用户能够创建相同资产的随机版本，例如具有不同链接长度的机器人，或具有不同碰撞器形状的刚性对象。</p>
+</section>
+<section id="disabling-physics-replication-in-interactive-scene">
+<h3>在交互式场景中禁用物理复制<a class="headerlink" href="#disabling-physics-replication-in-interactive-scene" title="Link to this heading">#</a></h3>
+<p>默认情况下，标志 <code class="xref py py-attr docutils literal notranslate"><span class="pre">scene.InteractiveScene.replicate_physics</span></code> 被设置为 True。此标志告知物理引擎仿真环境是彼此的副本，因此只需解析第一个环境即可了解整个仿真场景。这有助于加快仿真场景的解析速度。</p>
+<p>但是，在不同环境中生成不同的资产的情况下，这一假设不再成立。因此，必须禁用标志 <code class="xref py py-attr docutils literal notranslate"><span class="pre">scene.InteractiveScene.replicate_physics</span></code> 。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set main camera</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">set_camera_view</span><span class="p">([</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+
+<span class="c1"># Design scene</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="the-code-execution">
+<h2>代码执行<a class="headerlink" href="#the-code-execution" title="Link to this heading">#</a></h2>
+<p>要执行带有多个环境和随机资产的脚本，请使用以下命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/demos/multi_asset.py<span class="w"> </span>--num_envs<span class="w"> </span><span class="m">2048</span>
+</pre></div>
+</div>
+<p>此命令运行具有 2048 个环境的仿真场景，每个环境都具有随机选择的资产。要停止仿真，可以关闭窗口或在终端中按下 <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> 。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="make_fixed_prim.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">使仿真中的物理基本体固定</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="save_camera_output.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">保存渲染图像和3D重投影</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rigid-object-collections">刚性物体集合</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spawning-different-assets-under-the-same-prim-path">在同一 prim 路径下生成不同的资产</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#things-to-note">需要注意的事项</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#similar-asset-structuring">相似的资产结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-physics-replication-in-interactive-scene">在交互式场景中禁用物理复制</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

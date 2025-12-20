@@ -1,0 +1,1103 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>与表面夹爪互动 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=5774970f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/tutorials/01_assets/run_surface_gripper';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="使用交互式场景" href="../02_scene/create_scene.html" />
+    <link rel="prev" title="与可变形对象交互" href="run_deformable_object.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2025 年 12 月 20 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/oneclick_installation.html">【非官方】一键安装脚本(pip)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">教程</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-to/index.html">操作指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/isaaclab_3-0.html">IsaacLab 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/tutorials/01_assets/run_surface_gripper.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/tutorials/01_assets/run_surface_gripper.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/tutorials/01_assets/run_surface_gripper.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>与表面夹爪互动</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code">代码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-explained">代码解释</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-the-scene">设计场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-simulation-loop">运行仿真循环</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#resetting-the-simulation">重置仿真</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stepping-the-simulation">步进仿真</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-the-state">更新状态</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="interacting-with-a-surface-gripper">
+<span id="tutorial-interact-surface-gripper"></span><h1>与表面夹爪互动<a class="headerlink" href="#interacting-with-a-surface-gripper" title="Link to this heading">#</a></h1>
+<p>本教程展示了如何在仿真中与连接到其末端执行器的关节机器人进行交互。这是 <a class="reference internal" href="run_articulation.html#tutorial-interact-articulation"><span class="std std-ref">与关节交互</span></a> 教程的延续，我们在那里学习了如何与关节机器人进行交互。请注意，截至 IsaacSim 5.0，仅支持在cpu后端上的表面夹爪。</p>
+<section id="the-code">
+<h2>代码<a class="headerlink" href="#the-code" title="Link to this heading">#</a></h2>
+<p>该教程对应于 <code class="docutils literal notranslate"><span class="pre">scripts/tutorials/01_assets</span></code> 目录中的 <code class="docutils literal notranslate"><span class="pre">run_surface_gripper.py</span></code> 脚本。</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></svg></span><span class="sd-summary-text">run_surface_gripper.py 的代码</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).</span>
+<span class="linenos">  2</span><span class="c1"># All rights reserved.</span>
+<span class="linenos">  3</span><span class="c1">#</span>
+<span class="linenos">  4</span><span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span><span class="sd">&quot;&quot;&quot;This script demonstrates how to spawn a pick-and-place robot equipped with a surface gripper and interact with it.</span>
+<span class="linenos">  7</span>
+<span class="linenos">  8</span><span class="sd">.. code-block:: bash</span>
+<span class="linenos">  9</span>
+<span class="linenos"> 10</span><span class="sd">    # Usage</span>
+<span class="linenos"> 11</span><span class="sd">    ./isaaclab.sh -p scripts/tutorials/01_assets/run_surface_gripper.py --device=cpu</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="sd">When running this script make sure the --device flag is set to cpu. This is because the surface gripper is</span>
+<span class="linenos"> 14</span><span class="sd">currently only supported on the CPU.</span>
+<span class="linenos"> 15</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 16</span>
+<span class="linenos"> 17</span><span class="sd">&quot;&quot;&quot;Launch Isaac Sim Simulator first.&quot;&quot;&quot;</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="linenos"> 20</span>
+<span class="linenos"> 21</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.app</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLauncher</span>
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span><span class="c1"># add argparse arguments</span>
+<span class="linenos"> 24</span><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tutorial on spawning and interacting with a Surface Gripper.&quot;</span><span class="p">)</span>
+<span class="linenos"> 25</span><span class="c1"># append AppLauncher cli args</span>
+<span class="linenos"> 26</span><span class="n">AppLauncher</span><span class="o">.</span><span class="n">add_app_launcher_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+<span class="linenos"> 27</span><span class="c1"># parse the arguments</span>
+<span class="linenos"> 28</span><span class="n">args_cli</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="linenos"> 29</span>
+<span class="linenos"> 30</span><span class="c1"># launch omniverse app</span>
+<span class="linenos"> 31</span><span class="n">app_launcher</span> <span class="o">=</span> <span class="n">AppLauncher</span><span class="p">(</span><span class="n">args_cli</span><span class="p">)</span>
+<span class="linenos"> 32</span><span class="n">simulation_app</span> <span class="o">=</span> <span class="n">app_launcher</span><span class="o">.</span><span class="n">app</span>
+<span class="linenos"> 33</span>
+<span class="linenos"> 34</span><span class="sd">&quot;&quot;&quot;Rest everything follows.&quot;&quot;&quot;</span>
+<span class="linenos"> 35</span>
+<span class="linenos"> 36</span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="linenos"> 37</span>
+<span class="linenos"> 38</span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="linenos"> 39</span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim.utils.prims</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prim_utils</span>
+<span class="linenos"> 40</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Articulation</span><span class="p">,</span> <span class="n">SurfaceGripper</span><span class="p">,</span> <span class="n">SurfaceGripperCfg</span>
+<span class="linenos"> 41</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimulationContext</span>
+<span class="linenos"> 42</span>
+<span class="linenos"> 43</span><span class="c1">##</span>
+<span class="linenos"> 44</span><span class="c1"># Pre-defined configs</span>
+<span class="linenos"> 45</span><span class="c1">##</span>
+<span class="linenos"> 46</span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PICK_AND_PLACE_CFG</span>  <span class="c1"># isort:skip</span>
+<span class="linenos"> 47</span>
+<span class="linenos"> 48</span>
+<span class="linenos"> 49</span><span class="k">def</span><span class="w"> </span><span class="nf">design_scene</span><span class="p">():</span>
+<span class="linenos"> 50</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Designs the scene.&quot;&quot;&quot;</span>
+<span class="linenos"> 51</span>    <span class="c1"># Ground-plane</span>
+<span class="linenos"> 52</span>    <span class="n">cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">GroundPlaneCfg</span><span class="p">()</span>
+<span class="linenos"> 53</span>    <span class="n">cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/defaultGroundPlane&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="linenos"> 54</span>    <span class="c1"># Lights</span>
+<span class="linenos"> 55</span>    <span class="n">cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">DomeLightCfg</span><span class="p">(</span><span class="n">intensity</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">))</span>
+<span class="linenos"> 56</span>    <span class="n">cfg</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="s2">&quot;/World/Light&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span>    <span class="c1"># Create separate groups called &quot;Origin1&quot;, &quot;Origin2&quot;</span>
+<span class="linenos"> 59</span>    <span class="c1"># Each group will have a robot in it</span>
+<span class="linenos"> 60</span>    <span class="n">origins</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
+<span class="hll"><span class="linenos"> 61</span>    <span class="c1"># Origin 1</span>
+</span><span class="hll"><span class="linenos"> 62</span>    <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="s2">&quot;/World/Origin1&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">origins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span class="hll"><span class="linenos"> 63</span>    <span class="c1"># Origin 2</span>
+</span><span class="hll"><span class="linenos"> 64</span>    <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="s2">&quot;/World/Origin2&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">origins</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span class="hll"><span class="linenos"> 65</span>
+</span><span class="hll"><span class="linenos"> 66</span>    <span class="c1"># Articulation: First we define the robot config</span>
+</span><span class="hll"><span class="linenos"> 67</span>    <span class="n">pick_and_place_robot_cfg</span> <span class="o">=</span> <span class="n">PICK_AND_PLACE_CFG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos"> 68</span>    <span class="n">pick_and_place_robot_cfg</span><span class="o">.</span><span class="n">prim_path</span> <span class="o">=</span> <span class="s2">&quot;/World/Origin.*/Robot&quot;</span>
+</span><span class="hll"><span class="linenos"> 69</span>    <span class="n">pick_and_place_robot</span> <span class="o">=</span> <span class="n">Articulation</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="n">pick_and_place_robot_cfg</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 70</span>
+</span><span class="hll"><span class="linenos"> 71</span>    <span class="c1"># Surface Gripper: Next we define the surface gripper config</span>
+</span><span class="hll"><span class="linenos"> 72</span>    <span class="n">surface_gripper_cfg</span> <span class="o">=</span> <span class="n">SurfaceGripperCfg</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos"> 73</span>    <span class="c1"># We need to tell the View which prim to use for the surface gripper</span>
+</span><span class="hll"><span class="linenos"> 74</span>    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">prim_path</span> <span class="o">=</span> <span class="s2">&quot;/World/Origin.*/Robot/picker_head/SurfaceGripper&quot;</span>
+</span><span class="hll"><span class="linenos"> 75</span>    <span class="c1"># We can then set different parameters for the surface gripper, note that if these parameters are not set,</span>
+</span><span class="hll"><span class="linenos"> 76</span>    <span class="c1"># the View will try to read them from the prim.</span>
+</span><span class="hll"><span class="linenos"> 77</span>    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">max_grip_distance</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># [m] (Maximum distance at which the gripper can grasp an object)</span>
+</span><span class="hll"><span class="linenos"> 78</span>    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">shear_force_limit</span> <span class="o">=</span> <span class="mf">500.0</span>  <span class="c1"># [N] (Force limit in the direction perpendicular direction)</span>
+</span><span class="hll"><span class="linenos"> 79</span>    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">coaxial_force_limit</span> <span class="o">=</span> <span class="mf">500.0</span>  <span class="c1"># [N] (Force limit in the direction of the gripper&#39;s axis)</span>
+</span><span class="hll"><span class="linenos"> 80</span>    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">retry_interval</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># seconds (Time the gripper will stay in a grasping state)</span>
+</span><span class="hll"><span class="linenos"> 81</span>    <span class="c1"># We can now spawn the surface gripper</span>
+</span><span class="hll"><span class="linenos"> 82</span>    <span class="n">surface_gripper</span> <span class="o">=</span> <span class="n">SurfaceGripper</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="n">surface_gripper_cfg</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 83</span>
+</span><span class="hll"><span class="linenos"> 84</span>    <span class="c1"># return the scene information</span>
+</span><span class="hll"><span class="linenos"> 85</span>    <span class="n">scene_entities</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pick_and_place_robot&quot;</span><span class="p">:</span> <span class="n">pick_and_place_robot</span><span class="p">,</span> <span class="s2">&quot;surface_gripper&quot;</span><span class="p">:</span> <span class="n">surface_gripper</span><span class="p">}</span>
+</span><span class="linenos"> 86</span>    <span class="k">return</span> <span class="n">scene_entities</span><span class="p">,</span> <span class="n">origins</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulator</span><span class="p">(</span>
+<span class="linenos"> 90</span>    <span class="n">sim</span><span class="p">:</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationContext</span><span class="p">,</span> <span class="n">entities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Articulation</span> <span class="o">|</span> <span class="n">SurfaceGripper</span><span class="p">],</span> <span class="n">origins</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="linenos"> 91</span><span class="p">):</span>
+<span class="linenos"> 92</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs the simulation loop.&quot;&quot;&quot;</span>
+<span class="linenos"> 93</span>    <span class="c1"># Extract scene entities</span>
+<span class="linenos"> 94</span>    <span class="n">robot</span><span class="p">:</span> <span class="n">Articulation</span> <span class="o">=</span> <span class="n">entities</span><span class="p">[</span><span class="s2">&quot;pick_and_place_robot&quot;</span><span class="p">]</span>
+<span class="linenos"> 95</span>    <span class="n">surface_gripper</span><span class="p">:</span> <span class="n">SurfaceGripper</span> <span class="o">=</span> <span class="n">entities</span><span class="p">[</span><span class="s2">&quot;surface_gripper&quot;</span><span class="p">]</span>
+<span class="linenos"> 96</span>
+<span class="linenos"> 97</span>    <span class="c1"># Define simulation stepping</span>
+<span class="linenos"> 98</span>    <span class="n">sim_dt</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span>
+<span class="linenos"> 99</span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">100</span>    <span class="c1"># Simulation loop</span>
+<span class="linenos">101</span>    <span class="k">while</span> <span class="n">simulation_app</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span>
+<span class="linenos">102</span>        <span class="c1"># Reset</span>
+<span class="linenos">103</span>        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">104</span>            <span class="c1"># reset counter</span>
+<span class="linenos">105</span>            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">106</span>            <span class="c1"># reset the scene entities</span>
+<span class="linenos">107</span>            <span class="c1"># root state</span>
+<span class="linenos">108</span>            <span class="c1"># we offset the root state by the origin since the states are written in simulation world frame</span>
+<span class="linenos">109</span>            <span class="c1"># if this is not done, then the robots will be spawned at the (0, 0, 0) of the simulation world</span>
+<span class="linenos">110</span>            <span class="n">root_state</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_root_state</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos">111</span>            <span class="n">root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="n">origins</span>
+<span class="linenos">112</span>            <span class="n">robot</span><span class="o">.</span><span class="n">write_root_pose_to_sim</span><span class="p">(</span><span class="n">root_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="linenos">113</span>            <span class="n">robot</span><span class="o">.</span><span class="n">write_root_velocity_to_sim</span><span class="p">(</span><span class="n">root_state</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">:])</span>
+<span class="linenos">114</span>            <span class="c1"># set joint positions with some noise</span>
+<span class="linenos">115</span>            <span class="n">joint_pos</span><span class="p">,</span> <span class="n">joint_vel</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_pos</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_joint_vel</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="linenos">116</span>            <span class="n">joint_pos</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand_like</span><span class="p">(</span><span class="n">joint_pos</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+<span class="linenos">117</span>            <span class="n">robot</span><span class="o">.</span><span class="n">write_joint_state_to_sim</span><span class="p">(</span><span class="n">joint_pos</span><span class="p">,</span> <span class="n">joint_vel</span><span class="p">)</span>
+<span class="linenos">118</span>            <span class="c1"># clear internal buffers</span>
+<span class="linenos">119</span>            <span class="n">robot</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos">120</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Resetting robot state...&quot;</span><span class="p">)</span>
+<span class="linenos">121</span>            <span class="c1"># Opens the gripper and makes sure the gripper is in the open state</span>
+<span class="linenos">122</span>            <span class="n">surface_gripper</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos">123</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Resetting gripper state...&quot;</span><span class="p">)</span>
+<span class="hll"><span class="linenos">124</span>
+</span><span class="hll"><span class="linenos">125</span>        <span class="c1"># Sample a random command between -1 and 1.</span>
+</span><span class="linenos">126</span>        <span class="n">gripper_commands</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">surface_gripper</span><span class="o">.</span><span class="n">num_instances</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="mf">1.0</span>
+<span class="linenos">127</span>        <span class="c1"># The gripper behavior is as follows:</span>
+<span class="hll"><span class="linenos">128</span>        <span class="c1"># -1 &lt; command &lt; -0.3 --&gt; Gripper is Opening</span>
+</span><span class="hll"><span class="linenos">129</span>        <span class="c1"># -0.3 &lt; command &lt; 0.3 --&gt; Gripper is Idle</span>
+</span><span class="hll"><span class="linenos">130</span>        <span class="c1"># 0.3 &lt; command &lt; 1 --&gt; Gripper is Closing</span>
+</span><span class="hll"><span class="linenos">131</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO]: Gripper commands: </span><span class="si">{</span><span class="n">gripper_commands</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">132</span>        <span class="n">mapped_commands</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class="hll"><span class="linenos">133</span>            <span class="s2">&quot;Opening&quot;</span> <span class="k">if</span> <span class="n">command</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.3</span> <span class="k">else</span> <span class="s2">&quot;Closing&quot;</span> <span class="k">if</span> <span class="n">command</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="k">else</span> <span class="s2">&quot;Idle&quot;</span> <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">gripper_commands</span>
+</span><span class="hll"><span class="linenos">134</span>        <span class="p">]</span>
+</span><span class="hll"><span class="linenos">135</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO]: Mapped commands: </span><span class="si">{</span><span class="n">mapped_commands</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">136</span>        <span class="c1"># Set the gripper command</span>
+</span><span class="hll"><span class="linenos">137</span>        <span class="n">surface_gripper</span><span class="o">.</span><span class="n">set_grippers_command</span><span class="p">(</span><span class="n">gripper_commands</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">138</span>        <span class="c1"># Write data to sim</span>
+</span><span class="hll"><span class="linenos">139</span>        <span class="n">surface_gripper</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos">140</span>        <span class="c1"># Perform step</span>
+</span><span class="hll"><span class="linenos">141</span>        <span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</span><span class="hll"><span class="linenos">142</span>        <span class="c1"># Increment counter</span>
+</span><span class="linenos">143</span>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">144</span>        <span class="c1"># Read the gripper state from the simulation</span>
+<span class="linenos">145</span>        <span class="n">surface_gripper</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sim_dt</span><span class="p">)</span>
+<span class="linenos">146</span>        <span class="c1"># Read the gripper state from the buffer</span>
+<span class="hll"><span class="linenos">147</span>        <span class="n">surface_gripper_state</span> <span class="o">=</span> <span class="n">surface_gripper</span><span class="o">.</span><span class="n">state</span>
+</span><span class="hll"><span class="linenos">148</span>        <span class="c1"># The gripper state is a list of integers that can be mapped to the following:</span>
+</span><span class="hll"><span class="linenos">149</span>        <span class="c1"># -1 --&gt; Open</span>
+</span><span class="hll"><span class="linenos">150</span>        <span class="c1"># 0 --&gt; Closing</span>
+</span><span class="linenos">151</span>        <span class="c1"># 1 --&gt; Closed</span>
+<span class="linenos">152</span>        <span class="c1"># Print the gripper state</span>
+<span class="linenos">153</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO]: Gripper state: </span><span class="si">{</span><span class="n">surface_gripper_state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">154</span>        <span class="n">mapped_commands</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos">155</span>            <span class="s2">&quot;Open&quot;</span> <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;Closing&quot;</span> <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;Closed&quot;</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">surface_gripper_state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="linenos">156</span>        <span class="p">]</span>
+<span class="linenos">157</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO]: Mapped commands: </span><span class="si">{</span><span class="n">mapped_commands</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">158</span>
+<span class="linenos">159</span>
+<span class="linenos">160</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">161</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function.&quot;&quot;&quot;</span>
+<span class="linenos">162</span>    <span class="c1"># Load kit helper</span>
+<span class="linenos">163</span>    <span class="n">sim_cfg</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationCfg</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">args_cli</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">164</span>    <span class="n">sim</span> <span class="o">=</span> <span class="n">SimulationContext</span><span class="p">(</span><span class="n">sim_cfg</span><span class="p">)</span>
+<span class="linenos">165</span>    <span class="c1"># Set main camera</span>
+<span class="linenos">166</span>    <span class="n">sim</span><span class="o">.</span><span class="n">set_camera_view</span><span class="p">([</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="linenos">167</span>    <span class="c1"># Design scene</span>
+<span class="linenos">168</span>    <span class="n">scene_entities</span><span class="p">,</span> <span class="n">scene_origins</span> <span class="o">=</span> <span class="n">design_scene</span><span class="p">()</span>
+<span class="linenos">169</span>    <span class="n">scene_origins</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">scene_origins</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">170</span>    <span class="c1"># Play the simulator</span>
+<span class="linenos">171</span>    <span class="n">sim</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos">172</span>    <span class="c1"># Now we are ready!</span>
+<span class="linenos">173</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[INFO]: Setup complete...&quot;</span><span class="p">)</span>
+<span class="linenos">174</span>    <span class="c1"># Run the simulator</span>
+<span class="linenos">175</span>    <span class="n">run_simulator</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">scene_entities</span><span class="p">,</span> <span class="n">scene_origins</span><span class="p">)</span>
+<span class="linenos">176</span>
+<span class="linenos">177</span>
+<span class="linenos">178</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">179</span>    <span class="c1"># run the main function</span>
+<span class="linenos">180</span>    <span class="n">main</span><span class="p">()</span>
+<span class="linenos">181</span>    <span class="c1"># close sim app</span>
+<span class="linenos">182</span>    <span class="n">simulation_app</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="the-code-explained">
+<h2>代码解释<a class="headerlink" href="#the-code-explained" title="Link to this heading">#</a></h2>
+<section id="designing-the-scene">
+<h3>设计场景<a class="headerlink" href="#designing-the-scene" title="Link to this heading">#</a></h3>
+<p>类似于上一个教程，我们在场景中添加了地面平面和一个远处的光源。然后，我们从其 USD 文件中生成一个关节。这次生成了一个拾取-放置机器人。拾取-放置机器人是一个简单的机器人，有 3 个受驱动的轴，其龙门使其可以沿 x 和 y 轴移动，以及沿 z 轴上下移动。此外，机器人末端执行器配备了一个表面夹爪。拾取放置机器人的 USD 文件包含了机器人的几何形状、关节和其他物理属性以及表面夹爪。在自己的机器人上实现类似的夹爪之前，我们建议查看 Isaaclab 的 Nucleus 上找到的夹爪的 USD 文件。</p>
+<p>对于抓取和放置机器人，我们使用它的预定义配置对象，在 <a class="reference internal" href="../../how-to/write_articulation_cfg.html#how-to-write-articulation-config"><span class="std std-ref">编写资产配置</span></a> 教程中可以找到更多信息。对于表面夹爪，我们还需要创建一个配置对象。这可以通过实例化一个 <code class="xref py py-class docutils literal notranslate"><span class="pre">assets.SurfaceGripperCfg</span></code> 对象并传递相关参数来实现。</p>
+<p>可用的参数包括:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">max_grip_distance</span></code>: 夹爪能够抓取物体的最大距离。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shear_force_limit</span></code>: 夹爪能在与夹爪轴线垂直的方向上施加的最大力。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coaxial_force_limit</span></code>: 夹爪沿夹爪轴的方向可以施加的最大力。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retry_interval</span></code>: 夹爪将保持在抓取状态的时间。</p></li>
+</ul>
+<p>如前面的教程中所见，我们可以通过创建一个 <a class="reference internal" href="../../api/lab/isaaclab.assets.html#isaaclab.assets.Articulation" title="isaaclab.assets.Articulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">assets.Articulation</span></code></a> 类的实例，并将配置对象传递给其构造函数，以类似的方式将关节添加到场景中。同样的原则也适用于表面夹爪。通过将配置对象传递给 <code class="xref py py-class docutils literal notranslate"><span class="pre">assets.SurfaceGripper</span></code> 构造函数，就可以创建表面夹爪并将其添加到场景中。实际上，当按下播放按钮时，对象将只被初始化。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Create separate groups called &quot;Origin1&quot;, &quot;Origin2&quot;</span>
+    <span class="c1"># Each group will have a robot in it</span>
+    <span class="n">origins</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
+    <span class="c1"># Origin 1</span>
+    <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="s2">&quot;/World/Origin1&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">origins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># Origin 2</span>
+    <span class="n">prim_utils</span><span class="o">.</span><span class="n">create_prim</span><span class="p">(</span><span class="s2">&quot;/World/Origin2&quot;</span><span class="p">,</span> <span class="s2">&quot;Xform&quot;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">origins</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Articulation: First we define the robot config</span>
+    <span class="n">pick_and_place_robot_cfg</span> <span class="o">=</span> <span class="n">PICK_AND_PLACE_CFG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">pick_and_place_robot_cfg</span><span class="o">.</span><span class="n">prim_path</span> <span class="o">=</span> <span class="s2">&quot;/World/Origin.*/Robot&quot;</span>
+    <span class="n">pick_and_place_robot</span> <span class="o">=</span> <span class="n">Articulation</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="n">pick_and_place_robot_cfg</span><span class="p">)</span>
+
+    <span class="c1"># Surface Gripper: Next we define the surface gripper config</span>
+    <span class="n">surface_gripper_cfg</span> <span class="o">=</span> <span class="n">SurfaceGripperCfg</span><span class="p">()</span>
+    <span class="c1"># We need to tell the View which prim to use for the surface gripper</span>
+    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">prim_path</span> <span class="o">=</span> <span class="s2">&quot;/World/Origin.*/Robot/picker_head/SurfaceGripper&quot;</span>
+    <span class="c1"># We can then set different parameters for the surface gripper, note that if these parameters are not set,</span>
+    <span class="c1"># the View will try to read them from the prim.</span>
+    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">max_grip_distance</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># [m] (Maximum distance at which the gripper can grasp an object)</span>
+    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">shear_force_limit</span> <span class="o">=</span> <span class="mf">500.0</span>  <span class="c1"># [N] (Force limit in the direction perpendicular direction)</span>
+    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">coaxial_force_limit</span> <span class="o">=</span> <span class="mf">500.0</span>  <span class="c1"># [N] (Force limit in the direction of the gripper&#39;s axis)</span>
+    <span class="n">surface_gripper_cfg</span><span class="o">.</span><span class="n">retry_interval</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># seconds (Time the gripper will stay in a grasping state)</span>
+    <span class="c1"># We can now spawn the surface gripper</span>
+    <span class="n">surface_gripper</span> <span class="o">=</span> <span class="n">SurfaceGripper</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="n">surface_gripper_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-the-simulation-loop">
+<h3>运行仿真循环<a class="headerlink" href="#running-the-simulation-loop" title="Link to this heading">#</a></h3>
+<p>继续从前一教程开始，我们定期重置仿真，为关节设置指令，执行仿真步骤，并更新关节的内部缓冲区。</p>
+<section id="resetting-the-simulation">
+<h4>重置仿真<a class="headerlink" href="#resetting-the-simulation" title="Link to this heading">#</a></h4>
+<p>要重置表面夹爪，我们只需要调用 <cite>:meth:`SurfaceGripper.reset</cite> 方法，这将重置内部缓冲区和缓存。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>            <span class="c1"># Opens the gripper and makes sure the gripper is in the open state</span>
+            <span class="n">surface_gripper</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="stepping-the-simulation">
+<h4>步进仿真<a class="headerlink" href="#stepping-the-simulation" title="Link to this heading">#</a></h4>
+<p>将命令应用到表面夹爪涉及两个步骤:</p>
+<ol class="arabic simple">
+<li><p><em>设置所需命令</em>: 这将设置所需的夹爪命令（打开、关闭或空闲）。</p></li>
+<li><p><em>将数据写入仿真</em>: 基于表面夹爪的配置，此步骤将转换后的值写入PhysX缓冲区。</p></li>
+</ol>
+<p>在本教程中，我们使用一个随机命令来设置夹爪的指令。夹爪的行为如下:</p>
+<ul class="simple">
+<li><p>-1 &lt; command &lt; -0.3 --&gt; 夹爪打开中</p></li>
+<li><p>-0.3 &lt; command &lt; 0.3` --&gt; 夹爪空闲中</p></li>
+<li><p>0.3 &lt; command &lt; 1 --&gt; 夹爪关闭中</p></li>
+</ul>
+<p>在每一步中，我们通过调用 <code class="xref py py-meth docutils literal notranslate"><span class="pre">SurfaceGripper.set_grippers_command()</span></code> 方法随机采样命令并将其设置到夹爪中。设置完命令后，我们调用 <code class="xref py py-meth docutils literal notranslate"><span class="pre">SurfaceGripper.write_data_to_sim()</span></code> 方法将数据写入到PhysX缓冲区中。最后，我们进行仿真步进。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="c1"># Sample a random command between -1 and 1.</span>
+        <span class="n">gripper_commands</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">surface_gripper</span><span class="o">.</span><span class="n">num_instances</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="mf">1.0</span>
+        <span class="c1"># The gripper behavior is as follows:</span>
+        <span class="c1"># -1 &lt; command &lt; -0.3 --&gt; Gripper is Opening</span>
+        <span class="c1"># -0.3 &lt; command &lt; 0.3 --&gt; Gripper is Idle</span>
+        <span class="c1"># 0.3 &lt; command &lt; 1 --&gt; Gripper is Closing</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO]: Gripper commands: </span><span class="si">{</span><span class="n">gripper_commands</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">mapped_commands</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Opening&quot;</span> <span class="k">if</span> <span class="n">command</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.3</span> <span class="k">else</span> <span class="s2">&quot;Closing&quot;</span> <span class="k">if</span> <span class="n">command</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="k">else</span> <span class="s2">&quot;Idle&quot;</span> <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">gripper_commands</span>
+        <span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO]: Mapped commands: </span><span class="si">{</span><span class="n">mapped_commands</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Set the gripper command</span>
+        <span class="n">surface_gripper</span><span class="o">.</span><span class="n">set_grippers_command</span><span class="p">(</span><span class="n">gripper_commands</span><span class="p">)</span>
+        <span class="c1"># Write data to sim</span>
+        <span class="n">surface_gripper</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="updating-the-state">
+<h4>更新状态<a class="headerlink" href="#updating-the-state" title="Link to this heading">#</a></h4>
+<p>要了解表面夹爪的当前状态，我们可以查询 <code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.SurfaceGripper.state()</span></code> 属性。这个属性返回一个大小为 <code class="docutils literal notranslate"><span class="pre">[num_envs]</span></code> 的张量，其中每个元素都是 <code class="docutils literal notranslate"><span class="pre">-1</span></code> 、 <code class="docutils literal notranslate"><span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">1</span></code> ，分别对应夹爪的状态。这个属性在每次调用 <code class="xref py py-meth docutils literal notranslate"><span class="pre">assets.SurfaceGripper.update()</span></code> 方法时都会更新。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> --&gt; 机械手爪是打开的</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> --&gt; 夹爪正在闭合</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> --&gt; 夹爪已关闭</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="c1"># Read the gripper state from the simulation</span>
+        <span class="n">surface_gripper</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sim_dt</span><span class="p">)</span>
+        <span class="c1"># Read the gripper state from the buffer</span>
+        <span class="n">surface_gripper_state</span> <span class="o">=</span> <span class="n">surface_gripper</span><span class="o">.</span><span class="n">state</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="the-code-execution">
+<h2>代码执行<a class="headerlink" href="#the-code-execution" title="Link to this heading">#</a></h2>
+<p>要运行代码并查看结果，请从终端运行脚本:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/tutorials/01_assets/run_surface_gripper.py<span class="w"> </span>--device<span class="w"> </span>cpu
+</pre></div>
+</div>
+<p>这个命令应该打开一个带有地面平面、灯光和两个夹取放置机器人的场景。在终端中，您应该看到夹爪的状态以及打印出的命令。要停止仿真，您可以关闭窗口，或在终端中按 <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> 。</p>
+<figure class="align-center" style="width: 100%">
+<img alt="run_surface_gripper.py 的结果" src="../../../_images/tutorial_run_surface_gripper.jpg" />
+</figure>
+<p>在本教程中，我们学习了如何创建和与表面夹爪进行交互。我们看到如何设置命令并查询夹爪的状态。我们还看到如何更新其缓冲区以从仿真中读取最新状态。</p>
+<p>除了本教程之外，我们还提供了一些生成不同机器人的其他脚本。这些脚本包含在 <code class="docutils literal notranslate"><span class="pre">scripts/demos</span></code> 目录中。您可以这样运行这些脚本:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spawn many pick-and-place robots and perform a pick-and-place task</span>
+./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/demos/pick_and_place.py
+</pre></div>
+</div>
+<p>请注意，实践中，用户应该将他们的 <cite>assets.SurfaceGripper</cite> 实例注册到 <cite>isaaclab.InteractiveScene</cite> 对象中，在那里会自动处理对 <cite>assets.SurfaceGripper.write_data_to_sim</cite> 和 <cite>assets.SurfaceGripper.update</cite> 方法的调用。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a scene</span>
+<span class="n">scene</span> <span class="o">=</span> <span class="n">InteractiveScene</span><span class="p">()</span>
+
+<span class="c1"># Register the surface gripper</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">surface_grippers</span><span class="p">[</span><span class="s2">&quot;gripper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">surface_gripper</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="run_deformable_object.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">与可变形对象交互</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../02_scene/create_scene.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">使用交互式场景</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code">代码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-explained">代码解释</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-the-scene">设计场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-simulation-loop">运行仿真循环</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#resetting-the-simulation">重置仿真</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stepping-the-simulation">步进仿真</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-the-state">更新状态</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-execution">代码执行</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2025 年 12 月 20 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
