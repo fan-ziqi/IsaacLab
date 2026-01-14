@@ -1,0 +1,967 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022-2025, The Isaac Lab Project Developers.
+# This file is distributed under the same license as the Isaac Lab package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 2.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-14 18:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:4
+msgid "Training a Gear Insertion Policy and ROS Deployment"
+msgstr "训练齿轮插入策略和 ROS 部署"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:6
+msgid ""
+"This tutorial walks you through how to train a gear insertion assembly "
+"reinforcement learning (RL) policy that transfers from simulation to a "
+"real robot. The workflow consists of two main stages:"
+msgstr ""
+"本教程将指导您如何训练一个可以从仿真迁移到真实机器人的齿轮插入装配强化学习（RL）策略。工作流程包含两个主要阶段: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:8
+msgid ""
+"**Simulation Training in Isaac Lab**: Train the policy in a high-fidelity"
+" physics simulation with domain randomization"
+msgstr "**在 Isaac Lab 中进行仿真训练**: 在具有域随机化的高保真物理仿真中训练策略"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:9
+msgid ""
+"**Real Robot Deployment with Isaac ROS**: Deploy the trained policy on "
+"real hardware using Isaac ROS and a custom ROS inference node"
+msgstr "**使用 Isaac ROS 进行真实机器人部署**: 使用 Isaac ROS 和自定义 ROS 推理节点将训练好的策略部署到真实硬件上"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:11
+msgid ""
+"This walkthrough covers the key principles and best practices for sim-to-"
+"real transfer using Isaac Lab, illustrated with a real-world example:"
+msgstr ""
+"本教程介绍了使用 Isaac Lab 进行仿真到真实迁移的关键原则和最佳实践，并通过一个真实世界的示例进行说明: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:13
+msgid ""
+"the Gear Assembly task for the UR10e robot with the Robotiq 2F-140 "
+"gripper or 2F-85 gripper"
+msgstr "UR10e 机器人配合 Robotiq 2F-140 夹爪或 2F-85 夹爪的齿轮装配任务"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:15
+msgid "**Task Details:**"
+msgstr "**任务详情:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:17
+msgid "The gear assembly policy operates as follows:"
+msgstr "齿轮装配策略的工作方式如下: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:19
+msgid ""
+"**Initial State**: The policy assumes the gear is already grasped by the "
+"gripper at the start of the episode"
+msgstr "**初始状态**: 策略假设在回合开始时齿轮已被夹爪抓取"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:20
+msgid ""
+"**Input Observations**: The policy receives the pose of the gear shaft "
+"(position and orientation) in which the gear should be inserted, obtained"
+" from a separate perception pipeline"
+msgstr "**输入观测**: 策略接收齿轮轴的位姿（位置和方向），即齿轮应该插入的位置，该信息来自单独的感知管线"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:21
+msgid ""
+"**Policy Output**: The policy outputs delta joint positions (incremental "
+"changes to joint angles) to control the robot arm and perform the "
+"insertion"
+msgstr "**策略输出**: 策略输出增量关节位置（关节角度的增量变化）来控制机械臂并执行插入操作"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:22
+msgid ""
+"**Generalization**: The trained policy generalizes across 3 different "
+"gear sizes without requiring retraining for each size"
+msgstr "**泛化能力**: 训练好的策略可以泛化到 3 种不同尺寸的齿轮，无需针对每种尺寸重新训练"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:30
+msgid "Comparison of gear assembly in simulation versus real hardware"
+msgstr "仿真与真实硬件中齿轮装配的对比"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:30
+msgid ""
+"Sim-to-real transfer: Gear assembly policy trained in Isaac Lab (left) "
+"successfully deployed on real UR10e robot (right)."
+msgstr "仿真到真实迁移: 在 Isaac Lab 中训练的齿轮装配策略（左）成功部署到真实 UR10e 机器人（右）。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:32
+msgid ""
+"This environment has been successfully deployed on real UR10e robots "
+"without an IsaacLab dependency."
+msgstr "该环境已成功部署到真实 UR10e 机器人上，无需依赖 IsaacLab。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:34
+msgid "**Scope of This Tutorial:**"
+msgstr "**本教程范围: **"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:36
+msgid ""
+"This tutorial focuses exclusively on the **training part** of the sim-to-"
+"real transfer workflow in Isaac Lab. For the complete deployment workflow"
+" on the real robot, including the exact steps to set up the vision "
+"pipeline, robot interface and the ROS inference node to run your trained "
+"policy on real hardware, please refer to the `Isaac ROS Documentation "
+"<https://nvidia-isaac-"
+"ros.github.io/reference_workflows/isaac_for_manipulation/packages/isaac_manipulator_ur_dnn_policy/index.html>`_."
+msgstr ""
+"本教程专注于 Isaac Lab 中仿真到真实迁移工作流程的 **训练部分**。有关在真实机器人上的完整部署工作流程，"
+"包括设置视觉管线、机器人接口和 ROS 推理节点以在真实硬件上运行训练好的策略的详细步骤，"
+"请参阅 `Isaac ROS 文档 <https://nvidia-isaac-ros.github.io/reference_workflows/isaac_for_manipulation/packages/isaac_manipulator_ur_dnn_policy/index.html>`_ 。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:39
+msgid "Overview"
+msgstr "概述"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:41
+msgid ""
+"Successful sim-to-real transfer requires addressing three fundamental "
+"aspects:"
+msgstr "成功的仿真到真实迁移需要解决三个基本方面:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:43
+msgid ""
+"**Input Consistency**: Ensuring the observations your policy receives in "
+"simulation match those available on the real robot"
+msgstr "**输入一致性**: 确保策略在仿真中接收的观测与真实机器人上可用的观测相匹配"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:44
+msgid ""
+"**System Response Consistency**: Ensuring the robot and environment "
+"respond to actions in simulation the same way they do in reality"
+msgstr "**系统响应一致性**: 确保机器人和环境在仿真中对动作的响应与在现实中相同"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:45
+msgid ""
+"**Output Consistency**: Ensuring any post-processing applied to policy "
+"outputs in Isaac Lab is also applied during real-world inference"
+msgstr "**输出一致性**: 确保在 Isaac Lab 中应用于策略输出的任何后处理也应用于真实世界推理"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:47
+msgid ""
+"When all three aspects are properly addressed, policies trained purely in"
+" simulation can achieve robust performance on real hardware without any "
+"real-world training data."
+msgstr ""
+"当这三个方面都得到妥善解决时，纯粹在仿真中训练的策略可以在真实硬件上实现稳健的性能，而无需任何真实世界的训练数据。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:49
+msgid ""
+"**Debugging Tip**: When your policy fails on the real robot, the best "
+"approach to debug is to set up the real robot with the same initial "
+"observations as in simulation, then compare how the controller/system "
+"respond. This isolates whether the problem is from observation mismatch "
+"(Input Consistency) or physics/controller mismatch (System Response "
+"Consistency)."
+msgstr ""
+"**调试技巧**: 当策略在真实机器人上失败时，最好的调试方法是将真实机器人设置为与仿真中相同的初始观测，"
+"然后比较控制器/系统的响应方式。这可以隔离问题是来自观测不匹配（输入一致性）还是物理/控制器不匹配（系统响应一致性）。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:52
+msgid "Part 1: Input Consistency"
+msgstr "第一部分: 输入一致性"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:54
+msgid ""
+"The observations your policy receives must be consistent between "
+"simulation and reality. This means:"
+msgstr "策略接收的观测必须在仿真和现实之间保持一致。这意味着: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:56
+msgid ""
+"The observation space should only include information available from real"
+" sensors"
+msgstr "观测空间应仅包含真实传感器可提供的信息"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:57
+msgid "Sensor noise and delays should be modeled appropriately"
+msgstr "应适当建模传感器噪声和延迟"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:60
+msgid "Using Real-Robot-Available Observations"
+msgstr "使用真实机器人可用的观测"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:62
+msgid ""
+"Your simulation environment should only use observations that are "
+"available on the real robot and not use \"privileged\" information that "
+"wouldn't be available in deployment."
+msgstr ""
+"您的仿真环境应仅使用真实机器人上可用的观测，而不使用部署时不可用的 \"特权\" 信息。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:66
+msgid "Observation Specification: Isaac-Deploy-GearAssembly-UR10e-2F140-v0"
+msgstr "观测规范: Isaac-Deploy-GearAssembly-UR10e-2F140-v0"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:68
+msgid ""
+"The Gear Assembly environment uses both proprioceptive and exteroceptive "
+"(vision) observations:"
+msgstr "齿轮装配环境同时使用本体感受和外感受（视觉）观测: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:70
+msgid "Gear Assembly Environment Observations"
+msgstr "齿轮装配环境观测"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:74
+msgid "Observation"
+msgstr "观测"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:75
+msgid "Dimension"
+msgstr "维度"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:76
+msgid "Real-World Source"
+msgstr "真实世界来源"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:77
+msgid "Noise in Training"
+msgstr "训练中的噪声"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:78
+msgid "``joint_pos``"
+msgstr "``joint_pos``"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:79
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:83
+msgid "6 (UR10e arm joints)"
+msgstr "6（UR10e 机械臂关节）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:80
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:84
+msgid "UR10e controller"
+msgstr "UR10e 控制器"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:81
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:85
+msgid "None (proprioceptive)"
+msgstr "无（本体感受）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:82
+msgid "``joint_vel``"
+msgstr "``joint_vel``"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:86
+msgid "``gear_shaft_pos``"
+msgstr "``gear_shaft_pos``"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:87
+msgid "3 (x, y, z position)"
+msgstr "3（x, y, z 位置）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:88
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:92
+msgid "FoundationPose + RealSense depth"
+msgstr "FoundationPose + RealSense 深度"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:89
+msgid ""
+"±0.005 m (5mm, estimated error from FoundationPose + RealSense depth "
+"pipeline)"
+msgstr "±0.005 m（5mm，来自 FoundationPose + RealSense 深度管线的估计误差）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:90
+msgid "``gear_shaft_quat``"
+msgstr "``gear_shaft_quat``"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:91
+msgid "4 (quaternion orientation)"
+msgstr "4（四元数方向）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:93
+msgid ""
+"±0.01 per component (~5° angular error, estimated error from "
+"FoundationPose + RealSense depth pipeline)"
+msgstr "每个分量 ±0.01（约 5° 角度误差，来自 FoundationPose + RealSense 深度管线的估计误差）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:95
+msgid "**Implementation:**"
+msgstr "**实现: **"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:138
+msgid "**Why No Noise for Proprioceptive Observations?**"
+msgstr "**为什么本体感受观测不添加噪声？**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:140
+msgid ""
+"Empirically, we found that policies trained without noise on "
+"proprioceptive observations (joint positions and velocities) transfer "
+"well to real hardware. The UR10e controller provides sufficiently "
+"accurate joint state feedback that modeling sensor noise doesn't improve "
+"sim-to-real transfer for these tasks."
+msgstr ""
+"根据经验，我们发现在本体感受观测（关节位置和速度）上不添加噪声训练的策略可以很好地迁移到真实硬件。"
+"UR10e 控制器提供足够准确的关节状态反馈，因此对于这些任务，建模传感器噪声并不能改善仿真到真实的迁移效果。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:144
+msgid "Part 2: System Response Consistency"
+msgstr "第二部分: 系统响应一致性"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:146
+msgid ""
+"Once your observations are consistent, you need to ensure the simulated "
+"robot and environment respond to actions the same way the real system "
+"does. In this use case, this involves three main aspects:"
+msgstr ""
+"一旦观测保持一致，您需要确保仿真机器人和环境对动作的响应与真实系统相同。在本用例中，这涉及三个主要方面: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:148
+msgid "Physics simulation parameters (friction, contact properties)"
+msgstr "物理仿真参数（摩擦力、接触属性）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:149
+msgid "Actuator modeling (PD controller gains, effort limits)"
+msgstr "执行器建模（PD 控制器增益、力矩限制）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:150
+msgid "Domain randomization"
+msgstr "域随机化"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:153
+msgid "Physics Parameter Tuning"
+msgstr "物理参数调优"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:155
+msgid ""
+"Accurate physics simulation is critical for contact-rich tasks. Key "
+"parameters include:"
+msgstr "准确的物理仿真对于接触密集型任务至关重要。关键参数包括: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:157
+msgid "Friction coefficients (static and dynamic)"
+msgstr "摩擦系数（静态和动态）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:158
+msgid "Contact solver parameters"
+msgstr "接触求解器参数"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:159
+msgid "Material properties"
+msgstr "材料属性"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:160
+msgid "Rigid body properties"
+msgstr "刚体属性"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:162
+msgid "**Example: Gear Assembly Physics Configuration**"
+msgstr "**示例: 齿轮装配物理配置**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:164
+msgid ""
+"The Gear Assembly task requires accurate contact modeling for insertion. "
+"Here's how friction is configured:"
+msgstr "齿轮装配任务需要准确的接触建模来进行插入。以下是摩擦力的配置方式: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:200
+msgid ""
+"These friction values (0.75) were determined through iterative visual "
+"comparison:"
+msgstr "这些摩擦值（0.75）是通过迭代视觉比较确定的: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:202
+msgid "Record videos of the gear being grasped and manipulated on real hardware"
+msgstr "录制真实硬件上齿轮被抓取和操作的视频"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:203
+msgid "Start training in simulation and observe the live simulation viewer"
+msgstr "在仿真中开始训练并观察实时仿真查看器"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:204
+msgid "Look for physics issues (penetration, unrealistic slipping, poor contact)"
+msgstr "查找物理问题（穿透、不真实的滑动、接触不良）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:205
+msgid "Adjust friction coefficients and solver parameters and retry"
+msgstr "调整摩擦系数和求解器参数并重试"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:206
+msgid "Compare the gear's behavior in the gripper visually between sim and real"
+msgstr "视觉比较仿真和真实中齿轮在夹爪中的行为"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:207
+msgid ""
+"Repeat adjustments until behavior matches (no need to wait for full "
+"policy training)"
+msgstr "重复调整直到行为匹配（无需等待完整的策略训练）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:208
+msgid "Once physics looks good, train in headless mode with video recording:"
+msgstr "一旦物理看起来正常，使用无头模式进行训练并录制视频: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:217
+msgid ""
+"Review the recorded videos and compare with real hardware videos to "
+"verify physics behavior"
+msgstr "查看录制的视频并与真实硬件视频进行比较以验证物理行为"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:219
+msgid "**Contact Solver Configuration**"
+msgstr "**接触求解器配置**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:221
+msgid ""
+"Contact-rich manipulation requires careful solver tuning. These "
+"parameters were calibrated through the same iterative visual comparison "
+"process as the friction coefficients:"
+msgstr ""
+"接触密集型操作需要仔细调优求解器。这些参数是通过与摩擦系数相同的迭代视觉比较过程进行校准的: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:239
+msgid ""
+"**Important**: The ``solver_position_iteration_count`` is a critical "
+"parameter for contact-rich tasks. Increasing this value improves "
+"collision simulation stability and reduces penetration issues, but it "
+"also increases simulation and training time. For the gear assembly task, "
+"we use ``solver_position_iteration_count=4`` as a balance between physics"
+" accuracy and computational performance. If you observe penetration or "
+"unstable contacts, try increasing to 8 or 16, but expect slower training."
+msgstr ""
+"**重要**: ``solver_position_iteration_count`` 是接触密集型任务的关键参数。增加此值可以提高碰撞仿真稳定性并减少穿透问题，"
+"但也会增加仿真和训练时间。对于齿轮装配任务，我们使用 ``solver_position_iteration_count=4`` "
+"作为物理精度和计算性能之间的平衡。如果您观察到穿透或不稳定的接触，请尝试增加到 8 或 16，但要预期训练会变慢。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:257
+msgid "Actuator Modeling"
+msgstr "执行器建模"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:259
+msgid ""
+"Accurate actuator modeling ensures the simulated robot moves like the "
+"real one. This includes:"
+msgstr "准确的执行器建模确保仿真机器人的运动与真实机器人相同。这包括: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:261
+msgid "PD controller gains (stiffness and damping)"
+msgstr "PD 控制器增益（刚度和阻尼）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:262
+msgid "Effort and velocity limits"
+msgstr "力矩和速度限制"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:263
+msgid "Joint friction"
+msgstr "关节摩擦"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:265
+msgid "**Controller Choice: Impedance Control**"
+msgstr "**控制器选择: 阻抗控制**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:267
+msgid ""
+"For the UR10e deployment, we use an impedance controller interface. Using"
+" a simpler controller like impedance control reduces the chances of "
+"variation between simulation and reality compared to more complex "
+"controllers (e.g., operational space control, hybrid force-position "
+"control). Simpler controllers:"
+msgstr ""
+"对于 UR10e 部署，我们使用阻抗控制器接口。与更复杂的控制器（例如操作空间控制、混合力-位置控制）相比，"
+"使用像阻抗控制这样更简单的控制器可以减少仿真和现实之间的差异。更简单的控制器: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:269
+msgid "Have fewer parameters that can mismatch between sim and real"
+msgstr "仿真和真实之间可能不匹配的参数更少"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:270
+msgid "Are easier to model accurately in simulation"
+msgstr "在仿真中更容易准确建模"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:271
+msgid "Have more predictable behavior that's easier to replicate"
+msgstr "具有更可预测的行为，更容易复制"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:272
+msgid "Reduce the controller complexity as a source of sim-real gap"
+msgstr "减少控制器复杂性作为仿真-真实差距的来源"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:274
+msgid "**Example: UR10e Actuator Configuration**"
+msgstr "**示例: UR10e 执行器配置**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:290
+msgid "**Domain Randomization of Actuator Parameters**"
+msgstr "**执行器参数的域随机化**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:292
+msgid ""
+"To account for variations in real robot behavior, randomize actuator "
+"gains during training:"
+msgstr "为了考虑真实机器人行为的变化，在训练期间随机化执行器增益: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:310
+msgid "**Joint Friction Randomization**"
+msgstr "**关节摩擦随机化**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:312
+msgid ""
+"Real robots have friction in their joints that varies with position, "
+"velocity, and temperature. For the UR10e with impedance controller "
+"interface, we observed significant stiction (static friction) causing the"
+" controller to not reach target joint positions."
+msgstr ""
+"真实机器人的关节存在摩擦，摩擦随位置、速度和温度变化。对于使用阻抗控制器接口的 UR10e，"
+"我们观察到显著的静摩擦导致控制器无法达到目标关节位置。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:314
+msgid "**Characterizing Real Robot Behavior:**"
+msgstr "**表征真实机器人行为:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:316
+msgid ""
+"To quantify this behavior, we plotted the step response of the impedance "
+"controller on the real robot and observed contact offsets of "
+"approximately 0.25 degrees from the commanded setpoint. This steady-state"
+" error is caused by joint friction opposing the controller's commanded "
+"motion. Based on these measurements, we added joint friction modeling in "
+"simulation to replicate this behavior:"
+msgstr ""
+"为了量化这种行为，我们绘制了真实机器人上阻抗控制器的阶跃响应，并观察到与命令设定点大约 0.25 度的接触偏移。"
+"这种稳态误差是由关节摩擦对抗控制器命令运动引起的。基于这些测量，我们在仿真中添加了关节摩擦建模来复制这种行为: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:331
+msgid ""
+"**Why Joint Friction Matters**: Without modeling joint friction in "
+"simulation, the policy learns to expect that commanded joint positions "
+"are always reached. On the real robot, stiction prevents small movements "
+"and causes steady-state errors. By adding friction during training, the "
+"policy learns to account for these effects and commands appropriately "
+"larger motions to overcome friction."
+msgstr ""
+"**为什么关节摩擦很重要**: 如果在仿真中不建模关节摩擦，策略会学习到期望命令的关节位置总是能够达到。"
+"在真实机器人上，静摩擦会阻止小动作并导致稳态误差。通过在训练中添加摩擦，策略学会考虑这些影响并命令适当更大的运动来克服摩擦。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:333
+msgid "**Compensating for Stiction with Action Scaling:**"
+msgstr "**通过动作缩放补偿静摩擦:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:335
+msgid ""
+"To help the policy overcome stiction on the real robot, we also increased"
+" the output action scaling. The Isaac ROS documentation notes that a "
+"higher action scale (0.0325 vs 0.025) is needed to overcome the higher "
+"static friction (stiction) compared to the 2F-85 gripper. This increased "
+"scaling ensures the policy commands are large enough to overcome the "
+"friction forces observed in the step response analysis."
+msgstr ""
+"为了帮助策略克服真实机器人上的静摩擦，我们还增加了输出动作缩放。Isaac ROS 文档指出，"
+"与 2F-85 夹爪相比，需要更高的动作缩放（0.0325 vs 0.025）来克服更高的静摩擦。"
+"这种增加的缩放确保策略命令足够大以克服在阶跃响应分析中观察到的摩擦力。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:338
+msgid "Action Space Design"
+msgstr "动作空间设计"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:340
+msgid ""
+"Your action space should match what the real robot controller can "
+"execute. For this task we found that **incremental joint position "
+"control** is the most reliable approach."
+msgstr ""
+"您的动作空间应与真实机器人控制器可以执行的内容匹配。对于此任务，我们发现 **增量关节位置控制** 是最可靠的方法。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:342
+msgid "**Example: Gear Assembly Action Configuration**"
+msgstr "**示例: 齿轮装配动作配置**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:357
+msgid ""
+"The action scale is a critical hyperparameter that should be tuned based "
+"on:"
+msgstr "动作缩放是一个关键的超参数，应根据以下因素进行调优: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:359
+msgid "Task precision requirements (smaller for contact-rich tasks)"
+msgstr "任务精度要求（接触密集型任务需要更小的值）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:360
+msgid "Control frequency (higher frequency allows larger steps)"
+msgstr "控制频率（更高的频率允许更大的步长）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:363
+msgid "Domain Randomization Strategy"
+msgstr "域随机化策略"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:365
+msgid ""
+"Domain randomization should cover the range of conditions in which you "
+"want the real robot to perform. Increasing randomization ranges makes it "
+"harder for the policy to learn, but allows for larger variations in "
+"inputs and system parameters. The key is to balance training difficulty "
+"with robustness: randomize enough to cover real-world variations, but not"
+" so much that the policy cannot learn effectively."
+msgstr ""
+"域随机化应覆盖您希望真实机器人执行的条件范围。增加随机化范围会使策略更难学习，但允许更大的输入和系统参数变化。"
+"关键是平衡训练难度和鲁棒性: 随机化足以覆盖真实世界的变化，但不要太多以至于策略无法有效学习。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:367
+msgid "**Pose Randomization**"
+msgstr "**位姿随机化**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:369
+msgid ""
+"For manipulation tasks, randomize object poses to ensure the policy works"
+" across the workspace:"
+msgstr "对于操作任务，随机化物体位姿以确保策略在整个工作空间中都能工作:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:399
+msgid "**Initial State Randomization**"
+msgstr "**初始状态随机化**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:401
+msgid ""
+"Randomizing the robot's initial configuration helps the policy handle "
+"different starting conditions:"
+msgstr "随机化机器人的初始配置有助于策略处理不同的起始条件:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:421
+msgid "Part 3: Training the Policy in Isaac Lab"
+msgstr "第三部分: 在 Isaac Lab 中训练策略"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:423
+msgid ""
+"Now that we've covered the key principles for sim-to-real transfer, let's"
+" train the gear assembly policy in Isaac Lab."
+msgstr "现在我们已经介绍了仿真到真实迁移的关键原则，让我们在 Isaac Lab 中训练齿轮装配策略。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:426
+msgid "Step 1: Visualize the Environment"
+msgstr "步骤 1: 可视化环境"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:428
+msgid ""
+"First, launch the training with a small number of environments and "
+"visualization enabled to verify that the environment is set up correctly:"
+msgstr "首先，启动少量环境的训练并启用可视化，以验证环境设置正确:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:439
+msgid ""
+"For the Robotiq 2F-85 gripper, use ``--task Isaac-Deploy-GearAssembly-"
+"UR10e-2F85-v0`` instead."
+msgstr "对于 Robotiq 2F-85 夹爪，请改用 ``--task Isaac-Deploy-GearAssembly-UR10e-2F85-v0`` 。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:441
+msgid ""
+"This will open the Isaac Sim viewer where you can observe the training "
+"process in real-time."
+msgstr "这将打开 Isaac Sim 查看器，您可以在其中实时观察训练过程。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:448
+msgid "Gear assembly training visualization in Isaac Lab"
+msgstr "Isaac Lab 中的齿轮装配训练可视化"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:448
+msgid ""
+"Training visualization showing multiple parallel environments with robots"
+" grasping gears."
+msgstr "训练可视化显示多个并行环境中机器人抓取齿轮。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:450
+msgid "**What to Expect:**"
+msgstr "**预期效果:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:452
+msgid ""
+"In the early stages of training, you should see the robots moving around "
+"with the gears grasped by the grippers, but they won't be successfully "
+"inserting the gears yet. This is expected behavior as the policy is still"
+" learning. The robots will move the grasped gear in various directions. "
+"Once you've verified the environment looks correct, stop the training "
+"(Ctrl+C) and proceed to full-scale training."
+msgstr ""
+"在训练的早期阶段，您应该看到机器人在移动，夹爪抓着齿轮，但它们还不能成功插入齿轮。这是预期的行为，因为策略仍在学习中。"
+"机器人会将抓取的齿轮向各个方向移动。一旦您验证环境看起来正确，停止训练（Ctrl+C）并继续进行全规模训练。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:455
+msgid "Step 2: Full-Scale Training with Video Recording"
+msgstr "步骤 2: 带视频录制的全规模训练"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:457
+msgid ""
+"Now launch the full training run with more parallel environments in "
+"headless mode for faster training. We'll also enable video recording to "
+"monitor progress:"
+msgstr "现在在无头模式下启动更多并行环境的完整训练以加快训练速度。我们还将启用视频录制来监控进度:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:468
+msgid "This command will:"
+msgstr "此命令将:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:470
+msgid "Run 256 parallel environments for efficient training"
+msgstr "运行 256 个并行环境以进行高效训练"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:471
+msgid "Run in headless mode (no visualization) for maximum performance"
+msgstr "在无头模式下运行（无可视化）以获得最佳性能"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:472
+msgid "Record videos every 5000 steps to monitor training progress"
+msgstr "每 5000 步录制视频以监控训练进度"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:473
+msgid "Save videos with 800 frames each"
+msgstr "每个视频保存 800 帧"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:475
+msgid ""
+"Training typically takes ~12-24 hours for a robust insertion policy. The "
+"videos will be saved in the ``logs`` directory and can be reviewed to "
+"assess policy performance during training."
+msgstr ""
+"训练一个稳健的插入策略通常需要约 12-24 小时。视频将保存在 ``logs`` 目录中，可以查看以评估训练期间的策略性能。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:479
+msgid ""
+"**GPU Memory Considerations**: The default configuration uses 256 "
+"parallel environments, which should work on most modern GPUs (e.g., RTX "
+"3090, RTX 4090, A100). For better sim-to-real transfer performance, you "
+"can increase ``solver_position_iteration_count`` from 4 to 196 in "
+"``gear_assembly_env_cfg.py`` and ``joint_pos_env_cfg.py`` for more "
+"realistic contact simulation, but this requires a larger GPU (e.g., RTX "
+"PRO 6000 with 40GB+ VRAM). Higher solver iteration counts reduce "
+"penetration and improve contact stability but significantly increase GPU "
+"memory usage."
+msgstr ""
+"**GPU 内存注意事项**: 默认配置使用 256 个并行环境，这应该适用于大多数现代 GPU（例如 RTX 3090、RTX 4090、A100）。"
+"为了获得更好的仿真到真实迁移性能，您可以在 ``gear_assembly_env_cfg.py`` 和 ``joint_pos_env_cfg.py`` 中"
+"将 ``solver_position_iteration_count`` 从 4 增加到 196 以获得更真实的接触仿真，但这需要更大的 GPU"
+"（例如具有 40GB+ VRAM 的 RTX PRO 6000）。更高的求解器迭代次数可以减少穿透并提高接触稳定性，但会显著增加 GPU 内存使用量。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:482
+msgid "**Monitoring Training Progress with TensorBoard:**"
+msgstr "**使用 TensorBoard 监控训练进度:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:484
+msgid ""
+"You can monitor training metrics in real-time using TensorBoard. Open a "
+"new terminal and run:"
+msgstr "您可以使用 TensorBoard 实时监控训练指标。打开一个新终端并运行: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:490
+msgid ""
+"Replace ``<log_dir>`` with the path to your training logs (e.g., "
+"``logs/rsl_rl/gear_assembly_ur10e/2025-11-19_19-31-01``). TensorBoard "
+"will display plots showing rewards, episode lengths, and other metrics. "
+"Verify that the rewards are increasing over iterations to ensure the "
+"policy is learning successfully."
+msgstr ""
+"将 ``<log_dir>`` 替换为您的训练日志路径（例如 ``logs/rsl_rl/gear_assembly_ur10e/2025-11-19_19-31-01`` ）。"
+"TensorBoard 将显示奖励、回合长度和其他指标的图表。验证奖励在迭代过程中是否增加，以确保策略正在成功学习。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:494
+msgid "Step 3: Deploy on Real Robot"
+msgstr "步骤 3: 部署到真实机器人"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:496
+msgid ""
+"Once training is complete, follow the `Isaac ROS inference documentation "
+"<https://nvidia-isaac-"
+"ros.github.io/reference_workflows/isaac_for_manipulation/packages/isaac_manipulator_ur_dnn_policy/index.html>`_"
+" to deploy your policy."
+msgstr ""
+"训练完成后，按照 `Isaac ROS 推理文档 <https://nvidia-isaac-ros.github.io/reference_workflows/isaac_for_manipulation/packages/isaac_manipulator_ur_dnn_policy/index.html>`_ 部署您的策略。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:498
+msgid ""
+"The Isaac ROS deployment pipeline directly uses the trained model "
+"checkpoint (``.pt`` file) along with the ``agent.yaml`` and ``env.yaml`` "
+"configuration files generated during training. No additional export step "
+"is required."
+msgstr ""
+"Isaac ROS 部署管线直接使用训练好的模型检查点（ ``.pt`` 文件）以及训练期间生成的 ``agent.yaml`` 和 ``env.yaml`` 配置文件。无需额外的导出步骤。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:500
+msgid ""
+"The deployment pipeline uses Isaac ROS and a custom ROS inference node to"
+" run the policy on real hardware. The pipeline includes:"
+msgstr "部署管线使用 Isaac ROS 和自定义 ROS 推理节点在真实硬件上运行策略。管线包括: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:502
+msgid ""
+"**Perception**: Camera-based pose estimation (FoundationPose, Segment "
+"Anything)"
+msgstr "**感知**: 基于相机的位姿估计（FoundationPose、Segment Anything）"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:503
+msgid "**Motion Planning**: cuMotion for collision-free trajectories"
+msgstr "**运动规划**: cuMotion 用于无碰撞轨迹"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:504
+msgid ""
+"**Policy Inference**: Your trained policy running at control frequency in"
+" a custom ROS inference node"
+msgstr "**策略推理**: 您训练好的策略在自定义 ROS 推理节点中以控制频率运行"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:505
+msgid "**Robot Control**: Low-level controller executing commands"
+msgstr "**机器人控制**: 执行命令的底层控制器"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:509
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:511
+msgid ""
+"This section covers common errors you may encounter during training and "
+"their solutions."
+msgstr "本节介绍您在训练期间可能遇到的常见错误及其解决方案。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:514
+msgid "PhysX Collision Stack Overflow"
+msgstr "PhysX 碰撞堆栈溢出"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:516
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:544
+msgid "**Error Message:**"
+msgstr "**错误消息:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:524
+msgid ""
+"**Cause:** This error occurs when the GPU collision detection buffer is "
+"too small for the number of contacts being simulated. This is common in "
+"contact-rich environments like gear assembly."
+msgstr ""
+"**原因:** 当 GPU 碰撞检测缓冲区对于正在仿真的接触数量来说太小时，会发生此错误。这在齿轮装配等接触密集型环境中很常见。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:526
+msgid ""
+"**Solution:** Increase the ``gpu_collision_stack_size`` parameter in "
+"``gear_assembly_env_cfg.py``:"
+msgstr "**解决方案:** 在 ``gear_assembly_env_cfg.py`` 中增加 ``gpu_collision_stack_size`` 参数: "
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:539
+msgid ""
+"The error message will suggest a minimum size. Set "
+"``gpu_collision_stack_size`` to at least the recommended value (e.g., if "
+"the error says \"at least 269452544\", set it to ``2**28`` or ``2**29``)."
+" Note that increasing this value increases GPU memory usage."
+msgstr ""
+"错误消息会建议最小大小。将 ``gpu_collision_stack_size`` 设置为至少推荐的值（例如，如果错误提示 \"至少 269452544\" ，"
+"则将其设置为 ``2**28`` 或 ``2**29`` ）。请注意，增加此值会增加 GPU 内存使用量。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:542
+msgid "CUDA Out of Memory"
+msgstr "CUDA 内存不足"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:550
+msgid ""
+"**Cause:** The GPU does not have enough memory to run the requested "
+"number of parallel environments with the current simulation parameters."
+msgstr "**原因: ** GPU 没有足够的内存来使用当前仿真参数运行请求的并行环境数量。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:552
+msgid "**Solutions (in order of preference):**"
+msgstr "**解决方案（按优先顺序）:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:554
+msgid "**Reduce the number of parallel environments:**"
+msgstr "**减少并行环境数量:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:563
+msgid ""
+"**Trade-off:** Using fewer environments will reduce sample diversity per "
+"training iteration and may slow down training convergence. You may need "
+"to train for more iterations to achieve the same performance. However, "
+"the final policy quality should be similar."
+msgstr ""
+"**权衡:** 使用更少的环境会减少每次训练迭代的样本多样性，可能会减慢训练收敛速度。您可能需要训练更多迭代才能达到相同的性能。"
+"但是，最终的策略质量应该相似。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:565
+msgid ""
+"**If using increased solver iteration counts** (values higher than the "
+"default 4):"
+msgstr "**如果使用增加的求解器迭代次数**（高于默认值 4 的值）:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:567
+msgid ""
+"In both ``gear_assembly_env_cfg.py`` and ``joint_pos_env_cfg.py``, reduce"
+" ``solver_position_iteration_count`` back to the default value of 4, or "
+"use intermediate values like 8 or 16:"
+msgstr ""
+"在 ``gear_assembly_env_cfg.py`` 和 ``joint_pos_env_cfg.py`` 中，将 ``solver_position_iteration_count`` "
+"减少回默认值 4，或使用中间值如 8 或 16:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:581
+msgid ""
+"**Trade-off:** Lower solver iteration counts may result in less realistic"
+" contact dynamics and more penetration issues. The default value of 4 "
+"provides a good balance for most use cases."
+msgstr ""
+"**权衡:** 较低的求解器迭代次数可能导致接触动力学不太真实且穿透问题更多。默认值 4 为大多数用例提供了良好的平衡。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:583
+msgid "**Disable video recording during training:**"
+msgstr "**在训练期间禁用视频录制:**"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:585
+msgid "Remove the ``--video`` flags to save GPU memory:"
+msgstr "移除 ``--video`` 标志以节省 GPU 内存:"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:594
+msgid "You can always evaluate the trained policy later with visualization."
+msgstr "您可以随时使用可视化评估训练好的策略。"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:598
+msgid "Further Resources"
+msgstr "更多资源"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:600
+msgid ""
+"`IndustReal: Transferring Contact-Rich Assembly Tasks from Simulation to "
+"Reality <https://arxiv.org/abs/2305.17110>`_"
+msgstr ""
+"`IndustReal: Transferring Contact-Rich Assembly Tasks from Simulation to "
+"Reality <https://arxiv.org/abs/2305.17110>`_"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:601
+msgid ""
+"`FORGE: Force-Guided Exploration for Robust Contact-Rich Manipulation "
+"under Uncertainty <https://arxiv.org/abs/2408.04587>`_"
+msgstr ""
+"`FORGE: Force-Guided Exploration for Robust Contact-Rich Manipulation "
+"under Uncertainty <https://arxiv.org/abs/2408.04587>`_"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:602
+msgid ""
+"Sim-to-Real Policy Transfer for Whole Body Controllers: :ref:`sim2real` -"
+" Shows how to train and deploy a whole body controller for legged robots "
+"using Isaac Lab with the Newton backend"
+msgstr ""
+"全身控制器的仿真到真实策略迁移: :ref:`sim2real` - 展示如何使用 Isaac Lab 和 Newton 后端训练和部署腿足机器人的全身控制器"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:603
+msgid ""
+"`Isaac ROS Manipulation Documentation <https://nvidia-isaac-"
+"ros.github.io/reference_workflows/isaac_for_manipulation/index.html>`_"
+msgstr ""
+"`Isaac ROS 操作文档 <https://nvidia-isaac-"
+"ros.github.io/reference_workflows/isaac_for_manipulation/index.html>`_"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:604
+msgid ""
+"`Isaac ROS Gear Assembly Tutorial <https://nvidia-isaac-"
+"ros.github.io/reference_workflows/isaac_for_manipulation/tutorials/tutorial_gear_assembly.html>`_"
+msgstr ""
+"`Isaac ROS 齿轮装配教程 <https://nvidia-isaac-"
+"ros.github.io/reference_workflows/isaac_for_manipulation/tutorials/tutorial_gear_assembly.html>`_"
+
+#: ../../source/policy_deployment/02_gear_assembly/gear_assembly_policy.rst:605
+msgid "RL Training Tutorial: :ref:`tutorial-run-rl-training`"
+msgstr "RL 训练教程: :ref:`tutorial-run-rl-training`"
+
