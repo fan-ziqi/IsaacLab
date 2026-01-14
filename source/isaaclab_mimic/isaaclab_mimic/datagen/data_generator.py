@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# Copyright (c) 2024-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 # All rights reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -6,6 +6,7 @@
 """
 Base class for data generator.
 """
+
 import asyncio
 import copy
 import logging
@@ -187,10 +188,7 @@ class DataGenerator:
         Pretty print this object.
         """
         msg = str(self.__class__.__name__)
-        msg += " (\n\tdataset_path={}\n\tdemo_keys={}\n)".format(
-            self.dataset_path,
-            self.demo_keys,
-        )
+        msg += f" (\n\tdataset_path={self.dataset_path}\n\tdemo_keys={self.demo_keys}\n)"
         return msg
 
     def randomize_subtask_boundaries(self) -> dict[str, np.ndarray]:

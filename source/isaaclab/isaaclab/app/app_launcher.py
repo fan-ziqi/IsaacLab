@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -795,7 +795,7 @@ class AppLauncher:
             sys.stdout = open(os.devnull, "w")  # noqa: SIM115
 
         # pytest may have left some things in sys.argv, this will check for some of those
-        # do a mark and sweep to remove any -m pytest and -m isaacsim_ci and -c **/pytest.ini
+        # do a mark and sweep to remove any -m pytest and -m isaacsim_ci and -c **/pyproject.toml
         indexes_to_remove = []
         for idx, arg in enumerate(sys.argv[:-1]):
             if arg == "-m":
@@ -803,9 +803,8 @@ class AppLauncher:
                 if "pytest" in value_for_dash_m or "isaacsim_ci" in value_for_dash_m:
                     indexes_to_remove.append(idx)
                     indexes_to_remove.append(idx + 1)
-            if arg == "-c" and "pytest.ini" in sys.argv[idx + 1]:
+            if arg.startswith("--config-file=") and "pyproject.toml" in arg:
                 indexes_to_remove.append(idx)
-                indexes_to_remove.append(idx + 1)
             if arg == "--capture=no":
                 indexes_to_remove.append(idx)
         for idx in sorted(indexes_to_remove, reverse=True):
