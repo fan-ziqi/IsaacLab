@@ -5,20 +5,17 @@
 
 import contextlib
 import os
-import pytest
-
-# Platform-specific imports for real-time output streaming
 import select
 import subprocess
 import sys
 import time
 
-# Third-party imports
+import pytest
+from junitparser import Error, JUnitXml, TestCase, TestSuite
 from prettytable import PrettyTable
 
-from junitparser import Error, JUnitXml, TestCase, TestSuite
-
-import tools.test_settings as test_settings
+# Local imports
+import test_settings as test_settings  # isort: skip
 
 
 def pytest_ignore_collect(collection_path, config):
@@ -405,12 +402,14 @@ def pytest_sessionstart(session):
             - test_status[test_path]["errors"]
             - test_status[test_path]["skipped"]
         )
-        per_test_result_table.add_row([
-            test_path,
-            test_status[test_path]["result"],
-            f"{test_status[test_path]['time_elapsed']:0.2f}",
-            f"{num_tests_passed}/{test_status[test_path]['tests']}",
-        ])
+        per_test_result_table.add_row(
+            [
+                test_path,
+                test_status[test_path]["result"],
+                f"{test_status[test_path]['time_elapsed']:0.2f}",
+                f"{num_tests_passed}/{test_status[test_path]['tests']}",
+            ]
+        )
 
     summary_str += per_test_result_table.get_string()
 

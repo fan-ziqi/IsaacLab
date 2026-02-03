@@ -33,15 +33,20 @@
 
 """IndustReal: algorithms module.
 
-Contains functions that implement Simulation-Aware Policy Update (SAPU), SDF-Based Reward, and Sampling-Based Curriculum (SBC).
+Contains functions that implement:
+
+- Simulation-Aware Policy Update (SAPU)
+- SDF-Based Reward
+- Sampling-Based Curriculum (SBC)
 
 Not intended to be executed as a standalone script.
 """
 
 # Force garbage collection for large arrays
 import gc
-import numpy as np
 import os
+
+import numpy as np
 
 # from pysdf import SDF
 import torch

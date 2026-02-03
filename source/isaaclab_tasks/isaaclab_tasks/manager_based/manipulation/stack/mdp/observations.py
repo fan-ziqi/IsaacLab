@@ -5,8 +5,9 @@
 
 from __future__ import annotations
 
-import torch
 from typing import TYPE_CHECKING, Literal
+
+import torch
 
 import isaaclab.utils.math as math_utils
 from isaaclab.assets import Articulation, RigidObject, RigidObjectCollection
@@ -447,7 +448,8 @@ def object_abs_obs_in_base_frame(
     robot_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ):
     """
-    Object Abs observations (in base frame): remove the relative observations, and add abs gripper pos and quat in robot base frame
+    Object Abs observations (in base frame): remove the relative observations,
+    and add abs gripper pos and quat in robot base frame
         cube_1 pos,
         cube_1 quat,
         cube_2 pos,
