@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 18:26+0800\n"
+"POT-Creation-Date: 2026-02-03 21:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language: zh_CN\n"
@@ -69,89 +69,82 @@ msgstr ""
 msgid "**Local poses**: Positions and orientations relative to each prim's parent"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:13 of
-msgid "**Fabric and Physics Simulation:**"
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:12 of
+msgid ""
+"When Fabric is enabled, the class leverages NVIDIA's Fabric API for GPU-"
+"accelerated batch operations:"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:14 of
+msgid ""
+"Uses `omni:fabric:worldMatrix` and `omni:fabric:localMatrix` attributes "
+"for all Boundable prims"
 msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView:15 of
-msgid ""
-"This view operates directly on USD attributes. When **Fabric** (NVIDIA's "
-"USD runtime optimization) is enabled, physics simulation updates are "
-"written to Fabric's internal representation and **not propagated back to "
-"USD attributes**. This causes the following issues:"
+msgid "Performs batch matrix decomposition/composition using Warp kernels on GPU"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:19 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:16 of
+msgid "Achieves performance comparable to Isaac Sim's XFormPrim implementation"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:17 of
 msgid ""
-"Reading poses via :func:`get_world_poses()` or :func:`get_local_poses()` "
-"will return **stale USD data** which does not reflect the actual physics "
-"state"
+"Works for both physics-enabled and non-physics prims (cameras, meshes, "
+"etc.). Note: renderers typically consume USD-authored camera transforms."
 msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView:21 of
 msgid ""
-"Writing poses via :func:`set_world_poses()` or :func:`set_local_poses()` "
-"will update USD, but **physics simulation will not see these changes**."
+"**Fabric requires CUDA**: Fabric is only supported with on CUDA devices. "
+"Warp's CPU backend for fabric-array writes has known issues, so "
+"attempting to use Fabric with CPU device (``device=\"cpu\"``) will raise "
+"a ValueError at initialization."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:24 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:26 of
+msgid "**Fabric Support:**"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:28 of
 msgid ""
-"**Solution:** For prims with physics components (rigid bodies, "
-"articulations), use :mod:`isaaclab.assets` classes (e.g., "
-":class:`~isaaclab.assets.RigidObject`, "
-":class:`~isaaclab.assets.Articulation`) which use PhysX tensor APIs that "
-"work correctly with Fabric."
-msgstr ""
-
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:29 of
-msgid "**When to use XformPrimView:**"
-msgstr ""
-
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:31 of
-msgid "Non-physics prims (markers, visual elements, cameras without physics)"
-msgstr ""
-
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:32 of
-msgid "Setting initial poses before simulation starts"
+"When Fabric is enabled, this view ensures prims have the required Fabric "
+"hierarchy attributes (``omni:fabric:localMatrix`` and "
+"``omni:fabric:worldMatrix``). On first Fabric read, USD-authored "
+"transforms initialize Fabric state. Fabric writes can optionally be "
+"mirrored back to USD via :attr:`sync_usd_on_fabric_write`."
 msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView:33 of
-msgid "Non-Fabric workflows"
+msgid "For more information, see the `Fabric Hierarchy documentation`_."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:35 of
-msgid ""
-"For more information on Fabric, please refer to the `Fabric "
-"documentation`_."
-msgstr ""
-
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:40 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:38 of
 msgid "**Performance Considerations:**"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:42 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:40 of
 msgid "Tensor operations are performed on the specified device (CPU/CUDA)"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:43 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:41 of
 msgid "USD write operations use ``Sdf.ChangeBlock`` for batched updates"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:44 of
-msgid ""
-"Getting poses involves USD API calls and cannot be fully accelerated on "
-"GPU"
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:42 of
+msgid "Fabric operations use GPU-accelerated Warp kernels for maximum performance"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:45 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:43 of
 msgid "For maximum performance, minimize get/set operations within tight loops"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:48 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:46 of
 msgid "**Transform Requirements:**"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:50 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:48 of
 msgid ""
 "All prims in the view must be Xformable and have standardized transform "
 "operations: ``[translate, orient, scale]``. Non-standard prims will raise"
@@ -161,7 +154,7 @@ msgid ""
 "using this view."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView:56 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView:54 of
 msgid ""
 "This class operates at the USD default time code. Any animation or time-"
 "sampled data will not be affected by write operations. For animated "
@@ -340,15 +333,7 @@ msgid ""
 "initialize the view."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.__init__
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_visibility
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_visibility
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses of
+#: ../../source/api/lab/isaaclab.sim.views.rst
 msgid "Parameters"
 msgstr ""
 
@@ -373,35 +358,26 @@ msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.__init__:19 of
 msgid ""
-"USD stage to search for prims. Defaults to None, in which case the "
-"current active stage from the simulation context is used."
-msgstr ""
-
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.__init__
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_visibility
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses of
-msgid "Raises"
+"Whether to mirror Fabric transform writes back to USD. When True, "
+"transform updates are synchronized to USD so that USD data readers (e.g.,"
+" rendering cameras) can observe these changes. Defaults to False for "
+"better performance."
 msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.__init__:22 of
 msgid ""
+"USD stage to search for prims. Defaults to None, in which case the "
+"current active stage from the simulation context is used."
+msgstr ""
+
+#: ../../source/api/lab/isaaclab.sim.views.rst
+msgid "Raises"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.__init__:25 of
+msgid ""
 "If any matched prim is not Xformable or doesn't have standardized     "
 "transform operations (translate, orient, scale in that order)."
-msgstr ""
-
-#: isaaclab.sim.views.XformPrimView.count
-#: isaaclab.sim.views.XformPrimView.prim_paths
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_visibility
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses of
-msgid "Returns"
-msgstr ""
-
-#: isaaclab.sim.views.XformPrimView.count:3 of
-msgid "The number of prims being managed by this view."
 msgstr ""
 
 #: isaaclab.sim.views.XformPrimView.prim_paths:3 of
@@ -419,26 +395,26 @@ msgid ""
 "paths are explicitly required."
 msgstr ""
 
-#: isaaclab.sim.views.XformPrimView.prim_paths:12 of
-msgid "List of prim paths (as strings) in the same order as :attr:`prims`."
-msgstr ""
-
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:3 of
 msgid ""
 "This method sets the position and/or orientation of each prim in world "
-"space. The world pose is computed by considering the prim's parent "
-"transforms. If a prim has a parent, this method will convert the world "
-"pose to the appropriate local pose before setting it."
+"space."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:7
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:5 of
+msgid ""
+"When Fabric is enabled, the function writes directly to Fabric's "
+"``omni:fabric:worldMatrix`` attribute using GPU-accelerated batch "
+"operations."
+msgstr ""
+
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:7 of
 msgid ""
-"This operation writes to USD at the default time code. Any animation data"
-" will not be affected."
+"When Fabric is disabled, the function converts to local space and writes "
+"to USD's ``xformOp:translate`` and ``xformOp:orient`` attributes."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:9 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:10 of
 msgid ""
 "World-space positions as a tensor of shape (M, 3) where M is the number "
 "of prims to set (either all prims if indices is None, or the number of "
@@ -446,37 +422,68 @@ msgid ""
 "modified."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:12 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:13 of
 msgid ""
 "World-space orientations as quaternions (w, x, y, z) with shape (M, 4). "
 "Defaults to None, in which case orientations are not modified."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:14
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:14 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:23
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:15 of
 msgid ""
 "Indices of prims to set poses for. Defaults to None, in which case poses "
 "are set for all prims in the view."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:17 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:18 of
 msgid "If positions shape is not (M, 3) or orientations shape is not (M, 4)."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:18
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:18 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:27
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_world_poses:19 of
 msgid "If the number of poses doesn't match the number of indices provided."
 msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:3 of
 msgid ""
 "This method sets the position and/or orientation of each prim in local "
-"space (relative to their parent prims). This is useful when you want to "
-"directly manipulate the prim's transform attributes without considering "
-"the parent hierarchy."
+"space (relative to their parent prims)."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:9 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:6 of
+msgid ""
+"The function writes directly to USD's ``xformOp:translate`` and "
+"``xformOp:orient`` attributes."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:8
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:10 of
+msgid ""
+"Even in Fabric mode, local pose operations use USD. This behavior is "
+"based on Isaac Sim's design where Fabric is only used for world pose "
+"operations."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:13
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:15 of
+msgid "Rationale:"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:14 of
+msgid "Local pose writes need correct parent-child hierarchy relationships"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:13
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:15 of
+msgid "USD maintains these relationships correctly and efficiently"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:14
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:16 of
+msgid "Fabric is optimized for world pose operations, not local hierarchies"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:18 of
 msgid ""
 "Local-space translations as a tensor of shape (M, 3) where M is the "
 "number of prims to set (either all prims if indices is None, or the "
@@ -484,13 +491,13 @@ msgid ""
 " are not modified."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:12 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:21 of
 msgid ""
 "Local-space orientations as quaternions (w, x, y, z) with shape (M, 4). "
 "Defaults to None, in which case orientations are not modified."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:17 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_local_poses:26 of
 msgid "If translations shape is not (M, 3) or orientations shape is not (M, 4)."
 msgstr ""
 
@@ -500,17 +507,29 @@ msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:5 of
 msgid ""
+"When Fabric is enabled, the function updates scales in Fabric matrices "
+"using GPU-accelerated batch operations."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:6 of
+msgid ""
+"When Fabric is disabled, the function writes to USD's ``xformOp:scale`` "
+"attributes."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:8 of
+msgid ""
 "Scales as a tensor of shape (M, 3) where M is the number of prims to set "
 "(either all prims if indices is None, or the number of indices provided)."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:7 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:10 of
 msgid ""
 "Indices of prims to set scales for. Defaults to None, in which case "
 "scales are set for all prims in the view."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:10 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.set_scales:13 of
 msgid "If scales shape is not (M, 3)."
 msgstr ""
 
@@ -544,18 +563,32 @@ msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:6 of
 msgid ""
+"When Fabric is enabled, the function uses Fabric batch operations with "
+"Warp kernels."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:7 of
+msgid "When Fabric is disabled, the function uses USD XformCache."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:9 of
+msgid ""
 "Scale and skew are ignored. The returned poses contain only translation "
 "and rotation."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:8
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:8 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:18
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:11 of
 msgid ""
 "Indices of prims to get poses for. Defaults to None, in which case poses "
 "are retrieved for all prims in the view."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:11 of
+#: ../../source/api/lab/isaaclab.sim.views.rst
+msgid "Returns"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:14 of
 msgid ""
 "- positions: Torch tensor of shape (M, 3) containing world-space "
 "positions (x, y, z),   where M is the number of prims queried. - "
@@ -563,37 +596,40 @@ msgid ""
 "quaternions (w, x, y, z)"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:13 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:16 of
 msgid ""
 "positions: Torch tensor of shape (M, 3) containing world-space positions "
 "(x, y, z), where M is the number of prims queried."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:15 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses:18 of
 msgid ""
 "orientations: Torch tensor of shape (M, 4) containing world-space "
 "quaternions (w, x, y, z)"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_world_poses of
+#: ../../source/api/lab/isaaclab.sim.views.rst
 msgid "Return type"
 msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:3 of
 msgid ""
 "This method retrieves the position and orientation of each prim in local "
-"space (relative to their parent prims). These are the raw transform "
-"values stored on each prim."
+"space (relative to their parent prims). It reads directly from USD's "
+"``xformOp:translate`` and ``xformOp:orient`` attributes."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:6 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:12 of
+msgid "Local pose reads need correct parent-child hierarchy relationships"
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:16 of
 msgid ""
 "Scale is ignored. The returned poses contain only translation and "
 "rotation."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:11 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:21 of
 msgid ""
 "- translations: Torch tensor of shape (M, 3) containing local-space "
 "translations (x, y, z),   where M is the number of prims queried. - "
@@ -601,13 +637,13 @@ msgid ""
 "quaternions (w, x, y, z)"
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:13 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:23 of
 msgid ""
 "translations: Torch tensor of shape (M, 3) containing local-space "
 "translations (x, y, z), where M is the number of prims queried."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:15 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_local_poses:25 of
 msgid ""
 "orientations: Torch tensor of shape (M, 4) containing local-space "
 "quaternions (w, x, y, z)"
@@ -619,11 +655,23 @@ msgstr ""
 
 #: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales:5 of
 msgid ""
+"When Fabric is enabled, the function extracts scales from Fabric matrices"
+" using batch operations with Warp kernels."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales:7 of
+msgid ""
+"When Fabric is disabled, the function reads from USD's ``xformOp:scale`` "
+"attributes."
+msgstr ""
+
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales:9 of
+msgid ""
 "Indices of prims to get scales for. Defaults to None, in which case "
 "scales are retrieved for all prims in the view."
 msgstr ""
 
-#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales:8 of
+#: isaaclab.sim.views.xform_prim_view.XformPrimView.get_scales:12 of
 msgid ""
 "A tensor of shape (M, 3) containing the scales of each prim, where M is "
 "the number of prims queried."
@@ -644,4 +692,21 @@ msgid ""
 "A tensor of shape (M,) containing the visibility of each prim, where M is"
 " the number of prims queried. The tensor is of type bool."
 msgstr ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
