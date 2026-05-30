@@ -42,7 +42,7 @@ IsaacSim中文文档网站（API自动翻译）: `https://docs.robotsfan.com/isa
 .. code-block:: bash
 
    # install python packages
-   pip install --upgrade setuptools polib openai python-dotenv pytest sphinx-intl sphinx-book-theme myst-parser sphinxcontrib-bibtex autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium sphinx-tabs sphinx-multiversion httpx[socks]
+   pip install --upgrade setuptools polib openai python-dotenv pytest sphinx-intl "sphinx>=8.0,<9.0" "sphinx-book-theme>=1.1,<2.0" "myst-parser>=4.0,<5.0" sphinxcontrib-bibtex autodocsumm sphinx-copybutton sphinx-icon sphinx_design sphinxemoji numpy matplotlib warp-lang gymnasium sphinx-tabs sphinx-multiversion "httpx[socks]"
    # merge upstream changes
    git remote add upstream https://github.com/isaac-sim/IsaacLab.git
    git fetch upstream
