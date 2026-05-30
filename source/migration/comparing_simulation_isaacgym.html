@@ -1,0 +1,1164 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>比较 Isaac Gym 和 Isaac Lab 之间的仿真 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/twemoji.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5774970f" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <script src="../../_static/twemoji.js"></script>
+    <script src="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/translations.js?v=540d3cec"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/migration/comparing_simulation_isaacgym';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="从OmniIsaacGymEnvs迁移" href="migrating_from_omniisaacgymenvs.html" />
+    <link rel="prev" title="从IsaacGymEnvs迁移" href="migrating_from_isaacgymenvs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="2.3.2" />
+    <meta name="docbuild:last-update" content="2026 年 05 月 30 日"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Quick Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg" class="icon-link-image" alt="Isaac Sim"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" title="Stars" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba" class="icon-link-image" alt="Stars"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">Isaac Lab 生态系统</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/installation/index.html">本地安装</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/pip_installation.html">使用 Isaac Sim Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/binaries_installation.html">使用 Isaac Sim 预编译二进制安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/source_installation.html">使用 Isaac Sim 源代码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/isaaclab_pip_installation.html">使用 Isaac Lab Pip 包安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/installation/asset_caching.html">资产缓存</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/index.html">容器部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/docker.html">Docker 指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/run_docker_example.html">使用 Docker 运行示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cluster.html">集群指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/cloudxr_teleoperation_cluster.html">在 Kubernetes 上部署 CloudXR 远程操作</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/reference_architecture/index.html">参考架构</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/own-project/index.html">建立自己的项目或任务</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/template.html">创建新项目或任务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/own-project/project_structure.html">项目结构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../setup/walkthrough/index.html">演练</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/concepts_env_design.html">环境设计背景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/api_env_design.html">类和配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/technical_env_design.html">环境设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_gt.html">训练 Jetbot: 基准真相</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/walkthrough/training_jetbot_reward_exploration.html">探索 RL 问题</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/create_empty.html">创建一个空场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/spawn_prims.html">生成基本物体到场景中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/00_sim/launch_app.html">深入了解AppLauncher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/add_new_robot.html">将新机器人添加到 Isaac Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_rigid_object.html">与刚性物体交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_articulation.html">与关节交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_deformable_object.html">与可变形对象交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/01_assets/run_surface_gripper.html">与表面夹爪互动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/02_scene/create_scene.html">使用交互式场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_base_env.html">创建基于管理器的基础环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_manager_rl_env.html">创建基于管理器的强化学习环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/create_direct_rl_env.html">创建直接工作流RL环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/register_rl_env_gym.html">注册环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/run_rl_training.html">与 RL Agent 进行训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/configuring_rl_training.html">配置一个RL Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/modify_direct_rl_env.html">修改现有的 Direct RL 环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/03_envs/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/04_sensors/add_sensors_on_robot.html">向机器人添加传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_diff_ik.html">使用任务空间控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/05_controllers/run_osc.html">使用运动空间控制器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../how-to/index.html">操作指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/import_new_asset.html">导入新资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/write_articulation_cfg.html">编写资产配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/make_fixed_prim.html">使仿真中的物理基本体固定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/multi_asset_spawning.html">生成多个资产</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/save_camera_output.html">保存渲染图像和3D重投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/estimate_how_many_cameras_can_run.html">找出你应该用多少/什么相机训练</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/configure_rendering.html">配置渲染设置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/wrap_rl_env.html">包装环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/add_own_library.html">添加您自己的学习库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_animation.html">录制仿真动画</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/record_video.html">在训练期间录制视频剪辑</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/curriculums.html">Curriculum 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/master_omniverse.html">掌握机器人的 Omniverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/cloudxr_teleoperation.html">设置 CloudXR 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/haply_teleoperation.html">设置 Haply 远程操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/simulation_performance.html">仿真性能和调优</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/optimize_stage_creation.html">优化场景创建</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/developer-guide/index.html">开发者指南</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/vs_code.html">在使用Visual Studio Code前的设置</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/repo_structure.html">存储库组织</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/developer-guide/development.html">扩展开发</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/core-concepts/index.html">核心概念</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/actuators.html">执行器</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../overview/core-concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview/core-concepts/sensors/visuo_tactile_sensor.html">视触觉传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/core-concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/environments.html">可用环境</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/reinforcement-learning/index.html">强化学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_existing_scripts.html">强化学习脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/rl_frameworks.html">强化学习库比较</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/performance_benchmarks.html">性能基准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/reinforcement-learning/training_guide.html">调试和训练指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/teleop_imitation.html">​​Isaac Lab Mimic 中的遥操作与模仿学习​</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/imitation-learning/skillgen.html">自动生成演示的SkillGen</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/showroom.html">示例演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/simple_agents.html">简单智能体</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多GPU和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于人群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/core-concepts/sensors/camera.html">分块渲染</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/ray.html">Ray作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experimental-features/newton-physics-integration/index.html">Newton Physics集成</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/installation.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/isaaclab_newton-beta-2.html">Isaac Lab 3.0 Beta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/training-environments.html">训练环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/visualization.html">可视化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/limitations-and-known-bugs.html">限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/solver-transitioning.html">求解器过渡</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-sim.html">Sim-to-Sim 策略转移</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experimental-features/newton-physics-integration/sim-to-real.html">Sim-to-Real 策略转移</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/cloud_installation.html">云部署</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/00_hover/hover_policy.html">训练和部署 HOVER 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/01_io_descriptors/io_descriptors_101.html">IO 描述符 101</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">迁移指南</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="migrating_from_isaacgymenvs.html">从IsaacGymEnvs迁移</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">比较 Isaac Gym 和 Isaac Lab 之间的仿真</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_from_omniisaacgymenvs.html">从OmniIsaacGymEnvs迁移</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_from_orbit.html">从Orbit迁移</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API参考</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/migration.html">迁移指南（Isaac Sim）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/release_notes.html">发行说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">扩展更新日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/migration/comparing_simulation_isaacgym.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/migration/comparing_simulation_isaacgym.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/migration/comparing_simulation_isaacgym.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="亮色"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="暗色"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>比较 Isaac Gym 和 Isaac Lab 之间的仿真</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recording-to-pxd2-in-isaac-gym-preview-release">在 Isaac Gym Preview Release 中录制为 PXD2 格式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recording-to-ovd-in-isaac-lab">在 Isaac Lab 中录制为 OVD 格式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-pxd2-and-ovd-files">检查 PXD2 和 OVD 文件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-to-verify-during-simulation-comparison">仿真比较期间需要验证的参数</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxarticulationlink">PxArticulationLink（铰接链节）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mass-properties">质量属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#damping-properties">阻尼属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#velocity-properties">速度属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#contact-resolution-properties">接触解析属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#state-and-behavior-flags">状态和行为标志</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxarticulationjoint">PxArticulationJoint（铰接关节）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-configuration">关节配置</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#drive-properties">驱动属性</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxshape">PxShape（形状）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#collision-offsets">碰撞偏移</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-and-materials">几何和材质</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-flags">形状标志</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxrigiddynamic">PxRigidDynamic（刚体动力学）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mass-and-mass-related-properties">质量和质量相关属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#damping-and-velocity-limits">阻尼和速度限制</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#contact-resolution-and-impulses">接触解析和冲量</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sleep-and-activation-behavior">休眠和激活行为</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kinematic-mode-and-locking">运动学模式和锁定</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#forces-and-solver-overrides">力和求解器覆盖</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-related-aspects">形状相关方面</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-what-to-inspect-and-why">总结：检查什么以及为什么</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="comparing-simulations-between-isaac-gym-and-isaac-lab">
+<span id="migrating-from-isaacgymenvs-comparing-simulation"></span><h1>比较 Isaac Gym 和 Isaac Lab 之间的仿真<a class="headerlink" href="#comparing-simulations-between-isaac-gym-and-isaac-lab" title="链接到此标题。">#</a></h1>
+<p>当从 Isaac Gym 迁移仿真到 Isaac Lab 时，有时需要比较 Isaac Gym 和 Isaac Lab 中的仿真配置以识别两个设置之间的差异。默认值的解释方式、导入器对某些刚体层次结构的处理方式以及值的缩放方式可能存在差异。确保两个仿真在 PhysX 看来是等效的唯一方法是记录两个设置的仿真轨迹，并通过并排检查来比较它们。这种方法之所以有效，是因为 PhysX 是 Isaac Gym 和 Isaac Lab 的共同底层引擎，尽管版本不同。</p>
+<section id="recording-to-pxd2-in-isaac-gym-preview-release">
+<h2>在 Isaac Gym Preview Release 中录制为 PXD2 格式<a class="headerlink" href="#recording-to-pxd2-in-isaac-gym-preview-release" title="链接到此标题。">#</a></h2>
+<p>可以使用内置的 PhysX Visual Debugger (PVD) 文件输出功能在 Isaac Gym 中记录仿真轨迹。将操作系统环境变量 <code class="docutils literal notranslate"><span class="pre">GYM_PVD_FILE</span></code> 设置为所需的输出文件路径； <code class="docutils literal notranslate"><span class="pre">.pxd2</span></code> 文件扩展名将自动添加。</p>
+<p>有关详细说明，请参阅 Isaac Gym 附带的调优文档：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>isaacgym/docs/_sources/programming/tuning.rst.txt
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>提供此文件引用是因为 Isaac Gym 没有在线文档。</p>
+</div>
+</section>
+<section id="recording-to-ovd-in-isaac-lab">
+<h2>在 Isaac Lab 中录制为 OVD 格式<a class="headerlink" href="#recording-to-ovd-in-isaac-lab" title="链接到此标题。">#</a></h2>
+<p>要在 Isaac Lab 中记录 OVD 仿真轨迹文件，必须设置适当的 Isaac Sim Kit 参数。重要的是要在将 <code class="docutils literal notranslate"><span class="pre">omniPvdOutputEnabled</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">true</span></code> <strong>之前</strong> 设置 <code class="docutils literal notranslate"><span class="pre">omniPvdOvdRecordingDirectory</span></code> 变量。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>scripts/benchmarks/benchmark_non_rl.py<span class="w"> </span>--task<span class="w"> </span>&lt;task_name&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--kit_args<span class="o">=</span><span class="s2">&quot;--/persistent/physics/omniPvdOvdRecordingDirectory=/tmp/myovds/ \</span>
+<span class="s2">    --/physics/omniPvdOutputEnabled=true&quot;</span>
+</pre></div>
+</div>
+<p>此示例将一系列 OVD 文件输出到 <code class="docutils literal notranslate"><span class="pre">/tmp/myovds/</span></code> 目录。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">--kit_args</span></code> 参数在您的特定设置中不起作用，您可以通过直接编辑 Isaac Sim 源代码中的以下文件来手动设置 Kit 参数：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>source/extensions/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py
+</pre></div>
+</div>
+<p>在 <code class="docutils literal notranslate"><span class="pre">args</span> <span class="pre">=</span> <span class="pre">[]</span></code> 块后添加以下行：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--/persistent/physics/omniPvdOvdRecordingDirectory=/path/to/output/ovds/&quot;</span><span class="p">)</span>
+<span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--/physics/omniPvdOutputEnabled=true&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="inspecting-pxd2-and-ovd-files">
+<h2>检查 PXD2 和 OVD 文件<a class="headerlink" href="#inspecting-pxd2-and-ovd-files" title="链接到此标题。">#</a></h2>
+<p>通过在 PVD 查看器中打开 PXD2 文件并在 OmniPVD（一个 Kit 扩展）中打开 OVD 文件，您可以手动比较两次仿真运行及其各自的参数。</p>
+<p><strong>PhysX Visual Debugger (PVD) 用于 PXD2 文件</strong></p>
+<p>从 NVIDIA 开发者工具页面下载 PVD 查看器：</p>
+<blockquote>
+<div><p><a class="reference external" href="https://developer.nvidia.com/tools-downloads#?search=PVD">https://developer.nvidia.com/tools-downloads#?search=PVD</a></p>
+</div></blockquote>
+<p>PVD 查看器的版本 2 和版本 3 都与 PXD2 文件兼容。</p>
+<p><strong>OmniPVD 用于 OVD 文件</strong></p>
+<p>要查看 OVD 文件，请在 Isaac Sim 应用程序中启用 OmniPVD 扩展。有关详细说明，请参阅 OmniPVD 开发者指南：</p>
+<blockquote>
+<div><p><a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/extensions/ux/source/omni.physx.pvd/docs/dev_guide/physx_visual_debugger.html">https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/extensions/ux/source/omni.physx.pvd/docs/dev_guide/physx_visual_debugger.html</a></p>
+</div></blockquote>
+<p><strong>在 OmniPVD 中检查接触点小部件</strong></p>
+<p>要检查对象之间的接触点，请在 OmniPVD 中启用接触点小部件。确保在 OmniPVD 时间轴中将仿真帧设置为 <strong>PRE**（每个仿真步骤的预仿真帧），或将重放模式设置为 **PRE</strong> 。这样可以在求解器处理每个步骤之前可视化接触信息。</p>
+<p><strong>比较 PVD 和 OVD 文件</strong></p>
+<p>使用 PVD 查看器和 OmniPVD 扩展，您现在可以并排比较仿真以识别配置差异。左侧是用于检查 PXD2 的 PVD，右侧是加载用于检查 OVD 文件的 OmniPVD 扩展。</p>
+<img alt="../../_images/ovd_pvd_comparison.jpg" src="../../_images/ovd_pvd_comparison.jpg" />
+</section>
+<section id="parameters-to-verify-during-simulation-comparison">
+<h2>仿真比较期间需要验证的参数<a class="headerlink" href="#parameters-to-verify-during-simulation-comparison" title="链接到此标题。">#</a></h2>
+<p>对于 PhysX 铰接体，每个属性都值得检查，因为它揭示了链节或形状在接触、驱动和约束下的实际行为方式。下面详细说明了每个属性及其对调试和调优仿真的重要性。</p>
+<section id="pxarticulationlink">
+<h3>PxArticulationLink（铰接链节）<a class="headerlink" href="#pxarticulationlink" title="链接到此标题。">#</a></h3>
+<p>每个链节的行为类似于具有质量属性、阻尼、速度限制和接触解析限制的刚体。检查这些有助于解释稳定性问题、抖动和对力的异常响应。</p>
+<section id="mass-properties">
+<h4>质量属性<a class="headerlink" href="#mass-properties" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>质量</strong></dt><dd><p>决定链节在力作用下的加速强度，以及它在碰撞和关节约束中如何分担冲量。</p>
+<p><em>何时检查:</em> 理解为什么链节看起来 &quot;过重&quot; （被推动时几乎不动）或 &quot;过轻&quot; （因小冲量而到处飞），以及检测链条上不一致的质量分布，这可能导致不真实的运动或关节应力。</p>
+</dd>
+<dt><strong>质心（位姿）</strong></dt><dd><p>控制力的有效作用位置以及链节如何平衡。</p>
+<p><em>何时检查:</em> 角色或机构意外倾翻或感觉不平衡；偏移的质心会导致相同接触产生不真实的扭矩。</p>
+</dd>
+<dt><strong>惯性张量 / 惯性缩放</strong></dt><dd><p>定义关于每个轴的旋转阻力。</p>
+<p><em>何时检查:</em> 相对于其质量，链节旋转过于容易或困难，这会影响关节驱动调整和冲击响应。</p>
+</dd>
+</dl>
+</section>
+<section id="damping-properties">
+<h4>阻尼属性<a class="headerlink" href="#damping-properties" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>线性阻尼</strong></dt><dd><p>模拟与速度成正比的平移阻力；较高的值使链节更快地失去线性速度。</p>
+<p><em>何时检查:</em> 链节滑动过远（阻尼过低）或感觉 &quot;在水下&quot; （阻尼过高），或者当铰接体能量似乎在没有明显接触的情况下消失时。</p>
+</dd>
+<dt><strong>角阻尼</strong></dt><dd><p>模拟旋转阻力；较高的值使旋转链节更快地减速。</p>
+<p><em>何时检查:</em> 链节在冲击或电机驱动后继续旋转（过低），或者关节感觉 &quot;粘滞&quot; 且无法在重力下自由摆动（过高）。</p>
+</dd>
+</dl>
+</section>
+<section id="velocity-properties">
+<h4>速度属性<a class="headerlink" href="#velocity-properties" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>线速度</strong></dt><dd><p>链节在世界空间中的瞬时平移速度。</p>
+<p><em>何时检查:</em> 验证关节电机、重力或接触是否产生预期运动，检测数值爆炸（巨大峰值），并与CCD阈值和最大线速度钳位关联。</p>
+</dd>
+<dt><strong>角速度</strong></dt><dd><p>世界空间中的瞬时旋转速度。</p>
+<p><em>何时检查:</em> 验证关节驱动、冲击或约束是否产生正确的旋转；发现失控旋转，这可能在钳位生效之前导致不稳定或穿透。</p>
+</dd>
+<dt><strong>最大线速度</strong></dt><dd><p>PhysX在求解前用于钳制线速度的上限，旨在防止极快运动带来的数值问题。</p>
+<p><em>何时检查:</em> 对象开始穿透或仿真在高速时爆炸。如果过高，链节在一步中可能移动过远；过低，它们可能看起来被不自然地限制，像 &quot;限速&quot; 机器人。</p>
+</dd>
+<dt><strong>最大角速度</strong></dt><dd><p>角速度的上限；PhysX 以与线速度类似的方式钳制角速度。</p>
+<p><em>何时检查:</em> 链节在碰撞或驱动后旋转速度不切实际地快（值过大），或者旋转看起来被不自然地限制，特别是对于应该快速旋转的轮子或转子（值过小）。</p>
+</dd>
+</dl>
+</section>
+<section id="contact-resolution-properties">
+<h4>接触解析属性<a class="headerlink" href="#contact-resolution-properties" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>最大去穿透速度</strong></dt><dd><p>限制求解器在一步中可以添加多少校正速度来解决接触处的穿透。</p>
+<p><em>何时检查:</em> 重叠的链节在开始穿透后向外 &quot;爆炸&quot; 或抖动（过高），或嵌入的链节分离过慢并看起来粘在一起（过低）。</p>
+</dd>
+<dt><strong>最大接触冲量</strong></dt><dd><p>限制求解器在接触处可以施加的冲量；每个刚体的限制，实际接触限制是两个刚体值中的最小值。</p>
+<p><em>何时检查:</em> 接触感觉太软（刚体深度穿透或沉入环境）或太硬（尖锐冲量导致震铃或反弹），或者在调整 &quot;软碰撞&quot; （如橡胶或类皮肤表面）时。</p>
+</dd>
+</dl>
+</section>
+<section id="state-and-behavior-flags">
+<h4>状态和行为标志<a class="headerlink" href="#state-and-behavior-flags" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>运动学 vs 动力学标志 / 禁用重力</strong></dt><dd><p>指示链节是运动学驱动还是完全仿真，以及重力是否影响它。</p>
+<p><em>何时检查:</em> 部件看起来被冻结，直接跳转到位姿，或忽略重力，这可能会大幅改变铰接体行为。</p>
+</dd>
+<dt><strong>休眠阈值（线性、角度）和唤醒计数器</strong></dt><dd><p>控制链节何时允许进入休眠并停止仿真。</p>
+<p><em>何时检查:</em> 铰接体过早休眠（停止运动）或从不休眠（浪费性能并导致低幅度抖动）。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="pxarticulationjoint">
+<h3>PxArticulationJoint（铰接关节）<a class="headerlink" href="#pxarticulationjoint" title="链接到此标题。">#</a></h3>
+<p>入站关节定义链节与其父节点之间的相对运动。检查运动和相关参数可以解释限制、约束以及驱动如何塑造铰接体位姿和稳定性。</p>
+<section id="joint-configuration">
+<h4>关节配置<a class="headerlink" href="#joint-configuration" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>运动</strong></dt><dd><p>每轴设置（锁定、限制、自由），定义关节允许哪些自由度以及范围是否受限。</p>
+<p><em>何时检查:</em> 链节沿意外方向移动（轴错误地设置为自由），比预期更早或更晚碰到硬停止（限制 vs 锁定），或者由于轴错误地保持自由而看起来不受约束。</p>
+</dd>
+<dt><strong>关节类型 / 轴定义</strong></dt><dd><p>选择旋转、棱柱、球形等类型，以及定义轴的局部关节框架。</p>
+<p><em>何时检查:</em> &quot;铰链&quot; 表现得更像球关节或意外滑动；不正确的类型或框架对齐很容易产生怪异的运动。</p>
+</dd>
+<dt><strong>限制（摆动、扭转、线性）</strong></dt><dd><p>指定允许的角度或线性范围，通常包括刚度/阻尼。</p>
+<p><em>何时检查:</em> 关节过度伸展，穿过几何体，或在边界处突然咬合；设置错误的限制会导致弹跳和不稳定。</p>
+</dd>
+</dl>
+</section>
+<section id="drive-properties">
+<h4>驱动属性<a class="headerlink" href="#drive-properties" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>驱动目标位置（方向）和目标速度</strong></dt><dd><p>驱动铰接体的期望相对位姿和相对速度，通常使用弹簧-阻尼器模型。</p>
+<p><em>何时检查:</em> 控制器太慢或过冲并振荡——目标值和驱动参数必须与链节质量和惯性匹配。</p>
+</dd>
+<dt><strong>驱动刚度和阻尼（弹簧强度、切向阻尼）</strong></dt><dd><p>控制关节尝试达到目标位姿的激进程度以及过冲的阻尼量。</p>
+<p><em>何时检查:</em> 关节在负载下嗡嗡作响或振荡（刚度高、阻尼低）或感觉无响应且 &quot;橡胶般&quot; （刚度低）。</p>
+</dd>
+<dt><strong>关节摩擦 / 阻力（如果配置）</strong></dt><dd><p>即使在驱动中没有显式阻尼，也会增加阻力。</p>
+<p><em>何时检查:</em> 被动关节继续摆动时间过长，或者即使没有驱动也看起来被卡住。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="pxshape">
+<h3>PxShape（形状）<a class="headerlink" href="#pxshape" title="链接到此标题。">#</a></h3>
+<p>附加到链节的形状决定了碰撞表示和接触行为。即使它们在 OmniPhysics 中是内部的，它们的属性也对稳定性、接触时间和视觉对齐有很强的影响。</p>
+<section id="collision-offsets">
+<h4>碰撞偏移<a class="headerlink" href="#collision-offsets" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>静止偏移</strong></dt><dd><p>两个形状静止时的距离；它们的静止偏移之和定义了它们 &quot;安定&quot; 的分离距离。</p>
+<p><em>何时检查:</em> 图形和碰撞看起来不对齐（间隙或可见相交），或在网格上滑动粗糙。小的正偏移可以使滑动平滑，而零偏移倾向于精确对齐，但可能会卡在几何体上。</p>
+</dd>
+<dt><strong>接触偏移</strong></dt><dd><p>接触生成开始的距离；距离小于接触偏移之和的形状会生成接触。</p>
+<p><em>何时检查:</em> 接触看起来 &quot;过早&quot; （对象在视觉接触前似乎发生碰撞，增加接触计数）或 &quot;过晚&quot; （穿透或抖动）。接触偏移和静止偏移之间的差异对于预测性、稳定的接触至关重要。</p>
+</dd>
+</dl>
+</section>
+<section id="geometry-and-materials">
+<h4>几何和材质<a class="headerlink" href="#geometry-and-materials" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>几何类型和尺寸</strong></dt><dd><p>盒子、球体、胶囊、凸面、网格以及相关的尺寸参数。</p>
+<p><em>何时检查:</em> 碰撞轮廓与视觉网格不匹配——过大的形状会导致过早接触；小形状允许视觉相交并改变接触处的杠杆作用。</p>
+</dd>
+<dt><strong>材质：摩擦、恢复、柔度</strong></dt><dd><p>摩擦系数和恢复系数定义滑动和弹性。</p>
+<p><em>何时检查:</em> 铰接体的脚太容易打滑、粘在地面上或意外反弹。错误的材质会使机构不稳定或无响应。</p>
+</dd>
+</dl>
+</section>
+<section id="shape-flags">
+<h4>形状标志<a class="headerlink" href="#shape-flags" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>仿真 / 查询 / 触发标志</strong></dt><dd><p>形状是否参与仿真接触、仅光线投射或触发事件。</p>
+<p><em>何时检查:</em> 接触未出现（形状设置为仅查询）或触发器意外创建物理碰撞。</p>
+</dd>
+<dt><strong>接触密度（CCD 标志，如果使用）</strong></dt><dd><p>影响快速移动链节处理方式的连续碰撞检测标志。</p>
+<p><em>何时检查:</em> 快速铰接部件穿过薄障碍物，或 CCD 过于激进并降低性能。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="pxrigiddynamic">
+<h3>PxRigidDynamic（刚体动力学）<a class="headerlink" href="#pxrigiddynamic" title="链接到此标题。">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">PxRigidDynamic</span></code> 是 PhysX 中的核心仿真刚体类型，因此检查其属性对于理解场景中单个对象的行为、稳定性和性能至关重要。许多属性与 <code class="docutils literal notranslate"><span class="pre">PxArticulationLink</span></code> 相似，但刚体动力学不受铰接关节约束，也可以在运动学模式下使用。</p>
+<section id="mass-and-mass-related-properties">
+<h4>质量和质量相关属性<a class="headerlink" href="#mass-and-mass-related-properties" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>质量</strong></dt><dd><p>控制对力和冲量的平移响应；对于相同的冲量，较低的质量产生较高的速度变化。</p>
+<p><em>何时检查:</em> 对象几乎不对撞击做出反应（质量过大）或因小力而飞走（质量过小），或交互刚体之间的质量比导致过于主导或容易被欺负的刚体。</p>
+</dd>
+<dt><strong>质心 (COM) 位姿</strong></dt><dd><p>定义力的有效作用位置以及刚体围绕哪个点旋转。</p>
+<p><em>何时检查:</em> 对象意外倾翻、以不直观的方式滚动或感觉 &quot;不平衡&quot; 。质心过高或偏离中心可能会导致小接触产生强扭矩。</p>
+</dd>
+<dt><strong>惯性张量 / 惯性缩放</strong></dt><dd><p>确定给定扭矩下围绕每个轴的角加速度阻力。</p>
+<p><em>何时检查:</em> 刚体旋转过于容易或困难（例如，大物体因小撞击而快速旋转），或者当需要各向异性行为时（例如，轮子围绕一个轴容易旋转但抵抗其他轴）。</p>
+</dd>
+</dl>
+</section>
+<section id="damping-and-velocity-limits">
+<h4>阻尼和速度限制<a class="headerlink" href="#damping-and-velocity-limits" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>线性阻尼</strong></dt><dd><p>在平移上添加与速度成正比的阻力。</p>
+<p><em>何时检查:</em> 刚体滑动过远或过长时间（阻尼过低）或看起来像在浓稠液体中移动（阻尼过高），以及当场景比仅靠摩擦所暗示的更快地失去能量时。</p>
+</dd>
+<dt><strong>角阻尼</strong></dt><dd><p>增加旋转阻力，随时间降低角速度。</p>
+<p><em>何时检查:</em> 旋转物体从不稳定或旋转时间不切实际地长（过低），或者它们在冲击或电机冲量后几乎立即停止旋转（过高）。</p>
+</dd>
+<dt><strong>线速度</strong></dt><dd><p>积分器和求解器使用的当前平移速度。</p>
+<p><em>何时检查:</em> 调试冲量、重力或施加的力，以查看刚体是否按预期加速；检测速度中的尖峰或非物理跳跃。</p>
+</dd>
+<dt><strong>角速度</strong></dt><dd><p>围绕每个轴的当前旋转速度。</p>
+<p><em>何时检查:</em> 旋转看起来抖动、数值爆炸或未能响应施加的扭矩。相对于时间步长和对象比例的高值可能表示不稳定。</p>
+</dd>
+<dt><strong>最大线速度</strong></dt><dd><p>求解前用于钳制线速度的上限。</p>
+<p><em>何时检查:</em> 非常快的刚体导致穿透或仿真爆炸（值过高），或者它们看起来被不自然地 &quot;限速&quot; ，特别是高能场景中的抛射物或碎片（值过低）。</p>
+</dd>
+<dt><strong>最大角速度</strong></dt><dd><p>用于钳制角速度的上限。</p>
+<p><em>何时检查:</em> 薄或小的刚体旋转如此之快以至于它们破坏场景的稳定性（值过高），或者旋转元素如轮子、螺旋桨或碎片看起来被人为限制（值过低）。</p>
+</dd>
+</dl>
+</section>
+<section id="contact-resolution-and-impulses">
+<h4>接触解析和冲量<a class="headerlink" href="#contact-resolution-and-impulses" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>最大去穿透速度</strong></dt><dd><p>限制求解器在一步中可能引入的校正速度以解决互穿。</p>
+<p><em>何时检查:</em> 相交的刚体在重叠后 &quot;爆炸&quot; 分开或剧烈抖动（过高），或者非常缓慢地分离并在几帧中看起来卡住或互穿（过低）。</p>
+</dd>
+<dt><strong>最大接触冲量</strong></dt><dd><p>限制涉及此刚体的接触处可以施加的冲量；有效限制是两个刚体之间的最小值，或静态-动态接触中的动态刚体。</p>
+<p><em>何时检查:</em> 创建更软的接触（较低限制）或非常刚性、几乎不屈服的刚体（高或默认限制）；对象相互沉入或不切实际地反弹。</p>
+</dd>
+</dl>
+</section>
+<section id="sleep-and-activation-behavior">
+<h4>休眠和激活行为<a class="headerlink" href="#sleep-and-activation-behavior" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>休眠阈值</strong></dt><dd><p>质量归一化的动能低于此值时，刚体成为休眠候选。</p>
+<p><em>何时检查:</em> 刚体在应该继续移动时过早休眠（阈值过高）或持续抖动且从不休眠（阈值过低），这可能会损害性能。</p>
+</dd>
+<dt><strong>唤醒计数器 / isSleeping 标志</strong></dt><dd><p>指示刚体是否活动的内部计时器和状态。</p>
+<p><em>何时检查:</em> 刚体在交互时拒绝唤醒或过于容易唤醒。不良的休眠行为会使场景感觉 &quot;死气沉沉&quot; 或过于嘈杂。</p>
+</dd>
+</dl>
+</section>
+<section id="kinematic-mode-and-locking">
+<h4>运动学模式和锁定<a class="headerlink" href="#kinematic-mode-and-locking" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>运动学标志 (PxRigidBodyFlag::eKINEMATIC)</strong></dt><dd><p>设置后，刚体通过 <code class="docutils literal notranslate"><span class="pre">setKinematicTarget</span></code> 移动并忽略力和重力，同时仍然影响其接触的动态刚体。</p>
+<p><em>何时检查:</em> 对象似乎具有无限质量（推动其他对象但不做出反应）或忽略重力和冲量。这里的不匹配预期通常会导致角色、移动平台或门的奇怪行为。</p>
+</dd>
+<dt><strong>刚体动力学锁定标志 (PxRigidDynamicLockFlag)</strong></dt><dd><p>每轴线性和角度自由度锁定，有效地在没有关节的情况下约束运动。</p>
+<p><em>何时检查:</em> 刚体意外地在受约束方向上移动（未设置锁定）或在应该移动/旋转的地方无法移动（错误设置锁定），特别是对于 2D 风格的移动或简单的受约束机构。</p>
+</dd>
+<dt><strong>禁用重力 (PxActorFlag::eDISABLE_GRAVITY)</strong></dt><dd><p>切换刚体是否受场景重力影响。</p>
+<p><em>何时检查:</em> 对象漂浮在半空中或意外掉落。在某些无重力刚体的混合设置中，这是常见的困惑来源。</p>
+</dd>
+</dl>
+</section>
+<section id="forces-and-solver-overrides">
+<h4>力和求解器覆盖<a class="headerlink" href="#forces-and-solver-overrides" title="链接到此标题。">#</a></h4>
+<dl>
+<dt><strong>施加的力和扭矩（每步累积）</strong></dt><dd><p>将被积分到速度中的净力/扭矩。</p>
+<p><em>何时检查:</em> 调试游戏力（推进器、角色推动、爆炸）以查看预期输入是否实际到达刚体。</p>
+</dd>
+<dt><strong>每刚体求解器迭代计数 (minPositionIters, minVelocityIters)</strong></dt><dd><p>此刚体在约束和接触中获得多少求解器迭代的覆盖。</p>
+<p><em>何时检查:</em> 某些刚体（例如，角色、堆叠的箱子、脆弱的结构）需要更高的稳定性或更准确的堆叠。低迭代可能导致抖动和穿透；过高会浪费性能。</p>
+</dd>
+</dl>
+</section>
+<section id="shape-related-aspects">
+<h4>形状相关方面<a class="headerlink" href="#shape-related-aspects" title="链接到此标题。">#</a></h4>
+<p>虽然不是 <code class="docutils literal notranslate"><span class="pre">PxRigidDynamic</span></code> 本身的属性，但附加到它的形状会严重影响行为。</p>
+<dl>
+<dt><strong>附加形状的静止和接触偏移</strong></dt><dd><p>如前所述，控制预测性接触生成和视觉分离。</p>
+<p><em>何时检查:</em> 动态刚体似乎碰撞过早/过晚或看起来漂浮在表面上方或与它们视觉相交。</p>
+</dd>
+<dt><strong>附加材质（摩擦、恢复）</strong></dt><dd><p>定义此刚体接触的滑动和弹性。</p>
+<p><em>何时检查:</em> 刚体动力学以意外方式打滑、粘住或反弹。通常 &quot;行为问题&quot; 是材质配置而不是质量或阻尼。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="summary-what-to-inspect-and-why">
+<h3>总结：检查什么以及为什么<a class="headerlink" href="#summary-what-to-inspect-and-why" title="链接到此标题。">#</a></h3>
+<p>下表总结了每个 PhysX 组件的关键检查区域：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>组件</p></th>
+<th class="head"><p>关键属性</p></th>
+<th class="head"><p>调试重点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>链节</strong></p></td>
+<td><p>质量、阻尼、速度、限制</p></td>
+<td><p>整体能量、稳定性以及对关节/接触的响应</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>关节</strong></p></td>
+<td><p>运动、限制、驱动</p></td>
+<td><p>铰接体位姿如何演变；过度/不足约束的运动</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>形状</strong></p></td>
+<td><p>偏移、材质、几何</p></td>
+<td><p>接触时间、摩擦行为、视觉与物理对齐</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>刚体动力学</strong></p></td>
+<td><p>质量、惯性、阻尼、速度限制、休眠、运动学标志</p></td>
+<td><p>加速度、沉降、极端运动、刚体状态</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所有这些属性共同提供了为什么铰接体或刚体如此行为的全面图景，以及在哪里调整参数以实现稳定性、真实性或控制性能。</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="migrating_from_isaacgymenvs.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">从IsaacGymEnvs迁移</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="migrating_from_omniisaacgymenvs.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">从OmniIsaacGymEnvs迁移</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recording-to-pxd2-in-isaac-gym-preview-release">在 Isaac Gym Preview Release 中录制为 PXD2 格式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recording-to-ovd-in-isaac-lab">在 Isaac Lab 中录制为 OVD 格式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-pxd2-and-ovd-files">检查 PXD2 和 OVD 文件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-to-verify-during-simulation-comparison">仿真比较期间需要验证的参数</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxarticulationlink">PxArticulationLink（铰接链节）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mass-properties">质量属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#damping-properties">阻尼属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#velocity-properties">速度属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#contact-resolution-properties">接触解析属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#state-and-behavior-flags">状态和行为标志</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxarticulationjoint">PxArticulationJoint（铰接关节）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-configuration">关节配置</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#drive-properties">驱动属性</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxshape">PxShape（形状）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#collision-offsets">碰撞偏移</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-and-materials">几何和材质</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-flags">形状标志</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pxrigiddynamic">PxRigidDynamic（刚体动力学）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mass-and-mass-related-properties">质量和质量相关属性</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#damping-and-velocity-limits">阻尼和速度限制</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#contact-resolution-and-impulses">接触解析和冲量</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sleep-and-activation-behavior">休眠和激活行为</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kinematic-mode-and-locking">运动学模式和锁定</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#forces-and-solver-overrides">力和求解器覆盖</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-related-aspects">形状相关方面</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-what-to-inspect-and-why">总结：检查什么以及为什么</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers. Translate by 范子琦(Github@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, The Isaac Lab Project Developers..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 05 月 30 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
