@@ -41,12 +41,12 @@ PYTORCH_INDEX_URL = ["https://download.pytorch.org/whl/cu128"]
 # Extra dependencies for RL agents
 EXTRAS_REQUIRE = {
     "sb3": ["stable-baselines3>=2.6", "tqdm", "rich"],  # tqdm/rich for progress bar
-    "skrl": ["skrl>=1.4.3"],
+    "skrl": ["skrl>=2.0.0"],
     "rl-games": [
         "rl-games @ git+https://github.com/isaac-sim/rl_games.git@python3.11",
         "gym",
     ],  # rl-games still needs gym :(
-    "rsl-rl": ["rsl-rl-lib==3.1.2", "onnxscript>=0.5"],  # linux aarch 64 requires manual onnxscript installation
+    "rsl-rl": ["rsl-rl-lib==5.0.1", "onnxscript>=0.5"],  # linux aarch 64 requires manual onnxscript installation
 }
 # Add the names with hyphens as aliases for convenience
 EXTRAS_REQUIRE["rl_games"] = EXTRAS_REQUIRE["rl-games"]
