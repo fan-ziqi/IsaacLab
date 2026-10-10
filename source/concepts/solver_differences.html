@@ -1,0 +1,947 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>求解器差异 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=ccd4f661" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/environment-browser.css?v=665352f4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/demo-browser.css?v=e28b46a0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/guide-browser.css?v=7190c4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script>window.isaacLabDocsTranslations = {"5 visualizers running Isaac-Velocity-Flat-AnymalD with a circular velocity command": "五种可视化器运行 Isaac-Velocity-Flat-AnymalD，并使用环形速度指令", "A PhysX-trained ANYmal-D policy runs side by side in PhysX and Newton MJWarp": "在 PhysX 上训练的 ANYmal-D 策略，并排运行于 PhysX 与 Newton MJWarp", "A Rizon robot uses a Sharpa hand to manipulate a teapot": "Rizon 机器人使用 Sharpa 手操作茶壶", "A Rizon robot uses a Sharpa hand to manipulate an RJ45 cable": "Rizon 机器人使用 Sharpa 手操作 RJ45 网线", "All categories": "所有类别", "Animate an arm, biped, quadruped, dexterous hand, quadcopter, and rigid props in one deterministic scene.": "在同一确定性场景中，驱动机械臂、双足机器人、四足机器人、灵巧手、四旋翼和刚性道具。", "Arrow markers on the Franka arm's joints, with contact sensor markers on the cube": "Franka 机械臂关节上的箭头标记，以及立方体上的接触传感器标记", "Back to all guides": "返回全部指南", "Benchmark FPS measurements, scroll for more configurations": "性能测试 FPS 测量结果，可滚动查看更多配置", "Benchmark channel": "性能测试分支", "Benchmark data could not be loaded.": "无法加载性能测试数据。", "Benchmark data is not available yet": "暂无性能测试数据", "Benchmark workload": "性能测试负载", "Block and tackle pulleys and a red load": "滑轮组与红色负载", "Classic control": "经典控制", "Collection": "数据采集", "Command mode": "命令模式", "Contrib": "社区贡献", "Copy command": "复制命令", "Core": "核心任务", "Default": "默认", "Develop": "开发版", "Domain preset": "领域预设", "Drag a cable handle to lift a load through a 4:1 pulley system.": "拖动缆绳把手，通过 4:1 滑轮组举起负载。", "Each Allegro hand reorients its cube to match the target shown by the marker above it": "每只 Allegro 手调整立方体朝向，使其与上方标记显示的目标一致", "Each Franka arm reaches its end-effector toward a randomized target pose": "各 Franka 机械臂将末端执行器移动到随机目标位姿", "Each H1 humanoid climbs a staircase sub-terrain": "各 H1 人形机器人攀登楼梯子地形", "Each Kuka arm and Allegro hand lifts its cube off the table": "各 Kuka 机械臂和 Allegro 手将立方体从桌面举起", "Each Shadow Hand reorients its cube to match the target pose": "各 Shadow Hand 调整立方体朝向，使其与目标位姿一致", "Fill a Utah teapot with MPM water particles and pour them into a bowl.": "向 Utah 茶壶注入 MPM 水粒子，再倒入碗中。", "Filled teal fingers belong to the source solver; outlined blue fingers are destination-local proxies of those same bodies. The blue object represents material owned by the destination solver.": "青绿色实心手指属于源求解器；蓝色轮廓手指是目标求解器内这些刚体的本地代理。蓝色物体表示归目标求解器所有的材料。", "Green arrow: commanded velocity. Blue arrow: current velocity.": "绿色箭头表示指令速度；蓝色箭头表示当前速度。", "H1 Locomotion": "H1 行走", "H1 locomotion": "H1 行走", "H1 locomotion in Isaac Lab": "Isaac Lab 中的 H1 行走", "H1 locomotion uses a published policy. For autonomous H1 task playback, use": "H1 行走使用已发布的策略。要自主回放 H1 任务，请使用", "In the Newton viewer, press": "在 Newton 查看器中，按", "Interactive pick and place demo": "交互式抓取与放置演示", "Interactive view of the Galbot cube stacking environment": "Galbot 立方体堆叠环境的交互视图", "Interactively pick up a cube with a parallel robot and place it on a target.": "交互式控制并联机器人，抓起立方体并放到目标位置。", "Isaac Lab command builder": "Isaac Lab 命令生成器", "Isaac Lab demo command builder": "Isaac Lab 演示命令生成器", "Isaac-Cartpole preview": "Isaac-Cartpole 预览", "Isaac-Lift-KukaAllegro in Viser Visualizer": "Viser 可视化器中的 Isaac-Lift-KukaAllegro", "Isaac-Reach-Franka in Kit Visualizer": "Kit 可视化器中的 Isaac-Reach-Franka", "Isaac-Reorient-Cube-Allegro in Newton GL Visualizer": "Newton GL 可视化器中的 Isaac-Reorient-Cube-Allegro", "Isaac-Reorient-Cube-Shadow-Direct in Rerun Visualizer": "Rerun 可视化器中的 Isaac-Reorient-Cube-Shadow-Direct", "Isaac-Velocity-Rough-H1 in Newton RTX Visualizer": "Newton RTX 可视化器中的 Isaac-Velocity-Rough-H1", "Joint arrow markers on a Franka arm and contact sensor markers on a cube": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记", "Joint arrow markers on a Franka arm, with contact sensor markers on a cube.": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记。", "Kit visualizer": "Kit 可视化器", "Kit visualizer tiled streaming": "Kit 可视化器平铺串流", "Kit visualizer: interactive viewport": "Kit 可视化器：交互式视口", "Kit visualizer: streaming camera view": "Kit 可视化器：串流相机视图", "Large green/blue arrow markers showing target and base velocity for an AnymalD robot": "AnymalD 机器人上表示目标速度和基座速度的大型绿色、蓝色箭头标记", "Loading guide...": "正在加载指南…", "Locomotion": "移动", "Manipulation": "操作", "Mode": "模式", "Newton Block and Tackle": "Newton 滑轮组", "Newton GL visualizer": "Newton GL 可视化器", "Newton GL visualizer, with 3 plots opened": "Newton GL 可视化器，打开了三个曲线图", "Newton visualizer: interactive viewport": "Newton 可视化器：交互式视口", "Newton visualizer: streaming camera view": "Newton 可视化器：串流相机视图", "No guides match this search.": "没有符合搜索条件的指南。", "No tasks match this search.": "没有符合搜索条件的任务。", "Not available": "暂无数据", "Note: Newton RTX has no velocity arrows, since it doesn't yet support visualization markers.": "注意：Newton RTX 暂不支持可视化标记，因此没有速度箭头。", "OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.": "OV 与 Isaac Sim 不能混用。请选择相互匹配的物理后端和渲染后端。", "Open in a new tab": "在新标签页打开", "Open the animation": "打开动画", "Physics": "物理", "Physics backend": "物理后端", "Physics preset": "物理预设", "Pick and Place": "抓取与放置", "Pick and place": "抓取与放置", "Pick and place requires Kit input.": "抓取与放置需要 Kit 输入。", "Play": "回放", "Preset": "预设", "Proxy coupling between source and destination solvers": "源求解器与目标求解器之间的代理耦合", "RL Library": "强化学习库", "RL library": "强化学习库", "Recorded clip of the Shadow Hand cube-reorientation task, recording the streaming view of the Rerun visualizer with 4 streaming view envs and 4 GT types": "Shadow Hand 立方体转向任务的录像，录制 Rerun 可视化器的串流视图，包含四个串流环境和四种真值数据", "Recorded clip with ground-truth sensor views": "包含真值传感器视图的录像片段", "Release": "发布版", "Renderer": "渲染器", "Renderer preset": "渲染器预设", "Right-click dragging the first domino triggers the cascade across an NVIDIA-logo domino layout": "右键拖动第一张骨牌，在 NVIDIA 标志形状的骨牌布局中触发连锁倒下", "Robots in the Isaac Lab Zoo demo": "Isaac Lab Zoo 演示中的机器人", "Scene sensor": "场景传感器", "Search all guides": "搜索全部指南", "Search guides": "搜索指南", "Search tasks and capabilities": "搜索任务与功能", "Search tasks or capabilities": "搜索任务或功能", "Select H1 robots and control a trained rough-terrain policy with the keyboard and follow camera.": "选择 H1 机器人，通过键盘和跟随相机控制已训练的崎岖地形策略。", "Selected guide": "所选指南", "Selected task": "所选任务", "Smash rigid crates with coupled MPM snowballs.": "使用耦合的 MPM 雪球撞碎刚性箱子。", "Snowball Smash": "雪球撞击", "Snowballs striking a stack of colored crates": "雪球撞击一叠彩色箱子", "Streaming view showing tiled Galbot wrist-camera feeds": "显示 Galbot 腕部相机平铺画面的串流视图", "Table color shows success: red until the cube reaches its target pose, green once it does.": "桌面颜色表示成功状态：立方体到达目标位姿前为红色，到达后变为绿色。", "Task": "任务", "Task category": "任务类别", "Task collection": "任务集合", "Teapot Fill": "茶壶注水", "The upper arrow synchronizes source state with the proxies, including pose and velocity. Contact produces the force and torque feedback shown by the lower arrow, which returns to a later source solve or coupling iteration.": "上方箭头表示源状态与代理之间的同步，包括位姿和速度。接触产生下方箭头所示的力与力矩反馈，在后续源求解或耦合迭代中返回。", "This environment does not support RL training or playback. The command runs it with the zero-action agent instead.": "此环境不支持强化学习训练或回放，命令将改用零动作智能体运行。", "Train": "训练", "Training": "训练", "Use Pre-trained Checkpoint": "使用预训练检查点", "Utah teapot pouring simulated water": "Utah 茶壶倒出仿真水流", "VRAM": "显存", "Velocity arrow marker on an AnymalD robot": "AnymalD 机器人上的速度箭头标记", "Velocity command (green) and current velocity (blue) arrow markers on an AnymalD robot.": "AnymalD 机器人上表示速度指令（绿色）和当前速度（蓝色）的箭头标记。", "Viser visualizer, with 1 plot opened": "Viser 可视化器，打开了一个曲线图", "Visualizer": "可视化器", "Watch the proxy coupling animation.": "观看代理耦合动画。", "Zoo": "机器人集锦（Zoo）", "newton-dominoes example": "newton-dominoes 示例", "to pause or scrub through the exchange.": "可暂停或拖动进度查看交换过程。", "to select a robot,": "选择机器人，按", "to stop, and": "停止，按", "to toggle the follow camera.": "切换跟随相机。", "to walk forward or turn,": "前进或转向，按", "Copied": "已复制", "default": "默认", "Manager": "管理器", "Direct": "直接工作流", "Camera": "相机", "Direct-Camera": "直接工作流与相机", "Task variant": "任务变体", "Zero agent": "零动作智能体", "Not supported": "不支持", "Collection FPS": "采集 FPS", "Training FPS": "训练 FPS", "Configuration": "配置", "Mean FPS": "平均 FPS", "Unspecified renderer": "未指定渲染器", "Presets not recorded": "未记录预设", "Newton renderer": "Newton 渲染器", "Newton MJWarp VBD proxy": "Newton MJWarp VBD 代理", "none": "无"};</script>
+    <script src="../../_static/zh-cn-ui.js?v=2a63ae94"></script>
+    <script src="../../_static/media-status.js?v=d1674cca"></script>
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/concepts/solver_differences';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/css/environment-browser.js?v=0830db2c"></script>
+    <script src="../../_static/css/demo-browser.js?v=bcae0e8a"></script>
+    <script src="../../_static/css/guide-browser.js?v=d5610391"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="访问原生物理 API" href="native-physics-api/index.html" />
+    <link rel="prev" title="Warp 环境迁移指南" href="warp_environment_migration.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="3.0.0" />
+    <meta name="docbuild:last-update" content="2026 年 10 月 10 日"/>
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="快捷链接">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cube fa-lg" aria-hidden="true"></i><span class="visually-hidden">Isaac Sim</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab/stargazers" title="GitHub 星标" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-star fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub 星标</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">生态系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/tutorial.html">教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/demos.html">演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">操作指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../workflows/index.html">工作流程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../workflows/docker/index.html">在 Docker 中运行 Isaac Lab</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/images.html">容器镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/cluster.html">在 HPC 集群上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/cloud.html">云部署</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_to_isaaclab_3-0.html">迁移到 3.0</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">核心概念</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="backends_and_presets.html">后端与预设</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend_architecture.html">后端架构</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="physics_backends.html">物理后端</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="physics-backends/newton.html">Newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="joint_and_body_ordering.html">关节与刚体顺序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovphysx.html">OvPhysX 后端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_mpm.html">使用隐式 MPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp_environments.html">Warp 实验性环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp_environment_migration.html">Warp 环境迁移指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">求解器差异</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="native-physics-api/index.html">访问原生物理 API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/physx.html">PhysX 张量 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/newton.html">Newton 原生数据与选择 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/ovphysx.html">OvPhysX 张量绑定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="renderers.html">渲染器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actuators.html">执行器</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="sensors/camera.html">相机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/pva.html">位姿、速度与加速度（PVA）传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/joint_wrench_sensor.html">关节力旋量传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="coupled_solvers.html">耦合求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deformables.html">可变形物体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_cfgs.html">模式配置类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_fragments.html">模式片段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion_generators.html">运动生成器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../features/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/teleop_imitation.html">使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/humanoids_imitation.html">示例：人形机器人的数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/skillgen.html">使用 SkillGen 自动生成示范</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/isaac_teleop.html">Isaac Capture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多 GPU 和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于种群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/record_video.html">录制视频</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/visualizer_tiled_camera.html">可视化器相机流视图</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开发工具</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/editor_setup.html">编辑器配置</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/template_generator.html">创建自己的项目或任务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/add_physics_backend.html">添加物理后端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/extending_newton_solvers.html">扩展 Newton 求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/scene_data_providers.html">场景数据提供器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/agent_skills.html">智能体技能</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../developer-tools/benchmarking/index.html">性能测试</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/run_benchmarks.html">运行性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/micro_benchmarks.html">编写微基准测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/benchmark_api.html">使用性能测试 API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/ray.html">Ray 作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/visuo_tactile_sensor.html">视触觉传感器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/rlinf_vla_posttraining.html">VLA 模型的强化学习后训练</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/03_compass_with_NuRec/compass_navigation_policy_with_NuRec.html">使用 NuRec 资产训练和部署 COMPASS 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/04_reach/reach_policy.html">训练用于实机部署的 Reach 策略</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../policy_deployment/05_leapp/exporting_policies_with_leapp.html">使用 LEAPP 导出策略</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.html">使用 LEAPP 导出 Direct 工作流策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../policy_deployment/05_leapp/deploying_exported_policies_with_leapp.html">使用 LEAPP 部署导出的策略</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.benchmark.html">isaaclab.benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.cloner.html">isaaclab.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/lab/isaaclab.envs.leapp_deployment_env.html">LEAPP Deployment Environment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.physics.html">isaaclab.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.renderers.html">isaaclab.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene_data.html">isaaclab.scene_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.visualizers.html">isaaclab.visualizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.controllers.html">isaaclab_contrib.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.coupling.html">isaaclab_contrib.coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.custom_coupling.html">isaaclab_contrib.custom_coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.rl.html">isaaclab_contrib.rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_teleop/isaaclab_teleop.html">isaaclab_teleop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.app.html">isaaclab_physx.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.assets.html">isaaclab_physx.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.cloner.html">isaaclab_physx.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html">isaaclab_physx.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.renderers.html">isaaclab_physx.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sensors.html">isaaclab_physx.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.schemas.html">isaaclab_physx.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.spawners.html">isaaclab_physx.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.assets.html">isaaclab_newton.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.cloner.html">isaaclab_newton.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.controllers.html">isaaclab_newton.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html">isaaclab_newton.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.renderers.html">isaaclab_newton.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sensors.html">isaaclab_newton.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.schemas.html">isaaclab_newton.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.spawners.html">isaaclab_newton.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.app.html">isaaclab_ov.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.assets.html">isaaclab_ov.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.cloner.html">isaaclab_ov.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.physics.html">isaaclab_ov.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.renderers.html">isaaclab_ov.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sim.views.html">isaaclab_ov.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_assets/isaaclab_assets.robots.html">isaaclab_assets.robots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_assets/isaaclab_assets.sensors.html">isaaclab_assets.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.kit.html">isaaclab_visualizers.kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.newton.html">isaaclab_visualizers.newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.rerun.html">isaaclab_visualizers.rerun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.viser.html">isaaclab_visualizers.viser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.envs.html">isaaclab_experimental.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.managers.html">isaaclab_experimental.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.utils.html">isaaclab_experimental.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.benchmark.recorders.html">isaaclab.benchmark.recorders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.camera.html">isaaclab.sensors.camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.ray_caster.html">isaaclab.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.ui.widgets.html">isaaclab.ui.widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.ui.xr_widgets.html">isaaclab.ui.xr_widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.leapp.html">isaaclab.utils.leapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.envs.mdp.actions.html">isaaclab_experimental.envs.mdp.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.envs.mdp.html">isaaclab_newton.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.views.html">isaaclab_newton.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.envs.mdp.html">isaaclab_ov.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sensors.html">isaaclab_ov.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sensors.ray_caster.html">isaaclab_ov.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.envs.mdp.html">isaaclab_physx.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.views.html">isaaclab_physx.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ppisp/isaaclab_ppisp.html">isaaclab_ppisp</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/release_notes.html">发布说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">Package Changelogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/newton-physics/newton">NVIDIA Newton</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/concepts/solver_differences.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/concepts/solver_differences.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/concepts/solver_differences.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>求解器差异</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capabilities-at-a-glance">功能概览</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-solver-settings-do-not-translate-directly">为什么不能直接迁移求解器设置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#friction-and-contact">摩擦与接触</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restitution-and-stabilization">恢复系数与稳定化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinates-and-state-consistency">坐标与状态一致性</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timesteps-and-convergence">时间步长与收敛</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capacity-and-memory">容量与内存</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="solver-differences">
+<span id="id1"></span><h1>求解器差异<a class="headerlink" href="#solver-differences" title="Link to this heading">#</a></h1>
+<p>Isaac Lab 为不同物理后端提供统一的资源和任务接口，但这并不意味着底层求解器模型可以互换。PhysX 和 Newton 求解器即使使用相同的 USD 资源，也可能产生不同轨迹，因为它们构建接触、表示状态、稳定约束和分配计算工作的方式不同。</p>
+<p>下表比较文档中介绍的 PhysX，以及 Newton 的 MJWarp、Kamino、VBD 和 MPM 工作流程。后续详细说明主要关注用于刚性机器人的三种求解器：PhysX、MuJoCo-Warp（MJWarp）和 Kamino。其他 Newton 求解器配置见 <a class="reference internal" href="physics-backends/newton.html#newton-backend"><span class="std std-ref">Newton</span></a> 。OvPhysX 是独立的实验性后端，有自身的限制，并不是此处 PhysX 后端的另一种求解器模式。</p>
+<p>本页用于理解模型差异。具体参数和基于测量的调参方法见 <a class="reference internal" href="../how-to/solver_tuning_mjwarp.html"><span class="doc">MJWarp 调优</span></a> 或 <a class="reference internal" href="../how-to/solver_tuning_kamino.html"><span class="doc">Kamino 调优</span></a> ；准确字段与默认值以生成的求解器配置 API 为准。</p>
+<p>Newton 求解器之间更细致的功能、接触材质和关节支持比较，见 <a class="reference external" href="https://newton-physics.github.io/newton/stable/solvers/index.html#supported-features">Newton 功能支持矩阵</a> 。</p>
+<p>检查点兼容性和关节体顺序见 <a class="reference internal" href="../how-to/transfer_policies_between_physx_and_newton.html"><span class="doc">在 PhysX 和 Newton 之间迁移策略</span></a> 。其中的 <a class="reference internal" href="../how-to/transfer_policies_between_physx_and_newton.html#sim-to-sim-transfer-demonstrations"><span class="std std-ref">并排迁移演示</span></a> 展示了在 Newton MJWarp 中运行 PhysX 训练策略的效果。</p>
+<section id="capabilities-at-a-glance">
+<h2>功能概览<a class="headerlink" href="#capabilities-at-a-glance" title="Link to this heading">#</a></h2>
+<p>这些是通过 Isaac Lab 资源 API 暴露的求解器直接支持的功能。某个任务是否受支持，仍取决于其注册的物理预设。在耦合场景中，刚体动力学与可变形体或材料动力学可能由不同求解器处理。</p>
+<p>✅ 表示支持，❌ 表示不支持，⚠️ 表示有限支持。各单元格会注明 GPU 要求和实验性功能。</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-text">文档所述 Isaac Lab 工作流程中的求解器功能</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 16.0%" />
+<col style="width: 16.0%" />
+<col style="width: 16.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>功能</p></th>
+<th class="head"><p><a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html#isaaclab_physx.physics.PhysxCfg" title="isaaclab_physx.physics.PhysxCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysX</span></code></a></p></th>
+<th class="head"><p><a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.MJWarpSolverCfg" title="isaaclab_newton.physics.MJWarpSolverCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Newton</span> <span class="pre">MJWarp</span></code></a></p></th>
+<th class="head"><p>Newton Kamino（ <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.KaminoPADMMSolverCfg" title="isaaclab_newton.physics.KaminoPADMMSolverCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">P-ADMM</span></code></a> / <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.KaminoDVISolverCfg" title="isaaclab_newton.physics.KaminoDVISolverCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">DVI</span></code></a> ）</p></th>
+<th class="head"><p><a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.VBDSolverCfg" title="isaaclab_newton.physics.VBDSolverCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Newton</span> <span class="pre">VBD</span></code></a></p></th>
+<th class="head"><p><a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.MPMSolverCfg" title="isaaclab_newton.physics.MPMSolverCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Newton</span> <span class="pre">MPM</span></code></a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>主要处理对象</p></th>
+<td><p>刚性机器人和网格可变形体</p></td>
+<td><p>刚性关节机器人</p></td>
+<td><p>刚性机构，包括闭环机构</p></td>
+<td><p>布料、软体和线缆</p></td>
+<td><p>流体、颗粒介质和雪</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>刚体动力学</p></th>
+<td><p>✅ 支持</p></td>
+<td><p>✅ 支持</p></td>
+<td><p>✅ 支持</p></td>
+<td><p>✅ 支持</p></td>
+<td><p>❌ 不支持；仅支持碰撞体</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>关节体建模方式</p></th>
+<td><p>✅ 约化坐标</p></td>
+<td><p>✅ 广义坐标</p></td>
+<td><p>✅ 最大坐标</p></td>
+<td><p>⚠️ 有限支持最大坐标关节</p></td>
+<td><p>❌ 不支持关节动力学</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>布料（表面网格）</p></th>
+<td><p>✅ 支持；需要 GPU，实验性功能</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>✅ 支持</p></td>
+<td><p>❌ 不支持</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>软体（体积网格）</p></th>
+<td><p>✅ 支持；需要 GPU，实验性功能</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>✅ 支持</p></td>
+<td><p>❌ 不支持</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>分段线缆（ <code class="docutils literal notranslate"><span class="pre">CableObject</span></code> ）</p></th>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>✅ 支持；实验性功能</p></td>
+<td><p>❌ 不支持</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>粒子–网格连续介质材料</p></th>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>❌ 不支持</p></td>
+<td><p>✅ 支持；实验性功能</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>主要调参项</p></th>
+<td><p>时间步长、TGS/PGS 迭代次数、GPU 容量</p></td>
+<td><p>子步数、迭代次数、接触容量</p></td>
+<td><p>子步数、P-ADMM/DVI 收敛控制、稳定化</p></td>
+<td><p>子步数、迭代次数、材料与接触刚度</p></td>
+<td><p>体素分辨率、子步数、流变求解收敛控制</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>求解器详情</p></th>
+<td><p><a class="reference internal" href="physics_backends.html#physics-backends-physx"><span class="std std-ref">PhysX 概览</span></a></p></td>
+<td><p><a class="reference external" href="https://newton-physics.github.io/newton/stable/solvers/mujoco.html">MuJoCo-Warp</a></p></td>
+<td><p><a class="reference external" href="https://newton-physics.github.io/newton/stable/solvers/kamino.html">Kamino</a></p></td>
+<td><p><a class="reference external" href="https://newton-physics.github.io/newton/stable/api/_generated/newton.solvers.SolverVBD.html">VBD</a></p></td>
+<td><p><a class="reference external" href="https://newton-physics.github.io/newton/stable/api/_generated/newton.solvers.SolverImplicitMPM.html">隐式 MPM</a></p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>调参流程</p></th>
+<td><p><a class="reference internal" href="../how-to/solver_tuning_physx.html"><span class="doc">PhysX</span></a></p></td>
+<td><p><a class="reference internal" href="../how-to/solver_tuning_mjwarp.html"><span class="doc">MJWarp</span></a></p></td>
+<td><p><a class="reference internal" href="../how-to/solver_tuning_kamino.html"><span class="doc">Kamino</span></a></p></td>
+<td><p><a class="reference internal" href="../how-to/solver_tuning_vbd.html"><span class="doc">VBD</span></a></p></td>
+<td><p><a class="reference internal" href="../how-to/solver_tuning_mpm.html"><span class="doc">MPM</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>PhysX 表面与体积可变形体使用实验性资源 API，需要 CUDA，并要求 <code class="docutils literal notranslate"><span class="pre">scene.replicate_physics=False</span></code> 。节点运动学目标仅支持体积可变形体。资源要求见 <a class="reference internal" href="deformables.html"><span class="doc">可变形物体</span></a> 和 <a class="reference internal" href="../api/lab_physx/isaaclab_physx.assets.html#isaaclab_physx.assets.DeformableObject" title="isaaclab_physx.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeformableObject</span></code></a> 。</p>
+<p>VBD 对关节的有限支持不能替代通用机器人关节体。维护中的 Franka 可变形体任务通过代理耦合，让 MJWarp 处理机器人、VBD 处理可变形体。MPM 推进粒子材料，动态刚体需要单独的刚体求解器。受支持的场景构建方式和耦合限制见 <a class="reference internal" href="coupled_solvers.html"><span class="doc">耦合求解器</span></a> 和 <a class="reference internal" href="using_mpm.html"><span class="doc">使用隐式 MPM</span></a> 。</p>
+</section>
+<section id="why-solver-settings-do-not-translate-directly">
+<h2>为什么不能直接迁移求解器设置<a class="headerlink" href="#why-solver-settings-do-not-translate-directly" title="Link to this heading">#</a></h2>
+<p>配置值只有在使用它的求解器中才具有确定含义。例如，PhysX 场景参数不能配置 Newton 求解器，MJWarp 的 MuJoCo 专用参数也不能配置 PhysX。Isaac Lab 的统一配置负责选择后端与求解器，不会将某个数值设置换算成等效的物理作用。</p>
+<p>即使名称相似，设置也可能作用于不同的接触模型或收敛条件。因此，迁移应先保留机械模型、碰撞几何、材质绑定、重置状态、执行器行为和控制周期，再比较实际物理行为，使用目标求解器自己的参数进行调节。</p>
+</section>
+<section id="friction-and-contact">
+<h2>摩擦与接触<a class="headerlink" href="#friction-and-contact" title="Link to this heading">#</a></h2>
+<p>PhysX 使用基于接触片的库仑摩擦，相邻接触可以关联成一个摩擦接触片。摩擦关联和偏移参数属于 <a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html#isaaclab_physx.physics.PhysxCfg" title="isaaclab_physx.physics.PhysxCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysxCfg</span></code></a> 。MJWarp 使用 MuJoCo 的接触模型，包括可选的多面体或椭圆摩擦锥，以及摩擦阻抗比。Kamino 在最大坐标约束动力学求解中处理硬摩擦接触，并通过生成的 API 提供接触材质混合和热启动配置。</p>
+<p>碰撞处理路径也不同。PhysX 通过 <a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html#isaaclab_physx.physics.PhysxCfg.enable_ccd" title="isaaclab_physx.physics.PhysxCfg.enable_ccd"><code class="xref py py-attr docutils literal notranslate"><span class="pre">enable_ccd</span></code></a> 提供连续碰撞检测，但启用 GPU 动力学时，Isaac Lab 会禁用这一选项。MJWarp 可使用内部 MuJoCo 接触路径或 Newton 碰撞流程，两者互斥。Kamino 可使用 Newton 碰撞流程，也可在启用后使用其内部碰撞检测器。这些选择决定哪些容量和碰撞参数生效。</p>
+<p><strong>对迁移的影响。</strong> 相同材质系数不能保证相同的滑移、抓取稳定性或接触数量。调节摩擦前，应重新验证碰撞几何和接触行为。依赖 PhysX CCD 的任务迁移到 Newton 后，需要独立验证时间步长和碰撞策略；MJWarp 的 <code class="docutils literal notranslate"><span class="pre">ccd_iterations</span></code> 是凸 GJK/EPA 算法的收敛迭代上限，并不是 PhysX 式的 CCD 开关。</p>
+</section>
+<section id="restitution-and-stabilization">
+<h2>恢复系数与稳定化<a class="headerlink" href="#restitution-and-stabilization" title="Link to this heading">#</a></h2>
+<p>PhysX 根据材质属性和场景级反弹阈值应用恢复系数。可选的稳定化处理能够改善大时间步长下的行为，但可能使接触传感器报告的力不准确。MJWarp 通过 MuJoCo 模型和求解器形式描述接触柔顺性；Kamino 则分别为双边关节约束、单边关节限位和单边接触提供 Baumgarte 稳定化。</p>
+<p>这些机制不同，因此复制恢复系数或稳定化设置，不能保证静止接触行为一致。准确的配置参数见 <a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html#isaaclab_physx.physics.PhysxCfg" title="isaaclab_physx.physics.PhysxCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysxCfg</span></code></a> 、 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.MJWarpSolverCfg" title="isaaclab_newton.physics.MJWarpSolverCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MJWarpSolverCfg</span></code></a> 和 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.KaminoConstraintsCfg" title="isaaclab_newton.physics.KaminoConstraintsCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">KaminoConstraintsCfg</span></code></a> API 文档。</p>
+<p><strong>对迁移的影响。</strong> 在目标求解器中验证反弹、穿透、抖振和测得的接触力。不要通过稳定化或恢复系数参数，弥补无效的碰撞几何、重置状态或材质属性。</p>
+</section>
+<section id="coordinates-and-state-consistency">
+<h2>坐标与状态一致性<a class="headerlink" href="#coordinates-and-state-consistency" title="Link to this heading">#</a></h2>
+<p>PhysX 关节体和 MJWarp 使用简约关节坐标表示关节系统状态。Kamino 使用最大坐标和约束求解刚性多体系统，其重置流程可通过正向运动学使刚体位姿与简约关节状态保持一致。是否使用这一流程，取决于 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.KaminoPADMMSolverCfg.use_fk_solver" title="isaaclab_newton.physics.KaminoPADMMSolverCfg.use_fk_solver"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_fk_solver</span></code></a> 和关节体结构。</p>
+<p>Isaac Lab 资源 API 在各后端之间维持统一的公共状态接口，但自定义重置代码仍可能写入与目标求解器状态表示不一致的状态。</p>
+<p><strong>对迁移的影响。</strong> 使用资源写入 API 进行重置，并用固定状态验证首次步进。对于 Kamino，应先将关节状态与刚体位姿的不一致视为重置建模问题，再考虑调节求解器增益。</p>
+</section>
+<section id="timesteps-and-convergence">
+<h2>时间步长与收敛<a class="headerlink" href="#timesteps-and-convergence" title="Link to this heading">#</a></h2>
+<p>PhysX 按仿真时间步长推进，在场景限制范围内使用各对象的迭代次数。MJWarp 和 Kamino 在每个物理步中均运行 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.NewtonCfg.num_substeps" title="isaaclab_newton.physics.NewtonCfg.num_substeps"><code class="xref py py-attr docutils literal notranslate"><span class="pre">num_substeps</span></code></a> 个求解器子步，因此求解器时间步长等于仿真时间步长除以子步数。增加子步会改变积分工作量，不能将 PhysX 的迭代设置直接换算成 Newton 中的等效设置。</p>
+<p>子步本身不会刷新 Newton 碰撞流程的接触。当使用该流程时，只有 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.NewtonCfg.collision_decimation" title="isaaclab_newton.physics.NewtonCfg.collision_decimation"><code class="xref py py-attr docutils literal notranslate"><span class="pre">collision_decimation</span></code></a> 为正且小于 <code class="docutils literal notranslate"><span class="pre">num_substeps</span></code> ，才会在一个物理步中重新进行碰撞检测；默认值为零，表示仅在每个物理步开始时检测一次。MJWarp 使用内部 MuJoCo 接触路径，或 Kamino 使用内部碰撞检测器时，此设置不生效。</p>
+<p>MJWarp 提供外层迭代次数、线搜索迭代次数和残差容差。Kamino 的 P-ADMM 与 DVI 模式有不同的迭代和收敛参数。PhysX 则有自身的位置与速度迭代模型。应查阅生成的 API 和专门的调参指南，了解当前参数，而不是复制另一种求解器的默认值。</p>
+<p><strong>对迁移的影响。</strong> 在预期策略控制周期下比较一个固定的复现案例，再分别测试时间步长、子步数和求解器收敛。增加迭代次数不能修复无效接触几何、不兼容的重置状态或不稳定的控制器。</p>
+</section>
+<section id="capacity-and-memory">
+<h2>容量与内存<a class="headerlink" href="#capacity-and-memory" title="Link to this heading">#</a></h2>
+<p>PhysX 根据场景上限分配 GPU 缓冲区，包括刚体接触容量。MJWarp 有 <code class="docutils literal notranslate"><span class="pre">nconmax</span></code> 、 <code class="docutils literal notranslate"><span class="pre">njmax</span></code> 等每个仿真世界的接触和约束上限。Kamino 除所选碰撞路径使用的容量外，也有每个仿真世界的接触分配参数。即使每个环境包含相同资源，这些参数的单位和失败方式仍各不相同。</p>
+<p><strong>对迁移的影响。</strong> 扩大环境数量前，先测量目标求解器在重置和接触最密集状态下的需求。优先增大已观测到溢出的容量；容量调整不能修复无效的接触模型或收敛问题。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="warp_environment_migration.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Warp 环境迁移指南</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="native-physics-api/index.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">访问原生物理 API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capabilities-at-a-glance">功能概览</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-solver-settings-do-not-translate-directly">为什么不能直接迁移求解器设置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#friction-and-contact">摩擦与接触</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restitution-and-stabilization">恢复系数与稳定化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinates-and-state-consistency">坐标与状态一致性</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timesteps-and-convergence">时间步长与收敛</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capacity-and-memory">容量与内存</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026, The Isaac Lab Project Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 10 月 10 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

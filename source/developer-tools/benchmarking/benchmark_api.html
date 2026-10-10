@@ -1,0 +1,1236 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>使用性能测试 API &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=ccd4f661" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/environment-browser.css?v=665352f4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/demo-browser.css?v=e28b46a0" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/guide-browser.css?v=7190c4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script>window.isaacLabDocsTranslations = {"5 visualizers running Isaac-Velocity-Flat-AnymalD with a circular velocity command": "五种可视化器运行 Isaac-Velocity-Flat-AnymalD，并使用环形速度指令", "A PhysX-trained ANYmal-D policy runs side by side in PhysX and Newton MJWarp": "在 PhysX 上训练的 ANYmal-D 策略，并排运行于 PhysX 与 Newton MJWarp", "A Rizon robot uses a Sharpa hand to manipulate a teapot": "Rizon 机器人使用 Sharpa 手操作茶壶", "A Rizon robot uses a Sharpa hand to manipulate an RJ45 cable": "Rizon 机器人使用 Sharpa 手操作 RJ45 网线", "All categories": "所有类别", "Animate an arm, biped, quadruped, dexterous hand, quadcopter, and rigid props in one deterministic scene.": "在同一确定性场景中，驱动机械臂、双足机器人、四足机器人、灵巧手、四旋翼和刚性道具。", "Arrow markers on the Franka arm's joints, with contact sensor markers on the cube": "Franka 机械臂关节上的箭头标记，以及立方体上的接触传感器标记", "Back to all guides": "返回全部指南", "Benchmark FPS measurements, scroll for more configurations": "性能测试 FPS 测量结果，可滚动查看更多配置", "Benchmark channel": "性能测试分支", "Benchmark data could not be loaded.": "无法加载性能测试数据。", "Benchmark data is not available yet": "暂无性能测试数据", "Benchmark workload": "性能测试负载", "Block and tackle pulleys and a red load": "滑轮组与红色负载", "Classic control": "经典控制", "Collection": "数据采集", "Command mode": "命令模式", "Contrib": "社区贡献", "Copy command": "复制命令", "Core": "核心任务", "Default": "默认", "Develop": "开发版", "Domain preset": "领域预设", "Drag a cable handle to lift a load through a 4:1 pulley system.": "拖动缆绳把手，通过 4:1 滑轮组举起负载。", "Each Allegro hand reorients its cube to match the target shown by the marker above it": "每只 Allegro 手调整立方体朝向，使其与上方标记显示的目标一致", "Each Franka arm reaches its end-effector toward a randomized target pose": "各 Franka 机械臂将末端执行器移动到随机目标位姿", "Each H1 humanoid climbs a staircase sub-terrain": "各 H1 人形机器人攀登楼梯子地形", "Each Kuka arm and Allegro hand lifts its cube off the table": "各 Kuka 机械臂和 Allegro 手将立方体从桌面举起", "Each Shadow Hand reorients its cube to match the target pose": "各 Shadow Hand 调整立方体朝向，使其与目标位姿一致", "Fill a Utah teapot with MPM water particles and pour them into a bowl.": "向 Utah 茶壶注入 MPM 水粒子，再倒入碗中。", "Filled teal fingers belong to the source solver; outlined blue fingers are destination-local proxies of those same bodies. The blue object represents material owned by the destination solver.": "青绿色实心手指属于源求解器；蓝色轮廓手指是目标求解器内这些刚体的本地代理。蓝色物体表示归目标求解器所有的材料。", "Green arrow: commanded velocity. Blue arrow: current velocity.": "绿色箭头表示指令速度；蓝色箭头表示当前速度。", "H1 Locomotion": "H1 行走", "H1 locomotion": "H1 行走", "H1 locomotion in Isaac Lab": "Isaac Lab 中的 H1 行走", "H1 locomotion uses a published policy. For autonomous H1 task playback, use": "H1 行走使用已发布的策略。要自主回放 H1 任务，请使用", "In the Newton viewer, press": "在 Newton 查看器中，按", "Interactive pick and place demo": "交互式抓取与放置演示", "Interactive view of the Galbot cube stacking environment": "Galbot 立方体堆叠环境的交互视图", "Interactively pick up a cube with a parallel robot and place it on a target.": "交互式控制并联机器人，抓起立方体并放到目标位置。", "Isaac Lab command builder": "Isaac Lab 命令生成器", "Isaac Lab demo command builder": "Isaac Lab 演示命令生成器", "Isaac-Cartpole preview": "Isaac-Cartpole 预览", "Isaac-Lift-KukaAllegro in Viser Visualizer": "Viser 可视化器中的 Isaac-Lift-KukaAllegro", "Isaac-Reach-Franka in Kit Visualizer": "Kit 可视化器中的 Isaac-Reach-Franka", "Isaac-Reorient-Cube-Allegro in Newton GL Visualizer": "Newton GL 可视化器中的 Isaac-Reorient-Cube-Allegro", "Isaac-Reorient-Cube-Shadow-Direct in Rerun Visualizer": "Rerun 可视化器中的 Isaac-Reorient-Cube-Shadow-Direct", "Isaac-Velocity-Rough-H1 in Newton RTX Visualizer": "Newton RTX 可视化器中的 Isaac-Velocity-Rough-H1", "Joint arrow markers on a Franka arm and contact sensor markers on a cube": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记", "Joint arrow markers on a Franka arm, with contact sensor markers on a cube.": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记。", "Kit visualizer": "Kit 可视化器", "Kit visualizer tiled streaming": "Kit 可视化器平铺串流", "Kit visualizer: interactive viewport": "Kit 可视化器：交互式视口", "Kit visualizer: streaming camera view": "Kit 可视化器：串流相机视图", "Large green/blue arrow markers showing target and base velocity for an AnymalD robot": "AnymalD 机器人上表示目标速度和基座速度的大型绿色、蓝色箭头标记", "Loading guide...": "正在加载指南…", "Locomotion": "移动", "Manipulation": "操作", "Mode": "模式", "Newton Block and Tackle": "Newton 滑轮组", "Newton GL visualizer": "Newton GL 可视化器", "Newton GL visualizer, with 3 plots opened": "Newton GL 可视化器，打开了三个曲线图", "Newton visualizer: interactive viewport": "Newton 可视化器：交互式视口", "Newton visualizer: streaming camera view": "Newton 可视化器：串流相机视图", "No guides match this search.": "没有符合搜索条件的指南。", "No tasks match this search.": "没有符合搜索条件的任务。", "Not available": "暂无数据", "Note: Newton RTX has no velocity arrows, since it doesn't yet support visualization markers.": "注意：Newton RTX 暂不支持可视化标记，因此没有速度箭头。", "OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.": "OV 与 Isaac Sim 不能混用。请选择相互匹配的物理后端和渲染后端。", "Open in a new tab": "在新标签页打开", "Open the animation": "打开动画", "Physics": "物理", "Physics backend": "物理后端", "Physics preset": "物理预设", "Pick and Place": "抓取与放置", "Pick and place": "抓取与放置", "Pick and place requires Kit input.": "抓取与放置需要 Kit 输入。", "Play": "回放", "Preset": "预设", "Proxy coupling between source and destination solvers": "源求解器与目标求解器之间的代理耦合", "RL Library": "强化学习库", "RL library": "强化学习库", "Recorded clip of the Shadow Hand cube-reorientation task, recording the streaming view of the Rerun visualizer with 4 streaming view envs and 4 GT types": "Shadow Hand 立方体转向任务的录像，录制 Rerun 可视化器的串流视图，包含四个串流环境和四种真值数据", "Recorded clip with ground-truth sensor views": "包含真值传感器视图的录像片段", "Release": "发布版", "Renderer": "渲染器", "Renderer preset": "渲染器预设", "Right-click dragging the first domino triggers the cascade across an NVIDIA-logo domino layout": "右键拖动第一张骨牌，在 NVIDIA 标志形状的骨牌布局中触发连锁倒下", "Robots in the Isaac Lab Zoo demo": "Isaac Lab Zoo 演示中的机器人", "Scene sensor": "场景传感器", "Search all guides": "搜索全部指南", "Search guides": "搜索指南", "Search tasks and capabilities": "搜索任务与功能", "Search tasks or capabilities": "搜索任务或功能", "Select H1 robots and control a trained rough-terrain policy with the keyboard and follow camera.": "选择 H1 机器人，通过键盘和跟随相机控制已训练的崎岖地形策略。", "Selected guide": "所选指南", "Selected task": "所选任务", "Smash rigid crates with coupled MPM snowballs.": "使用耦合的 MPM 雪球撞碎刚性箱子。", "Snowball Smash": "雪球撞击", "Snowballs striking a stack of colored crates": "雪球撞击一叠彩色箱子", "Streaming view showing tiled Galbot wrist-camera feeds": "显示 Galbot 腕部相机平铺画面的串流视图", "Table color shows success: red until the cube reaches its target pose, green once it does.": "桌面颜色表示成功状态：立方体到达目标位姿前为红色，到达后变为绿色。", "Task": "任务", "Task category": "任务类别", "Task collection": "任务集合", "Teapot Fill": "茶壶注水", "The upper arrow synchronizes source state with the proxies, including pose and velocity. Contact produces the force and torque feedback shown by the lower arrow, which returns to a later source solve or coupling iteration.": "上方箭头表示源状态与代理之间的同步，包括位姿和速度。接触产生下方箭头所示的力与力矩反馈，在后续源求解或耦合迭代中返回。", "This environment does not support RL training or playback. The command runs it with the zero-action agent instead.": "此环境不支持强化学习训练或回放，命令将改用零动作智能体运行。", "Train": "训练", "Training": "训练", "Use Pre-trained Checkpoint": "使用预训练检查点", "Utah teapot pouring simulated water": "Utah 茶壶倒出仿真水流", "VRAM": "显存", "Velocity arrow marker on an AnymalD robot": "AnymalD 机器人上的速度箭头标记", "Velocity command (green) and current velocity (blue) arrow markers on an AnymalD robot.": "AnymalD 机器人上表示速度指令（绿色）和当前速度（蓝色）的箭头标记。", "Viser visualizer, with 1 plot opened": "Viser 可视化器，打开了一个曲线图", "Visualizer": "可视化器", "Watch the proxy coupling animation.": "观看代理耦合动画。", "Zoo": "机器人集锦（Zoo）", "newton-dominoes example": "newton-dominoes 示例", "to pause or scrub through the exchange.": "可暂停或拖动进度查看交换过程。", "to select a robot,": "选择机器人，按", "to stop, and": "停止，按", "to toggle the follow camera.": "切换跟随相机。", "to walk forward or turn,": "前进或转向，按", "Copied": "已复制", "default": "默认", "Manager": "管理器", "Direct": "直接工作流", "Camera": "相机", "Direct-Camera": "直接工作流与相机", "Task variant": "任务变体", "Zero agent": "零动作智能体", "Not supported": "不支持", "Collection FPS": "采集 FPS", "Training FPS": "训练 FPS", "Configuration": "配置", "Mean FPS": "平均 FPS", "Unspecified renderer": "未指定渲染器", "Presets not recorded": "未记录预设", "Newton renderer": "Newton 渲染器", "Newton MJWarp VBD proxy": "Newton MJWarp VBD 代理", "none": "无"};</script>
+    <script src="../../../_static/zh-cn-ui.js?v=2a63ae94"></script>
+    <script src="../../../_static/media-status.js?v=d1674cca"></script>
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/developer-tools/benchmarking/benchmark_api';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../../_static/css/environment-browser.js?v=0830db2c"></script>
+    <script src="../../../_static/css/demo-browser.js?v=bcae0e8a"></script>
+    <script src="../../../_static/css/guide-browser.js?v=d5610391"></script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="欢迎来到最前沿！" href="../../experimental-features/bleeding-edge.html" />
+    <link rel="prev" title="编写微基准测试" href="micro_benchmarks.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="3.0.0" />
+    <meta name="docbuild:last-update" content="2026 年 10 月 10 日"/>
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="快捷链接">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cube fa-lg" aria-hidden="true"></i><span class="visually-hidden">Isaac Sim</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab/stargazers" title="GitHub 星标" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-star fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub 星标</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/ecosystem.html">生态系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/quickstart.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/tutorial.html">教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/demos.html">演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how-to/index.html">操作指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../workflows/index.html">工作流程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../workflows/docker/index.html">在 Docker 中运行 Isaac Lab</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/images.html">容器镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/cluster.html">在 HPC 集群上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/cloud.html">云部署</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_to_isaaclab_3-0.html">迁移到 3.0</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">核心概念</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/backends_and_presets.html">后端与预设</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/backend_architecture.html">后端架构</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/physics_backends.html">物理后端</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/physics-backends/newton.html">Newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/joint_and_body_ordering.html">关节与刚体顺序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/ovphysx.html">OvPhysX 后端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/using_mpm.html">使用隐式 MPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/warp_environments.html">Warp 实验性环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/warp_environment_migration.html">Warp 环境迁移指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/solver_differences.html">求解器差异</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/native-physics-api/index.html">访问原生物理 API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/physx.html">PhysX 张量 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/newton.html">Newton 原生数据与选择 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/ovphysx.html">OvPhysX 张量绑定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/renderers.html">渲染器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/actuators.html">执行器</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/pva.html">位姿、速度与加速度（PVA）传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/joint_wrench_sensor.html">关节力旋量传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/coupled_solvers.html">耦合求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/visualization.html">可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/reinforcement_learning.html">强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/deformables.html">可变形物体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/schema_cfgs.html">模式配置类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/schema_fragments.html">模式片段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../features/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/teleop_imitation.html">使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/humanoids_imitation.html">示例：人形机器人的数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/skillgen.html">使用 SkillGen 自动生成示范</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/isaac_teleop.html">Isaac Capture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多 GPU 和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/population_based_training.html">基于种群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/reproducibility.html">可重现性和确定性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/record_video.html">录制视频</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/visualizer_tiled_camera.html">可视化器相机流视图</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开发工具</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../editor_setup.html">编辑器配置</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../template_generator.html">创建自己的项目或任务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_physics_backend.html">添加物理后端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extending_newton_solvers.html">扩展 Newton 求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scene_data_providers.html">场景数据提供器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent_skills.html">智能体技能</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">性能测试</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="run_benchmarks.html">运行性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micro_benchmarks.html">编写微基准测试</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">使用性能测试 API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/ray.html">Ray 作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/visuo_tactile_sensor.html">视触觉传感器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/rlinf_vla_posttraining.html">VLA 模型的强化学习后训练</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/03_compass_with_NuRec/compass_navigation_policy_with_NuRec.html">使用 NuRec 资产训练和部署 COMPASS 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/04_reach/reach_policy.html">训练用于实机部署的 Reach 策略</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../policy_deployment/05_leapp/exporting_policies_with_leapp.html">使用 LEAPP 导出策略</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.html">使用 LEAPP 导出 Direct 工作流策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../policy_deployment/05_leapp/deploying_exported_policies_with_leapp.html">使用 LEAPP 部署导出的策略</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html">isaaclab.benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.cloner.html">isaaclab.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/lab/isaaclab.envs.html">isaaclab.envs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/lab/isaaclab.envs.leapp_deployment_env.html">LEAPP Deployment Environment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.physics.html">isaaclab.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.renderers.html">isaaclab.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene_data.html">isaaclab.scene_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.visualizers.html">isaaclab.visualizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.controllers.html">isaaclab_contrib.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.coupling.html">isaaclab_contrib.coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.custom_coupling.html">isaaclab_contrib.custom_coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.rl.html">isaaclab_contrib.rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_teleop/isaaclab_teleop.html">isaaclab_teleop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.app.html">isaaclab_physx.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.assets.html">isaaclab_physx.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.cloner.html">isaaclab_physx.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.physics.html">isaaclab_physx.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.renderers.html">isaaclab_physx.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sensors.html">isaaclab_physx.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sim.schemas.html">isaaclab_physx.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sim.spawners.html">isaaclab_physx.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.assets.html">isaaclab_newton.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.cloner.html">isaaclab_newton.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.controllers.html">isaaclab_newton.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.physics.html">isaaclab_newton.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.renderers.html">isaaclab_newton.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sensors.html">isaaclab_newton.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sim.schemas.html">isaaclab_newton.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sim.spawners.html">isaaclab_newton.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.app.html">isaaclab_ov.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.assets.html">isaaclab_ov.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.cloner.html">isaaclab_ov.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.physics.html">isaaclab_ov.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.renderers.html">isaaclab_ov.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.sim.views.html">isaaclab_ov.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_assets/isaaclab_assets.robots.html">isaaclab_assets.robots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_assets/isaaclab_assets.sensors.html">isaaclab_assets.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.kit.html">isaaclab_visualizers.kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.newton.html">isaaclab_visualizers.newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.rerun.html">isaaclab_visualizers.rerun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.viser.html">isaaclab_visualizers.viser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.envs.html">isaaclab_experimental.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.managers.html">isaaclab_experimental.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.utils.html">isaaclab_experimental.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.benchmark.recorders.html">isaaclab.benchmark.recorders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.camera.html">isaaclab.sensors.camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.ray_caster.html">isaaclab.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.ui.widgets.html">isaaclab.ui.widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.ui.xr_widgets.html">isaaclab.ui.xr_widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.leapp.html">isaaclab.utils.leapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.envs.mdp.actions.html">isaaclab_experimental.envs.mdp.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.envs.mdp.html">isaaclab_newton.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sim.views.html">isaaclab_newton.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.envs.mdp.html">isaaclab_ov.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.sensors.html">isaaclab_ov.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.sensors.ray_caster.html">isaaclab_ov.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.envs.mdp.html">isaaclab_physx.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sim.views.html">isaaclab_physx.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ppisp/isaaclab_ppisp.html">isaaclab_ppisp</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发布说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">Package Changelogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/newton-physics/newton">NVIDIA Newton</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/developer-tools/benchmarking/benchmark_api.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/developer-tools/benchmarking/benchmark_api.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/developer-tools/benchmarking/benchmark_api.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>使用性能测试 API</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-one-workflow">运行一个工作流</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-request">选择请求</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-a-request">配置请求</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-output-formats">选择输出格式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-result">读取结果</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handle-errors-and-process-lifetime">处理错误与进程生命周期</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-custom-producer">添加自定义数据生成器</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-lower-level-runner">选择底层运行器</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">故障排除</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="use-the-benchmark-api">
+<span id="developer-tools-benchmarking-api"></span><h1>使用性能测试 API<a class="headerlink" href="#use-the-benchmark-api" title="Link to this heading">#</a></h1>
+<p>本指南面向需要通过 Python 运行受支持的性能测试、读取带类型的结果，或添加性能测试数据生成器的自动化开发者。日常测试先参阅 <a class="reference internal" href="run_benchmarks.html#developer-tools-benchmarking-run"><span class="std std-ref">运行性能测试</span></a> 中的命令行工作流和结果解读。要单独测量某个资产方法、缓存属性或传感器更新，使用 <a class="reference internal" href="micro_benchmarks.html#developer-tools-benchmarking-micro"><span class="std std-ref">编写微基准测试</span></a> 。</p>
+<section id="run-one-workflow">
+<h2>运行一个工作流<a class="headerlink" href="#run-one-workflow" title="Link to this heading">#</a></h2>
+<p>对受支持工作流使用带类型的请求。它采用与命令行相同的启动、任务、计时、数据结构和输出行为。以下运行时示例在预热 50 步后测量 1000 步，禁用可视化器，并同时输出稳定数据结构和便于阅读的摘要：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BenchmarkLauncherConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkOutputConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkRuntimeRequest</span><span class="p">,</span>
+    <span class="n">run_runtime_benchmark</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_runtime_benchmark</span><span class="p">(</span>
+    <span class="n">BenchmarkRuntimeRequest</span><span class="p">(</span>
+        <span class="n">task</span><span class="o">=</span><span class="s2">"Isaac-Cartpole-Direct"</span><span class="p">,</span>
+        <span class="n">num_envs</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+        <span class="n">num_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+        <span class="n">presets</span><span class="o">=</span><span class="p">(</span><span class="s2">"newton_mjwarp"</span><span class="p">,),</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">BenchmarkOutputConfig</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"results/runtime"</span><span class="p">),</span>
+            <span class="n">formatters</span><span class="o">=</span><span class="p">(</span><span class="s2">"schema"</span><span class="p">,</span> <span class="s2">"summary"</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">launcher</span><span class="o">=</span><span class="n">BenchmarkLauncherConfig</span><span class="p">(</span><span class="n">visualizers</span><span class="o">=</span><span class="p">()),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total FPS: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">total_fps</span><span class="o">.</span><span class="n">mean</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">output_path</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">output_paths</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>通过 Isaac Lab Python 包装脚本运行该文件：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./isaaclab.sh<span class="w"> </span>-p<span class="w"> </span>runtime_benchmark.py
+</pre></div>
+</div>
+<p>命令打印摘要报告。 <code class="docutils literal notranslate"><span class="pre">result.output_paths</span></code> 中的路径指向已写入的数据结构 JSON 和摘要 JSON。自动化中应使用这些路径，而不是自行重建带时间戳的文件名。</p>
+<p>当任务的 <code class="docutils literal notranslate"><span class="pre">benchmark_mode</span></code> 不为 <code class="docutils literal notranslate"><span class="pre">None</span></code> ，且设置 <code class="docutils literal notranslate"><span class="pre">ISAACLAB_RENDER_PROFILE=1</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ISAACLAB_PHYSICS_PROFILE=1</span></code> 时，运行时工作流还会在 <code class="docutils literal notranslate"><span class="pre">result.bundle.extra</span></code> 中提供标量性能摘要： <code class="docutils literal notranslate"><span class="pre">physics_mean_ms</span></code> 、 <code class="docutils literal notranslate"><span class="pre">physics_std_ms</span></code> 、 <code class="docutils literal notranslate"><span class="pre">physics_max_ms</span></code> 、 <code class="docutils literal notranslate"><span class="pre">physics_calls</span></code> 及对应的 <code class="docutils literal notranslate"><span class="pre">render_*</span></code> 键。它们报告采样中每次调用的平均耗时、标准差、最大耗时 [ms] 和调用次数。禁用的范围不会生成对应键。这些摘要会写入 schema 和 OmniPerf 输出，数据结构版本仍为 1.4。按顺序保留的原始样本位于 <code class="docutils literal notranslate"><span class="pre">&lt;output_path&gt;/profile_timings.json</span></code> ，供本地分析使用。</p>
+</section>
+<section id="choose-a-request">
+<h2>选择请求<a class="headerlink" href="#choose-a-request" title="Link to this heading">#</a></h2>
+<p>根据要测量的问题，选择对应请求及专用运行器。如果通用分派更方便， <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.run_benchmark" title="isaaclab.benchmark.run_benchmark"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_benchmark()</span></code></a> 可接受任意请求类型。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 37.0%" />
+<col style="width: 38.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>要回答的问题</p></th>
+<th class="head"><p>请求</p></th>
+<th class="head"><p>运行器</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>环境步进能力</p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkRuntimeRequest" title="isaaclab.benchmark.BenchmarkRuntimeRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkRuntimeRequest</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.run_runtime_benchmark" title="isaaclab.benchmark.run_runtime_benchmark"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_runtime_benchmark()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>应用与任务启动</p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkStartupRequest" title="isaaclab.benchmark.BenchmarkStartupRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkStartupRequest</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.run_startup_benchmark" title="isaaclab.benchmark.run_startup_benchmark"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_startup_benchmark()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>强化学习训练与学习过程</p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkTrainingRequest" title="isaaclab.benchmark.BenchmarkTrainingRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkTrainingRequest</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.run_training_benchmark" title="isaaclab.benchmark.run_training_benchmark"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_training_benchmark()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>已训练策略回放</p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkPlayRequest" title="isaaclab.benchmark.BenchmarkPlayRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkPlayRequest</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.run_play_benchmark" title="isaaclab.benchmark.run_play_benchmark"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_play_benchmark()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以下示例复用运行时工作流的输出和启动器对象。</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">分析启动性能</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">启动性能分析记录每个阶段的实际耗时，以及耗时最多的函数：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BenchmarkLauncherConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkOutputConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkStartupRequest</span><span class="p">,</span>
+    <span class="n">run_startup_benchmark</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_startup_benchmark</span><span class="p">(</span>
+    <span class="n">BenchmarkStartupRequest</span><span class="p">(</span>
+        <span class="n">task</span><span class="o">=</span><span class="s2">"Isaac-Cartpole-Direct"</span><span class="p">,</span>
+        <span class="n">num_envs</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+        <span class="n">top_n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">presets</span><span class="o">=</span><span class="p">(</span><span class="s2">"newton_mjwarp"</span><span class="p">,),</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">BenchmarkOutputConfig</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"results/startup"</span><span class="p">),</span>
+            <span class="n">formatters</span><span class="o">=</span><span class="p">(</span><span class="s2">"schema"</span><span class="p">,</span> <span class="s2">"summary"</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">launcher</span><span class="o">=</span><span class="n">BenchmarkLauncherConfig</span><span class="p">(</span><span class="n">visualizers</span><span class="o">=</span><span class="p">()),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Environment creation: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">phases</span><span class="p">[</span><span class="s1">'env_creation'</span><span class="p">]</span><span class="o">.</span><span class="n">total_time_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">运行训练</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">训练返回所选强化学习库生成的检查点：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BenchmarkLauncherConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkOutputConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkTrainingRequest</span><span class="p">,</span>
+    <span class="n">run_training_benchmark</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_training_benchmark</span><span class="p">(</span>
+    <span class="n">BenchmarkTrainingRequest</span><span class="p">(</span>
+        <span class="n">backend</span><span class="o">=</span><span class="s2">"rsl_rl"</span><span class="p">,</span>
+        <span class="n">task</span><span class="o">=</span><span class="s2">"Isaac-Cartpole-Direct"</span><span class="p">,</span>
+        <span class="n">num_envs</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+        <span class="n">max_iterations</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+        <span class="n">presets</span><span class="o">=</span><span class="p">(</span><span class="s2">"newton_mjwarp"</span><span class="p">,),</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">BenchmarkOutputConfig</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"results/training"</span><span class="p">),</span>
+            <span class="n">formatters</span><span class="o">=</span><span class="p">(</span><span class="s2">"schema"</span><span class="p">,</span> <span class="s2">"summary"</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">launcher</span><span class="o">=</span><span class="n">BenchmarkLauncherConfig</span><span class="p">(</span><span class="n">visualizers</span><span class="o">=</span><span class="p">()),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Collection FPS: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">collection_fps</span><span class="o">.</span><span class="n">mean</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Checkpoint: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">checkpoint_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">运行回放</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">在 <strong>新进程</strong> 中，将已保存的 <code class="docutils literal notranslate"><span class="pre">checkpoint_path</span></code> 传给回放请求：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BenchmarkLauncherConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkOutputConfig</span><span class="p">,</span>
+    <span class="n">BenchmarkPlayRequest</span><span class="p">,</span>
+    <span class="n">run_play_benchmark</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">checkpoint</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"checkpoint.txt"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_play_benchmark</span><span class="p">(</span>
+    <span class="n">BenchmarkPlayRequest</span><span class="p">(</span>
+        <span class="n">backend</span><span class="o">=</span><span class="s2">"rsl_rl"</span><span class="p">,</span>
+        <span class="n">task</span><span class="o">=</span><span class="s2">"Isaac-Cartpole-Direct"</span><span class="p">,</span>
+        <span class="n">checkpoint</span><span class="o">=</span><span class="n">checkpoint</span><span class="p">,</span>
+        <span class="n">num_envs</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+        <span class="n">num_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+        <span class="n">presets</span><span class="o">=</span><span class="p">(</span><span class="s2">"newton_mjwarp"</span><span class="p">,),</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">BenchmarkOutputConfig</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"results/play"</span><span class="p">),</span>
+            <span class="n">formatters</span><span class="o">=</span><span class="p">(</span><span class="s2">"schema"</span><span class="p">,</span> <span class="s2">"summary"</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">launcher</span><span class="o">=</span><span class="n">BenchmarkLauncherConfig</span><span class="p">(</span><span class="n">visualizers</span><span class="o">=</span><span class="p">()),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Environment + inference FPS: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">collection_fps</span><span class="o">.</span><span class="n">mean</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="configure-a-request">
+<h2>配置请求<a class="headerlink" href="#configure-a-request" title="Link to this heading">#</a></h2>
+<p>所有请求共享任务标识、可选环境数量和随机种子、任务配置、输出配置与启动器配置。</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id1">
+<caption><span class="caption-text">共享请求字段</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>用途</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">task</span></code></p></td>
+<td><p>已注册的 Gym 任务标识，例如 <code class="docutils literal notranslate"><span class="pre">Isaac-Cartpole-Direct</span></code> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_envs</span></code> 和 <code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p>环境数量与随机种子。比较时，两者都应保持固定。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">presets</span></code></p></td>
+<td><p>带类型的任务预设，例如 <code class="docutils literal notranslate"><span class="pre">(&quot;newton_mjwarp&quot;,)</span></code> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hydra_args</span></code></p></td>
+<td><p>额外的 Hydra 覆盖项，以字符串元组表示。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">output</span></code></p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkOutputConfig" title="isaaclab.benchmark.BenchmarkOutputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkOutputConfig</span></code></a> ，控制输出目录和格式化器集合。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">launcher</span></code></p></td>
+<td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkLauncherConfig" title="isaaclab.benchmark.BenchmarkLauncherConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkLauncherConfig</span></code></a> ，控制设备、相机、可视化器、Kit、实时串流和日志选项。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-text">工作流专用字段</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 26.0%" />
+<col style="width: 52.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>工作流程</p></th>
+<th class="head"><p>字段</p></th>
+<th class="head"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>运行时</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">num_steps</span></code>, <code class="docutils literal notranslate"><span class="pre">warmup_steps</span></code></p></td>
+<td><p>测量的环境步数，以及之前不计入测量的步数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>启动</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">top_n</span></code>, <code class="docutils literal notranslate"><span class="pre">whitelist_config</span></code></p></td>
+<td><p>每个阶段保留的分析函数数量，以及可选过滤条件。</p></td>
+</tr>
+<tr class="row-even"><td><p>训练</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">backend</span></code>, <code class="docutils literal notranslate"><span class="pre">max_iterations</span></code>, <code class="docutils literal notranslate"><span class="pre">warmup_steps</span></code></p></td>
+<td><p>强化学习库、学习迭代次数，以及不计入环境步计时的初始步数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>回放</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">backend</span></code>, <code class="docutils literal notranslate"><span class="pre">checkpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">num_steps</span></code>, <code class="docutils literal notranslate"><span class="pre">warmup_steps</span></code></p></td>
+<td><p>强化学习库、策略、测量的推理步数，以及不计入测量的初始步数。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>训练还提供学习、视频、传感器采集与收敛相关选项。训练和回放也提供 <code class="docutils literal notranslate"><span class="pre">backend_args</span></code> ，用于确实只属于某个强化学习库的选项。受支持选项应优先使用带类型的字段、预设和 <code class="docutils literal notranslate"><span class="pre">hydra_args</span></code> 。 <code class="docutils literal notranslate"><span class="pre">backend_args</span></code> 绕过通用请求约定。完整字段列表见 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#module-isaaclab.benchmark" title="isaaclab.benchmark"><code class="xref py py-mod docutils literal notranslate"><span class="pre">isaaclab.benchmark</span></code></a> API 参考。</p>
+<p>空的 <code class="docutils literal notranslate"><span class="pre">visualizers</span></code> 元组显式禁用全部可视化器； <code class="docutils literal notranslate"><span class="pre">None</span></code> 保留任务与环境的默认设置。启用相机、渲染、实时串流、确定性行为或动画录制会改变负载，比较的运行必须保持这些设置一致。</p>
+</section>
+<section id="choose-output-formats">
+<h2>选择输出格式<a class="headerlink" href="#choose-output-formats" title="Link to this heading">#</a></h2>
+<p>在 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkOutputConfig" title="isaaclab.benchmark.BenchmarkOutputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkOutputConfig</span></code></a> 中选择一个或多个格式化器名称：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>格式化器</p></th>
+<th class="head"><p>约定</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">schema</span></code></p></td>
+<td><p>写入稳定的带类型结果包，适合程序化比较和长期结果存储。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">summary</span></code></p></td>
+<td><p>打印精简的终端报告，并写入扁平指标 JSON 文件。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">json</span></code></p></td>
+<td><p>写入更底层的阶段、测量与元数据表示。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">osmo</span></code></p></td>
+<td><p>为 Osmo 使用方写入按阶段组织的 KPI 文件。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">omniperf</span></code></p></td>
+<td><p>写入 OmniPerf KPI 表示。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>需要审阅或发布的结果应使用 <code class="docutils literal notranslate"><span class="pre">(&quot;schema&quot;,</span> <span class="pre">&quot;summary&quot;)</span></code> 。摘要提供即时反馈，schema 保留供分析使用的带类型数据。使用多个格式化器时，各输出文件名包含格式化器名称，因此 JSON 输出不会互相覆盖。</p>
+</section>
+<section id="read-the-result">
+<h2>读取结果<a class="headerlink" href="#read-the-result" title="Link to this heading">#</a></h2>
+<p>每个工作流都返回 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BenchmarkResult" title="isaaclab.benchmark.BenchmarkResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkResult</span></code></a> ，包含两个成员：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bundle</span></code> 是 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.RuntimeBundle" title="isaaclab.benchmark.RuntimeBundle"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeBundle</span></code></a> 、 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.StartupBundle" title="isaaclab.benchmark.StartupBundle"><code class="xref py py-class docutils literal notranslate"><span class="pre">StartupBundle</span></code></a> 、 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.TrainingBundle" title="isaaclab.benchmark.TrainingBundle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingBundle</span></code></a> 或 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.PlayBundle" title="isaaclab.benchmark.PlayBundle"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayBundle</span></code></a> 。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_paths</span></code> 是所选格式化器实际写入的 <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="（在 Python v3.15）"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> 对象元组。</p></li>
+</ul>
+<p>应读取带类型的字段，而不是解析终端文本，或依赖 <code class="docutils literal notranslate"><span class="pre">bundle.extra</span></code> 中的键：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Runtime or play</span>
+<span class="n">total_fps</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">total_fps</span><span class="o">.</span><span class="n">mean</span>
+<span class="n">step_fps</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">environment_step_timing</span><span class="o">.</span><span class="n">environment_step_fps</span><span class="o">.</span><span class="n">mean</span>
+
+<span class="c1"># Startup</span>
+<span class="n">scene_creation_s</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">phases</span><span class="p">[</span><span class="s2">"env_creation"</span><span class="p">]</span><span class="o">.</span><span class="n">total_time_s</span>
+
+<span class="c1"># Training</span>
+<span class="n">collection_fps</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">collection_fps</span><span class="o">.</span><span class="n">mean</span>
+<span class="n">final_reward</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">learning</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">final_raw</span>
+<span class="n">checkpoint</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">checkpoint_path</span>
+
+<span class="c1"># Play, when at least one episode completed</span>
+<span class="n">mean_return</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">mean</span> <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">bundle</span><span class="o">.</span><span class="n">reward</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>通用的 <code class="docutils literal notranslate"><span class="pre">run</span></code> 、 <code class="docutils literal notranslate"><span class="pre">versions</span></code> 和 <code class="docutils literal notranslate"><span class="pre">hardware</span></code> 字段保存比较所需的上下文。 <code class="docutils literal notranslate"><span class="pre">runtime</span></code> 区分采集吞吐量、总吞吐量、启动时间和环境步计时。测量定义见 <a class="reference internal" href="run_benchmarks.html#developer-tools-benchmarking-run"><span class="std std-ref">运行性能测试</span></a> ；所有数据结构字段见公共 API 参考。</p>
+</section>
+<section id="handle-errors-and-process-lifetime">
+<h2>处理错误与进程生命周期<a class="headerlink" href="#handle-errors-and-process-lifetime" title="Link to this heading">#</a></h2>
+<p>如果工作流解析器拒绝带类型请求，API 抛出 <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> ；如果工作流退出却没有返回结果，则抛出 <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> 。无效输出配置也会报错，例如格式化器元组为空或包含未知名称。</p>
+<p>每个工作流应在独立进程中运行，使各性能测试拥有完整、独立的仿真器生命周期，避免状态在工作流之间遗留，也与命令行执行模型一致。进程启动时间与稳态吞吐量分别报告。开始回放前，先保存 <code class="docutils literal notranslate"><span class="pre">result.bundle.checkpoint_path</span></code> 。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><code class="docutils literal notranslate"><span class="pre">measure_synchronized_step_breakdown=True</span></code> 在环境与仿真步边界插入设备同步。这会使计算串行化，改变被测调度，Newton 尤其明显。该次运行的所有速率均属诊断数据，不能作为吞吐量报告。 <code class="docutils literal notranslate"><span class="pre">SimulationContext.step()</span></code> 之外的时间包含必要的动作、执行器、状态、管理器、重置、包装器和同步工作，不能直接视为可移除的 Isaac Lab 开销。</p>
+</div>
+</section>
+<section id="add-a-custom-producer">
+<h2>添加自定义数据生成器<a class="headerlink" href="#add-a-custom-producer" title="Link to this heading">#</a></h2>
+<p>如果数据生成器的生命周期无法用受支持的工作流表示，可使用 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BaseIsaacLabBenchmark" title="isaaclab.benchmark.BaseIsaacLabBenchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseIsaacLabBenchmark</span></code></a> 。框架提供阶段、带类型的测量与元数据记录、系统记录器和格式化器，但计时边界必须由你定义。</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id3">
+<caption><span class="caption-text">测量与元数据类型</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>类型</p></th>
+<th class="head"><p>用途</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.SingleMeasurement" title="isaaclab.benchmark.SingleMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleMeasurement</span></code></a></p></td>
+<td><p>带有单位的单个标量，例如总时长或完成的操作数。</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.StatisticalMeasurement" title="isaaclab.benchmark.StatisticalMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatisticalMeasurement</span></code></a></p></td>
+<td><p>重复样本的均值、标准差、样本数和单位。</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.BooleanMeasurement" title="isaaclab.benchmark.BooleanMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanMeasurement</span></code></a></p></td>
+<td><p>状态或正确性结果。</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.DictMeasurement" title="isaaclab.benchmark.DictMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMeasurement</span></code></a></p></td>
+<td><p>非标量样本的结构化测量数据。</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.ListMeasurement" title="isaaclab.benchmark.ListMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListMeasurement</span></code></a></p></td>
+<td><p>保留的样本序列或学习序列。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">StringMetadata</span></code>, <code class="docutils literal notranslate"><span class="pre">IntMetadata</span></code>, <code class="docutils literal notranslate"><span class="pre">FloatMetadata</span></code>, <code class="docutils literal notranslate"><span class="pre">DictMetadata</span></code></p></td>
+<td><p>比较测量结果所需的配置与身份信息。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以下可执行示例测量 CPU 负载，记录样本分布与配置，更新系统记录器，并确保最终完成性能测试的收尾：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">statistics</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseIsaacLabBenchmark</span><span class="p">,</span>
+    <span class="n">IntMetadata</span><span class="p">,</span>
+    <span class="n">StatisticalMeasurement</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">benchmark</span> <span class="o">=</span> <span class="n">BaseIsaacLabBenchmark</span><span class="p">(</span>
+    <span class="n">benchmark_name</span><span class="o">=</span><span class="s2">"custom_cpu_workload"</span><span class="p">,</span>
+    <span class="n">formatter_type</span><span class="o">=</span><span class="p">[</span><span class="s2">"json"</span><span class="p">,</span> <span class="s2">"summary"</span><span class="p">],</span>
+    <span class="n">output_path</span><span class="o">=</span><span class="s2">"results/custom"</span><span class="p">,</span>
+    <span class="n">output_prefix</span><span class="o">=</span><span class="s2">"custom_cpu_workload"</span><span class="p">,</span>
+    <span class="n">use_recorders</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">workflow_metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"num_iterations"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">:</span> <span class="n">num_iterations</span><span class="p">}]</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">output_paths</span> <span class="o">=</span> <span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="n">value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">))</span>
+
+    <span class="n">samples_ms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="n">start_ns</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter_ns</span><span class="p">()</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="n">value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">))</span>
+        <span class="n">samples_ms</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter_ns</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_ns</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0e6</span><span class="p">)</span>
+
+    <span class="n">benchmark</span><span class="o">.</span><span class="n">add_measurement</span><span class="p">(</span>
+        <span class="s2">"workload"</span><span class="p">,</span>
+        <span class="n">measurement</span><span class="o">=</span><span class="n">StatisticalMeasurement</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"duration"</span><span class="p">,</span>
+            <span class="n">mean</span><span class="o">=</span><span class="n">statistics</span><span class="o">.</span><span class="n">fmean</span><span class="p">(</span><span class="n">samples_ms</span><span class="p">),</span>
+            <span class="n">std</span><span class="o">=</span><span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">samples_ms</span><span class="p">),</span>
+            <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">samples_ms</span><span class="p">),</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"ms"</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">IntMetadata</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"warmup_iterations"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">benchmark</span><span class="o">.</span><span class="n">update_manual_recorders</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">output_paths</span> <span class="o">=</span> <span class="n">benchmark</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">output_path</span> <span class="ow">in</span> <span class="n">output_paths</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>选择有意义的阶段名，并明确单位。采样前先预热，报告均值与标准差时同时报告样本数。对于 GPU 计算，说明指标是提交延迟，还是设备同步后的完成延迟，并有意识地选择同步边界。</p>
+<p>自定义数据生成器创建稳定工作流结果包时，应先调用 <code class="docutils literal notranslate"><span class="pre">attach_bundle(bundle)</span></code> ，再调用 <code class="docutils literal notranslate"><span class="pre">finalize()</span></code> ，并选择 <code class="docutils literal notranslate"><span class="pre">schema</span></code> 。否则，使用底层 <code class="docutils literal notranslate"><span class="pre">json</span></code> 表示。 <code class="docutils literal notranslate"><span class="pre">finalize()</span></code> 停止可选的 Kit 帧耗时记录器，收集记录器数据，写入所有选定格式，并返回写入路径。</p>
+<p><code class="docutils literal notranslate"><span class="pre">use_recorders=True</span></code> （默认值）时，基类采集 CPU、GPU、内存及版本元数据。在 <code class="docutils literal notranslate"><span class="pre">finalize()</span></code> 前至少调用一次 <code class="docutils literal notranslate"><span class="pre">update_manual_recorders()</span></code> ；长时间负载需要当前利用率样本时，也应在运行中更新。</p>
+<p>只有 Kit 应用正在运行，且负载需要物理、渲染、应用或 GPU 帧耗时数据时，才设置 <code class="docutils literal notranslate"><span class="pre">frametime_recorders=True</span></code> 。框架启用可用的 Isaac Sim 性能测试服务，并跳过不可用记录器。帧耗时插桩本身也是负载的一部分，比较时应保持设置不变。</p>
+<section id="choose-a-lower-level-runner">
+<h3>选择底层运行器<a class="headerlink" href="#choose-a-lower-level-runner" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.MethodBenchmarkRunner" title="isaaclab.benchmark.MethodBenchmarkRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">MethodBenchmarkRunner</span></code></a> 在不同输入模式、预热步数和实例数量下，重复运行某个方法或属性。使用 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.measure_latency" title="isaaclab.benchmark.measure_latency"><code class="xref py py-func docutils literal notranslate"><span class="pre">measure_latency()</span></code></a> 定义成对的主机提交与设备同步计时边界；使用 <a class="reference internal" href="../../api/lab/isaaclab.benchmark.html#isaaclab.benchmark.LatencyBenchmarkRunner" title="isaaclab.benchmark.LatencyBenchmarkRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">LatencyBenchmarkRunner</span></code></a> 报告这些结构化延迟样本。这些单项结果都不能预测端到端环境或训练吞吐量。命令矩阵与扩展协议见 <a class="reference internal" href="micro_benchmarks.html#developer-tools-benchmarking-micro"><span class="std std-ref">编写微基准测试</span></a> 。</p>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>故障排除<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<p>通过 <code class="docutils literal notranslate"><span class="pre">./isaaclab.sh</span> <span class="pre">-p</span></code> 运行脚本，确保 Isaac Lab 和仿真器 Python 环境已启用。如果缺少输出，检查返回的 <code class="docutils literal notranslate"><span class="pre">output_paths</span></code> ，确认自定义数据生成器调用了 <code class="docutils literal notranslate"><span class="pre">finalize()</span></code> 。格式化器名称使用小写且区分大小写，有效名称为 <code class="docutils literal notranslate"><span class="pre">schema</span></code> 、 <code class="docutils literal notranslate"><span class="pre">summary</span></code> 、 <code class="docutils literal notranslate"><span class="pre">json</span></code> 、 <code class="docutils literal notranslate"><span class="pre">osmo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">omniperf</span></code> 。</p>
+<p>缺少 GPU 元数据通常表示 <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> 或 CUDA 设备发现不可用。缺少 Kit 帧耗时测量，则可能是对应性能测试服务不存在，这并不影响非帧耗时阶段的有效性。</p>
+<p>新增受支持的端到端工作流时，应保持带类型请求的构建、分派、schema 输出、摘要输出及命令行行为一致。对于单项操作，先参照 <a class="reference internal" href="micro_benchmarks.html#developer-tools-benchmarking-micro"><span class="std std-ref">编写微基准测试</span></a> ，再添加新运行器或计时约定。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="micro_benchmarks.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">编写微基准测试</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../experimental-features/bleeding-edge.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">欢迎来到最前沿！</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-one-workflow">运行一个工作流</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-request">选择请求</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-a-request">配置请求</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-output-formats">选择输出格式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-result">读取结果</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handle-errors-and-process-lifetime">处理错误与进程生命周期</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-custom-producer">添加自定义数据生成器</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-lower-level-runner">选择底层运行器</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">故障排除</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026, The Isaac Lab Project Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 10 月 10 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

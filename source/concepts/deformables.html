@@ -1,0 +1,1334 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>可变形物体 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=ccd4f661" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/environment-browser.css?v=665352f4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/demo-browser.css?v=e28b46a0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/guide-browser.css?v=7190c4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script>window.isaacLabDocsTranslations = {"5 visualizers running Isaac-Velocity-Flat-AnymalD with a circular velocity command": "五种可视化器运行 Isaac-Velocity-Flat-AnymalD，并使用环形速度指令", "A PhysX-trained ANYmal-D policy runs side by side in PhysX and Newton MJWarp": "在 PhysX 上训练的 ANYmal-D 策略，并排运行于 PhysX 与 Newton MJWarp", "A Rizon robot uses a Sharpa hand to manipulate a teapot": "Rizon 机器人使用 Sharpa 手操作茶壶", "A Rizon robot uses a Sharpa hand to manipulate an RJ45 cable": "Rizon 机器人使用 Sharpa 手操作 RJ45 网线", "All categories": "所有类别", "Animate an arm, biped, quadruped, dexterous hand, quadcopter, and rigid props in one deterministic scene.": "在同一确定性场景中，驱动机械臂、双足机器人、四足机器人、灵巧手、四旋翼和刚性道具。", "Arrow markers on the Franka arm's joints, with contact sensor markers on the cube": "Franka 机械臂关节上的箭头标记，以及立方体上的接触传感器标记", "Back to all guides": "返回全部指南", "Benchmark FPS measurements, scroll for more configurations": "性能测试 FPS 测量结果，可滚动查看更多配置", "Benchmark channel": "性能测试分支", "Benchmark data could not be loaded.": "无法加载性能测试数据。", "Benchmark data is not available yet": "暂无性能测试数据", "Benchmark workload": "性能测试负载", "Block and tackle pulleys and a red load": "滑轮组与红色负载", "Classic control": "经典控制", "Collection": "数据采集", "Command mode": "命令模式", "Contrib": "社区贡献", "Copy command": "复制命令", "Core": "核心任务", "Default": "默认", "Develop": "开发版", "Domain preset": "领域预设", "Drag a cable handle to lift a load through a 4:1 pulley system.": "拖动缆绳把手，通过 4:1 滑轮组举起负载。", "Each Allegro hand reorients its cube to match the target shown by the marker above it": "每只 Allegro 手调整立方体朝向，使其与上方标记显示的目标一致", "Each Franka arm reaches its end-effector toward a randomized target pose": "各 Franka 机械臂将末端执行器移动到随机目标位姿", "Each H1 humanoid climbs a staircase sub-terrain": "各 H1 人形机器人攀登楼梯子地形", "Each Kuka arm and Allegro hand lifts its cube off the table": "各 Kuka 机械臂和 Allegro 手将立方体从桌面举起", "Each Shadow Hand reorients its cube to match the target pose": "各 Shadow Hand 调整立方体朝向，使其与目标位姿一致", "Fill a Utah teapot with MPM water particles and pour them into a bowl.": "向 Utah 茶壶注入 MPM 水粒子，再倒入碗中。", "Filled teal fingers belong to the source solver; outlined blue fingers are destination-local proxies of those same bodies. The blue object represents material owned by the destination solver.": "青绿色实心手指属于源求解器；蓝色轮廓手指是目标求解器内这些刚体的本地代理。蓝色物体表示归目标求解器所有的材料。", "Green arrow: commanded velocity. Blue arrow: current velocity.": "绿色箭头表示指令速度；蓝色箭头表示当前速度。", "H1 Locomotion": "H1 行走", "H1 locomotion": "H1 行走", "H1 locomotion in Isaac Lab": "Isaac Lab 中的 H1 行走", "H1 locomotion uses a published policy. For autonomous H1 task playback, use": "H1 行走使用已发布的策略。要自主回放 H1 任务，请使用", "In the Newton viewer, press": "在 Newton 查看器中，按", "Interactive pick and place demo": "交互式抓取与放置演示", "Interactive view of the Galbot cube stacking environment": "Galbot 立方体堆叠环境的交互视图", "Interactively pick up a cube with a parallel robot and place it on a target.": "交互式控制并联机器人，抓起立方体并放到目标位置。", "Isaac Lab command builder": "Isaac Lab 命令生成器", "Isaac Lab demo command builder": "Isaac Lab 演示命令生成器", "Isaac-Cartpole preview": "Isaac-Cartpole 预览", "Isaac-Lift-KukaAllegro in Viser Visualizer": "Viser 可视化器中的 Isaac-Lift-KukaAllegro", "Isaac-Reach-Franka in Kit Visualizer": "Kit 可视化器中的 Isaac-Reach-Franka", "Isaac-Reorient-Cube-Allegro in Newton GL Visualizer": "Newton GL 可视化器中的 Isaac-Reorient-Cube-Allegro", "Isaac-Reorient-Cube-Shadow-Direct in Rerun Visualizer": "Rerun 可视化器中的 Isaac-Reorient-Cube-Shadow-Direct", "Isaac-Velocity-Rough-H1 in Newton RTX Visualizer": "Newton RTX 可视化器中的 Isaac-Velocity-Rough-H1", "Joint arrow markers on a Franka arm and contact sensor markers on a cube": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记", "Joint arrow markers on a Franka arm, with contact sensor markers on a cube.": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记。", "Kit visualizer": "Kit 可视化器", "Kit visualizer tiled streaming": "Kit 可视化器平铺串流", "Kit visualizer: interactive viewport": "Kit 可视化器：交互式视口", "Kit visualizer: streaming camera view": "Kit 可视化器：串流相机视图", "Large green/blue arrow markers showing target and base velocity for an AnymalD robot": "AnymalD 机器人上表示目标速度和基座速度的大型绿色、蓝色箭头标记", "Loading guide...": "正在加载指南…", "Locomotion": "移动", "Manipulation": "操作", "Mode": "模式", "Newton Block and Tackle": "Newton 滑轮组", "Newton GL visualizer": "Newton GL 可视化器", "Newton GL visualizer, with 3 plots opened": "Newton GL 可视化器，打开了三个曲线图", "Newton visualizer: interactive viewport": "Newton 可视化器：交互式视口", "Newton visualizer: streaming camera view": "Newton 可视化器：串流相机视图", "No guides match this search.": "没有符合搜索条件的指南。", "No tasks match this search.": "没有符合搜索条件的任务。", "Not available": "暂无数据", "Note: Newton RTX has no velocity arrows, since it doesn't yet support visualization markers.": "注意：Newton RTX 暂不支持可视化标记，因此没有速度箭头。", "OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.": "OV 与 Isaac Sim 不能混用。请选择相互匹配的物理后端和渲染后端。", "Open in a new tab": "在新标签页打开", "Open the animation": "打开动画", "Physics": "物理", "Physics backend": "物理后端", "Physics preset": "物理预设", "Pick and Place": "抓取与放置", "Pick and place": "抓取与放置", "Pick and place requires Kit input.": "抓取与放置需要 Kit 输入。", "Play": "回放", "Preset": "预设", "Proxy coupling between source and destination solvers": "源求解器与目标求解器之间的代理耦合", "RL Library": "强化学习库", "RL library": "强化学习库", "Recorded clip of the Shadow Hand cube-reorientation task, recording the streaming view of the Rerun visualizer with 4 streaming view envs and 4 GT types": "Shadow Hand 立方体转向任务的录像，录制 Rerun 可视化器的串流视图，包含四个串流环境和四种真值数据", "Recorded clip with ground-truth sensor views": "包含真值传感器视图的录像片段", "Release": "发布版", "Renderer": "渲染器", "Renderer preset": "渲染器预设", "Right-click dragging the first domino triggers the cascade across an NVIDIA-logo domino layout": "右键拖动第一张骨牌，在 NVIDIA 标志形状的骨牌布局中触发连锁倒下", "Robots in the Isaac Lab Zoo demo": "Isaac Lab Zoo 演示中的机器人", "Scene sensor": "场景传感器", "Search all guides": "搜索全部指南", "Search guides": "搜索指南", "Search tasks and capabilities": "搜索任务与功能", "Search tasks or capabilities": "搜索任务或功能", "Select H1 robots and control a trained rough-terrain policy with the keyboard and follow camera.": "选择 H1 机器人，通过键盘和跟随相机控制已训练的崎岖地形策略。", "Selected guide": "所选指南", "Selected task": "所选任务", "Smash rigid crates with coupled MPM snowballs.": "使用耦合的 MPM 雪球撞碎刚性箱子。", "Snowball Smash": "雪球撞击", "Snowballs striking a stack of colored crates": "雪球撞击一叠彩色箱子", "Streaming view showing tiled Galbot wrist-camera feeds": "显示 Galbot 腕部相机平铺画面的串流视图", "Table color shows success: red until the cube reaches its target pose, green once it does.": "桌面颜色表示成功状态：立方体到达目标位姿前为红色，到达后变为绿色。", "Task": "任务", "Task category": "任务类别", "Task collection": "任务集合", "Teapot Fill": "茶壶注水", "The upper arrow synchronizes source state with the proxies, including pose and velocity. Contact produces the force and torque feedback shown by the lower arrow, which returns to a later source solve or coupling iteration.": "上方箭头表示源状态与代理之间的同步，包括位姿和速度。接触产生下方箭头所示的力与力矩反馈，在后续源求解或耦合迭代中返回。", "This environment does not support RL training or playback. The command runs it with the zero-action agent instead.": "此环境不支持强化学习训练或回放，命令将改用零动作智能体运行。", "Train": "训练", "Training": "训练", "Use Pre-trained Checkpoint": "使用预训练检查点", "Utah teapot pouring simulated water": "Utah 茶壶倒出仿真水流", "VRAM": "显存", "Velocity arrow marker on an AnymalD robot": "AnymalD 机器人上的速度箭头标记", "Velocity command (green) and current velocity (blue) arrow markers on an AnymalD robot.": "AnymalD 机器人上表示速度指令（绿色）和当前速度（蓝色）的箭头标记。", "Viser visualizer, with 1 plot opened": "Viser 可视化器，打开了一个曲线图", "Visualizer": "可视化器", "Watch the proxy coupling animation.": "观看代理耦合动画。", "Zoo": "机器人集锦（Zoo）", "newton-dominoes example": "newton-dominoes 示例", "to pause or scrub through the exchange.": "可暂停或拖动进度查看交换过程。", "to select a robot,": "选择机器人，按", "to stop, and": "停止，按", "to toggle the follow camera.": "切换跟随相机。", "to walk forward or turn,": "前进或转向，按", "Copied": "已复制", "default": "默认", "Manager": "管理器", "Direct": "直接工作流", "Camera": "相机", "Direct-Camera": "直接工作流与相机", "Task variant": "任务变体", "Zero agent": "零动作智能体", "Not supported": "不支持", "Collection FPS": "采集 FPS", "Training FPS": "训练 FPS", "Configuration": "配置", "Mean FPS": "平均 FPS", "Unspecified renderer": "未指定渲染器", "Presets not recorded": "未记录预设", "Newton renderer": "Newton 渲染器", "Newton MJWarp VBD proxy": "Newton MJWarp VBD 代理", "none": "无"};</script>
+    <script src="../../_static/zh-cn-ui.js?v=2a63ae94"></script>
+    <script src="../../_static/media-status.js?v=d1674cca"></script>
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/concepts/deformables';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/css/environment-browser.js?v=0830db2c"></script>
+    <script src="../../_static/css/demo-browser.js?v=bcae0e8a"></script>
+    <script src="../../_static/css/guide-browser.js?v=d5610391"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="模式配置类" href="schema_cfgs.html" />
+    <link rel="prev" title="强化学习" href="reinforcement_learning.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="3.0.0" />
+    <meta name="docbuild:last-update" content="2026 年 10 月 10 日"/>
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="快捷链接">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cube fa-lg" aria-hidden="true"></i><span class="visually-hidden">Isaac Sim</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab/stargazers" title="GitHub 星标" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-star fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub 星标</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">生态系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/tutorial.html">教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/demos.html">演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">操作指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../workflows/index.html">工作流程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../workflows/docker/index.html">在 Docker 中运行 Isaac Lab</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/images.html">容器镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/cluster.html">在 HPC 集群上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/cloud.html">云部署</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_to_isaaclab_3-0.html">迁移到 3.0</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">核心概念</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="backends_and_presets.html">后端与预设</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend_architecture.html">后端架构</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="physics_backends.html">物理后端</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="physics-backends/newton.html">Newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="joint_and_body_ordering.html">关节与刚体顺序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovphysx.html">OvPhysX 后端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_mpm.html">使用隐式 MPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp_environments.html">Warp 实验性环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp_environment_migration.html">Warp 环境迁移指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="solver_differences.html">求解器差异</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="native-physics-api/index.html">访问原生物理 API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/physx.html">PhysX 张量 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/newton.html">Newton 原生数据与选择 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/ovphysx.html">OvPhysX 张量绑定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="renderers.html">渲染器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actuators.html">执行器</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="sensors/camera.html">相机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/pva.html">位姿、速度与加速度（PVA）传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/joint_wrench_sensor.html">关节力旋量传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="coupled_solvers.html">耦合求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">强化学习</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">可变形物体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_cfgs.html">模式配置类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_fragments.html">模式片段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion_generators.html">运动生成器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../features/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/teleop_imitation.html">使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/humanoids_imitation.html">示例：人形机器人的数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/skillgen.html">使用 SkillGen 自动生成示范</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/isaac_teleop.html">Isaac Capture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多 GPU 和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于种群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/record_video.html">录制视频</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/visualizer_tiled_camera.html">可视化器相机流视图</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开发工具</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/editor_setup.html">编辑器配置</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/template_generator.html">创建自己的项目或任务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/add_physics_backend.html">添加物理后端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/extending_newton_solvers.html">扩展 Newton 求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/scene_data_providers.html">场景数据提供器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/agent_skills.html">智能体技能</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../developer-tools/benchmarking/index.html">性能测试</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/run_benchmarks.html">运行性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/micro_benchmarks.html">编写微基准测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/benchmark_api.html">使用性能测试 API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/ray.html">Ray 作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/visuo_tactile_sensor.html">视触觉传感器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/rlinf_vla_posttraining.html">VLA 模型的强化学习后训练</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/03_compass_with_NuRec/compass_navigation_policy_with_NuRec.html">使用 NuRec 资产训练和部署 COMPASS 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/04_reach/reach_policy.html">训练用于实机部署的 Reach 策略</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../policy_deployment/05_leapp/exporting_policies_with_leapp.html">使用 LEAPP 导出策略</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.html">使用 LEAPP 导出 Direct 工作流策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../policy_deployment/05_leapp/deploying_exported_policies_with_leapp.html">使用 LEAPP 部署导出的策略</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.benchmark.html">isaaclab.benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.cloner.html">isaaclab.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/lab/isaaclab.envs.leapp_deployment_env.html">LEAPP Deployment Environment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.physics.html">isaaclab.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.renderers.html">isaaclab.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene_data.html">isaaclab.scene_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.visualizers.html">isaaclab.visualizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.controllers.html">isaaclab_contrib.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.coupling.html">isaaclab_contrib.coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.custom_coupling.html">isaaclab_contrib.custom_coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.rl.html">isaaclab_contrib.rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_teleop/isaaclab_teleop.html">isaaclab_teleop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.app.html">isaaclab_physx.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.assets.html">isaaclab_physx.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.cloner.html">isaaclab_physx.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html">isaaclab_physx.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.renderers.html">isaaclab_physx.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sensors.html">isaaclab_physx.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.schemas.html">isaaclab_physx.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.spawners.html">isaaclab_physx.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.assets.html">isaaclab_newton.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.cloner.html">isaaclab_newton.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.controllers.html">isaaclab_newton.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html">isaaclab_newton.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.renderers.html">isaaclab_newton.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sensors.html">isaaclab_newton.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.schemas.html">isaaclab_newton.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.spawners.html">isaaclab_newton.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.app.html">isaaclab_ov.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.assets.html">isaaclab_ov.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.cloner.html">isaaclab_ov.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.physics.html">isaaclab_ov.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.renderers.html">isaaclab_ov.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sim.views.html">isaaclab_ov.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_assets/isaaclab_assets.robots.html">isaaclab_assets.robots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_assets/isaaclab_assets.sensors.html">isaaclab_assets.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.kit.html">isaaclab_visualizers.kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.newton.html">isaaclab_visualizers.newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.rerun.html">isaaclab_visualizers.rerun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.viser.html">isaaclab_visualizers.viser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.envs.html">isaaclab_experimental.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.managers.html">isaaclab_experimental.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.utils.html">isaaclab_experimental.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.benchmark.recorders.html">isaaclab.benchmark.recorders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.camera.html">isaaclab.sensors.camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.ray_caster.html">isaaclab.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.ui.widgets.html">isaaclab.ui.widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.ui.xr_widgets.html">isaaclab.ui.xr_widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.leapp.html">isaaclab.utils.leapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.envs.mdp.actions.html">isaaclab_experimental.envs.mdp.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.envs.mdp.html">isaaclab_newton.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.views.html">isaaclab_newton.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.envs.mdp.html">isaaclab_ov.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sensors.html">isaaclab_ov.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sensors.ray_caster.html">isaaclab_ov.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.envs.mdp.html">isaaclab_physx.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.views.html">isaaclab_physx.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ppisp/isaaclab_ppisp.html">isaaclab_ppisp</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/release_notes.html">发布说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">Package Changelogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/newton-physics/newton">NVIDIA Newton</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/concepts/deformables.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/concepts/deformables.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/concepts/deformables.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>可变形物体</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backend-support">后端支持情况</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volume-and-surface-deformables">体积和表面可变形物体</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#authoring">编写资产</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-from-usd">从 USD 加载</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume-or-surface">体积还是表面</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetrahedralization">四面体划分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-state">运行时状态</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cables">线缆</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-authoring">编写线缆</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-material-parameters">线缆材质参数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-collision">线缆碰撞</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-runtime-state">线缆运行时状态</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-cables-from-usd">从 USD 加载线缆</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-rendering">线缆渲染</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-limitations">线缆限制</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#material-parameters-in-practice">材质参数的实际效果</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume">体积</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surface">表面</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable">线缆</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-and-tasks">示例与任务</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related">相关内容</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="deformables">
+<span id="id1"></span><h1>可变形物体<a class="headerlink" href="#deformables" title="Link to this heading">#</a></h1>
+<p>可变形物体是在仿真中形状会发生变化的资产。与刚体不同，它没有刚性的根坐标系；其状态由仿真网格中每个节点的位置和速度组成。</p>
+<p>Isaac Lab 按仿真几何体的维度，将可变形物体分为三类：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 16.0%" />
+<col style="width: 28.0%" />
+<col style="width: 28.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>属性</p></th>
+<th class="head"><p>体积</p></th>
+<th class="head"><p>表面</p></th>
+<th class="head"><p>线缆</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>模拟对象</p></td>
+<td><p>软质实体：橡胶块、泰迪熊、器官</p></td>
+<td><p>布料、薄片、膜</p></td>
+<td><p>绳索、软管、电线、线束</p></td>
+</tr>
+<tr class="row-odd"><td><p>仿真几何体</p></td>
+<td><p>四面体网格（ <code class="docutils literal notranslate"><span class="pre">UsdGeom.TetMesh</span></code> ）</p></td>
+<td><p>三角网格（ <code class="docutils literal notranslate"><span class="pre">UsdGeom.Mesh</span></code> ）</p></td>
+<td><p>开放曲线（ <code class="docutils literal notranslate"><span class="pre">UsdGeom.BasisCurves</span></code> ），以胶囊体线段模拟</p></td>
+</tr>
+<tr class="row-even"><td><p>资产类</p></td>
+<td><p><a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject" title="isaaclab.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeformableObject</span></code></a></p></td>
+<td><p><a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject" title="isaaclab.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeformableObject</span></code></a></p></td>
+<td><p><a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.CableObject" title="isaaclab.assets.CableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableObject</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>运行时状态</p></td>
+<td><p>节点位置和速度</p></td>
+<td><p>节点位置和速度</p></td>
+<td><p>各线段的位姿和速度</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>体积和表面可变形物体使用同一资产类和编写方式，区别仅在于所分配的物理材质。线缆使用独立的资产类，具有自己的生成器、材质和状态布局，详见 <a class="reference internal" href="#cables">线缆</a> 。</p>
+<p>流体和颗粒介质等基于粒子的材料不属于这里所说的可变形物体。它们使用独立的资产和求解器；参见 <a class="reference internal" href="using_mpm.html"><span class="doc">使用隐式 MPM</span></a> 。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>这三类物体都仍在持续开发。在 Newton 上，可变形物体与刚体物体和关节体一起实现在 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.assets.html#module-isaaclab_newton.assets" title="isaaclab_newton.assets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">isaaclab_newton.assets</span></code></a> 中。线缆支持尤其处于实验阶段，其生成器配置、资产类和材质默认值仍可能变化。</p>
+</div>
+<section id="backend-support">
+<h2>后端支持情况<a class="headerlink" href="#backend-support" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 26.0%" />
+<col style="width: 26.0%" />
+<col style="width: 26.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>类型</p></th>
+<th class="head"><p>PhysX</p></th>
+<th class="head"><p>Newton</p></th>
+<th class="head"><p>OvPhysX</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>体积</p></td>
+<td><p>Yes</p></td>
+<td><p>支持，仅限 VBD 求解器</p></td>
+<td><p>实验性，仅限 CUDA 设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>表面</p></td>
+<td><p>Yes</p></td>
+<td><p>支持，仅限 VBD 求解器</p></td>
+<td><p>实验性，仅限 CUDA 设备</p></td>
+</tr>
+<tr class="row-even"><td><p>线缆</p></td>
+<td><p>No</p></td>
+<td><p>支持，仅限 VBD 求解器</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在 Newton 上，各类可变形物体都由 VBD 求解器模拟，因此包含它们的场景必须选择使用 VBD 求解器的物理配置。求解器参数、在同一场景中运行刚性机器人与可变形物体的方法，以及调参流程，见 <a class="reference internal" href="../how-to/solver_tuning_vbd.html"><span class="doc">VBD 求解器</span></a> 和 <a class="reference internal" href="coupled_solvers.html"><span class="doc">耦合求解器</span></a> 。</p>
+<p>OvPhysX 可变形物体还有节点数量和启动开销方面的限制。参见 <a class="reference internal" href="ovphysx.html"><span class="doc">OvPhysX 后端</span></a> 。</p>
+</section>
+<section id="volume-and-surface-deformables">
+<h2>体积和表面可变形物体<a class="headerlink" href="#volume-and-surface-deformables" title="Link to this heading">#</a></h2>
+<section id="authoring">
+<h3>编写资产<a class="headerlink" href="#authoring" title="Link to this heading">#</a></h3>
+<p>可变形物体使用网格生成器，并增加两个字段：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">deformable_props</span></code> ：后端特有的 <code class="docutils literal notranslate"><span class="pre">*DeformableBodyPropertiesCfg</span></code> 。设置此字段才会将网格变为可变形物体。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">physics_material</span></code> ：可变形材质配置，其类型决定使用体积还是表面模型。</p></li>
+</ul>
+<p>将生成器放入 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObjectCfg" title="isaaclab.assets.DeformableObjectCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeformableObjectCfg</span></code></a> ，即可创建运行时资产。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeformableObjectCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_physx.sim.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhysxDeformableBodyPropertiesCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_physx.sim.spawners.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhysxDeformableBodyMaterialCfg</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">DeformableObjectCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">"/World/env_.*/Cube"</span><span class="p">,</span>
+    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MeshCuboidCfg</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">deformable_props</span><span class="o">=</span><span class="n">PhysxDeformableBodyPropertiesCfg</span><span class="p">(),</span>
+        <span class="n">physics_material</span><span class="o">=</span><span class="n">PhysxDeformableBodyMaterialCfg</span><span class="p">(</span>
+            <span class="n">youngs_modulus</span><span class="o">=</span><span class="mf">1.0e5</span><span class="p">,</span> <span class="n">poissons_ratio</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">1000.0</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>在 Newton 上，同一物体需要替换这两个后端配置：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeformableObjectCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_newton.sim.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">NewtonDeformableBodyPropertiesCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_newton.sim.spawners.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">NewtonDeformableBodyMaterialCfg</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">DeformableObjectCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">"/World/env_.*/Cube"</span><span class="p">,</span>
+    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MeshCuboidCfg</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">deformable_props</span><span class="o">=</span><span class="n">NewtonDeformableBodyPropertiesCfg</span><span class="p">(),</span>
+        <span class="n">physics_material</span><span class="o">=</span><span class="n">NewtonDeformableBodyMaterialCfg</span><span class="p">(</span>
+            <span class="n">k_mu</span><span class="o">=</span><span class="mf">3.5714e4</span><span class="p">,</span> <span class="n">k_lambda</span><span class="o">=</span><span class="mf">1.4286e5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">1000.0</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>这两个后端采用不同的弹性参数：PhysX 使用 <code class="docutils literal notranslate"><span class="pre">youngs_modulus</span></code> 和 <code class="docutils literal notranslate"><span class="pre">poissons_ratio</span></code> ，Newton 使用拉梅参数 <code class="docutils literal notranslate"><span class="pre">k_mu</span></code> 和 <code class="docutils literal notranslate"><span class="pre">k_lambda</span></code> 。上述值表示同一种材料，通过 <code class="docutils literal notranslate"><span class="pre">k_mu</span> <span class="pre">=</span> <span class="pre">E</span> <span class="pre">/</span> <span class="pre">(2</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">nu))</span></code> 和 <code class="docutils literal notranslate"><span class="pre">k_lambda</span> <span class="pre">=</span> <span class="pre">E</span> <span class="pre">*</span> <span class="pre">nu</span> <span class="pre">/</span> <span class="pre">((1</span> <span class="pre">+</span> <span class="pre">nu)</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">nu))</span></code> 转换。</p>
+<p>表面可变形物体采用同样的方式编写，但使用二维网格生成器和表面材质：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_newton.sim.spawners.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">NewtonSurfaceDeformableBodyMaterialCfg</span>
+
+<span class="n">cloth</span> <span class="o">=</span> <span class="n">DeformableObjectCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">"</span><span class="si">{ENV_REGEX_NS}</span><span class="s2">/Cloth"</span><span class="p">,</span>
+    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MeshRectangleCfg</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">edge_refinement</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">deformable_props</span><span class="o">=</span><span class="n">NewtonDeformableBodyPropertiesCfg</span><span class="p">(),</span>
+        <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)),</span>
+        <span class="n">physics_material</span><span class="o">=</span><span class="n">NewtonSurfaceDeformableBodyMaterialCfg</span><span class="p">(</span>
+            <span class="n">density</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">particle_radius</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span> <span class="n">tri_ke</span><span class="o">=</span><span class="mf">5e2</span><span class="p">,</span> <span class="n">tri_ka</span><span class="o">=</span><span class="mf">5e2</span><span class="p">,</span> <span class="n">edge_ke</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">init_state</span><span class="o">=</span><span class="n">DeformableObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>上述材质值来自 <code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Cloth-Franka</span></code> 调整后的配置，而非默认值。各参数的作用和默认值见 <a class="reference internal" href="../how-to/solver_tuning_vbd.html"><span class="doc">VBD 求解器</span></a> ，其中也介绍了布料自接触。自接触默认关闭，因此启用前布料可以穿过自身。</p>
+<p><code class="docutils literal notranslate"><span class="pre">edge_refinement</span></code> 设置这两类物体的仿真分辨率：最大表面边长为包围盒对角线长度除以该值，体积可变形物体也将其作为四面体划分的目标。默认值为 <code class="docutils literal notranslate"><span class="pre">4.0</span></code> ，且必须至少为 <code class="docutils literal notranslate"><span class="pre">1.0</span></code> 。接近 <code class="docutils literal notranslate"><span class="pre">1.0</span></code> 的值会显著减慢四面体划分。</p>
+<p>网格生成器会拒绝无法工作的组合： <code class="docutils literal notranslate"><span class="pre">deformable_props</span></code> 与 <code class="docutils literal notranslate"><span class="pre">rigid_props</span></code> 或 <code class="docutils literal notranslate"><span class="pre">mass_props</span></code> 同时设置，或配合非可变形材质的 <code class="docutils literal notranslate"><span class="pre">physics_material</span></code> ，都会在生成时抛出 <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="（在 Python v3.15）"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> 。</p>
+</section>
+<section id="loading-from-usd">
+<h3>从 USD 加载<a class="headerlink" href="#loading-from-usd" title="Link to this heading">#</a></h3>
+<p>可变形物体也可以来自预先编写的资产。将 <code class="docutils literal notranslate"><span class="pre">deformable_props</span></code> 和 <code class="docutils literal notranslate"><span class="pre">physics_material</span></code> 传给 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.from_files.UsdFileCfg" title="isaaclab.sim.spawners.from_files.UsdFileCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">UsdFileCfg</span></code></a> ；生成器会在加载的 prim 上应用可变形模式，如果 prim 已有该模式，则原地修改。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cfg_usd</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">UsdFileCfg</span><span class="p">(</span>
+    <span class="n">usd_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ISAACLAB_NUCLEUS_DIR</span><span class="si">}</span><span class="s2">/Objects/Teddy_Bear/teddy_bear.usd"</span><span class="p">,</span>
+    <span class="n">deformable_props</span><span class="o">=</span><span class="n">PhysxDeformableBodyPropertiesCfg</span><span class="p">(),</span>
+    <span class="n">physics_material</span><span class="o">=</span><span class="n">PhysxDeformableBodyMaterialCfg</span><span class="p">(),</span>
+    <span class="n">scale</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="volume-or-surface">
+<h3>体积还是表面<a class="headerlink" href="#volume-or-surface" title="Link to this heading">#</a></h3>
+<p>没有显式的类型字段，也没有独立的布料资产类。编写时，类型由材质配置决定：继承自 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.materials.SurfaceDeformableBodyMaterialBaseCfg" title="isaaclab.sim.spawners.materials.SurfaceDeformableBodyMaterialBaseCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">SurfaceDeformableBodyMaterialBaseCfg</span></code></a> 的材质产生表面可变形物体，其他材质产生体积可变形物体。这决定写入的 USD 内容：体积模型使用 <code class="docutils literal notranslate"><span class="pre">UsdGeom.TetMesh</span></code> 仿真网格，表面模型使用可视网格的三角 <code class="docutils literal notranslate"><span class="pre">UsdGeom.Mesh</span></code> 副本。</p>
+<p>初始化时，资产从舞台重新判断类型。PhysX 和 OvPhysX 读取绑定物理材质上应用的模式；无法确定时，再根据网格拓扑判断。Newton 只使用拓扑，将 prim 下的 <code class="docutils literal notranslate"><span class="pre">UsdGeom.TetMesh</span></code> 视为体积，将普通 <code class="docutils literal notranslate"><span class="pre">UsdGeom.Mesh</span></code> 视为表面。</p>
+<p>因此，材质配置决定实际模型：将体积材质与布料形状的网格搭配，会生成经四面体划分的实体，而不是薄片。</p>
+</section>
+<section id="tetrahedralization">
+<h3>四面体划分<a class="headerlink" href="#tetrahedralization" title="Link to this heading">#</a></h3>
+<p>体积可变形物体需要四面体仿真网格。如果生成的 prim 尚未包含 <code class="docutils literal notranslate"><span class="pre">UsdGeom.TetMesh</span></code> ，Isaac Lab 会生成一个；各后端都需要可选的 <code class="docutils literal notranslate"><span class="pre">tetrahedralization</span></code> 依赖：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>sync<span class="w"> </span>--inexact<span class="w"> </span>--extra<span class="w"> </span>tetrahedralization
+
+<span class="c1"># With the legacy installer.</span>
+./isaaclab.sh<span class="w"> </span>-i<span class="w"> </span>tetrahedralization
+</pre></div>
+</div>
+<p>表面可变形物体无需该依赖；从 USD 加载、且可变形 prim 下已包含预先划分的 <code class="docutils literal notranslate"><span class="pre">UsdGeom.TetMesh</span></code> 的体积物体也不需要。</p>
+</section>
+<section id="runtime-state">
+<h3>运行时状态<a class="headerlink" href="#runtime-state" title="Link to this heading">#</a></h3>
+<p>可变形物体的状态定义在节点上，以仿真世界坐标系表示。下文的 <code class="docutils literal notranslate"><span class="pre">N</span></code> 为 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.max_sim_vertices_per_body" title="isaaclab.assets.DeformableObject.max_sim_vertices_per_body"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_sim_vertices_per_body</span></code></a> 。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data.nodal_pos_w</span></code> 和 <code class="docutils literal notranslate"><span class="pre">data.nodal_vel_w</span></code> ：形状为 <code class="docutils literal notranslate"><span class="pre">(num_instances,</span> <span class="pre">N)</span></code> ，元素类型为 <code class="docutils literal notranslate"><span class="pre">vec3f</span></code> ，分别表示位置 [m] 和速度 [m/s]。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data.nodal_state_w</span></code> ：相同数据，形状为 <code class="docutils literal notranslate"><span class="pre">(num_instances,</span> <span class="pre">N)</span></code> ，元素类型为 <code class="docutils literal notranslate"><span class="pre">vec6f</span></code> 。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data.default_nodal_state_w</span></code> ：生成时的状态，用于重置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data.root_pos_w</span></code> 和 <code class="docutils literal notranslate"><span class="pre">data.root_vel_w</span></code> ：形状为 <code class="docutils literal notranslate"><span class="pre">(num_instances,)</span></code> 。它们是 <em>派生量</em>，由仿真节点的平均值计算得到。不存在根方向。</p></li>
+</ul>
+<p>通过带索引的设置方法写回状态。 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject.transform_nodal_pos" title="isaaclab.assets.DeformableObject.transform_nodal_pos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform_nodal_pos()</span></code></a> 相对于当前节点均值应用位姿偏移，从而将生成状态缓冲区分配到各环境原点。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nodal_state</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_nodal_state_w</span><span class="o">.</span><span class="n">torch</span><span class="p">[</span><span class="n">env_ids</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">transform_nodal_pos</span><span class="p">(</span><span class="n">nodal_state</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">pos</span><span class="p">,</span> <span class="n">quat</span><span class="p">)</span>
+<span class="n">cube</span><span class="o">.</span><span class="n">write_nodal_state_to_sim_index</span><span class="p">(</span><span class="n">nodal_state</span><span class="p">,</span> <span class="n">env_ids</span><span class="o">=</span><span class="n">env_ids</span><span class="p">)</span>
+<span class="n">cube</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">env_ids</span><span class="o">=</span><span class="n">env_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>与其他资产一样， <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.DeformableObject" title="isaaclab.assets.DeformableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeformableObject</span></code></a> 可与 <a class="reference internal" href="../api/lab/isaaclab.scene.html#isaaclab.scene.InteractiveScene" title="isaaclab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code></a> 、 <code class="docutils literal notranslate"><span class="pre">scene.get_state</span></code> / <code class="docutils literal notranslate"><span class="pre">scene.reset_to</span></code> 和 <code class="docutils literal notranslate"><span class="pre">reset_scene_to_default</span></code> 事件项集成。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>不带后缀的写入方法（ <code class="docutils literal notranslate"><span class="pre">write_nodal_state_to_sim</span></code> 等）已弃用，应使用 <code class="docutils literal notranslate"><span class="pre">_to_sim_index</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_to_sim_mask</span></code> 变体。掩码变体支持 CUDA 图捕获。</p>
+</div>
+</section>
+</section>
+<section id="cables">
+<h2>线缆<a class="headerlink" href="#cables" title="Link to this heading">#</a></h2>
+<p>线缆是一维杆：单个开放的 <code class="docutils literal notranslate"><span class="pre">UsdGeom.BasisCurves</span></code> prim，带有 <code class="docutils literal notranslate"><span class="pre">PhysicsCurvesDeformableSimAPI</span></code> 模式，以一串通过线缆关节连接的胶囊体线段进行模拟。</p>
+<section id="cable-authoring">
+<h3>编写线缆<a class="headerlink" href="#cable-authoring" title="Link to this heading">#</a></h3>
+<p>线缆由 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.shapes.CableCfg" title="isaaclab.sim.spawners.shapes.CableCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableCfg</span></code></a> 和 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.materials.CableMaterialCfg" title="isaaclab.sim.spawners.materials.CableMaterialCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableMaterialCfg</span></code></a> 配置。 <code class="docutils literal notranslate"><span class="pre">positions</span></code> 中相邻的点构成线段，每段生成直径为 <code class="docutils literal notranslate"><span class="pre">thickness</span></code> 的胶囊体，并通过线缆关节与相邻线段连接。 <code class="docutils literal notranslate"><span class="pre">N</span></code> 个控制点产生 <code class="docutils literal notranslate"><span class="pre">N-1</span></code> 个线段刚体和 <code class="docutils literal notranslate"><span class="pre">N-2</span></code> 个关节；根线段自由悬浮。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">positions</span></code></p></td>
+<td><p>线缆局部坐标系中的控制点 [m]。至少需要 <strong>三个</strong> 坐标值有限的点，且相邻点间距必须大于 <code class="docutils literal notranslate"><span class="pre">1e-8</span></code> m。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">physics_material</span></code></p></td>
+<td><p>必需的 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.materials.CableMaterialCfg" title="isaaclab.sim.spawners.materials.CableMaterialCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableMaterialCfg</span></code></a> ；见 <a class="reference internal" href="#cable-material-parameters">线缆材质参数</a> 。厚度也会写入曲线的 <code class="docutils literal notranslate"><span class="pre">widths</span></code> 属性，使可视半径与物理半径一致。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">collision_props</span></code></p></td>
+<td><p>可选的碰撞属性。省略时，线缆不发生碰撞；设置后（通常为 <code class="docutils literal notranslate"><span class="pre">[UsdPhysicsCollisionCfg(collision_enabled=True)]</span></code> ），线缆会与地面和其他线缆碰撞。见 <a class="reference internal" href="#cable-collision">线缆碰撞</a> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">visual_material</span></code></p></td>
+<td><p>可选的 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.materials.VisualMaterialCfg" title="isaaclab.sim.spawners.materials.VisualMaterialCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">VisualMaterialCfg</span></code></a> ，用于设置曲线外观。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">visual_material_path</span></code></p></td>
+<td><p>可视材质在线缆几何 prim 下的子路径，默认为 <code class="docutils literal notranslate"><span class="pre">&quot;material&quot;</span></code> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">physics_material_path</span></code></p></td>
+<td><p>物理材质在线缆几何 prim 下的子路径，默认为 <code class="docutils literal notranslate"><span class="pre">&quot;physics_material&quot;</span></code> 。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.assets</span><span class="w"> </span><span class="kn">import</span> <span class="n">CableObject</span><span class="p">,</span> <span class="n">CableObjectCfg</span>
+
+<span class="n">cable</span> <span class="o">=</span> <span class="n">CableObject</span><span class="p">(</span>
+    <span class="n">cfg</span><span class="o">=</span><span class="n">CableObjectCfg</span><span class="p">(</span>
+        <span class="n">prim_path</span><span class="o">=</span><span class="s2">"/World/Env_0/Cable"</span><span class="p">,</span>
+        <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CableCfg</span><span class="p">(</span>
+            <span class="n">positions</span><span class="o">=</span><span class="p">[(</span><span class="n">index</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)],</span>
+            <span class="n">visual_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">PreviewSurfaceCfg</span><span class="p">(</span><span class="n">diffuse_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)),</span>
+            <span class="n">physics_material</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CableMaterialCfg</span><span class="p">(</span>
+                <span class="n">thickness</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
+                <span class="n">density</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+                <span class="n">stretch_stiffness</span><span class="o">=</span><span class="mf">1.0e9</span><span class="p">,</span>
+                <span class="n">bend_stiffness</span><span class="o">=</span><span class="mf">1.0e6</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">collision_props</span><span class="o">=</span><span class="p">[</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">UsdPhysicsCollisionCfg</span><span class="p">(</span><span class="n">collision_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)],</span>
+        <span class="p">),</span>
+        <span class="n">init_state</span><span class="o">=</span><span class="n">CableObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>这会沿线缆局部 x 轴生成一条 0.9 m 长的红色直线缆：9 个胶囊体线段（每段长 0.1 m，直径 0.03 m），通过 8 个线缆关节连接。继承的 <code class="docutils literal notranslate"><span class="pre">init_state</span></code> 设置线缆根节点在各环境中的初始位姿。</p>
+</section>
+<section id="cable-material-parameters">
+<h3>线缆材质参数<a class="headerlink" href="#cable-material-parameters" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.materials.CableMaterialCfg" title="isaaclab.sim.spawners.materials.CableMaterialCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableMaterialCfg</span></code></a> 定义线缆的几何和刚度。编写时会验证所有值；非有限值或超出范围的值会在创建任何 prim 前抛出 <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="（在 Python v3.15）"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> 。</p>
+<p>刚度字段是弹性模量，不是关节刚度。每个杆关节都有自己的离散化刚度，使用该关节的对偶静止长度 <code class="docutils literal notranslate"><span class="pre">L</span> <span class="pre">=</span> <span class="pre">0.5</span> <span class="pre">*</span> <span class="pre">(L_parent</span> <span class="pre">+</span> <span class="pre">L_child)</span></code> 计算，其中 <code class="docutils literal notranslate"><span class="pre">L_parent</span></code> 和 <code class="docutils literal notranslate"><span class="pre">L_child</span></code> 是它连接的两个线段的静止长度。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 24.0%" />
+<col style="width: 76.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">thickness</span></code></p></td>
+<td><p>线缆完整厚度（直径）[m]，必须有限且为正。以 <code class="docutils literal notranslate"><span class="pre">radius</span> <span class="pre">=</span> <span class="pre">thickness</span> <span class="pre">/</span> <span class="pre">2</span></code> 用于胶囊体截面、弯曲截面二次矩和碰撞半径。默认 <code class="docutils literal notranslate"><span class="pre">0.001</span></code> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<td><p>线缆密度 [kg/m^3]，必须有限且为正。各线段质量由密度和胶囊体体积计算得到。默认 <code class="docutils literal notranslate"><span class="pre">1000.0</span></code> 。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stretch_stiffness</span></code></p></td>
+<td><p>轴向（拉伸）弹性模量 <code class="docutils literal notranslate"><span class="pre">E</span></code> [Pa]，必须有限且非负。转换为各关节的轴向刚度 <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">*</span> <span class="pre">A</span> <span class="pre">/</span> <span class="pre">L</span></code> ，其中 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是圆形截面积。值越高，伸长越小。默认 <code class="docutils literal notranslate"><span class="pre">1.0e9</span></code> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bend_stiffness</span></code></p></td>
+<td><p>弯曲弹性模量 <code class="docutils literal notranslate"><span class="pre">E</span></code> [Pa]，必须有限且非负。转换为各关节的弯曲刚度 <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">*</span> <span class="pre">I</span> <span class="pre">/</span> <span class="pre">L</span></code> ，其中 <code class="docutils literal notranslate"><span class="pre">I</span></code> 是圆形截面的二次矩。 <code class="docutils literal notranslate"><span class="pre">0.0</span></code> 表示柔软的绳索；增大该值可模拟较硬的软管或电线。默认 <code class="docutils literal notranslate"><span class="pre">1.0e6</span></code> 。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shear_stiffness</span></code></p></td>
+<td><p>横向剪切弹性模量 [Pa]，必须有限且非负。可选：保留 <code class="docutils literal notranslate"><span class="pre">None</span></code> 时不写入该属性，求解器复用 <code class="docutils literal notranslate"><span class="pre">stretch_stiffness</span></code> 。默认 <code class="docutils literal notranslate"><span class="pre">None</span></code> 。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">twist_stiffness</span></code></p></td>
+<td><p>扭转弹性模量 [Pa]，必须有限且非负。可选：保留 <code class="docutils literal notranslate"><span class="pre">None</span></code> 时不写入该属性，求解器复用弯曲 <em>结构</em> 刚度。默认 <code class="docutils literal notranslate"><span class="pre">None</span></code> 。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>线缆关节具有四种自由度：线性的拉伸和剪切，以及角向的弯曲和扭转。未设置 <code class="docutils literal notranslate"><span class="pre">shear_stiffness</span></code> 或 <code class="docutils literal notranslate"><span class="pre">twist_stiffness</span></code> <strong>并不</strong> 表示线缆没有剪切或扭转阻力，而是由求解器回退到拉伸和弯曲值。显式设置 <code class="docutils literal notranslate"><span class="pre">0.0</span></code> 与不设置不同：前者会去除该阻力。</p>
+<p>这两种回退并不对称。剪切复用拉伸模量，作用于同一截面积；扭转复用弯曲 <em>结构</em> 刚度 <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">*</span> <span class="pre">I</span> <span class="pre">/</span> <span class="pre">L</span></code> ，而显式设置的 <code class="docutils literal notranslate"><span class="pre">twist_stiffness</span></code> 作用于极惯性矩 <code class="docutils literal notranslate"><span class="pre">J</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">I</span></code> 。因此，设置 <code class="docutils literal notranslate"><span class="pre">twist_stiffness</span> <span class="pre">=</span> <span class="pre">bend_stiffness</span></code> 会得到回退刚度的两倍，而不是相同值。</p>
+<p>未提供阻尼配置。杆关节具有阻尼，但 Isaac Lab 编写的 USD 曲线材质模式中没有对应属性。</p>
+</div>
+<p>如果需要指定轴向 <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">*</span> <span class="pre">A</span></code> 或弯曲 <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">*</span> <span class="pre">I</span></code> ，可反解这些关系来确定模量； <code class="docutils literal notranslate"><span class="pre">examples/cables.py</span></code> 演示了如何根据目标刚度和线段几何计算。</p>
+</section>
+<section id="cable-collision">
+<h3>线缆碰撞<a class="headerlink" href="#cable-collision" title="Link to this heading">#</a></h3>
+<p>碰撞需通过 <code class="docutils literal notranslate"><span class="pre">collision_props</span></code> 显式启用。启用后，导入器采用 <strong>仅过滤相邻线段</strong> 的规则：直接连接的线段共享关节锚点，不过滤会产生抖动，因此将其过滤；其他所有线段对都发生碰撞。由此：</p>
+<ul class="simple">
+<li><p>线缆会与地面和其他线缆碰撞。</p></li>
+<li><p><strong>同一</strong> 线缆的不相邻线段会碰撞，因此线缆回绕自身时可以通过自接触阻止继续运动。</p></li>
+</ul>
+<p>省略 <code class="docutils literal notranslate"><span class="pre">collision_props</span></code> 时，线缆作为仅参与动力学的杆导入，不发生碰撞。</p>
+</section>
+<section id="cable-runtime-state">
+<h3>线缆运行时状态<a class="headerlink" href="#cable-runtime-state" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.CableObject" title="isaaclab.assets.CableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableObject</span></code></a> 提供各线段的世界状态，并与 <a class="reference internal" href="../api/lab/isaaclab.scene.html#isaaclab.scene.InteractiveScene" title="isaaclab.scene.InteractiveScene"><code class="xref py py-class docutils literal notranslate"><span class="pre">InteractiveScene</span></code></a> 、 <code class="docutils literal notranslate"><span class="pre">scene.get_state</span></code> / <code class="docutils literal notranslate"><span class="pre">scene.reset_to</span></code> 和 <code class="docutils literal notranslate"><span class="pre">reset_scene_to_default</span></code> 事件项集成。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cable.data.segment_pose_w</span></code> ：形状为 <code class="docutils literal notranslate"><span class="pre">(num_instances,</span> <span class="pre">num_segments)</span></code> ，元素类型为 <code class="docutils literal notranslate"><span class="pre">wp.transformf</span></code> ，位置 [m] 在前，四元数 <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">z,</span> <span class="pre">w)</span></code> 在后。Torch 视图最后一维的长度为 7。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cable.data.segment_velocity_w</span></code> ：形状为 <code class="docutils literal notranslate"><span class="pre">(num_instances,</span> <span class="pre">num_segments)</span></code> ，元素类型为 <code class="docutils literal notranslate"><span class="pre">wp.spatial_vectorf</span></code> ，线速度 [m/s] 在前，角速度 [rad/s] 在后。Torch 视图最后一维的长度为 6。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cable.data.default_segment_pose_w</span></code> 和 <code class="docutils literal notranslate"><span class="pre">default_segment_velocity_w</span></code> ：生成时的状态。</p></li>
+</ul>
+<p>通过索引或掩码设置方法写回各线段状态；掩码形式支持 CUDA 图捕获。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cable</span><span class="o">.</span><span class="n">write_segment_pose_to_sim_index</span><span class="p">(</span><span class="n">segment_pose</span><span class="o">=</span><span class="n">cable</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_segment_pose_w</span><span class="p">)</span>
+<span class="n">cable</span><span class="o">.</span><span class="n">write_segment_velocity_to_sim_index</span><span class="p">(</span><span class="n">segment_velocity</span><span class="o">=</span><span class="n">cable</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">default_segment_velocity_w</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>写入会直接更新两个仿真状态中的最大坐标刚体状态，并将受影响的环境标记为需要重置求解器。</p>
+</section>
+<section id="loading-cables-from-usd">
+<h3>从 USD 加载线缆<a class="headerlink" href="#loading-cables-from-usd" title="Link to this heading">#</a></h3>
+<p>物理属性直接写在曲线上： <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.shapes.spawn_cable" title="isaaclab.sim.spawners.shapes.spawn_cable"><code class="xref py py-func docutils literal notranslate"><span class="pre">spawn_cable()</span></code></a> 应用 <code class="docutils literal notranslate"><span class="pre">PhysicsCurvesDeformableSimAPI</span></code> 模式并绑定可变形曲线材质，曲线随后以原生方式导入。拓扑来自曲线自身的 <code class="docutils literal notranslate"><span class="pre">points</span></code> 和 <code class="docutils literal notranslate"><span class="pre">curveVertexCounts</span></code> ，无需自定义边属性。</p>
+<p>因此，也可以通过 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.from_files.UsdFileCfg" title="isaaclab.sim.spawners.from_files.UsdFileCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">UsdFileCfg</span></code></a> 从外部 USD 加载线缆，例如在 DCC 工具中编写的资产，前提是曲线已经具备：</p>
+<ul class="simple">
+<li><p>加载的 prim 下有单个开放、线性、非周期的 <code class="docutils literal notranslate"><span class="pre">UsdGeom.BasisCurves</span></code> ；</p></li>
+<li><p>已应用 <code class="docutils literal notranslate"><span class="pre">PhysicsCurvesDeformableSimAPI</span></code> 模式；以及</p></li>
+<li><p>已绑定可变形曲线材质（ <code class="docutils literal notranslate"><span class="pre">PhysicsCurvesDeformableMaterialAPI</span></code> ），在 <code class="docutils literal notranslate"><span class="pre">physics:</span></code> 命名空间中提供 <code class="docutils literal notranslate"><span class="pre">thickness</span></code> 、 <code class="docutils literal notranslate"><span class="pre">density</span></code> 、 <code class="docutils literal notranslate"><span class="pre">stretchStiffness</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bendStiffness</span></code> 。</p></li>
+</ul>
+<p>这对应两种失败情况。没有仿真模式的曲线不属于可变形物体导入范围，会被静默跳过。具有该模式但无法解析厚度的曲线会使用默认半径导入，并发出警告。请通过 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html#isaaclab.sim.spawners.shapes.spawn_cable" title="isaaclab.sim.spawners.shapes.spawn_cable"><code class="xref py py-func docutils literal notranslate"><span class="pre">spawn_cable()</span></code></a> 编写线缆，或在构造前将模式和材质应用到导入的 prim 上。</p>
+</section>
+<section id="cable-rendering">
+<h3>线缆渲染<a class="headerlink" href="#cable-rendering" title="Link to this heading">#</a></h3>
+<p>线缆在 Kit 视口中以 <code class="docutils literal notranslate"><span class="pre">UsdGeom.BasisCurves</span></code> 渲染。每次渲染更新时，根据线缆各线段端点刷新曲线点，使渲染形状始终与仿真一致。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>曲线点通过 <strong>CPU</strong> Fabric 同步，因为 RTX Hydra 委托不会读取 <code class="docutils literal notranslate"><span class="pre">BasisCurves</span></code> 的 GPU Fabric 数组（NVBug 6502662）。同步时会跳过周期曲线。</p>
+</div>
+</section>
+<section id="cable-limitations">
+<h3>线缆限制<a class="headerlink" href="#cable-limitations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>每个对象只能包含一条独立、未与其他线缆焊接的线缆。</strong> <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.CableObject" title="isaaclab.assets.CableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableObject</span></code></a> 要求 <code class="docutils literal notranslate"><span class="pre">prim_path</span></code> 下恰好有一个带 <code class="docutils literal notranslate"><span class="pre">PhysicsCurvesDeformableSimAPI</span></code> 的 <code class="docutils literal notranslate"><span class="pre">BasisCurves</span></code> prim，其中包含一条未与其他线缆焊接的开放曲线。多曲线 <code class="docutils literal notranslate"><span class="pre">BasisCurves</span></code> prim、周期（闭合）曲线，以及曲线之间硬性重合的 <code class="docutils literal notranslate"><span class="pre">PhysicsAttachment</span></code> 焊接，都会在初始化时失败。</p></li>
+<li><p><strong>线缆端点可以铰接固定，不能夹紧固支。</strong> 连接到 xform 目标的 <code class="docutils literal notranslate"><span class="pre">PhysicsAttachment</span></code> 会转换为球关节，因此只约束位置，线缆可以在锚点处自由转动。无法表示需要传递方向约束的刚性插头和端部接头。</p></li>
+<li><p><strong>没有阻尼调节参数。</strong> 提供了四种刚度模量，但没有对应的阻尼参数。</p></li>
+<li><p><strong>渲染同步仅使用 CPU</strong> （NVBug 6502662）；周期曲线不会同步。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>只有附件刚度未设置或为无穷大时，才会创建附件关节。有限刚度仅保留为元数据，不创建关节。这两种情况均以导入警告而非错误报告，因此线缆仍会正常初始化，即使附件实际缺失。如果附件似乎不起作用，请检查导入器输出。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>运行时对象拒绝的拓扑仍会参与仿真：物理模型从整个 USD 舞台构建，因此每条带 <code class="docutils literal notranslate"><span class="pre">PhysicsCurvesDeformableSimAPI</span></code> 的曲线都会导入，无论是否由 <a class="reference internal" href="../api/lab/isaaclab.assets.html#isaaclab.assets.CableObject" title="isaaclab.assets.CableObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CableObject</span></code></a> 包装。可通过 <a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html#isaaclab_newton.physics.NewtonManager" title="isaaclab_newton.physics.NewtonManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">NewtonManager</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">get_model()</span></code> / <code class="docutils literal notranslate"><span class="pre">get_state_0()</span></code> 和自行创建的 <code class="docutils literal notranslate"><span class="pre">newton.selection.ArticulationView</span></code> 控制它们。这些情况没有对应的 Isaac Lab 资产包装器。</p>
+</div>
+</section>
+</section>
+<section id="material-parameters-in-practice">
+<h2>材质参数的实际效果<a class="headerlink" href="#material-parameters-in-practice" title="Link to this heading">#</a></h2>
+<p>下方每个动画都将同一场景运行三次，只改变一个材质参数，其余保持不变。标签给出各次运行使用的值。</p>
+<section id="volume">
+<h3>体积<a class="headerlink" href="#volume" title="Link to this heading">#</a></h3>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/volume_youngs_1e3_1e4_1e5.gif"><img alt="三种杨氏模量下，软球落到桌面上的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/volume_youngs_1e3_1e4_1e5.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>杨氏模量</strong> ：控制整体刚度。设为 <code class="docutils literal notranslate"><span class="pre">1e3</span></code> Pa 时，球体撞击后压成扁饼；设为 <code class="docutils literal notranslate"><span class="pre">1e5</span></code> Pa 时，几乎不变形。软体过软或过硬时，应首先调整此参数。</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/volume_poisson.gif"><img alt="三种泊松比下，软球落到桌面上的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/volume_poisson.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>泊松比</strong> ：控制材料受压时保持体积的程度。设为 <code class="docutils literal notranslate"><span class="pre">0.10</span></code> 时，球体压扁但不向四周展开；设为 <code class="docutils literal notranslate"><span class="pre">0.49</span></code> 时，材料近乎不可压缩，同样的压缩会使其向外明显鼓起。</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/volume_particle_radius.gif"><img alt="三种粒子半径下，软球静置于桌面上的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/volume_particle_radius.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>粒子半径</strong> ：各仿真节点周围的接触厚度，并非材质属性。半径越大，越早在远离表面的位置检测到接触，因此球体会明显浮在桌面上方，也无法压得很薄。半径过小可能漏检接触或检测过晚；相对网格分辨率过大，则会过早产生接触。</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="surface">
+<h3>表面<a class="headerlink" href="#surface" title="Link to this heading">#</a></h3>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cloth_stretch_stiffness.gif"><img alt="三种拉伸刚度下，布料垂覆在滚筒上的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cloth_stretch_stiffness.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>拉伸刚度</strong> ：抵抗面内伸长的能力。较低值使布料在自重下拉伸和下垂，较高值则使其保持接近静止长度。</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cloth_bendstiffness.gif"><img alt="三种弯曲刚度下，布料从滚筒上落下的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cloth_bendstiffness.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>弯曲刚度</strong> ：抵抗折叠的能力。设为 <code class="docutils literal notranslate"><span class="pre">1e-2</span></code> 时，布料揉皱成松散的一堆；设为 <code class="docutils literal notranslate"><span class="pre">1e0</span></code> 时，会保持较大、较硬的褶皱，并继续垂覆在滚筒上。这类似丝绸与帆布的区别。</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="cable">
+<h3>线缆<a class="headerlink" href="#cable" title="Link to this heading">#</a></h3>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cable_bend_1e0_1e1_1e.gif"><img alt="三种弯曲刚度下，线缆跨在两根支柱之间的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cable_bend_1e0_1e1_1e.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>弯曲刚度</strong> ：设为 <code class="docutils literal notranslate"><span class="pre">1e0</span></code> 时，线缆像松绳一样在支撑点之间下垂；设为 <code class="docutils literal notranslate"><span class="pre">1e2</span></code> 时，则像较硬的软管一样保持平直。</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cable_twiststiffness_1e_1_1e0_1e1.gif"><img alt="三种扭转刚度下，带配重的悬挂线缆在顶端扭转的效果" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/cable_twiststiffness_1e_1_1e0_1e1.gif" style="width: 640px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>扭转刚度</strong> ：在锚点处扭转带配重的线缆。设为 <code class="docutils literal notranslate"><span class="pre">1e-1</span></code> 时，扭转在局部被吸收，线缆仍直垂；设为 <code class="docutils literal notranslate"><span class="pre">1e1</span></code> 时，扭转沿杆传递，直到发生屈曲并卷成螺旋。如果线缆需要抵抗缠绕，应显式设置该值；未设置时会按前述规则回退到弯曲值。</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="examples-and-tasks">
+<h2>示例与任务<a class="headerlink" href="#examples-and-tasks" title="Link to this heading">#</a></h2>
+<p>先运行示例，确认生成器、求解器和可视化器都能在当前环境中正常工作。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 44.0%" />
+<col style="width: 36.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>类型</p></th>
+<th class="head"><p>示例</p></th>
+<th class="head"><p>任务</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>体积</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deformables</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Soft-Franka</span></code>, <code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Soft-Franka-Camera</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>表面</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deformables</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Cloth-Franka</span></code>, <code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Cloth-Franka-Camera</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>线缆</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cables</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Cable-Franka</span></code>, <code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Cable-Franka-Camera</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Volume and surface deformables falling onto a ground plane.</span>
+uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>tetrahedralization<span class="w"> </span>isaaclab<span class="w"> </span>example<span class="w"> </span>deformables
+
+<span class="c1"># A pile of cables that collide and settle. Newton VBD only.</span>
+uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>example<span class="w"> </span>cables
+
+<span class="c1"># A larger cable pile, without a visualizer, stopping after a fixed number of steps.</span>
+uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>example<span class="w"> </span>cables<span class="w"> </span>--visualizer<span class="w"> </span>none<span class="w"> </span>--num_cables<span class="w"> </span><span class="m">40</span><span class="w"> </span>--num_segments<span class="w"> </span><span class="m">15</span><span class="w"> </span>--max_steps<span class="w"> </span><span class="m">500</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">scripts/environments/state_machine/lift_franka_soft.py</span></code> 使用脚本状态机驱动 <code class="docutils literal notranslate"><span class="pre">Isaac-Lift-Soft-Franka</span></code> ，可作为可变形物体操作任务的起点。</p>
+</section>
+<section id="related">
+<h2>相关内容<a class="headerlink" href="#related" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../how-to/run_deformable_object.html#tutorial-interact-deformable-object"><span class="std std-ref">与可变形对象交互</span></a> 逐步介绍体积可变形物体。</p></li>
+<li><p><a class="reference internal" href="../how-to/solver_tuning_vbd.html"><span class="doc">VBD 求解器</span></a> 介绍 VBD 求解器参数、Newton 材质表、布料自接触和调参流程。</p></li>
+<li><p><a class="reference internal" href="coupled_solvers.html"><span class="doc">耦合求解器</span></a> 介绍如何在同一场景中运行刚性机器人与可变形物体。</p></li>
+<li><p><a class="reference internal" href="../migration/migrating_to_isaaclab_3-0.html#migrating-deformables"><span class="std std-ref">可变形物体迁移</span></a> 介绍 Isaac Lab 3.0 可变形物体 API 的变化。</p></li>
+<li><p><a class="reference internal" href="ovphysx.html"><span class="doc">OvPhysX 后端</span></a> 介绍 OvPhysX 可变形物体的限制。</p></li>
+<li><p><a class="reference internal" href="../api/lab/isaaclab.assets.html"><span class="doc">isaaclab.assets</span></a> 和 <a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html"><span class="doc">isaaclab.sim.spawners</span></a> 是本页使用的资产、生成器和材质类的 API 参考。</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="reinforcement_learning.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">强化学习</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="schema_cfgs.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">模式配置类</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backend-support">后端支持情况</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volume-and-surface-deformables">体积和表面可变形物体</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#authoring">编写资产</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-from-usd">从 USD 加载</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume-or-surface">体积还是表面</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetrahedralization">四面体划分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-state">运行时状态</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cables">线缆</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-authoring">编写线缆</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-material-parameters">线缆材质参数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-collision">线缆碰撞</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-runtime-state">线缆运行时状态</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-cables-from-usd">从 USD 加载线缆</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-rendering">线缆渲染</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable-limitations">线缆限制</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#material-parameters-in-practice">材质参数的实际效果</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume">体积</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surface">表面</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cable">线缆</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-and-tasks">示例与任务</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related">相关内容</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026, The Isaac Lab Project Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 10 月 10 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

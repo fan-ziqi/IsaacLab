@@ -1,0 +1,1578 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>isaaclab_physx.sensors &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=ccd4f661" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/environment-browser.css?v=665352f4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/demo-browser.css?v=e28b46a0" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/guide-browser.css?v=7190c4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script>window.isaacLabDocsTranslations = {"5 visualizers running Isaac-Velocity-Flat-AnymalD with a circular velocity command": "五种可视化器运行 Isaac-Velocity-Flat-AnymalD，并使用环形速度指令", "A PhysX-trained ANYmal-D policy runs side by side in PhysX and Newton MJWarp": "在 PhysX 上训练的 ANYmal-D 策略，并排运行于 PhysX 与 Newton MJWarp", "A Rizon robot uses a Sharpa hand to manipulate a teapot": "Rizon 机器人使用 Sharpa 手操作茶壶", "A Rizon robot uses a Sharpa hand to manipulate an RJ45 cable": "Rizon 机器人使用 Sharpa 手操作 RJ45 网线", "All categories": "所有类别", "Animate an arm, biped, quadruped, dexterous hand, quadcopter, and rigid props in one deterministic scene.": "在同一确定性场景中，驱动机械臂、双足机器人、四足机器人、灵巧手、四旋翼和刚性道具。", "Arrow markers on the Franka arm's joints, with contact sensor markers on the cube": "Franka 机械臂关节上的箭头标记，以及立方体上的接触传感器标记", "Back to all guides": "返回全部指南", "Benchmark FPS measurements, scroll for more configurations": "性能测试 FPS 测量结果，可滚动查看更多配置", "Benchmark channel": "性能测试分支", "Benchmark data could not be loaded.": "无法加载性能测试数据。", "Benchmark data is not available yet": "暂无性能测试数据", "Benchmark workload": "性能测试负载", "Block and tackle pulleys and a red load": "滑轮组与红色负载", "Classic control": "经典控制", "Collection": "数据采集", "Command mode": "命令模式", "Contrib": "社区贡献", "Copy command": "复制命令", "Core": "核心任务", "Default": "默认", "Develop": "开发版", "Domain preset": "领域预设", "Drag a cable handle to lift a load through a 4:1 pulley system.": "拖动缆绳把手，通过 4:1 滑轮组举起负载。", "Each Allegro hand reorients its cube to match the target shown by the marker above it": "每只 Allegro 手调整立方体朝向，使其与上方标记显示的目标一致", "Each Franka arm reaches its end-effector toward a randomized target pose": "各 Franka 机械臂将末端执行器移动到随机目标位姿", "Each H1 humanoid climbs a staircase sub-terrain": "各 H1 人形机器人攀登楼梯子地形", "Each Kuka arm and Allegro hand lifts its cube off the table": "各 Kuka 机械臂和 Allegro 手将立方体从桌面举起", "Each Shadow Hand reorients its cube to match the target pose": "各 Shadow Hand 调整立方体朝向，使其与目标位姿一致", "Fill a Utah teapot with MPM water particles and pour them into a bowl.": "向 Utah 茶壶注入 MPM 水粒子，再倒入碗中。", "Filled teal fingers belong to the source solver; outlined blue fingers are destination-local proxies of those same bodies. The blue object represents material owned by the destination solver.": "青绿色实心手指属于源求解器；蓝色轮廓手指是目标求解器内这些刚体的本地代理。蓝色物体表示归目标求解器所有的材料。", "Green arrow: commanded velocity. Blue arrow: current velocity.": "绿色箭头表示指令速度；蓝色箭头表示当前速度。", "H1 Locomotion": "H1 行走", "H1 locomotion": "H1 行走", "H1 locomotion in Isaac Lab": "Isaac Lab 中的 H1 行走", "H1 locomotion uses a published policy. For autonomous H1 task playback, use": "H1 行走使用已发布的策略。要自主回放 H1 任务，请使用", "In the Newton viewer, press": "在 Newton 查看器中，按", "Interactive pick and place demo": "交互式抓取与放置演示", "Interactive view of the Galbot cube stacking environment": "Galbot 立方体堆叠环境的交互视图", "Interactively pick up a cube with a parallel robot and place it on a target.": "交互式控制并联机器人，抓起立方体并放到目标位置。", "Isaac Lab command builder": "Isaac Lab 命令生成器", "Isaac Lab demo command builder": "Isaac Lab 演示命令生成器", "Isaac-Cartpole preview": "Isaac-Cartpole 预览", "Isaac-Lift-KukaAllegro in Viser Visualizer": "Viser 可视化器中的 Isaac-Lift-KukaAllegro", "Isaac-Reach-Franka in Kit Visualizer": "Kit 可视化器中的 Isaac-Reach-Franka", "Isaac-Reorient-Cube-Allegro in Newton GL Visualizer": "Newton GL 可视化器中的 Isaac-Reorient-Cube-Allegro", "Isaac-Reorient-Cube-Shadow-Direct in Rerun Visualizer": "Rerun 可视化器中的 Isaac-Reorient-Cube-Shadow-Direct", "Isaac-Velocity-Rough-H1 in Newton RTX Visualizer": "Newton RTX 可视化器中的 Isaac-Velocity-Rough-H1", "Joint arrow markers on a Franka arm and contact sensor markers on a cube": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记", "Joint arrow markers on a Franka arm, with contact sensor markers on a cube.": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记。", "Kit visualizer": "Kit 可视化器", "Kit visualizer tiled streaming": "Kit 可视化器平铺串流", "Kit visualizer: interactive viewport": "Kit 可视化器：交互式视口", "Kit visualizer: streaming camera view": "Kit 可视化器：串流相机视图", "Large green/blue arrow markers showing target and base velocity for an AnymalD robot": "AnymalD 机器人上表示目标速度和基座速度的大型绿色、蓝色箭头标记", "Loading guide...": "正在加载指南…", "Locomotion": "移动", "Manipulation": "操作", "Mode": "模式", "Newton Block and Tackle": "Newton 滑轮组", "Newton GL visualizer": "Newton GL 可视化器", "Newton GL visualizer, with 3 plots opened": "Newton GL 可视化器，打开了三个曲线图", "Newton visualizer: interactive viewport": "Newton 可视化器：交互式视口", "Newton visualizer: streaming camera view": "Newton 可视化器：串流相机视图", "No guides match this search.": "没有符合搜索条件的指南。", "No tasks match this search.": "没有符合搜索条件的任务。", "Not available": "暂无数据", "Note: Newton RTX has no velocity arrows, since it doesn't yet support visualization markers.": "注意：Newton RTX 暂不支持可视化标记，因此没有速度箭头。", "OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.": "OV 与 Isaac Sim 不能混用。请选择相互匹配的物理后端和渲染后端。", "Open in a new tab": "在新标签页打开", "Open the animation": "打开动画", "Physics": "物理", "Physics backend": "物理后端", "Physics preset": "物理预设", "Pick and Place": "抓取与放置", "Pick and place": "抓取与放置", "Pick and place requires Kit input.": "抓取与放置需要 Kit 输入。", "Play": "回放", "Preset": "预设", "Proxy coupling between source and destination solvers": "源求解器与目标求解器之间的代理耦合", "RL Library": "强化学习库", "RL library": "强化学习库", "Recorded clip of the Shadow Hand cube-reorientation task, recording the streaming view of the Rerun visualizer with 4 streaming view envs and 4 GT types": "Shadow Hand 立方体转向任务的录像，录制 Rerun 可视化器的串流视图，包含四个串流环境和四种真值数据", "Recorded clip with ground-truth sensor views": "包含真值传感器视图的录像片段", "Release": "发布版", "Renderer": "渲染器", "Renderer preset": "渲染器预设", "Right-click dragging the first domino triggers the cascade across an NVIDIA-logo domino layout": "右键拖动第一张骨牌，在 NVIDIA 标志形状的骨牌布局中触发连锁倒下", "Robots in the Isaac Lab Zoo demo": "Isaac Lab Zoo 演示中的机器人", "Scene sensor": "场景传感器", "Search all guides": "搜索全部指南", "Search guides": "搜索指南", "Search tasks and capabilities": "搜索任务与功能", "Search tasks or capabilities": "搜索任务或功能", "Select H1 robots and control a trained rough-terrain policy with the keyboard and follow camera.": "选择 H1 机器人，通过键盘和跟随相机控制已训练的崎岖地形策略。", "Selected guide": "所选指南", "Selected task": "所选任务", "Smash rigid crates with coupled MPM snowballs.": "使用耦合的 MPM 雪球撞碎刚性箱子。", "Snowball Smash": "雪球撞击", "Snowballs striking a stack of colored crates": "雪球撞击一叠彩色箱子", "Streaming view showing tiled Galbot wrist-camera feeds": "显示 Galbot 腕部相机平铺画面的串流视图", "Table color shows success: red until the cube reaches its target pose, green once it does.": "桌面颜色表示成功状态：立方体到达目标位姿前为红色，到达后变为绿色。", "Task": "任务", "Task category": "任务类别", "Task collection": "任务集合", "Teapot Fill": "茶壶注水", "The upper arrow synchronizes source state with the proxies, including pose and velocity. Contact produces the force and torque feedback shown by the lower arrow, which returns to a later source solve or coupling iteration.": "上方箭头表示源状态与代理之间的同步，包括位姿和速度。接触产生下方箭头所示的力与力矩反馈，在后续源求解或耦合迭代中返回。", "This environment does not support RL training or playback. The command runs it with the zero-action agent instead.": "此环境不支持强化学习训练或回放，命令将改用零动作智能体运行。", "Train": "训练", "Training": "训练", "Use Pre-trained Checkpoint": "使用预训练检查点", "Utah teapot pouring simulated water": "Utah 茶壶倒出仿真水流", "VRAM": "显存", "Velocity arrow marker on an AnymalD robot": "AnymalD 机器人上的速度箭头标记", "Velocity command (green) and current velocity (blue) arrow markers on an AnymalD robot.": "AnymalD 机器人上表示速度指令（绿色）和当前速度（蓝色）的箭头标记。", "Viser visualizer, with 1 plot opened": "Viser 可视化器，打开了一个曲线图", "Visualizer": "可视化器", "Watch the proxy coupling animation.": "观看代理耦合动画。", "Zoo": "机器人集锦（Zoo）", "newton-dominoes example": "newton-dominoes 示例", "to pause or scrub through the exchange.": "可暂停或拖动进度查看交换过程。", "to select a robot,": "选择机器人，按", "to stop, and": "停止，按", "to toggle the follow camera.": "切换跟随相机。", "to walk forward or turn,": "前进或转向，按", "Copied": "已复制", "default": "默认", "Manager": "管理器", "Direct": "直接工作流", "Camera": "相机", "Direct-Camera": "直接工作流与相机", "Task variant": "任务变体", "Zero agent": "零动作智能体", "Not supported": "不支持", "Collection FPS": "采集 FPS", "Training FPS": "训练 FPS", "Configuration": "配置", "Mean FPS": "平均 FPS", "Unspecified renderer": "未指定渲染器", "Presets not recorded": "未记录预设", "Newton renderer": "Newton 渲染器", "Newton MJWarp VBD proxy": "Newton MJWarp VBD 代理", "none": "无"};</script>
+    <script src="../../../_static/zh-cn-ui.js?v=2a63ae94"></script>
+    <script src="../../../_static/media-status.js?v=d1674cca"></script>
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/api/lab_physx/isaaclab_physx.sensors';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../../_static/css/environment-browser.js?v=0830db2c"></script>
+    <script src="../../../_static/css/demo-browser.js?v=bcae0e8a"></script>
+    <script src="../../../_static/css/guide-browser.js?v=d5610391"></script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="isaaclab_physx.sim.schemas" href="isaaclab_physx.sim.schemas.html" />
+    <link rel="prev" title="isaaclab_physx.renderers" href="isaaclab_physx.renderers.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="3.0.0" />
+    <meta name="docbuild:last-update" content="2026 年 10 月 10 日"/>
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="快捷链接">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cube fa-lg" aria-hidden="true"></i><span class="visually-hidden">Isaac Sim</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab/stargazers" title="GitHub 星标" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-star fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub 星标</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/ecosystem.html">生态系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/quickstart.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/tutorial.html">教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/demos.html">演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how-to/index.html">操作指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../workflows/index.html">工作流程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../workflows/docker/index.html">在 Docker 中运行 Isaac Lab</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/images.html">容器镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/cluster.html">在 HPC 集群上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/cloud.html">云部署</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_to_isaaclab_3-0.html">迁移到 3.0</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">核心概念</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/backends_and_presets.html">后端与预设</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/backend_architecture.html">后端架构</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/physics_backends.html">物理后端</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/physics-backends/newton.html">Newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/joint_and_body_ordering.html">关节与刚体顺序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/ovphysx.html">OvPhysX 后端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/using_mpm.html">使用隐式 MPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/warp_environments.html">Warp 实验性环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/warp_environment_migration.html">Warp 环境迁移指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/solver_differences.html">求解器差异</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/native-physics-api/index.html">访问原生物理 API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/physx.html">PhysX 张量 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/newton.html">Newton 原生数据与选择 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/ovphysx.html">OvPhysX 张量绑定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/renderers.html">渲染器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/actuators.html">执行器</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/pva.html">位姿、速度与加速度（PVA）传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/joint_wrench_sensor.html">关节力旋量传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/coupled_solvers.html">耦合求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/visualization.html">可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/reinforcement_learning.html">强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/deformables.html">可变形物体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/schema_cfgs.html">模式配置类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/schema_fragments.html">模式片段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../features/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/teleop_imitation.html">使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/humanoids_imitation.html">示例：人形机器人的数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../features/imitation-learning/skillgen.html">使用 SkillGen 自动生成示范</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/isaac_teleop.html">Isaac Capture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/multi_gpu.html">多 GPU 和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/population_based_training.html">基于种群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/reproducibility.html">可重现性和确定性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/record_video.html">录制视频</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/visualizer_tiled_camera.html">可视化器相机流视图</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开发工具</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/editor_setup.html">编辑器配置</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/template_generator.html">创建自己的项目或任务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/add_physics_backend.html">添加物理后端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/extending_newton_solvers.html">扩展 Newton 求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/scene_data_providers.html">场景数据提供器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/agent_skills.html">智能体技能</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../developer-tools/benchmarking/index.html">性能测试</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/benchmarking/run_benchmarks.html">运行性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/benchmarking/micro_benchmarks.html">编写微基准测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/benchmarking/benchmark_api.html">使用性能测试 API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/ray.html">Ray 作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/visuo_tactile_sensor.html">视触觉传感器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/rlinf_vla_posttraining.html">VLA 模型的强化学习后训练</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/03_compass_with_NuRec/compass_navigation_policy_with_NuRec.html">使用 NuRec 资产训练和部署 COMPASS 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/04_reach/reach_policy.html">训练用于实机部署的 Reach 策略</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../policy_deployment/05_leapp/exporting_policies_with_leapp.html">使用 LEAPP 导出策略</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.html">使用 LEAPP 导出 Direct 工作流策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../policy_deployment/05_leapp/deploying_exported_policies_with_leapp.html">使用 LEAPP 部署导出的策略</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.benchmark.html">isaaclab.benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.cloner.html">isaaclab.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../lab/isaaclab.envs.html">isaaclab.envs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../lab/isaaclab.envs.leapp_deployment_env.html">LEAPP Deployment Environment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.physics.html">isaaclab.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.renderers.html">isaaclab.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.scene_data.html">isaaclab.scene_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.visualizers.html">isaaclab.visualizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.controllers.html">isaaclab_contrib.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.coupling.html">isaaclab_contrib.coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.custom_coupling.html">isaaclab_contrib.custom_coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.rl.html">isaaclab_contrib.rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_teleop/isaaclab_teleop.html">isaaclab_teleop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.app.html">isaaclab_physx.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.assets.html">isaaclab_physx.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.cloner.html">isaaclab_physx.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.physics.html">isaaclab_physx.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.renderers.html">isaaclab_physx.renderers</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">isaaclab_physx.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.sim.schemas.html">isaaclab_physx.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.sim.spawners.html">isaaclab_physx.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.assets.html">isaaclab_newton.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.cloner.html">isaaclab_newton.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.controllers.html">isaaclab_newton.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.physics.html">isaaclab_newton.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.renderers.html">isaaclab_newton.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.sensors.html">isaaclab_newton.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.sim.schemas.html">isaaclab_newton.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.sim.spawners.html">isaaclab_newton.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.app.html">isaaclab_ov.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.assets.html">isaaclab_ov.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.cloner.html">isaaclab_ov.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.physics.html">isaaclab_ov.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.renderers.html">isaaclab_ov.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.sim.views.html">isaaclab_ov.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_assets/isaaclab_assets.robots.html">isaaclab_assets.robots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_assets/isaaclab_assets.sensors.html">isaaclab_assets.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_visualizers/isaaclab_visualizers.kit.html">isaaclab_visualizers.kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_visualizers/isaaclab_visualizers.newton.html">isaaclab_visualizers.newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_visualizers/isaaclab_visualizers.rerun.html">isaaclab_visualizers.rerun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_visualizers/isaaclab_visualizers.viser.html">isaaclab_visualizers.viser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_experimental/isaaclab_experimental.envs.html">isaaclab_experimental.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_experimental/isaaclab_experimental.managers.html">isaaclab_experimental.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_experimental/isaaclab_experimental.utils.html">isaaclab_experimental.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.benchmark.recorders.html">isaaclab.benchmark.recorders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sensors.camera.html">isaaclab.sensors.camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.sensors.ray_caster.html">isaaclab.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.ui.widgets.html">isaaclab.ui.widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.ui.xr_widgets.html">isaaclab.ui.xr_widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab/isaaclab.utils.leapp.html">isaaclab.utils.leapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_experimental/isaaclab_experimental.envs.mdp.actions.html">isaaclab_experimental.envs.mdp.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.envs.mdp.html">isaaclab_newton.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_newton/isaaclab_newton.sim.views.html">isaaclab_newton.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.envs.mdp.html">isaaclab_ov.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.sensors.html">isaaclab_ov.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ov/isaaclab_ov.sensors.ray_caster.html">isaaclab_ov.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.envs.mdp.html">isaaclab_physx.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isaaclab_physx.sim.views.html">isaaclab_physx.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lab_ppisp/isaaclab_ppisp.html">isaaclab_ppisp</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发布说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">Package Changelogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/newton-physics/newton">NVIDIA Newton</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/api/lab_physx/isaaclab_physx.sensors.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/api/lab_physx/isaaclab_physx.sensors.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/api/lab_physx/isaaclab_physx.sensors.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>isaaclab_physx.sensors</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-public-classes">Additional Public Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensor"><code class="docutils literal notranslate"><span class="pre">ContactSensor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensor.__init__"><code class="docutils literal notranslate"><span class="pre">ContactSensor.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensor.__new__"><code class="docutils literal notranslate"><span class="pre">ContactSensor.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorCfg"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorCfg.__new__"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorCfg.__init__"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorData"><code class="docutils literal notranslate"><span class="pre">ContactSensorData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorData.__new__"><code class="docutils literal notranslate"><span class="pre">ContactSensorData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorData.__init__"><code class="docutils literal notranslate"><span class="pre">ContactSensorData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformer"><code class="docutils literal notranslate"><span class="pre">FrameTransformer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformer.__init__"><code class="docutils literal notranslate"><span class="pre">FrameTransformer.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformer.__new__"><code class="docutils literal notranslate"><span class="pre">FrameTransformer.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformerData"><code class="docutils literal notranslate"><span class="pre">FrameTransformerData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformerData.__new__"><code class="docutils literal notranslate"><span class="pre">FrameTransformerData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformerData.__init__"><code class="docutils literal notranslate"><span class="pre">FrameTransformerData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Imu"><code class="docutils literal notranslate"><span class="pre">Imu</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Imu.__init__"><code class="docutils literal notranslate"><span class="pre">Imu.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Imu.__new__"><code class="docutils literal notranslate"><span class="pre">Imu.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ImuData"><code class="docutils literal notranslate"><span class="pre">ImuData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ImuData.__new__"><code class="docutils literal notranslate"><span class="pre">ImuData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ImuData.__init__"><code class="docutils literal notranslate"><span class="pre">ImuData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensor"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensor.__init__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensor.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensor.__new__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensor.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensorData"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensorData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensorData.__init__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensorData.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensorData.__new__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensorData.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCaster"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCaster</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__new__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCaster.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__init__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCaster.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__new__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__init__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Pva"><code class="docutils literal notranslate"><span class="pre">Pva</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Pva.__init__"><code class="docutils literal notranslate"><span class="pre">Pva.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Pva.__new__"><code class="docutils literal notranslate"><span class="pre">Pva.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.PvaData"><code class="docutils literal notranslate"><span class="pre">PvaData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.PvaData.__new__"><code class="docutils literal notranslate"><span class="pre">PvaData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.PvaData.__init__"><code class="docutils literal notranslate"><span class="pre">PvaData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCaster"><code class="docutils literal notranslate"><span class="pre">RayCaster</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCaster.__init__"><code class="docutils literal notranslate"><span class="pre">RayCaster.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCaster.__new__"><code class="docutils literal notranslate"><span class="pre">RayCaster.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCasterCamera"><code class="docutils literal notranslate"><span class="pre">RayCasterCamera</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCasterCamera.__new__"><code class="docutils literal notranslate"><span class="pre">RayCasterCamera.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCasterCamera.__init__"><code class="docutils literal notranslate"><span class="pre">RayCasterCamera.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-isaaclab_physx.sensors">
+<span id="isaaclab-physx-sensors"></span><h1>isaaclab_physx.sensors<a class="headerlink" href="#module-isaaclab_physx.sensors" title="Link to this heading">#</a></h1>
+<p>Sub-package containing PhysX-specific sensor implementations.</p>
+<section id="additional-public-classes">
+<h2>Additional Public Classes<a class="headerlink" href="#additional-public-classes" title="Link to this heading">#</a></h2>
+<p>The following classes are part of the public <a class="reference internal" href="#module-isaaclab_physx.sensors" title="isaaclab_physx.sensors"><code class="xref py py-mod docutils literal notranslate"><span class="pre">isaaclab_physx.sensors</span></code></a> API.</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensor" title="isaaclab_physx.sensors.ContactSensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContactSensor</span></code></a></p></td>
+<td><p>A PhysX contact reporting sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorCfg" title="isaaclab_physx.sensors.ContactSensorCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContactSensorCfg</span></code></a></p></td>
+<td><p>PhysX contact sensor configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorData" title="isaaclab_physx.sensors.ContactSensorData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContactSensorData</span></code></a></p></td>
+<td><p>Data container for the PhysX contact reporting sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.FrameTransformer" title="isaaclab_physx.sensors.FrameTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FrameTransformer</span></code></a></p></td>
+<td><p>A PhysX sensor for reporting frame transforms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.FrameTransformerData" title="isaaclab_physx.sensors.FrameTransformerData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FrameTransformerData</span></code></a></p></td>
+<td><p>Data container for the PhysX frame transformer sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.Imu" title="isaaclab_physx.sensors.Imu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Imu</span></code></a></p></td>
+<td><p>The PhysX Inertial Measurement Unit (IMU) sensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ImuData" title="isaaclab_physx.sensors.ImuData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImuData</span></code></a></p></td>
+<td><p>Data container for the PhysX IMU sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.JointWrenchSensor" title="isaaclab_physx.sensors.JointWrenchSensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JointWrenchSensor</span></code></a></p></td>
+<td><p>PhysX joint reaction wrench sensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.JointWrenchSensorData" title="isaaclab_physx.sensors.JointWrenchSensorData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JointWrenchSensorData</span></code></a></p></td>
+<td><p>Data container for the PhysX joint-wrench sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCaster" title="isaaclab_physx.sensors.MultiMeshRayCaster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiMeshRayCaster</span></code></a></p></td>
+<td><p>PhysX MultiMeshRayCaster implementation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera" title="isaaclab_physx.sensors.MultiMeshRayCasterCamera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera</span></code></a></p></td>
+<td><p>PhysX MultiMeshRayCasterCamera implementation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.Pva" title="isaaclab_physx.sensors.Pva"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pva</span></code></a></p></td>
+<td><p>The PhysX Pose Velocity Acceleration (PVA) sensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.PvaData" title="isaaclab_physx.sensors.PvaData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PvaData</span></code></a></p></td>
+<td><p>Data container for the PhysX PVA sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.RayCaster" title="isaaclab_physx.sensors.RayCaster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCaster</span></code></a></p></td>
+<td><p>PhysX ray-caster implementation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.RayCasterCamera" title="isaaclab_physx.sensors.RayCasterCamera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayCasterCamera</span></code></a></p></td>
+<td><p>PhysX RayCasterCamera implementation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">ContactSensor</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/contact_sensor/contact_sensor.py#L47-L746"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensor" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseContactSensor" title="isaaclab.sensors.contact_sensor.base_contact_sensor.BaseContactSensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContactSensor</span></code></a></p>
+<p>A PhysX contact reporting sensor.</p>
+<p>The contact sensor reports the normal contact forces on a rigid body in the world frame.
+It relies on the <a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/omni_usd_schema_physics/104.2/class_physx_schema_physx_contact_report_a_p_i.html">PhysX ContactReporter</a> API to be activated on the rigid bodies.</p>
+<p>To enable the contact reporter on a rigid body, please make sure to enable the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">isaaclab.sim.spawner.RigidObjectSpawnerCfg.activate_contact_sensors</span></code> on your
+asset spawner configuration. This will enable the contact reporter on all the rigid bodies
+in the asset.</p>
+<p>The sensor can be configured to report the contact forces on a set of bodies with a given
+filter pattern using the <code class="xref py py-attr docutils literal notranslate"><span class="pre">ContactSensorCfg.filter_prim_paths_expr</span></code>. This is useful
+when you want to report the contact forces between the sensor bodies and a specific set of
+bodies in the scene. The data can be accessed using the <code class="xref py py-attr docutils literal notranslate"><span class="pre">ContactSensorData.normal_force_matrix_w</span></code>.
+Please check the documentation on <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/py/source/extensions/isaacsim.core.experimental.prims/docs/index.html">RigidContact</a> for more details.</p>
+<p>The reporting of the filtered contact forces is only possible as one-to-many. This means that only one
+sensor body in an environment can be filtered against multiple bodies in that environment. If you need to
+filter multiple sensor bodies against multiple bodies, you need to create separate sensors for each sensor
+body.</p>
+<p>As an example, suppose you want to report the contact forces for all the feet of a robot against an object
+exclusively. In that case, setting the <code class="xref py py-attr docutils literal notranslate"><span class="pre">ContactSensorCfg.prim_path</span></code> and
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">ContactSensorCfg.filter_prim_paths_expr</span></code> with <code class="docutils literal notranslate"><span class="pre">{ENV_REGEX_NS}/Robot/.*_FOOT</span></code> and <code class="docutils literal notranslate"><span class="pre">{ENV_REGEX_NS}/Object</span></code>
+respectively will not work. Instead, you need to create a separate sensor for each foot and filter
+it against the object.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensor.__init__" title="isaaclab_physx.sensors.ContactSensor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the contact sensor object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensor.__new__" title="isaaclab_physx.sensors.ContactSensor.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorCfg" title="isaaclab_physx.sensors.ContactSensorCfg"><span class="pre">ContactSensorCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/contact_sensor/contact_sensor.py#L85-L131"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensor.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the contact sensor object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.ContactSensor.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.ContactSensor.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensor.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensor.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensorCfg">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">ContactSensorCfg</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/contact_sensor/contact_sensor_cfg.py#L15-L19"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensorCfg" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.ContactSensorCfg" title="isaaclab.sensors.contact_sensor.contact_sensor_cfg.ContactSensorCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContactSensorCfg</span></code></a></p>
+<p>PhysX contact sensor configuration.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorCfg.__new__" title="isaaclab_physx.sensors.ContactSensorCfg.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorCfg.__init__" title="isaaclab_physx.sensors.ContactSensorCfg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([class_type, cloning_contexts, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensorCfg.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensorCfg.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensorCfg.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_type:</span> <span class="pre">type[ContactSensor]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cloning_contexts:</span> <span class="pre">tuple[str</span> <span class="pre">|</span> <span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prim_path:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_period:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_vis:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_pose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_contact_points:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_friction_forces:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_contact_data_count_per_prim:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_air_time:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_threshold:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_length:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_prim_paths_expr:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensor_shape_prim_expr:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_shape_prim_expr:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualizer_cfg:</span> <span class="pre">~isaaclab.markers.visualization_markers_cfg.VisualizationMarkersCfg</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_force_visualizer_cfg:</span> <span class="pre">~isaaclab.markers.visualization_markers_cfg.VisualizationMarkersCfg</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_force_visualizer_cfg:</span> <span class="pre">~isaaclab.markers.visualization_markers_cfg.VisualizationMarkersCfg</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_visualization_scale:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="（在 Python v3.15）"><span class="pre">None</span></a></span></span><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensorCfg.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensorData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">ContactSensorData</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/contact_sensor/contact_sensor_data.py#L21-L366"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensorData" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseContactSensorData" title="isaaclab.sensors.contact_sensor.base_contact_sensor_data.BaseContactSensorData"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseContactSensorData</span></code></a></p>
+<p>Data container for the PhysX contact reporting sensor.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorData.__new__" title="isaaclab_physx.sensors.ContactSensorData.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ContactSensorData.__init__" title="isaaclab_physx.sensors.ContactSensorData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensorData.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensorData.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ContactSensorData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.ContactSensorData.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.FrameTransformer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">FrameTransformer</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/frame_transformer/frame_transformer.py#L36-L616"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.FrameTransformer" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseFrameTransformer" title="isaaclab.sensors.frame_transformer.base_frame_transformer.BaseFrameTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFrameTransformer</span></code></a></p>
+<p>A PhysX sensor for reporting frame transforms.</p>
+<p>This class provides an interface for reporting the transform of one or more frames (target frames)
+with respect to another frame (source frame). The source frame is specified by the user as a prim path
+(<code class="xref py py-attr docutils literal notranslate"><span class="pre">FrameTransformerCfg.prim_path</span></code>) and the target frames are specified by the user as a list of
+prim paths (<code class="xref py py-attr docutils literal notranslate"><span class="pre">FrameTransformerCfg.target_frames</span></code>).</p>
+<p>The source frame and target frames are assumed to be rigid bodies. The transform of the target frames
+with respect to the source frame is computed by first extracting the transform of the source frame
+and target frames from the physics engine and then computing the relative transform between the two.</p>
+<p>Additionally, the user can specify an offset for the source frame and each target frame. This is useful
+for specifying the transform of the desired frame with respect to the body's center of mass, for instance.</p>
+<p>A common example of using this sensor is to track the position and orientation of the end effector of a
+robotic manipulator. In this case, the source frame would be the body corresponding to the base frame of the
+manipulator, and the target frame would be the body corresponding to the end effector. Since the end-effector is
+typically a fictitious body, the user may need to specify an offset from the end-effector to the body of the
+manipulator.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.FrameTransformer.__init__" title="isaaclab_physx.sensors.FrameTransformer.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the frame transformer object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.FrameTransformer.__new__" title="isaaclab_physx.sensors.FrameTransformer.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.FrameTransformer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.FrameTransformerCfg" title="isaaclab.sensors.FrameTransformerCfg"><span class="pre">FrameTransformerCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/frame_transformer/frame_transformer.py#L65-L77"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.FrameTransformer.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the frame transformer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.FrameTransformer.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.FrameTransformer.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.FrameTransformer.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.FrameTransformer.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.FrameTransformerData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">FrameTransformerData</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/frame_transformer/frame_transformer_data.py#L16-L187"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.FrameTransformerData" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseFrameTransformerData" title="isaaclab.sensors.frame_transformer.base_frame_transformer_data.BaseFrameTransformerData"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFrameTransformerData</span></code></a></p>
+<p>Data container for the PhysX frame transformer sensor.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.FrameTransformerData.__new__" title="isaaclab_physx.sensors.FrameTransformerData.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.FrameTransformerData.__init__" title="isaaclab_physx.sensors.FrameTransformerData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.FrameTransformerData.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.FrameTransformerData.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.FrameTransformerData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.FrameTransformerData.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.Imu">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">Imu</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/imu/imu.py#L30-L274"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.Imu" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseImu" title="isaaclab.sensors.imu.base_imu.BaseImu"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseImu</span></code></a></p>
+<p>The PhysX Inertial Measurement Unit (IMU) sensor.</p>
+<p>This sensor models a real IMU that measures angular velocity (gyroscope) and
+linear acceleration (accelerometer) in the sensor's body frame. Unlike the PVA
+sensor, it does not provide pose, linear velocity, angular acceleration, or
+projected gravity.</p>
+<p>Like a real accelerometer, the linear acceleration readings always include the
+contribution of gravity. The gravity vector is queried from the simulation at
+initialization.</p>
+<p>The sensor can be attached to any prim path with a rigid ancestor in its tree.
+If the provided path is not a rigid body, the closest rigid-body ancestor is used
+for simulation queries. The fixed transform from that ancestor to the target prim
+is computed once during initialization and composed with the configured sensor offset.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Linear acceleration is read from the solver and transported from the body center of
+mass to the sensor frame, then biased by gravity.</p>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.Imu.__init__" title="isaaclab_physx.sensors.Imu.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the IMU sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.Imu.__new__" title="isaaclab_physx.sensors.Imu.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.Imu.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.ImuCfg" title="isaaclab.sensors.ImuCfg"><span class="pre">ImuCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/imu/imu.py#L59-L75"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.Imu.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the IMU sensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.Imu.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.Imu.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.Imu.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.Imu.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ImuData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">ImuData</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/imu/imu_data.py#L14-L53"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.ImuData" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseImuData" title="isaaclab.sensors.imu.base_imu_data.BaseImuData"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseImuData</span></code></a></p>
+<p>Data container for the PhysX IMU sensor.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ImuData.__new__" title="isaaclab_physx.sensors.ImuData.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.ImuData.__init__" title="isaaclab_physx.sensors.ImuData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ImuData.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.ImuData.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.ImuData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.ImuData.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.JointWrenchSensor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">JointWrenchSensor</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/joint_wrench/joint_wrench_sensor.py#L34-L222"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.JointWrenchSensor" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseJointWrenchSensor" title="isaaclab.sensors.joint_wrench.base_joint_wrench_sensor.BaseJointWrenchSensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseJointWrenchSensor</span></code></a></p>
+<p>PhysX joint reaction wrench sensor.</p>
+<p>The sensor reads PhysX's incoming joint wrench for every articulation link
+and exposes the linear force [N] and angular torque [N·m] components in
+the child-side joint frame, with torque referenced at the child-side joint
+anchor. The root body's entry is included.</p>
+<p><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.SensorBaseCfg.prim_path" title="isaaclab.sensors.SensorBaseCfg.prim_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">prim_path</span></code></a> must point at either
+the articulation root prim or a parent prim containing a single
+articulation root in every environment.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.JointWrenchSensor.__init__" title="isaaclab_physx.sensors.JointWrenchSensor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initialize the PhysX joint-wrench sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.JointWrenchSensor.__new__" title="isaaclab_physx.sensors.JointWrenchSensor.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.JointWrenchSensor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.JointWrenchSensorCfg" title="isaaclab.sensors.JointWrenchSensorCfg"><span class="pre">JointWrenchSensorCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/joint_wrench/joint_wrench_sensor.py#L53-L66"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.JointWrenchSensor.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the PhysX joint-wrench sensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.JointWrenchSensor.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.JointWrenchSensor.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.JointWrenchSensor.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.JointWrenchSensor.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.JointWrenchSensorData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">JointWrenchSensorData</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/joint_wrench/joint_wrench_sensor_data.py#L14-L67"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.JointWrenchSensorData" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BaseJointWrenchSensorData" title="isaaclab.sensors.joint_wrench.base_joint_wrench_sensor_data.BaseJointWrenchSensorData"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseJointWrenchSensorData</span></code></a></p>
+<p>Data container for the PhysX joint-wrench sensor.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.JointWrenchSensorData.__init__" title="isaaclab_physx.sensors.JointWrenchSensorData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.JointWrenchSensorData.__new__" title="isaaclab_physx.sensors.JointWrenchSensorData.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.JointWrenchSensorData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/joint_wrench/joint_wrench_sensor_data.py#L17-L22"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.JointWrenchSensorData.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.JointWrenchSensorData.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.JointWrenchSensorData.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.MultiMeshRayCaster">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">MultiMeshRayCaster</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/ray_caster/multi_mesh_ray_caster.py#L13-L14"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.MultiMeshRayCaster" title="Link to this definition">#</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">_PhysXRayCasterMixin</span></code>, <a class="reference internal" href="../lab/isaaclab.sensors.ray_caster.html#isaaclab.sensors.ray_caster.BaseMultiMeshRayCaster" title="isaaclab.sensors.ray_caster.base_multi_mesh_ray_caster.BaseMultiMeshRayCaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMultiMeshRayCaster</span></code></a></p>
+<p>PhysX MultiMeshRayCaster implementation.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__new__" title="isaaclab_physx.sensors.MultiMeshRayCaster.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__init__" title="isaaclab_physx.sensors.MultiMeshRayCaster.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the ray-caster object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.MultiMeshRayCaster.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.MultiMeshRayCaster.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.MultiMeshRayCasterCfg" title="isaaclab.sensors.MultiMeshRayCasterCfg"><span class="pre">MultiMeshRayCasterCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab/isaaclab/sensors/ray_caster/base_multi_mesh_ray_caster.py#L101-L120"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the ray-caster object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.MultiMeshRayCaster.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCaster.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.MultiMeshRayCasterCamera">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">MultiMeshRayCasterCamera</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/ray_caster/multi_mesh_ray_caster_camera.py#L13-L14"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera" title="Link to this definition">#</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">_PhysXRayCasterMixin</span></code>, <a class="reference internal" href="../lab/isaaclab.sensors.ray_caster.html#isaaclab.sensors.ray_caster.BaseMultiMeshRayCasterCamera" title="isaaclab.sensors.ray_caster.base_multi_mesh_ray_caster_camera.BaseMultiMeshRayCasterCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMultiMeshRayCasterCamera</span></code></a></p>
+<p>PhysX MultiMeshRayCasterCamera implementation.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__new__" title="isaaclab_physx.sensors.MultiMeshRayCasterCamera.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__init__" title="isaaclab_physx.sensors.MultiMeshRayCasterCamera.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the camera object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.MultiMeshRayCasterCamera.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.MultiMeshRayCasterCamera.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.MultiMeshRayCasterCameraCfg" title="isaaclab.sensors.MultiMeshRayCasterCameraCfg"><span class="pre">MultiMeshRayCasterCameraCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab/isaaclab/sensors/ray_caster/base_multi_mesh_ray_caster_camera.py#L43-L56"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the camera object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.MultiMeshRayCasterCamera.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+<dt class="field-even">抛出<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="（在 Python v3.15）"><strong>ValueError</strong></a> -- If the provided data types are not supported by the ray-caster camera.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.Pva">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">Pva</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/pva/pva.py#L34-L367"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.Pva" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BasePva" title="isaaclab.sensors.pva.base_pva.BasePva"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePva</span></code></a></p>
+<p>The PhysX Pose Velocity Acceleration (PVA) sensor.</p>
+<p>The sensor can be attached to any prim path with a rigid ancestor in its tree and produces body-frame
+linear acceleration and angular velocity, along with world-frame pose and body-frame linear and angular
+accelerations/velocities.</p>
+<p>If the provided path is not a rigid body, the closest rigid-body ancestor is used for simulation queries.
+The fixed transform from that ancestor to the target prim is computed once during initialization and
+composed with the configured sensor offset.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Linear and angular accelerations are read from the solver and transported from the body
+center of mass to the sensor frame. They are kinematic accelerations, so they do not
+include the gravity bias that the IMU sensor reports.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The user can configure the sensor offset in the configuration file. The offset is applied relative to the
+rigid source prim. If the target prim is not a rigid body, the offset is composed with the fixed transform
+from the rigid ancestor to the target prim. The offset is applied in the body frame of the rigid source prim.
+The offset is defined as a position vector and a quaternion rotation, which
+are applied in the order: position, then rotation. The position is applied as a translation
+in the body frame of the rigid source prim, and the rotation is applied as a rotation
+in the body frame of the rigid source prim.</p>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.Pva.__init__" title="isaaclab_physx.sensors.Pva.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the PVA sensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.Pva.__new__" title="isaaclab_physx.sensors.Pva.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.Pva.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.PvaCfg" title="isaaclab.sensors.PvaCfg"><span class="pre">PvaCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/pva/pva.py#L69-L90"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.Pva.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the PVA sensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.Pva.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.Pva.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.Pva.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.Pva.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.PvaData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">PvaData</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/pva/pva_data.py#L20-L147"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.PvaData" title="Link to this definition">#</a></dt>
+<dd><p>基类：<a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.BasePvaData" title="isaaclab.sensors.pva.base_pva_data.BasePvaData"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePvaData</span></code></a></p>
+<p>Data container for the PhysX PVA sensor.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.PvaData.__new__" title="isaaclab_physx.sensors.PvaData.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.PvaData.__init__" title="isaaclab_physx.sensors.PvaData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.PvaData.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.PvaData.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.PvaData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.PvaData.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.RayCaster">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">RayCaster</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/ray_caster/ray_caster.py#L177-L275"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.RayCaster" title="Link to this definition">#</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">_PhysXRayCasterMixin</span></code>, <a class="reference internal" href="../lab/isaaclab.sensors.ray_caster.html#isaaclab.sensors.ray_caster.BaseRayCaster" title="isaaclab.sensors.ray_caster.base_ray_caster.BaseRayCaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRayCaster</span></code></a></p>
+<p>PhysX ray-caster implementation.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.RayCaster.__init__" title="isaaclab_physx.sensors.RayCaster.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initialize the PhysX ray-caster.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.RayCaster.__new__" title="isaaclab_physx.sensors.RayCaster.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.RayCaster.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.RayCasterCfg" title="isaaclab.sensors.RayCasterCfg"><span class="pre">RayCasterCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/ray_caster/ray_caster.py#L180-L191"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.RayCaster.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the PhysX ray-caster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.RayCaster.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.RayCaster.params.cfg">¶</a> -- The ray-caster configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.RayCaster.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.RayCaster.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.RayCasterCamera">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">isaaclab_physx.sensors.</span></span><span class="sig-name descname"><span class="pre">RayCasterCamera</span></span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab_physx/isaaclab_physx/sensors/ray_caster/ray_caster_camera.py#L13-L14"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.RayCasterCamera" title="Link to this definition">#</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">_PhysXRayCasterMixin</span></code>, <a class="reference internal" href="../lab/isaaclab.sensors.ray_caster.html#isaaclab.sensors.ray_caster.BaseRayCasterCamera" title="isaaclab.sensors.ray_caster.base_ray_caster_camera.BaseRayCasterCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRayCasterCamera</span></code></a></p>
+<p>PhysX RayCasterCamera implementation.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.RayCasterCamera.__new__" title="isaaclab_physx.sensors.RayCasterCamera.__new__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isaaclab_physx.sensors.RayCasterCamera.__init__" title="isaaclab_physx.sensors.RayCasterCamera.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(cfg)</p></td>
+<td><p>Initializes the camera object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.RayCasterCamera.__new__">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#isaaclab_physx.sensors.RayCasterCamera.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="isaaclab_physx.sensors.RayCasterCamera.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lab/isaaclab.sensors.html#isaaclab.sensors.RayCasterCameraCfg" title="isaaclab.sensors.RayCasterCameraCfg"><span class="pre">RayCasterCameraCfg</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/blob/release/3.0.0/source/isaaclab/isaaclab/sensors/ray_caster/base_ray_caster_camera.py#L72-L86"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#isaaclab_physx.sensors.RayCasterCamera.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the camera object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="isaaclab_physx.sensors.RayCasterCamera.params.cfg"></span><strong>cfg</strong><a class="paramlink headerlink reference internal" href="#isaaclab_physx.sensors.RayCasterCamera.params.cfg">¶</a> -- The configuration parameters.</p>
+</dd>
+<dt class="field-even">抛出<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="（在 Python v3.15）"><strong>ValueError</strong></a> -- If the provided data types are not supported by the ray-caster camera.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="isaaclab_physx.renderers.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">isaaclab_physx.renderers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="isaaclab_physx.sim.schemas.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">isaaclab_physx.sim.schemas</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-public-classes">Additional Public Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensor"><code class="docutils literal notranslate"><span class="pre">ContactSensor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensor.__init__"><code class="docutils literal notranslate"><span class="pre">ContactSensor.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensor.__new__"><code class="docutils literal notranslate"><span class="pre">ContactSensor.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorCfg"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorCfg.__new__"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorCfg.__init__"><code class="docutils literal notranslate"><span class="pre">ContactSensorCfg.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorData"><code class="docutils literal notranslate"><span class="pre">ContactSensorData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorData.__new__"><code class="docutils literal notranslate"><span class="pre">ContactSensorData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ContactSensorData.__init__"><code class="docutils literal notranslate"><span class="pre">ContactSensorData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformer"><code class="docutils literal notranslate"><span class="pre">FrameTransformer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformer.__init__"><code class="docutils literal notranslate"><span class="pre">FrameTransformer.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformer.__new__"><code class="docutils literal notranslate"><span class="pre">FrameTransformer.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformerData"><code class="docutils literal notranslate"><span class="pre">FrameTransformerData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformerData.__new__"><code class="docutils literal notranslate"><span class="pre">FrameTransformerData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.FrameTransformerData.__init__"><code class="docutils literal notranslate"><span class="pre">FrameTransformerData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Imu"><code class="docutils literal notranslate"><span class="pre">Imu</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Imu.__init__"><code class="docutils literal notranslate"><span class="pre">Imu.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Imu.__new__"><code class="docutils literal notranslate"><span class="pre">Imu.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ImuData"><code class="docutils literal notranslate"><span class="pre">ImuData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ImuData.__new__"><code class="docutils literal notranslate"><span class="pre">ImuData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.ImuData.__init__"><code class="docutils literal notranslate"><span class="pre">ImuData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensor"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensor.__init__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensor.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensor.__new__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensor.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensorData"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensorData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensorData.__init__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensorData.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.JointWrenchSensorData.__new__"><code class="docutils literal notranslate"><span class="pre">JointWrenchSensorData.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCaster"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCaster</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__new__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCaster.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCaster.__init__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCaster.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__new__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.MultiMeshRayCasterCamera.__init__"><code class="docutils literal notranslate"><span class="pre">MultiMeshRayCasterCamera.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Pva"><code class="docutils literal notranslate"><span class="pre">Pva</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Pva.__init__"><code class="docutils literal notranslate"><span class="pre">Pva.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.Pva.__new__"><code class="docutils literal notranslate"><span class="pre">Pva.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.PvaData"><code class="docutils literal notranslate"><span class="pre">PvaData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.PvaData.__new__"><code class="docutils literal notranslate"><span class="pre">PvaData.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.PvaData.__init__"><code class="docutils literal notranslate"><span class="pre">PvaData.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCaster"><code class="docutils literal notranslate"><span class="pre">RayCaster</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCaster.__init__"><code class="docutils literal notranslate"><span class="pre">RayCaster.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCaster.__new__"><code class="docutils literal notranslate"><span class="pre">RayCaster.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCasterCamera"><code class="docutils literal notranslate"><span class="pre">RayCasterCamera</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCasterCamera.__new__"><code class="docutils literal notranslate"><span class="pre">RayCasterCamera.__new__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isaaclab_physx.sensors.RayCasterCamera.__init__"><code class="docutils literal notranslate"><span class="pre">RayCasterCamera.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026, The Isaac Lab Project Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 10 月 10 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

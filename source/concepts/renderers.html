@@ -1,0 +1,1494 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>渲染器 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=ccd4f661" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/environment-browser.css?v=665352f4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/demo-browser.css?v=e28b46a0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/guide-browser.css?v=7190c4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script>window.isaacLabDocsTranslations = {"5 visualizers running Isaac-Velocity-Flat-AnymalD with a circular velocity command": "五种可视化器运行 Isaac-Velocity-Flat-AnymalD，并使用环形速度指令", "A PhysX-trained ANYmal-D policy runs side by side in PhysX and Newton MJWarp": "在 PhysX 上训练的 ANYmal-D 策略，并排运行于 PhysX 与 Newton MJWarp", "A Rizon robot uses a Sharpa hand to manipulate a teapot": "Rizon 机器人使用 Sharpa 手操作茶壶", "A Rizon robot uses a Sharpa hand to manipulate an RJ45 cable": "Rizon 机器人使用 Sharpa 手操作 RJ45 网线", "All categories": "所有类别", "Animate an arm, biped, quadruped, dexterous hand, quadcopter, and rigid props in one deterministic scene.": "在同一确定性场景中，驱动机械臂、双足机器人、四足机器人、灵巧手、四旋翼和刚性道具。", "Arrow markers on the Franka arm's joints, with contact sensor markers on the cube": "Franka 机械臂关节上的箭头标记，以及立方体上的接触传感器标记", "Back to all guides": "返回全部指南", "Benchmark FPS measurements, scroll for more configurations": "性能测试 FPS 测量结果，可滚动查看更多配置", "Benchmark channel": "性能测试分支", "Benchmark data could not be loaded.": "无法加载性能测试数据。", "Benchmark data is not available yet": "暂无性能测试数据", "Benchmark workload": "性能测试负载", "Block and tackle pulleys and a red load": "滑轮组与红色负载", "Classic control": "经典控制", "Collection": "数据采集", "Command mode": "命令模式", "Contrib": "社区贡献", "Copy command": "复制命令", "Core": "核心任务", "Default": "默认", "Develop": "开发版", "Domain preset": "领域预设", "Drag a cable handle to lift a load through a 4:1 pulley system.": "拖动缆绳把手，通过 4:1 滑轮组举起负载。", "Each Allegro hand reorients its cube to match the target shown by the marker above it": "每只 Allegro 手调整立方体朝向，使其与上方标记显示的目标一致", "Each Franka arm reaches its end-effector toward a randomized target pose": "各 Franka 机械臂将末端执行器移动到随机目标位姿", "Each H1 humanoid climbs a staircase sub-terrain": "各 H1 人形机器人攀登楼梯子地形", "Each Kuka arm and Allegro hand lifts its cube off the table": "各 Kuka 机械臂和 Allegro 手将立方体从桌面举起", "Each Shadow Hand reorients its cube to match the target pose": "各 Shadow Hand 调整立方体朝向，使其与目标位姿一致", "Fill a Utah teapot with MPM water particles and pour them into a bowl.": "向 Utah 茶壶注入 MPM 水粒子，再倒入碗中。", "Filled teal fingers belong to the source solver; outlined blue fingers are destination-local proxies of those same bodies. The blue object represents material owned by the destination solver.": "青绿色实心手指属于源求解器；蓝色轮廓手指是目标求解器内这些刚体的本地代理。蓝色物体表示归目标求解器所有的材料。", "Green arrow: commanded velocity. Blue arrow: current velocity.": "绿色箭头表示指令速度；蓝色箭头表示当前速度。", "H1 Locomotion": "H1 行走", "H1 locomotion": "H1 行走", "H1 locomotion in Isaac Lab": "Isaac Lab 中的 H1 行走", "H1 locomotion uses a published policy. For autonomous H1 task playback, use": "H1 行走使用已发布的策略。要自主回放 H1 任务，请使用", "In the Newton viewer, press": "在 Newton 查看器中，按", "Interactive pick and place demo": "交互式抓取与放置演示", "Interactive view of the Galbot cube stacking environment": "Galbot 立方体堆叠环境的交互视图", "Interactively pick up a cube with a parallel robot and place it on a target.": "交互式控制并联机器人，抓起立方体并放到目标位置。", "Isaac Lab command builder": "Isaac Lab 命令生成器", "Isaac Lab demo command builder": "Isaac Lab 演示命令生成器", "Isaac-Cartpole preview": "Isaac-Cartpole 预览", "Isaac-Lift-KukaAllegro in Viser Visualizer": "Viser 可视化器中的 Isaac-Lift-KukaAllegro", "Isaac-Reach-Franka in Kit Visualizer": "Kit 可视化器中的 Isaac-Reach-Franka", "Isaac-Reorient-Cube-Allegro in Newton GL Visualizer": "Newton GL 可视化器中的 Isaac-Reorient-Cube-Allegro", "Isaac-Reorient-Cube-Shadow-Direct in Rerun Visualizer": "Rerun 可视化器中的 Isaac-Reorient-Cube-Shadow-Direct", "Isaac-Velocity-Rough-H1 in Newton RTX Visualizer": "Newton RTX 可视化器中的 Isaac-Velocity-Rough-H1", "Joint arrow markers on a Franka arm and contact sensor markers on a cube": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记", "Joint arrow markers on a Franka arm, with contact sensor markers on a cube.": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记。", "Kit visualizer": "Kit 可视化器", "Kit visualizer tiled streaming": "Kit 可视化器平铺串流", "Kit visualizer: interactive viewport": "Kit 可视化器：交互式视口", "Kit visualizer: streaming camera view": "Kit 可视化器：串流相机视图", "Large green/blue arrow markers showing target and base velocity for an AnymalD robot": "AnymalD 机器人上表示目标速度和基座速度的大型绿色、蓝色箭头标记", "Loading guide...": "正在加载指南…", "Locomotion": "移动", "Manipulation": "操作", "Mode": "模式", "Newton Block and Tackle": "Newton 滑轮组", "Newton GL visualizer": "Newton GL 可视化器", "Newton GL visualizer, with 3 plots opened": "Newton GL 可视化器，打开了三个曲线图", "Newton visualizer: interactive viewport": "Newton 可视化器：交互式视口", "Newton visualizer: streaming camera view": "Newton 可视化器：串流相机视图", "No guides match this search.": "没有符合搜索条件的指南。", "No tasks match this search.": "没有符合搜索条件的任务。", "Not available": "暂无数据", "Note: Newton RTX has no velocity arrows, since it doesn't yet support visualization markers.": "注意：Newton RTX 暂不支持可视化标记，因此没有速度箭头。", "OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.": "OV 与 Isaac Sim 不能混用。请选择相互匹配的物理后端和渲染后端。", "Open in a new tab": "在新标签页打开", "Open the animation": "打开动画", "Physics": "物理", "Physics backend": "物理后端", "Physics preset": "物理预设", "Pick and Place": "抓取与放置", "Pick and place": "抓取与放置", "Pick and place requires Kit input.": "抓取与放置需要 Kit 输入。", "Play": "回放", "Preset": "预设", "Proxy coupling between source and destination solvers": "源求解器与目标求解器之间的代理耦合", "RL Library": "强化学习库", "RL library": "强化学习库", "Recorded clip of the Shadow Hand cube-reorientation task, recording the streaming view of the Rerun visualizer with 4 streaming view envs and 4 GT types": "Shadow Hand 立方体转向任务的录像，录制 Rerun 可视化器的串流视图，包含四个串流环境和四种真值数据", "Recorded clip with ground-truth sensor views": "包含真值传感器视图的录像片段", "Release": "发布版", "Renderer": "渲染器", "Renderer preset": "渲染器预设", "Right-click dragging the first domino triggers the cascade across an NVIDIA-logo domino layout": "右键拖动第一张骨牌，在 NVIDIA 标志形状的骨牌布局中触发连锁倒下", "Robots in the Isaac Lab Zoo demo": "Isaac Lab Zoo 演示中的机器人", "Scene sensor": "场景传感器", "Search all guides": "搜索全部指南", "Search guides": "搜索指南", "Search tasks and capabilities": "搜索任务与功能", "Search tasks or capabilities": "搜索任务或功能", "Select H1 robots and control a trained rough-terrain policy with the keyboard and follow camera.": "选择 H1 机器人，通过键盘和跟随相机控制已训练的崎岖地形策略。", "Selected guide": "所选指南", "Selected task": "所选任务", "Smash rigid crates with coupled MPM snowballs.": "使用耦合的 MPM 雪球撞碎刚性箱子。", "Snowball Smash": "雪球撞击", "Snowballs striking a stack of colored crates": "雪球撞击一叠彩色箱子", "Streaming view showing tiled Galbot wrist-camera feeds": "显示 Galbot 腕部相机平铺画面的串流视图", "Table color shows success: red until the cube reaches its target pose, green once it does.": "桌面颜色表示成功状态：立方体到达目标位姿前为红色，到达后变为绿色。", "Task": "任务", "Task category": "任务类别", "Task collection": "任务集合", "Teapot Fill": "茶壶注水", "The upper arrow synchronizes source state with the proxies, including pose and velocity. Contact produces the force and torque feedback shown by the lower arrow, which returns to a later source solve or coupling iteration.": "上方箭头表示源状态与代理之间的同步，包括位姿和速度。接触产生下方箭头所示的力与力矩反馈，在后续源求解或耦合迭代中返回。", "This environment does not support RL training or playback. The command runs it with the zero-action agent instead.": "此环境不支持强化学习训练或回放，命令将改用零动作智能体运行。", "Train": "训练", "Training": "训练", "Use Pre-trained Checkpoint": "使用预训练检查点", "Utah teapot pouring simulated water": "Utah 茶壶倒出仿真水流", "VRAM": "显存", "Velocity arrow marker on an AnymalD robot": "AnymalD 机器人上的速度箭头标记", "Velocity command (green) and current velocity (blue) arrow markers on an AnymalD robot.": "AnymalD 机器人上表示速度指令（绿色）和当前速度（蓝色）的箭头标记。", "Viser visualizer, with 1 plot opened": "Viser 可视化器，打开了一个曲线图", "Visualizer": "可视化器", "Watch the proxy coupling animation.": "观看代理耦合动画。", "Zoo": "机器人集锦（Zoo）", "newton-dominoes example": "newton-dominoes 示例", "to pause or scrub through the exchange.": "可暂停或拖动进度查看交换过程。", "to select a robot,": "选择机器人，按", "to stop, and": "停止，按", "to toggle the follow camera.": "切换跟随相机。", "to walk forward or turn,": "前进或转向，按", "Copied": "已复制", "default": "默认", "Manager": "管理器", "Direct": "直接工作流", "Camera": "相机", "Direct-Camera": "直接工作流与相机", "Task variant": "任务变体", "Zero agent": "零动作智能体", "Not supported": "不支持", "Collection FPS": "采集 FPS", "Training FPS": "训练 FPS", "Configuration": "配置", "Mean FPS": "平均 FPS", "Unspecified renderer": "未指定渲染器", "Presets not recorded": "未记录预设", "Newton renderer": "Newton 渲染器", "Newton MJWarp VBD proxy": "Newton MJWarp VBD 代理", "none": "无"};</script>
+    <script src="../../_static/zh-cn-ui.js?v=2a63ae94"></script>
+    <script src="../../_static/media-status.js?v=d1674cca"></script>
+    <script src="../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/concepts/renderers';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/css/environment-browser.js?v=0830db2c"></script>
+    <script src="../../_static/css/demo-browser.js?v=bcae0e8a"></script>
+    <script src="../../_static/css/guide-browser.js?v=d5610391"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="执行器" href="actuators.html" />
+    <link rel="prev" title="OvPhysX 张量绑定" href="native-physics-api/ovphysx.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="3.0.0" />
+    <meta name="docbuild:last-update" content="2026 年 10 月 10 日"/>
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="快捷链接">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cube fa-lg" aria-hidden="true"></i><span class="visually-hidden">Isaac Sim</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab/stargazers" title="GitHub 星标" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-star fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub 星标</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/ecosystem.html">生态系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/quickstart.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/tutorial.html">教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup/demos.html">演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">操作指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../workflows/index.html">工作流程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../workflows/docker/index.html">在 Docker 中运行 Isaac Lab</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/images.html">容器镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/cluster.html">在 HPC 集群上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workflows/docker/cloud.html">云部署</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/migrating_to_isaaclab_3-0.html">迁移到 3.0</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">核心概念</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="backends_and_presets.html">后端与预设</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend_architecture.html">后端架构</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="physics_backends.html">物理后端</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="physics-backends/newton.html">Newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="joint_and_body_ordering.html">关节与刚体顺序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovphysx.html">OvPhysX 后端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_mpm.html">使用隐式 MPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp_environments.html">Warp 实验性环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp_environment_migration.html">Warp 环境迁移指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="solver_differences.html">求解器差异</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="native-physics-api/index.html">访问原生物理 API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/physx.html">PhysX 张量 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/newton.html">Newton 原生数据与选择 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="native-physics-api/ovphysx.html">OvPhysX 张量绑定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">渲染器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actuators.html">执行器</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="sensors/camera.html">相机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/pva.html">位姿、速度与加速度（PVA）传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensors/joint_wrench_sensor.html">关节力旋量传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="coupled_solvers.html">耦合求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reinforcement_learning.html">强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deformables.html">可变形物体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_cfgs.html">模式配置类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_fragments.html">模式片段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion_generators.html">运动生成器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../features/imitation-learning/index.html">模仿学习</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/teleop_imitation.html">使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/humanoids_imitation.html">示例：人形机器人的数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../features/imitation-learning/skillgen.html">使用 SkillGen 自动生成示范</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/isaac_teleop.html">Isaac Capture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/multi_gpu.html">多 GPU 和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/population_based_training.html">基于种群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/reproducibility.html">可重现性和确定性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/record_video.html">录制视频</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/visualizer_tiled_camera.html">可视化器相机流视图</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开发工具</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/editor_setup.html">编辑器配置</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/template_generator.html">创建自己的项目或任务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/add_physics_backend.html">添加物理后端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/extending_newton_solvers.html">扩展 Newton 求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/scene_data_providers.html">场景数据提供器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-tools/agent_skills.html">智能体技能</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../developer-tools/benchmarking/index.html">性能测试</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/run_benchmarks.html">运行性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/micro_benchmarks.html">编写微基准测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer-tools/benchmarking/benchmark_api.html">使用性能测试 API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/ray.html">Ray 作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/visuo_tactile_sensor.html">视触觉传感器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental-features/rlinf_vla_posttraining.html">VLA 模型的强化学习后训练</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/03_compass_with_NuRec/compass_navigation_policy_with_NuRec.html">使用 NuRec 资产训练和部署 COMPASS 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../policy_deployment/04_reach/reach_policy.html">训练用于实机部署的 Reach 策略</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../policy_deployment/05_leapp/exporting_policies_with_leapp.html">使用 LEAPP 导出策略</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.html">使用 LEAPP 导出 Direct 工作流策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../policy_deployment/05_leapp/deploying_exported_policies_with_leapp.html">使用 LEAPP 部署导出的策略</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.benchmark.html">isaaclab.benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.cloner.html">isaaclab.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/lab/isaaclab.envs.html">isaaclab.envs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/lab/isaaclab.envs.leapp_deployment_env.html">LEAPP Deployment Environment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.physics.html">isaaclab.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.renderers.html">isaaclab.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.scene_data.html">isaaclab.scene_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.visualizers.html">isaaclab.visualizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.controllers.html">isaaclab_contrib.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.coupling.html">isaaclab_contrib.coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.custom_coupling.html">isaaclab_contrib.custom_coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.rl.html">isaaclab_contrib.rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_teleop/isaaclab_teleop.html">isaaclab_teleop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.app.html">isaaclab_physx.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.assets.html">isaaclab_physx.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.cloner.html">isaaclab_physx.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.physics.html">isaaclab_physx.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.renderers.html">isaaclab_physx.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sensors.html">isaaclab_physx.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.schemas.html">isaaclab_physx.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.spawners.html">isaaclab_physx.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.assets.html">isaaclab_newton.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.cloner.html">isaaclab_newton.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.controllers.html">isaaclab_newton.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.physics.html">isaaclab_newton.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.renderers.html">isaaclab_newton.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sensors.html">isaaclab_newton.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.schemas.html">isaaclab_newton.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.spawners.html">isaaclab_newton.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.app.html">isaaclab_ov.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.assets.html">isaaclab_ov.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.cloner.html">isaaclab_ov.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.physics.html">isaaclab_ov.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.renderers.html">isaaclab_ov.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sim.views.html">isaaclab_ov.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_assets/isaaclab_assets.robots.html">isaaclab_assets.robots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_assets/isaaclab_assets.sensors.html">isaaclab_assets.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.kit.html">isaaclab_visualizers.kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.newton.html">isaaclab_visualizers.newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.rerun.html">isaaclab_visualizers.rerun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_visualizers/isaaclab_visualizers.viser.html">isaaclab_visualizers.viser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.envs.html">isaaclab_experimental.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.managers.html">isaaclab_experimental.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.utils.html">isaaclab_experimental.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.benchmark.recorders.html">isaaclab.benchmark.recorders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.camera.html">isaaclab.sensors.camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.sensors.ray_caster.html">isaaclab.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.ui.widgets.html">isaaclab.ui.widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.ui.xr_widgets.html">isaaclab.ui.xr_widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab/isaaclab.utils.leapp.html">isaaclab.utils.leapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_experimental/isaaclab_experimental.envs.mdp.actions.html">isaaclab_experimental.envs.mdp.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.envs.mdp.html">isaaclab_newton.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_newton/isaaclab_newton.sim.views.html">isaaclab_newton.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.envs.mdp.html">isaaclab_ov.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sensors.html">isaaclab_ov.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ov/isaaclab_ov.sensors.ray_caster.html">isaaclab_ov.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.envs.mdp.html">isaaclab_physx.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_physx/isaaclab_physx.sim.views.html">isaaclab_physx.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/lab_ppisp/isaaclab_ppisp.html">isaaclab_ppisp</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/release_notes.html">发布说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/changelog.html">Package Changelogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/newton-physics/newton">NVIDIA Newton</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/concepts/renderers.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/concepts/renderers.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/source/concepts/renderers.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>渲染器</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-renderer-backend">选择渲染后端</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renderer-outputs-at-a-glance">渲染器输出概览</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renderer-details">渲染器详情</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-rendering-capability">选择渲染功能</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simplified-rendering">简化渲染</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#photo-real-rendering">逼真渲染</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-rendering-outputs">高级渲染输出</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-environment-isaac-rtx-scene-partitioning">Isaac RTX 按环境划分场景</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">架构概览</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batching-camera-renders">批量渲染相机</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts">核心概念</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-ovrtx-renderer">安装 OVRTX 渲染器</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asynchronous-rendering">异步渲染</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">另请参阅</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="renderers">
+<span id="overview-renderers"></span><span id="concepts-renderers"></span><h1>渲染器<a class="headerlink" href="#renderers" title="Link to this heading">#</a></h1>
+<p>渲染器为策略观测和合成数据流程生成相机传感器缓冲区。它们不同于 <a class="reference internal" href="visualization.html"><span class="doc">可视化器</span></a> ；后者为检查、调试和录制提供面向人的交互式视图。Isaac Lab 采用可插拔渲染器架构，所有实现均遵循 <a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer" title="isaaclab.renderers.BaseRenderer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRenderer</span></code></a> 定义的接口。</p>
+<p>Isaac Lab 支持三种渲染后端。下表概括其运行时要求和主要用途。执行方式、输出支持与限制见 <a class="reference internal" href="#renderer-details"><span class="std std-ref">渲染器详情</span></a> ，按后端划分的输出支持矩阵见 <a class="reference internal" href="sensors/camera.html#camera-supported-annotators"><span class="std std-ref">渲染器支持情况</span></a> 。</p>
+<section id="choosing-a-renderer-backend">
+<h2>选择渲染后端<a class="headerlink" href="#choosing-a-renderer-backend" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>后端</p></th>
+<th class="head"><p>是否需要 Isaac Sim？</p></th>
+<th class="head"><p>最适用于</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Isaac RTX</p></td>
+<td><p>Yes</p></td>
+<td><p>完整传感器保真度、RTX 逼真渲染、PhysX 后端</p></td>
+</tr>
+<tr class="row-odd"><td><p>OVRTX</p></td>
+<td><p>不需要（不依赖 Kit；需要 <code class="docutils literal notranslate"><span class="pre">isaaclab_ov</span></code> + <code class="docutils literal notranslate"><span class="pre">ovrtx</span></code> ）</p></td>
+<td><p>无需 Isaac Sim 即可获得 RTX 级渲染质量</p></td>
+</tr>
+<tr class="row-even"><td><p>Newton Warp</p></td>
+<td><p>不需要（不依赖 Kit）</p></td>
+<td><p>Newton 后端、快速训练</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="renderer-outputs-at-a-glance">
+<span id="renderer-visual-comparison"></span><h2>渲染器输出概览<a class="headerlink" href="#renderer-outputs-at-a-glance" title="Link to this heading">#</a></h2>
+<p>下方示例使用相同的场景、相机、光源、材质和初始条件。六个球体分别展示镜面、透明、半透明、哑光、光泽和自发光材质。RGB 动画展示球体落到桌面上的过程，其余输出为同一次运行中的静帧。静帧取自第六个渲染帧，以便运动向量等时序输出包含有效运动，同时球体仍接近初始位姿。</p>
+<p>这些图像用于定性比较功能支持和画面特征，不是性能测试。不依赖 Kit 的渲染器使用 Newton 物理，Isaac RTX 使用 PhysX，因此球体的精确位姿可能不同。这里使用仅用于显示的色图，使标量、向量和标签输出易于观察；相机传感器仍返回文档所述的原始张量。相近的别名，以及距离或 ID 的变体没有逐一列出，因为它们不会呈现明显不同的视觉模式。</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Newton Warp</label><div class="sd-tab-content docutils">
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton.webp"><img alt="Newton Warp RGB 输出：六个材质球落到桌面上。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton.webp" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">RGB 动画</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton-albedo.png"><img alt="Newton Warp 的六个材质球反照率输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton-albedo.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">反照率</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-newton-depth.png"><img alt="Newton Warp 的六个材质球深度输出（以伪彩色显示）。" src="../../_images/camera-renderer-newton-depth.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">深度。Turbo 色图从近处的紫色逐渐过渡到远处的红色。</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-newton-normals.png"><img alt="Newton Warp 的六个材质球表面法线输出。" src="../../_images/camera-renderer-newton-normals.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">法线</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id6">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-newton-semantic-segmentation.png"><img alt="Newton Warp 的六个材质球语义分割输出（以伪彩色显示）。" src="../../_images/camera-renderer-newton-semantic-segmentation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">语义分割</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id7">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-newton-instance-segmentation.png"><img alt="Newton Warp 的六个材质球实例分割输出（以伪彩色显示）。" src="../../_images/camera-renderer-newton-instance-segmentation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">实例分割</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+OVRTX</label><div class="sd-tab-content docutils">
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx.webp"><img alt="OVRTX RGB 输出：六个材质球落到桌面上。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx.webp" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">RGB 动画</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-albedo.png"><img alt="OVRTX 的六个材质球反照率输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-albedo.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">反照率</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-depth.png"><img alt="OVRTX 的六个材质球深度输出（以伪彩色显示）。" src="../../_images/camera-renderer-ovrtx-depth.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">深度。Turbo 色图从近处的紫色逐渐过渡到远处的红色。</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-normals.png"><img alt="OVRTX 的六个材质球表面法线输出。" src="../../_images/camera-renderer-ovrtx-normals.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">法线</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-semantic-segmentation.png"><img alt="OVRTX 的六个材质球语义分割输出（以伪彩色显示）。" src="../../_images/camera-renderer-ovrtx-semantic-segmentation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">语义分割</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id13">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-instance-segmentation.png"><img alt="OVRTX 的六个材质球实例分割输出（以伪彩色显示）。" src="../../_images/camera-renderer-ovrtx-instance-segmentation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">实例分割</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id14">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-motion-vectors.png"><img alt="OVRTX 的六个下落材质球运动向量输出（以伪彩色显示）。" src="../../_images/camera-renderer-ovrtx-motion-vectors.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">运动向量。颜色表示方向和相对大小，箭头表示采样得到的图像空间运动。</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id15">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-simple-shading-constant-diffuse.png"><img alt="OVRTX 的六个材质球常量漫反射简化着色输出。" src="../../_images/camera-renderer-ovrtx-simple-shading-constant-diffuse.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">常量漫反射着色</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id16">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-diffuse-mdl.png"><img alt="OVRTX 的六个材质球漫反射 MDL 简化着色输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-diffuse-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">漫反射 MDL 着色</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id17">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-full-mdl.png"><img alt="OVRTX 的六个材质球完整 MDL 简化着色输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-full-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">完整 MDL 着色</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Isaac RTX</label><div class="sd-tab-content docutils">
+<figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx.webp"><img alt="Isaac RTX RGB 输出：六个材质球落到桌面上。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx.webp" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">RGB 动画</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id19">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-albedo.png"><img alt="Isaac RTX 的六个材质球反照率输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-albedo.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">反照率</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id20">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-depth.png"><img alt="Isaac RTX 的六个材质球深度输出（以伪彩色显示）。" src="../../_images/camera-renderer-isaac-rtx-depth.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">深度。Turbo 色图从近处的紫色逐渐过渡到远处的红色。</span><a class="headerlink" href="#id20" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id21">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-normals.png"><img alt="Isaac RTX 的六个材质球表面法线输出。" src="../../_images/camera-renderer-isaac-rtx-normals.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">法线</span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id22">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-semantic-segmentation.png"><img alt="Isaac RTX 的六个材质球语义分割输出（以伪彩色显示）。" src="../../_images/camera-renderer-isaac-rtx-semantic-segmentation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">语义分割</span><a class="headerlink" href="#id22" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id23">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-instance-segmentation.png"><img alt="Isaac RTX 的六个材质球实例分割输出（以伪彩色显示）。" src="../../_images/camera-renderer-isaac-rtx-instance-segmentation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">实例分割</span><a class="headerlink" href="#id23" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id24">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-motion-vectors.png"><img alt="Isaac RTX 的六个下落材质球运动向量输出（以伪彩色显示）。" src="../../_images/camera-renderer-isaac-rtx-motion-vectors.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">运动向量。颜色表示方向和相对大小，箭头表示采样得到的图像空间运动。</span><a class="headerlink" href="#id24" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id25">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-simple-shading-constant-diffuse.png"><img alt="Isaac RTX 的六个材质球常量漫反射简化着色输出。" src="../../_images/camera-renderer-isaac-rtx-simple-shading-constant-diffuse.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">常量漫反射着色</span><a class="headerlink" href="#id25" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id26">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-diffuse-mdl.png"><img alt="Isaac RTX 的六个材质球漫反射 MDL 简化着色输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-diffuse-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">漫反射 MDL 着色</span><a class="headerlink" href="#id26" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id27">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-full-mdl.png"><img alt="Isaac RTX 的六个材质球完整 MDL 简化着色输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-full-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">完整 MDL 着色</span><a class="headerlink" href="#id27" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="renderer-details">
+<span id="id1"></span><h2>渲染器详情<a class="headerlink" href="#renderer-details" title="Link to this heading">#</a></h2>
+<p>展开下方渲染器条目，查看执行方式、输出支持、限制和典型用途。上方图像只用于视觉比较，相机支持矩阵才是各后端输出支持的权威依据。</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Newton Warp 渲染器</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><strong>运行时与物理：</strong> 基于 NVIDIA Warp 的轻量光栅化渲染器，不依赖 Kit，与 Newton 物理配合使用。</p></li>
+<li><p class="sd-card-text"><strong>输出支持：</strong> 提供 RGB、反照率、深度、法线、语义分割和实例分割，不提供运动向量或 RTX 材质光传输。其精简的光栅化流程所提供的真值输出少于 RTX 渲染器，后者集成了更广泛的 RTX 和标注器功能。</p></li>
+<li><p class="sd-card-text"><strong>适用场景：</strong> 吞吐量比完整 RTX 保真度更重要的训练流程。</p></li>
+</ul>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">OVRTX 渲染器</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><strong>运行时与物理：</strong> 通过 <code class="docutils literal notranslate"><span class="pre">isaaclab_ov</span></code> 扩展提供不依赖 Kit 的 RTX 渲染，与 Newton 物理配合使用。</p></li>
+<li><p class="sd-card-text"><strong>输出支持：</strong> 提供 RTX Minimal 和逼真渲染，以及几何、运动和标签输出。</p></li>
+<li><p class="sd-card-text"><strong>适用场景：</strong> 无需运行 Isaac Sim 即可获得 RTX 图像质量。</p></li>
+</ul>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Isaac RTX 渲染器</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><strong>运行时与物理：</strong> 在 Isaac Sim 内运行 NVIDIA Omniverse RTX 渲染流程，与 PhysX 配合使用。</p></li>
+<li><p class="sd-card-text"><strong>输出支持：</strong> 提供 RTX Minimal、逼真渲染，以及最广泛的相机输出支持。</p></li>
+<li><p class="sd-card-text"><strong>适用场景：</strong> 完整 RTX 保真度，以及已经依赖 Isaac Sim 或 Kit 的工作流程。</p></li>
+</ul>
+</div>
+</details></section>
+<section id="choosing-a-rendering-capability">
+<h2>选择渲染功能<a class="headerlink" href="#choosing-a-rendering-capability" title="Link to this heading">#</a></h2>
+<p>上方概览集中展示了所有视觉上不同的输出。下方按用途重新分组：面向高吞吐量训练的简化渲染、提供完整 RTX 图像质量的逼真渲染，以及几何、运动和标签等高级输出。详细图注和命令使用不带后缀的 <code class="docutils literal notranslate"><span class="pre">Isaac-Cartpole-Camera</span></code> 任务，无需修改 Python 即可尝试各模式。</p>
+<section id="simplified-rendering">
+<h3>简化渲染<a class="headerlink" href="#simplified-rendering" title="Link to this heading">#</a></h3>
+<p>简化渲染优先考虑吞吐量和可预测的成像，而非完整光传输。Newton Warp 提供轻量的光栅化 RGB 路径。OVRTX 和 Isaac RTX 提供 RTX Minimal 模式，关闭间接光照，并提供三个层级的材质求值：</p>
+<ul class="simple">
+<li><p><strong>常量漫反射</strong> 使用单一的恒定表面颜色。</p></li>
+<li><p><strong>漫反射 MDL</strong> 是 Isaac Lab 对带纹理漫反射着色所采用的稳定名称。</p></li>
+<li><p><strong>完整 MDL</strong> 是 Isaac Lab 对漫反射、光泽和自发光材质求值所采用的稳定名称。</p></li>
+</ul>
+<p>RTX Minimal 使用场景中的第一个远光源，并采用硬阴影。渲染器级设置和限制见上游 <a class="reference external" href="https://nvidia-omniverse.github.io/ovrtx/sensors/cameras/render_modes/minimal.html">OVRTX Minimal 模式</a> 与 <a class="reference external" href="https://docs.omniverse.nvidia.com/materials-and-rendering/latest/rtx-renderer_minimal.html">RTX Minimal 渲染器</a> 文档。</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Newton Warp RGB</label><div class="sd-tab-content docutils">
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id28">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton-shadows-disabled.png"><img alt="关闭方向光阴影的 Newton Warp RGB 输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton-shadows-disabled.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">无阴影（默认）</span><a class="headerlink" href="#id28" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id29">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton-shadows-enabled.png"><img alt="启用方向光阴影的 Newton Warp RGB 输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-newton-shadows-enabled.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">有阴影</span><a class="headerlink" href="#id29" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>如果轻量 RGB 观测已经足够，Newton Warp 是不依赖 Kit 的选择。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>newton_mjwarp<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>newton_renderer<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>rgb
+</pre></div>
+</div>
+<p>显式启用方向光阴影：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>newton_mjwarp<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>newton_renderer<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>rgb<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>env.scene.tiled_camera.renderer_cfg.enable_shadows<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+OVRTX Minimal</label><div class="sd-tab-content docutils">
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 renderer-preset-grid docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id30">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-ovrtx-simple-shading-constant-diffuse.png"><img alt="OVRTX 常量漫反射 RTX Minimal 输出。" src="../../_images/camera-renderer-ovrtx-simple-shading-constant-diffuse.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">常量漫反射： <code class="docutils literal notranslate"><span class="pre">presets=simple_shading_constant_diffuse</span></code></span><a class="headerlink" href="#id30" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id31">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-diffuse-mdl.png"><img alt="OVRTX 带纹理漫反射 RTX Minimal 输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-diffuse-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">漫反射 MDL： <code class="docutils literal notranslate"><span class="pre">presets=simple_shading_diffuse_mdl</span></code></span><a class="headerlink" href="#id31" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id32">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-full-mdl.png"><img alt="OVRTX 完整材质 RTX Minimal 输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx-simple-shading-full-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">完整 MDL： <code class="docutils literal notranslate"><span class="pre">presets=simple_shading_full_mdl</span></code></span><a class="headerlink" href="#id32" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>常量漫反射</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>newton_mjwarp<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>ovrtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>simple_shading_constant_diffuse
+</pre></div>
+</div>
+<p><strong>带纹理漫反射</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>newton_mjwarp<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>ovrtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>simple_shading_diffuse_mdl
+</pre></div>
+</div>
+<p><strong>漫反射、光泽和自发光材质求值</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>newton_mjwarp<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>ovrtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>simple_shading_full_mdl
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
+Isaac RTX Minimal</label><div class="sd-tab-content docutils">
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 renderer-preset-grid docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id33">
+<a class="reference internal image-reference" href="../../_images/camera-renderer-isaac-rtx-simple-shading-constant-diffuse.png"><img alt="Isaac RTX 常量漫反射 RTX Minimal 输出。" src="../../_images/camera-renderer-isaac-rtx-simple-shading-constant-diffuse.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">常量漫反射： <code class="docutils literal notranslate"><span class="pre">presets=simple_shading_constant_diffuse</span></code></span><a class="headerlink" href="#id33" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id34">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-diffuse-mdl.png"><img alt="Isaac RTX 带纹理漫反射 RTX Minimal 输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-diffuse-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">漫反射 MDL： <code class="docutils literal notranslate"><span class="pre">presets=simple_shading_diffuse_mdl</span></code></span><a class="headerlink" href="#id34" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id35">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-full-mdl.png"><img alt="Isaac RTX 完整材质 RTX Minimal 输出。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx-simple-shading-full-mdl.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">完整 MDL： <code class="docutils literal notranslate"><span class="pre">presets=simple_shading_full_mdl</span></code></span><a class="headerlink" href="#id35" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>常量漫反射</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>isaacsim_physx<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>isaacsim_rtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>simple_shading_constant_diffuse
+</pre></div>
+</div>
+<p><strong>带纹理漫反射</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>isaacsim_physx<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>isaacsim_rtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>simple_shading_diffuse_mdl
+</pre></div>
+</div>
+<p><strong>漫反射、光泽和自发光材质求值</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>isaacsim_physx<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>isaacsim_rtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>simple_shading_full_mdl
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="photo-real-rendering">
+<h3>逼真渲染<a class="headerlink" href="#photo-real-rendering" title="Link to this heading">#</a></h3>
+<p>这里的 <strong>逼真渲染</strong> 指完整 RTX 实时路径追踪模式的常规 RGB 路径；它是功能分类，不是 Isaac Lab 预设名称。当材质外观、反射、透明度、光照或附带的 RTX AOV 比最低渲染延迟更重要时，选择这种方式。OVRTX 在不使用 Kit 的情况下提供此路径，Isaac RTX 则在 Isaac Sim 内提供。请参阅上游 <a class="reference external" href="https://nvidia-omniverse.github.io/ovrtx/sensors/cameras/render_modes.html">OVRTX 渲染模式</a> 与 <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/reference_material/rendering_modes.html">Isaac Sim 渲染模式</a> 。</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-6">
+OVRTX</label><div class="sd-tab-content docutils">
+<figure class="align-center" id="id36">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx.webp"><img alt="OVRTX RGB 输出：六个材质球落到桌面上。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-ovrtx.webp" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">OVRTX 逼真 RGB： <code class="docutils literal notranslate"><span class="pre">renderer=ovrtx</span> <span class="pre">presets=rgb</span></code></span><a class="headerlink" href="#id36" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>同一渲染器也提供概览图中的反照率、深度、法线、分割和运动向量输出。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>newton_mjwarp<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>ovrtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>rgb
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-7" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-7">
+Isaac RTX</label><div class="sd-tab-content docutils">
+<figure class="align-center" id="id37">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx.webp"><img alt="Isaac RTX RGB 输出：六个材质球落到桌面上。" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/camera-renderer-isaac-rtx.webp" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Isaac RTX 逼真 RGB： <code class="docutils literal notranslate"><span class="pre">renderer=isaacsim_rtx</span> <span class="pre">presets=rgb</span></code></span><a class="headerlink" href="#id37" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>同一渲染器也提供概览图中的反照率、深度、法线、分割和运动向量输出。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>isaaclab<span class="w"> </span>train<span class="w"> </span>--rl_library<span class="w"> </span>rsl_rl<span class="w"> </span>--task<span class="w"> </span>Isaac-Cartpole-Camera<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span><span class="nv">physics</span><span class="o">=</span>isaacsim_physx<span class="w"> </span><span class="nv">renderer</span><span class="o">=</span>isaacsim_rtx<span class="w"> </span><span class="nv">presets</span><span class="o">=</span>rgb
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="advanced-rendering-outputs">
+<h3>高级渲染输出<a class="headerlink" href="#advanced-rendering-outputs" title="Link to this heading">#</a></h3>
+<p>除 RGB 外，渲染器生成的缓冲区还提供材质、几何、运动和标注信息：</p>
+<ul class="simple">
+<li><p><strong>反照率</strong> 将材质基础色与光照分离。</p></li>
+<li><p><strong>深度</strong> 测量沿光轴的距离，用于几何感知和重建。</p></li>
+<li><p><strong>法线</strong> 表示局部表面朝向。</p></li>
+<li><p><strong>语义分割</strong> 按类别划分像素， <strong>实例分割</strong> 则区分各个物体。</p></li>
+<li><p><strong>运动向量</strong> 表示每个像素在图像空间中的运动，需要前一帧历史信息。</p></li>
+</ul>
+<p>通过 <code class="xref py py-attr docutils literal notranslate"><span class="pre">data_types</span></code> 请求一个或多个缓冲区。配置示例见 <a class="reference internal" href="sensors/camera.html#camera-configuration"><span class="std std-ref">配置相机</span></a> ，可用名称、张量形状、数据类型和含义见 <a class="reference internal" href="sensors/camera.html#camera-output-types"><span class="std std-ref">输出类型</span></a> 。环境级 <code class="docutils literal notranslate"><span class="pre">presets=...</span></code> 选择器是任务定义的便捷方式，不是全部相机输出的完整列表。</p>
+<p>各后端支持的输出不同。选择渲染器前，请检查 <a class="reference internal" href="sensors/camera.html#camera-supported-annotators"><span class="std std-ref">相机渲染器支持矩阵</span></a> 。例如，OVRTX 和 Isaac RTX 提供运动向量，Newton Warp 不提供。上方 <a class="reference internal" href="#renderer-visual-comparison"><span class="std std-ref">渲染器视觉比较</span></a> 展示了同一场景中的这些输出。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>可视化标记是可视化器提供的调试叠加内容，不是相机输出。其支持情况独立于相机渲染器：Kit、Newton GL、Rerun 和 Viser 可视化器支持标记，实验性的 Newton RTX 可视化器不支持。可视化器支持矩阵见 <a class="reference internal" href="visualization.html"><span class="doc">可视化</span></a> 。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>基于相机的强化学习中的时序信息。</strong> 与采用时序抗锯齿的 RTX 模式（DLSS、DLAA、TAA）不同，Newton Warp 渲染器不会将前一帧信息引入当前图像。依赖速度等视觉线索的相机控制任务，应显式添加时序观测，例如在任务中叠帧，而不是依赖特定渲染器产生的画面特征。</p>
+</div>
+</section>
+</section>
+<section id="per-environment-isaac-rtx-scene-partitioning">
+<h2>Isaac RTX 按环境划分场景<a class="headerlink" href="#per-environment-isaac-rtx-scene-partitioning" title="Link to this heading">#</a></h2>
+<p>Isaac RTX 渲染器默认启用按环境划分场景，为每个 <code class="docutils literal notranslate"><span class="pre">/World/envs/env_&lt;index&gt;</span></code> 层级及其相机分配匹配的场景分区标记，使平铺视图仅渲染对应环境的几何。</p>
+<p>通过 <a class="reference internal" href="../api/lab_physx/isaaclab_physx.renderers.html#isaaclab_physx.renderers.IsaacRtxRendererCfg" title="isaaclab_physx.renderers.IsaacRtxRendererCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">IsaacRtxRendererCfg</span></code></a> 配置该行为：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_physx.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsaacRtxRendererCfg</span>
+
+<span class="n">renderer_cfg</span> <span class="o">=</span> <span class="n">IsaacRtxRendererCfg</span><span class="p">(</span><span class="n">enable_scene_partitioning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>场景分区与显示所有环境的观察视图是两个独立设置。只有启用 Kit 视口，或请求 Kit 可视化、录制、直播流或 XR 时， <a class="reference internal" href="../api/lab_physx/isaaclab_physx.app.html#isaaclab_physx.app.KitLauncher" title="isaaclab_physx.app.KitLauncher"><code class="xref py py-class docutils literal notranslate"><span class="pre">KitLauncher</span></code></a> 才会在 RTX 启动前启用观察模式支持。常规无界面训练和相机传感器运行保持该功能关闭，使平铺相机不受观察模式世界空间布局约束的影响。</p>
+<p><code class="docutils literal notranslate"><span class="pre">global_settings.show_all_partitions_by_default</span></code> 对应同一个进程级全局 RTX 设置，并不是独立功能。其默认值 <code class="docutils literal notranslate"><span class="pre">None</span></code> 保留 <a class="reference internal" href="../api/lab_physx/isaaclab_physx.app.html#isaaclab_physx.app.KitLauncher" title="isaaclab_physx.app.KitLauncher"><code class="xref py py-class docutils literal notranslate"><span class="pre">KitLauncher</span></code></a> 在启动时的选择。显式赋值会在构建 Isaac RTX 渲染器时覆盖该设置。启用时，环境必须在空间上分开，因为分区边界重叠可能使内容出现在其他环境中或消失。关闭时，Kit 视口只显示选中的环境。</p>
+<p>此设置不影响 OVRTX；OVRTX 始终对多环境场景进行分区。</p>
+<p>环境层级之外的 prim 保留在共享背景分区中。环境持有的 <code class="docutils literal notranslate"><span class="pre">PointInstancer</span></code> 标记可以为每个实例携带一个匹配的场景分区标记；没有此类所有权信息的标记保持共享。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Isaac RTX 与 OVRTX 渲染器将场景分区数量限制为 15625。启用场景分区时，如果请求超过 15625 个环境，多出的分区会被丢弃， <code class="docutils literal notranslate"><span class="pre">rtx.scenedb.plugin</span></code> 会记录 <code class="docutils literal notranslate"><span class="pre">SceneDbContext</span> <span class="pre">:</span> <span class="pre">Maximum</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">scene</span> <span class="pre">partitions</span> <span class="pre">(15625)</span> <span class="pre">reached.</span> <span class="pre">Additional</span> <span class="pre">scene</span> <span class="pre">partitions</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">discarded.</span></code> 。超过该数量的环境会与其他环境共享分区，因此其平铺相机画面可能显示其他环境的几何。详情见 <a class="reference internal" href="../refs/issues.html#known-issues-scene-partition-count-cap"><span class="std std-ref">场景分区上限为 15625 个</span></a> 。</p>
+</div>
+</section>
+<section id="architecture-overview">
+<h2>架构概览<a class="headerlink" href="#architecture-overview" title="Link to this heading">#</a></h2>
+<p>渲染器系统由以下部分组成：</p>
+<ol class="arabic simple">
+<li><p><strong>BaseRenderer</strong> ：定义渲染生命周期和接口的抽象基类。</p></li>
+<li><p><strong>RendererCfg</strong> ： <code class="docutils literal notranslate"><span class="pre">BackendCfg</span></code> 的子类；各后端扩展它以提供专用选项，并在 <code class="docutils literal notranslate"><span class="pre">class_type</span></code> 中声明具体实现。</p></li>
+<li><p><strong>具体实现</strong> ：扩展软件包中的后端专用渲染器。</p></li>
+<li><p><strong>SimulationContext</strong> ：在后端注册表中持有渲染器实例，通过 <code class="docutils literal notranslate"><span class="pre">get_or_create_backend(renderer_cfg)</span></code> ，在具体类型相同且配置相等的请求之间共享实例。</p></li>
+<li><p><strong>RenderContext</strong> ：通过仿真注册表的过滤视图，协调初始化、舞台准备、场景更新和材质写入器，不负责构建、缓存或关闭渲染器实例。</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRenderer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_newton.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NewtonWarpRendererCfg</span>
+
+<span class="c1"># Create a Newton Warp renderer (no Isaac Sim required)</span>
+<span class="n">sim_ctx</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationContext</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="c1"># Reuse a matching renderer or construct one through instantiate(cfg).</span>
+<span class="n">renderer</span><span class="p">:</span> <span class="n">BaseRenderer</span> <span class="o">=</span> <span class="n">sim_ctx</span><span class="o">.</span><span class="n">get_or_create_backend</span><span class="p">(</span><span class="n">NewtonWarpRendererCfg</span><span class="p">())</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">BaseRenderer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>使用 RTX 渲染器时（需要 Isaac Sim）：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRenderer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_physx.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsaacRtxRendererCfg</span>
+
+<span class="c1"># Create an RTX renderer</span>
+<span class="n">sim_ctx</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationContext</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="c1"># Reuse a matching renderer or construct one through instantiate(cfg).</span>
+<span class="n">renderer</span><span class="p">:</span> <span class="n">BaseRenderer</span> <span class="o">=</span> <span class="n">sim_ctx</span><span class="o">.</span><span class="n">get_or_create_backend</span><span class="p">(</span><span class="n">IsaacRtxRendererCfg</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>RTX 渲染器设置见 <a class="reference internal" href="../how-to/configure_rendering.html"><span class="doc">选择与配置渲染器</span></a> 。</p>
+</section>
+<section id="batching-camera-renders">
+<span id="renderer-camera-batching"></span><h2>批量渲染相机<a class="headerlink" href="#batching-camera-renders" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer.render_batch" title="isaaclab.renderers.BaseRenderer.render_batch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render_batch()</span></code></a> 接受同一渲染器持有的一组渲染数据对象。渲染前准备相机位姿、内参和共享场景状态，之后读取各相机输出。空序列不会触发渲染。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">renderer</span><span class="o">.</span><span class="n">render_batch</span><span class="p">([</span><span class="n">first_render_data</span><span class="p">,</span> <span class="n">second_render_data</span><span class="p">])</span>
+<span class="n">renderer</span><span class="o">.</span><span class="n">read_output</span><span class="p">(</span><span class="n">first_render_data</span><span class="p">,</span> <span class="n">first_camera_data</span><span class="p">)</span>
+<span class="n">renderer</span><span class="o">.</span><span class="n">read_output</span><span class="p">(</span><span class="n">second_render_data</span><span class="p">,</span> <span class="n">second_camera_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer.render" title="isaaclab.renderers.BaseRenderer.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code></a> 仍接受单个渲染数据对象。默认的 <code class="docutils literal notranslate"><span class="pre">render_batch()</span></code> 实现逐项调用 <code class="docutils literal notranslate"><span class="pre">render()</span></code> ，因此已有自定义渲染器和单相机调用方无需修改。OVRTX 同时推进所有已注册渲染产品，但只发布所请求相机的观测。</p>
+<p>主动更新传感器时（ <code class="docutils literal notranslate"><span class="pre">scene.cfg.lazy_sensor_update=False</span></code> ）， <code class="docutils literal notranslate"><span class="pre">scene.update()</span></code> 按场景顺序推进传感器时钟，并收集支持批处理的传感器。循环结束后，相机批处理实现会准备其余到期的采集请求。 <code class="xref py py-meth docutils literal notranslate"><span class="pre">render_into_cameras()</span></code> 按渲染器实例分组，渲染各组并读取输出。上下文不保留待处理相机队列，每个相机维护自己的更新周期和重置状态。</p>
+<p>按需更新传感器时，读取相机的 <code class="docutils literal notranslate"><span class="pre">data</span></code> 只刷新该相机的传感器缓冲区和采集时间戳，不会刷新共享渲染器的其他相机传感器。</p>
+</section>
+<section id="core-concepts">
+<h2>核心概念<a class="headerlink" href="#core-concepts" title="Link to this heading">#</a></h2>
+<ul>
+<li><p><strong>使用仿真注册表：</strong> 始终通过 <code class="docutils literal notranslate"><span class="pre">sim_ctx.get_or_create_backend(IsaacRtxRendererCfg())</span></code> 等方式，使用渲染器专用配置类获取渲染器。不要直接导入或实例化具体后端类，例如 <code class="docutils literal notranslate"><span class="pre">IsaacRtxRenderer</span></code> 、 <code class="docutils literal notranslate"><span class="pre">OVRTXRenderer</span></code> ；类名和软件包位置属于实现细节，可能不经通知就改变。</p></li>
+<li><p><strong>轻量配置导入：</strong> 导入渲染器配置类不会引入后端专用依赖。 <code class="docutils literal notranslate"><span class="pre">class_type</span></code> 在构建渲染器时按需解析，后端未安装时，构建可能失败。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">isaaclab.sim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sim_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRenderer</span>
+<span class="c1"># Lightweight: does not import OVRTX backend dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">isaaclab_ov.renderers</span><span class="w"> </span><span class="kn">import</span> <span class="n">OVRTXRendererCfg</span>
+
+<span class="c1"># Lazily loads ovrtx when instantiated; may fail if isaaclab_ov / ovrtx is not installed</span>
+<span class="n">sim_ctx</span> <span class="o">=</span> <span class="n">sim_utils</span><span class="o">.</span><span class="n">SimulationContext</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">renderer</span><span class="p">:</span> <span class="n">BaseRenderer</span> <span class="o">=</span> <span class="n">sim_ctx</span><span class="o">.</span><span class="n">get_or_create_backend</span><span class="p">(</span><span class="n">OVRTXRendererCfg</span><span class="p">())</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="installing-the-ovrtx-renderer">
+<h2>安装 OVRTX 渲染器<a class="headerlink" href="#installing-the-ovrtx-renderer" title="Link to this heading">#</a></h2>
+<p>OVRTX 渲染器由 <code class="docutils literal notranslate"><span class="pre">isaaclab_ov</span></code> 扩展提供。扩展源码包随核心安装发布，但渲染器的 <code class="docutils literal notranslate"><span class="pre">ovrtx</span></code> 运行时 wheel（公开 PyPI 上发布的 <a class="reference external" href="https://github.com/NVIDIA-Omniverse/ovrtx">ovrtx</a> 软件包）默认 <strong>不会</strong> 安装，必须显式选择。OVRTX <strong>不需要</strong> Isaac Sim。</p>
+<p>通过 Isaac Lab CLI 使用 <code class="docutils literal notranslate"><span class="pre">ov[ovrtx]</span></code> 选项安装：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the ovrtx runtime wheel on top of an existing install</span>
+./isaaclab.sh<span class="w"> </span>-i<span class="w"> </span>ov<span class="o">[</span>ovrtx<span class="o">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>单独使用 <code class="docutils literal notranslate"><span class="pre">ov</span></code> 选项 <strong>不会</strong> 安装任何运行时 wheel，因为源码包已包含在核心安装中。请使用 <code class="docutils literal notranslate"><span class="pre">ov[ovrtx]</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ov[all]</span></code> 安装 <code class="docutils literal notranslate"><span class="pre">ovrtx</span></code> 依赖。</p>
+</div>
+<p>也可以直接从 PyPI 安装公开的 <code class="docutils literal notranslate"><span class="pre">ovrtx</span></code> 软件包：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ovrtx==0.5.0.377615"</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>不透明渲染数据：</strong> <a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer.create_render_data" title="isaaclab.renderers.BaseRenderer.create_render_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_render_data()</span></code></a> 返回的渲染数据对象传给后续渲染器方法。调用方应将其视为完全不透明的对象；通过属性读写检查或修改它是不恰当的用法，会破坏 API 约定。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer" title="isaaclab.renderers.BaseRenderer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRenderer</span></code></a> 仍在积极开发，可能不经通知就改变。</p>
+</div>
+</section>
+<section id="asynchronous-rendering">
+<span id="renderers-async-data-flow"></span><h2>异步渲染<a class="headerlink" href="#asynchronous-rendering" title="Link to this heading">#</a></h2>
+<p><code class="xref py py-attr docutils literal notranslate"><span class="pre">async_rendering</span></code> 在渲染下一张图像时，返回相机的前一次采集结果，使渲染能够与仿真及 Python 工作重叠。首次采集（包括重置后的首次采集）会等待新图像，ovstage 路径保持同步。</p>
+<p>延迟为一次采集，不一定等于一个物理步或控制步。状态观测仍是当前值，因此启用此选项会改变策略观测的时序，训练可能需要考虑该延迟。物理与策略计算也可能使用 GPU。</p>
+<p>对于每个环境步采集一次的相机，稳态运行过程如下：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Synchronous:   physics k -&gt; submit image k -&gt; wait/read image k -&gt; policy
+Asynchronous:  physics k -&gt; submit image k -&gt; wait/read image k-1 -&gt; policy
+                                |                                 |
+                                +---- image k renders ------------+--&gt; physics k+1
+</pre></div>
+</div>
+<p>首次准备完成后立即返回第一张图像，下一次采集时会再返回一次。</p>
+<p>每个相机持有自己的待发布观测。读取相机 A 不会改变相机 B 的像素或元数据，即使它们共享一次原生渲染提交。重置丢弃该相机的待发布观测。部分环境重置会重新准备整个平铺相机产品，不会使其他相机失效。</p>
+<p><code class="docutils literal notranslate"><span class="pre">camera.data.pos_w</span></code> 、 <code class="docutils literal notranslate"><span class="pre">camera.data.intrinsic_matrices</span></code> 等实时字段仍是当前值。将延迟像素与位姿或标定配对时，应使用采集元数据，例如进行深度反投影时：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">data</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="s2">"distance_to_image_plane"</span><span class="p">]</span>
+<span class="n">capture</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"distance_to_image_plane"</span><span class="p">][</span><span class="s2">"capture"</span><span class="p">]</span>
+<span class="n">position</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="n">capture</span><span class="p">[</span><span class="s2">"pos_w"</span><span class="p">],</span> <span class="n">capture</span><span class="p">[</span><span class="s2">"quat_w_world"</span><span class="p">]</span>
+<span class="n">intrinsics</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">capture</span><span class="p">[</span><span class="s2">"intrinsic_matrices"</span><span class="p">],</span> <span class="n">capture</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>之后的采集不会改变已有采集元数据。直接调用渲染器时，在提交采集前使用 <a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer.prepare_capture" title="isaaclab.renderers.BaseRenderer.prepare_capture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prepare_capture()</span></code></a> ，通过 <a class="reference internal" href="../api/lab/isaaclab.renderers.html#isaaclab.renderers.BaseRenderer.read_output" title="isaaclab.renderers.BaseRenderer.read_output"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read_output()</span></code></a> 发布结果。</p>
+<p>SDP 填充渲染器持有的变换与几何缓冲区，包括可变形网格、粒子和线缆。两个缓冲区在每次写入时交替使用，只有 OVRTX 消费完后才能复用。因此，物理仿真可以在前一次采集仍在渲染时更新实时数组。</p>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../developer-tools/scene_data_providers.html"><span class="doc">场景数据提供器</span></a> ：场景数据如何从物理后端流向渲染器。</p></li>
+<li><p><a class="reference internal" href="visualization.html"><span class="doc">可视化</span></a> ：用于交互反馈的轻量可视化后端。</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="native-physics-api/ovphysx.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">OvPhysX 张量绑定</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="actuators.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">执行器</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-renderer-backend">选择渲染后端</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renderer-outputs-at-a-glance">渲染器输出概览</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renderer-details">渲染器详情</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-rendering-capability">选择渲染功能</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simplified-rendering">简化渲染</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#photo-real-rendering">逼真渲染</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-rendering-outputs">高级渲染输出</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-environment-isaac-rtx-scene-partitioning">Isaac RTX 按环境划分场景</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">架构概览</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batching-camera-renders">批量渲染相机</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts">核心概念</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-ovrtx-renderer">安装 OVRTX 渲染器</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asynchronous-rendering">异步渲染</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">另请参阅</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026, The Isaac Lab Project Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 10 月 10 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

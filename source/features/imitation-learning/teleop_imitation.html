@@ -1,0 +1,1412 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>使用 Isaac Lab Mimic 进行合成数据生成与模仿学习 &#8212; Isaac Lab 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/css/all.min.css?v=53359634" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=ccd4f661" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/environment-browser.css?v=665352f4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/demo-browser.css?v=e28b46a0" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/guide-browser.css?v=7190c4d8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script>window.isaacLabDocsTranslations = {"5 visualizers running Isaac-Velocity-Flat-AnymalD with a circular velocity command": "五种可视化器运行 Isaac-Velocity-Flat-AnymalD，并使用环形速度指令", "A PhysX-trained ANYmal-D policy runs side by side in PhysX and Newton MJWarp": "在 PhysX 上训练的 ANYmal-D 策略，并排运行于 PhysX 与 Newton MJWarp", "A Rizon robot uses a Sharpa hand to manipulate a teapot": "Rizon 机器人使用 Sharpa 手操作茶壶", "A Rizon robot uses a Sharpa hand to manipulate an RJ45 cable": "Rizon 机器人使用 Sharpa 手操作 RJ45 网线", "All categories": "所有类别", "Animate an arm, biped, quadruped, dexterous hand, quadcopter, and rigid props in one deterministic scene.": "在同一确定性场景中，驱动机械臂、双足机器人、四足机器人、灵巧手、四旋翼和刚性道具。", "Arrow markers on the Franka arm's joints, with contact sensor markers on the cube": "Franka 机械臂关节上的箭头标记，以及立方体上的接触传感器标记", "Back to all guides": "返回全部指南", "Benchmark FPS measurements, scroll for more configurations": "性能测试 FPS 测量结果，可滚动查看更多配置", "Benchmark channel": "性能测试分支", "Benchmark data could not be loaded.": "无法加载性能测试数据。", "Benchmark data is not available yet": "暂无性能测试数据", "Benchmark workload": "性能测试负载", "Block and tackle pulleys and a red load": "滑轮组与红色负载", "Classic control": "经典控制", "Collection": "数据采集", "Command mode": "命令模式", "Contrib": "社区贡献", "Copy command": "复制命令", "Core": "核心任务", "Default": "默认", "Develop": "开发版", "Domain preset": "领域预设", "Drag a cable handle to lift a load through a 4:1 pulley system.": "拖动缆绳把手，通过 4:1 滑轮组举起负载。", "Each Allegro hand reorients its cube to match the target shown by the marker above it": "每只 Allegro 手调整立方体朝向，使其与上方标记显示的目标一致", "Each Franka arm reaches its end-effector toward a randomized target pose": "各 Franka 机械臂将末端执行器移动到随机目标位姿", "Each H1 humanoid climbs a staircase sub-terrain": "各 H1 人形机器人攀登楼梯子地形", "Each Kuka arm and Allegro hand lifts its cube off the table": "各 Kuka 机械臂和 Allegro 手将立方体从桌面举起", "Each Shadow Hand reorients its cube to match the target pose": "各 Shadow Hand 调整立方体朝向，使其与目标位姿一致", "Fill a Utah teapot with MPM water particles and pour them into a bowl.": "向 Utah 茶壶注入 MPM 水粒子，再倒入碗中。", "Filled teal fingers belong to the source solver; outlined blue fingers are destination-local proxies of those same bodies. The blue object represents material owned by the destination solver.": "青绿色实心手指属于源求解器；蓝色轮廓手指是目标求解器内这些刚体的本地代理。蓝色物体表示归目标求解器所有的材料。", "Green arrow: commanded velocity. Blue arrow: current velocity.": "绿色箭头表示指令速度；蓝色箭头表示当前速度。", "H1 Locomotion": "H1 行走", "H1 locomotion": "H1 行走", "H1 locomotion in Isaac Lab": "Isaac Lab 中的 H1 行走", "H1 locomotion uses a published policy. For autonomous H1 task playback, use": "H1 行走使用已发布的策略。要自主回放 H1 任务，请使用", "In the Newton viewer, press": "在 Newton 查看器中，按", "Interactive pick and place demo": "交互式抓取与放置演示", "Interactive view of the Galbot cube stacking environment": "Galbot 立方体堆叠环境的交互视图", "Interactively pick up a cube with a parallel robot and place it on a target.": "交互式控制并联机器人，抓起立方体并放到目标位置。", "Isaac Lab command builder": "Isaac Lab 命令生成器", "Isaac Lab demo command builder": "Isaac Lab 演示命令生成器", "Isaac-Cartpole preview": "Isaac-Cartpole 预览", "Isaac-Lift-KukaAllegro in Viser Visualizer": "Viser 可视化器中的 Isaac-Lift-KukaAllegro", "Isaac-Reach-Franka in Kit Visualizer": "Kit 可视化器中的 Isaac-Reach-Franka", "Isaac-Reorient-Cube-Allegro in Newton GL Visualizer": "Newton GL 可视化器中的 Isaac-Reorient-Cube-Allegro", "Isaac-Reorient-Cube-Shadow-Direct in Rerun Visualizer": "Rerun 可视化器中的 Isaac-Reorient-Cube-Shadow-Direct", "Isaac-Velocity-Rough-H1 in Newton RTX Visualizer": "Newton RTX 可视化器中的 Isaac-Velocity-Rough-H1", "Joint arrow markers on a Franka arm and contact sensor markers on a cube": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记", "Joint arrow markers on a Franka arm, with contact sensor markers on a cube.": "Franka 机械臂上的关节箭头标记，以及立方体上的接触传感器标记。", "Kit visualizer": "Kit 可视化器", "Kit visualizer tiled streaming": "Kit 可视化器平铺串流", "Kit visualizer: interactive viewport": "Kit 可视化器：交互式视口", "Kit visualizer: streaming camera view": "Kit 可视化器：串流相机视图", "Large green/blue arrow markers showing target and base velocity for an AnymalD robot": "AnymalD 机器人上表示目标速度和基座速度的大型绿色、蓝色箭头标记", "Loading guide...": "正在加载指南…", "Locomotion": "移动", "Manipulation": "操作", "Mode": "模式", "Newton Block and Tackle": "Newton 滑轮组", "Newton GL visualizer": "Newton GL 可视化器", "Newton GL visualizer, with 3 plots opened": "Newton GL 可视化器，打开了三个曲线图", "Newton visualizer: interactive viewport": "Newton 可视化器：交互式视口", "Newton visualizer: streaming camera view": "Newton 可视化器：串流相机视图", "No guides match this search.": "没有符合搜索条件的指南。", "No tasks match this search.": "没有符合搜索条件的任务。", "Not available": "暂无数据", "Note: Newton RTX has no velocity arrows, since it doesn't yet support visualization markers.": "注意：Newton RTX 暂不支持可视化标记，因此没有速度箭头。", "OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.": "OV 与 Isaac Sim 不能混用。请选择相互匹配的物理后端和渲染后端。", "Open in a new tab": "在新标签页打开", "Open the animation": "打开动画", "Physics": "物理", "Physics backend": "物理后端", "Physics preset": "物理预设", "Pick and Place": "抓取与放置", "Pick and place": "抓取与放置", "Pick and place requires Kit input.": "抓取与放置需要 Kit 输入。", "Play": "回放", "Preset": "预设", "Proxy coupling between source and destination solvers": "源求解器与目标求解器之间的代理耦合", "RL Library": "强化学习库", "RL library": "强化学习库", "Recorded clip of the Shadow Hand cube-reorientation task, recording the streaming view of the Rerun visualizer with 4 streaming view envs and 4 GT types": "Shadow Hand 立方体转向任务的录像，录制 Rerun 可视化器的串流视图，包含四个串流环境和四种真值数据", "Recorded clip with ground-truth sensor views": "包含真值传感器视图的录像片段", "Release": "发布版", "Renderer": "渲染器", "Renderer preset": "渲染器预设", "Right-click dragging the first domino triggers the cascade across an NVIDIA-logo domino layout": "右键拖动第一张骨牌，在 NVIDIA 标志形状的骨牌布局中触发连锁倒下", "Robots in the Isaac Lab Zoo demo": "Isaac Lab Zoo 演示中的机器人", "Scene sensor": "场景传感器", "Search all guides": "搜索全部指南", "Search guides": "搜索指南", "Search tasks and capabilities": "搜索任务与功能", "Search tasks or capabilities": "搜索任务或功能", "Select H1 robots and control a trained rough-terrain policy with the keyboard and follow camera.": "选择 H1 机器人，通过键盘和跟随相机控制已训练的崎岖地形策略。", "Selected guide": "所选指南", "Selected task": "所选任务", "Smash rigid crates with coupled MPM snowballs.": "使用耦合的 MPM 雪球撞碎刚性箱子。", "Snowball Smash": "雪球撞击", "Snowballs striking a stack of colored crates": "雪球撞击一叠彩色箱子", "Streaming view showing tiled Galbot wrist-camera feeds": "显示 Galbot 腕部相机平铺画面的串流视图", "Table color shows success: red until the cube reaches its target pose, green once it does.": "桌面颜色表示成功状态：立方体到达目标位姿前为红色，到达后变为绿色。", "Task": "任务", "Task category": "任务类别", "Task collection": "任务集合", "Teapot Fill": "茶壶注水", "The upper arrow synchronizes source state with the proxies, including pose and velocity. Contact produces the force and torque feedback shown by the lower arrow, which returns to a later source solve or coupling iteration.": "上方箭头表示源状态与代理之间的同步，包括位姿和速度。接触产生下方箭头所示的力与力矩反馈，在后续源求解或耦合迭代中返回。", "This environment does not support RL training or playback. The command runs it with the zero-action agent instead.": "此环境不支持强化学习训练或回放，命令将改用零动作智能体运行。", "Train": "训练", "Training": "训练", "Use Pre-trained Checkpoint": "使用预训练检查点", "Utah teapot pouring simulated water": "Utah 茶壶倒出仿真水流", "VRAM": "显存", "Velocity arrow marker on an AnymalD robot": "AnymalD 机器人上的速度箭头标记", "Velocity command (green) and current velocity (blue) arrow markers on an AnymalD robot.": "AnymalD 机器人上表示速度指令（绿色）和当前速度（蓝色）的箭头标记。", "Viser visualizer, with 1 plot opened": "Viser 可视化器，打开了一个曲线图", "Visualizer": "可视化器", "Watch the proxy coupling animation.": "观看代理耦合动画。", "Zoo": "机器人集锦（Zoo）", "newton-dominoes example": "newton-dominoes 示例", "to pause or scrub through the exchange.": "可暂停或拖动进度查看交换过程。", "to select a robot,": "选择机器人，按", "to stop, and": "停止，按", "to toggle the follow camera.": "切换跟随相机。", "to walk forward or turn,": "前进或转向，按", "Copied": "已复制", "default": "默认", "Manager": "管理器", "Direct": "直接工作流", "Camera": "相机", "Direct-Camera": "直接工作流与相机", "Task variant": "任务变体", "Zero agent": "零动作智能体", "Not supported": "不支持", "Collection FPS": "采集 FPS", "Training FPS": "训练 FPS", "Configuration": "配置", "Mean FPS": "平均 FPS", "Unspecified renderer": "未指定渲染器", "Presets not recorded": "未记录预设", "Newton renderer": "Newton 渲染器", "Newton MJWarp VBD proxy": "Newton MJWarp VBD 代理", "none": "无"};</script>
+    <script src="../../../_static/zh-cn-ui.js?v=2a63ae94"></script>
+    <script src="../../../_static/media-status.js?v=d1674cca"></script>
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/sphinxcontrib/icon/node_modules/@fortawesome/fontawesome-free/js/all.min.js?v=ec35c6c9"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/features/imitation-learning/teleop_imitation';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../../_static/css/environment-browser.js?v=0830db2c"></script>
+    <script src="../../../_static/css/demo-browser.js?v=bcae0e8a"></script>
+    <script src="../../../_static/css/guide-browser.js?v=d5610391"></script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="示例：人形机器人的数据生成与模仿学习" href="humanoids_imitation.html" />
+    <link rel="prev" title="模仿学习" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="3.0.0" />
+    <meta name="docbuild:last-update" content="2026 年 10 月 10 日"/>
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/NVIDIA-logo-white.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/NVIDIA-logo-black.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Isaac Lab 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="快捷链接">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/isaac-sim" title="Isaac Sim" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cube fa-lg" aria-hidden="true"></i><span class="visually-hidden">Isaac Sim</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/isaac-sim/IsaacLab/stargazers" title="GitHub 星标" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-star fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub 星标</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="搜索文档…"
+         aria-label="搜索文档…"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Isaac Lab</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../setup/translation.html">【非官方】关于翻译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/wechat.html">【非官方】微信交流群</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/oneclick_installation.html">【非官方】一键安装脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/ecosystem.html">生态系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/environments.html">环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/quickstart.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/tutorial.html">教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup/demos.html">演示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how-to/index.html">操作指南</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../workflows/index.html">工作流程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../workflows/docker/index.html">在 Docker 中运行 Isaac Lab</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/images.html">容器镜像</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/cluster.html">在 HPC 集群上运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../workflows/docker/cloud.html">云部署</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/migrating_to_isaaclab_3-0.html">迁移到 3.0</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">核心概念</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/backends_and_presets.html">后端与预设</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/backend_architecture.html">后端架构</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/physics_backends.html">物理后端</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/physics-backends/newton.html">Newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/joint_and_body_ordering.html">关节与刚体顺序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/ovphysx.html">OvPhysX 后端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/using_mpm.html">使用隐式 MPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/warp_environments.html">Warp 实验性环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/warp_environment_migration.html">Warp 环境迁移指南</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/solver_differences.html">求解器差异</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/native-physics-api/index.html">访问原生物理 API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/physx.html">PhysX 张量 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/newton.html">Newton 原生数据与选择 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/native-physics-api/ovphysx.html">OvPhysX 张量绑定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/renderers.html">渲染器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/actuators.html">执行器</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../concepts/sensors/index.html">传感器</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/camera.html">相机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/ray_caster.html">射线投射器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/contact_sensor.html">接触传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/frame_transformer.html">坐标变换器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/imu.html">惯性测量单元 (IMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/pva.html">位姿、速度与加速度（PVA）传感器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/sensors/joint_wrench_sensor.html">关节力旋量传感器</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/coupled_solvers.html">耦合求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/visualization.html">可视化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/reinforcement_learning.html">强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/deformables.html">可变形物体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/schema_cfgs.html">模式配置类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/schema_fragments.html">模式片段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/task_workflows.html">任务设计工作流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/motion_generators.html">运动生成器</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">特点</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">模仿学习</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="humanoids_imitation.html">示例：人形机器人的数据生成与模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmented_imitation.html">增强模仿学习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skillgen.html">使用 SkillGen 自动生成示范</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../isaac_teleop.html">Isaac Capture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydra.html">Hydra 配置系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_gpu.html">多 GPU 和多节点训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../population_based_training.html">基于种群的训练</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reproducibility.html">可重现性和确定性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../draw_markers.html">创建可视化标记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../record_video.html">录制视频</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualizer_tiled_camera.html">可视化器相机流视图</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">开发工具</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/editor_setup.html">编辑器配置</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/template_generator.html">创建自己的项目或任务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/add_physics_backend.html">添加物理后端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/extending_newton_solvers.html">扩展 Newton 求解器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/scene_data_providers.html">场景数据提供器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/agent_skills.html">智能体技能</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../developer-tools/benchmarking/index.html">性能测试</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/benchmarking/run_benchmarks.html">运行性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/benchmarking/micro_benchmarks.html">编写微基准测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/benchmarking/benchmark_api.html">使用性能测试 API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">实验性功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/bleeding-edge.html">欢迎来到最前沿！</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/ray.html">Ray 作业调度和调优</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/visuo_tactile_sensor.html">视触觉传感器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experimental-features/rlinf_vla_posttraining.html">VLA 模型的强化学习后训练</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">资源</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../policy_deployment/index.html">Isaac Lab 训练策略的仿真到现实部署</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how-to/policy_inference_in_usd.html">USD 环境中的策略推理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/02_gear_assembly/gear_assembly_policy.html">训练齿轮插入策略和 ROS 部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/03_compass_with_NuRec/compass_navigation_policy_with_NuRec.html">使用 NuRec 资产训练和部署 COMPASS 策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../policy_deployment/04_reach/reach_policy.html">训练用于实机部署的 Reach 策略</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../policy_deployment/05_leapp/exporting_policies_with_leapp.html">使用 LEAPP 导出策略</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.html">使用 LEAPP 导出 Direct 工作流策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../policy_deployment/05_leapp/deploying_exported_policies_with_leapp.html">使用 LEAPP 部署导出的策略</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">源码 API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.app.html">isaaclab.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.actuators.html">isaaclab.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.assets.html">isaaclab.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.benchmark.html">isaaclab.benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.cloner.html">isaaclab.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.controllers.html">isaaclab.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.devices.html">isaaclab.devices</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/lab/isaaclab.envs.html">isaaclab.envs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/lab/isaaclab.envs.leapp_deployment_env.html">LEAPP Deployment Environment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.managers.html">isaaclab.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.markers.html">isaaclab.markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.physics.html">isaaclab.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.renderers.html">isaaclab.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene.html">isaaclab.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.scene_data.html">isaaclab.scene_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.html">isaaclab.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.html">isaaclab.sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.terrains.html">isaaclab.terrains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.html">isaaclab.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.visualizers.html">isaaclab.visualizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.mdp.html">isaaclab.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.envs.ui.html">isaaclab.envs.ui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.patterns.html">isaaclab.sensors.patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.converters.html">isaaclab.sim.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.schemas.html">isaaclab.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.spawners.html">isaaclab.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.views.html">isaaclab.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sim.utils.html">isaaclab.sim.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_rl/isaaclab_rl.html">isaaclab_rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.datagen.html">isaaclab_mimic.datagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_mimic/isaaclab_mimic.envs.html">isaaclab_mimic.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.actuators.html">isaaclab_contrib.actuators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.assets.html">isaaclab_contrib.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.controllers.html">isaaclab_contrib.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.coupling.html">isaaclab_contrib.coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.custom_coupling.html">isaaclab_contrib.custom_coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.mdp.html">isaaclab_contrib.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.rl.html">isaaclab_contrib.rl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_contrib/isaaclab_contrib.sensors.html">isaaclab_contrib.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_tasks/isaaclab_tasks.utils.html">isaaclab_tasks.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_teleop/isaaclab_teleop.html">isaaclab_teleop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.app.html">isaaclab_physx.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.assets.html">isaaclab_physx.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.cloner.html">isaaclab_physx.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.physics.html">isaaclab_physx.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.renderers.html">isaaclab_physx.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sensors.html">isaaclab_physx.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sim.schemas.html">isaaclab_physx.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sim.spawners.html">isaaclab_physx.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.assets.html">isaaclab_newton.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.cloner.html">isaaclab_newton.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.controllers.html">isaaclab_newton.controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.physics.html">isaaclab_newton.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.renderers.html">isaaclab_newton.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sensors.html">isaaclab_newton.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sim.schemas.html">isaaclab_newton.sim.schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sim.spawners.html">isaaclab_newton.sim.spawners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.app.html">isaaclab_ov.app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.assets.html">isaaclab_ov.assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.cloner.html">isaaclab_ov.cloner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.physics.html">isaaclab_ov.physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.renderers.html">isaaclab_ov.renderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.sim.views.html">isaaclab_ov.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_assets/isaaclab_assets.robots.html">isaaclab_assets.robots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_assets/isaaclab_assets.sensors.html">isaaclab_assets.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.kit.html">isaaclab_visualizers.kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.newton.html">isaaclab_visualizers.newton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.rerun.html">isaaclab_visualizers.rerun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_visualizers/isaaclab_visualizers.viser.html">isaaclab_visualizers.viser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.envs.html">isaaclab_experimental.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.managers.html">isaaclab_experimental.managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.utils.html">isaaclab_experimental.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.benchmark.recorders.html">isaaclab.benchmark.recorders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.camera.html">isaaclab.sensors.camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.sensors.ray_caster.html">isaaclab.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.ui.widgets.html">isaaclab.ui.widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.ui.xr_widgets.html">isaaclab.ui.xr_widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab/isaaclab.utils.leapp.html">isaaclab.utils.leapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_experimental/isaaclab_experimental.envs.mdp.actions.html">isaaclab_experimental.envs.mdp.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.envs.mdp.html">isaaclab_newton.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_newton/isaaclab_newton.sim.views.html">isaaclab_newton.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.envs.mdp.html">isaaclab_ov.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.sensors.html">isaaclab_ov.sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ov/isaaclab_ov.sensors.ray_caster.html">isaaclab_ov.sensors.ray_caster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.envs.mdp.html">isaaclab_physx.envs.mdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_physx/isaaclab_physx.sim.views.html">isaaclab_physx.sim.views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/lab_ppisp/isaaclab_ppisp.html">isaaclab_ppisp</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">参考资料</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../refs/additional_resources.html">附加资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/contributing.html">贡献指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/troubleshooting.html">技巧和故障排除</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/issues.html">已知问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/release_notes.html">发布说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/changelog.html">Package Changelogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/license.html">许可证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs/bibliography.html">参考资料</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">项目链接</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/isaac-sim/IsaacLab">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/index.html">NVIDIA Isaac Sim</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/index.html">NVIDIA PhysX</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/newton-physics/newton">NVIDIA Newton</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/edit/main/docs/source/features/imitation-learning/teleop_imitation.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/isaac-sim/IsaacLab/issues/new?title=Issue%20on%20page%20%2Fsource/features/imitation-learning/teleop_imitation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/source/features/imitation-learning/teleop_imitation.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>使用 Isaac Lab Mimic 进行合成数据生成与模仿学习</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-isaac-lab-mimic">什么是 Isaac Lab Mimic？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-human-data-collection">步骤 1：采集人类示范数据</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-introduction">环境介绍</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teleoperation">遥操作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-teleoperation-with-xr-headsets">（可选）使用 XR 头显遥操作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-a-dataset-of-human-demonstrations">采集人类示范数据集</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-synthetic-data-generation-using-isaac-lab-mimic">步骤 2：使用 Isaac Lab Mimic 生成合成数据</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-download-pre-recorded-human-demonstrations">（可选）下载预录制的人类示范</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-additional-synthetic-demonstrations">生成更多合成示范</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-policy-training">步骤 3：训练策略</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-robomimic">安装 Robomimic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-an-agent">训练智能体</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-results">查看结果</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#humanoid-examples">人形机器人示例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-your-own-isaac-lab-mimic-compatible-environments">创建您自己的 Isaac Lab Mimic 兼容环境</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">它是如何工作的</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-and-subtask-definition">配置和子任务定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subtask-annotation">子任务标注</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#helpers-for-demonstration-generation">生成演示的帮助程序</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-the-environment">注册环境</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-successful-data-generation-with-isaac-lab-mimic">成功使用 Isaac Lab Mimic 进行数据生成的技巧</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-subtasks">划分子任务</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-number-of-interpolation-steps">选择插值步数</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-pitfalls-when-generating-data">生成数据时常见的陷阱</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#glossary">术语表</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="synthetic-data-generation-and-imitation-learning-with-isaac-lab-mimic">
+<span id="teleoperation-imitation-learning"></span><h1>使用 Isaac Lab Mimic 进行合成数据生成与模仿学习<a class="headerlink" href="#synthetic-data-generation-and-imitation-learning-with-isaac-lab-mimic" title="Link to this heading">#</a></h1>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>Isaac Lab Mimic 仅支持 Linux。</p>
+</div>
+<section id="what-is-isaac-lab-mimic">
+<h2>什么是 Isaac Lab Mimic？<a class="headerlink" href="#what-is-isaac-lab-mimic" title="Link to this heading">#</a></h2>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/franka_mimic_imitation_learning.jpg"><img alt="Franka 机器人执行堆叠任务" src="../../../_images/franka_mimic_imitation_learning.jpg" style="width: 100%;" />
+</a>
+</figure>
+<p>Isaac Lab Mimic（Mimic）是一种轨迹数据生成工具，通过生成新的合成数据来扩充人类示范。给定一组人类示范，Mimic 可以自动生成任务相同、空间配置不同的新示范。即使只有少量手动示范，生成的数据也能用于训练更能适应空间变化的模仿学习策略。</p>
+<p>Mimic 将每条人类示范拆分为一系列子任务。子任务按决定机器人末端执行器（eef）运动的参考物体定义：每个子任务都是示范中的连续片段，期间末端运动由单个参考物体决定。参考物体变化时，新的子任务开始。标注用于指出示范中各子任务完成的位置。</p>
+<p>数据生成时，Mimic 使用人类示范的子任务片段，对机器人动作施加刚体变换，得到任务相同、空间配置不同的新示范。系统会评估新示范是否成功，成功的示范会加入输出数据集。</p>
+<p>Mimic 兼容多种机器人形态，包括单末端执行器（如机械臂）和多末端执行器（如人形机器人）。刚体变换要求机器人的动作空间定义在 <strong>任务空间</strong> 中。如果动作定义在关节空间中，必须通过正向运动学将其转换到任务空间。</p>
+<p>以下各节将介绍如何为 Franka 机器人堆叠任务采集少量人类示范，使用 Isaac Lab Mimic 生成新的合成数据扩充数据集，最后训练执行堆叠任务的策略。</p>
+</section>
+<section id="step-1-human-data-collection">
+<span id="teleop-imitation-step-1-human-data-collection"></span><h2>步骤 1：采集人类示范数据<a class="headerlink" href="#step-1-human-data-collection" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果不想自行采集示范，可以跳过此步骤，直接进入 <a class="reference internal" href="#teleop-imitation-step-2-synthetic-data"><span class="std std-ref">步骤 2：使用 Isaac Lab Mimic 生成合成数据</span></a> 。</p>
+</div>
+<section id="environment-introduction">
+<h3>环境介绍<a class="headerlink" href="#environment-introduction" title="Link to this heading">#</a></h3>
+<p>本教程使用 <code class="docutils literal notranslate"><span class="pre">IsaacContrib-Stack-Cube-Franka-IK-Rel</span></code> 环境及其变体。场景中有一台固定在桌上的 Franka 机器人及三个立方体。任务是按以下顺序堆叠：蓝色在底部、红色在中间、绿色在顶部。教程后续会使用观测空间不同的环境变体，如基于状态的观测、视觉运动观测等。</p>
+<p>运行以下命令，通过 Isaac Lab 提供的 <code class="docutils literal notranslate"><span class="pre">zero_agent.py</span></code> 脚本启动环境并显示场景。脚本在循环中创建环境，以全零张量动作推进仿真，运行时机器人会保持不动。滚动鼠标滚轮可缩放场景；按住 Alt 键并点击拖动，可调整场景视图。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/environments/zero_agent.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+<p>接下来，使用 <code class="docutils literal notranslate"><span class="pre">random_agent.py</span></code> 启动环境并执行随机动作。脚本在循环中创建环境，以随机张量动作推进仿真，可以看到机器人向随机方向移动。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/environments/random_agent.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../../_images/franka_cube_stacking_env.jpg"><img alt="Franka 立方体堆叠环境" src="../../../_images/franka_cube_stacking_env.jpg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Franka 立方体堆叠环境</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="teleoperation">
+<h3>遥操作<a class="headerlink" href="#teleoperation" title="Link to this heading">#</a></h3>
+<p>Isaac Lab 支持通过键盘、SpaceMouse 和 XR 头显等多种输入设备遥操作机器人。</p>
+<p>运行以下命令启动环境，通过键盘遥操作机器人。先熟悉控制方式，再尝试堆叠任务。立方体顺序应为蓝色在底部、红色在中间、绿色在顶部。操作熟练后，可按 Ctrl+C 退出脚本，关闭环境。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+--sensitivity<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+--teleop_device<span class="w"> </span>keyboard
+</pre></div>
+</div>
+<p>脚本会打印按键帮助。键盘的按键绑定如下：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Keyboard Controller for SE(3): Se3Keyboard
+   Reset all commands: R
+   Toggle gripper (open/close): K
+   Move arm along x-axis: W/S
+   Move arm along y-axis: A/D
+   Move arm along z-axis: Q/E
+   Rotate arm along x-axis: Z/X
+   Rotate arm along y-axis: T/G
+   Rotate arm along z-axis: C/V
+</pre></div>
+</div>
+<p>建议使用 SpaceMouse 获得更平滑的操作，并同时控制多个轴。平滑的示范更容易被策略模仿。Isaac Lab 支持 3Dconnexion <a class="reference external" href="https://3dconnexion.com/us/product/spacemouse-compact/">SpaceMouse Compact</a> 和 <a class="reference external" href="https://3dconnexion.com/us/product/spacemouse-wireless/">SpaceMouse Wireless</a> 。使用时只需相应修改 <code class="docutils literal notranslate"><span class="pre">--teleop_device</span></code> ：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+--sensitivity<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+--teleop_device<span class="w"> </span>spacemouse
+</pre></div>
+</div>
+<p>脚本会打印按键帮助。SpaceMouse 的按键绑定如下：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SpaceMouse Controller for SE(3): Se3SpaceMouse
+   Reset all commands: Right click
+   Toggle gripper (open/close): Click the left button on the SpaceMouse
+   Move arm along x/y-axis: Tilt the SpaceMouse
+   Move arm along z-axis: Push or pull the SpaceMouse
+   Rotate arm: Twist the SpaceMouse
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>如果检测不到 SpaceMouse，通常是用户权限不足。Isaac Lab 安装的 <code class="docutils literal notranslate"><span class="pre">hidapi</span></code> wheel 附带通过 <code class="docutils literal notranslate"><span class="pre">libusb</span></code> 与设备通信的后端，因此需要对 <code class="docutils literal notranslate"><span class="pre">/dev/bus/usb</span></code> 下的 USB 节点具有读写权限。仅授予 <code class="docutils literal notranslate"><span class="pre">/dev/hidraw*</span></code> 权限 <strong>并不够</strong> ；没有 USB 访问权限时，设备虽能被枚举，但没有产品名称。</p>
+<p>为 3Dconnexion 厂商 ID 安装 udev 规则，授予权限：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>groupadd<span class="w"> </span>-f<span class="w"> </span>plugdev<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>plugdev<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
+sudo<span class="w"> </span>tee<span class="w"> </span>/etc/udev/rules.d/99-spacemouse.rules<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">SUBSYSTEM=="usb", ATTR{idVendor}=="256f", TAG+="uaccess", GROUP="plugdev", MODE="0660"</span>
+<span class="s">KERNEL=="hidraw*", ATTRS{idVendor}=="256f", TAG+="uaccess", GROUP="plugdev", MODE="0660"</span>
+<span class="s">EOF</span>
+sudo<span class="w"> </span>udevadm<span class="w"> </span>control<span class="w"> </span>--reload-rules<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>udevadm<span class="w"> </span>trigger
+</pre></div>
+</div>
+<p>然后拔下并重新连接 SpaceMouse，注销后重新登录，使新的用户组成员资格生效。该规则仅授权本地会话用户（ <code class="docutils literal notranslate"><span class="pre">uaccess</span></code> ）及 <code class="docutils literal notranslate"><span class="pre">plugdev</span></code> 成员，而非机器上的所有账户。通过 SSH 使用时没有本地会话，正是 <code class="docutils literal notranslate"><span class="pre">plugdev</span></code> 成员资格提供了访问权限。SpaceNavigator for Notebooks 等较旧的 3Dconnexion 型号使用 Logitech 厂商 ID，请将 <code class="docutils literal notranslate"><span class="pre">256f</span></code> 改为 <code class="docutils literal notranslate"><span class="pre">046d</span></code> 。</p>
+<p>使用 SpaceMouse 时建议在本地部署 Isaac Lab。如果使用容器部署（ <a class="reference internal" href="../../workflows/docker/index.html#deployment-docker"><span class="std std-ref">在 Docker 中运行 Isaac Lab</span></a> ），必须在 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> 中挂载 USB 总线，并通过设备 cgroup 规则允许 <code class="docutils literal notranslate"><span class="pre">isaac-lab-base</span></code> 容器访问：</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/bus/usb:/dev/bus/usb</span>
+<span class="nt">device_cgroup_rules</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"c</span><span class="nv"> </span><span class="s">189:*</span><span class="nv"> </span><span class="s">rmw"</span>
+</pre></div>
+</div>
+<p>Isaac Lab 支持 3Dconnexion 的 SpaceMouse Compact、SpaceMouse Wireless 和 SpaceNavigator for Notebooks。SE(3) 遥操作还支持 SpaceNavigator 及 3Dconnexion Universal Receiver。</p>
+</div>
+</section>
+<section id="optional-teleoperation-with-xr-headsets">
+<h3>（可选）使用 XR 头显遥操作<a class="headerlink" href="#optional-teleoperation-with-xr-headsets" title="Link to this heading">#</a></h3>
+<p>对于适合采用手部跟踪扩展现实（XR）设备的任务，Isaac Lab 支持通过 <a class="reference external" href="https://github.com/NVIDIA/IsaacCapture">Isaac Capture</a> 与 NVIDIA CloudXR，将场景以沉浸式方式串流到兼容 XR 设备上进行遥操作。</p>
+<p>请按 <a class="reference internal" href="../../how-to/cloudxr_teleoperation.html#cloudxr-teleoperation"><span class="std std-ref">配置 Isaac Capture 与 CloudXR</span></a> 安装 Isaac Capture 并配置 CloudXR 遥操作。配置完成后，可用以下命令启动立方体堆叠环境，通过 XR 头显尝试操作。使用手部跟踪时，建议选择任务的绝对动作空间变体（ <code class="docutils literal notranslate"><span class="pre">IsaacContrib-Stack-Cube-Franka-IK-Abs</span></code> ）：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Abs<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--xr
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>Isaac Lab 遥操作框架的完整介绍，见 <a class="reference internal" href="../isaac_teleop.html#isaac-teleop-feature"><span class="std std-ref">Isaac Capture</span></a> 。支持的 XR 设备列表见 <a class="reference internal" href="../isaac_teleop.html#isaac-teleop-supported-devices"><span class="std std-ref">支持的设备</span></a> ，添加新设备的方法见 <a class="reference internal" href="../isaac_teleop.html#isaac-teleop-new-device"><span class="std std-ref">添加新设备</span></a> 。</p>
+</div>
+</section>
+<section id="collect-a-dataset-of-human-demonstrations">
+<h3>采集人类示范数据集<a class="headerlink" href="#collect-a-dataset-of-human-demonstrations" title="Link to this heading">#</a></h3>
+<p>在 <code class="docutils literal notranslate"><span class="pre">IsaacLab</span></code> 根目录中新建文件夹存放数据集：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>datasets
+</pre></div>
+</div>
+<p>运行示范录制脚本，为立方体堆叠任务采集 10 条人类示范。选择与输入设备对应的选项卡：</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+键盘</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>record<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--dataset_file<span class="w"> </span>./datasets/dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--num_demos<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+--teleop_device<span class="w"> </span>keyboard
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+SpaceMouse</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>record<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--dataset_file<span class="w"> </span>./datasets/dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--num_demos<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+--teleop_device<span class="w"> </span>spacemouse
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+XR 头显（Meta Quest / Pico）</label><div class="sd-tab-content docutils">
+<p>通过 XR 头显进行手部跟踪时，使用任务的绝对动作空间变体，并省略 <code class="docutils literal notranslate"><span class="pre">--teleop_device</span></code> 。 <code class="docutils literal notranslate"><span class="pre">--xr</span></code> 标志会自动激活 Isaac Capture 流水线。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>record<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Abs<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--dataset_file<span class="w"> </span>./datasets/dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--num_demos<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+--xr
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>运行前，确保 CloudXR 已配置、头显已连接。配置方法见 <a class="reference internal" href="../../how-to/cloudxr_teleoperation.html#cloudxr-teleoperation"><span class="std std-ref">配置 Isaac Capture 与 CloudXR</span></a> 。</p>
+</div>
+</div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>堆叠立方体的顺序应为蓝色（底部）、红色（中间）、绿色（顶部）。</p>
+</div>
+<p>采集高质量示范的建议：</p>
+<ul class="simple">
+<li><p>保持演示简短。简短的演示意味着策略需要做出的决策更少，从而使训练变得更容易。</p></li>
+<li><p>沿直接路径高效移动到目标。</p></li>
+<li><p>避免长时间停顿，尽量保持平滑、连续的运动。策略很难判断何时以及为何应停顿，因此连续运动更易学习。</p></li>
+</ul>
+<p>如果示范中出现操作失误，键盘用户可按 <code class="docutils literal notranslate"><span class="pre">R</span></code> ，SpaceMouse 用户可按右侧按钮，丢弃当前示范并重置到新的起始位置。</p>
+<p>您可以通过运行以下命令重现收集的演示:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>teleop,isaacsim<span class="w"> </span>isaaclab<span class="w"> </span>teleop<span class="w"> </span>replay<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+--reset_sim_buffer_each_episode<span class="w"> </span><span class="se">\</span>
+--dataset_file<span class="w"> </span>./datasets/dataset.hdf5
+</pre></div>
+</div>
+<p><strong>采集 10 条成功示范后，再进入下一步。</strong></p>
+</section>
+</section>
+<section id="step-2-synthetic-data-generation-using-isaac-lab-mimic">
+<span id="teleop-imitation-step-2-synthetic-data"></span><h2>步骤 2：使用 Isaac Lab Mimic 生成合成数据<a class="headerlink" href="#step-2-synthetic-data-generation-using-isaac-lab-mimic" title="Link to this heading">#</a></h2>
+<section id="optional-download-pre-recorded-human-demonstrations">
+<h3>（可选）下载预录制的人类示范<a class="headerlink" href="#optional-download-pre-recorded-human-demonstrations" title="Link to this heading">#</a></h3>
+<p>我们提供了包含 10 条立方体堆叠人类示范的 HDF5 数据集： <a class="reference external" href="https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/franka_stack_datasets/dataset.hdf5">[立方体堆叠人类示范数据集]</a> 。如果跳过了 <a class="reference internal" href="#teleop-imitation-step-1-human-data-collection"><span class="std std-ref">步骤 1：采集人类示范数据</span></a> ，可下载此数据集，完成后续教程。</p>
+<p>将数据集放到 <code class="docutils literal notranslate"><span class="pre">IsaacLab/datasets</span></code> 文件夹。如果跳过了步骤 1，且尚未创建该文件夹，请先创建。</p>
+</section>
+<section id="generate-additional-synthetic-demonstrations">
+<span id="generate-additional-demonstrations"></span><h3>生成更多合成示范<a class="headerlink" href="#generate-additional-synthetic-demonstrations" title="Link to this heading">#</a></h3>
+<p>以下示例介绍如何通过 Isaac Lab Mimic 生成额外示范，训练基于状态的策略（使用 <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Mimic-v0</span></code> 环境）或视觉运动策略（使用 <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Mimic-v0</span></code> 环境），让 Franka 机器人学会堆叠立方体。</p>
+<p>生成额外示范前，必须先标注人类示范，确定各子任务的边界。子任务分别针对每个末端执行器（eef）定义，是末端相对于特定物体执行动作的示范片段。末端的目标物体每次变化，都会开始新的子任务。例如，堆叠任务的第一个子任务是抓取红色立方体（末端运动由红色立方体决定），第二个是将红色立方体堆到蓝色立方体上（末端运动由蓝色立方体决定）。可以手动标注，也可以在环境支持时通过启发式规则自动标注。本教程环境支持自动标注，下一步将采用这种方式。</p>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>以下各节中的所有命令必须保持一致的策略类型。例如，如果选择使用基于状态的策略，那么所有使用的命令都应来自 &quot;基于状态的策略&quot; 选项卡。</p>
+</div>
+<p>标注录制数据中的子任务：</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="state" for="sd-tab-item-3">
+基于状态的策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/annotate_demos.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>Isaac-Stack-Cube-Franka-IK-Rel-Mimic-v0<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--auto<span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>./datasets/annotated_dataset.hdf5
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="visuomotor" for="sd-tab-item-4">
+视觉运动策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/annotate_demos.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Mimic-v0<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--auto<span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>./datasets/annotated_dataset.hdf5
+</pre></div>
+</div>
+</div>
+</div>
+<p>接下来，使用 Isaac Lab Mimic 生成更多示范：</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="state" for="sd-tab-item-5">
+基于状态的策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/generate_dataset.py<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+--generation_num_trials<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/annotated_dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>./datasets/generated_dataset_small.hdf5
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="visuomotor" for="sd-tab-item-6">
+视觉运动策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/generate_dataset.py<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+--generation_num_trials<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/annotated_dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>./datasets/generated_dataset_small.hdf5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p><code class="docutils literal notranslate"><span class="pre">annotate_demos.py</span></code> 的 output_file 是 <code class="docutils literal notranslate"><span class="pre">generate_dataset.py</span></code> 的 input_file。</p>
+</div>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../../_images/franka_datagen.jpg"><img alt="Franka 机器人执行堆叠任务" src="../../../_images/franka_datagen.jpg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Franka 立方体堆叠任务的并行数据生成</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>检查生成的数据（ <code class="docutils literal notranslate"><span class="pre">generated_dataset_small.hdf5</span></code> ），确认满意后生成完整数据集：</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-7" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="state" for="sd-tab-item-7">
+基于状态的策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/generate_dataset.py<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+--generation_num_trials<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/annotated_dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>./datasets/generated_dataset.hdf5
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-8" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="visuomotor" for="sd-tab-item-8">
+视觉运动策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/isaaclab_mimic/generate_dataset.py<span class="w"> </span><span class="se">\</span>
+--num_envs<span class="w"> </span><span class="m">300</span><span class="w"> </span><span class="se">\</span>
+--generation_num_trials<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+--input_file<span class="w"> </span>./datasets/annotated_dataset.hdf5<span class="w"> </span><span class="se">\</span>
+--output_file<span class="w"> </span>./datasets/generated_dataset.hdf5
+</pre></div>
+</div>
+</div>
+</div>
+<p>可按策略需要调整示范数量 <code class="docutils literal notranslate"><span class="pre">--generation_num_trials</span></code> 。对于成功率很低的任务，可用 <code class="docutils literal notranslate"><span class="pre">--max_num_failures</span></code> 在失败达到指定次数后停止。未设置此选项时，生成会持续到获得所需数量的成功示范为止。本教程的 BC RNN 策略使用 1000 条示范已能取得较好的训练效果。</p>
+<p>可通过 <code class="docutils literal notranslate"><span class="pre">--num_envs</span></code> 调整环境数量，从而改变数据生成速度。建议值基于 RTX PRO 6000 Blackwell GPU；使用其他 GPU 时，可能需要按显存容量调整环境数。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>预计数据生成成功率与耗时</strong></p>
+<ul class="simple">
+<li><p>数据生成成功率：基于状态和视觉运动两种情况均约为 40%。</p></li>
+<li><p>数据生成耗时：基于状态约 15 分钟，视觉运动约 1 小时。</p></li>
+</ul>
+<p><em>以上数据基于 RTX PRO 6000 Blackwell GPU 和所提供的命令。</em></p>
+</div>
+</section>
+</section>
+<section id="step-3-policy-training">
+<h2>步骤 3：训练策略<a class="headerlink" href="#step-3-policy-training" title="Link to this heading">#</a></h2>
+<section id="install-robomimic">
+<h3>安装 Robomimic<a class="headerlink" href="#install-robomimic" title="Link to this heading">#</a></h3>
+<p>本步骤使用 <a class="reference external" href="https://robomimic.github.io/">Robomimic</a> 训练行为克隆（BC）RNN 智能体，利用上一步生成的合成数据学习立方体堆叠策略。</p>
+<p>使用以下命令安装 Robomimic 框架：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install the dependencies</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>cmake<span class="w"> </span>build-essential
+<span class="c1"># resolve and verify Robomimic in the uv-managed environment</span>
+uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>mimic<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import robomimic"</span>
+</pre></div>
+</div>
+<p>旧版环境可通过 <code class="docutils literal notranslate"><span class="pre">./isaaclab.sh</span> <span class="pre">-i</span> <span class="pre">mimic</span></code> 安装相同依赖。</p>
+</section>
+<section id="train-an-agent">
+<h3>训练智能体<a class="headerlink" href="#train-an-agent" title="Link to this heading">#</a></h3>
+<p>使用 Isaac Lab Mimic 生成的数据，现在可以为 <code class="docutils literal notranslate"><span class="pre">IsaacContrib-Stack-Cube-Franka-IK-Rel</span></code> 训练基于状态的 BC RNN 智能体，或为 <code class="docutils literal notranslate"><span class="pre">IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor</span></code> 训练视觉运动 BC RNN 智能体：</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-9" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="state" for="sd-tab-item-9">
+基于状态的策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/robomimic/train.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--algo<span class="w"> </span>bc<span class="w"> </span><span class="se">\</span>
+--epochs<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+--dataset<span class="w"> </span>./datasets/generated_dataset.hdf5
+</pre></div>
+</div>
+<p>该命令将配置中默认的 2000 个 epoch 改为 1000 个，与下面的训练耗时估计一致。</p>
+</div>
+<input id="sd-tab-item-10" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="visuomotor" for="sd-tab-item-10">
+视觉运动策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/robomimic/train.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor<span class="w"> </span><span class="se">\</span>
+--algo<span class="w"> </span>bc<span class="w"> </span><span class="se">\</span>
+--dataset<span class="w"> </span>./datasets/generated_dataset.hdf5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>训练模型和日志保存到 <code class="docutils literal notranslate"><span class="pre">IsaacLab/logs/robomimic</span></code> 。</p>
+</div>
+</section>
+<section id="visualize-the-results">
+<h3>查看结果<a class="headerlink" href="#visualize-the-results" title="Link to this heading">#</a></h3>
+<p>运行已训练策略，查看效果：</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-11" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="state" for="sd-tab-item-11">
+基于状态的策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/robomimic/play.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_rollouts<span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="se">\</span>
+--checkpoint<span class="w"> </span>/PATH/TO/desired_model_checkpoint.pth
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-12" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="policy_type" data-sync-id="visuomotor" for="sd-tab-item-12">
+视觉运动策略</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>--extra<span class="w"> </span>isaacsim,mimic<span class="w"> </span>python<span class="w"> </span>scripts/imitation_learning/robomimic/play.py<span class="w"> </span><span class="se">\</span>
+--task<span class="w"> </span>IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor<span class="w"> </span><span class="se">\</span>
+--viz<span class="w"> </span>kit<span class="w"> </span><span class="se">\</span>
+--num_rollouts<span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="se">\</span>
+--checkpoint<span class="w"> </span>/PATH/TO/desired_model_checkpoint.pth
+</pre></div>
+</div>
+</div>
+</div>
+<p>评估策略时，不同训练 epoch 的效果常有差异。如果未达到预期效果， <strong>应测试多个 epoch 的策略</strong> ，而非只看最终检查点，以找出表现最好的模型。训练过程中模型性能可能波动较大，最后一个 epoch 并不总是最佳。</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/franka_cube_stack_robomimic_mimic_bcrnn.gif"><img alt="Robomimic BCRNN 策略执行立方体堆叠任务" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/franka_cube_stack_robomimic_mimic_bcrnn.gif" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Robomimic BC RNN 策略执行立方体堆叠任务</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>预计策略训练耗时与成功率</strong></p>
+<ul class="simple">
+<li><p>BC RNN 训练耗时：基于状态约 30 分钟（1000 个 epoch），视觉运动约 6 小时（600 个 epoch）。</p></li>
+<li><p>BC RNN 策略成功率：基于状态和视觉运动两种情况均约为 40–60%。</p></li>
+<li><p><strong>建议：</strong> 在整个训练过程中评估来自不同轮次的检查点，以识别性能最佳的模型</p></li>
+</ul>
+<p><em>以上数据基于 RTX PRO 6000 Blackwell GPU 和所提供的命令。</em></p>
+</div>
+<p><strong>您已完成 Isaac Lab Mimic 合成数据生成与策略训练的入门教程。后续章节提供其他机器人形态（如人形机器人）的示例，并介绍如何创建自己的 Mimic 兼容环境。</strong></p>
+</section>
+</section>
+<section id="humanoid-examples">
+<h2>人形机器人示例<a class="headerlink" href="#humanoid-examples" title="Link to this heading">#</a></h2>
+<p>人形机器人（GR-1、G1）的数据生成与策略训练示例，见 <a class="reference internal" href="humanoids_imitation.html#data-generation-imitation-learning-humanoids"><span class="std std-ref">示例：人形机器人的数据生成与模仿学习</span></a> 。</p>
+</section>
+<section id="creating-your-own-isaac-lab-mimic-compatible-environments">
+<h2>创建您自己的 Isaac Lab Mimic 兼容环境<a class="headerlink" href="#creating-your-own-isaac-lab-mimic-compatible-environments" title="Link to this heading">#</a></h2>
+<figure class="align-center" id="id4" style="width: 100%">
+<img alt="Mimic 兼容环境的类与配置层次结构" src="../../../_images/mimic_env_architecture.jpg" />
+<figcaption>
+<p><span class="caption-text">Mimic 兼容环境的类与配置层次结构</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="how-it-works">
+<h3>它是如何工作的<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h3>
+<p>Isaac Lab Mimic 通过将输入的示范分割成子任务来工作。子任务是示范中用户定义的、在所有示范中共有的片段。子任务的例子包括 &quot;抓取物体&quot; 、 &quot;将末端执行器移动到某个预定义位置&quot; 、 &quot;释放物体&quot; 等等。请注意，大多数子任务是相对于机器人与之交互的某个物体来定义的。</p>
+<p>子任务需要被定义，然后为每个输入示例添加标注。标注可以通过定义用于子任务检测的启发式算法来实现，如上面示例中所做的那样，或者也可以手动完成。</p>
+<p>定义并标注了子任务后，Isaac Lab Mimic 利用少量辅助方法来转换子任务片段，并通过将它们拼接在一起生成新的演示，以匹配当前的任务。</p>
+<p>对于每个这样生成的候选演示，Isaac Lab Mimic 使用布尔成功标准来判断演示是否成功执行任务，如果成功，则将其添加到输出数据集。候选演示的成功率在简单情况下可以高达 70%，而在复杂任务和机器人本身的复杂性影响下，成功率可能低于 1%。</p>
+</section>
+<section id="configuration-and-subtask-definition">
+<h3>配置和子任务定义<a class="headerlink" href="#configuration-and-subtask-definition" title="Link to this heading">#</a></h3>
+<p>子任务，除了 Isaac Lab Mimic 的其他配置设置外，还在 Mimic 兼容的环境配置类中定义，该类通过扩展现有的环境配置并加入额外的 Mimic 所需参数来创建。</p>
+<p>所有 Mimic 所需的配置参数都在 <a class="reference internal" href="../../api/lab/isaaclab.envs.html#isaaclab.envs.MimicEnvCfg" title="isaaclab.envs.MimicEnvCfg"><code class="xref py py-class docutils literal notranslate"><span class="pre">MimicEnvCfg</span></code></a> 类中指定。</p>
+<p>配置类 <code class="xref py py-class docutils literal notranslate"><span class="pre">FrankaCubeStackIKRelMimicEnvCfg</span></code> 作为一个示例，用于创建一个与 Mimic 兼容的环境配置类，适用于上面示例中使用的 Franka 堆叠任务。</p>
+<p><code class="docutils literal notranslate"><span class="pre">DataGenConfig</span></code> 成员包含各种影响数据生成的参数。最初只需要设置 <code class="docutils literal notranslate"><span class="pre">name</span></code> 参数，其他的可以稍后修改。</p>
+<p>子任务是一个 <a class="reference internal" href="../../api/lab/isaaclab.envs.html#isaaclab.envs.SubTaskConfig" title="isaaclab.envs.SubTaskConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubTaskConfig</span></code></a> 对象的列表，其中最重要的成员是:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">object_ref</span></code> 是正在交互的对象。它将用于在数据生成过程中相对于该对象调整动作。如果当前子任务不涉及任何对象，则可以是 <code class="docutils literal notranslate"><span class="pre">None</span></code> 。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subtask_term_signal</span></code> 是指示子任务是否处于活动状态的信号的 ID。</p></li>
+</ul>
+<p>对于具有多个末端执行器的环境，可以通过指定子任务约束来强制定义末端执行器之间的子任务顺序。这些约束在 <a class="reference internal" href="../../api/lab/isaaclab.envs.html#isaaclab.envs.SubTaskConstraintConfig" title="isaaclab.envs.SubTaskConstraintConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubTaskConstraintConfig</span></code></a> 类中定义。</p>
+</section>
+<section id="subtask-annotation">
+<h3>子任务标注<a class="headerlink" href="#subtask-annotation" title="Link to this heading">#</a></h3>
+<p>一旦子任务被定义，它们需要在源数据中进行标注。有两种方法可以标注源示范的子任务边界: 手动标注或使用启发式方法。</p>
+<p>通常手动标注是最简单的，因为输入示例的数量通常非常少。要执行手动标注，请使用 <code class="docutils literal notranslate"><span class="pre">annotate_demos.py</span></code> 脚本，且不带 <code class="docutils literal notranslate"><span class="pre">--auto</span></code> 标志。然后按 <code class="docutils literal notranslate"><span class="pre">B</span></code> 暂停，按 <code class="docutils literal notranslate"><span class="pre">N</span></code> 继续，按 <code class="docutils literal notranslate"><span class="pre">S</span></code> 标注子任务边界。</p>
+<p>如果需要更准确的边界，或希望加快实验中同一任务的反复处理，可以用启发式规则完成标注。启发式规则以环境观测的形式实现。 <code class="docutils literal notranslate"><span class="pre">source/isaaclab_tasks/isaaclab_tasks/contrib/stack/stack_env_cfg.py</span></code> 展示了如何添加子任务项，将其组成名为 <code class="docutils literal notranslate"><span class="pre">SubtaskCfg</span></code> 的观测组。该示例使用预置规则，也可以方便地实现自定义规则。</p>
+</section>
+<section id="helpers-for-demonstration-generation">
+<h3>生成演示的帮助程序<a class="headerlink" href="#helpers-for-demonstration-generation" title="Link to this heading">#</a></h3>
+<p>在 Isaac Lab Mimic 中需要的帮助程序是在环境中定义的。所有要与 Isaac Lab Mimic 一起使用的任务都源自 <a class="reference internal" href="../../api/lab/isaaclab.envs.html#isaaclab.envs.ManagerBasedRLMimicEnv" title="isaaclab.envs.ManagerBasedRLMimicEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManagerBasedRLMimicEnv</span></code></a> 基类，并且必须实现以下功能:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_robot_eef_pose</span></code>: 返回当前机器人末端执行器姿态，该姿态与机器人末端执行器控制器使用的坐标系相同。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_eef_pose_to_action</span></code>: 获取目标姿态和夹爪动作，供末端执行器控制器使用，并返回一个能够实现目标姿态的动作。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action_to_target_eef_pose</span></code>: 采取一个动作并返回末端执行器控制器的目标姿态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">actions_to_gripper_actions</span></code>: 接收一系列动作，并返回动作中的夹爪执行器部分。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_object_poses</span></code>: 返回场景中用于数据生成的每个对象的姿势。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_subtask_term_signals</span></code>: 返回一个字典，包含任务中每个子任务的二进制标志。当子任务已完成时，标志为 true，否则为 false。</p></li>
+</ul>
+<p>该类 <code class="xref py py-class docutils literal notranslate"><span class="pre">FrankaCubeStackIKRelMimicEnv</span></code> 展示了如何从现有的 Isaac Lab 环境创建一个 Mimic 兼容的环境。</p>
+</section>
+<section id="registering-the-environment">
+<h3>注册环境<a class="headerlink" href="#registering-the-environment" title="Link to this heading">#</a></h3>
+<p>一旦创建了兼容 Mimic 的环境和环境配置类，就可以使用 <code class="docutils literal notranslate"><span class="pre">gym.register</span></code> 注册一个新的 Mimic 兼容环境。对于上面示例中的 Franka 堆叠任务，Mimic 环境被注册为 <code class="docutils literal notranslate"><span class="pre">Isaac-Stack-Cube-Franka-IK-Rel-Mimic-v0</span></code> 。</p>
+<p>注册的环境现在已准备好与 Isaac Lab Mimic 一起使用。</p>
+</section>
+</section>
+<section id="tips-for-successful-data-generation-with-isaac-lab-mimic">
+<h2>成功使用 Isaac Lab Mimic 进行数据生成的技巧<a class="headerlink" href="#tips-for-successful-data-generation-with-isaac-lab-mimic" title="Link to this heading">#</a></h2>
+<section id="splitting-subtasks">
+<h3>划分子任务<a class="headerlink" href="#splitting-subtasks" title="Link to this heading">#</a></h3>
+<p>一个基本的经验法则是把任务分解为尽可能少的子任务，同时仍能完成任务。Isaac Lab Mimic 数据生成使用线性插值来连接和拼接子任务段。更多的子任务会导致轨迹的拼接更多，这可能导致动作更不平滑，演示失败的可能性更大。因此，通常最好在机器人的运动不太可能与其他物体相撞的地方标记子任务边界。</p>
+<p>例如，在下面的情况中，机器人的左臂抓取物体后有一个子任务分区。在左侧，子任务标注在抓取后立即标记，而在右侧，在机器人抓取并提起物体后标记标注。在左侧情况下，插值导致机器人的左臂与桌子碰撞，并且它的运动延迟，而在右侧，运动是连续和平滑的。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/lagging_subtask.gif"><img alt="子任务拆分示例" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/lagging_subtask.gif" style="width: 99%;" />
+</a>
+</figure>
+<p class="centered">
+<strong>由于不良子任务分割造成的运动延迟/碰撞（向左）</strong></p></section>
+<section id="selecting-number-of-interpolation-steps">
+<h3>选择插值步数<a class="headerlink" href="#selecting-number-of-interpolation-steps" title="Link to this heading">#</a></h3>
+<p>在 <a class="reference internal" href="../../api/lab/isaaclab.envs.html#isaaclab.envs.SubTaskConfig" title="isaaclab.envs.SubTaskConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubTaskConfig</span></code></a> 类中可以指定子任务段之间的插值步数。转换后，子任务段不会在同一位置开始/结束，因此为了创建连续运动，Isaac Lab Mimic 将在前一个子任务的最后一个点和下一个子任务的第一个点之间应用线性插值。</p>
+<p>插值步数的数量可以调整，以控制在这个拼接过程中生成的演示的平滑度。适当的插值步数取决于机器人的速度和任务的复杂性。具有较大物体重置分布的复杂任务将在子任务段之间具有更大的间隙，并需要更多的插值步骤来创建平滑运动。另外，对于子任务段之间间隔较小的任务，应该使用较少的插值步骤，以避免由于过多步骤导致的不必要的动作延迟。</p>
+<p>以下显示了插值步数如何影响生成的演示示例。在这个示例中，将对机器人的右臂进行插值，以弥合左臂抓取和右臂放置之间的差距。在 0 步的情况下，右臂在运动中出现突然跳跃，而在 20 步的情况下，运动会显得延迟。在 5 步的情况下，运动是平滑而自然的。</p>
+<p><a class="reference internal" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/0_interpolation_steps.gif"><img alt="GR-1 机器人，0 插值步骤" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/0_interpolation_steps.gif" style="width: 32%;" /></a> <a class="reference internal" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/5_interpolation_steps.gif"><img alt="GR-1 机器人，5 个插补步骤" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/5_interpolation_steps.gif" style="width: 32%;" /></a> <a class="reference internal" href="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/20_interpolation_steps.gif"><img alt="GR-1 机器人，20 个插值步骤" src="https://download.isaacsim.omniverse.nvidia.com/isaaclab/images/20_interpolation_steps.gif" style="width: 32%;" /></a></p>
+<p class="centered">
+<strong>左侧: 0 步。中间: 5 步。右侧: 20 步。</strong></p></section>
+</section>
+<section id="common-pitfalls-when-generating-data">
+<span id="common-pitfalls-generating-data"></span><h2>生成数据时常见的陷阱<a class="headerlink" href="#common-pitfalls-when-generating-data" title="Link to this heading">#</a></h2>
+<p><strong>示范轨迹过长：</strong></p>
+<ul class="simple">
+<li><p>更长的时间范围对于策略来说更难学习</p></li>
+<li><p>从第一个物体开始，尽量减少运动</p></li>
+</ul>
+<p><strong>演示不流畅:</strong></p>
+<ul class="simple">
+<li><p>不规则运动很难被策略解读</p></li>
+<li><p>更好的遥控设备带来更好的数据（即 SpaceMouse 比 Keyboard 更好）</p></li>
+</ul>
+<p><strong>演示中的暂停:</strong></p>
+<ul class="simple">
+<li><p>暂停是难以学习的</p></li>
+<li><p>保持人类动作平滑流畅</p></li>
+</ul>
+<p><strong>过多的子任务:</strong></p>
+<ul class="simple">
+<li><p>最小化完成给定任务所需定义的子任务数量</p></li>
+<li><p>较少的子任务导致较少的轨迹拼接，从而提高了数据生成成功率</p></li>
+</ul>
+<p><strong>缺乏动作噪声:</strong></p>
+<ul class="simple">
+<li><p>动作从使策略更加鲁棒</p></li>
+</ul>
+<p><strong>录制裁剪过于紧密:</strong></p>
+<ul class="simple">
+<li><p>如果录制在成功项触发的帧上停止，则在回放期间可能不会重新触发</p></li>
+<li><p>允许在录制结束时留出一些缓冲区</p></li>
+</ul>
+<p><strong>非确定性重放:</strong></p>
+<ul class="simple">
+<li><p>在 IsaacLab 中，使用 <code class="docutils literal notranslate"><span class="pre">env.reset</span></code> 时，物理仿真无法确定性地复现，因此在回放时，演示可能会失败。</p></li>
+<li><p>收集比所需更多的人类演示，使用在标注过程中成功的那些</p></li>
+<li><p>所有在 Isaac Lab Mimic 生成的 HDF5 文件中的数据都代表一个成功的演示，并且可以用于训练（即使非确定性在重放时导致失败）。</p></li>
+</ul>
+</section>
+<section id="glossary">
+<span id="glossary-mimic-terminology"></span><h2>术语表<a class="headerlink" href="#glossary" title="Link to this heading">#</a></h2>
+<dl class="simple glossary">
+<dt id="term-Isaac-Lab-Mimic-Mimic">Isaac Lab Mimic（Mimic）<a class="headerlink" href="#term-Isaac-Lab-Mimic-Mimic" title="Link to this term">#</a></dt><dd><p>从少量人类示范生成不同空间配置下机器人新示范的工具。</p>
+</dd>
+<dt id="term-Subtask">子任务<a class="headerlink" href="#term-Subtask" title="Link to this term">#</a></dt><dd><p>人类示范中的连续片段，期间机器人末端执行器的动作由单个刚性物体决定。</p>
+</dd>
+<dt id="term-Annotated-Dataset">已标注数据集<a class="headerlink" href="#term-Annotated-Dataset" title="Link to this term">#</a></dt><dd><p>包含人类示范并标记子任务完成边界的 HDF5 数据集。</p>
+</dd>
+<dt id="term-IK">IK<a class="headerlink" href="#term-IK" title="Link to this term">#</a></dt><dd><p>逆向运动学。</p>
+</dd>
+<dt id="term-FK">FK<a class="headerlink" href="#term-FK" title="Link to this term">#</a></dt><dd><p>正向运动学。</p>
+</dd>
+<dt id="term-Task-Space-Action">任务空间动作<a class="headerlink" href="#term-Task-Space-Action" title="Link to this term">#</a></dt><dd><p>定义在机器人末端执行器空间中的动作，由空间平移（XYZ）和朝向（四元数或欧拉角）描述。</p>
+</dd>
+<dt id="term-State-based-Policy">基于状态的策略<a class="headerlink" href="#term-State-based-Policy" title="Link to this term">#</a></dt><dd><p>以状态向量为输入、输出机器人动作的策略。</p>
+</dd>
+<dt id="term-Visuomotor-Policy">视觉运动策略：<a class="headerlink" href="#term-Visuomotor-Policy" title="Link to this term">#</a></dt><dd><p>以相机图像为输入、输出机器人动作的策略。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">模仿学习</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="humanoids_imitation.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">示例：人形机器人的数据生成与模仿学习</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-isaac-lab-mimic">什么是 Isaac Lab Mimic？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-human-data-collection">步骤 1：采集人类示范数据</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-introduction">环境介绍</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teleoperation">遥操作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-teleoperation-with-xr-headsets">（可选）使用 XR 头显遥操作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-a-dataset-of-human-demonstrations">采集人类示范数据集</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-synthetic-data-generation-using-isaac-lab-mimic">步骤 2：使用 Isaac Lab Mimic 生成合成数据</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-download-pre-recorded-human-demonstrations">（可选）下载预录制的人类示范</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-additional-synthetic-demonstrations">生成更多合成示范</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-policy-training">步骤 3：训练策略</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-robomimic">安装 Robomimic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-an-agent">训练智能体</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-results">查看结果</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#humanoid-examples">人形机器人示例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-your-own-isaac-lab-mimic-compatible-environments">创建您自己的 Isaac Lab Mimic 兼容环境</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">它是如何工作的</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-and-subtask-definition">配置和子任务定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subtask-annotation">子任务标注</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#helpers-for-demonstration-generation">生成演示的帮助程序</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-the-environment">注册环境</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-successful-data-generation-with-isaac-lab-mimic">成功使用 Isaac Lab Mimic 进行数据生成的技巧</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-subtasks">划分子任务</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-number-of-interpolation-steps">选择插值步数</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-pitfalls-when-generating-data">生成数据时常见的陷阱</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#glossary">术语表</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2026, The Isaac Lab Project Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 10 月 10 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <!--Matomo--><script>var _paq=window._paq=window._paq||[];_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//matomo.robotsfan.com/";_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
