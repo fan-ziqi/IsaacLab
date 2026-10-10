@@ -1,9 +1,7 @@
 【非官方】关于翻译
 ===============================
 
-.. attention::
-
-   本站为 `范子琦 <https://github.com/fan-ziqi>`__ 维护的非官方中文翻译，与 NVIDIA 和 Isaac Lab 官方无关。译文仅供学习交流，禁止转载或用于商业用途。
+.. include:: ../../_includes/translation_notice.txt
 
 当前译文基于官方 ``release/3.0.0`` 分支，翻译项目仍在 ``main`` 分支维护。指南、教程和版本说明提供中文译文，``API`` 与 ``CHANGELOG`` 保留英文。
 
@@ -25,9 +23,9 @@
 
    .. raw:: html
 
-      <div style="display: flow-root; margin: 0.75rem 0;">
-        <a href="https://www.buymeacoffee.com/robotsfan" aria-label="在 Buy Me a Coffee 支持本站" style="float: right; display: flex; align-items: center; justify-content: center; width: 217px; height: 60px; background: #ffdd00; color: #000; border-radius: 6px; font-weight: 600; text-decoration: none;">
-          <img align="right" style="height: 60px !important; width: 217px !important;" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" data-link-fallback="true" />
+      <div style="display: flex; justify-content: center; margin: 0.75rem 0;">
+        <a href="https://www.buymeacoffee.com/robotsfan" aria-label="在 Buy Me a Coffee 支持本站" style="display: flex; align-items: center; justify-content: center; width: 217px; height: 60px; background: #ffdd00; color: #000; border-radius: 6px; font-weight: 600; text-decoration: none;">
+          <img style="height: 60px !important; width: 217px !important;" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" data-link-fallback="true" />
         </a>
       </div>
 
