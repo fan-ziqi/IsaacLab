@@ -244,7 +244,7 @@ fi
 echo -e "${CYAN}Installing system dependencies...${RESET}"
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 2>/dev/null || true
 sudo apt-get update -qq
-sudo apt-get install -y cmake build-essential git wget g++-11
+sudo apt-get install -y cmake build-essential git wget curl g++-11
 
 divider
 
