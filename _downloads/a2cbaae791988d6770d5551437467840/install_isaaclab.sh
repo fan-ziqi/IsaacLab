@@ -4,7 +4,7 @@
 # Supports: conda / uv package managers
 # Versions: v3.0.0 (release/3.0.0), v1.4.1, v2.3.2, main, develop (extensible)
 # ============================================================================
-# Version: v3.0.3
+# Version: v3.0.4
 # Author: Ziqi Fan
 # Email: fanziqi614@gmail.com
 # GitHub: https://github.com/fan-ziqi
@@ -32,7 +32,7 @@ divider() {
 
 print_author_info() {
     echo -e "${BOLD}One-click Installation Script for IsaacSim and IsaacLab (pip only)${RESET}"
-    echo "Version: v3.0.3"
+    echo "Version: v3.0.4"
     echo "Author: Ziqi Fan"
     echo "Email: fanziqi614@gmail.com"
     echo "GitHub: https://github.com/fan-ziqi"
@@ -617,11 +617,11 @@ if [[ "$ANSWER" == "y" ]]; then
     if [ "$GIT_TAG" == "v1.4.1" ]; then
         python source/standalone/tutorials/00_sim/create_empty.py
     elif [[ "$SELECTED_VERSION" == "v3.0.0" && "$INSTALL_BACKEND" == "newton" ]]; then
-        # The empty-stage tutorial needs Isaac Sim; use a Newton-only example.
+        # Use a Newton-only demo that does not download external robot assets.
         if [[ "$PKG_MANAGER" == "uv" ]]; then
-            uv run --active isaaclab example newton-dominoes --viz newton_gl
+            uv run --active isaaclab demo newton-block-and-tackle --viz newton_gl
         else
-            ./isaaclab.sh -p examples/newton_viewer_dominoes.py --viz newton_gl
+            ./isaaclab.sh -p examples/demos/newton_viewer_block_and_tackle.py --viz newton_gl
         fi
     elif [[ "$GIT_TAG" == "v2.3.2" ]]; then
         ./isaaclab.sh -p scripts/tutorials/00_sim/create_empty.py
