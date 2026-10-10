@@ -1,0 +1,552 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:2
+msgid "Exporting Policies with LEAPP"
+msgstr "使用 LEAPP 导出策略"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:6
+msgid ""
+"This guide covers how to export and deploy trained reinforcement learning "
+"policies from Isaac Lab using `LEAPP <https://nvidia-"
+"isaac.github.io/leapp/>`__ (Lightweight Export Annotations for Policy "
+"Pipelines). The main goal of the LEAPP export path is to package a policy "
+"together with the input and output semantics needed for deployment, so "
+"downstream users do not need to reimplement Isaac Lab observation "
+"preprocessing, action postprocessing, or recurrent-state handling by hand."
+msgstr ""
+"本指南介绍如何使用 `LEAPP <https://nvidia-isaac.github.io/leapp/>`__ （Lightweight "
+"Export Annotations for Policy Pipelines，策略流水线轻量级导出标注）从 Isaac Lab "
+"导出并部署已训练的强化学习策略。LEAPP 导出的主要目的，是将策略与部署所需的输入、输出语义一同打包，让下游用户无需手动重新实现 Isaac Lab "
+"的观测预处理、动作后处理或循环状态处理。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:12
+msgid ""
+"The Isaac Lab LEAPP exporter traces the data flowing between the policy and "
+"the simulation, capturing the operations applied along the way. It also "
+"embeds semantic metadata for the exported policy inputs and outputs. Isaac "
+"Lab can consume these exports through :class:`~envs.LeappDeploymentEnv` for "
+"deployment in simulation. You can also deploy LEAPP-exported policies "
+"directly on real robots through ROS using `Isaac ROS Deploy <https://nvidia-"
+"isaac-"
+"ros.github.io/repositories_and_packages/isaac_ros_deploy/index.html>`__ or "
+"build your own deployment orchestration by parsing the YAML."
+msgstr ""
+"Isaac Lab 的 LEAPP 导出器跟踪策略与仿真之间的数据流，捕获沿途执行的操作，并为导出的策略输入、输出嵌入语义元数据。Isaac Lab "
+"可通过 :class:`~envs.LeappDeploymentEnv` 加载这些导出产物，在仿真中部署。也可以通过 ROS，使用 `Isaac "
+"ROS Deploy <https://nvidia-isaac-"
+"ros.github.io/repositories_and_packages/isaac_ros_deploy/index.html>`__ "
+"直接部署到真实机器人，或解析 YAML，自行组织部署流程。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:19
+msgid ""
+"Side-by-side UR10 reaching motions in Isaac Lab on the left and on a "
+"physical robot on the right."
+msgstr "UR10 到达目标的运动对比：左侧为 Isaac Lab 仿真，右侧为真实机器人。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:24
+msgid ""
+"A LEAPP-exported ``Isaac-Reach-UR10`` policy deployed on a physical robot."
+msgstr "通过 LEAPP 导出的 ``Isaac-Reach-UR10`` 策略部署到真实机器人。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:27
+msgid "Supported Workflows"
+msgstr "支持的工作流"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:29
+msgid ""
+"**Manager-based RL environments:** Export policies trained with ``rsl_rl``, "
+"``rl_games``, ``skrl``, or ``sb3`` and run them in Isaac Lab with "
+":class:`~envs.LeappDeploymentEnv`."
+msgstr ""
+"**基于管理器的 RL 环境：** 导出通过 ``rsl_rl`` 、 ``rl_games`` 、 ``skrl`` 或 ``sb3`` "
+"训练的策略，并使用 :class:`~envs.LeappDeploymentEnv` 在 Isaac Lab 中运行。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:31
+msgid ""
+"**Direct RL environments:** Export RSL-RL policies after adding LEAPP "
+"annotations; see the :doc:`Direct workflow export guide "
+"<exporting_direct_workflow_policies_with_leapp>`. These policies are not "
+"supported by :class:`~envs.LeappDeploymentEnv`."
+msgstr ""
+"**Direct RL 环境：** 添加 LEAPP 标注后导出 RSL-RL 策略，见 :doc:`Direct 工作流导出指南 "
+"<exporting_direct_workflow_policies_with_leapp>` 。 "
+":class:`~envs.LeappDeploymentEnv` 不支持这类策略。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:34
+msgid ""
+"**Physics backends:** Export with Isaac Sim PhysX, Newton MJWarp, or OV "
+"PhysX, as supported by your task. Use the same backend and configuration as "
+"training."
+msgstr ""
+"**物理后端：** 根据任务支持情况，使用 Isaac Sim PhysX、Newton MJWarp 或 OV PhysX "
+"导出。后端及配置应与训练时一致。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:45
+msgid ""
+"For more information on LEAPP, please visit the `LEAPP documentation "
+"<https://nvidia-isaac.github.io/leapp/>`__."
+msgstr "LEAPP 的更多信息见 `LEAPP 文档 <https://nvidia-isaac.github.io/leapp/>`__ 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:50
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:52
+msgid ""
+"This export flow requires ``leapp``, Python >= 3.10, and PyTorch >= 2.6. "
+"``leapp`` is a specialized optional extra (it is not part of ``--extra "
+"all``)."
+msgstr ""
+"这一导出流程需要 ``leapp`` 、Python >= 3.10 及 PyTorch >= 2.6。 ``leapp`` "
+"是专用的可选额外依赖，不包含在 ``--extra all`` 中。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:55
+msgid ""
+"Select extras the same way as ``isaaclab train``: add ``--extra leapp`` on "
+"every ``uv run``, and add the backend extra that matches your task. "
+"``--extra`` makes the integration available; ``physics=...`` selects it for "
+"the task:"
+msgstr ""
+"额外依赖的选择方式与 ``isaaclab train`` 相同：每次 ``uv run`` 都添加 ``--extra leapp`` "
+"，以及与任务匹配的后端额外依赖。 ``--extra`` 使集成可用， ``physics=...`` 为任务选择该集成："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:59
+msgid "**Newton** (kitless): ``--extra leapp`` (no Isaac Sim extra)"
+msgstr "**Newton** （不依赖 Kit）： ``--extra leapp`` （无需 Isaac Sim 额外依赖）"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:60
+msgid ""
+"**OV PhysX**: ``--extra ovphysx --extra leapp`` with ``physics=ovphysx``"
+msgstr ""
+"**OV PhysX** ： ``--extra ovphysx --extra leapp`` ，配合 ``physics=ovphysx``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:61
+msgid ""
+"**Isaac Sim PhysX**: ``--extra isaacsim --extra leapp`` with "
+"``physics=isaacsim_physx``"
+msgstr ""
+"**Isaac Sim PhysX** ： ``--extra isaacsim --extra leapp`` ，配合 "
+"``physics=isaacsim_physx``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:63
+msgid ""
+"See :ref:`uv-run-training` and :ref:`installation-optional-extras` for the "
+"full extras model used by training and play."
+msgstr ""
+"训练和回放使用的完整额外依赖机制，见 :ref:`uv-run-training` 及 :ref:`installation-optional-"
+"extras` 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:68
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:70
+msgid "Export a trained policy, then launch the exported policy in Isaac Lab:"
+msgstr "先导出已训练策略，再在 Isaac Lab 中启动导出的策略："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:82
+msgid ""
+"Continue with the sections below to select a different RL library, configure"
+" the export, and validate the generated artifacts."
+msgstr "下文介绍如何选择其他 RL 库、配置导出并验证生成的产物。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:87
+msgid "Why Export with LEAPP"
+msgstr "为什么使用 LEAPP 导出"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:89
+msgid ""
+"Running the export command generates a self-contained export directory "
+"alongside your checkpoint (or at a custom path). The directory contains:"
+msgstr "运行导出命令后，会在检查点所在目录（或自定义路径）生成一个独立完整的导出目录，包含："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:92
+msgid ""
+"**Exported model files** — ``.onnx`` (default) or ``.pt`` depending on the "
+"chosen backend."
+msgstr "**导出的模型文件** ：根据所选后端，为 ``.onnx`` （默认）或 ``.pt`` 文件。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:93
+msgid ""
+"**Export metadata** — LEAPP records the semantic information and wiring "
+"needed by downstream deployment runtimes, including the policy execution "
+"frequency."
+msgstr "**导出元数据** ：LEAPP 记录下游部署运行时所需的语义信息和连接关系，包括策略执行频率。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:95
+msgid ""
+"**Initial values** — a ``.safetensors`` file for any feedback state, such as"
+" recurrent hidden state or last action."
+msgstr "**初始值** ： ``.safetensors`` 文件，存储循环隐藏状态或上一动作等反馈状态的初始值。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:97
+msgid ""
+"**A graph visualization** — a ``.png`` diagram of the pipeline (can be "
+"disabled)."
+msgstr "**计算图可视化** ：流水线的 ``.png`` 示意图，可选择不生成。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:99
+msgid ""
+"The exported artifact encapsulates the policy and all observation "
+"preprocessing and action postprocessing performed in Isaac Lab, so "
+"deployment frameworks do not need to replicate that logic."
+msgstr "导出产物封装策略，以及 Isaac Lab 中执行的所有观测预处理和动作后处理，部署框架无需重新实现这些逻辑。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:102
+msgid ""
+"For a detailed description of LEAPP's generated artifacts and APIs, refer to"
+" the `LEAPP documentation <https://nvidia-isaac.github.io/leapp/>`_."
+msgstr ""
+"LEAPP 生成产物及 API 的详细说明，见 `LEAPP 文档 <https://nvidia-isaac.github.io/leapp/>`_ "
+"。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:107
+msgid "Exporting a Policy"
+msgstr "导出策略"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:111
+msgid ""
+"Export requires a trained checkpoint. Normally you train a policy first — "
+"follow :ref:`uv-run-training` and "
+":doc:`/source/concepts/reinforcement_learning` — and the export command then"
+" discovers the newest matching local run automatically. To get started "
+"without training, RSL-RL can pass ``--checkpoint pretrained`` to download a "
+"published policy for a supported core task and backend combination "
+"(availability is limited; see :ref:`pretrained-checkpoints`)."
+msgstr ""
+"导出需要已训练的检查点。通常先按 :ref:`uv-run-training` 和 "
+":doc:`/source/concepts/reinforcement_learning` "
+"训练策略，导出命令随后会自动查找本地最新的匹配运行。如果希望跳过训练直接开始，RSL-RL 可传入 ``--checkpoint "
+"pretrained`` ，下载支持的核心任务与后端组合对应的已发布策略（可用范围有限，见 :ref:`pretrained-checkpoints` "
+"）。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:119
+msgid ""
+"Use ``--rl_library`` to select the RL library that produced the checkpoint. "
+"The supported libraries are ``rsl_rl``, ``rl_games``, ``skrl``, and ``sb3``."
+" Export runs headless by default. Use the same backend extra and "
+"``physics=...`` selector that you used for training. For Isaac Sim Kit "
+"launches in non-interactive shells, set the EULA variables so startup does "
+"not prompt:"
+msgstr ""
+"使用 ``--rl_library`` 选择生成检查点的 RL 库。支持 ``rsl_rl`` 、 ``rl_games`` 、 ``skrl`` 和 "
+"``sb3`` 。导出默认无界面运行，请使用与训练时相同的后端额外依赖及 ``physics=...`` 选择项。在非交互式 shell 中启动 "
+"Isaac Sim Kit 时，应设置 EULA 环境变量，避免启动时等待确认："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:0
+msgid ":icon:`fa-brands fa-linux` Linux"
+msgstr ":icon:`fa-brands fa-linux` Linux"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:0
+msgid ":icon:`fa-brands fa-windows` Windows"
+msgstr ":icon:`fa-brands fa-windows` Windows"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:164
+msgid ""
+"When ``--checkpoint`` is omitted, the exporter uses the selected task's "
+"agent configuration to find the default checkpoint in the newest matching "
+"local run. This avoids hardcoding the experiment directory or training "
+"iteration in the command. Pass ``--checkpoint <PATH_TO_CHECKPOINT>`` to "
+"export a specific model instead."
+msgstr ""
+"省略 ``--checkpoint`` "
+"时，导出器根据所选任务的智能体配置，在最新的匹配本地运行中查找默认检查点，因此无需在命令中写死实验目录或训练迭代次数。要导出指定模型，请传入 "
+"``--checkpoint <PATH_TO_CHECKPOINT>`` 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:169
+msgid ""
+"For example, to export a Humanoid policy trained with RSL-RL on Isaac Sim "
+"PhysX:"
+msgstr "例如，导出在 Isaac Sim PhysX 上通过 RSL-RL 训练的 Humanoid 策略："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:193
+msgid ""
+"By default, the export artifacts are saved in the same directory as the "
+"checkpoint. The exported graph is named after the task."
+msgstr "默认情况下，导出产物保存到检查点所在目录，导出的计算图以任务名命名。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:198
+msgid "CLI Options"
+msgstr "命令行选项"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:200
+msgid ""
+"The export command accepts the following common LEAPP-specific arguments in "
+"addition to backend-specific and launcher arguments (see "
+":func:`~isaaclab.app.add_launcher_args`):"
+msgstr ""
+"除了后端及启动器参数（见 :func:`~isaaclab.app.add_launcher_args` ），导出命令还接受以下通用 LEAPP "
+"专用参数："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:207
+msgid "Argument"
+msgstr "参数"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:208
+msgid "Default"
+msgstr "默认值"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:209
+msgid "Description"
+msgstr "描述"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:210
+msgid "``--checkpoint``"
+msgstr "``--checkpoint``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:211
+msgid "Automatic local discovery"
+msgstr "自动查找本地检查点"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:212
+msgid ""
+"Path to a specific checkpoint, or ``pretrained`` to request the published "
+"checkpoint for the resolved task, RL library, physics backend, and renderer "
+"backend."
+msgstr "指定检查点的路径，或 ``pretrained`` ，后者请求与已确定的任务、RL 库、物理后端和渲染后端对应的已发布检查点。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:214
+msgid "``--export_task_name``"
+msgstr "``--export_task_name``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:215
+msgid "Task name"
+msgstr "任务名"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:216
+msgid "Name for the exported graph and output directory."
+msgstr "导出计算图及输出目录的名称。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:217
+msgid "``--export_method``"
+msgstr "``--export_method``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:218
+msgid "``onnx-dynamo``"
+msgstr "``onnx-dynamo``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:219
+msgid ""
+"Select the export backend based on the artifact format you need. ``onnx-"
+"dynamo`` is the recommended default; the other choices are optional. If one "
+"backend does not support your model, try another. See the `LEAPP export "
+"guide <https://nvidia-isaac.github.io/leapp/guides/export.html>`__ for "
+"options and guidance."
+msgstr ""
+"根据所需产物格式选择导出后端。推荐默认的 ``onnx-dynamo`` ，其他选项按需使用。如果某个后端不支持模型，可以尝试其他后端。选项及建议见 "
+"`LEAPP 导出指南 <https://nvidia-isaac.github.io/leapp/guides/export.html>`__ 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:224
+msgid "``--export_save_path``"
+msgstr "``--export_save_path``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:225
+msgid "Checkpoint dir"
+msgstr "检查点目录"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:226
+msgid "Base directory for export output."
+msgstr "导出输出的基础目录。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:227
+msgid "``--validation_steps``"
+msgstr "``--validation_steps``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:228
+msgid "``5``"
+msgstr "``5``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:229
+msgid ""
+"Number of environment steps to run during the traced rollout. Set to ``0`` "
+"to skip validation."
+msgstr "跟踪轨迹运行期间执行的环境步数。设为 ``0`` 可跳过验证。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:231
+msgid "``--disable_graph_visualization``"
+msgstr "``--disable_graph_visualization``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:232
+msgid "``False``"
+msgstr "``False``"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:233
+msgid "Skip generating the pipeline graph PNG."
+msgstr "不生成流水线计算图 PNG。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:237
+msgid ""
+"``--checkpoint pretrained`` is supported by the RSL-RL, RL-Games, skrl, and "
+"Stable-Baselines3 exporters, but a published artifact is not available for "
+"every task and backend combination. If no matching artifact has been "
+"published, the exporter reports that it is unavailable and exits. Train the "
+"task locally and omit ``--checkpoint`` for automatic discovery, or pass an "
+"explicit checkpoint path. See :ref:`pretrained-checkpoints` for checkpoint "
+"availability."
+msgstr ""
+"RSL-RL、RL-Games、skrl 和 Stable-Baselines3 导出器都支持 ``--checkpoint pretrained`` "
+"，但并非每种任务与后端组合都有已发布的产物。没有匹配产物时，导出器会提示不可用并退出。此时请在本地训练任务，再省略 ``--checkpoint`` "
+"以自动查找，或显式传入检查点路径。检查点可用情况见 :ref:`pretrained-checkpoints` 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:245
+msgid "How It Works (High Level)"
+msgstr "工作原理概览"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:247
+msgid "The export command performs the following steps:"
+msgstr "导出命令执行以下步骤："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:249
+msgid ""
+"**Creates the environment** with ``num_envs=1`` and loads the trained "
+"checkpoint."
+msgstr "以 ``num_envs=1`` **创建环境** ，并加载已训练的检查点。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:250
+msgid ""
+"**Patches the environment** for export. This step injects annotations into "
+"the environment so that tensor i/o to the pipeline are identified by LEAPP "
+"during execution."
+msgstr "为导出 **修改环境** 。此步骤向环境注入标注，使 LEAPP 能在执行期间识别流水线的张量输入、输出。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:252
+msgid ""
+"**Runs a short rollout** (controlled by ``--validation_steps``) with LEAPP "
+"tracing active. During this rollout, LEAPP traces all tensor operations in "
+"the pipeline and automatically builds an onnx file."
+msgstr ""
+"启用 LEAPP 跟踪， **运行一小段轨迹** （由 ``--validation_steps`` 控制）。期间，LEAPP "
+"跟踪流水线中的所有张量操作，并自动生成 ONNX 文件。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:255
+msgid ""
+"**Compiles the graph** so the exported model and deployment metadata can be "
+"consumed by downstream runtimes, and optionally validates that the exported "
+"model reproduces the traced outputs."
+msgstr "**编译计算图** ，让下游运行时能加载导出模型及部署元数据，并可选择验证导出模型是否复现被跟踪的输出。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:259
+msgid ""
+"The patching is transparent to the policy; no changes to your training code "
+"or environment configuration are needed."
+msgstr "这些修改对策略透明，无需改变训练代码或环境配置。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:264
+msgid ""
+"LEAPP is designed to support a broad range of model architectures, but the "
+"current implementation has a few important limitations:"
+msgstr "LEAPP 的设计旨在支持广泛的模型架构，但当前实现存在一些重要限制："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:267
+msgid ""
+"**Dynamic control flow** is not supported when the condition depends on "
+"runtime tensor values, such as tensor-dependent ``if``, ``for``, or "
+"``while`` logic."
+msgstr "不支持条件依赖运行时张量值的 **动态控制流** ，例如由张量决定的 ``if`` 、 ``for`` 或 ``while`` 逻辑。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:269
+msgid ""
+"**Critical traced operations should avoid unsupported third-party "
+"libraries.** PyTorch operations are the best-supported path. NumPy "
+"conversions inside the traced node can be captured when they do not cross "
+"the graph boundary, but external library calls may not be traceable. This "
+"export path does not currently support Warp operations."
+msgstr ""
+"**关键的被跟踪操作应避免使用不支持的第三方库。** PyTorch 操作的支持最完善。跟踪节点内未跨越计算图边界的 NumPy "
+"转换可以被捕获，但外部库调用可能无法跟踪。当前导出流程不支持 Warp 操作。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:276
+msgid "Verifying an Export"
+msgstr "验证导出结果"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:278
+msgid "Verify an export in the following order:"
+msgstr "按以下顺序验证："
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:280
+msgid ""
+"**Run automatic validation.** Keep ``--validation_steps`` greater than zero "
+"so LEAPP can replay the traced rollout and compare the exported artifact "
+"with the original policy. This catches conversion errors, unsupported "
+"operations, output mismatches, and common feedback-state issues."
+msgstr ""
+"**运行自动验证。** 保持 ``--validation_steps`` 大于零，让 LEAPP "
+"重放被跟踪的轨迹，并比较导出产物与原始策略。这能发现转换错误、不支持的操作、输出不一致及常见反馈状态问题。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:285
+msgid ""
+"**Inspect the generated graph.** Open the graph PNG to confirm the expected "
+"inputs, outputs, and feedback edges are present. Keep graph generation "
+"enabled while developing a new export path; use "
+"``--disable_graph_visualization`` only when you do not need it."
+msgstr ""
+"**检查生成的计算图。** 打开计算图 PNG，确认预期输入、输出和反馈边都存在。开发新的导出流程时应保留计算图生成；只有不需要时才使用 "
+"``--disable_graph_visualization`` 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:289
+msgid ""
+"**Review the LEAPP log.** When validation fails or the artifacts look "
+"unexpected, the log is the best starting point for backend errors, missing "
+"metadata, and unsupported model patterns."
+msgstr "**查看 LEAPP 日志。** 验证失败或产物不符合预期时，应先查日志，寻找后端错误、缺失元数据或不支持的模型模式。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:293
+msgid ""
+"Use the default ``onnx-dynamo`` backend unless your downstream runtime or "
+"workflow requires another format. Backend support can vary by model, so if "
+"one backend fails, try another backend that produces an acceptable artifact "
+"format."
+msgstr ""
+"除非下游运行时或工作流要求其他格式，否则请使用默认的 ``onnx-dynamo`` "
+"后端。后端支持情况因模型而异；某个后端失败时，可尝试能生成合适产物格式的其他后端。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:297
+msgid ""
+"For details on ONNX, JIT, and PT2 export formats, see the `LEAPP export "
+"guide <https://nvidia-isaac.github.io/leapp/guides/export.html>`__."
+msgstr ""
+"ONNX、JIT 和 PT2 导出格式的详细信息，见 `LEAPP 导出指南 <https://nvidia-"
+"isaac.github.io/leapp/guides/export.html>`__ 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:301
+msgid ""
+"To run an exported policy in Isaac Lab, see the :doc:`deployment guide "
+"<deploying_exported_policies_with_leapp>`."
+msgstr ""
+"在 Isaac Lab 中运行导出策略的方法，见 :doc:`部署指南 "
+"<deploying_exported_policies_with_leapp>` 。"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:306
+msgid "Further Reading"
+msgstr "延伸阅读"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:308
+msgid "`LEAPP documentation <https://nvidia-isaac.github.io/leapp/>`__"
+msgstr "`LEAPP 文档 <https://nvidia-isaac.github.io/leapp/>`__"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:309
+msgid ""
+"`LEAPP API reference <https://nvidia-"
+"isaac.github.io/leapp/api/index.html>`__"
+msgstr ""
+"`LEAPP API 参考 <https://nvidia-isaac.github.io/leapp/api/index.html>`__"
+
+#: source/policy_deployment/05_leapp/exporting_policies_with_leapp.rst:310
+msgid ":class:`~envs.LeappDeploymentEnv` API reference"
+msgstr ":class:`~envs.LeappDeploymentEnv` API 参考"

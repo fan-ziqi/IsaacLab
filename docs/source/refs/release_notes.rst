@@ -1666,14 +1666,30 @@ and :attr:`~isaaclab.actuators.ActuatorBaseCfg.effort_limit` inside the actuator
 of changes in-between led to a regression from v1.4.0 to v2.0.1 release of IsaacLab. To make this
 clearer to understand, we note the change in their behavior in a tabular form:
 
-+---------------+-------------------------+--------------------------------------------------------------------+----------------------------------------------------------------+
-| Actuator Type | Attribute               | v1.4.0 Behavior                                                    | v2.0.1 Behavior                                                |
-+---------------+-------------------------+--------------------------------------------------------------------+----------------------------------------------------------------+
-| Implicit      | :attr:`velocity_limit`  | Ignored, not set into simulation                                   | Set into simulation                                            |
-| Implicit      | :attr:`effort_limit`    | Set into simulation                                                | Set into simulation                                            |
-| Explicit      | :attr:`velocity_limit`  | Used by actuator models (e.g., DC Motor), not set into simulation  | Used by actuator models (e.g., DC Motor), set into simulation  |
-| Explicit      | :attr:`effort_limit`    | Used by actuator models, not set into simulation                   | Used by actuator models, set into simulation                   |
-+---------------+-------------------------+--------------------------------------------------------------------+----------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+
+   * - Actuator Type
+     - Attribute
+     - v1.4.0 Behavior
+     - v2.0.1 Behavior
+   * - Implicit
+     - :attr:`velocity_limit`
+     - Ignored, not set into simulation
+     - Set into simulation
+   * - Implicit
+     - :attr:`effort_limit`
+     - Set into simulation
+     - Set into simulation
+   * - Explicit
+     - :attr:`velocity_limit`
+     - Used by actuator models (e.g., DC Motor), not set into simulation
+     - Used by actuator models (e.g., DC Motor), set into simulation
+   * - Explicit
+     - :attr:`effort_limit`
+     - Used by actuator models, not set into simulation
+     - Used by actuator models, set into simulation
+
 
 Setting the limits from the configuration into the simulation directly affects the behavior
 of the underlying physics engine solver. This impact is particularly noticeable when velocity
@@ -1685,14 +1701,25 @@ Consequently, we have reverted back to the prior behavior and added :attr:`veloc
 :attr:`effort_limit_sim` attributes to make it clear that setting those parameters means
 changing solver's configuration. The new behavior is as follows:
 
-+----------------------------+--------------------------------------------------------+-------------------------------------------------------------+
-| Attribute                  | Implicit Actuator                                      | Explicit Actuator                                           |
-+============================+========================================================+=============================================================+
-| :attr:`velocity_limit`     | Ignored, not set into simulation                       | Used by the model (e.g., DC Motor), not set into simulation |
-| :attr:`effort_limit`       | Set into simulation (same as :attr:`effort_limit_sim`) | Used by the models, not set into simulation                 |
-| :attr:`velocity_limit_sim` | Set into simulation                                    | Set into simulation                                         |
-| :attr:`effort_limit_sim`   | Set into simulation (same as :attr:`effort_limit`)     | Set into simulation                                         |
-+----------------------------+--------------------------------------------------------+-------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+
+   * - Attribute
+     - Implicit Actuator
+     - Explicit Actuator
+   * - :attr:`velocity_limit`
+     - Ignored, not set into simulation
+     - Used by the model (e.g., DC Motor), not set into simulation
+   * - :attr:`effort_limit`
+     - Set into simulation (same as :attr:`effort_limit_sim`)
+     - Used by the models, not set into simulation
+   * - :attr:`velocity_limit_sim`
+     - Set into simulation
+     - Set into simulation
+   * - :attr:`effort_limit_sim`
+     - Set into simulation (same as :attr:`effort_limit`)
+     - Set into simulation
+
 
 Users are advised to use the ``xxx_sim`` flag if they want to directly modify the solver limits.
 

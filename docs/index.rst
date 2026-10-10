@@ -5,6 +5,19 @@ Welcome to Isaac Lab!
    :width: 100%
    :alt: H1 Humanoid example using Isaac Lab
 
+.. attention::
+
+    本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由 `范子琦 <https://github.com/fan-ziqi>`__ 提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。详情请查看 `关于翻译 <source/setup/translation.html>`_ 章节。
+
+    官方文档提供多个版本。本站由本项目的 ``main`` 分支发布，当前译文以官方 ``release/3.0.0`` 分支为基准。除下述旧版存档外，不提供完整的历史版本翻译。
+
+    由于 1.x 与后续版本的 API 差异较大，本站保留了一份 1.x 文档存档（并非严格对应最终的 1.4.1 版本），可通过 `https://docs.robotsfan.com/isaaclab_v1 <https://docs.robotsfan.com/isaaclab_v1>`__ 访问。
+
+    如果您需要基于 Isaac Lab 开发独立扩展项目，请参考 `robot_lab <https://github.com/fan-ziqi/robot_lab>`__ 项目。
+
+    如果您想将 Isaac Lab 训练的模型部署到实际机器人，或在 Gazebo/MuJoCo 中仿真，请参考 `rl_sar <https://github.com/fan-ziqi/rl_sar>`__ 项目。
+
+
 **Isaac Lab** is a unified and modular framework for robot learning that aims to simplify common workflows
 in robotics research (such as reinforcement learning, learning from demonstrations, and motion planning). It supports
 `NVIDIA Isaac Sim`_ for photo-realistic scenes and RTX rendering, and can also run standalone with the Newton physics backend
@@ -88,6 +101,9 @@ Table of Contents
    :maxdepth: 1
    :caption: Isaac Lab
 
+   source/setup/translation
+   source/setup/wechat
+   source/setup/oneclick_installation
    source/setup/ecosystem
    source/setup/installation/index
    source/setup/environments

@@ -1,0 +1,124 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/sensors/ray_caster.rst:7
+msgid "Ray Caster"
+msgstr "射线投射器"
+
+#: source/concepts/sensors/ray_caster.rst:9
+msgid "A diagram outlining the basic geometry of frame transformations"
+msgstr "描述坐标变换基本几何关系的示意图"
+
+#: source/concepts/sensors/ray_caster.rst:14
+msgid ""
+"The Ray Caster sensor (and the ray caster camera) are similar to RTX based "
+"rendering in that they both involve casting rays.  The difference here is "
+"that the rays cast by the Ray Caster sensor return strictly collision "
+"information along the cast, and the direction of each individual ray can be "
+"specified.  They do not bounce, nor are they affected by things like "
+"materials or opacity. For each ray specified by the sensor, a line is traced"
+" along the path of the ray and the location of first collision with the "
+"specified mesh is returned. This is the method used by some of our quadruped"
+" examples to measure the local height field."
+msgstr ""
+"射线投射器传感器（以及射线投射相机）与基于 RTX "
+"的渲染类似，都涉及射线投射。不同之处在于，射线投射器传感器仅返回沿射线方向的碰撞信息，并且可以指定每条射线的方向。射线不会发生反射，也不会受到材质或透明度等因素的影响。对于传感器指定的每条射线，都会沿其路径进行跟踪，并返回与指定网格的首次碰撞位置。我们的一些四足机器人示例使用此方法来测量局部高度场。"
+
+#: source/concepts/sensors/ray_caster.rst:16
+msgid ""
+"The ray-casting implementation depends on the physics backend. With PhysX "
+"and OV PhysX, configured meshes are loaded into `Warp "
+"<https://nvidia.github.io/warp/>`_ when the sensor initializes and must "
+"remain static. With Newton, the sensor queries the live scene BVH and "
+"therefore sees every collision shape in its environment, global terrain, and"
+" dynamic bodies. Newton ignores "
+":attr:`~sensors.RayCasterCfg.mesh_prim_paths`; use "
+":class:`isaaclab_newton.sensors.NewtonRaycastSensorCfg` to make that "
+"behavior explicit and to access Newton-specific options."
+msgstr ""
+"射线投射的实现取决于物理后端。在 PhysX 和 OV PhysX 上，配置的网格会在传感器初始化时加载到 `Warp "
+"<https://nvidia.github.io/warp/>`_ ，且必须保持静止。在 Newton 上，传感器查询实时场景的 "
+"BVH，因此能够感知所在环境中的所有碰撞形状、全局地形和动态刚体。Newton 会忽略 "
+":attr:`~sensors.RayCasterCfg.mesh_prim_paths` ；可使用 "
+":class:`isaaclab_newton.sensors.NewtonRaycastSensorCfg` 明确指定这一行为，并访问 Newton "
+"特有的选项。"
+
+#: source/concepts/sensors/ray_caster.rst:25
+msgid ""
+"Using a ray caster sensor requires a **pattern** and a parent xform to be "
+"attached to.  The pattern defines how the rays are cast, while the prim "
+"properties defines the orientation and position of the sensor (additional "
+"offsets can be specified for more exact placement).  Isaac Lab supports a "
+"number of ray casting pattern configurations, including a generic LIDAR and "
+"grid pattern."
+msgstr ""
+"使用射线投射器传感器需要指定 **模式（pattern）** 并附加到一个父级变换（parent "
+"xform）。模式定义了射线的投射方式，而主元（prim）属性定义了传感器的方向和位置（可以通过额外偏移实现更精确的放置）。Isaac Lab "
+"支持多种射线投射模式配置，包括通用激光雷达（LIDAR）模式和网格模式。"
+
+#: source/concepts/sensors/ray_caster.rst:31
+msgid ""
+"Notice that the units on the pattern config is in degrees! Also, we enable "
+"visualization here to explicitly show the pattern in the rendering, but this"
+" is not required and should be disabled for performance tuning."
+msgstr ""
+"请注意，模式配置的单位是 **度（degrees）** "
+"！此外，我们在此启用了可视化，以便在渲染时直观展示模式，但这并非必需项，实际应用中应禁用此功能以优化性能。"
+
+#: source/concepts/sensors/ray_caster.rst:33
+msgid "Lidar Pattern visualized"
+msgstr "激光雷达模式可视化"
+
+#: source/concepts/sensors/ray_caster.rst:38
+msgid ""
+"Querying the sensor for data can be done at simulation run time like any "
+"other sensor."
+msgstr "与其他传感器类似，可以在仿真运行时查询射线投射器传感器的数据。"
+
+#: source/concepts/sensors/ray_caster.rst:76
+msgid ""
+"Here we can see the data returned by the sensor itself.  Notice first that "
+"there are 3 closed brackets at the beginning and the end: this is because "
+"the data returned is batched by the number of sensors. The ray cast pattern "
+"itself has also been flattened, and so the dimensions of the array are ``[N,"
+" B, 3]`` where ``N`` is the number of sensors, ``B`` is the number of cast "
+"rays in the pattern, and 3 is the dimension of the casting space. Finally, "
+"notice that the first several values in this casting pattern are the same: "
+"this is because the lidar pattern is spherical and we have specified our FOV"
+"  to be hemispherical, which includes the poles. In this configuration, the "
+"\"flattening pattern\" becomes apparent: the first 180 entries will be the "
+"same because it's the bottom pole of this hemisphere, and there will be 180 "
+"of them because our horizontal FOV is 180 degrees with a resolution of 1 "
+"degree."
+msgstr ""
+"这里可以看到传感器返回的数据。首先，注意数据开头和结尾各有 3 个闭括号，这表明数据按照传感器的数量进行了批处理。射线投射模式也被展平，因此数组的维度为"
+" ``[N, B, 3]`` ，其中 ``N`` 是传感器数量， ``B`` 是模式中投射的射线数量，3 "
+"代表投射空间的维度。最后，注意到投射模式的前几个值是相同的，这是因为激光雷达模式是球形的，而我们指定的视场（FOV）为半球形，因此包含极点。在这种配置下，"
+" \"展平模式\" 就很明显: 前 180 个条目是相同的，因为它们对应于该半球的底部极点，并且由于我们的水平视场为 180 度、分辨率为 1 "
+"度，所以共有 180 个条目。"
+
+#: source/concepts/sensors/ray_caster.rst:78
+msgid ""
+"You can use this script to experiment with pattern configurations and build "
+"an intuition about how the data is stored by altering the ``triggered`` "
+"variable on line 81."
+msgstr "您可以使用此脚本实验不同的模式配置，并通过更改第 81 行的 ``triggered`` 变量，直观理解数据的存储方式。"
+
+#: source/concepts/sensors/ray_caster.rst:0
+msgid "Code for raycaster_sensor.py"
+msgstr "raycaster_sensor.py 的代码"

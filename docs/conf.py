@@ -47,12 +47,13 @@ sys.path.insert(0, os.path.abspath("../source/isaaclab_ov"))
 sys.path.insert(0, os.path.abspath("../source/isaaclab_ov/isaaclab_ov"))
 sys.path.insert(0, os.path.abspath("../source/isaaclab_visualizers"))
 sys.path.insert(0, os.path.abspath("../source/isaaclab_visualizers/isaaclab_visualizers"))
+sys.path.insert(0, os.path.abspath("../source/isaaclab_ppisp"))
 
 # -- Project information -----------------------------------------------------
 
 project = "Isaac Lab"
-copyright = "2022-2025, The Isaac Lab Project Developers."
-author = "The Isaac Lab Project Developers."
+copyright = "2022-2026, The Isaac Lab Project Developers"
+author = "The Isaac Lab Project Developers；中文翻译：范子琦 (GitHub@fan-ziqi)"
 
 # Read version from the package
 with open(os.path.join(os.path.dirname(__file__), "..", "VERSION")) as f:
@@ -60,7 +61,7 @@ with open(os.path.join(os.path.dirname(__file__), "..", "VERSION")) as f:
     version = ".".join(full_version.split(".")[:3])
 
 # Latest release branch referenced by installation documentation.
-isaaclab_latest_branch = os.getenv("ISAACLAB_LATEST_BRANCH", "develop")
+isaaclab_latest_branch = os.getenv("ISAACLAB_LATEST_BRANCH", "release/3.0.0")
 isaaclab_wheel_version = "3.0.0rc1"
 isaaclab_wheel_source_tag = "v3.0.0-EA"
 
@@ -128,9 +129,11 @@ extensions = [
     "sphinx_tabs.tabs",  # backwards compatibility for building docs on v1.0.0
     "sphinx_multiversion",
     "isaaclab_docs",
+    "zh_cn_docs",
 ]
 
 # mathjax hacks
+mathjax_path = "mathjax/tex-mml-chtml.js"
 mathjax3_config = {
     "tex": {
         "inlineMath": [["\\(", "\\)"]],
@@ -162,7 +165,7 @@ nitpick_ignore_regex = [
 ]
 
 # emoji style
-sphinxemoji_style = "twemoji"  # options: "twemoji" or "unicode"
+sphinxemoji_style = "unicode"  # Native glyphs work without the external Twemoji CDN.
 # put type hints inside the signature instead of the description (easier to maintain)
 autodoc_typehints = "signature"
 # autodoc_typehints_format = "fully-qualified"
@@ -219,6 +222,7 @@ exclude_patterns = [
     "plans",
     # Include-only fragments (pulled in via ``.. include::``; not standalone pages).
     "source/migration/include/*",
+    "source/_static/benchmarks/README.md",
 ]
 
 # Mock out modules that are not available on RTD
@@ -277,6 +281,7 @@ autodoc_mock_imports = [
     "flatdict",
     "leapp",
     "ovrtx",
+    "ovstage",
     "filelock",
     "IPython",
     "cv2",
@@ -322,7 +327,7 @@ language = "en"
 
 import sphinx_book_theme
 
-html_title = "Isaac Lab Documentation"
+html_title = "Isaac Lab 文档"
 html_theme_path = [sphinx_book_theme.get_html_theme_path()]
 html_theme = "sphinx_book_theme"
 html_favicon = "source/_static/favicon.ico"
@@ -348,6 +353,7 @@ html_js_files = [
 
 html_theme_options = {
     "path_to_docs": "docs/",
+    "search_bar_text": "搜索文档…",
     "navbar_persistent": [],
     "collapse_navigation": True,
     "repository_url": "https://github.com/isaac-sim/IsaacLab",
@@ -357,7 +363,7 @@ html_theme_options = {
     "show_toc_level": 1,
     "use_sidenotes": True,
     "logo": {
-        "text": "Isaac Lab Documentation",
+        "text": "Isaac Lab 文档",
         "image_light": "source/_static/NVIDIA-logo-white.png",
         "image_dark": "source/_static/NVIDIA-logo-black.png",
     },
@@ -371,17 +377,26 @@ html_theme_options = {
         {
             "name": "Isaac Sim",
             "url": "https://developer.nvidia.com/isaac-sim",
-            "icon": f"https://img.shields.io/badge/IsaacSim-{isaacsim_docs_version}-silver.svg",
-            "type": "url",
+            "icon": "fa-solid fa-cube",
+            "type": "fontawesome",
         },
         {
-            "name": "Stars",
-            "url": "https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba",
-            "icon": "https://img.shields.io/github/stars/isaac-sim/IsaacLab?color=fedcba",
-            "type": "url",
+            "name": "GitHub 星标",
+            "url": "https://github.com/isaac-sim/IsaacLab/stargazers",
+            "icon": "fa-solid fa-star",
+            "type": "fontawesome",
         },
     ],
-    "icon_links_label": "Quick Links",
+    "icon_links_label": "快捷链接",
+    "extra_footer": (
+        "<!--Matomo--><script>var _paq=window._paq=window._paq||[];"
+        '_paq.push(["setDocumentTitle",document.domain+"/"+document.title]);'
+        "_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);"
+        '(function(){var u="//matomo.robotsfan.com/";'
+        "_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId','2']);"
+        "var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];"
+        "g.async=true;g.src=u+'matomo.js';s.parentNode.insertBefore(g,s)})();</script><!--End Matomo Code-->"
+    ),
 }
 
 templates_path = [
@@ -457,3 +472,9 @@ def skip_member(app, what, name, obj, skip, options):
 
 def setup(app):
     app.connect("autodoc-skip-member", skip_member)
+
+
+# Chinese documentation catalogs: keep one PO per source document.
+locale_dirs = ["locale/"]
+gettext_compact = False
+gettext_last_translator = "Ziqi Fan <fanziqi614@gmail.com>"

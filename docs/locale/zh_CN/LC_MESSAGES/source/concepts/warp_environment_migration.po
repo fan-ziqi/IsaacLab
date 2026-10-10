@@ -1,0 +1,548 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/warp_environment_migration.rst:4
+msgid "Warp Environment Migration Guide"
+msgstr "Warp 环境迁移指南"
+
+#: source/concepts/warp_environment_migration.rst:6
+msgid ""
+"This guide covers the key conventions and patterns used by the warp-first "
+"environment infrastructure, useful for migrating existing torch environments"
+" or creating new ones natively. For an overview of the warp env path itself "
+"(workflows, available envs, performance, limitations, benchmarking), see "
+":doc:`warp_environments`."
+msgstr ""
+"本指南介绍以 Warp 为核心的环境基础设施所用的主要约定和模式，可用于迁移已有 Torch 环境，或原生创建新环境。Warp "
+"环境路径本身的概览（工作流程、可用环境、性能、限制和基准测试）见 :doc:`warp_environments` 。"
+
+#: source/concepts/warp_environment_migration.rst:13
+msgid "Design Rationale"
+msgstr "设计依据"
+
+#: source/concepts/warp_environment_migration.rst:15
+msgid ""
+"The warp environment path is built around `CUDA graph capture "
+"<https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-"
+"graphs.html>`_. A CUDA graph records a sequence of GPU operations (kernel "
+"launches, memory copies) during a capture phase, then replays the entire "
+"sequence with a single launch. This eliminates per-kernel CPU overhead — the"
+" parameter validation, kernel selection, and buffer setup that normally "
+"costs 20–200 μs per operation is performed once during graph instantiation "
+"and reused on every replay (~10 μs total). All CPU-side code (Python logic, "
+"torch dispatching) executed during capture is completely bypassed during "
+"replay. See the `Warp concurrency documentation "
+"<https://nvidia.github.io/warp/stable/deep_dive/concurrency.html>`_ for "
+"Warp's graph capture API (``wp.ScopedCapture``)."
+msgstr ""
+"Warp 环境路径围绕 `CUDA 图捕获 <https://docs.nvidia.com/cuda/cuda-programming-"
+"guide/04-special-topics/cuda-graphs.html>`_ 构建。CUDA 图在捕获阶段记录一系列 GPU "
+"操作（内核启动、内存拷贝），随后通过一次启动回放整个序列。这消除了逐内核的 CPU 开销：通常每次操作需要 20–200 μs "
+"的参数验证、内核选择和缓冲区设置，在图实例化时只执行一次，之后每次回放复用（总计约 10 μs）。捕获期间执行的全部 CPU 端代码（Python "
+"逻辑、Torch 分发）在回放时都会被跳过。Warp 图捕获 API（ ``wp.ScopedCapture`` ）见 `Warp 并发文档 "
+"<https://nvidia.github.io/warp/stable/deep_dive/concurrency.html>`_ 。"
+
+#: source/concepts/warp_environment_migration.rst:26
+msgid ""
+"All design decisions in the warp infrastructure follow from this constraint:"
+" every operation in the step loop must be a GPU kernel launch with stable "
+"memory pointers so that the captured graph can be replayed without "
+"modification."
+msgstr "Warp 基础设施的所有设计都遵循这一约束：步进循环中的每个操作都必须是使用稳定内存指针的 GPU 内核启动，使捕获的图无需修改即可回放。"
+
+#: source/concepts/warp_environment_migration.rst:30
+msgid "Key consequences:"
+msgstr "由此带来的主要要求："
+
+#: source/concepts/warp_environment_migration.rst:32
+msgid ""
+"All buffers are **pre-allocated** — no dynamic allocation inside the step "
+"loop"
+msgstr "所有缓冲区都 **预先分配** — 步进循环内不动态分配"
+
+#: source/concepts/warp_environment_migration.rst:33
+msgid ""
+"Data flows through **persistent ``wp.array`` pointers** — never replaced, "
+"only overwritten"
+msgstr "数据通过 **持久的** ``wp.array`` **指针** 传递 — 只覆盖内容，不替换数组"
+
+#: source/concepts/warp_environment_migration.rst:34
+msgid ""
+"MDP terms are **pure ``@wp.kernel`` functions** — no Python branching on GPU"
+" data"
+msgstr "MDP 项是 **纯** ``@wp.kernel`` **函数** — 不在 Python 中根据 GPU 数据分支"
+
+#: source/concepts/warp_environment_migration.rst:35
+msgid ""
+"Reset uses **boolean masks** (``env_mask``) instead of index lists "
+"(``env_ids``) to avoid variable-length indexing that changes graph topology"
+msgstr "重置使用 **布尔掩码** （ ``env_mask`` ）代替索引列表（ ``env_ids`` ），避免可变长度索引改变图拓扑"
+
+#: source/concepts/warp_environment_migration.rst:40
+msgid "Project Structure"
+msgstr "项目结构"
+
+#: source/concepts/warp_environment_migration.rst:42
+msgid ""
+"Warp-specific implementations that diverge from the torch-based managers and"
+" env classes live in the ``_experimental`` packages:"
+msgstr "与基于 Torch 的管理器和环境类不同的 Warp 专属实现，位于 ``_experimental`` 包中："
+
+#: source/concepts/warp_environment_migration.rst:44
+msgid ""
+"``isaaclab_experimental`` — warp managers, base env classes, warp MDP terms"
+msgstr "``isaaclab_experimental`` — Warp 管理器、环境基类和 Warp MDP 项"
+
+#: source/concepts/warp_environment_migration.rst:45
+msgid ""
+"``isaaclab_tasks_experimental`` — warp task configs and task-specific MDP "
+"terms"
+msgstr "``isaaclab_tasks_experimental`` — Warp 任务配置及任务特有的 MDP 项"
+
+#: source/concepts/warp_environment_migration.rst:47
+msgid ""
+"Any new warp implementation that differs from the torch-based managers or "
+"env classes belongs in these packages. Warp task configs reference Newton "
+"physics directly (no ``PresetCfg``) since the warp path is Newton-only."
+msgstr ""
+"凡是与基于 Torch 的管理器或环境类不同的新 Warp 实现，都应放入这些包。Warp 路径仅支持 Newton，因此 Warp 任务配置直接引用 "
+"Newton 物理配置，不使用 ``PresetCfg`` 。"
+
+#: source/concepts/warp_environment_migration.rst:53
+msgid "Writing Warp MDP Terms"
+msgstr "编写 Warp MDP 项"
+
+#: source/concepts/warp_environment_migration.rst:56
+msgid "Imports"
+msgstr "导入"
+
+#: source/concepts/warp_environment_migration.rst:58
+msgid "Warp task configs import from the experimental packages:"
+msgstr "Warp 任务配置从实验性包导入："
+
+#: source/concepts/warp_environment_migration.rst:66
+msgid ""
+"The term config classes have the same interface — only the import path "
+"changes."
+msgstr "项配置类具有相同接口，只改变导入路径。"
+
+#: source/concepts/warp_environment_migration.rst:70
+msgid "Common Pattern"
+msgstr "通用模式"
+
+#: source/concepts/warp_environment_migration.rst:72
+msgid ""
+"All warp MDP terms (observations, rewards, terminations, events, actions) "
+"follow the same **kernel + launch** pattern. Torch terms use torch tensors "
+"and return results; warp terms write into pre-allocated ``wp.array`` output "
+"buffers via ``@wp.kernel`` functions:"
+msgstr ""
+"所有 Warp MDP 项（观测、奖励、终止、事件、动作）均遵循 **内核 + 启动** 模式。Torch 项使用 Torch 张量并返回结果；Warp"
+" 项通过 ``@wp.kernel`` 函数写入预分配的 ``wp.array`` 输出缓冲区："
+
+#: source/concepts/warp_environment_migration.rst:91
+msgid "The output buffer shapes differ by term type:"
+msgstr "输出缓冲区形状因项类型而异："
+
+#: source/concepts/warp_environment_migration.rst:93
+msgid ""
+"**Observations**: ``(num_envs, D)`` where D is the observation dimension"
+msgstr "**观测** ： ``(num_envs, D)`` ，其中 D 为观测维度"
+
+#: source/concepts/warp_environment_migration.rst:94
+msgid "**Rewards**: ``(num_envs,)``"
+msgstr "**奖励** ： ``(num_envs,)``"
+
+#: source/concepts/warp_environment_migration.rst:95
+msgid "**Terminations**: ``(num_envs,)`` with dtype ``bool``"
+msgstr "**终止** ： ``(num_envs,)`` ，数据类型为 ``bool``"
+
+#: source/concepts/warp_environment_migration.rst:96
+msgid ""
+"**Events**: ``(num_envs,)`` mask — events don't produce output, they modify "
+"sim state"
+msgstr "**事件** ： ``(num_envs,)`` 掩码 — 事件不生成输出，而是修改仿真状态"
+
+#: source/concepts/warp_environment_migration.rst:100
+msgid "Observation Terms"
+msgstr "观测项"
+
+#: source/concepts/warp_environment_migration.rst:102
+msgid ""
+"Since warp terms write into pre-allocated buffers, the observation manager "
+"must know each term's output dimension at initialization to allocate the "
+"correct ``(num_envs, D)`` output array. This is resolved via a fallback "
+"chain (see ``ObservationManager._infer_term_dim_scalar`` in "
+"``isaaclab_experimental/managers/observation_manager.py``):"
+msgstr ""
+"Warp 项写入预分配缓冲区，因此观测管理器必须在初始化时知道各项的输出维度，才能分配正确的 ``(num_envs, D)`` "
+"输出数组。维度通过逐级回退机制确定（见 "
+"``isaaclab_experimental/managers/observation_manager.py`` 中的 "
+"``ObservationManager._infer_term_dim_scalar`` ）："
+
+#: source/concepts/warp_environment_migration.rst:110
+msgid ""
+"The IO descriptor decorators are deprecated in Isaac Lab 3.0 and will be "
+"removed in Isaac Lab 3.2. Their output-dimension metadata remains available "
+"temporarily for Warp-first environments while a replacement runtime "
+"configuration is developed."
+msgstr ""
+"IO 描述符装饰器已在 Isaac Lab 3.0 中弃用，将在 Isaac Lab 3.2 "
+"中移除。在替代的运行时配置开发完成前，其输出维度元数据暂时保留，供以 Warp 为核心的环境使用。"
+
+#: source/concepts/warp_environment_migration.rst:115
+msgid "**Explicit ``out_dim`` in decorator** (preferred):"
+msgstr "**装饰器中显式设置** ``out_dim`` （推荐）："
+
+#: source/concepts/warp_environment_migration.rst:122
+msgid ""
+"``out_dim`` can be an integer, or a string that resolves at initialization:"
+msgstr "``out_dim`` 可以是整数，也可以是在初始化时解析的字符串："
+
+#: source/concepts/warp_environment_migration.rst:124
+msgid "``\"joint\"`` — number of selected joints from ``asset_cfg``"
+msgstr "``\"joint\"`` — ``asset_cfg`` 中所选关节的数量"
+
+#: source/concepts/warp_environment_migration.rst:125
+msgid "``\"body:N\"`` — N components per selected body from ``asset_cfg``"
+msgstr "``\"body:N\"`` — ``asset_cfg`` 中每个所选刚体的 N 个分量"
+
+#: source/concepts/warp_environment_migration.rst:126
+msgid "``\"command\"`` — dimension from command manager"
+msgstr "``\"command\"`` — 从指令管理器获取维度"
+
+#: source/concepts/warp_environment_migration.rst:127
+msgid "``\"action\"`` — dimension from action manager"
+msgstr "``\"action\"`` — 从动作管理器获取维度"
+
+#: source/concepts/warp_environment_migration.rst:129
+msgid "**``axes`` metadata**: Dimension equals the number of axes listed:"
+msgstr "``axes`` **元数据** ：维度等于列出的轴数量："
+
+#: source/concepts/warp_environment_migration.rst:137
+msgid ""
+"**Legacy params**: ``term_dim``, ``out_dim``, or ``obs_dim`` keys in "
+"``term_cfg.params``."
+msgstr ""
+"**旧式参数** ： ``term_cfg.params`` 中的 ``term_dim`` 、 ``out_dim`` 或 ``obs_dim`` "
+"键。"
+
+#: source/concepts/warp_environment_migration.rst:139
+msgid ""
+"**Asset config fallback**: Count of ``asset_cfg.joint_ids`` (or "
+"``joint_ids_wp``) for joint-level terms."
+msgstr ""
+"**资产配置回退** ：对于关节级项，使用 ``asset_cfg.joint_ids`` （或 ``joint_ids_wp`` ）的数量。"
+
+#: source/concepts/warp_environment_migration.rst:144
+msgid "Event Terms"
+msgstr "事件项"
+
+#: source/concepts/warp_environment_migration.rst:146
+msgid ""
+"Events use ``env_mask`` (boolean ``wp.array``) instead of ``env_ids``, and "
+"each kernel checks the mask to skip non-selected environments:"
+msgstr "事件使用 ``env_mask`` （布尔 ``wp.array`` ）代替 ``env_ids`` ，各内核检查掩码以跳过未选中的环境："
+
+#: source/concepts/warp_environment_migration.rst:161
+msgid ""
+"RNG uses per-env ``env.rng_state_wp`` (``wp.uint32``) instead of "
+"``torch.rand``"
+msgstr "随机数生成使用逐环境 ``env.rng_state_wp`` （ ``wp.uint32`` ），而非 ``torch.rand``"
+
+#: source/concepts/warp_environment_migration.rst:162
+msgid ""
+"**Startup/prestartup** events use the torch convention ``(env, env_ids, "
+"**params)``"
+msgstr "**启动/预启动** 事件使用 Torch 约定 ``(env, env_ids, **params)``"
+
+#: source/concepts/warp_environment_migration.rst:163
+msgid ""
+"**Reset/interval** events use the warp convention ``(env, env_mask, "
+"**params)``"
+msgstr "**重置/间隔** 事件使用 Warp 约定 ``(env, env_mask, **params)``"
+
+#: source/concepts/warp_environment_migration.rst:167
+msgid "Action Terms"
+msgstr "动作项"
+
+#: source/concepts/warp_environment_migration.rst:169
+msgid ""
+"Actions follow a **two-stage execution**: ``process_actions`` (called once "
+"per env step) scales and clips raw actions, and ``apply_actions`` (called "
+"once per sim step) writes targets to the asset. Both stages use warp kernels"
+" with pre-allocated ``_raw_actions`` and ``_processed_actions`` buffers."
+msgstr ""
+"动作采用 **两阶段执行** ： ``process_actions`` 每个环境步调用一次，对原始动作缩放和限幅； ``apply_actions``"
+" 每个仿真步调用一次，将目标写入资产。两个阶段都使用 Warp 内核，以及预分配的 ``_raw_actions`` 和 "
+"``_processed_actions`` 缓冲区。"
+
+#: source/concepts/warp_environment_migration.rst:176
+msgid "Capture Safety"
+msgstr "图捕获安全性"
+
+#: source/concepts/warp_environment_migration.rst:178
+msgid ""
+"When writing terms that run inside the captured step loop, keep in mind:"
+msgstr "编写在捕获的步进循环内运行的项时，应注意："
+
+#: source/concepts/warp_environment_migration.rst:180
+msgid "**No ``wp.to_torch``** or torch arithmetic — stay in warp throughout"
+msgstr "**不使用** ``wp.to_torch`` **或 Torch 运算** — 全程使用 Warp"
+
+#: source/concepts/warp_environment_migration.rst:181
+msgid ""
+"**No lazy-evaluated properties** — use sim-bound (Tier 1) data directly; if "
+"a derived quantity is needed, compute it inline in the kernel"
+msgstr "**不访问惰性求值属性** — 直接使用与仿真绑定的第一层（Tier 1）数据；需要派生量时，在内核内计算"
+
+#: source/concepts/warp_environment_migration.rst:183
+msgid ""
+"**No dynamic allocation** — all buffers must be pre-allocated in "
+"``__init__``"
+msgstr "**不动态分配** — 所有缓冲区必须在 ``__init__`` 中预分配"
+
+#: source/concepts/warp_environment_migration.rst:187
+msgid "Parity Testing"
+msgstr "一致性测试"
+
+#: source/concepts/warp_environment_migration.rst:189
+msgid "Two levels of parity testing are used to validate warp terms:"
+msgstr "通过两个层次的一致性测试验证 Warp 项："
+
+#: source/concepts/warp_environment_migration.rst:191
+msgid ""
+"**1. Implementation parity (torch vs warp)** — verifies that the warp kernel"
+" produces the same result as the torch implementation. This is optional for "
+"terms that have no torch counterpart (e.g. new terms written directly in "
+"warp)."
+msgstr ""
+"**1. 实现一致性（Torch 与 Warp）** — 验证 Warp 内核与 Torch 实现产生相同结果。没有 Torch "
+"对应实现的项（例如直接用 Warp 编写的新项）可以不进行此测试。"
+
+#: source/concepts/warp_environment_migration.rst:210
+msgid ""
+"**2. Capture parity (warp vs warp-captured)** — verifies that the term "
+"produces identical results when replayed from a CUDA graph vs launched "
+"directly. A mismatch here indicates capture-unsafe code (e.g. stale "
+"pointers, dynamic allocation, or lazy property access that doesn't replay). "
+"This test should always be run, even for terms without a torch counterpart."
+msgstr ""
+"**2. 捕获一致性（Warp 与图捕获后的 Warp）** — 验证 CUDA "
+"图回放和直接启动产生完全相同的结果。不一致说明代码不适合捕获，例如使用了过时指针、动态分配，或回放时不会执行的惰性属性访问。即使没有 Torch "
+"对应实现，也应始终运行此测试。"
+
+#: source/concepts/warp_environment_migration.rst:229
+msgid ""
+"See ``source/isaaclab_experimental/test/envs/mdp/`` for complete parity test"
+" examples."
+msgstr "完整的一致性测试示例见 ``source/isaaclab_experimental/test/envs/mdp/`` 。"
+
+#: source/concepts/warp_environment_migration.rst:233
+msgid "Available Warp MDP Terms"
+msgstr "可用的 Warp MDP 项"
+
+#: source/concepts/warp_environment_migration.rst:239
+msgid "Category"
+msgstr "类别"
+
+#: source/concepts/warp_environment_migration.rst:240
+msgid "Available Terms"
+msgstr "可用项"
+
+#: source/concepts/warp_environment_migration.rst:241
+msgid "Observations (11)"
+msgstr "观测（11）"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``base_pos_z``"
+msgstr "``base_pos_z``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``base_lin_vel``"
+msgstr "``base_lin_vel``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``base_ang_vel``"
+msgstr "``base_ang_vel``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``projected_gravity``"
+msgstr "``projected_gravity``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_pos``"
+msgstr "``joint_pos``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_pos_rel``"
+msgstr "``joint_pos_rel``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_pos_limit_normalized``"
+msgstr "``joint_pos_limit_normalized``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_vel``"
+msgstr "``joint_vel``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_vel_rel``"
+msgstr "``joint_vel_rel``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``last_action``"
+msgstr "``last_action``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``generated_commands``"
+msgstr "``generated_commands``"
+
+#: source/concepts/warp_environment_migration.rst:253
+msgid "Rewards (16)"
+msgstr "奖励（16）"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``is_alive``"
+msgstr "``is_alive``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``is_terminated``"
+msgstr "``is_terminated``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``lin_vel_z_l2``"
+msgstr "``lin_vel_z_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``ang_vel_xy_l2``"
+msgstr "``ang_vel_xy_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``flat_orientation_l2``"
+msgstr "``flat_orientation_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_torques_l2``"
+msgstr "``joint_torques_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_vel_l1``"
+msgstr "``joint_vel_l1``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_vel_l2``"
+msgstr "``joint_vel_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_acc_l2``"
+msgstr "``joint_acc_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_deviation_l1``"
+msgstr "``joint_deviation_l1``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_pos_limits``"
+msgstr "``joint_pos_limits``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``action_rate_l2``"
+msgstr "``action_rate_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``action_l2``"
+msgstr "``action_l2``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``undesired_contacts``"
+msgstr "``undesired_contacts``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``track_lin_vel_xy_exp``"
+msgstr "``track_lin_vel_xy_exp``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``track_ang_vel_z_exp``"
+msgstr "``track_ang_vel_z_exp``"
+
+#: source/concepts/warp_environment_migration.rst:270
+msgid "Events (6)"
+msgstr "事件（6）"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``reset_joints_by_offset``"
+msgstr "``reset_joints_by_offset``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``reset_joints_by_scale``"
+msgstr "``reset_joints_by_scale``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``reset_root_state_uniform``"
+msgstr "``reset_root_state_uniform``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``push_by_setting_velocity``"
+msgstr "``push_by_setting_velocity``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``apply_external_force_torque``"
+msgstr "``apply_external_force_torque``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``randomize_rigid_body_com``"
+msgstr "``randomize_rigid_body_com``"
+
+#: source/concepts/warp_environment_migration.rst:277
+msgid "Terminations (4)"
+msgstr "终止（4）"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``time_out``"
+msgstr "``time_out``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``root_height_below_minimum``"
+msgstr "``root_height_below_minimum``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``joint_pos_out_of_manual_limit``"
+msgstr "``joint_pos_out_of_manual_limit``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``illegal_contact``"
+msgstr "``illegal_contact``"
+
+#: source/concepts/warp_environment_migration.rst:282
+msgid "Actions (2)"
+msgstr "动作（2）"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``JointPositionAction``"
+msgstr "``JointPositionAction``"
+
+#: source/concepts/warp_environment_migration.rst:0
+msgid "``JointEffortAction``"
+msgstr "``JointEffortAction``"
+
+#: source/concepts/warp_environment_migration.rst:286
+msgid ""
+"Terms not listed here remain in torch only. When using an env that requires "
+"unlisted terms, those terms must be implemented in warp first."
+msgstr "未列出的项仍仅有 Torch 实现。环境需要未列出的项时，必须先用 Warp 实现这些项。"

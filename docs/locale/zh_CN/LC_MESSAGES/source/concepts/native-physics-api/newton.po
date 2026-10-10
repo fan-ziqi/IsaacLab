@@ -1,0 +1,203 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/native-physics-api/newton.rst:7
+msgid "Newton Native Data and Selection API"
+msgstr "Newton 原生数据与选择 API"
+
+#: source/concepts/native-physics-api/newton.rst:10
+msgid "Mental model"
+msgstr "基本概念"
+
+#: source/concepts/native-physics-api/newton.rst:12
+msgid ""
+"The Newton backend exposes its engine-owned `Model <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Model.html>`_, `State "
+"<https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.State.html>`_, "
+"`Control <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Control.html>`_, and "
+"optional ``Contacts`` objects through "
+":class:`isaaclab_newton.physics.NewtonManager`. Their Warp arrays are the "
+"live engine data, rather than values pulled into a separate per-asset view "
+"buffer. The model owns structural and static arrays and labels; a state owns"
+" evolving simulation arrays; and a control owns actuation inputs. Contacts "
+"are optional and depend on the active solver and collision path."
+msgstr ""
+"Newton 后端通过 :class:`isaaclab_newton.physics.NewtonManager` 暴露引擎持有的 `Model "
+"<https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Model.html>`_ 、 `State"
+" <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.State.html>`_ 、 "
+"`Control <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Control.html>`_ 和可选的 "
+"``Contacts`` 对象。它们的 Warp "
+"数组就是引擎实时数据，而非读取到单独的各资源视图缓冲区中的副本。模型持有结构、静态数组和标签，状态持有随仿真演化的数组，控制对象持有驱动输入。接触对象是可选的，取决于当前求解器和碰撞路径。"
+
+#: source/concepts/native-physics-api/newton.rst:23
+msgid "Lifecycle prerequisite"
+msgstr "生命周期前提"
+
+#: source/concepts/native-physics-api/newton.rst:25
+msgid ""
+"Access Newton data after the simulation context has initialized the physics "
+"backend and built its model. Treat the objects as invalid after a model "
+"rebuild and reacquire them after Isaac Lab has reinitialized the simulation."
+" This API is intended for code that can own the necessary lifecycle and "
+"synchronization responsibilities."
+msgstr ""
+"在仿真上下文初始化物理后端并构建模型之后，才能访问 Newton 数据。模型重建后，应将现有对象视为失效，并在 Isaac Lab "
+"重新初始化仿真后重新获取。此 API 面向能够承担必要生命周期管理和同步责任的代码。"
+
+#: source/concepts/native-physics-api/newton.rst:31
+msgid "Reuse Isaac Lab-owned access"
+msgstr "复用 Isaac Lab 持有的访问对象"
+
+#: source/concepts/native-physics-api/newton.rst:33
+msgid "Use the manager accessors to obtain the current Newton objects:"
+msgstr "通过管理器访问器获取当前 Newton 对象："
+
+#: source/concepts/native-physics-api/newton.rst:47
+msgid ""
+":meth:`isaaclab_newton.physics.NewtonManager.get_model` can construct a "
+"visualization shadow model when PhysX is active. The write semantics in this"
+" guide apply only when Newton is the active, authoritative physics backend."
+msgstr ""
+"PhysX 处于活动状态时， :meth:`isaaclab_newton.physics.NewtonManager.get_model` "
+"可以构建用于可视化的影子模型。本指南中的写入语义仅在 Newton 是当前实际负责物理仿真的后端时适用。"
+
+#: source/concepts/native-physics-api/newton.rst:51
+msgid ""
+"Isaac Lab's Newton-backed assets expose the same generic "
+"``newton.selection.ArticulationView`` selection helper. For example, reuse "
+"an articulation's root selection instead of constructing the matching "
+"selection again:"
+msgstr ""
+"Isaac Lab 使用 Newton 后端的资源暴露同一种通用 ``newton.selection.ArticulationView`` "
+"选择辅助对象。例如，复用关节体的根选择，而不是再次构建相同选择："
+
+#: source/concepts/native-physics-api/newton.rst:61
+msgid ""
+"Newton uses this generic, label-based selection concept for Isaac Lab "
+"articulations, rigid objects, rigid-object collections, and cables. It is a "
+"selection helper over model indices, not per-asset typed storage."
+msgstr ""
+"Newton 对 Isaac Lab "
+"关节体、刚体对象、刚体对象集合和线缆使用这一通用的基于标签的选择方式。它是模型索引上的选择辅助对象，不是各资源专用的类型化存储。"
+
+#: source/concepts/native-physics-api/newton.rst:66
+msgid "Create raw access"
+msgstr "创建底层访问"
+
+#: source/concepts/native-physics-api/newton.rst:68
+msgid ""
+"Code that owns a matching model can construct its own selection from a model"
+" and a label pattern:"
+msgstr "持有匹配模型的代码，可以根据模型和标签模式构建自己的选择："
+
+#: source/concepts/native-physics-api/newton.rst:80
+msgid "Read/write semantics"
+msgstr "读写语义"
+
+#: source/concepts/native-physics-api/newton.rst:82
+msgid ""
+"Selections provide typed convenience methods as well as generic string-keyed"
+" ``get_attribute()`` and ``set_attribute()`` methods. The generic methods "
+"expose engine properties that do not have dedicated selection methods. Clone"
+" a selected value before modifying it when you want the write to remain "
+"explicit:"
+msgstr ""
+"选择对象既提供类型化便捷方法，也提供以字符串为键的通用 ``get_attribute()`` 和 ``set_attribute()`` "
+"方法。通用方法暴露没有专门选择方法的引擎属性。如果希望写入保持显式，应先克隆选定的值，再进行修改："
+
+#: source/concepts/native-physics-api/newton.rst:104
+msgid ""
+"The string names a Newton model attribute rather than an Isaac Lab field. "
+"This example uses rolling friction because it has no dedicated selection "
+"method. Notify the manager with the flag appropriate to the property "
+"changed; other model writes can require a different flag. State writes that "
+"change generalized coordinates instead require forward-kinematics "
+"synchronization through ``NewtonManager.invalidate_fk()`` and "
+"``NewtonManager.forward()``."
+msgstr ""
+"字符串指定的是 Newton 模型属性，不是 Isaac Lab "
+"字段。本例使用滚动摩擦，因为它没有专门的选择方法。根据修改的属性，使用适当的标志通知管理器；其他模型写入可能需要不同标志。如果状态写入改变广义坐标，则需要通过"
+" ``NewtonManager.invalidate_fk()`` 和 ``NewtonManager.forward()`` 同步正向运动学。"
+
+#: source/concepts/native-physics-api/newton.rst:112
+msgid "Ownership, synchronization, and invalidation"
+msgstr "所有权、同步与失效"
+
+#: source/concepts/native-physics-api/newton.rst:114
+msgid ""
+"Direct writes bypass Isaac Lab caches and shape/order validation. Some "
+"Newton solvers swap current and next state buffers, so reacquire "
+":meth:`isaaclab_newton.physics.NewtonManager.get_state_0` when code needs "
+"the current authoritative state on a later step. A selection can survive "
+"state-buffer swaps because it describes model indices, but it must be "
+"recreated after a model rebuild. Solver-specific generalized- and maximal-"
+"coordinate conventions remain authoritative."
+msgstr ""
+"直接写入会绕过 Isaac Lab 缓存，以及形状与顺序验证。部分 Newton "
+"求解器会交换当前与下一状态缓冲区，因此后续步中需要当前实际状态时，应重新调用 "
+":meth:`isaaclab_newton.physics.NewtonManager.get_state_0` "
+"。选择对象描述模型索引，所以可以跨状态缓冲区交换继续使用，但模型重建后必须重新创建。广义坐标和最大坐标的约定仍以具体求解器为准。"
+
+#: source/concepts/native-physics-api/newton.rst:122
+msgid "Authoritative references"
+msgstr "权威参考"
+
+#: source/concepts/native-physics-api/newton.rst:124
+msgid ""
+"`Model reference <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Model.html>`_"
+msgstr ""
+"`Model 参考文档 <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Model.html>`_"
+
+#: source/concepts/native-physics-api/newton.rst:125
+msgid ""
+"`State reference <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.State.html>`_"
+msgstr ""
+"`State 参考文档 <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.State.html>`_"
+
+#: source/concepts/native-physics-api/newton.rst:126
+msgid ""
+"`Control reference <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Control.html>`_"
+msgstr ""
+"`Control 参考文档 <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.Control.html>`_"
+
+#: source/concepts/native-physics-api/newton.rst:127
+msgid ""
+"`ArticulationView selection reference <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.selection.ArticulationView.html>`_"
+msgstr ""
+"`ArticulationView 选择参考文档 <https://newton-"
+"physics.github.io/newton/stable/api/_generated/newton.selection.ArticulationView.html>`_"
+
+#: source/concepts/native-physics-api/newton.rst:128
+msgid ""
+"`Newton articulation guide <https://newton-"
+"physics.github.io/newton/stable/concepts/articulations.html>`_"
+msgstr ""
+"`Newton 关节体指南 <https://newton-"
+"physics.github.io/newton/stable/concepts/articulations.html>`_"

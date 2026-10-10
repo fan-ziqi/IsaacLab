@@ -1,0 +1,1391 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/cloudxr_teleoperation.rst:6
+msgid "Setting up Isaac Capture with CloudXR"
+msgstr "配置 Isaac Capture 与 CloudXR"
+
+#: source/how-to/cloudxr_teleoperation.rst:10
+msgid ""
+"`Isaac Capture <https://github.com/NVIDIA/IsaacCapture>`_ "
+"(https://github.com/NVIDIA/IsaacCapture) is the unified framework for high-"
+"fidelity teleoperation in Isaac Lab. It provides standardized device "
+"interfaces, a flexible retargeting pipeline, and bundled `NVIDIA CloudXR`_ "
+"streaming for immersive XR-based teleoperation."
+msgstr ""
+"`Isaac Capture <https://github.com/NVIDIA/IsaacCapture>`_ "
+"（https://github.com/NVIDIA/IsaacCapture ）是 Isaac Lab "
+"的高保真遥操作统一框架。它提供标准化设备接口、灵活的重定向管线，以及随附的 `NVIDIA CloudXR`_ 串流功能，用于基于 XR "
+"的沉浸式遥操作。"
+
+#: source/how-to/cloudxr_teleoperation.rst:14
+msgid ""
+"This guide walks you through setting up CloudXR, connecting an XR device, "
+"and running your first teleoperation session. For additional details see the"
+" `Isaac Capture Quick Start "
+"<https://nvidia.github.io/IsaacCapture/main/getting_started/quick_start.html>`_."
+msgstr ""
+"本指南介绍如何配置 CloudXR、连接 XR 设备并开始第一次遥操作。更多信息见 `Isaac Capture 快速入门 "
+"<https://nvidia.github.io/IsaacCapture/main/getting_started/quick_start.html>`_"
+" 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:20
+msgid ""
+"Isaac Lab currently pins the 1.4 ``isaacteleop`` distribution and import "
+"package. Upstream renamed both to ``isaaccapture`` in 1.6, so the "
+"``isaacteleop`` commands and imports in this guide are intentional. See the "
+"`Isaac Capture migration guide "
+"<https://nvidia.github.io/IsaacCapture/main/references/migration.html>`_ for"
+" details."
+msgstr ""
+"Isaac Lab 目前锁定 1.4 版本的 ``isaacteleop`` 分发包和导入包。上游在 1.6 中将二者都改名为 "
+"``isaaccapture`` ，因此本指南有意继续使用 ``isaacteleop`` 命令和导入。详情见 `Isaac Capture 迁移指南 "
+"<https://nvidia.github.io/IsaacCapture/main/references/migration.html>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:27
+msgid ""
+"For architecture details, retargeting pipelines, control scheme "
+"recommendations, and how to add new embodiments or devices, see the "
+":ref:`isaac-teleop-feature` page."
+msgstr "架构细节、重定向管线、控制方案建议，以及添加新机器人形态或设备的方法，见 :ref:`isaac-teleop-feature` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:32
+#: source/how-to/cloudxr_teleoperation.rst:614
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/how-to/cloudxr_teleoperation.rst:34
+msgid ""
+"**Isaac Lab** installed with the ``teleop`` extra (see :ref:`install-isaac-"
+"teleop` below). That section also covers the system libraries the CloudXR "
+"runtime needs."
+msgstr ""
+"安装 **Isaac Lab** 并选择 ``teleop`` 可选依赖组（见下文 :ref:`install-isaac-teleop` "
+"）。该节还说明 CloudXR 运行时所需的系统库。"
+
+#: source/how-to/cloudxr_teleoperation.rst:37
+msgid "**Isaac Lab workstation**"
+msgstr "**Isaac Lab 工作站**"
+
+#: source/how-to/cloudxr_teleoperation.rst:39
+msgid "Ubuntu 22.04 or Ubuntu 24.04"
+msgstr "Ubuntu 22.04 或 Ubuntu 24.04"
+
+#: source/how-to/cloudxr_teleoperation.rst:40
+msgid "CPU: x86_64 (ARM support coming soon)"
+msgstr "CPU：x86_64（ARM 支持即将提供）"
+
+#: source/how-to/cloudxr_teleoperation.rst:41
+msgid "GPU: NVIDIA GPU required. For 45 FPS with 120 Hz physics:"
+msgstr "GPU：需要 NVIDIA GPU。以 120 Hz 运行物理、达到 45 FPS 所需配置："
+
+#: source/how-to/cloudxr_teleoperation.rst:43
+msgid "CPU: AMD Ryzen Threadripper 7960x or higher"
+msgstr "CPU：AMD Ryzen Threadripper 7960X 或更高"
+
+#: source/how-to/cloudxr_teleoperation.rst:44
+msgid "GPU: 1x RTX PRO 6000 (or equivalent, e.g. 1x RTX 5090) or higher"
+msgstr "GPU：一块 RTX PRO 6000（或同等级型号，例如一块 RTX 5090）或更高"
+
+#: source/how-to/cloudxr_teleoperation.rst:45
+msgid "Memory: 64 GB RAM"
+msgstr "内存：64 GB RAM"
+
+#: source/how-to/cloudxr_teleoperation.rst:47
+msgid ""
+"For driver requirements see the `Technical Requirements "
+"<https://docs.omniverse.nvidia.com/materials-and-"
+"rendering/latest/common/technical-requirements.html>`_ guide."
+msgstr ""
+"驱动要求见 `技术要求 <https://docs.omniverse.nvidia.com/materials-and-"
+"rendering/latest/common/technical-requirements.html>`_ 指南。"
+
+#: source/how-to/cloudxr_teleoperation.rst:48
+msgid "Python 3.12 or newer"
+msgstr "Python 3.12 或更新版本"
+
+#: source/how-to/cloudxr_teleoperation.rst:49
+msgid "CUDA 12.8 (recommended)"
+msgstr "CUDA 12.8（推荐）"
+
+#: source/how-to/cloudxr_teleoperation.rst:50
+msgid "NVIDIA Driver 580.95.05 (recommended)"
+msgstr "NVIDIA 驱动 580.95.05（推荐）"
+
+#: source/how-to/cloudxr_teleoperation.rst:52
+msgid "**Wifi 6 capable router**"
+msgstr "**支持 Wi-Fi 6 的路由器**"
+
+#: source/how-to/cloudxr_teleoperation.rst:54
+msgid ""
+"A strong wireless connection is essential for a high-quality streaming "
+"experience. Refer to the `CloudXR Network Setup`_ guide for detailed "
+"requirements, router configuration, and troubleshooting."
+msgstr ""
+"稳定的无线连接是高质量串流体验的基础。详细要求、路由器配置和故障排查见 `CloudXR 网络配置 <CloudXR Network Setup_>`_"
+" 指南。"
+
+#: source/how-to/cloudxr_teleoperation.rst:57
+msgid ""
+"We recommend a dedicated router; concurrent usage will degrade quality."
+msgstr "建议使用专用路由器；其他设备同时使用网络会降低串流质量。"
+
+#: source/how-to/cloudxr_teleoperation.rst:58
+msgid ""
+"The XR device and Isaac Lab workstation must be IP-reachable from one "
+"another. Many institutional wireless networks prevent device-to-device "
+"connectivity."
+msgstr "XR 设备和 Isaac Lab 工作站必须能够通过 IP 相互访问。许多机构的无线网络禁止设备间连接。"
+
+#: source/how-to/cloudxr_teleoperation.rst:63
+msgid "Teleoperation is not currently supported on DGX Spark."
+msgstr "目前不支持在 DGX Spark 上进行遥操作。"
+
+#: source/how-to/cloudxr_teleoperation.rst:69
+msgid "Workstation capability check"
+msgstr "工作站能力检查"
+
+#: source/how-to/cloudxr_teleoperation.rst:71
+msgid ""
+"When a teleop session starts, Isaac Lab measures the workstation against the"
+" spec above and reports any unmet requirement. The result is printed to the "
+"terminal and pushed to the connected XR client, where it appears as a "
+"dismissible banner in the headset -- so the warning is visible to the "
+"operator wearing the device, not only in a terminal they cannot see."
+msgstr ""
+"遥操作会话启动时，Isaac Lab 会按上述规格测量工作站，并报告不满足的要求。结果打印到终端，同时推送到已连接的 XR "
+"客户端，在头显中显示为可关闭的横幅。因此，佩戴设备的操作员也能看到警告，而不必查看终端。"
+
+#: source/how-to/cloudxr_teleoperation.rst:76
+msgid "The check is **advisory and never blocks a session**. It reports:"
+msgstr "检查 **仅供参考，不会阻止会话启动** 。它报告以下项目："
+
+#: source/how-to/cloudxr_teleoperation.rst:82
+msgid "Requirement"
+msgstr "要求"
+
+#: source/how-to/cloudxr_teleoperation.rst:83
+msgid "Threshold"
+msgstr "阈值"
+
+#: source/how-to/cloudxr_teleoperation.rst:84
+msgid "CPU single-thread"
+msgstr "CPU 单线程性能"
+
+#: source/how-to/cloudxr_teleoperation.rst:85
+msgid "At least 80% of the reference CPU (AMD Ryzen Threadripper 7960X)"
+msgstr "至少达到参考 CPU（AMD Ryzen Threadripper 7960X）的 80%"
+
+#: source/how-to/cloudxr_teleoperation.rst:86
+msgid "CPU governor"
+msgstr "CPU 频率调节策略"
+
+#: source/how-to/cloudxr_teleoperation.rst:87
+msgid ""
+"``performance``, unless the single-thread score already meets its threshold"
+msgstr "``performance`` ，但单线程得分已达到阈值时不作要求"
+
+#: source/how-to/cloudxr_teleoperation.rst:88
+msgid "CPU boost clock"
+msgstr "CPU 加速频率"
+
+#: source/how-to/cloudxr_teleoperation.rst:89
+msgid "4.0 GHz"
+msgstr "4.0 GHz"
+
+#: source/how-to/cloudxr_teleoperation.rst:90
+msgid "CPU physical cores"
+msgstr "CPU 物理核心数"
+
+#: source/how-to/cloudxr_teleoperation.rst:91
+msgid "8"
+msgstr "8"
+
+#: source/how-to/cloudxr_teleoperation.rst:92
+msgid "GPU memory"
+msgstr "显存"
+
+#: source/how-to/cloudxr_teleoperation.rst:93
+msgid "24 GB"
+msgstr "24 GB"
+
+#: source/how-to/cloudxr_teleoperation.rst:94
+msgid "GPU architecture"
+msgstr "GPU 架构"
+
+#: source/how-to/cloudxr_teleoperation.rst:95
+msgid "Compute capability 8.9 (Ada) or newer"
+msgstr "计算能力 8.9（Ada）或更新"
+
+#: source/how-to/cloudxr_teleoperation.rst:96
+msgid "NVIDIA driver"
+msgstr "NVIDIA 驱动"
+
+#: source/how-to/cloudxr_teleoperation.rst:97
+msgid "580 or newer"
+msgstr "580 或更新版本"
+
+#: source/how-to/cloudxr_teleoperation.rst:98
+msgid "System memory"
+msgstr "系统内存"
+
+#: source/how-to/cloudxr_teleoperation.rst:99
+msgid "60 GiB (a nominal 64 GB machine)"
+msgstr "60 GiB（标称 64 GB 的机器）"
+
+#: source/how-to/cloudxr_teleoperation.rst:100
+msgid "CPU architecture"
+msgstr "CPU 架构"
+
+#: source/how-to/cloudxr_teleoperation.rst:101
+msgid "``x86_64``"
+msgstr "``x86_64``"
+
+#: source/how-to/cloudxr_teleoperation.rst:103
+msgid ""
+"Thresholds are numeric rather than a list of approved CPU and GPU models, so"
+" equivalent hardware passes. CPU single-thread throughput is weighted most "
+"heavily and is measured with a short benchmark rather than inferred from the"
+" core count: Pink IK and CPU-side physics are single-thread bound, so a "
+"machine with fewer but faster cores teleoperates better than one with many "
+"slow cores."
+msgstr ""
+"检查使用数值阈值，而不是认可的 CPU 和 GPU 型号列表，因此同等级硬件也能通过。CPU "
+"单线程吞吐量的权重最高，通过短时基准测试测量，而不是根据核心数推断。Pink IK 和 CPU "
+"侧物理受单线程性能限制，因此核心较少但单核更快的机器，遥操作表现会优于拥有许多较慢核心的机器。"
+
+#: source/how-to/cloudxr_teleoperation.rst:111
+msgid ""
+"**The CPU governor is only reported when the machine is also measurably "
+"slow.** Ubuntu defaults to ``powersave``, which costs per-frame ramp-up "
+"latency in the bursty workload teleoperation generates. The governor is a "
+"proxy for delivered throughput, though, so a workstation whose single-thread"
+" score already meets its threshold is fast enough whatever the governor says"
+" and is not flagged. Setting ``performance`` remains a setup step -- see "
+":ref:`install-isaac-teleop`."
+msgstr ""
+"**只有机器实测速度也较慢时，才会报告 CPU 频率调节策略问题。** Ubuntu 默认采用 ``powersave`` "
+"，在遥操作这种突发性负载下，会增加每帧的升频延迟。不过，调节策略只是实际吞吐量的间接指标：如果工作站单线程得分已达到阈值，不论采用何种策略，都认为速度足够，不会标记问题。配置时仍建议设置"
+" ``performance`` ，参见 :ref:`install-isaac-teleop` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:118
+msgid ""
+"If a probe is unavailable (for example, ``cpufreq`` is not exposed inside a "
+"container), that item is reported as skipped rather than failed."
+msgstr "如果某项探测不可用，例如容器内未暴露 ``cpufreq`` ，则报告该项已跳过，而非失败。"
+
+#: source/how-to/cloudxr_teleoperation.rst:121
+msgid ""
+"On a multi-GPU workstation the GPU checks measure the device the session "
+"runs on -- the one selected with ``--device`` -- not simply the first "
+"adapter. The reported value names the ordinal (e.g. ``cuda:1``) so it is "
+"clear which GPU was measured."
+msgstr ""
+"多 GPU 工作站的 GPU 检查针对会话实际使用的设备，即 ``--device`` 选择的设备，而非简单检查第一块显卡。报告值会注明设备序号，例如 "
+"``cuda:1`` ，以明确测量的是哪块 GPU。"
+
+#: source/how-to/cloudxr_teleoperation.rst:125
+msgid ""
+"To use the check on its own -- for example to qualify a machine before "
+"setting up a session:"
+msgstr "也可以单独运行检查，例如在配置会话前评估机器："
+
+#: source/how-to/cloudxr_teleoperation.rst:135
+msgid "Install Isaac Capture"
+msgstr "安装 Isaac Capture"
+
+#: source/how-to/cloudxr_teleoperation.rst:137
+msgid ""
+"Use this path to teleoperate robots from an XR headset and to record "
+"demonstrations for imitation learning. It uses the ``teleop`` extra, which "
+"carries `Isaac Capture <https://github.com/NVIDIA/IsaacCapture>`__ with its "
+"CloudXR streaming runtime, and Isaac Sim itself for the Kit XR runtime that "
+"renders the stereo view. One flag covers the whole workflow."
+msgstr ""
+"通过此方式，可以从 XR 头显遥操作机器人，并录制用于模仿学习的示范。它使用 ``teleop`` 可选依赖组，其中包含 `Isaac Capture "
+"<https://github.com/NVIDIA/IsaacCapture>`__ 及其 CloudXR 串流运行时，也包含 Isaac "
+"Sim，用于渲染双目视图的 Kit XR 运行时。一个选项即可覆盖整个工作流。"
+
+#: source/how-to/cloudxr_teleoperation.rst:143
+msgid ""
+"XR teleoperation is supported on **Linux x86_64 only**. The ``teleop`` extra"
+" gates ``isaacteleop`` and ``dex-retargeting`` behind platform markers, so "
+"on Windows or aarch64 the extra resolves but installs nothing usable. It is "
+"also not supported on DGX Spark."
+msgstr ""
+"XR 遥操作 **只支持 Linux x86_64** 。 ``teleop`` 可选依赖组通过平台标记限制 ``isaacteleop`` 和 "
+"``dex-retargeting`` ；因此在 Windows 或 aarch64 上，依赖组虽然能解析，却不会安装可用组件。DGX Spark "
+"也不受支持。"
+
+#: source/how-to/cloudxr_teleoperation.rst:147
+msgid ""
+"``isaaclab teleop`` groups the three workflow scripts: ``run`` for a live "
+"session, ``record`` to capture demonstrations, and ``replay`` to play a "
+"dataset back. :ref:`The next section <run-isaac-lab-with-the-cloudxr-"
+"runtime>` walks through a session once setup is complete."
+msgstr ""
+"``isaaclab teleop`` 将三个工作流脚本组织在一起： ``run`` 用于实时会话， ``record`` 用于录制示范， "
+"``replay`` 用于回放数据集。完成配置后， :ref:`下一节 <run-isaac-lab-with-the-cloudxr-"
+"runtime>` 会介绍如何运行会话。"
+
+#: source/how-to/cloudxr_teleoperation.rst:153
+msgid ""
+"``teleop`` cannot be combined with ``ov`` or ``ovphysx`` in a single ``uv "
+"run``: the bundled Isaac Sim pins ``packaging==26.0`` while those runtimes "
+"require ``<24``. Install the OV runtimes separately when you need them."
+msgstr ""
+"不能在同一条 ``uv run`` 命令中同时选择 ``teleop`` 和 ``ov`` 或 ``ovphysx`` ：随附的 Isaac Sim "
+"锁定 ``packaging==26.0`` ，而这些运行时要求 ``<24`` 。需要 OV 运行时时，应单独安装。"
+
+#: source/how-to/cloudxr_teleoperation.rst:157
+msgid "Complete these steps first:"
+msgstr "先完成以下步骤："
+
+#: source/how-to/cloudxr_teleoperation.rst:159
+msgid "Install the system libraries required by the CloudXR runtime:"
+msgstr "安装 CloudXR 运行时所需的系统库："
+
+#: source/how-to/cloudxr_teleoperation.rst:165
+msgid ""
+"The CloudXR runtime links against Vulkan at runtime. If your system already "
+"has the NVIDIA driver installed, ``libvulkan1`` may already be present."
+msgstr "CloudXR 运行时在运行时链接 Vulkan。如果系统已安装 NVIDIA 驱动， ``libvulkan1`` 可能已经存在。"
+
+#: source/how-to/cloudxr_teleoperation.rst:168
+msgid "Set the CPU frequency governor to ``performance``:"
+msgstr "将 CPU 频率调节策略设为 ``performance`` ："
+
+#: source/how-to/cloudxr_teleoperation.rst:177
+msgid ""
+"Ubuntu defaults to the ``powersave`` governor, which measurably increases "
+"Pink IK solve latency and lowers the achievable teleop frame rate. Because "
+"IK and CPU-side physics are single-thread bound, this is one of the highest-"
+"impact settings on the workstation."
+msgstr ""
+"Ubuntu 默认的 ``powersave`` 策略会明显增加 Pink IK 求解延迟，降低可达到的遥操作帧率。由于 IK 和 CPU "
+"侧物理受单线程性能限制，这是工作站上影响较大的设置之一。"
+
+#: source/how-to/cloudxr_teleoperation.rst:181
+msgid "Verify the change:"
+msgstr "验证修改："
+
+#: source/how-to/cloudxr_teleoperation.rst:187
+msgid "Expected output: ``performance``."
+msgstr "预期输出： ``performance`` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:191
+msgid ""
+"This setting does not survive a reboot. Re-run the command after restarting,"
+" or make it persistent with a systemd unit or your distribution's "
+"``cpupower`` service configuration. The :ref:`teleop-workstation-capability-"
+"check` reports the governor at session start, so a machine that has reverted"
+" to ``powersave`` is flagged before you notice the frame rate."
+msgstr ""
+"此设置在重启后失效。重启后需再次运行命令，或通过 systemd 单元、发行版的 ``cpupower`` 服务配置使其持久生效。 "
+":ref:`teleop-workstation-capability-check` 在会话启动时报告调节策略，因此机器恢复到 "
+"``powersave`` 后，可以在注意到帧率下降前得到提示。"
+
+#: source/how-to/cloudxr_teleoperation.rst:196
+msgid ""
+"``isaacteleop`` ships as part of the ``teleop`` extra, so no separate pip "
+"install step is required — but note that it comes from the extra rather than"
+" from the ``isaaclab_teleop`` package metadata, so installing "
+"``isaaclab_teleop`` on its own does **not** pull it in. For building from "
+"source or plugin development, see the `Isaac Capture GitHub "
+"<https://github.com/NVIDIA/IsaacCapture>`_."
+msgstr ""
+"``isaacteleop`` 包含在 ``teleop`` 可选依赖组中，无需单独执行 pip 安装。但它来自该依赖组，而非 "
+"``isaaclab_teleop`` 的包元数据，所以单独安装 ``isaaclab_teleop`` **不会** 安装它。源码构建或插件开发见 "
+"`Isaac Capture GitHub <https://github.com/NVIDIA/IsaacCapture>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:202
+msgid ""
+"Configure the firewall to allow CloudXR traffic. The required ports depend "
+"on the client type."
+msgstr "配置防火墙以允许 CloudXR 流量。所需端口取决于客户端类型。"
+
+#: source/how-to/cloudxr_teleoperation.rst:205
+msgid "**For Apple native clients** (CloudXR Framework):"
+msgstr "**Apple 原生客户端** （CloudXR Framework）："
+
+#: source/how-to/cloudxr_teleoperation.rst:223
+msgid "**For web clients** (CloudXR.js via the built-in WSS proxy):"
+msgstr "**网页客户端** （通过内置 WSS 代理使用 CloudXR.js）："
+
+#: source/how-to/cloudxr_teleoperation.rst:231
+msgid ""
+"For full network requirements and Windows firewall instructions, see the "
+"`CloudXR Network Setup <https://docs.nvidia.com/cloudxr-"
+"sdk/latest/requirement/network_setup.html#firewall-configuration>`__ "
+"documentation."
+msgstr ""
+"完整网络要求和 Windows 防火墙说明见 `CloudXR 网络配置 <https://docs.nvidia.com/cloudxr-"
+"sdk/latest/requirement/network_setup.html#firewall-configuration>`__ 文档。"
+
+#: source/how-to/cloudxr_teleoperation.rst:239
+msgid "Run Isaac Lab with CloudXR"
+msgstr "配合 CloudXR 运行 Isaac Lab"
+
+#: source/how-to/cloudxr_teleoperation.rst:241
+msgid ""
+"The CloudXR runtime launches automatically when a teleop script is started. "
+"No separate terminal or ``source`` step is needed. Launch a teleoperation "
+"session directly:"
+msgstr "启动遥操作脚本时，CloudXR 运行时会自动启动，无需另开终端或执行 ``source`` 。直接启动遥操作会话："
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/cloudxr_teleoperation.rst:264
+msgid ""
+"To verify that the headset and controller tracking poses are reaching Isaac "
+"Lab, add ``--enable_debug_visualization`` to the command. The visualization "
+"draws red markers at tracked hand joints and RGB axes at tracked controller "
+"aim poses. See :ref:`isaac-teleop-tracking-debug-visualization` for details."
+msgstr ""
+"要确认头显与控制器的跟踪位姿已传到 Isaac Lab，可在命令中添加 ``--enable_debug_visualization`` "
+"。可视化会在跟踪到的手部关节位置绘制红色标记，并在控制器的指向位姿处绘制 RGB 坐标轴。详情见 :ref:`isaac-teleop-"
+"tracking-debug-visualization` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:269
+msgid ""
+"For fixed-base G1 upper-body manipulation, select ``IsaacContrib-PickPlace-"
+"FixedBaseUpperBodyIK-G1-Abs`` instead. Both G1 tasks enable a head-locked "
+"robot-camera PiP panel by default in XR. See :ref:`isaac-teleop-xr-camera-"
+"feedback` for a fixed-base launch example, camera-recording differences, and"
+" scene-partition isolation behavior."
+msgstr ""
+"固定基座 G1 上半身操作应改选 ``IsaacContrib-PickPlace-FixedBaseUpperBodyIK-G1-Abs`` 。两个 "
+"G1 任务默认都在 XR 中启用随头部移动的机器人相机画中画面板。固定基座启动示例、相机录制差异和场景分区隔离行为见 :ref:`isaac-"
+"teleop-xr-camera-feedback` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:276
+msgid ""
+"**First run — EULA acceptance required.** On the first launch, Isaac Sim "
+"will prompt you to accept the NVIDIA Omniverse License Agreement before the "
+"simulation starts:"
+msgstr "**首次运行需要接受 EULA。** 首次启动时，Isaac Sim 会在仿真开始前提示接受 NVIDIA Omniverse 许可协议："
+
+#: source/how-to/cloudxr_teleoperation.rst:287
+msgid ""
+"Type ``Yes`` and press **Enter** to continue. If this prompt goes unnoticed "
+"the script will appear to hang — check your terminal output if Isaac Sim "
+"does not start within a few seconds."
+msgstr ""
+"输入 ``Yes`` 并按 **Enter** 继续。如果忽略了提示，脚本会看似卡住；若 Isaac Sim 几秒内未启动，请检查终端输出。"
+
+#: source/how-to/cloudxr_teleoperation.rst:293
+msgid ""
+"The ``IsaacContrib-PickPlace-Locomanipulation-G1-Abs`` task above uses "
+"**motion controllers** as its input mode: the controller grip poses drive "
+"the arms, the trigger and squeeze buttons close the TriHand fingers, and the"
+" thumbsticks drive locomotion and hip height. Hold a controller in each hand"
+" rather than relying on optical hand tracking. Other tasks expect hand "
+"tracking instead -- see the :ref:`isaac-teleop-control-schemes` table for "
+"the full list."
+msgstr ""
+"上述 ``IsaacContrib-PickPlace-Locomanipulation-G1-Abs`` 任务以 **运动控制器** "
+"作为输入：控制器的握持位姿驱动双臂，扳机和握压按钮闭合 TriHand "
+"手指，摇杆控制移动和髋部高度。应双手各持一个控制器，而不是依靠光学手部跟踪。其他任务则可能要求手部跟踪，完整列表见 :ref:`isaac-"
+"teleop-control-schemes` 表。"
+
+#: source/how-to/cloudxr_teleoperation.rst:300
+msgid ""
+"To switch the CloudXR device profile at launch time (e.g. from Quest to "
+"Apple Vision Pro), use the ``--cloudxr_env`` flag. Apple Vision Pro tracks "
+"hands rather than motion controllers, so pair it with a hand-tracking task "
+"such as ``IsaacContrib-PickPlace-GR1T2-WaistEnabled-Abs``:"
+msgstr ""
+"启动时可通过 ``--cloudxr_env`` 切换 CloudXR 设备配置，例如从 Quest 切换到 Apple Vision "
+"Pro。Apple Vision Pro 跟踪双手而非运动控制器，因此应搭配手部跟踪任务，例如 ``IsaacContrib-PickPlace-"
+"GR1T2-WaistEnabled-Abs`` ："
+
+#: source/how-to/cloudxr_teleoperation.rst:327
+msgid ""
+"For details on the shipped ``.env`` profiles and how to customise them, see "
+":ref:`isaac-teleop-cloudxr-profiles` in the feature guide."
+msgstr "随附 ``.env`` 配置及其自定义方法，见功能指南中的 :ref:`isaac-teleop-cloudxr-profiles` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:330
+msgid "Then in the Isaac Sim UI:"
+msgstr "然后在 Isaac Sim 界面中："
+
+#: source/how-to/cloudxr_teleoperation.rst:332
+msgid "Locate the panel named **XR** and choose the following options:"
+msgstr "找到 **XR** 面板，选择以下选项："
+
+#: source/how-to/cloudxr_teleoperation.rst:334
+msgid "Selected Output Plugin: **OpenXR**"
+msgstr "选择的输出插件: **OpenXR**"
+
+#: source/how-to/cloudxr_teleoperation.rst:335
+msgid "OpenXR Runtime: **System OpenXR Runtime**"
+msgstr "OpenXR 运行时: **System OpenXR Runtime**"
+
+#: source/how-to/cloudxr_teleoperation.rst:337
+msgid "Isaac Sim UI: XR Panel"
+msgstr "Isaac Sim 界面：XR 面板"
+
+#: source/how-to/cloudxr_teleoperation.rst:342
+msgid "Click **Start XR**."
+msgstr "点击 **Start XR** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:344
+msgid ""
+"You should see \"Waiting for connection\" displayed in the status bar at the"
+" bottom of the viewport. The dual-eye stereo render only becomes active once"
+" a headset connects and playback begins on the device."
+msgstr "视口底部状态栏应显示 \"Waiting for connection\"（等待连接）。只有头显连接并开始在设备上播放后，双目立体渲染才会启用。"
+
+#: source/how-to/cloudxr_teleoperation.rst:347
+msgid ""
+"Isaac Lab viewport showing \"Waiting for connection\" status after clicking "
+"Start XR"
+msgstr "点击 Start XR 后，Isaac Lab 视口显示 \"Waiting for connection\" 状态。"
+
+#: source/how-to/cloudxr_teleoperation.rst:352
+msgid "Isaac Lab is now ready to receive connections from a CloudXR client."
+msgstr "Isaac Lab 已准备好接收 CloudXR 客户端连接。"
+
+#: source/how-to/cloudxr_teleoperation.rst:356
+msgid ""
+"**Running headless (no local UI).** The commands above use ``--visualizer "
+"kit`` to open the local Kit viewport, where you click **Start XR**. On a "
+"server or cloud instance without a display, run headless instead: omit "
+"``--visualizer`` (headless is the default) or pass ``--visualizer none`` / "
+"``--viz none``. In headless XR the AR session starts automatically -- there "
+"is no viewport to click **Start XR** -- so Isaac Lab begins streaming as "
+"soon as a CloudXR client connects. The ``--headless`` flag was removed in "
+"Isaac Lab 3.0; ``HEADLESS=1`` in the environment also forces headless."
+msgstr ""
+"**无界面运行（没有本地图形界面）。** 上述命令使用 ``--visualizer kit`` 打开本地 Kit 视口，需要点击 **Start "
+"XR** 。在没有显示器的服务器或云实例上，应使用默认的无界面模式：省略 ``--visualizer`` ，或传入 ``--visualizer "
+"none`` / ``--viz none`` 。无界面 XR 中，AR 会话自动启动，无需在视口点击 **Start XR** ；CloudXR "
+"客户端一连接，Isaac Lab 就开始串流。Isaac Lab 3.0 已移除 ``--headless`` 标志；设置环境变量 "
+"``HEADLESS=1`` 也可强制无界面运行。"
+
+#: source/how-to/cloudxr_teleoperation.rst:366
+msgid ""
+"**ERROR_STREAMSDK_PORT_UNAVAILABLE / port 49100 already in use.** The "
+"CloudXR runtime binds TCP port 49100 for WebRTC signaling. If a previous "
+"CloudXR runtime instance is still running, ``Server::create`` fails with "
+"this error. Identify the process holding the port, confirm it is safe to "
+"stop, then terminate it -- try a graceful ``kill`` before escalating to "
+"``kill -9``:"
+msgstr ""
+"**ERROR_STREAMSDK_PORT_UNAVAILABLE / 49100 端口已被占用。** CloudXR 运行时绑定 TCP 49100"
+" 端口进行 WebRTC 信令通信。如果之前的 CloudXR 实例仍在运行， ``Server::create`` "
+"会因这一错误失败。查明占用端口的进程，确认可以停止后再终止它；先尝试正常的 ``kill`` ，必要时再用 ``kill -9`` ："
+
+#: source/how-to/cloudxr_teleoperation.rst:378
+msgid ""
+"Alternatively, set a different port with the ``NV_CXR_SERVER_PORT`` "
+"environment variable."
+msgstr "也可通过 ``NV_CXR_SERVER_PORT`` 环境变量设置其他端口。"
+
+#: source/how-to/cloudxr_teleoperation.rst:384
+msgid "Connect an XR Device"
+msgstr "连接 XR 设备"
+
+#: source/how-to/cloudxr_teleoperation.rst:386
+msgid ""
+"Isaac Capture supports several XR headsets. You only need **one** of the "
+"devices below -- choose the tab that matches your hardware."
+msgstr "Isaac Capture 支持多种 XR 头显。只需下列设备中的 **一种** ，选择与你的硬件对应的选项卡。"
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "Meta Quest 3 / Pico 4 Ultra"
+msgstr "Meta Quest 3 / Pico 4 Ultra"
+
+#: source/how-to/cloudxr_teleoperation.rst:396
+msgid ""
+"Meta Quest 3 and Pico 4 Ultra connect to Isaac Lab via the `CloudXR.js "
+"<https://docs.nvidia.com/cloudxr-"
+"sdk/latest/usr_guide/cloudxr_js/index.html>`_ WebXR client. The built-in "
+"environments default to the ``cloudxrjs-cloudxr.env`` profile (``auto-"
+"webrtc``), which is the correct setting for these devices."
+msgstr ""
+"Meta Quest 3 和 Pico 4 Ultra 通过 `CloudXR.js <https://docs.nvidia.com/cloudxr-"
+"sdk/latest/usr_guide/cloudxr_js/index.html>`_ WebXR 客户端连接 Isaac Lab。内置环境默认采用"
+" ``cloudxrjs-cloudxr.env`` 配置（ ``auto-webrtc`` ），这正是这些设备所需的设置。"
+
+#: source/how-to/cloudxr_teleoperation.rst:403
+msgid ""
+"Pico 4 Ultra requires Pico OS 15.4.4U or later and must use HTTPS mode."
+msgstr "Pico 4 Ultra 需要 Pico OS 15.4.4U 或更新版本，且必须使用 HTTPS 模式。"
+
+#: source/how-to/cloudxr_teleoperation.rst:405
+msgid ""
+"Launch the teleop script as shown in :ref:`run-isaac-lab-with-the-cloudxr-"
+"runtime`. The CloudXR runtime and WSS proxy start automatically."
+msgstr ""
+"按照 :ref:`run-isaac-lab-with-the-cloudxr-runtime` 启动遥操作脚本。CloudXR 运行时和 WSS "
+"代理会自动启动。"
+
+#: source/how-to/cloudxr_teleoperation.rst:409
+msgid ""
+"Open the browser on your headset and navigate to the hosted CloudXR.js "
+"client: `<https://nvidia.github.io/IsaacCapture/client/release-1.4.x/>`_."
+msgstr ""
+"在头显中打开浏览器，访问托管的 CloudXR.js 客户端： "
+"`<https://nvidia.github.io/IsaacCapture/client/release-1.4.x/>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:414
+msgid ""
+"The web client URL is versioned. The ``release-1.4.x`` path corresponds to "
+"the ``isaacteleop`` version pinned by Isaac Lab (``isaacteleop~=1.4.145`` in"
+" the ``teleop`` extra of the root ``pyproject.toml``). When Isaac Lab "
+"updates its teleoperation dependency, update this link to the matching "
+"client release."
+msgstr ""
+"网页客户端 URL 带有版本。 ``release-1.4.x`` 路径对应 Isaac Lab 锁定的 ``isaacteleop`` 版本，即根 "
+"``pyproject.toml`` 的 ``teleop`` 依赖组中的 ``isaacteleop~=1.4.145`` 。Isaac Lab "
+"更新遥操作依赖时，应将此链接更新为匹配的客户端版本。"
+
+#: source/how-to/cloudxr_teleoperation.rst:421
+msgid ""
+"For rapid development, you can test the CloudXR.js client on a desktop "
+"browser before deploying to headsets."
+msgstr "开发时，可以先在桌面浏览器中测试 CloudXR.js 客户端，再部署到头显。"
+
+#: source/how-to/cloudxr_teleoperation.rst:424
+msgid ""
+"Enter the IP address of your Isaac Lab host machine in the **Server IP** "
+"field."
+msgstr "在 **Server IP** 字段中输入 Isaac Lab 主机的 IP 地址。"
+
+#: source/how-to/cloudxr_teleoperation.rst:426
+msgid ""
+"Because the WSS proxy uses a self-signed certificate, you must accept it "
+"before connecting. Click the **Click https://<ip>:48322/ to accept cert** "
+"link that appears on the page."
+msgstr ""
+"WSS 代理使用自签名证书，因此连接前必须接受它。点击页面上的 **Click https://<ip>:48322/ to accept cert**"
+" 链接。"
+
+#: source/how-to/cloudxr_teleoperation.rst:430
+msgid "CloudXR.js certificate acceptance link"
+msgstr "CloudXR.js 证书接受链接"
+
+#: source/how-to/cloudxr_teleoperation.rst:435
+msgid ""
+"A new tab opens with a **\"Your connection is not private\"** warning. Click"
+" **Advanced**, then click **Proceed to <ip> (unsafe)**."
+msgstr ""
+"新选项卡会显示 **\"Your connection is not private\"** （连接不安全）警告。点击 **Advanced** "
+"，再点击 **Proceed to <ip> (unsafe)** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:438
+msgid "Browser privacy warning for self-signed certificate"
+msgstr "浏览器对自签名证书显示的隐私警告"
+
+#: source/how-to/cloudxr_teleoperation.rst:443
+msgid ""
+"The browser will show a **\"Certificate Accepted\"** page confirming the "
+"certificate has been accepted. Close this tab and return to the CloudXR.js "
+"client page."
+msgstr ""
+"浏览器会显示 **\"Certificate Accepted\"** 页面，确认已接受证书。关闭该选项卡，返回 CloudXR.js 客户端页面。"
+
+#: source/how-to/cloudxr_teleoperation.rst:446
+msgid "Certificate accepted confirmation page"
+msgstr "证书已接受的确认页面"
+
+#: source/how-to/cloudxr_teleoperation.rst:451
+msgid "Click **Connect** to begin teleoperation."
+msgstr "点击 **Connect** 开始遥操作。"
+
+#: source/how-to/cloudxr_teleoperation.rst:453
+msgid ""
+"For advanced configuration, troubleshooting, and additional details, see the"
+" `CloudXR.js User Guide <https://docs.nvidia.com/cloudxr-"
+"sdk/latest/usr_guide/cloudxr_js/index.html>`_."
+msgstr ""
+"高级配置、故障排查及更多信息见 `CloudXR.js 用户指南 <https://docs.nvidia.com/cloudxr-"
+"sdk/latest/usr_guide/cloudxr_js/index.html>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "Apple Vision Pro"
+msgstr "Apple Vision Pro"
+
+#: source/how-to/cloudxr_teleoperation.rst:461
+msgid ""
+"Apple Vision Pro connects to Isaac Lab via the native `Isaac XR Teleop "
+"Sample Client`_ app."
+msgstr ""
+"Apple Vision Pro 通过原生 `Isaac XR 遥操作示例客户端 <Isaac XR Teleop Sample Client_>`_ "
+"应用连接 Isaac Lab。"
+
+#: source/how-to/cloudxr_teleoperation.rst:465
+msgid ""
+"Apple Vision Pro requires the ``auto-native`` device profile. Pass the "
+"``avp`` shorthand when launching the teleop script:"
+msgstr "Apple Vision Pro 需要 ``auto-native`` 设备配置。启动遥操作脚本时，传入简写 ``avp`` ："
+
+#: source/how-to/cloudxr_teleoperation.rst:488
+msgid ""
+"See :ref:`isaac-teleop-cloudxr-profiles` for details on the shipped "
+"profiles."
+msgstr "随附配置的详情见 :ref:`isaac-teleop-cloudxr-profiles` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "Build and Install the Client App"
+msgstr "构建并安装客户端应用"
+
+#: source/how-to/cloudxr_teleoperation.rst:494
+msgid "Requirements:"
+msgstr "要求："
+
+#: source/how-to/cloudxr_teleoperation.rst:496
+msgid ""
+"Apple Vision Pro with visionOS 26, Apple M3 Pro chip (11-core CPU), 16 GB "
+"unified memory"
+msgstr "Apple Vision Pro，配备 visionOS 26、Apple M3 Pro 芯片（11 核 CPU）和 16 GB 统一内存"
+
+#: source/how-to/cloudxr_teleoperation.rst:497
+msgid "Apple Silicon Mac with macOS Sequoia 15.6+ and Xcode 26.0"
+msgstr "Apple Silicon Mac，配备 macOS Sequoia 15.6+ 和 Xcode 26.0"
+
+#: source/how-to/cloudxr_teleoperation.rst:499
+msgid "On your Mac:"
+msgstr "在您的 Mac 上:"
+
+#: source/how-to/cloudxr_teleoperation.rst:501
+msgid "Clone the `Isaac XR Teleop Sample Client`_ repository:"
+msgstr "克隆 `Isaac XR 遥操作示例客户端 <Isaac XR Teleop Sample Client_>`_ 仓库："
+
+#: source/how-to/cloudxr_teleoperation.rst:507
+msgid "Check out the version that matches your Isaac Lab version:"
+msgstr "检出与 Isaac Lab 版本匹配的版本："
+
+#: source/how-to/cloudxr_teleoperation.rst:510
+msgid "Isaac Lab Version"
+msgstr "Isaac Lab 版本"
+
+#: source/how-to/cloudxr_teleoperation.rst:510
+msgid "Client App Version"
+msgstr "客户端应用程序版本"
+
+#: source/how-to/cloudxr_teleoperation.rst:512
+msgid "3.0"
+msgstr "3.0"
+
+#: source/how-to/cloudxr_teleoperation.rst:512
+msgid "v3.0.0"
+msgstr "v3.0.0"
+
+#: source/how-to/cloudxr_teleoperation.rst:514
+msgid "2.3"
+msgstr "2.3"
+
+#: source/how-to/cloudxr_teleoperation.rst:514
+msgid "v2.3.0"
+msgstr "v2.3.0"
+
+#: source/how-to/cloudxr_teleoperation.rst:521
+msgid ""
+"Follow the README in the repository to build and install the app on your "
+"Apple Vision Pro."
+msgstr "按照存储库中的 README 构建并安装应用程序到您的 Apple Vision Pro 上。"
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "Teleoperate with Apple Vision Pro"
+msgstr "使用 Apple Vision Pro 遥操作"
+
+#: source/how-to/cloudxr_teleoperation.rst:530
+msgid "**Before wearing the headset**, verify connectivity from your Mac:"
+msgstr "**佩戴头显前** ，先从 Mac 验证连接："
+
+#: source/how-to/cloudxr_teleoperation.rst:536
+msgid "Expected output: ``Connection to <ip> port 48010 [tcp/*] succeeded!``"
+msgstr "预期输出: ``Connection to <ip> port 48010 [tcp/*] succeeded!``"
+
+#: source/how-to/cloudxr_teleoperation.rst:538
+msgid ""
+"On your Isaac Lab workstation, ensure Isaac Lab and CloudXR are running as "
+"described in :ref:`run-isaac-lab-with-the-cloudxr-runtime`."
+msgstr ""
+"在 Isaac Lab 工作站上，确保 Isaac Lab 和 CloudXR 已按 :ref:`run-isaac-lab-with-the-"
+"cloudxr-runtime` 启动。"
+
+#: source/how-to/cloudxr_teleoperation.rst:541
+msgid "On your Apple Vision Pro:"
+msgstr "在 Apple Vision Pro 上："
+
+#: source/how-to/cloudxr_teleoperation.rst:543
+msgid "Open the Isaac XR Teleop Sample Client."
+msgstr "打开 Isaac XR Teleop Sample Client。"
+
+#: source/how-to/cloudxr_teleoperation.rst:545
+msgid "Apple Vision Pro connect UI"
+msgstr "Apple Vision Pro 连接界面"
+
+#: source/how-to/cloudxr_teleoperation.rst:550
+msgid ""
+"Enter the IP address of your Isaac Lab workstation and click **Connect**."
+msgstr "输入 Isaac Lab 工作站的 IP 地址，点击 **Connect** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:554
+msgid ""
+"The Apple Vision Pro and workstation must be IP-reachable from one another. "
+"We recommend a dedicated Wifi 6 router."
+msgstr "Apple Vision Pro 和工作站必须能通过 IP 相互访问。建议使用专用 Wi-Fi 6 路由器。"
+
+#: source/how-to/cloudxr_teleoperation.rst:557
+msgid ""
+"After a brief period you should see the simulation rendered in the headset "
+"along with teleoperation controls."
+msgstr "稍等片刻，头显中应显示渲染的仿真画面和遥操作控件。"
+
+#: source/how-to/cloudxr_teleoperation.rst:560
+msgid "Apple Vision Pro teleop UI"
+msgstr "Apple Vision Pro 遥操作界面"
+
+#: source/how-to/cloudxr_teleoperation.rst:565
+msgid ""
+"Click **Play** to begin teleoperating. Use **Play**, **Stop**, and **Reset**"
+" to control the session."
+msgstr "点击 **Play** 开始遥操作。通过 **Play** 、 **Stop** 和 **Reset** 控制会话。"
+
+#: source/how-to/cloudxr_teleoperation.rst:570
+msgid "For bimanual tasks, visionOS voice control enables hands-free UI:"
+msgstr "对于双手任务，可用 visionOS 语音控制免手操作界面："
+
+#: source/how-to/cloudxr_teleoperation.rst:572
+msgid ""
+"**Settings** > **Accessibility** > **Voice Control** > Turn on **Voice "
+"Control**"
+msgstr ""
+"进入 **Settings** > **Accessibility** > **Voice Control** ，打开 **Voice "
+"Control** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:573
+msgid "Enable **<item name>** under **Commands** > **Basic Navigation**"
+msgstr "在 **Commands** > **Basic Navigation** 下启用 **<item name>** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:574
+msgid "Say \"Play\", \"Stop\", or \"Reset\" while the app is connected."
+msgstr "应用连接后，说出 \"Play\"、\"Stop\" 或 \"Reset\"。"
+
+#: source/how-to/cloudxr_teleoperation.rst:576
+msgid "Teleoperate the robot by moving your hands."
+msgstr "移动双手，遥操作机器人。"
+
+#: source/how-to/cloudxr_teleoperation.rst:578
+msgid "Bimanual dexterous teleoperation with CloudXR"
+msgstr "通过 CloudXR 进行双手灵巧遥操作"
+
+#: source/how-to/cloudxr_teleoperation.rst:584
+msgid ""
+"If the IK solver fails, an error message appears in the headset. Click "
+"**Reset** to return the robot to its original pose and continue."
+msgstr "IK 求解器失败时，头显中会出现错误消息。点击 **Reset** ，将机器人恢复到初始位姿，再继续操作。"
+
+#: source/how-to/cloudxr_teleoperation.rst:587
+msgid "IK error message in XR device"
+msgstr "XR 设备中的 IK 错误消息"
+
+#: source/how-to/cloudxr_teleoperation.rst:592
+msgid "Click **Disconnect** when finished."
+msgstr "完成后点击 **Disconnect** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:598
+msgid "Manus Gloves"
+msgstr "Manus 手套"
+
+#: source/how-to/cloudxr_teleoperation.rst:600
+msgid ""
+"Manus gloves provide high-fidelity finger tracking via the Manus SDK. This "
+"is useful when optical hand tracking from the headset is occluded or when "
+"higher-precision finger data is needed. Because the gloves feed the hand-"
+"tracking pipeline, pair them with a hand-tracking task such as "
+"``IsaacContrib-PickPlace-GR1T2-WaistEnabled-Abs`` rather than a controller-"
+"driven one. Manus tracking data flows through the same API as headset-based "
+"optical hand tracking in Isaac Capture, so the same retargeters and "
+"pipelines work with both input sources."
+msgstr ""
+"Manus 手套通过 Manus SDK "
+"提供高保真手指跟踪，适用于头显光学手部跟踪被遮挡，或需要更高精度手指数据的情况。手套输入进入手部跟踪管线，因此应搭配 ``IsaacContrib-"
+"PickPlace-GR1T2-WaistEnabled-Abs`` 等手部跟踪任务，而非控制器驱动任务。在 Isaac Capture 中，Manus"
+" 跟踪数据与头显光学手部跟踪使用同一 API，因此二者可使用相同的重定向器和管线。"
+
+#: source/how-to/cloudxr_teleoperation.rst:609
+msgid ""
+"Manus glove support has been migrated into Isaac Capture as a native plugin."
+" The previous ``isaac-teleop-device-plugins`` repository and the "
+"``libsurvive``-based Vive tracker integration are no longer required."
+msgstr ""
+"Manus 手套支持已迁入 Isaac Capture，作为原生插件提供。以前的 ``isaac-teleop-device-plugins`` "
+"仓库和基于 ``libsurvive`` 的 Vive 跟踪器集成已不再需要。"
+
+#: source/how-to/cloudxr_teleoperation.rst:616
+msgid ""
+"**Manus gloves with a Manus SDK license**, paired with the MANUS Core "
+"application so they are connected and calibrated. See the `MANUS Getting "
+"Started guide for Linux <https://docs.manus-"
+"meta.com/3.1.1/Plugins/SDK/Linux/>`_."
+msgstr ""
+"**具有 Manus SDK 许可的 Manus 手套** ，已与 MANUS Core 应用配对、连接并完成校准。参见 `MANUS Linux "
+"入门指南 <https://docs.manus-meta.com/3.1.1/Plugins/SDK/Linux/>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:620
+msgid ""
+"**The** ``manus_hand_plugin`` **plugin, built from Isaac Capture source**: "
+"glove tracking data is streamed by a standalone C++ plugin that you run "
+"alongside the sim."
+msgstr ""
+"**从 Isaac Capture 源码构建的** ``manus_hand_plugin`` **插件** ：手套跟踪数据由独立 C++ "
+"插件传输，需要与仿真一同运行。"
+
+#: source/how-to/cloudxr_teleoperation.rst:625
+msgid ""
+"``manus_hand_plugin`` is **not** shipped with Isaac Lab, is **not** part of "
+"the ``isaacteleop`` pip package, and is not in any release archive. It "
+"exists only after building the `Isaac Capture "
+"<https://github.com/NVIDIA/IsaacCapture>`_ repository from source. If "
+"``install/plugins/manus/manus_hand_plugin`` does not exist in your Isaac "
+"Capture checkout, this step has not been completed."
+msgstr ""
+"``manus_hand_plugin`` **不随** Isaac Lab 提供，也 **不包含** 在 ``isaacteleop`` pip "
+"包或任何发布归档中。只有从源码构建 `Isaac Capture <https://github.com/NVIDIA/IsaacCapture>`_ "
+"仓库后，它才会存在。如果 Isaac Capture 检出目录中没有 "
+"``install/plugins/manus/manus_hand_plugin`` ，说明尚未完成这一步。"
+
+#: source/how-to/cloudxr_teleoperation.rst:631
+msgid ""
+"Clone the repository and check out the release branch matching the "
+"``isaacteleop`` version Isaac Lab is pinned to (``isaacteleop~=1.4.145`` in "
+"the ``teleop`` extra of the root ``pyproject.toml``), so the plugin's wire "
+"format matches the ``isaacteleop`` package Isaac Lab installs:"
+msgstr ""
+"克隆仓库，并检出与 Isaac Lab 锁定的 ``isaacteleop`` 版本匹配的发布分支（根 ``pyproject.toml`` 的 "
+"``teleop`` 依赖组目前锁定 ``isaacteleop~=1.4.145`` ），以确保插件的通信格式与 Isaac Lab 安装的 "
+"``isaacteleop`` 包匹配："
+
+#: source/how-to/cloudxr_teleoperation.rst:644
+msgid ""
+"When Isaac Lab updates its teleoperation dependency, check out the matching "
+"``release/<version>.x`` branch instead."
+msgstr "Isaac Lab 更新遥操作依赖时，应改为检出匹配的 ``release/<version>.x`` 分支。"
+
+#: source/how-to/cloudxr_teleoperation.rst:647
+msgid ""
+"Grant the host access to the Manus dongle **once, on the host machine**. Run"
+" this outside any container -- udev rules are processed by ``systemd-"
+"udevd``, which does not run inside Docker, so installing rules from a "
+"container has no effect:"
+msgstr ""
+"**在宿主机上执行一次** ，授予主机访问 Manus 接收器的权限。不要在容器内执行：udev 规则由 ``systemd-udevd`` "
+"处理，而该服务不在 Docker 内运行，因此在容器内安装规则不会生效："
+
+#: source/how-to/cloudxr_teleoperation.rst:657
+msgid ""
+"Then, inside the environment you build in (devcontainer, Isaac ROS "
+"container, or bare host), install ``clang-format-14`` -- a missing ``clang-"
+"format-14`` is the most common cause of a failed build, because the root "
+"``CMakeLists.txt`` enforces the format check by default on Linux and "
+"``install_manus.sh`` does not install it for you:"
+msgstr ""
+"随后，在用于构建的环境中（开发容器、Isaac ROS 容器或宿主机）安装 ``clang-format-14`` "
+"。缺少它是构建失败最常见的原因，因为根 ``CMakeLists.txt`` 默认在 Linux 上强制执行格式检查，而 "
+"``install_manus.sh`` 不会帮你安装它："
+
+#: source/how-to/cloudxr_teleoperation.rst:667
+msgid "Then download the Manus SDK and build and install the plugin:"
+msgstr "然后下载 Manus SDK，构建并安装插件："
+
+#: source/how-to/cloudxr_teleoperation.rst:674
+msgid ""
+"The script installs the remaining required system packages, downloads the "
+"Manus SDK, and builds and installs the plugin and its diagnostic CLI tool. "
+"The plugin is installed to "
+"``<IsaacCapture>/install/plugins/manus/manus_hand_plugin``. Every later "
+"command in this section runs from the Isaac Capture checkout root; "
+"substitute your own path for ``/path/to/IsaacCapture``."
+msgstr ""
+"脚本会安装其余必需系统包、下载 Manus SDK，并构建和安装插件及其诊断命令行工具。插件安装到 "
+"``<IsaacCapture>/install/plugins/manus/manus_hand_plugin`` 。本节后续所有命令均从 Isaac"
+" Capture 检出目录根部运行；请将 ``/path/to/IsaacCapture`` 替换为实际路径。"
+
+#: source/how-to/cloudxr_teleoperation.rst:679
+msgid ""
+"Verify the build and that the gloves are tracking with the diagnostic CLI "
+"tool, which opens a **MANUS Data Visualizer** window showing the hand "
+"skeleton. Only one process can hold the Manus SDK connection at a time, so "
+"stop the CLI tool before starting the plugin:"
+msgstr ""
+"使用诊断命令行工具验证构建结果和手套跟踪状态。它会打开 **MANUS Data Visualizer** "
+"窗口，显示手部骨架。同一时间只能有一个进程占用 Manus SDK 连接，因此启动插件前应停止该工具："
+
+#: source/how-to/cloudxr_teleoperation.rst:688
+msgid ""
+"See the `Manus plugin documentation`_ for manual installation without "
+"``install_manus.sh``, the full data-path reference (skeleton injection, "
+"flex-sensor tensors, haptics), and troubleshooting."
+msgstr ""
+"不使用 ``install_manus.sh`` 的手动安装方式、完整数据路径参考（骨架注入、弯曲传感器张量、触觉反馈）及故障排查，见 `Manus "
+"插件文档 <Manus plugin documentation_>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:692
+msgid ""
+"**A Meta Quest 3 or Pico 4 Ultra controller per hand**, required for wrist "
+"positioning. Each MANUS glove has a Universal Mount on the back of the wrist"
+" strap; clip the controller into it so the controller's grip pose drives "
+"wrist placement while the glove tracks the fingers. See `Wrist Positioning "
+"-- Controllers vs Optical Hand Tracking`_ in the Manus plugin documentation "
+"for how the plugin selects between controller and optical wrist tracking."
+msgstr ""
+"**每只手配一个 Meta Quest 3 或 Pico 4 Ultra 控制器** ，用于确定手腕位置。每只 MANUS 手套的腕带背面都有 "
+"Universal Mount；将控制器卡入其中，使控制器握持位姿驱动手腕位置，而手套跟踪手指。插件如何在控制器和光学手腕跟踪之间选择，见 Manus "
+"插件文档中的 `手腕定位：控制器与光学手部跟踪 <Wrist Positioning -- Controllers vs Optical Hand "
+"Tracking_>`_ 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:701
+msgid ""
+"Meta Quest 3 controller mounted on the left MANUS glove's Universal Mount"
+msgstr "Meta Quest 3 控制器安装在左侧 MANUS 手套的 Universal Mount 上"
+
+#: source/how-to/cloudxr_teleoperation.rst:706
+msgid "Left glove"
+msgstr "左手套"
+
+#: source/how-to/cloudxr_teleoperation.rst:707
+msgid ""
+"Meta Quest 3 controller mounted on the right MANUS glove's Universal Mount"
+msgstr "Meta Quest 3 控制器安装在右侧 MANUS 手套的 Universal Mount 上"
+
+#: source/how-to/cloudxr_teleoperation.rst:712
+msgid "Right glove"
+msgstr "右手套"
+
+#: source/how-to/cloudxr_teleoperation.rst:715
+msgid "Run the simulation"
+msgstr "运行仿真"
+
+#: source/how-to/cloudxr_teleoperation.rst:717
+msgid ""
+"Launch a teleoperation session paired with a hand-tracking task, as shown in"
+" :ref:`run-isaac-lab-with-the-cloudxr-runtime`:"
+msgstr "按 :ref:`run-isaac-lab-with-the-cloudxr-runtime` 所示，选择手部跟踪任务启动遥操作会话："
+
+#: source/how-to/cloudxr_teleoperation.rst:740
+msgid ""
+"Manus gloves and other external push-device peripherals require "
+"``NV_CXR_ENABLE_PUSH_DEVICES=1``. The shipped ``.env`` profiles set this to "
+"``0`` (optimised for headset optical hand tracking). Create a custom "
+"``.env`` file with the value set to ``1`` and pass it via ``--cloudxr_env`` "
+"instead of the plain command above:"
+msgstr ""
+"Manus 手套及其他外部推送设备需要 ``NV_CXR_ENABLE_PUSH_DEVICES=1`` 。随附 ``.env`` 配置将其设为 "
+"``0`` ，针对头显光学手部跟踪优化。创建自定义 ``.env`` 文件，将此值设为 ``1`` ，再通过 ``--cloudxr_env`` "
+"传入，替代上述普通命令："
+
+#: source/how-to/cloudxr_teleoperation.rst:774
+msgid ""
+"See :ref:`isaac-teleop-cloudxr-profiles` for full details on customising "
+"profiles."
+msgstr "自定义配置的完整说明见 :ref:`isaac-teleop-cloudxr-profiles` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:776
+msgid ""
+"Wait for **\"Waiting for connection\"** in the viewport status bar (or, "
+"running headless, for the CloudXR runtime to finish starting) before "
+"launching the plugin -- see :ref:`run-isaac-lab-with-the-cloudxr-runtime`."
+msgstr ""
+"启动插件前，等待视口状态栏显示 **\"Waiting for connection\"** ；无界面运行时，则等待 CloudXR "
+"运行时完成启动。参见 :ref:`run-isaac-lab-with-the-cloudxr-runtime` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:781
+msgid "Start the plugin"
+msgstr "启动插件"
+
+#: source/how-to/cloudxr_teleoperation.rst:783
+msgid ""
+"Isaac Lab does not spawn the plugin for you. Once the sim is up and CloudXR "
+"is waiting for a connection, in a **separate terminal**, source the "
+"environment file the runtime writes on startup (this points the OpenXR "
+"loader at CloudXR) and start the plugin:"
+msgstr ""
+"Isaac Lab 不会替你启动插件。仿真已启动且 CloudXR 正等待连接后，在 **另一个终端** 中，用 ``source`` "
+"加载运行时启动时写出的环境文件（它将 OpenXR 加载器指向 CloudXR），再启动插件："
+
+#: source/how-to/cloudxr_teleoperation.rst:793
+msgid ""
+"By default the plugin enables human hand injection, flex-sensor push, and "
+"haptic read. Restrict datasets with ``--datasets=`` (comma-separated) -- see"
+" the `Manus plugin documentation`_ for details on each data path:"
+msgstr ""
+"插件默认启用人手数据注入、弯曲传感器推送和触觉反馈读取。可用 ``--datasets=`` 限定数据集（以逗号分隔）；各数据路径详情见 `Manus "
+"插件文档 <Manus plugin documentation_>`_ ："
+
+#: source/how-to/cloudxr_teleoperation.rst:803
+msgid "Start teleoperation"
+msgstr "启动遥操作"
+
+#: source/how-to/cloudxr_teleoperation.rst:805
+msgid "Put on the Manus gloves and headset."
+msgstr "戴上 Manus 手套和头显。"
+
+#: source/how-to/cloudxr_teleoperation.rst:806
+msgid ""
+"Connect the headset to Isaac Lab: for Meta Quest 3 / Pico 4 Ultra, follow "
+"the :ref:`connection steps above <connect-quest-pico>`; for Apple Vision "
+"Pro, follow :ref:`the Apple Vision Pro steps <use-apple-vision-pro>`. No "
+"additional pairing step is required for the gloves once the headset is "
+"connected -- Manus tracking data replaces the headset's own hand tracking on"
+" the same OpenXR path."
+msgstr ""
+"将头显连接到 Isaac Lab：Meta Quest 3 / Pico 4 Ultra 按 :ref:`上述连接步骤 <connect-quest-"
+"pico>` 操作，Apple Vision Pro 按 :ref:`Apple Vision Pro 步骤 <use-apple-vision-"
+"pro>` 操作。头显连接后，手套无需额外配对；Manus 跟踪数据在同一 OpenXR 路径上替代头显自身的手部跟踪。"
+
+#: source/how-to/cloudxr_teleoperation.rst:811
+msgid ""
+"Send the start command from the headset (Meta Quest 3 / Pico 4 Ultra: the "
+"CloudXR.js **Connect** button; Apple Vision Pro: the **Play** button in the "
+"Isaac XR Teleop Sample Client)."
+msgstr ""
+"从头显发送启动命令：Meta Quest 3 / Pico 4 Ultra 使用 CloudXR.js 的 **Connect** 按钮；Apple "
+"Vision Pro 使用 Isaac XR Teleop Sample Client 的 **Play** 按钮。"
+
+#: source/how-to/cloudxr_teleoperation.rst:815
+msgid ""
+"Move your hands and the simulated follower will mirror the glove-tracked "
+"finger joints in real time."
+msgstr "移动双手，仿真中的从动机器人会实时跟随手套跟踪到的手指关节。"
+
+#: source/how-to/cloudxr_teleoperation.rst:821
+msgid "Haptikos Exoskeletons with Quest"
+msgstr "配合 Quest 使用 Haptikos 外骨骼"
+
+#: source/how-to/cloudxr_teleoperation.rst:823
+msgid ""
+"The `Haptikos plugin "
+"<https://github.com/NVIDIA/IsaacCapture/tree/release/1.4.x/src/plugins/haptikos>`_"
+" combines controller wrist poses with exoskeleton finger tracking from the "
+"Haptikos Core App and pushes hand joints into the OpenXR runtime. Isaac Lab "
+"receives them through Isaac Capture's standard hand-tracking input, so no "
+"Haptikos-specific Isaac Lab device is needed. The plugin supports Linux and "
+"has been tested with Meta Quest headsets; other headsets with controllers "
+"may also work."
+msgstr ""
+"`Haptikos 插件 "
+"<https://github.com/NVIDIA/IsaacCapture/tree/release/1.4.x/src/plugins/haptikos>`_"
+" 将控制器手腕位姿与 Haptikos Core App 的外骨骼手指跟踪相结合，把手部关节推送到 OpenXR 运行时。Isaac Lab 通过 "
+"Isaac Capture 的标准手部跟踪输入接收数据，因此无需 Haptikos 专用的 Isaac Lab 设备。该插件支持 Linux，已在 "
+"Meta Quest 头显上测试；其他带控制器的头显也可能可用。"
+
+#: source/how-to/cloudxr_teleoperation.rst:831
+msgid "Build the plugin"
+msgstr "构建插件"
+
+#: source/how-to/cloudxr_teleoperation.rst:833
+msgid ""
+"The Haptikos plugin is built from Isaac Capture source; it is not included "
+"in Isaac Lab's ``teleop`` extra. Check out the release branch matching Isaac"
+" Lab's ``isaacteleop`` pin (currently ``1.4.x``), obtain the `Haptikos "
+"Robotics API <https://github.com/Haptikostech/HaptikosAPI>`_, and copy its "
+"``HaptikosCpp_API_Shared`` directory into ``src/plugins/haptikos``. The C++ "
+"API is required to build the tracking plugin, even if you do not use haptic "
+"feedback. Follow the `plugin's setup instructions "
+"<https://github.com/NVIDIA/IsaacCapture/tree/release/1.4.x/src/plugins/haptikos>`_"
+" for Haptikos account and licensing requirements."
+msgstr ""
+"Haptikos 插件需从 Isaac Capture 源码构建，不包含在 Isaac Lab 的 ``teleop`` 可选依赖组中。检出与 "
+"Isaac Lab 锁定的 ``isaacteleop`` 版本匹配的发布分支（目前为 ``1.4.x`` ），获取 `Haptikos "
+"Robotics API <https://github.com/Haptikostech/HaptikosAPI>`_ ，并将其 "
+"``HaptikosCpp_API_Shared`` 目录复制到 ``src/plugins/haptikos`` "
+"。即使不使用触觉反馈，构建跟踪插件也需要 C++ API。Haptikos 账号和许可要求见 `插件配置说明 "
+"<https://github.com/NVIDIA/IsaacCapture/tree/release/1.4.x/src/plugins/haptikos>`_"
+" 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:851
+msgid "Run Isaac Lab and the plugin"
+msgstr "运行 Isaac Lab 与插件"
+
+#: source/how-to/cloudxr_teleoperation.rst:853
+msgid ""
+"Attach a controller to each exoskeleton using the included mount. Calibrate "
+"the exoskeleton forward direction against the headset, then keep the "
+"Haptikos Core App, exoskeletons, and controllers active. Use the hand-"
+"tracking task below."
+msgstr ""
+"使用随附支架，为每个外骨骼安装一个控制器。以头显为参照校准外骨骼前向方向，然后保持 Haptikos Core "
+"App、外骨骼和控制器运行。使用下列手部跟踪任务。"
+
+#: source/how-to/cloudxr_teleoperation.rst:857
+msgid ""
+"Haptikos uses an external OpenXR push device. The shipped CloudXR profiles "
+"disable push devices, so enable them in a custom profile before launching "
+"Isaac Lab:"
+msgstr ""
+"Haptikos 使用外部 OpenXR 推送设备。随附 CloudXR 配置禁用推送设备，因此启动 Isaac Lab 前，应在自定义配置中启用："
+
+#: source/how-to/cloudxr_teleoperation.rst:870
+msgid ""
+"Once CloudXR is waiting for a connection, open a separate terminal and start"
+" the plugin with the runtime environment created by Isaac Lab:"
+msgstr "CloudXR 开始等待连接后，另开终端，使用 Isaac Lab 创建的运行时环境启动插件："
+
+#: source/how-to/cloudxr_teleoperation.rst:879
+msgid ""
+"Connect the Quest using :ref:`the Quest/Pico connection steps <connect-"
+"quest-pico>`, then start teleoperation from the headset."
+msgstr "按 :ref:`Quest/Pico 连接步骤 <connect-quest-pico>` 连接 Quest，再从头显开始遥操作。"
+
+#: source/how-to/cloudxr_teleoperation.rst:882
+msgid "See :ref:`isaac-teleop-cloudxr-profiles` for more on custom profiles."
+msgstr "自定义配置的更多信息见 :ref:`isaac-teleop-cloudxr-profiles` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:886
+msgid "Run with Docker"
+msgstr "使用 Docker 运行"
+
+#: source/how-to/cloudxr_teleoperation.rst:888
+msgid ""
+"Teleoperation runs in a **single container**. Build the image yourself and "
+"run a single container. Do **not** use Docker Compose, which is a multi-"
+"container setup as we had in Isaac Lab 2.x. All components run inside one "
+"container with Isaac Lab in this release."
+msgstr ""
+"遥操作在 **单个容器** 中运行。自行构建镜像并运行一个容器。 **不要使用** Docker Compose；它采用 Isaac Lab 2.x "
+"中曾使用的多容器配置。本版本所有组件与 Isaac Lab 一同运行在一个容器中。"
+
+#: source/how-to/cloudxr_teleoperation.rst:892
+msgid ""
+"The CloudXR runtime auto-launches when a teleop script is started, so no "
+"separate runtime command is needed."
+msgstr "启动遥操作脚本时，CloudXR 运行时会自动启动，无需单独执行运行时命令。"
+
+#: source/how-to/cloudxr_teleoperation.rst:897
+msgid ""
+"Recent Isaac Lab Docker images (3.0.0-beta2 and later) run as a **non-root**"
+" user (uid/gid 1000). Persistent named volumes or host directories that were"
+" created by an earlier root-based image are owned by ``root`` and are **not "
+"writable** by the runtime user. The XR teleop workflow trips on this first, "
+"because it writes the extension registry cache under the runtime home. The "
+"failure looks like::"
+msgstr ""
+"较新的 Isaac Lab Docker 镜像（3.0.0-beta2 及以后）以 **非 root** 用户运行，uid/gid 为 1000。旧的 "
+"root 镜像创建的持久命名卷或宿主机目录归 ``root`` 所有，运行时用户 **无法写入** 。XR "
+"遥操作往往最先遇到此问题，因为它会在运行时主目录下写入扩展注册表缓存。故障通常如下::"
+
+#: source/how-to/cloudxr_teleoperation.rst:905
+msgid "followed by a cascade of extension-registry errors::"
+msgstr "随后出现一系列扩展注册表错误::"
+
+#: source/how-to/cloudxr_teleoperation.rst:909
+msgid ""
+"To fix it, make the persistent storage writable by uid/gid 1000 before "
+"relaunching:"
+msgstr "重新启动前，使 uid/gid 1000 能写入持久存储，即可修复："
+
+#: source/how-to/cloudxr_teleoperation.rst:911
+msgid "**Docker Compose:** recreate the named volumes, e.g."
+msgstr "**Docker Compose：** 重新创建命名卷，例如："
+
+#: source/how-to/cloudxr_teleoperation.rst:917
+msgid ""
+"See :ref:`deployment-docker` for details. To preserve cached data instead of"
+" deleting it, ``chown`` the volume: ``docker run --rm -v docker_isaac-"
+"data:/data alpine chown -R 1000:1000 /data``."
+msgstr ""
+"详情见 :ref:`deployment-docker` 。如果希望保留缓存数据而非删除，可修改卷的所有权： ``docker run --rm -v "
+"docker_isaac-data:/data alpine chown -R 1000:1000 /data`` 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:920
+msgid ""
+"**Single container with bind mounts:** pre-create the host directories and "
+"``sudo chown -R 1000:1000`` them before launching, so the non-root user can "
+"write to them."
+msgstr ""
+"**使用绑定挂载的单个容器：** 启动前创建宿主机目录，并执行 ``sudo chown -R 1000:1000`` ，使非 root 用户可写入。"
+
+#: source/how-to/cloudxr_teleoperation.rst:924
+msgid ""
+"Because the Isaac Lab container runs with ``network_mode: host``, the "
+"container's ports are exposed directly on the host network stack. The host "
+"firewall therefore governs whether XR devices can reach Isaac Lab. Apply the"
+" same ``ufw`` rules from :ref:`install-isaac-teleop` **on the host machine**"
+" before starting the container:"
+msgstr ""
+"Isaac Lab 容器采用 ``network_mode: host`` ，其端口直接暴露在宿主机网络栈上。因此，XR 设备能否访问 Isaac "
+"Lab 由宿主机防火墙决定。启动容器前，在 **宿主机上** 应用 :ref:`install-isaac-teleop` 中相同的 ``ufw`` "
+"规则："
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "Meta Quest 3 / Pico 4 Ultra (web client)"
+msgstr "Meta Quest 3 / Pico 4 Ultra（网页客户端）"
+
+#: source/how-to/cloudxr_teleoperation.rst:0
+msgid "Apple Vision Pro (native client)"
+msgstr "Apple Vision Pro（原生客户端）"
+
+#: source/how-to/cloudxr_teleoperation.rst:955
+msgid ""
+"If port 48322 is not open, the headset browser will show **\"This site can't"
+" be reached\"** when navigating to the certificate-acceptance page — the TCP"
+" connection fails before any certificate exchange occurs."
+msgstr ""
+"如果未开放 48322 端口，头显浏览器访问证书接受页面时，会显示 **\"This site can't be reached\"** "
+"（无法访问此网站）。此时 TCP 连接在证书交换开始前就已失败。"
+
+#: source/how-to/cloudxr_teleoperation.rst:959
+msgid ""
+"Run the teleop script (e.g. ``record_demos.py`` to record demonstrations):"
+msgstr "运行遥操作脚本，例如用 ``record_demos.py`` 录制示范："
+
+#: source/how-to/cloudxr_teleoperation.rst:983
+msgid ""
+"Then in the Isaac Sim UI, set the XR panel to **System OpenXR Runtime** and "
+"click **Start XR**."
+msgstr ""
+"然后，在 Isaac Sim 界面中，将 XR 面板设为 **System OpenXR Runtime** ，并点击 **Start XR** 。"
+
+#: source/how-to/cloudxr_teleoperation.rst:985
+msgid ""
+"For a fully headless experience, replace ``--visualizer kit`` with "
+"``--visualizer none`` or ``--viz none`` and the XR teleop session will run "
+"automatically."
+msgstr ""
+"如需完全无界面运行，将 ``--visualizer kit`` 换为 ``--visualizer none`` 或 ``--viz none`` "
+"，XR 遥操作会话便会自动运行。"
+
+#: source/how-to/cloudxr_teleoperation.rst:988
+msgid "Next Steps"
+msgstr "后续步骤"
+
+#: source/how-to/cloudxr_teleoperation.rst:990
+msgid ""
+"**Architecture, retargeting, and control schemes**: :ref:`isaac-teleop-"
+"feature`"
+msgstr "**架构、重定向与控制方案** ： :ref:`isaac-teleop-feature`"
+
+#: source/how-to/cloudxr_teleoperation.rst:991
+msgid ""
+"**Teleoperation for imitation learning**: :ref:`teleoperation-imitation-"
+"learning`"
+msgstr "**用于模仿学习的遥操作** ： :ref:`teleoperation-imitation-learning`"
+
+#: source/how-to/cloudxr_teleoperation.rst:992
+msgid "**API reference**: :ref:`isaaclab_teleop-api`"
+msgstr "**API 参考** ： :ref:`isaaclab_teleop-api`"

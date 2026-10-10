@@ -1,0 +1,330 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:4
+msgid "RL Post-Training for VLA Models"
+msgstr "VLA 模型的强化学习后训练"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:6
+msgid ""
+"`RLinf <https://github.com/RLinf/RLinf.git>`_ is a flexible and scalable "
+"open-source RL infrastructure designed for Embodied and Agentic AI. This "
+"integration enables **reinforcement learning fine-tuning of Vision-Language-"
+"Action (VLA) models** (e.g., GR00T, OpenVLA) on Isaac Lab simulation tasks."
+msgstr ""
+"`RLinf <https://github.com/RLinf/RLinf.git>`_ 是面向具身智能和智能体 AI "
+"的灵活、可扩展开源强化学习基础设施。通过这一集成，可以在 Isaac Lab 仿真任务上，对 GR00T、OpenVLA 等 **视觉-语言-"
+"动作（VLA）模型进行强化学习微调** 。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:10
+msgid "The typical workflow follows three stages:"
+msgstr "典型工作流分三个阶段："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:12
+msgid ""
+"**Data collection** — Collect demonstration data from the Isaac Lab "
+"environment (e.g., via teleoperation or scripted policy)."
+msgstr "**数据采集** ：从 Isaac Lab 环境采集示范数据，例如使用遥操作或脚本化策略。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:13
+msgid ""
+"**Base model training** — Train a VLA base model (e.g., GR00T) on the "
+"collected demonstrations using supervised learning."
+msgstr "**基础模型训练** ：用采集的示范进行监督学习，训练 GR00T 等 VLA 基础模型。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:14
+msgid ""
+"**RL fine-tuning** — Fine-tune the pretrained VLA model on the Isaac Lab "
+"task using RLinf with PPO / Actor-Critic / SAC."
+msgstr ""
+"**强化学习微调** ：通过 RLinf 的 PPO / Actor-Critic / SAC，在 Isaac Lab 任务上微调预训练 VLA 模型。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:17
+msgid "Overview"
+msgstr "概述"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:19
+msgid "The RLinf integration allows Isaac Lab users to:"
+msgstr "RLinf 集成使 Isaac Lab 用户能够："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:21
+msgid ""
+"Fine-tune pretrained VLA models on Isaac Lab tasks using PPO / Actor-Critic "
+"/ SAC"
+msgstr "通过 PPO / Actor-Critic / SAC，在 Isaac Lab 任务上微调预训练 VLA 模型"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:22
+msgid ""
+"Leverage RLinf's FSDP-based distributed training across multiple GPUs/nodes"
+msgstr "使用 RLinf 基于 FSDP 的多 GPU、多节点分布式训练"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:23
+msgid ""
+"Define observation/action mappings from Isaac Lab to GR00T format via a "
+"single YAML config"
+msgstr "通过单个 YAML 配置，定义 Isaac Lab 到 GR00T 格式的观测与动作映射"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:24
+msgid ""
+"Register Isaac Lab tasks into RLinf without modifying RLinf source code"
+msgstr "无需修改 RLinf 源码，即可将 Isaac Lab 任务注册到 RLinf"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:27
+msgid "Architecture"
+msgstr "架构"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:44
+msgid "**Data flow:**"
+msgstr "**数据流：**"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:46
+msgid ""
+"``EnvWorker`` runs Isaac Lab simulation and converts observations to RLinf "
+"format"
+msgstr "``EnvWorker`` 运行 Isaac Lab 仿真，并将观测转换为 RLinf 格式"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:47
+msgid ""
+"``RolloutWorker`` runs VLA model inference (e.g., GR00T) to produce actions"
+msgstr "``RolloutWorker`` 运行 GR00T 等 VLA 模型推理，生成动作"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:48
+msgid ""
+"Actions are converted back to Isaac Lab format and stepped in the "
+"environment"
+msgstr "动作转换回 Isaac Lab 格式，并在环境中执行一步"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:49
+msgid ""
+"``ActorWorker`` updates the VLA model with PPO/actor-critic loss via FSDP"
+msgstr "``ActorWorker`` 通过 FSDP，使用 PPO 或 actor-critic 损失更新 VLA 模型"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:52
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:56
+msgid ""
+"RLinf post-training currently supports Linux only. Compatible distributions "
+"include Ubuntu and Debian, Red Hat-family distributions, and Arch Linux."
+msgstr "RLinf 后训练目前只支持 Linux。兼容发行版包括 Ubuntu、Debian、Red Hat 系发行版和 Arch Linux。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:59
+msgid "**Isaac Lab** installed and configured"
+msgstr "已安装并配置 **Isaac Lab**"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:60
+msgid "**Isaac-GR00T** repo (for VLA inference and data transforms)"
+msgstr "**Isaac-GR00T** 仓库，用于 VLA 推理和数据转换"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:61
+msgid ""
+"A **pretrained VLA checkpoint** in HuggingFace format. A pretrained GR00T "
+"checkpoint for ``assemble_trocar`` is available and can be downloaded via:"
+msgstr ""
+"HuggingFace 格式的 **预训练 VLA 检查点** 。已有用于 ``assemble_trocar`` 的预训练 GR00T "
+"检查点，可通过以下方式下载："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:67
+msgid "Multi-GPU setup recommended (FSDP requires at least 1 GPU)"
+msgstr "建议使用多 GPU 配置；FSDP 至少需要一块 GPU"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:70
+msgid "Installation"
+msgstr "安装"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:72
+msgid "From the Isaac Lab root directory:"
+msgstr "从 Isaac Lab 根目录运行："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:105
+msgid ""
+"The packages installed in Step 2 intentionally differ from the versions in "
+"the Isaac Lab lockfile. Use ``uv run --no-sync`` for the commands below so "
+"that ``uv`` does not replace these GR00T-compatible versions before "
+"launching."
+msgstr ""
+"第 2 步安装的包版本有意不同于 Isaac Lab 锁文件。以下命令使用 ``uv run --no-sync`` ，避免 ``uv`` "
+"在启动前替换这些兼容 GR00T 的版本。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:112
+msgid "Skipping flash-attn"
+msgstr "跳过 flash-attn"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:114
+msgid ""
+"If Step 4 fails, skip installation of flash-attn and apply this patch "
+"instead:"
+msgstr "如果第 4 步失败，可跳过 flash-attn 安装，改为应用此补丁："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:121
+msgid ""
+"The patch switches GR00T to PyTorch SDPA, so flash-attn is no longer "
+"required. The training and evaluation commands below work unchanged."
+msgstr "该补丁将 GR00T 切换到 PyTorch SDPA，因此不再需要 flash-attn。以下训练和评估命令无需修改。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:127
+msgid "OpenMP preload on aarch64"
+msgstr "aarch64 上的 OpenMP 预加载"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:129
+msgid ""
+"On DGX Spark and other aarch64 Linux systems only, preload the aarch64 "
+"OpenMP library so it can be loaded into the Python process (see "
+":ref:`installation-method-python-env`):"
+msgstr ""
+"只在 DGX Spark 和其他 aarch64 Linux 系统上，预加载 aarch64 OpenMP 库，使其能加载到 Python 进程中（见 "
+":ref:`installation-method-python-env` ）："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:138
+msgid ""
+"Do not set this aarch64 path on x86_64 Linux. If it was inherited from a "
+"previous setup, run ``unset LD_PRELOAD`` before launching Isaac Lab."
+msgstr ""
+"不要在 x86_64 Linux 上设置此 aarch64 路径。如果继承了旧配置，启动 Isaac Lab 前运行 ``unset "
+"LD_PRELOAD`` 。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:143
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:145
+msgid "**Training** — RL fine-tuning of a pretrained VLA model:"
+msgstr "**训练** ：对预训练 VLA 模型进行强化学习微调："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:0
+msgid "isaaclab.sh"
+msgstr "isaaclab.sh"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:165
+msgid ""
+"**Evaluation** — Evaluate a pretrained (base) model with video recording:"
+msgstr "**评估** ：评估预训练基础模型，并录制视频："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:187
+msgid ""
+"**Evaluation** — Evaluate an RL-finetuned checkpoint with video recording:"
+msgstr "**评估** ：评估强化学习微调后的检查点，并录制视频："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:211
+msgid ""
+"Here ``--model_path`` points to the HuggingFace-format base model (with "
+"``config.json``), and ``--checkpoint`` points to the RLinf checkpoint "
+"directory (the ``global_step_<N>`` folder). The script loads the model "
+"architecture from the base model and overlays the RL-finetuned weights "
+"(``full_weights.pt``) from the checkpoint."
+msgstr ""
+"这里 ``--model_path`` 指向包含 ``config.json`` 的 HuggingFace 格式基础模型， "
+"``--checkpoint`` 指向 RLinf 检查点目录，即 ``global_step_<N>`` "
+"文件夹。脚本从基础模型加载网络结构，再覆盖检查点中的强化学习微调权重 ``full_weights.pt`` 。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:219
+msgid ""
+"The ``--config_path`` flag is optional. When omitted, the scripts "
+"automatically search the ``isaaclab_tasks`` package for the matching YAML "
+"configuration file."
+msgstr ""
+"``--config_path`` 是可选标志。省略时，脚本自动在 ``isaaclab_tasks`` 包中搜索匹配的 YAML 配置文件。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:223
+msgid "Checkpoints"
+msgstr "检查点"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:225
+msgid ""
+"Checkpoints are saved every ``save_interval`` epochs (default: ``2``) to::"
+msgstr "检查点每隔 ``save_interval`` 个 epoch（默认 ``2`` ）保存到::"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:229
+msgid ""
+"The placeholders are configurable in the task YAML "
+"(``source/isaaclab_tasks/isaaclab_tasks/contrib/assemble_trocar/config/isaaclab_ppo_gr00t_assemble_trocar.yaml``):"
+msgstr ""
+"占位符可在任务 YAML（ "
+"``source/isaaclab_tasks/isaaclab_tasks/contrib/assemble_trocar/config/isaaclab_ppo_gr00t_assemble_trocar.yaml``"
+" ）中配置："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:232
+msgid ""
+"``<experiment_name>`` — ``runner.logger.experiment_name`` (default: "
+"``test_gr00t``)"
+msgstr ""
+"``<experiment_name>`` ： ``runner.logger.experiment_name`` （默认 ``test_gr00t``"
+" ）"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:233
+msgid "``<N>`` — increments every ``runner.save_interval`` epochs"
+msgstr "``<N>`` ：每隔 ``runner.save_interval`` 个 epoch 增加"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:235
+msgid ""
+"The exact path is printed at startup as ``[INFO] Logging to: ...``. To "
+"resume training, pass the ``global_step_<N>`` directory via "
+"``--checkpoint``. For playback, ``--checkpoint`` also accepts ``latest`` and"
+" ``best``; both select the newest saved RLinf checkpoint."
+msgstr ""
+"确切路径在启动时以 ``[INFO] Logging to: ...`` 打印。恢复训练时，通过 ``--checkpoint`` 传入 "
+"``global_step_<N>`` 目录。回放时， ``--checkpoint`` 也接受 ``latest`` 和 ``best`` "
+"，二者都会选择最新保存的 RLinf 检查点。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:241
+msgid ""
+"Training throughput scales with the number of parallel environments. If your"
+" GPU has spare memory, increase ``env.train.total_num_envs`` (default: "
+"``4``) in the task YAML."
+msgstr ""
+"训练吞吐量随并行环境数增加。如果 GPU 尚有空闲显存，可增加任务 YAML 中的 ``env.train.total_num_envs`` （默认 "
+"``4`` ）。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:247
+msgid ""
+"Each checkpoint can be several gigabytes. To avoid filling up disk space, "
+"increase ``save_interval`` in the task YAML so that fewer intermediate "
+"checkpoints are saved during training."
+msgstr "每个检查点可能有数 GB。为避免占满磁盘，可增加任务 YAML 的 ``save_interval`` ，减少训练期间保存的中间检查点。"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:252
+msgid "Configuration"
+msgstr "配置"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:254
+msgid ""
+"All configuration lives in a **single YAML file** loaded by `Hydra "
+"<https://hydra.cc/>`_. The key configuration block is the "
+"``env.train.isaaclab`` section, which defines how Isaac Lab observations are"
+" converted to GR00T format:"
+msgstr ""
+"全部配置位于 `Hydra <https://hydra.cc/>`_ 加载的 **单个 YAML 文件** 中。关键配置块是 "
+"``env.train.isaaclab`` ，定义如何将 Isaac Lab 观测转换为 GR00T 格式："
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:279
+msgid "Key Files"
+msgstr "关键文件"
+
+#: source/experimental-features/rlinf_vla_posttraining.rst:292
+msgid ""
+"For detailed configuration options, CLI arguments, and how to add new tasks,"
+" use the unified ``./isaaclab.sh train --rl_library rlinf`` and "
+"``./isaaclab.sh play --rl_library rlinf`` commands."
+msgstr ""
+"详细配置选项、命令行参数和添加新任务的方法，通过统一的 ``./isaaclab.sh train --rl_library rlinf`` 和 "
+"``./isaaclab.sh play --rl_library rlinf`` 命令查看。"

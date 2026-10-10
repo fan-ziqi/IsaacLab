@@ -1,0 +1,206 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/modify_direct_rl_env.rst:7
+msgid "Modifying an existing Direct RL Environment"
+msgstr "修改现有的 Direct RL 环境"
+
+#: source/how-to/modify_direct_rl_env.rst:11
+msgid ""
+"Having learnt how to create a task in :ref:`tutorial-create-direct-rl-env`, "
+"register it in :ref:`tutorial-register-rl-env-gym`, and train it in "
+":ref:`tutorial-run-rl-training`, we will now look at how to make minor "
+"modifications to an existing task."
+msgstr ""
+"学习如何在 :ref:`tutorial-create-direct-rl-env` 中创建任务，在 :ref:`tutorial-register-"
+"rl-env-gym` 中注册任务，以及在 :ref:`tutorial-run-rl-training` "
+"中训练任务后，我们现在将探讨如何对现有任务进行小的修改。"
+
+#: source/how-to/modify_direct_rl_env.rst:14
+msgid ""
+"Sometimes it is necessary to create, due to complexity or variations from "
+"existing examples, tasks from scratch. However, in certain situations, it is"
+" possible to start from the existing code and introduce minor changes, one "
+"by one, to transform them according to our needs."
+msgstr ""
+"有时由于复杂性或与现有示例的变化，有必要从头开始创建任务。然而，在某些情况下，可以从现有代码开始，逐一进行小的修改，以根据我们的需求进行转换。"
+
+#: source/how-to/modify_direct_rl_env.rst:17
+msgid ""
+"In this tutorial, we will make minor modifications to the direct workflow "
+"Humanoid task to change the simple humanoid model to the Unitree H1 humanoid"
+" robot without affecting the original code."
+msgstr "在本教程中，我们将对直接工作流程中的人形任务进行轻微修改，将简单的人形模型更改为 Unitree H1 人形机器人，而不影响原始代码。"
+
+#: source/how-to/modify_direct_rl_env.rst:22
+msgid "The Base Code"
+msgstr "基础代码"
+
+#: source/how-to/modify_direct_rl_env.rst:24
+msgid ""
+"For this tutorial, we start from the direct workflow Humanoid environment "
+"defined in ``isaaclab_tasks.core.locomotion.humanoid`` module."
+msgstr ""
+"本教程从 ``isaaclab_tasks.core.locomotion.humanoid`` 模块中定义的直接工作流 Humanoid 环境开始。"
+
+#: source/how-to/modify_direct_rl_env.rst:0
+msgid "Code for humanoid_direct_env.py"
+msgstr "humanoid_direct_env.py 代码"
+
+#: source/how-to/modify_direct_rl_env.rst:35
+msgid "The Changes Explained"
+msgstr "变更说明"
+
+#: source/how-to/modify_direct_rl_env.rst:38
+msgid "Duplicating the file and registering a new task"
+msgstr "复制文件并注册新任务"
+
+#: source/how-to/modify_direct_rl_env.rst:40
+msgid ""
+"To avoid modifying the existing task, create an ``h1_env.py`` file in the "
+"Isaac Lab project "
+"``source/isaaclab_tasks/isaaclab_tasks/core/locomotion/humanoid`` folder. "
+"The new classes below inherit the existing environment and configuration, "
+"changing only the robot-specific data."
+msgstr ""
+"为避免修改现有任务，在 Isaac Lab 项目的 "
+"``source/isaaclab_tasks/isaaclab_tasks/core/locomotion/humanoid`` 目录下创建 "
+"``h1_env.py`` 。下面的新类继承现有环境和配置，只改变机器人相关的数据。"
+
+#: source/how-to/modify_direct_rl_env.rst:44
+msgid ""
+"Once the name change has been made, we proceed to add a new entry to "
+"register the task under the name ``Isaac-H1-Direct-v0``. To do this, we "
+"modify the ``__init__.py`` file in the same working folder and add the "
+"following entry. Refer to the :ref:`tutorial-register-rl-env-gym` tutorial "
+"for more details about environment registrations."
+msgstr ""
+"一旦更改名称完成，我们就开始在名称为 ``Isaac-H1-Direct-v0`` 的任务下添加新条目。为此，我们修改同一工作文件夹中的 "
+"``__init__.py`` 文件，并添加以下条目。有关环境注册的更多详细信息，请参考 :ref:`tutorial-register-rl-env-"
+"gym` 教程。"
+
+#: source/how-to/modify_direct_rl_env.rst:50
+msgid ""
+"If the changes in the task are minimal, it is very likely that the same RL "
+"library agent configurations can be used to train it successfully. "
+"Otherwise, it is advisable to create new configuration files (adjusting "
+"their name during registration under the ``kwargs`` parameter) to avoid "
+"altering the original configurations."
+msgstr ""
+"如果任务中的变化很小，则很可能可以使用相同的 RL 库智能体配置成功训练它。否则，建议创建新的配置文件（在 ``kwargs`` "
+"参数下注册时调整其名称），以避免更改原始配置。"
+
+#: source/how-to/modify_direct_rl_env.rst:66
+msgid "Changing the robot"
+msgstr "改变机器人"
+
+#: source/how-to/modify_direct_rl_env.rst:68
+msgid ""
+"The ``H1SceneCfg`` class (in the newly created ``h1_env.py`` file) declares "
+"the assets that the environment constructs. In this example, its ``robot`` "
+"property holds the target articulation configuration."
+msgstr ""
+"新建 ``h1_env.py`` 中的 ``H1SceneCfg`` 类声明环境要构建的资产。本例中，其 ``robot`` 属性保存目标关节体配置。"
+
+#: source/how-to/modify_direct_rl_env.rst:71
+msgid ""
+"Since the Unitree H1 robot is included in the Isaac Lab assets extension "
+"(``isaaclab_assets``) we can just import it and do the replacement directly "
+"(under the ``H1SceneCfg.robot`` property), as shown below. Note that we also"
+" need to modify the ``joint_gears`` property as it holds robot-specific "
+"configuration values."
+msgstr ""
+"Unitree H1 机器人已包含在 Isaac Lab 资产扩展（ ``isaaclab_assets`` ）中，因此直接导入并替换 "
+"``H1SceneCfg.robot`` 属性即可，如下所示。还需修改 ``joint_gears`` 属性，因为它保存机器人专用的配置值。"
+
+#: source/how-to/modify_direct_rl_env.rst:79
+msgid ""
+"If the target robot is not included in the Isaac Lab assets extension, it is"
+" possible to load and configure it, from a USD file, by using the "
+":class:`~isaaclab.assets.ArticulationCfg` class."
+msgstr ""
+"如果目标机器人不包含在 Isaac Lab 资产扩展中，可以通过使用 :class:`~isaaclab.assets.ArticulationCfg`"
+" 类从 USD 文件加载和配置它。"
+
+#: source/how-to/modify_direct_rl_env.rst:82
+msgid ""
+"See the |franka-direct-link| source code for an example of loading and "
+"configuring a robot from a USD file."
+msgstr "查看 |franka-direct-link| 源代码以获取从 USD 文件加载和配置机器人的示例。"
+
+#: source/how-to/modify_direct_rl_env.rst:83
+msgid ""
+"Refer to the :doc:`Importing a New Asset <import_new_asset>` tutorial for "
+"details on how to import an asset from URDF or MJCF file, and other formats."
+msgstr "从 URDF、MJCF 及其他格式导入资产的详细步骤见 :doc:`导入新资产 <import_new_asset>` 教程。"
+
+#: source/how-to/modify_direct_rl_env.rst:95
+msgid ""
+"The robot changed, and with it the number of joints to control or the number"
+" of rigid bodies that compose the articulation, for example. Therefore, "
+"define the derived environment configuration and adjust the values that "
+"depend on the robot, such as the action and observation spaces. The "
+"environment implementation itself remains unchanged."
+msgstr ""
+"更换机器人后，需要控制的关节数、组成关节体的刚体数等也可能改变。因此，应定义派生的环境配置，并调整依赖机器人的值，例如动作空间和观测空间。环境实现本身无需修改。"
+
+#: source/how-to/modify_direct_rl_env.rst:105
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/modify_direct_rl_env.rst:107
+msgid ""
+"After the minor modification has been done, and similar to the previous "
+"tutorial, we can train on the task using one of the available RL workflows "
+"for such task."
+msgstr "完成了轻微修改之后，类似于之前的教程，我们可以使用其中一个可用的强化学习工作流来对该任务进行训练。"
+
+#: source/how-to/modify_direct_rl_env.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/modify_direct_rl_env.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/modify_direct_rl_env.rst:123
+msgid ""
+"When the training is finished, we can visualize the result with the "
+"following command. To stop the simulation, you can either close the window, "
+"or press ``Ctrl+C`` in the terminal where you started the simulation."
+msgstr "当训练完成时，我们可以使用以下命令可视化结果。要停止仿真，您可以关闭窗口，或者在启动仿真的终端中按下 ``Ctrl+C`` 。"
+
+#: source/how-to/modify_direct_rl_env.rst:141
+msgid "result of training Isaac-H1-Direct-v0 task"
+msgstr "训练 Isaac-H1-Direct-v0 任务的 `result`"
+
+#: source/how-to/modify_direct_rl_env.rst:146
+msgid ""
+"In this tutorial, we learnt how to make minor modifications to an existing "
+"environment without affecting the original code."
+msgstr "在本教程中，我们学习了如何对现有环境进行轻微修改，而不影响原始代码。"
+
+#: source/how-to/modify_direct_rl_env.rst:148
+msgid ""
+"It is important to note, however, that while the changes to be made may be "
+"small, they may not always work on the first try, as there may be deeper "
+"dependencies on the original assets in the environment being modified. In "
+"these cases, it is advisable to analyze the code of the available examples "
+"in detail in order to make an appropriate adjustment."
+msgstr ""
+"重要的是要注意，虽然需要进行的更改可能很小，但它们不一定能在第一次尝试时成功，因为在被修改的环境中可能存在对原始资产的更深层依赖关系。在这些情况下，建议详细分析可用示例的代码，以便进行适当的调整。"

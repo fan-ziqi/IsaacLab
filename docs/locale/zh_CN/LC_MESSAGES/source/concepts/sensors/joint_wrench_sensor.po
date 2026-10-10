@@ -1,0 +1,124 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:7
+msgid "Joint Wrench Sensor"
+msgstr "关节力旋量传感器"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:9
+msgid ""
+"A :class:`~sensors.JointWrenchSensor` reports the incoming reaction wrench "
+"at each selected articulation body's parent joint. It exposes force [N] and "
+"torque [N·m] separately, with entries ordered by "
+":attr:`~sensors.JointWrenchSensor.body_names`."
+msgstr ""
+":class:`~sensors.JointWrenchSensor` 报告每个所选关节体刚体的父关节处传入的反作用力旋量。力 [N] 和力矩 "
+"[N·m] 分别提供，各条目按 :attr:`~sensors.JointWrenchSensor.body_names` 排列。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:14
+msgid "Wrench convention"
+msgstr "力旋量约定"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:16
+msgid ""
+"The ``incoming_joint_frame`` convention expresses the wrench in the child-"
+"side joint frame at the child-side joint anchor. This matches the placement "
+"of a six-axis force/torque sensor mounted at the joint. Backend "
+"implementations convert their native solver output to this common "
+"convention."
+msgstr ""
+"``incoming_joint_frame`` "
+"约定在子侧关节锚点处、以子侧关节坐标系表示力旋量。这与安装在关节处的六轴力/力矩传感器的位置相符。各后端实现会将求解器原生输出转换为这一统一约定。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:20
+msgid ""
+"PhysX's ``get_link_incoming_joint_force()`` already returns the wrench in "
+"the child-side joint frame, referenced at its anchor, so the PhysX sensor "
+"exposes those components directly. Applying the USD ``localPos1`` and "
+"``localRot1`` again would shift and rotate the wrench twice."
+msgstr ""
+"PhysX 的 ``get_link_incoming_joint_force()`` 返回的力旋量已经以子侧关节坐标系表示，并以其锚点为参考点，因此 "
+"PhysX 传感器直接提供这些分量。再次应用 USD 的 ``localPos1`` 和 ``localRot1`` 会重复平移和旋转该力旋量。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:25
+msgid "Configure the sensor"
+msgstr "配置传感器"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:27
+msgid ""
+"Set :attr:`~sensors.JointWrenchSensorCfg.prim_path` to the articulation "
+"root. Reported body coverage depends on the physics backend:"
+msgstr ""
+"将 :attr:`~sensors.JointWrenchSensorCfg.prim_path` 设为关节体根节点。报告的刚体范围取决于物理后端："
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:30
+msgid ""
+"PhysX and OVPhysX report every articulation link, including the root link."
+msgstr "PhysX 和 OVPhysX 报告所有关节体连杆，包括根连杆。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:31
+msgid ""
+"Newton reports the child link of each non-free joint in the articulation "
+"tree, including fixed connections between bodies such as a welded wrist "
+"sensor or tool flange. Free joints, fixed joints to the world, and loop-"
+"closing constraints are excluded. The reported wrench at a weld includes the"
+" loads transmitted by its child subtree, even though the joint has no "
+"degrees of freedom."
+msgstr ""
+"Newton "
+"报告关节体树中每个非自由关节的子连杆，包括刚体间的固定连接，例如焊接的腕部传感器或工具法兰。不包括自由关节、与世界相连的固定关节，以及闭环约束。即使焊接关节没有自由度，其报告的力旋量仍包含由子树传递的负载。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:36
+msgid ""
+"Use :attr:`~sensors.JointWrenchSensor.body_names` or "
+":meth:`~sensors.JointWrenchSensor.find_bodies` instead of assuming that "
+"different backends expose the same number or order of entries:"
+msgstr ""
+"请使用 :attr:`~sensors.JointWrenchSensor.body_names` 或 "
+":meth:`~sensors.JointWrenchSensor.find_bodies` ，不要假定不同后端提供相同数量或顺序的条目："
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:45
+msgid ""
+"Manager-based environments can select a body subset through "
+":class:`~isaaclab.managers.SceneEntityCfg` and use "
+":func:`~isaaclab.envs.mdp.body_incoming_wrench` as an observation term:"
+msgstr ""
+"基于管理器的环境可以通过 :class:`~isaaclab.managers.SceneEntityCfg` 选择刚体子集，并使用 "
+":func:`~isaaclab.envs.mdp.body_incoming_wrench` 作为观测项："
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:55
+msgid "Read the data"
+msgstr "读取数据"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:57
+msgid ""
+"For ``E`` environments and ``B`` reported bodies, ``force.torch`` and "
+"``torque.torch`` each have shape ``(E, B, 3)``. Both buffers are ``None`` "
+"before simulation initialization."
+msgstr ""
+"对于 ``E`` 个环境和 ``B`` 个报告的刚体， ``force.torch`` 和 ``torque.torch`` 的形状均为 ``(E, "
+"B, 3)`` 。两个缓冲区在仿真初始化前均为 ``None`` 。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:69
+msgid ""
+"The composed ``wrench`` has shape ``(E, num_selected_bodies, 6)`` with force"
+" components followed by torque components. ``B`` and the entry ordering can "
+"differ between backends."
+msgstr ""
+"组合后的 ``wrench`` 形状为 ``(E, num_selected_bodies, 6)`` ，力分量在前，力矩分量在后。 ``B`` "
+"及条目的排列顺序可能因后端而异。"

@@ -1,0 +1,468 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/configure_rendering.rst:4
+msgid "Select and configure a Renderer"
+msgstr "选择与配置渲染器"
+
+#: source/how-to/configure_rendering.rst:6
+msgid ""
+"Renderers produce camera-sensor observations. They are distinct from "
+"visualizers, which provide interactive views for people. Select a renderer "
+"for the images your policy or data pipeline needs, then tune only the "
+"options that affect that workflow."
+msgstr "渲染器生成相机传感器观测，可视化器则为人提供交互式视图。应根据策略或数据管线需要的图像选择渲染器，再只调整影响该工作流的选项。"
+
+#: source/how-to/configure_rendering.rst:11
+msgid "Choose a renderer"
+msgstr "选择渲染器"
+
+#: source/how-to/configure_rendering.rst:13
+msgid ""
+"For tasks that advertise renderer presets, choose a compatible physics and "
+"renderer pair at launch. Use ``--task <task-name> --help`` to see the "
+"presets a task actually supports; renderer availability is task-specific."
+msgstr ""
+"对于提供渲染器预设的任务，启动时选择兼容的物理与渲染器组合。使用 ``--task <task-name> --help`` "
+"查看任务实际支持的预设；可用渲染器因任务而异。"
+
+#: source/how-to/configure_rendering.rst:17
+msgid "Renderer choices"
+msgstr "渲染器选项"
+
+#: source/how-to/configure_rendering.rst:21
+msgid "Renderer"
+msgstr "渲染器"
+
+#: source/how-to/configure_rendering.rst:22
+msgid "Choose it when"
+msgstr "适用情况"
+
+#: source/how-to/configure_rendering.rst:23
+msgid "Trade-off"
+msgstr "取舍"
+
+#: source/how-to/configure_rendering.rst:24
+msgid "Typical command"
+msgstr "典型命令"
+
+#: source/how-to/configure_rendering.rst:25
+msgid "Newton Warp"
+msgstr "Newton Warp"
+
+#: source/how-to/configure_rendering.rst:26
+msgid ""
+"You need the lowest VRAM use and high camera throughput for Newton training."
+msgstr "Newton 训练需要尽量低的显存占用和较高的相机吞吐量。"
+
+#: source/how-to/configure_rendering.rst:27
+msgid ""
+"Lightweight rasterization; it has a smaller output set and does not provide "
+"motion vectors or full RTX material transport."
+msgstr "轻量光栅化；输出种类较少，不提供运动向量或完整的 RTX 材质光传输。"
+
+#: source/how-to/configure_rendering.rst:29
+msgid "``physics=newton_mjwarp renderer=newton_renderer presets=rgb``"
+msgstr "``physics=newton_mjwarp renderer=newton_renderer presets=rgb``"
+
+#: source/how-to/configure_rendering.rst:30
+msgid "OVRTX"
+msgstr "OVRTX"
+
+#: source/how-to/configure_rendering.rst:31
+msgid "You need scalable kit-less RTX rendering and higher visual fidelity."
+msgstr "需要可扩展、不依赖 Kit 的 RTX 渲染及更高的视觉保真度。"
+
+#: source/how-to/configure_rendering.rst:32
+msgid ""
+"Uses more VRAM than Newton Warp. Choose RTX Minimal outputs when throughput "
+"matters more than photo-real appearance."
+msgstr "比 Newton Warp 占用更多显存。如果吞吐量比照片级真实感更重要，可选择 RTX Minimal 输出。"
+
+#: source/how-to/configure_rendering.rst:34
+msgid "``physics=newton_mjwarp renderer=ovrtx presets=rgb``"
+msgstr "``physics=newton_mjwarp renderer=ovrtx presets=rgb``"
+
+#: source/how-to/configure_rendering.rst:35
+msgid "Isaac RTX (legacy)"
+msgstr "Isaac RTX（传统）"
+
+#: source/how-to/configure_rendering.rst:36
+msgid ""
+"A workflow must run through Isaac Sim/Kit or needs its broad RTX and "
+"Replicator output set."
+msgstr "工作流必须通过 Isaac Sim/Kit 运行，或需要其丰富的 RTX 与 Replicator 输出。"
+
+#: source/how-to/configure_rendering.rst:37
+msgid ""
+"Requires Isaac Sim and PhysX; do not use it as the default performance path "
+"for new work."
+msgstr "需要 Isaac Sim 和 PhysX；新工作不应将其作为默认的性能方案。"
+
+#: source/how-to/configure_rendering.rst:38
+msgid "``physics=isaacsim_physx renderer=isaacsim_rtx presets=rgb``"
+msgstr "``physics=isaacsim_physx renderer=isaacsim_rtx presets=rgb``"
+
+#: source/how-to/configure_rendering.rst:40
+msgid "For example, start a camera task with the low-VRAM Newton renderer:"
+msgstr "例如，使用低显存占用的 Newton 渲染器启动相机任务："
+
+#: source/how-to/configure_rendering.rst:48
+msgid ""
+"Switch the same supported task to the higher-fidelity kit-less RTX renderer:"
+msgstr "将同一受支持任务切换到保真度更高、不依赖 Kit 的 RTX 渲染器："
+
+#: source/how-to/configure_rendering.rst:56
+msgid ""
+"The :ref:`renderer details <renderer-details>` and the :ref:`camera renderer"
+" support matrix <camera-supported-annotators>` are the authoritative "
+"references for output availability and runtime requirements. Do not compare "
+"the renderer choices through a camera-count heuristic: measure the complete "
+"task and observation configuration you intend to train."
+msgstr ""
+"输出可用性及运行时要求，以 :ref:`渲染器细节 <renderer-details>` 和 :ref:`相机渲染器支持矩阵 <camera-"
+"supported-annotators>` 为准。不要仅凭相机数量粗略比较渲染器；应测量实际准备训练的完整任务与观测配置。"
+
+#: source/how-to/configure_rendering.rst:62
+msgid "Customize Newton Warp"
+msgstr "自定义 Newton Warp"
+
+#: source/how-to/configure_rendering.rst:64
+msgid ""
+"Newton Warp is the throughput-oriented choice. Begin with its defaults, then"
+" enable only the image features that matter to the policy. Shadows, "
+"textures, ambient lighting, traversal order, and tile dimensions are "
+"controlled by :class:`~isaaclab_newton.renderers.NewtonWarpRendererCfg`."
+msgstr ""
+"Newton Warp 侧重吞吐量。先采用默认值，再只启用对策略有用的图像功能。阴影、纹理、环境光、遍历顺序和图块尺寸，由 "
+":class:`~isaaclab_newton.renderers.NewtonWarpRendererCfg` 控制。"
+
+#: source/how-to/configure_rendering.rst:68
+msgid ""
+"For a task with a camera renderer configuration, enable directional-light "
+"shadows with an override:"
+msgstr "如果任务配置了相机渲染器，可通过覆盖项启用方向光阴影："
+
+#: source/how-to/configure_rendering.rst:77
+msgid "When defining a camera in Python, configure the renderer directly:"
+msgstr "在 Python 中定义相机时，可直接配置渲染器："
+
+#: source/how-to/configure_rendering.rst:89
+msgid ""
+"Use ``render_order`` and the tile dimensions only after profiling a "
+"representative scene; they are implementation-level throughput controls, not"
+" visual-quality settings."
+msgstr "只有对代表性场景进行性能分析后，才调整 ``render_order`` 和图块尺寸。它们是实现层面的吞吐量控制项，并非视觉质量设置。"
+
+#: source/how-to/configure_rendering.rst:93
+msgid "Customize OVRTX"
+msgstr "自定义 OVRTX"
+
+#: source/how-to/configure_rendering.rst:95
+msgid ""
+"OVRTX provides RTX Minimal and photo-real paths without Isaac Sim. Use the "
+"regular ``rgb`` output when material appearance, reflections, transparency, "
+"or the broader RTX output set matter. For training that only needs "
+"simplified color, select a ``simple_shading_*`` preset instead:"
+msgstr ""
+"OVRTX 无需 Isaac Sim，即可提供 RTX Minimal 和照片级渲染路径。如果材质外观、反射、透明度或更丰富的 RTX "
+"输出很重要，应使用常规 ``rgb`` 输出。对于只需要简化颜色的训练，则选择 ``simple_shading_*`` 预设："
+
+#: source/how-to/configure_rendering.rst:106
+msgid ""
+"In RTX Minimal mode, "
+":class:`~isaaclab_ov.renderers.OVRTXRendererCfg.enable_shadows` controls "
+"directional-light shadow rays. They improve visual faithfulness but cost "
+"render time. Path-traced OVRTX outputs always cast shadows, so this option "
+"does not affect regular ``rgb`` or other AOVs."
+msgstr ""
+"在 RTX Minimal 模式下， "
+":class:`~isaaclab_ov.renderers.OVRTXRendererCfg.enable_shadows` "
+"控制方向光阴影射线。它能改善视觉保真度，但会增加渲染耗时。路径追踪的 OVRTX 输出始终计算阴影，因此该选项不影响常规 ``rgb`` 或其他 "
+"AOV。"
+
+#: source/how-to/configure_rendering.rst:117
+msgid "Customize Isaac RTX"
+msgstr "自定义 Isaac RTX"
+
+#: source/how-to/configure_rendering.rst:119
+msgid ""
+"Isaac RTX remains available for Isaac Sim and PhysX workflows. The settings "
+"below are specific to that legacy renderer; use Newton Warp or OVRTX for new"
+" Newton and kit-less workloads."
+msgstr ""
+"Isaac RTX 仍可用于 Isaac Sim 和 PhysX 工作流。下列设置仅适用于该传统渲染器；新的 Newton 和不依赖 Kit "
+"的负载应使用 Newton Warp 或 OVRTX。"
+
+#: source/how-to/configure_rendering.rst:124
+msgid ""
+"Requesting one of the ``simple_shading_*`` camera data types without a "
+"regular color output switches that camera's render product to RTX Minimal "
+"mode; the data type selects the shading level. The switch applies per render"
+" product, so other cameras and the Kit viewport keep their configured render"
+" mode. RTX Minimal uses only the first ``DistantLight`` prim, ignores "
+"``DomeLight`` prims, and may also use configured ambient lighting. When "
+"``rgb``, ``rgba``, or ``rgb_hdr`` is requested from the same render product,"
+" it retains its configured render mode to preserve the color output; the "
+"``simple_shading_*`` output remains available but does not receive the RTX "
+"Minimal performance improvement."
+msgstr ""
+"请求某种 ``simple_shading_*`` 相机数据类型、且未请求常规彩色输出时，会将该相机的渲染产品切换到 RTX Minimal "
+"模式，具体着色级别由数据类型决定。切换按渲染产品分别进行，因此其他相机和 Kit 视口保留各自配置的渲染模式。RTX Minimal 只使用第一个 "
+"``DistantLight`` prim，忽略 ``DomeLight`` prim，也可能使用已配置的环境光。如果同一渲染产品还请求 ``rgb``"
+" 、 ``rgba`` 或 ``rgb_hdr`` ，则为保留彩色输出而继续使用配置的渲染模式； ``simple_shading_*`` "
+"输出仍可用，但不会获得 RTX Minimal 的性能提升。"
+
+#: source/how-to/configure_rendering.rst:134
+msgid "Overriding Specific Rendering Settings"
+msgstr "覆盖特定渲染设置"
+
+#: source/how-to/configure_rendering.rst:136
+msgid ""
+"RTX rendering settings can be overridden via "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg`."
+msgstr ""
+"通过 :class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` ，可覆盖"
+" RTX 渲染设置。"
+
+#: source/how-to/configure_rendering.rst:139
+msgid "There are 2 ways to provide settings that override the defaults."
+msgstr "有两种方式提供设置，以覆盖默认值。"
+
+#: source/how-to/configure_rendering.rst:141
+msgid ""
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` "
+"supports overriding specific settings via user-friendly setting names that "
+"map to underlying RTX settings. For example:"
+msgstr ""
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` "
+"支持使用易于理解的设置名称覆盖特定设置，并将其映射到底层 RTX 设置。例如："
+
+#: source/how-to/configure_rendering.rst:155
+msgid "List of user-friendly settings."
+msgstr "用户友好的设置列表。"
+
+#: source/how-to/configure_rendering.rst:161
+msgid "enable_translucency"
+msgstr "enable_translucency"
+
+#: source/how-to/configure_rendering.rst:161
+msgid ""
+"Bool. Enables translucency for specular transmissive surfaces such as glass "
+"at the cost of some performance."
+msgstr "布尔值。启用透射光，用于玻璃等反射性透明表面，以牺牲一些性能。"
+
+#: source/how-to/configure_rendering.rst:164
+msgid "enable_reflections"
+msgstr "enable_reflections"
+
+#: source/how-to/configure_rendering.rst:164
+msgid "Bool. Enables reflections at the cost of some performance."
+msgstr "布尔值。启用反射以牺牲一些性能。"
+
+#: source/how-to/configure_rendering.rst:166
+msgid "enable_global_illumination"
+msgstr "enable_global_illumination"
+
+#: source/how-to/configure_rendering.rst:166
+msgid ""
+"Bool. Enables Diffused Global Illumination at the cost of some performance."
+msgstr "布尔值。启用漫反射全局照明以牺牲一些性能。"
+
+#: source/how-to/configure_rendering.rst:169
+msgid "antialiasing_mode"
+msgstr "antialiasing_mode"
+
+#: source/how-to/configure_rendering.rst:169
+msgid "Literal[\"Off\", \"FXAA\", \"DLSS\", \"TAA\", \"DLAA\"]."
+msgstr "字面值[\"Off\", \"FXAA\", \"DLSS\", \"TAA\", \"DLAA\"]。"
+
+#: source/how-to/configure_rendering.rst:171
+msgid ""
+"DLSS: Boosts performance by using AI to output higher resolution frames from"
+" a lower resolution input. DLSS samples multiple lower resolution images and"
+" uses motion data and feedback from prior frames to reconstruct native "
+"quality images. DLAA: Provides higher image quality with an AI-based anti-"
+"aliasing technique. DLAA uses the same Super Resolution technology developed"
+" for DLSS, reconstructing a native resolution image to maximize image "
+"quality."
+msgstr ""
+"DLSS: 通过使用 AI 从较低分辨率输入生成更高分辨率帧来提高性能。DLSS "
+"采样多个较低分辨率图像，并使用运动数据和先前帧的反馈来重建原生质量图像。DLAA: 提供基于 AI 的抗锯齿技术，提供更高的图像质量。DLAA 使用为 "
+"DLSS 开发的超分辨率技术，重建原生分辨率图像以最大化图像质量。"
+
+#: source/how-to/configure_rendering.rst:179
+msgid "enable_dlssg"
+msgstr "enable_dlssg"
+
+#: source/how-to/configure_rendering.rst:179
+msgid ""
+"Bool. Enables the use of DLSS-G. DLSS Frame Generation boosts performance by"
+" using AI to generate more frames. This feature requires an Ada Lovelace "
+"architecture GPU and can hurt performance due to additional thread-related "
+"activities."
+msgstr ""
+"布尔值。启用 DLSS-G 的使用。DLSS 帧生成通过使用 AI 生成更多帧来提高性能。这个功能需要 Ada Lovelace 架构 "
+"GPU，并且由于额外的线程相关活动可能会影响性能。"
+
+#: source/how-to/configure_rendering.rst:184
+msgid "enable_dl_denoiser"
+msgstr "enable_dl_denoiser"
+
+#: source/how-to/configure_rendering.rst:184
+msgid ""
+"Bool. Enables the use of a DL denoiser, which improves the quality of "
+"renders at the cost of performance."
+msgstr "布尔值。启用 DL 降噪器的使用，可以改善渲染的质量，但会牺牲一些性能。"
+
+#: source/how-to/configure_rendering.rst:187
+msgid "dlss_mode"
+msgstr "dlss_mode"
+
+#: source/how-to/configure_rendering.rst:187
+msgid ""
+"Literal[0, 1, 2, 3]. For DLSS anti-aliasing, selects the performance/ "
+"quality tradeoff mode. Valid values are 0 (Performance), 1 (Balanced), 2 "
+"(Quality), or 3 (Auto)."
+msgstr ""
+"字面值[0, 1, 2, 3]。对于 DLSS 抗锯齿，选择性能/质量的折衷模式。有效值为 0（性能）、1（平衡）、2（质量）或 3（自动）。"
+
+#: source/how-to/configure_rendering.rst:191
+msgid "enable_direct_lighting"
+msgstr "enable_direct_lighting"
+
+#: source/how-to/configure_rendering.rst:191
+msgid "Bool. Enable direct light contributions from lights."
+msgstr "布尔值。启用来自灯光的直接光照贡献。"
+
+#: source/how-to/configure_rendering.rst:193
+msgid "samples_per_pixel"
+msgstr "samples_per_pixel"
+
+#: source/how-to/configure_rendering.rst:193
+msgid ""
+"Int. Defines the Direct Lighting samples per pixel. Higher values increase "
+"the direct lighting quality at the cost of performance."
+msgstr "整数。定义每像素的直接光照采样。较高的值增加了直接光照质量，但会牺牲性能。"
+
+#: source/how-to/configure_rendering.rst:196
+msgid "enable_shadows"
+msgstr "enable_shadows"
+
+#: source/how-to/configure_rendering.rst:196
+msgid ""
+"Bool. Enables shadows at the cost of performance. When disabled, lights will"
+" not cast shadows."
+msgstr "布尔值。启用阴影以牺牲一些性能。当禁用时，灯光不会投射阴影。"
+
+#: source/how-to/configure_rendering.rst:199
+msgid "enable_ambient_occlusion"
+msgstr "enable_ambient_occlusion"
+
+#: source/how-to/configure_rendering.rst:199
+msgid "Bool. Enables ambient occlusion at the cost of some performance."
+msgstr "布尔值。启用环境光遮蔽以牺牲一些性能。"
+
+#: source/how-to/configure_rendering.rst:203
+msgid ""
+"For more control, "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` allows "
+"you to override any RTX setting by using the ``carb_settings`` argument."
+msgstr ""
+"如果需要更多控制， "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` 允许通过 "
+"``carb_settings`` 参数覆盖任意 RTX 设置。"
+
+#: source/how-to/configure_rendering.rst:208
+msgid ""
+"The full NVIDIA RTX renderer documentation can be found at "
+"https://docs.omniverse.nvidia.com/materials-and-rendering/latest/rtx-"
+"renderer.html."
+msgstr ""
+"完整的 NVIDIA RTX 渲染器文档见 https://docs.omniverse.nvidia.com/materials-and-"
+"rendering/latest/rtx-renderer.html 。"
+
+#: source/how-to/configure_rendering.rst:211
+msgid "An example usage of ``carb_settings``."
+msgstr "``carb_settings`` 的示例用法。"
+
+#: source/how-to/configure_rendering.rst:226
+msgid "Current Limitations"
+msgstr "当前限制"
+
+#: source/how-to/configure_rendering.rst:228
+msgid ""
+"For performance reasons, we default to using DLSS for denoising, which "
+"generally provides better performance. This may result in renders of lower "
+"quality, which may be especially evident at lower resolutions. Due to this, "
+"we recommend using per-tile or per-camera resolution of at least 100 x 100. "
+"For renders at lower resolutions, we advice setting the "
+"``antialiasing_mode`` attribute in "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` to "
+"``DLAA``, and also potentially enabling ``enable_dl_denoiser``. Both of "
+"these settings should help improve render quality, but also comes at a cost "
+"of performance. Additional rendering parameters can also be specified in "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg`."
+msgstr ""
+"出于性能考虑，默认使用 DLSS 去噪。这通常具有较好性能，但可能降低渲染质量，在低分辨率下尤其明显。因此，建议每个图块或相机的分辨率至少为 100 x"
+" 100。对于更低分辨率，可将 "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` 的 "
+"``antialiasing_mode`` 设为 ``DLAA`` ，并考虑启用 ``enable_dl_denoiser`` "
+"。这两项设置有助于改善渲染质量，但也会牺牲性能。还可通过 "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererGlobalSettingsCfg` "
+"指定其他渲染参数。"
+
+#: source/how-to/configure_rendering.rst:238
+msgid ""
+"If you observe visual artifacts such as ghosting or disocclusion issues when"
+" using tiled rendering, you can try adjusting the ``disocclusionScale`` "
+"parameter. This setting controls how aggressively the renderer handles areas"
+" that become newly visible between frames:"
+msgstr ""
+"如果平铺渲染出现重影或去遮挡等视觉伪影，可尝试调整 ``disocclusionScale`` 。该参数控制渲染器处理帧间新显露区域的力度："
+
+#: source/how-to/configure_rendering.rst:252
+msgid ""
+"This parameter is not commonly exposed as it may have side effects in "
+"certain scenarios. Only use it as a last resort if other quality settings do"
+" not resolve the visual artifacts. The value can be adjusted to a very high "
+"value to reduce disocclusion artifacts."
+msgstr ""
+"此参数通常不对外暴露，因为某些场景下可能产生副作用。只有其他质量设置无法解决伪影时，才将其作为最后手段。可将其调到很高的值，以减少去遮挡伪影。"
+
+#: source/how-to/configure_rendering.rst:258
+msgid "Rendering UsdVol 3D Gaussian Scenes in Multiple Environments"
+msgstr "在多个环境中渲染 UsdVol 三维高斯场景"
+
+#: source/how-to/configure_rendering.rst:260
+msgid ""
+"When using UsdVol volumes with 3D Gaussian particles (e.g. exported from "
+"`3DGRUT <https://github.com/nv-tlabs/3dgrut?tab=readme-ov-file#exporting-"
+"usdz-for-use-in-omniverse-and-isaac-sim>`_) in **multiple environments**, "
+"you must set the following so the renderer uses the correct compositing "
+"path:"
+msgstr ""
+"在 **多个环境** 中使用包含三维高斯粒子的 UsdVol 体积（例如从 `3DGRUT <https://github.com/nv-"
+"tlabs/3dgrut?tab=readme-ov-file#exporting-usdz-for-use-in-omniverse-and-"
+"isaac-sim>`_ 导出）时，必须进行以下设置，使渲染器使用正确的合成路径："
+
+#: source/how-to/configure_rendering.rst:274
+msgid ""
+"With multiple environments, each environment holds its own copy of the "
+"scene, increasing device memory use, and environments are rendered one after"
+" another, which can substantially slow down rendering."
+msgstr "多个环境各自持有一份场景副本，会增加设备内存用量；而且环境依次渲染，可能显著降低渲染速度。"

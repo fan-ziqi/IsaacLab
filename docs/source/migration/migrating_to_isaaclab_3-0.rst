@@ -1050,7 +1050,7 @@ removed in a future release.
 
 Actuator configurations now use joint-qualified names for solver limits. Update active
 configurations to the canonical fields below. The former names remain accepted with a
-``DeprecationWarning`` through the 3.x release line and will be removed in 3.1.
+``DeprecationWarning`` in the 3.0 release line and will be removed in 3.1.
 
 .. list-table:: Actuator limit migration
    :header-rows: 1
@@ -1072,7 +1072,7 @@ configurations to the canonical fields below. The former names remain accepted w
 ``actuator_effort_limit`` clips explicit actuator-model output. ``joint_effort_limit`` and
 ``joint_velocity_limit`` are construction-time joint-property overrides selected by an actuator
 group's joint expression. The deprecated aliases ``effort_limit``, ``velocity_limit``,
-``effort_limit_sim``, and ``velocity_limit_sim`` remain accepted through 3.x. ``effort_limit``
+``effort_limit_sim``, and ``velocity_limit_sim`` remain accepted in 3.0. ``effort_limit``
 resolves to the rated ``actuator_effort_limit`` for every actuator type. For an implicit group
 without a separately configured solver clamp, the rated value also populates
 ``joint_effort_limit`` for backward compatibility; configure both fields to author distinct
@@ -2541,17 +2541,17 @@ The details below describe how CLI visualizer arguments resolve together with
 For the full behavior of visualizer resolution with the visualizer CLI argument and visualizer configs,
 see :ref:`visualization-common-modes`.
 
-**Breaking change — ``--headless`` no longer suppresses visualizers.**
+**Breaking change — the ``--headless`` CLI flag has been removed.**
 
 In Isaac Lab 2.x, passing ``--headless`` disabled all visualizers regardless of ``--viz``.
-In Isaac Lab 3.0, ``--headless`` and ``--viz`` are independent:
+In Isaac Lab 3.0, headless execution and ``--viz`` selection are independent:
 
-- ``--headless`` controls the simulation rendering pipeline (Kit app mode, GPU context).
+- The ``HEADLESS=1`` environment variable requests headless rendering (Kit app mode, GPU context).
 - ``--viz <type>`` controls which visualizer backends to launch.
 
-Passing ``--viz kit --headless`` now launches a Kit visualizer in headless mode using the
-Replicator offscreen renderer (no display window required).  Passing ``--viz newton_gl --headless``
-launches a Newton GL visualizer using pyglet's EGL headless backend.  To disable all visualizers
+Setting ``HEADLESS=1`` and passing ``--viz kit`` launches a Kit visualizer in headless mode using the
+Replicator offscreen renderer (no display window required). Newton GL supports headless execution
+through pyglet's EGL backend. To disable all visualizers
 explicitly, use ``--viz none``.
 
 .. list-table:: Headless visualizer requirements
@@ -2580,8 +2580,8 @@ In Isaac Lab 3.0, the equivalent is:
 .. code-block:: bash
 
    # Record from Kit viewport headlessly (equivalent to 2.x --video behaviour)
-   uv run isaaclab train --rl_library rsl_rl --task Isaac-Cartpole-Direct \
-       --viz kit --enable_cameras --headless --video
+   HEADLESS=1 uv run isaaclab train --rl_library rsl_rl --task Isaac-Cartpole-Direct \
+       --viz kit --enable_cameras --video
 
 As a convenience, passing ``--video`` without ``--viz`` still works: Isaac Lab
 auto-creates a headless Kit visualizer (falling back to Newton GL if Kit is unavailable)

@@ -1,0 +1,198 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/sensors/index.rst:5
+msgid "Sensors"
+msgstr "传感器"
+
+#: source/concepts/sensors/index.rst:9
+msgid ""
+"These pages are the source of truth for the ``isaaclab-using-sensors-"
+"actuators`` agent skill (`skills/user/use-sensors-actuators/ "
+"<../../../../skills/user/use-sensors-actuators/SKILL.md>`__). When sensor "
+"behavior changes, keep the API documentation, maintained demos, these "
+"concept pages, and the skill synchronized."
+msgstr ""
+"这些页面是 ``isaaclab-using-sensors-actuators`` 智能体技能的权威参考（ `skills/user/use-"
+"sensors-actuators/ <../../../../skills/user/use-sensors-"
+"actuators/SKILL.md>`__ ）。传感器行为发生变化时，请同步更新 API 文档、维护中的演示程序、这些概念页面和该技能。"
+
+#: source/concepts/sensors/index.rst:14
+msgid ""
+"Sensors turn simulation state or rendered scene data into batched "
+"measurements. Every Isaac Lab sensor derives from "
+":class:`~isaaclab.sensors.SensorBase` and follows the same lifecycle:"
+msgstr ""
+"传感器将仿真状态或渲染场景数据转换为批量测量值。Isaac Lab 的所有传感器都继承自 "
+":class:`~isaaclab.sensors.SensorBase` ，并遵循相同的生命周期："
+
+#: source/concepts/sensors/index.rst:17
+msgid ""
+"``prim_path`` selects the prim or prims measured in every cloned "
+"environment."
+msgstr "``prim_path`` 选择每个克隆环境中要测量的一个或多个 prim。"
+
+#: source/concepts/sensors/index.rst:18
+msgid ""
+"``update_period`` sets the sampling period in simulated seconds. A value of "
+"``0.0`` samples every simulation step."
+msgstr "``update_period`` 设置采样周期，以仿真秒计。 ``0.0`` 表示每个仿真步都采样。"
+
+#: source/concepts/sensors/index.rst:20
+msgid ""
+":meth:`~isaaclab.sensors.SensorBase.update` advances the sensor clock. "
+"Sensor data is evaluated lazily when the "
+":attr:`~isaaclab.sensors.SensorBase.data` property is read, unless "
+"recomputation or debug visualization is requested."
+msgstr ""
+":meth:`~isaaclab.sensors.SensorBase.update` "
+"推进传感器时钟。除非请求重新计算或调试可视化，否则传感器数据会在读取 :attr:`~isaaclab.sensors.SensorBase.data`"
+" 属性时才进行惰性计算。"
+
+#: source/concepts/sensors/index.rst:23
+msgid ""
+":meth:`~isaaclab.sensors.SensorBase.reset` clears per-environment timestamps"
+" and internal state."
+msgstr ":meth:`~isaaclab.sensors.SensorBase.reset` 清除各环境的时间戳和内部状态。"
+
+#: source/concepts/sensors/index.rst:25
+msgid ""
+"With eager sensor updates (``scene.cfg.lazy_sensor_update=False``), "
+"``scene.update(dt)`` refreshes sensor data before returning. It advances "
+"sensor clocks in scene order, updating ordinary sensors individually and "
+"collecting sensors that support batch updates. After the loop, it refreshes "
+"the collected sensors' pending buffers together. Each sensor retains its own"
+" update period and reset state. Camera sensors use this mechanism to "
+":ref:`batch captures by renderer <renderer-camera-batching>`."
+msgstr ""
+"采用即时传感器更新（ ``scene.cfg.lazy_sensor_update=False`` ）时， ``scene.update(dt)`` "
+"会在返回前刷新传感器数据。它按场景顺序推进传感器时钟，逐个更新普通传感器，并收集支持批量更新的传感器。循环结束后，它统一刷新所收集传感器中待更新的缓冲区。各传感器保留自己的更新周期和重置状态。相机传感器使用该机制"
+" :ref:`按渲染器批量采集 <renderer-camera-batching>` 。"
+
+#: source/concepts/sensors/index.rst:31
+msgid ""
+"Sensor data is exposed through :class:`~isaaclab.utils.warp.ProxyArray` "
+"buffers, including camera outputs. Use the ``torch`` property for a cached "
+"zero-copy Torch view or ``warp`` for the underlying Warp array."
+msgstr ""
+"传感器数据（包括相机输出）通过 :class:`~isaaclab.utils.warp.ProxyArray` 缓冲区提供。使用 ``torch`` "
+"属性获取缓存的零拷贝 Torch 视图，或使用 ``warp`` 获取底层 Warp 数组。"
+
+#: source/concepts/sensors/index.rst:36
+msgid "Choose a sensor"
+msgstr "选择传感器"
+
+#: source/concepts/sensors/index.rst:42
+msgid "Sensor"
+msgstr "传感器"
+
+#: source/concepts/sensors/index.rst:43
+msgid "Measurement"
+msgstr "测量内容"
+
+#: source/concepts/sensors/index.rst:44
+msgid "Typical use"
+msgstr "典型用途"
+
+#: source/concepts/sensors/index.rst:45
+msgid ":doc:`camera`"
+msgstr ":doc:`camera`"
+
+#: source/concepts/sensors/index.rst:46
+msgid ""
+"Renderer-produced color, depth, normals, motion, and segmentation images"
+msgstr "渲染器生成的颜色、深度、法线、运动和分割图像"
+
+#: source/concepts/sensors/index.rst:47
+msgid "Vision observations and synthetic data"
+msgstr "视觉观测和合成数据"
+
+#: source/concepts/sensors/index.rst:48
+msgid ":doc:`ray_caster`"
+msgstr ":doc:`ray_caster`"
+
+#: source/concepts/sensors/index.rst:49
+msgid "First collision locations for configurable ray patterns"
+msgstr "可配置射线模式下的首次碰撞位置"
+
+#: source/concepts/sensors/index.rst:50
+msgid "Terrain sensing, lidar-style queries, and ray-cast cameras"
+msgstr "地形感知、类似激光雷达的查询和射线投射相机"
+
+#: source/concepts/sensors/index.rst:51
+msgid ":doc:`contact_sensor`"
+msgstr ":doc:`contact_sensor`"
+
+#: source/concepts/sensors/index.rst:52
+msgid ""
+"Net and filtered contact forces, contact points, friction, and contact "
+"timing"
+msgstr "接触合力与过滤后的接触力、接触点、摩擦力和接触时长"
+
+#: source/concepts/sensors/index.rst:53
+msgid "Locomotion, grasping, and collision events"
+msgstr "运动、抓取和碰撞事件"
+
+#: source/concepts/sensors/index.rst:54
+msgid ":doc:`frame_transformer`"
+msgstr ":doc:`frame_transformer`"
+
+#: source/concepts/sensors/index.rst:55
+msgid "Relative and world poses for configured frames"
+msgstr "所配置坐标系的相对位姿和世界位姿"
+
+#: source/concepts/sensors/index.rst:56
+msgid "End-effector, foot, and object tracking"
+msgstr "末端执行器、足部和物体跟踪"
+
+#: source/concepts/sensors/index.rst:57
+msgid ":doc:`imu`"
+msgstr ":doc:`imu`"
+
+#: source/concepts/sensors/index.rst:58
+msgid "Angular velocity and proper linear acceleration"
+msgstr "角速度和固有线加速度"
+
+#: source/concepts/sensors/index.rst:59
+msgid "Inertial observations"
+msgstr "惯性观测"
+
+#: source/concepts/sensors/index.rst:60
+msgid ":doc:`pva`"
+msgstr ":doc:`pva`"
+
+#: source/concepts/sensors/index.rst:61
+msgid ""
+"Ground-truth pose, velocity, coordinate acceleration, and projected gravity"
+msgstr "真值位姿、速度、坐标加速度和投影后的重力"
+
+#: source/concepts/sensors/index.rst:62
+msgid "State estimation and privileged observations"
+msgstr "状态估计和特权观测"
+
+#: source/concepts/sensors/index.rst:63
+msgid ":doc:`joint_wrench_sensor`"
+msgstr ":doc:`joint_wrench_sensor`"
+
+#: source/concepts/sensors/index.rst:64
+msgid "Incoming joint reaction force and torque"
+msgstr "传入的关节反作用力和力矩"
+
+#: source/concepts/sensors/index.rst:65
+msgid "Force/torque sensing and contact-rich control"
+msgstr "力/力矩感知和多接触控制"

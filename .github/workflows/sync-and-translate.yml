@@ -1,0 +1,106 @@
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+name: Sync and Translate Documentation
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  # schedule:
+  #   - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-and-translate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout user's repo (main branch)
+      uses: actions/checkout@v4
+      with:
+        repository: fan-ziqi/IsaacLab
+        ref: main
+
+    - name: Configure git user
+      run: |
+        git config --global user.name 'fan-ziqi'
+        git config --global user.email 'fanziqi614@gmail.com'
+
+    # - name: Add upstream repository
+    #   run: git remote add upstream https://github.com/isaac-sim/IsaacLab.git
+
+    # - name: Merge upstream changes while keeping local changes
+    #   run: |
+    #     git fetch upstream
+    #     git checkout main
+    #     git merge upstream/main --strategy-option ours --allow-unrelated-histories --verbose
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r docs/requirements-translation.txt
+
+    - name: Generate gettext
+      run: |
+        pushd docs
+        sphinx-build -M gettext . _build
+        popd
+
+    - name: Update translations
+      run: |
+        pushd docs
+        sphinx-intl update -p _build/gettext -l zh_CN
+        popd
+
+    # - name: Translate using custom script
+    #   run: |
+    #     pushd docs
+    #     python po_translator.py --folder ./locale --lang zh_CN --folder-language --bulk --fuzzy
+    #     popd
+
+    - name: Build HTML with translations
+      run: |
+        pushd docs
+        sphinx-build -M html . _build -D language='zh_CN'
+        popd
+
+    - name: Copy generated HTML files to temporary Path
+      run: |
+        mkdir -p temp_html
+        cp -r docs/_build/html/* temp_html/
+        rm -rf docs/_build/html/
+
+    - name: Check if po files changed
+      id: po_files_changed
+      run: |
+        git checkout main
+        git add docs/locale/zh_CN/LC_MESSAGES/**/*.po
+        git diff-index --quiet HEAD -- || echo "po_changed=true" >> $GITHUB_ENV
+
+    - name: Commit and push po files to main branch
+      run: |
+        if [ "$po_changed" = "true" ]; then
+          git commit -am "Update po files"
+          git push origin main
+        else
+          echo "No changes to commit"
+        fi
+
+    - name: Commit and push changes to gh-pages-zhcn branch
+      run: |
+        git checkout --orphan gh-pages-zhcn
+        git rm -rf .
+        rm -rf docs source
+        cp -r temp_html/* .
+        rm -rf temp_html
+        git add .
+        git commit -m "Update translated documentation"
+        git push origin gh-pages-zhcn --force

@@ -1,0 +1,944 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/features/hydra.rst:2
+msgid "Hydra Configuration System"
+msgstr "Hydra 配置系统"
+
+#: source/features/hydra.rst:6
+msgid ""
+"Isaac Lab supports the `Hydra <https://hydra.cc/docs/intro/>`_ configuration"
+" system to modify the task's configuration using command line arguments, "
+"which can be useful to automate experiments and perform hyperparameter "
+"tuning."
+msgstr ""
+"Isaac Lab 支持 `Hydra <https://hydra.cc/docs/intro/>`_ "
+"配置系统，以通过命令行参数修改任务的配置，这对于自动化实验和执行超参数调整非常有用。"
+
+#: source/features/hydra.rst:9
+msgid ""
+"Any parameter of the environment can be modified by adding one or multiple "
+"elements of the form ``env.a.b.param1=value`` to the command line input, "
+"where ``a.b.param1`` reflects the parameter's hierarchy, for example "
+"``env.actions.joint_effort.scale=10.0``. Similarly, the agent's parameters "
+"can be modified by using the ``agent`` prefix, for example "
+"``agent.seed=2024``."
+msgstr ""
+"环境的任何参数都可以通过在命令行输入中添加一个或多个形式为 ``env.a.b.param1=value`` 的元素来修改，其中 "
+"``a.b.param1`` 反映了参数的层次结构，例如 ``env.actions.joint_effort.scale=10.0`` "
+"。类似地，智能体的参数可以通过使用 ``agent`` 前缀来修改，例如 ``agent.seed=2024`` 。"
+
+#: source/features/hydra.rst:13
+msgid ""
+"The way these command line arguments are set follow the exact structure of "
+"the configuration files. Since the different RL frameworks use different "
+"conventions, there might be differences in the way the parameters are set. "
+"For example, with *rl_games* the seed will be set with "
+"``agent.params.seed``, while with *rsl_rl*, *skrl* and *sb3* it will be set "
+"with ``agent.seed``."
+msgstr ""
+"这些命令行参数的设置方式遵循配置文件的精确结构。由于不同的 RL 框架使用不同的约定，因此参数设置方式可能会有所不同。例如，使用 *rl_games* "
+"时，种子将通过 ``agent.params.seed`` 设置，而在 *rsl_rl* 、 *skrl* 和 *sb3* 中，则通过 "
+"``agent.seed`` 设置。"
+
+#: source/features/hydra.rst:18
+msgid ""
+"As a result, training with hydra arguments can be run with the following "
+"syntax:"
+msgstr "因此，使用 hydra 参数进行训练可以使用以下语法运行: "
+
+#: source/features/hydra.rst:0
+msgid "rsl_rl"
+msgstr "rsl_rl"
+
+#: source/features/hydra.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/features/hydra.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/features/hydra.rst:0
+msgid "rl_games"
+msgstr "`rl_games`"
+
+#: source/features/hydra.rst:0
+msgid "skrl"
+msgstr "`skrl`"
+
+#: source/features/hydra.rst:0
+msgid "sb3"
+msgstr "sb3"
+
+#: source/features/hydra.rst:91
+msgid ""
+"The above command will run training with the task ``Isaac-Cartpole`` without"
+" selecting a visualizer, and set the ``env.actions.joint_effort.scale`` "
+"parameter to 10.0 and the ``agent.seed`` parameter to 2024."
+msgstr ""
+"上述命令训练 ``Isaac-Cartpole`` 任务，不选择可视化器，并将 ``env.actions.joint_effort.scale`` "
+"设为 10.0、 ``agent.seed`` 设为 2024。"
+
+#: source/features/hydra.rst:96
+msgid ""
+"To keep backwards compatibility, and to provide a more user-friendly "
+"experience, we have kept the old cli arguments of the form ``--param``, for "
+"example ``--num_envs``, ``--seed``, ``--max_iterations``. These arguments "
+"have precedence over the hydra arguments, and will overwrite the values set "
+"by the hydra arguments."
+msgstr ""
+"为了保持向后兼容性，并提供更友好的用户体验，我们保留了旧的 cli 参数形式 ``--param`` ，例如 ``--num_envs`` 、 "
+"``--seed`` 、 ``--max_iterations`` 。这些参数优先于 hydra 参数，并将覆盖由 hydra 参数设置的值。"
+
+#: source/features/hydra.rst:102
+msgid "Modifying advanced parameters"
+msgstr "修改高级参数"
+
+#: source/features/hydra.rst:105
+msgid "Callables"
+msgstr "可调用对象"
+
+#: source/features/hydra.rst:107
+msgid ""
+"It is possible to modify functions and classes in the configuration files by"
+" using the syntax ``module:attribute_name``. For example, in the Cartpole "
+"environment:"
+msgstr "可以通过使用语法 ``module:attribute_name`` 修改配置文件中的函数和类。例如，在 Cartpole 环境中: "
+
+#: source/features/hydra.rst:116
+msgid ""
+"we could modify ``joint_pos_rel`` to compute absolute positions instead of "
+"relative positions with "
+"``env.observations.policy.joint_pos_rel.func=isaaclab.envs.mdp:joint_pos``."
+msgstr ""
+"我们可以修改 ``joint_pos_rel`` 以计算绝对位置，而不是相对位置，使用 "
+"``env.observations.policy.joint_pos_rel.func=isaaclab.envs.mdp:joint_pos`` 。"
+
+#: source/features/hydra.rst:120
+msgid "Setting parameters to None"
+msgstr "将参数设置为 None"
+
+#: source/features/hydra.rst:122
+msgid ""
+"To set parameters to None, use the ``null`` keyword, which is a special "
+"keyword in Hydra that is automatically converted to None. In the above "
+"example, we could also disable the ``joint_pos_rel`` observation by setting "
+"it to None with ``env.observations.policy.joint_pos_rel=null``."
+msgstr ""
+"要将参数设置为 None，请使用 ``null`` 关键字，这是 Hydra 中的一个特殊关键字，会自动转换为 "
+"None。在上面的示例中，我们还可以通过将 ``env.observations.policy.joint_pos_rel=null`` 设置为 "
+"None 来禁用 ``joint_pos_rel`` 观测。"
+
+#: source/features/hydra.rst:127
+msgid "Dictionaries"
+msgstr "字典"
+
+#: source/features/hydra.rst:128
+msgid ""
+"Elements in dictionaries are handled as parameters in the hierarchy. For "
+"example, in the Cartpole environment:"
+msgstr "字典中的元素作为配置层级中的参数处理。例如，在 Cartpole 环境中："
+
+#: source/features/hydra.rst:135
+msgid ""
+"the ``position_range`` parameter can be modified with "
+"``env.events.reset_cart_position.params.position_range=\"[-2.0, 2.0]\"``. "
+"This example shows two noteworthy points:"
+msgstr ""
+"``position_range`` 参数可以通过 "
+"``env.events.reset_cart_position.params.position_range=\"[-2.0, 2.0]\"`` "
+"进行修改。这个例子展示了两个值得注意的点: "
+
+#: source/features/hydra.rst:138
+msgid ""
+"The value contains a space, so it must be enclosed in quotes for the shell."
+msgstr "该值包含空格，因此必须用引号括起，供 shell 正确解析。"
+
+#: source/features/hydra.rst:139
+msgid ""
+"The parameter is a list while it is a tuple in the config. This is due to "
+"the fact that Hydra does not support tuples."
+msgstr "参数是一个列表，而在 config 中它是一个元组。这是因为 Hydra 不支持元组。"
+
+#: source/features/hydra.rst:143
+msgid "Modifying inter-dependent parameters"
+msgstr "修改高级参数"
+
+#: source/features/hydra.rst:145
+msgid ""
+"Particular care should be taken when modifying the parameters using command "
+"line arguments. Some of the configurations perform intermediate computations"
+" based on other parameters. These computations will not be updated when the "
+"parameters are modified."
+msgstr "在使用命令行参数修改参数时应特别小心。一些配置会根据其他参数执行中间计算。这些计算在参数被修改时不会更新。"
+
+#: source/features/hydra.rst:149
+msgid "For example, for the configuration of the Cartpole camera environment:"
+msgstr "例如，Cartpole 相机环境的配置："
+
+#: source/features/hydra.rst:156
+msgid ""
+"The configuration declares the single-frame channel count and a default "
+"spatial size. At environment initialization, ``CartpoleCameraEnv`` rebuilds "
+"``observation_space`` from the resolved camera: the default "
+"``frame_stack=2`` expands channels, and height/width are taken from "
+"``scene.tiled_camera``. So ``env.scene.tiled_camera.width=128 "
+"env.scene.tiled_camera.height=128`` alone yields an effective stacked shape "
+"of ``[6,128,128]`` without also overriding ``env.observation_space``. The "
+"channel entry in ``observation_space`` must still match the camera data type"
+" (for example ``[1, ...]`` with ``presets=depth``); presets already set "
+"this."
+msgstr ""
+"配置声明单帧通道数和默认空间尺寸。环境初始化时， ``CartpoleCameraEnv`` 根据解析后的相机重新构建 "
+"``observation_space`` ：默认 ``frame_stack=2`` 会扩展通道数，高度和宽度来自 "
+"``scene.tiled_camera`` 。因此，仅设置 ``env.scene.tiled_camera.width=128 "
+"env.scene.tiled_camera.height=128`` ，就会得到有效的堆叠形状 ``[6,128,128]`` ，无需同时覆盖 "
+"``env.observation_space`` 。 ``observation_space`` 中的通道数仍必须匹配相机数据类型（例如 "
+"``presets=depth`` 对应 ``[1, ...]`` ）；预设已完成这一设置。"
+
+#: source/features/hydra.rst:165
+msgid ""
+"Class-body assignments are evaluated once at import time and do **not** "
+"track later Hydra overrides unless runtime code explicitly rebuilds the "
+"dependent value, as this camera environment does."
+msgstr ""
+"类体中的赋值在导入时只求值一次， **不会** 随后续 Hydra 覆盖自动更新，除非运行时代码显式重新构建依赖值，正如这个相机环境所做的那样。"
+
+#: source/features/hydra.rst:169
+msgid ""
+"Similarly, the ``__post_init__`` method is not updated with the command line"
+" inputs. In the ``LocomotionVelocityRoughEnvCfg``, for example, the post "
+"init update is as follows:"
+msgstr ""
+"类似地， ``__post_init__`` 方法不会随着命令行输入而更新。在 ``LocomotionVelocityRoughEnvCfg`` "
+"中，例如，post init 更新如下: "
+
+#: source/features/hydra.rst:176
+msgid ""
+"Here, when modifying ``env.decimation`` or ``env.sim.dt``, the user needs to"
+" give the updated ``env.sim.render_interval``, "
+"``env.scene.height_scanner.update_period``, and "
+"``env.scene.contact_forces.update_period`` as input as well."
+msgstr ""
+"在这里，当修改 ``env.decimation`` 或 ``env.sim.dt`` 时，用户还需要输入更新后的 "
+"``env.sim.render_interval`` 、 ``env.scene.height_scanner.update_period`` 和 "
+"``env.scene.contact_forces.update_period`` 。"
+
+#: source/features/hydra.rst:181
+msgid "Custom Configuration Validation"
+msgstr "自定义配置验证"
+
+#: source/features/hydra.rst:183
+msgid ""
+"Configclass objects can define a ``validate_config()`` method to perform "
+"domain-specific validation after all fields have been resolved. This hook is"
+" called automatically after preset resolution and MISSING-field checks "
+"succeed, allowing you to catch invalid parameter combinations early with "
+"clear error messages."
+msgstr ""
+"Configclass 对象可以定义 ``validate_config()`` 方法，在所有字段解析后执行领域相关验证。预设解析和 MISSING "
+"字段检查成功后会自动调用该钩子，使你能尽早发现无效参数组合，并提供明确的错误信息。"
+
+#: source/features/hydra.rst:188
+msgid ""
+"For example, the Franka reach configuration validates that its Newton IK "
+"action preset is paired with a Newton physics configuration:"
+msgstr "例如，Franka 到达任务配置会验证 Newton IK 动作预设是否与 Newton 物理配置配合使用："
+
+#: source/features/hydra.rst:196
+msgid "**When it runs:**"
+msgstr "**执行时机：**"
+
+#: source/features/hydra.rst:198
+msgid ""
+"All ``MISSING`` fields are checked first — if any remain, ``TypeError`` is "
+"raised."
+msgstr "先检查所有 ``MISSING`` 字段；仍有缺失时抛出 ``TypeError`` 。"
+
+#: source/features/hydra.rst:199
+msgid ""
+"Only then is ``validate_config()`` called on the **top-level** config "
+"object."
+msgstr "只有此后，才在 **顶层** 配置对象上调用 ``validate_config()`` 。"
+
+#: source/features/hydra.rst:200
+msgid ""
+"The hook should raise ``ValueError`` with a clear message and migration "
+"guidance."
+msgstr "该钩子应抛出 ``ValueError`` ，并给出明确说明和迁移建议。"
+
+#: source/features/hydra.rst:202
+msgid "**Common validation patterns:**"
+msgstr "**常见验证内容：**"
+
+#: source/features/hydra.rst:204
+msgid ""
+"Compatibility between independently selectable controllers, physics "
+"configurations, and renderers"
+msgstr "独立选择的控制器、物理配置和渲染器之间的兼容性"
+
+#: source/features/hydra.rst:205
+msgid "Renderer, camera data type, and feature extractor compatibility"
+msgstr "渲染器、相机数据类型和特征提取器的兼容性"
+
+#: source/features/hydra.rst:206
+msgid ""
+"Numeric relationships or limits that cannot be expressed by field types "
+"alone"
+msgstr "仅靠字段类型无法表达的数值关系或限制"
+
+#: source/features/hydra.rst:210
+msgid "Preset System"
+msgstr "预设系统"
+
+#: source/features/hydra.rst:212
+msgid ""
+"For a user-focused introduction to choosing physics, rendering, and task "
+"variants, start with :doc:`/source/concepts/backends_and_presets`. This "
+"section covers the complete preset definition and resolution behavior."
+msgstr ""
+"若想从使用者角度了解如何选择物理、渲染和任务变体，请先阅读 :doc:`/source/concepts/backends_and_presets` "
+"。本节介绍完整的预设定义和解析行为。"
+
+#: source/features/hydra.rst:216
+msgid ""
+"The preset system lets you swap out entire config sections -- or individual "
+"scalar values -- with a single command line argument. Instead of overriding "
+"individual fields, you select a named preset that **completely replaces** "
+"the config section (no field merging)."
+msgstr ""
+"预设系统允许通过一个命令行参数替换整个配置部分，或单个标量值。无需逐字段覆盖，只需选择命名预设，即可 **完全替换** 对应配置部分（不合并字段）。"
+
+#: source/features/hydra.rst:221
+msgid ""
+"Presets are declared by subclassing "
+":class:`~isaaclab_tasks.utils.hydra.PresetCfg` or by using the "
+":func:`~isaaclab_tasks.utils.hydra.preset` convenience factory. The system "
+"recursively discovers all presets from nested configs automatically, "
+"including presets inside dict-valued fields (e.g. ``actuators``)."
+msgstr ""
+"预设通过继承 :class:`~isaaclab_tasks.utils.hydra.PresetCfg` ，或使用便捷工厂 "
+":func:`~isaaclab_tasks.utils.hydra.preset` "
+"声明。系统自动从嵌套配置中递归发现全部预设，包括字典字段内的预设（例如 ``actuators`` ）。"
+
+#: source/features/hydra.rst:228
+msgid "Override Order"
+msgstr "覆盖顺序"
+
+#: source/features/hydra.rst:230
+msgid "The effective precedence, from lowest to highest, is:"
+msgstr "实际优先级从低到高为："
+
+#: source/features/hydra.rst:232
+msgid ""
+"**Defaults**: Each unresolved ``PresetCfg`` falls back to its ``default`` "
+"field."
+msgstr "**默认值** ：未解析的 ``PresetCfg`` 回退到各自的 ``default`` 字段。"
+
+#: source/features/hydra.rst:233
+msgid ""
+"**Typed and domain selections**: ``physics=newton_mjwarp`` selects physics "
+"while ``presets=rgb`` broadcasts a task-specific name to every matching "
+"config."
+msgstr ""
+"**带类型和领域选择** ： ``physics=newton_mjwarp`` 选择物理配置， ``presets=rgb`` "
+"将任务特有名称广播到所有匹配配置。"
+
+#: source/features/hydra.rst:235
+msgid ""
+"**Path selections**: ``env.sim.physics=newton_kamino`` targets one specific "
+"``PresetCfg`` and takes precedence at that path."
+msgstr ""
+"**路径选择** ： ``env.sim.physics=newton_kamino`` 定位一个具体的 ``PresetCfg`` "
+"，并在该路径上优先生效。"
+
+#: source/features/hydra.rst:237
+msgid ""
+"**Play-mode changes**: When requested by a play command, the environment's "
+"``play_mode()`` changes are applied to the resolved config."
+msgstr "**回放模式修改** ：回放命令请求时，将环境的 ``play_mode()`` 修改应用到解析后的配置。"
+
+#: source/features/hydra.rst:239
+msgid ""
+"**Scalar overrides**: ``env.sim.dt=0.001`` has the final say for an "
+"individual field."
+msgstr "**标量覆盖** ： ``env.sim.dt=0.001`` 对单个字段具有最终决定权。"
+
+#: source/features/hydra.rst:241
+msgid ""
+"If multiple broadcast names select different alternatives at the same active"
+" path, resolution fails instead of silently choosing one."
+msgstr "如果多个广播名称在同一有效路径上选择不同选项，解析会失败，而不是静默选择其中一个。"
+
+#: source/features/hydra.rst:246
+msgid "Defining Presets with PresetCfg"
+msgstr "使用 PresetCfg 定义预设"
+
+#: source/features/hydra.rst:248
+msgid ""
+"Create a :class:`~isaaclab_tasks.utils.hydra.PresetCfg` subclass where each "
+"field is a named alternative. The ``default`` field is the config used when "
+"no CLI override is given:"
+msgstr ""
+"创建 :class:`~isaaclab_tasks.utils.hydra.PresetCfg` "
+"子类，将每个字段定义为一个命名选项。没有命令行覆盖时，使用 ``default`` 字段指定的配置："
+
+#: source/features/hydra.rst:270
+msgid ""
+"Physics is owned by :class:`~isaaclab.sim.SimulationCfg`, so the preset's "
+"config path is ``env.sim.physics``. For backend selection, prefer the typed "
+"selector:"
+msgstr ""
+"物理由 :class:`~isaaclab.sim.SimulationCfg` 管理，因此预设配置路径是 ``env.sim.physics`` "
+"。选择后端时优先使用带类型选择器："
+
+#: source/features/hydra.rst:278
+msgid ""
+"Use the path form ``env.sim.physics=newton_mjwarp`` only when you "
+"intentionally want to replace that one preset node without selecting other "
+"matching task presets."
+msgstr ""
+"只有明确希望替换这一个预设节点、而不选择其他匹配的任务预设时，才使用路径形式 ``env.sim.physics=newton_mjwarp`` 。"
+
+#: source/features/hydra.rst:281
+msgid ""
+"The ``default`` field can be set to ``None`` to make an optional feature "
+"that is disabled unless explicitly selected:"
+msgstr "将 ``default`` 字段设为 ``None`` ，可定义默认关闭、只有显式选择才启用的可选功能："
+
+#: source/features/hydra.rst:301
+msgid ""
+"Here, ``env.scene.camera`` resolves to ``None`` by default. A registered "
+"task using this config can activate the large camera with the path selector "
+"``env.scene.camera=large``."
+msgstr ""
+"此处 ``env.scene.camera`` 默认解析为 ``None`` 。使用该配置的已注册任务可以通过路径选择器 "
+"``env.scene.camera=large`` 启用大相机。"
+
+#: source/features/hydra.rst:309
+msgid "Backend and Solver Presets"
+msgstr "后端与求解器预设"
+
+#: source/features/hydra.rst:311
+msgid ""
+"Physics backend selection uses the same preset system. A task can define a "
+"``PresetCfg`` whose entries replace the complete physics config:"
+msgstr "物理后端选择使用同一预设系统。任务可以定义 ``PresetCfg`` ，各条目替换完整物理配置："
+
+#: source/features/hydra.rst:314
+msgid "The Cartpole task's definition is a maintained example:"
+msgstr "Cartpole 任务中的定义是一个持续维护的示例："
+
+#: source/features/hydra.rst:321
+msgid ""
+"The ``newton_mjwarp`` and ``newton_kamino`` entries both select the Newton "
+"physics backend because both entries are "
+":class:`~isaaclab_newton.physics.NewtonCfg` objects. The difference is the "
+"solver configuration: ``newton_mjwarp`` uses "
+":class:`~isaaclab_newton.physics.MJWarpSolverCfg`, while ``newton_kamino`` "
+"uses :class:`~isaaclab_newton.physics.KaminoPADMMSolverCfg`."
+msgstr ""
+"``newton_mjwarp`` 和 ``newton_kamino`` 均选择 Newton 物理后端，因为两者都是 "
+":class:`~isaaclab_newton.physics.NewtonCfg` 对象。区别在于求解器配置： ``newton_mjwarp`` "
+"使用 :class:`~isaaclab_newton.physics.MJWarpSolverCfg` ， ``newton_kamino`` 使用 "
+":class:`~isaaclab_newton.physics.KaminoPADMMSolverCfg` 。"
+
+#: source/features/hydra.rst:327
+msgid ""
+"Kamino is therefore a solver preset, not a separate Isaac Lab backend. The "
+"same Newton assets, sensors, renderers, and visualizers are used after the "
+"preset is resolved. It is a Proximal Alternating Direction Method of "
+"Multipliers (P-ADMM) based solver for constrained rigid multi-body dynamics,"
+" and its Isaac Lab support is currently beta."
+msgstr ""
+"因此，Kamino 是求解器预设，而非独立的 Isaac Lab 后端。预设解析后，使用相同的 Newton "
+"资产、传感器、渲染器和可视化器。它是基于近端交替方向乘子法（P-ADMM）的约束刚性多体动力学求解器，在 Isaac Lab 中的支持目前处于 beta"
+" 阶段。"
+
+#: source/features/hydra.rst:335
+msgid ""
+"Kamino support is experimental and currently depends on the asset being "
+"structured in a way that Kamino can consume. Assets that work with the "
+"MuJoCo-Warp or PhysX presets may still require model-structure updates "
+"before they work with ``physics=newton_kamino``."
+msgstr ""
+"Kamino 支持仍具有实验性质，目前要求资产结构能够被 Kamino 读取。适用于 MuJoCo-Warp 或 PhysX "
+"预设的资产，可能仍需调整模型结构才能用于 ``physics=newton_kamino`` 。"
+
+#: source/features/hydra.rst:350
+msgid ""
+"Backend support is task-specific and changes as tasks are validated. Use the"
+" task's ``--help`` output as the source of truth. Passing "
+"``physics=newton_kamino`` to a task that does not advertise it fails; it "
+"does not add a Kamino configuration to that task."
+msgstr ""
+"后端支持范围取决于具体任务，并会随验证进展变化，以任务的 ``--help`` 输出为准。向未列出该预设的任务传入 "
+"``physics=newton_kamino`` 会失败，不会自动为该任务添加 Kamino 配置。"
+
+#: source/features/hydra.rst:357
+msgid "Inline Presets with preset()"
+msgstr "通过 preset() 定义内联预设"
+
+#: source/features/hydra.rst:359
+msgid ""
+"For simple values (scalars, lists) that don't warrant a full subclass, use "
+"the :func:`~isaaclab_tasks.utils.hydra.preset` factory. It dynamically "
+"creates a ``PresetCfg`` instance from keyword arguments:"
+msgstr ""
+"对于不值得单独定义完整子类的简单值（标量、列表），使用 :func:`~isaaclab_tasks.utils.hydra.preset` "
+"工厂。它根据关键字参数动态创建 ``PresetCfg`` 实例："
+
+#: source/features/hydra.rst:372
+msgid ""
+"This is equivalent to defining a ``PresetCfg`` subclass with the same "
+"``float`` fields, but without the ceremony. The ``default`` keyword is "
+"required."
+msgstr ""
+"这等价于定义包含相同 ``float`` 字段的 ``PresetCfg`` 子类，但写法更简洁。必须提供 ``default`` 关键字。"
+
+#: source/features/hydra.rst:375
+msgid ""
+"``preset()`` works for any value type -- scalars, lists, or even config "
+"instances:"
+msgstr "``preset()`` 适用于任意值类型，包括标量、列表，甚至配置实例："
+
+#: source/features/hydra.rst:390
+msgid ""
+"Use ``preset()`` when the definition fits on a single line. Use a "
+"``PresetCfg`` subclass when the options are verbose enough to benefit from "
+"type annotations and multiline formatting."
+msgstr "定义可以写在一行时，使用 ``preset()`` 。选项较复杂、需要类型注解和多行排版时，使用 ``PresetCfg`` 子类。"
+
+#: source/features/hydra.rst:394
+msgid ""
+"The preset system discovers ``preset()`` values anywhere in the config tree,"
+" including inside dict-valued fields such as ``actuators``:"
+msgstr "预设系统会发现配置树中任意位置的 ``preset()`` 值，包括 ``actuators`` 等字典字段内部："
+
+#: source/features/hydra.rst:403
+msgid ""
+"The typed ``physics=`` selector uses broadcast resolution for the selected "
+"name, so matching task-specific alternatives such as this armature value are"
+" updated too. It additionally verifies that the name resolved a physics "
+"configuration; the free-form ``presets=`` selector does not provide that "
+"type check."
+msgstr ""
+"带类型的 ``physics=`` "
+"选择器按所选名称进行广播解析，因此具有相同名称的任务选项（例如这里的电枢惯量值）也会更新。它还验证该名称确实解析出了物理配置；自由形式的 "
+"``presets=`` 选择器不提供这一类型检查。"
+
+#: source/features/hydra.rst:410
+msgid "Typed Preset Selectors"
+msgstr "带类型的预设选择器"
+
+#: source/features/hydra.rst:412
+msgid ""
+"The preset CLI layer recognizes three ``key=value`` tokens (no leading "
+"dashes) that can be appended to any training or play script command:"
+msgstr "预设命令行层识别三种 ``key=value`` 参数（不带前导短横线），可附加到任意训练或回放脚本命令后："
+
+#: source/features/hydra.rst:419
+msgid "Token"
+msgstr "参数"
+
+#: source/features/hydra.rst:420 source/features/hydra.rst:630
+msgid "Effect"
+msgstr "作用"
+
+#: source/features/hydra.rst:421
+msgid "``physics=NAME``"
+msgstr "``physics=NAME``"
+
+#: source/features/hydra.rst:422
+msgid "Typed selector for :class:`~isaaclab.physics.PhysicsCfg` variants"
+msgstr "用于选择 :class:`~isaaclab.physics.PhysicsCfg` 变体的带类型选择器"
+
+#: source/features/hydra.rst:423
+msgid "``renderer=NAME``"
+msgstr "``renderer=NAME``"
+
+#: source/features/hydra.rst:424
+msgid ""
+"Typed selector for :class:`~isaaclab.renderers.renderer_cfg.RendererCfg` "
+"variants"
+msgstr "用于选择 :class:`~isaaclab.renderers.renderer_cfg.RendererCfg` 变体的带类型选择器"
+
+#: source/features/hydra.rst:425
+msgid "``presets=NAME[,NAME,...]``"
+msgstr "``presets=NAME[,NAME,...]``"
+
+#: source/features/hydra.rst:426
+msgid ""
+"Broadcast: applied to every matching "
+":class:`~isaaclab_tasks.utils.hydra.PresetCfg` in the config tree"
+msgstr "广播：应用到配置树中每个匹配的 :class:`~isaaclab_tasks.utils.hydra.PresetCfg`"
+
+#: source/features/hydra.rst:428
+msgid ""
+"The typed selectors use the same broadcast resolution as ``presets=``. This "
+"means ``physics=newton_mjwarp`` can also update dependent task presets with "
+"the same name, such as actuator or event settings. They are not "
+"interchangeable, however: a typed selector must resolve at least one config "
+"of its declared type or it raises an error. Use ``physics=`` and "
+"``renderer=`` for backend choices, and reserve ``presets=`` for task-"
+"specific modes."
+msgstr ""
+"带类型选择器采用与 ``presets=`` 相同的广播解析。因此 ``physics=newton_mjwarp`` "
+"也可以更新具有相同名称的依赖任务预设，例如执行器或事件设置。但它们并不等价：带类型选择器必须解析出至少一个声明类型的配置，否则报错。后端选择使用 "
+"``physics=`` 和 ``renderer=`` ，任务特有模式使用 ``presets=`` 。"
+
+#: source/features/hydra.rst:435
+msgid "**Common physics preset names** (only when advertised by the task):"
+msgstr "**常见物理预设名称** （仅当任务列出时可用）："
+
+#: source/features/hydra.rst:441 source/features/hydra.rst:461
+msgid "Name"
+msgstr "名称"
+
+#: source/features/hydra.rst:442
+msgid "Backend"
+msgstr "后端"
+
+#: source/features/hydra.rst:443
+msgid "``isaacsim_physx``"
+msgstr "``isaacsim_physx``"
+
+#: source/features/hydra.rst:444
+msgid "Concrete Isaac Sim PhysX configuration"
+msgstr "明确的 Isaac Sim PhysX 配置"
+
+#: source/features/hydra.rst:445
+msgid "``physx``"
+msgstr "``physx``"
+
+#: source/features/hydra.rst:446
+msgid "Automatic PhysX-family selection between configured alternatives"
+msgstr "在已配置的选项中自动选择 PhysX 系列后端"
+
+#: source/features/hydra.rst:447
+msgid "``newton_mjwarp``"
+msgstr "``newton_mjwarp``"
+
+#: source/features/hydra.rst:448
+msgid "Newton physics with the MuJoCo-Warp solver"
+msgstr "使用 MuJoCo-Warp 求解器的 Newton 物理配置"
+
+#: source/features/hydra.rst:449
+msgid "``newton_kamino``"
+msgstr "``newton_kamino``"
+
+#: source/features/hydra.rst:450
+msgid ""
+"Newton physics with the Kamino solver (beta; limited tasks — see "
+":ref:`hydra-backend-solver-presets`)"
+msgstr ""
+"使用 Kamino 求解器的 Newton 物理配置（beta，仅限部分任务；见 :ref:`hydra-backend-solver-presets`"
+" ）"
+
+#: source/features/hydra.rst:451
+msgid "``ovphysx``"
+msgstr "``ovphysx``"
+
+#: source/features/hydra.rst:452
+msgid "Concrete OvPhysX configuration for supported kit-less tasks"
+msgstr "受支持的不依赖 Kit 的任务所用的明确 OvPhysX 配置"
+
+#: source/features/hydra.rst:454
+msgid ""
+"**Common renderer preset names** (when provided by "
+":class:`~isaaclab_tasks.utils.presets.MultiBackendRendererCfg`):"
+msgstr ""
+"**常见渲染器预设名称** （由 "
+":class:`~isaaclab_tasks.utils.presets.MultiBackendRendererCfg` 提供时）："
+
+#: source/features/hydra.rst:462
+msgid "Renderer"
+msgstr "渲染器"
+
+#: source/features/hydra.rst:463
+msgid "``isaacsim_rtx``"
+msgstr "``isaacsim_rtx``"
+
+#: source/features/hydra.rst:464
+msgid "Concrete Isaac Sim RTX renderer"
+msgstr "明确的 Isaac Sim RTX 渲染器"
+
+#: source/features/hydra.rst:465
+msgid "``rtx``"
+msgstr "``rtx``"
+
+#: source/features/hydra.rst:466
+msgid "Automatic RTX-family selection between configured alternatives"
+msgstr "在已配置的选项中自动选择 RTX 系列渲染器"
+
+#: source/features/hydra.rst:467
+msgid "``newton_renderer``"
+msgstr "``newton_renderer``"
+
+#: source/features/hydra.rst:468
+msgid "Newton Warp renderer"
+msgstr "Newton Warp 渲染器"
+
+#: source/features/hydra.rst:469
+msgid "``ovrtx``"
+msgstr "``ovrtx``"
+
+#: source/features/hydra.rst:470
+msgid "Concrete OVRTX renderer for supported kit-less tasks"
+msgstr "受支持的不依赖 Kit 的任务所用的明确 OVRTX 渲染器"
+
+#: source/features/hydra.rst:472
+msgid ""
+"The implicit ``default`` field is task-specific and is intentionally omitted"
+" from ``--help``. Do not infer a task's default backend from these "
+"conventional names; inspect its help output or configuration. Automatic "
+"choices such as ``physics=physx`` and ``renderer=rtx`` are opt-in, not "
+"universal defaults."
+msgstr ""
+"隐含的 ``default`` 字段由任务决定，并有意不在 ``--help`` 中列出。不要根据这些惯用名称推断任务默认后端，应查看帮助输出或配置。 "
+"``physics=physx`` 和 ``renderer=rtx`` 等自动选择需显式启用，并非通用默认值。"
+
+#: source/features/hydra.rst:477
+msgid ""
+"Domain presets (observation modes, camera configurations, etc.) are task-"
+"specific. Pass ``--task=<task-name> --help`` to a training command to see "
+"all presets available for that task, grouped by selector type."
+msgstr ""
+"领域预设（观测模式、相机配置等）取决于任务。向训练命令传入 ``--task=<task-name> --help`` "
+"，可查看按选择器类型分组的全部可用任务预设。"
+
+#: source/features/hydra.rst:481
+msgid ""
+"For reinforcement-learning tasks, preset resolution composes the registered "
+"environment and agent configurations as sibling roots. A library's canonical"
+" ``<library>_cfg_entry_point`` may therefore return a root-level "
+"``PresetCfg`` with the same alternative names as the environment. A "
+"broadcast such as ``presets=resnet18`` selects ``resnet18`` in both roots in"
+" one resolution pass:"
+msgstr ""
+"对于强化学习任务，预设解析将已注册的环境和智能体配置组合为同级根节点。因此，库的规范 ``<library>_cfg_entry_point`` "
+"可以返回根级 ``PresetCfg`` ，包含与环境相同名称的选项。 ``presets=resnet18`` "
+"这样的广播会在一次解析中，在两个根节点上都选择 ``resnet18`` ："
+
+#: source/features/hydra.rst:503
+msgid ""
+"This is the preferred way to keep an environment-coupled policy shape, such "
+"as a feature extractor or action-space head, aligned with the selected "
+"environment. It does not require a preset-specific registry entry or rewrite"
+" ``--agent``."
+msgstr ""
+"这是使依赖环境的策略形状（例如特征提取器或动作空间输出头）与所选环境保持一致的推荐方式，无需预设专属的注册条目，也无需改写 ``--agent`` 。"
+
+#: source/features/hydra.rst:507
+msgid ""
+"Independent training recipes remain explicit agent choices. A task may "
+"select an alternate agent for symmetry, recurrence, distillation, or another"
+" algorithm without changing its environment preset."
+msgstr "独立的训练方案仍通过显式选择智能体来指定。任务可以为对称性、循环网络、蒸馏或其他算法选择不同智能体，而不改变环境预设。"
+
+#: source/features/hydra.rst:511
+msgid ""
+"Preset-specific agent entry points and registry-side preset-to-agent maps "
+"are not part of this model. Use the canonical entry point and select its "
+"variant with ``presets=``. For older SKRL runs whose manifest or directory "
+"encoded a configuration-key suffix instead of ``agent.class`` as the "
+"algorithm, pass the checkpoint path explicitly instead of using automatic "
+"``latest`` or ``best`` discovery."
+msgstr ""
+"该模型不使用预设专属的智能体入口，也不在注册表端维护预设到智能体的映射。应使用规范入口，并通过 ``presets=`` 选择变体。对于旧版 SKRL "
+"运行，如果其清单或目录以配置键后缀而非 ``agent.class`` 表示算法，请显式传入检查点路径，不要使用自动 ``latest`` 或 "
+"``best`` 发现。"
+
+#: source/features/hydra.rst:520
+msgid ""
+"Legacy aliases ``newton`` → ``newton_mjwarp`` and ``kamino`` → "
+"``newton_kamino`` are still accepted but emit a :class:`FutureWarning`. The "
+"renderer aliases ``isaacsim_rtx_renderer`` → ``isaacsim_rtx`` and "
+"``ovrtx_renderer`` → ``ovrtx`` behave the same way. Prefer the canonical "
+"names."
+msgstr ""
+"旧别名 ``newton`` → ``newton_mjwarp`` 和 ``kamino`` → ``newton_kamino`` "
+"仍可使用，但会发出 :class:`FutureWarning` 。渲染器别名 ``isaacsim_rtx_renderer`` → "
+"``isaacsim_rtx`` 和 ``ovrtx_renderer`` → ``ovrtx`` 也如此。请优先使用规范名称。"
+
+#: source/features/hydra.rst:527
+msgid "Using Presets"
+msgstr "使用预设"
+
+#: source/features/hydra.rst:529
+msgid ""
+"**Typed selectors** -- preferred form for physics and renderer backends:"
+msgstr "**带类型选择器** — 选择物理和渲染器后端的推荐形式："
+
+#: source/features/hydra.rst:546
+msgid "**Path presets** -- select a specific preset for one config path:"
+msgstr "**路径预设** — 为一个配置路径选择具体预设："
+
+#: source/features/hydra.rst:554
+msgid ""
+"**Domain presets** -- broadcast a task-specific name everywhere it exists:"
+msgstr "**领域预设** — 在所有存在该名称的位置广播任务特有选项："
+
+#: source/features/hydra.rst:562
+msgid ""
+"**Multiple domain presets** -- apply several non-conflicting task choices:"
+msgstr "**多个领域预设** — 应用多个互不冲突的任务选项："
+
+#: source/features/hydra.rst:569
+msgid ""
+"The KukaAllegro ``-Camera`` tasks default to a single camera and the "
+"matching RSL-RL CNN actor. ``presets=duo_camera`` switches both the camera "
+"rig and actor inputs; the critic continues to use state observations."
+msgstr ""
+"KukaAllegro 的 ``-Camera`` 任务默认使用单相机，以及与之匹配的 RSL-RL CNN actor。 "
+"``presets=duo_camera`` 同时切换相机组合和 actor 输入；critic 继续使用状态观测。"
+
+#: source/features/hydra.rst:573
+msgid ""
+"**Combined** -- typed selectors, a domain preset, and a scalar override:"
+msgstr "**组合使用** — 带类型选择器、领域预设和标量覆盖："
+
+#: source/features/hydra.rst:584
+msgid "Global Preset Conflict Detection"
+msgstr "全局预设冲突检测"
+
+#: source/features/hydra.rst:586
+msgid ""
+"If two global presets both match the same config path, an error is raised so"
+" the ambiguity is caught early:"
+msgstr "如果两个全局预设都匹配同一配置路径，会抛出错误，尽早暴露歧义："
+
+#: source/features/hydra.rst:596
+msgid "Real-World Example"
+msgstr "实际示例"
+
+#: source/features/hydra.rst:598
+msgid ""
+"The ANYmal-C locomotion environment shows both ``PresetCfg`` and "
+"``preset()`` working together:"
+msgstr "ANYmal-C 运动环境展示了 ``PresetCfg`` 与 ``preset()`` 的配合使用："
+
+#: source/features/hydra.rst:605
+msgid ""
+"The base velocity configuration also defines ``newton_mjwarp`` alternatives "
+"for physics and a center-of-mass randomization event that MJWarp disables. "
+"An explicit ``physics=newton_mjwarp`` resolves the physics config and every "
+"active dependent alternative with that name: the event is disabled and the "
+"ANYmal-C actuator armature becomes ``0.01``. The typed selector also "
+"verifies that a physics preset was actually selected."
+msgstr ""
+"基础速度配置还为物理和质心随机化事件定义了 ``newton_mjwarp`` 选项，MJWarp 会禁用该事件。显式设置 "
+"``physics=newton_mjwarp`` ，会解析物理配置及具有同名的所有有效依赖选项：禁用该事件，并将 ANYmal-C 执行器电枢惯量设为"
+" ``0.01`` 。带类型选择器还会验证确实选中了物理预设。"
+
+#: source/features/hydra.rst:617
+msgid ""
+"Without a selector, each ``PresetCfg`` independently uses its own "
+"``default``; the name of a default alternative is not broadcast to other "
+"preset nodes."
+msgstr "不提供选择器时，各 ``PresetCfg`` 独立使用自己的 ``default`` ；默认选项的名称不会广播到其他预设节点。"
+
+#: source/features/hydra.rst:622
+msgid "Summary"
+msgstr "总结"
+
+#: source/features/hydra.rst:628
+msgid "Override Type"
+msgstr "覆盖类型"
+
+#: source/features/hydra.rst:629
+msgid "Syntax"
+msgstr "语法"
+
+#: source/features/hydra.rst:631
+msgid "Scalar"
+msgstr "标量"
+
+#: source/features/hydra.rst:632
+msgid "``env.sim.dt=0.001``"
+msgstr "``env.sim.dt=0.001``"
+
+#: source/features/hydra.rst:633
+msgid "Modify single field"
+msgstr "修改单个字段"
+
+#: source/features/hydra.rst:634
+msgid "Path preset"
+msgstr "路径预设"
+
+#: source/features/hydra.rst:635
+msgid "``env.sim.physics=newton_kamino``"
+msgstr "``env.sim.physics=newton_kamino``"
+
+#: source/features/hydra.rst:636
+msgid "Replace entire section"
+msgstr "替换整个配置部分"
+
+#: source/features/hydra.rst:637
+msgid "Domain preset"
+msgstr "领域预设"
+
+#: source/features/hydra.rst:638
+msgid "``presets=rgb``"
+msgstr "``presets=rgb``"
+
+#: source/features/hydra.rst:639
+msgid "Apply a task-specific name everywhere matching"
+msgstr "在所有匹配位置应用任务特有名称"
+
+#: source/features/hydra.rst:640
+msgid "Typed physics selector"
+msgstr "带类型的物理选择器"
+
+#: source/features/hydra.rst:641
+msgid "``physics=newton_mjwarp``"
+msgstr "``physics=newton_mjwarp``"
+
+#: source/features/hydra.rst:642
+msgid ""
+"Select a physics variant, update matching dependent presets, and require a "
+"typed match"
+msgstr "选择物理变体，更新匹配的依赖预设，并要求类型匹配"
+
+#: source/features/hydra.rst:643
+msgid "Typed renderer selector"
+msgstr "带类型的渲染器选择器"
+
+#: source/features/hydra.rst:644
+msgid "``renderer=newton_renderer``"
+msgstr "``renderer=newton_renderer``"
+
+#: source/features/hydra.rst:645
+msgid "Select a renderer variant and require a typed match"
+msgstr "选择渲染器变体，并要求类型匹配"
+
+#: source/features/hydra.rst:646
+msgid "Combined"
+msgstr "组合使用"
+
+#: source/features/hydra.rst:647
+msgid ""
+"``physics=newton_mjwarp renderer=newton_renderer presets=rgb "
+"env.sim.dt=0.001``"
+msgstr ""
+"``physics=newton_mjwarp renderer=newton_renderer presets=rgb "
+"env.sim.dt=0.001``"
+
+#: source/features/hydra.rst:648
+msgid "Typed selectors + domain preset + scalar override"
+msgstr "带类型选择器 + 领域预设 + 标量覆盖"

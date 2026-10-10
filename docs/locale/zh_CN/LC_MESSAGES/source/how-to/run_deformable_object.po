@@ -1,0 +1,342 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/run_deformable_object.rst:7
+msgid "Interacting with a deformable object"
+msgstr "与可变形对象交互"
+
+#: source/how-to/run_deformable_object.rst:11
+msgid ""
+"While deformable objects sometimes refer to a broader class of objects, such"
+" as cloths, fluids and soft bodies, Isaac Lab represents deformable objects "
+"as either surface or volume deformables. Unlike rigid objects, soft bodies "
+"can deform under external forces and collisions. In this tutorial, we focus "
+"on volume deformable bodies. For an example of surface deformables (cloth), "
+"run the ``deformables`` example."
+msgstr ""
+"可变形物体有时泛指布料、流体和软体等对象；Isaac Lab "
+"则将其表示为表面可变形物体或体积可变形物体。与刚性物体不同，软体会在外力和碰撞下变形。本教程关注体积可变形物体。表面可变形物体（布料）的示例可通过运行 "
+"``deformables`` 查看。"
+
+#: source/how-to/run_deformable_object.rst:16
+msgid ""
+"The deformable object API and schema define/modify functions are shared "
+"across backends, while deformable property and material configuration "
+"classes are backend-specific. PhysX simulates soft bodies using the Finite "
+"Element Method (FEM); the Newton experimental backend uses the core VBD "
+"solver from :mod:`isaaclab_newton.physics` with the deformable object "
+"integration from :mod:`isaaclab_newton.assets`. The volume deformable "
+"comprises of two tetrahedral meshes -- a simulation mesh and a collision "
+"mesh. The simulation mesh is used to simulate the deformations of the soft "
+"body, while the collision mesh is used to detect collisions with other "
+"objects in the scene. For PhysX-specific details, please check the `PhysX "
+"documentation`_."
+msgstr ""
+"可变形物体 API 以及模式定义、修改函数由各后端共享，而可变形属性和材料配置类因后端而异。PhysX 使用有限元法（FEM）仿真软体；实验性 "
+"Newton 后端使用 :mod:`isaaclab_newton.physics` 的核心 VBD 求解器，以及 "
+":mod:`isaaclab_newton.assets` "
+"的可变形物体集成。体积可变形物体由两个四面体网格组成：仿真网格和碰撞网格。前者用于计算软体变形，后者用于检测与场景中其他物体的碰撞。PhysX "
+"专用细节见 `PhysX 文档 <PhysX documentation_>`_ 。"
+
+#: source/how-to/run_deformable_object.rst:25
+msgid ""
+"This tutorial shows how to interact with a deformable object in the "
+"simulation. We will spawn a set of soft cubes and see how to set their nodal"
+" positions and velocities, along with apply kinematic commands to the mesh "
+"nodes to move the soft body."
+msgstr ""
+"本教程展示了如何在仿真中与可变形对象进行交互。我们将生成一组软体立方体，并了解如何设置它们的节点位置和速度，以及如何对网格节点应用运动学命令以移动软体。"
+
+#: source/how-to/run_deformable_object.rst:31
+msgid ""
+"This tutorial automatically tetrahedralizes volume deformables, and its "
+"default visualizer is Kit. Run it with the ``isaacsim`` and "
+"``tetrahedralization`` extras:"
+msgstr ""
+"本教程会自动对体积可变形物体进行四面体化，默认可视化器为 Kit。运行时选择 ``isaacsim`` 和 ``tetrahedralization``"
+" 可选依赖组："
+
+#: source/how-to/run_deformable_object.rst:38
+msgid "With the legacy installer, install the optional dependencies first:"
+msgstr "使用传统安装程序时，先安装可选依赖："
+
+#: source/how-to/run_deformable_object.rst:46
+msgid "The Code"
+msgstr "代码"
+
+#: source/how-to/run_deformable_object.rst:48
+msgid ""
+"The tutorial corresponds to the ``run_deformable_object.py`` script in the "
+"``scripts/tutorials/01_assets`` directory."
+msgstr ""
+"该教程对应于 ``run_deformable_object.py`` 脚本，在 ``scripts/tutorials/01_assets`` "
+"目录中。"
+
+#: source/how-to/run_deformable_object.rst:0
+msgid "Code for run_deformable_object.py"
+msgstr "`run_deformable_object.py` 的代码"
+
+#: source/how-to/run_deformable_object.rst:60
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: source/how-to/run_deformable_object.rst:63
+msgid "Designing the scene"
+msgstr "设计场景"
+
+#: source/how-to/run_deformable_object.rst:65
+msgid ""
+"We declare the ground plane, light, and deformable cube in a subclass of "
+":class:`scene.InteractiveSceneCfg`. :class:`scene.InteractiveScene` "
+"constructs the assets and handles replication internally. "
+"``DeformableSceneCfg(num_envs=4, env_spacing=0.5)`` selects four environment"
+" origins on a centered grid with 0.5 m spacing."
+msgstr ""
+"我们在 :class:`scene.InteractiveSceneCfg` 的子类中声明地面、灯光和可变形立方体。 "
+":class:`scene.InteractiveScene` 在内部构建资产并处理复制。 "
+"``DeformableSceneCfg(num_envs=4, env_spacing=0.5)`` 在以中心对齐的网格上设置四个环境原点，间距为 "
+"0.5 m。"
+
+#: source/how-to/run_deformable_object.rst:70
+msgid ""
+"In this tutorial, we create a cubical soft object using the spawn "
+"configuration similar to the deformable cube in the :ref:`Spawn Objects "
+"<tutorial-spawn-prims>` tutorial. The only difference is that now we wrap "
+"the spawning configuration into the :class:`assets.DeformableObjectCfg` "
+"class. This class contains information about the asset's spawning strategy "
+"and default initial state. When this class is passed to the "
+":class:`assets.DeformableObject` class, it spawns the object and initializes"
+" the corresponding physics handles when the simulation is played."
+msgstr ""
+"在本教程中，我们使用与 :ref:`Spawn Objects <tutorial-spawn-prims>` 教程中的可变立方体类似的 spawn "
+"配置来创建一个立方体软体对象。唯一的区别是我们现在将 spawn 配置包装到 :class:`assets.DeformableObjectCfg` "
+"类中。这个类包含有关资产的 spawn 策略和默认初始状态的信息。当这个类传递给 :class:`assets.DeformableObject` "
+"类时，它会在仿真播放时生成对象并初始化相应的物理句柄。"
+
+#: source/how-to/run_deformable_object.rst:78
+msgid ""
+"Deformable objects require a mesh object to be spawned with backend-specific"
+" deformable body physics properties and a matching deformable physics "
+"material. Use ``--backend physx`` for the PhysX implementation or "
+"``--backend newton_vbd`` for the experimental Newton implementation."
+msgstr ""
+"可变形物体需要生成网格对象，并赋予后端专用的可变形体物理属性和匹配的可变形物理材料。PhysX 实现使用 ``--backend physx`` "
+"；实验性 Newton 实现使用 ``--backend newton_vbd`` 。"
+
+#: source/how-to/run_deformable_object.rst:84
+msgid ""
+"The scene constructs the deformable objects from their cfg and owns their "
+"clone lifecycle. The simulation loop accesses the resulting asset through "
+"``scene[\"cube_object\"]``."
+msgstr "场景根据配置构建可变形物体，并管理其克隆生命周期。仿真循环通过 ``scene[\"cube_object\"]`` 访问构建出的资产。"
+
+#: source/how-to/run_deformable_object.rst:93
+msgid "Running the simulation loop"
+msgstr "运行仿真循环"
+
+#: source/how-to/run_deformable_object.rst:95
+msgid ""
+"Continuing from the rigid body tutorial, we reset the simulation at regular "
+"intervals, apply kinematic commands to the deformable body, step the "
+"simulation, and update the deformable object's internal buffers."
+msgstr "继续刚体教程，我们在定期间隔内重置仿真，对可变形物体应用运动学命令，推进仿真，并更新可变形对象的内部缓冲区。"
+
+#: source/how-to/run_deformable_object.rst:99
+msgid "Resetting the simulation state"
+msgstr "重置仿真状态"
+
+#: source/how-to/run_deformable_object.rst:101
+msgid ""
+"Unlike rigid bodies and articulations, deformable objects have a different "
+"state representation. The state of a deformable object is defined by the "
+"nodal positions and velocities of the mesh. The nodal positions and "
+"velocities are defined in the **simulation world frame** and are stored in "
+"the :attr:`assets.DeformableObject.data` attribute."
+msgstr ""
+"与刚体和关节不同，可变形物体具有不同的状态表示。可变形物体的状态由网格的节点位置和速度定义。节点位置和速度定义在 **simulation world "
+"frame** 中，并存储在 :attr:`assets.DeformableObject.data` 属性中。"
+
+#: source/how-to/run_deformable_object.rst:105
+msgid ""
+"We use the :attr:`assets.DeformableObject.data.default_nodal_state_w` "
+"attribute to get the default nodal state of the spawned object prims. This "
+"default state can be configured from the "
+":attr:`assets.DeformableObjectCfg.init_state` attribute, which places the "
+"cube 1 m above its environment origin in this tutorial."
+msgstr ""
+"通过 :attr:`assets.DeformableObject.data.default_nodal_state_w` 属性，获取所生成物体 "
+"prim 的默认节点状态。该状态可通过 :attr:`assets.DeformableObjectCfg.init_state` "
+"配置；本教程将立方体放在环境原点上方 1 m 处。"
+
+#: source/how-to/run_deformable_object.rst:110
+msgid ""
+"The initial state in the configuration :attr:`assets.DeformableObjectCfg` "
+"specifies the pose of the deformable object at the time of spawning. Based "
+"on this initial state, the default nodal state is obtained when the "
+"simulation is played for the first time."
+msgstr ""
+"配置中的初始状态 :attr:`assets.DeformableObjectCfg` "
+"指定了在生成时变形对象的姿态。根据这个初始状态，当仿真第一次播放时，会得到默认的节点状态。"
+
+#: source/how-to/run_deformable_object.rst:114
+msgid ""
+"We apply transformations to the nodal positions to randomize the initial "
+"state of the deformable object."
+msgstr "我们对节点位置应用变换，以随机化可变形物体的初始状态。"
+
+#: source/how-to/run_deformable_object.rst:121
+msgid ""
+"To reset the deformable object, we first set the nodal state by calling the "
+":meth:`assets.DeformableObject.write_nodal_state_to_sim` method. This method"
+" writes the nodal state of the deformable object prim into the simulation "
+"buffer. Additionally, we free all the kinematic targets set for the nodes in"
+" the previous simulation step by calling the "
+":meth:`assets.DeformableObject.write_nodal_kinematic_target_to_sim` method. "
+"We explain the kinematic targets in the next section."
+msgstr ""
+"要重置可变形对象，我们首先通过调用 :meth:`assets.DeformableObject.write_nodal_state_to_sim` "
+"方法来设置节点状态。此方法将可变形对象原始的节点状态写入仿真缓冲区。此外，我们通过调用 "
+":meth:`assets.DeformableObject.write_nodal_kinematic_target_to_sim` "
+"方法来释放在上一个仿真步骤中为节点设置的所有运动学目标。我们将在下一节中解释运动学目标。"
+
+#: source/how-to/run_deformable_object.rst:127
+msgid ""
+"Finally, we call the :meth:`assets.DeformableObject.reset` method to reset "
+"any internal buffers and caches."
+msgstr "最后，我们调用 :meth:`assets.DeformableObject.reset` 方法来重置任何内部缓冲区和缓存。"
+
+#: source/how-to/run_deformable_object.rst:135
+msgid "Stepping the simulation"
+msgstr "推进仿真"
+
+#: source/how-to/run_deformable_object.rst:137
+msgid ""
+"Deformable bodies support user-driven kinematic control where a user can "
+"specify position targets for some of the mesh nodes while the rest of the "
+"nodes are simulated by the active deformable solver. This `partial "
+"kinematic`_ control is useful for applications where the user wants to "
+"interact with the deformable object in a controlled manner."
+msgstr ""
+"可变形体支持用户控制的运动学操作：用户为部分网格节点指定目标位置，其余节点仍由当前可变形求解器仿真。这种 `部分运动学控制 <partial "
+"kinematic_>`_ 适合需要以受控方式与可变形物体交互的应用。"
+
+#: source/how-to/run_deformable_object.rst:141
+msgid ""
+"In this tutorial, we apply kinematic commands to two out of the four cubes "
+"in the scene. We set the position targets for the node at index 0 (bottom-"
+"left corner) to move the cube along the z-axis."
+msgstr "在本教程中，我们将运动学命令应用于场景中的四个立方体中的两个。我们设置索引为 0（左下角）的节点的位置目标，使立方体沿 z 轴移动。"
+
+#: source/how-to/run_deformable_object.rst:144
+msgid ""
+"At every step, we increment the kinematic position target for the node by a "
+"small value. Additionally, we set the flag to indicate that the target is a "
+"kinematic target for that node in the simulation buffer. These are set into "
+"the simulation buffer by calling the "
+":meth:`assets.DeformableObject.write_nodal_kinematic_target_to_sim` method."
+msgstr ""
+"在每一步中，我们通过一个小值来增加节点的运动学位置目标。此外，我们设置标志以指示该目标是仿真缓冲区中该节点的运动学目标。这些设置通过调用 "
+":meth:`assets.DeformableObject.write_nodal_kinematic_target_to_sim` "
+"方法来写入仿真缓冲区。"
+
+#: source/how-to/run_deformable_object.rst:154
+msgid ""
+"Similar to the rigid object and articulation, we perform the "
+":meth:`assets.DeformableObject.write_data_to_sim` method before stepping the"
+" simulation. For deformable objects, this method does not apply any external"
+" forces to the object. However, we keep this method for completeness and "
+"future extensions."
+msgstr ""
+"类似于刚体和关节，我们在进行仿真步进之前执行 :meth:`assets.DeformableObject.write_data_to_sim` "
+"方法。对于可变形对象，此方法不会对对象施加任何外部力。然而，我们保留此方法以便于完整性和未来扩展。"
+
+#: source/how-to/run_deformable_object.rst:164
+msgid "Updating the state"
+msgstr "更新状态"
+
+#: source/how-to/run_deformable_object.rst:166
+msgid ""
+"After stepping the simulation, we update the internal buffers of the "
+"deformable object prims to reflect their new state inside the "
+":class:`assets.DeformableObject.data` attribute. This is done using the "
+":meth:`assets.DeformableObject.update` method."
+msgstr ""
+"在运行仿真后，我们更新可变对象 prims 的内部缓冲区，以反映它们在 :class:`assets.DeformableObject.data` "
+"属性中的新状态。这是通过 :meth:`assets.DeformableObject.update` 方法完成的。"
+
+#: source/how-to/run_deformable_object.rst:169
+msgid ""
+"At a fixed interval, we print the root position of the deformable object to "
+"the terminal. As mentioned earlier, there is no concept of a root state for "
+"deformable objects. However, we compute the root position as the average "
+"position of all the nodes in the mesh."
+msgstr ""
+"在固定的间隔下，我们将可变形物体的根位置打印到终端。如前所述，对于可变形物体来说，没有根状态的概念。然而，我们计算根位置的方法是所有网格节点的平均位置。"
+
+#: source/how-to/run_deformable_object.rst:180
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/run_deformable_object.rst:182
+msgid ""
+"Now that we have gone through the code, let's run the script and see the "
+"result:"
+msgstr "现在我们已经浏览了代码，让我们运行脚本并查看结果: "
+
+#: source/how-to/run_deformable_object.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/run_deformable_object.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/run_deformable_object.rst:198
+msgid ""
+"To run the same tutorial with the experimental Newton deformable backend:"
+msgstr "使用实验性 Newton 可变形后端运行同一教程："
+
+#: source/how-to/run_deformable_object.rst:216
+msgid ""
+"This should open a stage with a ground plane, lights, and several cubes. Two"
+" of the four cubes must be dropping from a height and settling on to the "
+"ground. Meanwhile the other two cubes must be moving along the z-axis. You "
+"should see a marker showing the kinematic target position for the nodes at "
+"the bottom-left corner of the cubes. To stop the simulation, you can either "
+"close the window, or press ``Ctrl+C`` in the terminal"
+msgstr ""
+"这应打开一个包含地面、灯光和若干立方体的舞台。四个立方体中，两个从高处落下并停在地面，另外两个沿 z "
+"轴运动。立方体左下角的节点应显示运动学目标位置标记。关闭窗口或在终端按 ``Ctrl+C`` 可停止仿真。"
+
+#: source/how-to/run_deformable_object.rst:221
+msgid "result of run_deformable_object.py"
+msgstr "run_deformable_object.py 的结果"
+
+#: source/how-to/run_deformable_object.rst:226
+msgid ""
+"This tutorial showed how to spawn deformable objects and wrap them in a "
+":class:`DeformableObject` class to initialize their physics handles which "
+"allows setting and obtaining their state. We also saw how to apply kinematic"
+" commands to the deformable object to move the mesh nodes in a controlled "
+"manner. The ``deformables`` example provides a more advanced example, "
+"including surface deformables, loading USD assets, and applying deformable "
+"materials."
+msgstr ""
+"本教程展示了如何生成可变形物体，并用 :class:`DeformableObject` "
+"类封装它们、初始化物理句柄，从而设置和读取状态。还展示了如何施加运动学命令，以受控方式移动网格节点。 ``deformables`` "
+"示例提供了更进阶的用法，包括表面可变形物体、加载 USD 资产和应用可变形材料。"

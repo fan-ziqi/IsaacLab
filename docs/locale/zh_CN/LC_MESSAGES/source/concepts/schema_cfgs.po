@@ -1,0 +1,815 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/schema_cfgs.rst:4
+msgid "Schema Configuration Classes"
+msgstr "模式配置类"
+
+#: source/concepts/schema_cfgs.rst:6
+msgid ""
+"Isaac Lab's spawners author USD physics attributes onto prims via a layered "
+"set of configuration classes. The layering separates **universal-physics** "
+"parameters from **backend-specific** parameters, so the same asset cfg can "
+"be authored once and target any backend that supports it."
+msgstr ""
+"Isaac Lab 的生成器通过分层配置类，将 USD 物理属性写入 prim。分层结构区分 **通用物理** 参数与 **后端特有** "
+"参数，使同一资产配置只需编写一次，就能用于所有支持它的后端。"
+
+#: source/concepts/schema_cfgs.rst:11
+msgid ""
+"This page explains the class hierarchy, when to use each tier, and how "
+"parameters route to the underlying USD attributes."
+msgstr "本页介绍类的继承关系、各层的适用场景，以及参数如何对应到底层 USD 属性。"
+
+#: source/concepts/schema_cfgs.rst:14
+msgid ""
+"Migrating from 2.x? See :ref:`schemas-cfg-refactor` in the 3.0 migration "
+"guide."
+msgstr "从 2.x 迁移？请参阅 3.0 迁移指南中的 :ref:`schemas-cfg-refactor` 。"
+
+#: source/concepts/schema_cfgs.rst:17
+msgid "Quick example"
+msgstr "快速示例"
+
+#: source/concepts/schema_cfgs.rst:19
+msgid "Add MuJoCo (MJC) gravity compensation to an articulated asset:"
+msgstr "为关节体资产添加 MuJoCo（MJC）重力补偿："
+
+#: source/concepts/schema_cfgs.rst:35
+msgid ""
+"The Mujoco-specific fields land under ``mjc:*`` on the prim; any "
+"``RigidBodyBaseCfg`` / ``JointDriveBaseCfg`` fields you set on the same "
+"instance land under ``physics:*``. See :ref:`schema-cfgs-mixed` for the full"
+" routing rules."
+msgstr ""
+"MuJoCo 特有字段写入 prim 的 ``mjc:*`` 命名空间；在同一实例上设置的 ``RigidBodyBaseCfg`` / "
+"``JointDriveBaseCfg`` 字段则写入 ``physics:*`` 。完整规则见 :ref:`schema-cfgs-mixed` 。"
+
+#: source/concepts/schema_cfgs.rst:40
+msgid "Class hierarchy"
+msgstr "类的继承关系"
+
+#: source/concepts/schema_cfgs.rst:42
+msgid ""
+"For each property group (rigid body, joint drive, collision, articulation "
+"root, material, mesh collision), Isaac Lab defines a single base class in "
+"core ``isaaclab.sim.schemas`` and one subclass per backend in the "
+"corresponding extension package:"
+msgstr ""
+"对于各属性组（刚体、关节驱动、碰撞、关节体根节点、材质和网格碰撞），Isaac Lab 在核心包 ``isaaclab.sim.schemas`` "
+"中定义一个基类，并在对应扩展包中为各后端定义子类："
+
+#: source/concepts/schema_cfgs.rst:80
+msgid ""
+":class:`~isaaclab_newton.sim.schemas.NewtonMeshCollisionPropertiesCfg` uses "
+"multiple inheritance: it extends both "
+":class:`~isaaclab_newton.sim.schemas.NewtonCollisionPropertiesCfg` (for "
+"``contact_margin`` / ``contact_gap``) and "
+":class:`~isaaclab.sim.schemas.MeshCollisionBaseCfg` (for "
+"``mesh_approximation_name``). This is the textbook case for the per-"
+"declaring- class MRO routing described under :ref:`schema-cfgs-mixed` — each"
+" inherited field is written under the namespace of the class that declared "
+"it. :class:`~isaaclab_newton.sim.schemas.NewtonSDFCollisionPropertiesCfg` is"
+" collision-rooted, so it authors ``NewtonSDFCollisionAPI`` without also "
+"applying ``UsdPhysics.MeshCollisionAPI`` or setting "
+"``physics:approximation``."
+msgstr ""
+":class:`~isaaclab_newton.sim.schemas.NewtonMeshCollisionPropertiesCfg` "
+"使用多重继承，同时继承 "
+":class:`~isaaclab_newton.sim.schemas.NewtonCollisionPropertiesCfg` （提供 "
+"``contact_margin`` / ``contact_gap`` ）和 "
+":class:`~isaaclab.sim.schemas.MeshCollisionBaseCfg` （提供 "
+"``mesh_approximation_name`` ）。这是 :ref:`schema-cfgs-mixed` 所述按声明类及 MRO "
+"进行属性分发的典型案例：每个继承字段都写入声明该字段的类所对应的命名空间。 "
+":class:`~isaaclab_newton.sim.schemas.NewtonSDFCollisionPropertiesCfg` "
+"以碰撞配置为根，因此编写 ``NewtonSDFCollisionAPI`` 时，不会同时应用 "
+"``UsdPhysics.MeshCollisionAPI`` 或设置 ``physics:approximation`` 。"
+
+#: source/concepts/schema_cfgs.rst:92
+msgid ""
+"The hierarchy is **single-rooted per spawner slot**: every spawner has a "
+"single field for each property group (``rigid_props``, "
+"``joint_drive_props``, ``collision_props``, etc.), and Python's polymorphism"
+" allows any subclass to be passed where the base type is expected."
+msgstr ""
+"该继承体系 **在每个生成器配置槽位上只有一个根类** ：各生成器为每个属性组提供一个字段（ ``rigid_props`` 、 "
+"``joint_drive_props`` 、 ``collision_props`` 等）。Python 的多态允许在期望基类的位置传入任意子类。"
+
+#: source/concepts/schema_cfgs.rst:98
+msgid "When to use which class"
+msgstr "何时使用哪种类"
+
+#: source/concepts/schema_cfgs.rst:100
+msgid ""
+"The choice depends on which backends you target and which fields you need."
+msgstr "选择取决于目标后端和所需字段。"
+
+#: source/concepts/schema_cfgs.rst:102
+msgid ""
+"**Use a base class** (``RigidBodyBaseCfg``, ``JointDriveBaseCfg``, etc.)"
+msgstr "**使用基类** （ ``RigidBodyBaseCfg`` 、 ``JointDriveBaseCfg`` 等）"
+
+#: source/concepts/schema_cfgs.rst:103
+msgid ""
+"when you only need universal-physics fields and you want your asset cfg to "
+"be backend-portable. Importing the base class does not pull in "
+":mod:`isaaclab_physx` or :mod:`isaaclab_newton`."
+msgstr ""
+"适用于只需要通用物理字段，并希望资产配置可跨后端使用的情况。导入基类不会连带导入 :mod:`isaaclab_physx` 或 "
+":mod:`isaaclab_newton` 。"
+
+#: source/concepts/schema_cfgs.rst:107
+msgid "**Use a PhysX subclass** (``PhysxRigidBodyPropertiesCfg``, etc.)"
+msgstr "**使用 PhysX 子类** （ ``PhysxRigidBodyPropertiesCfg`` 等）"
+
+#: source/concepts/schema_cfgs.rst:108
+msgid ""
+"when your asset uses PhysX-specific knobs (per-body damping, TGS solver "
+"iterations, sleep / stabilization thresholds, torsional patch friction, "
+"compliant-contact materials, etc.) and you target the PhysX backend. "
+"Inherits all base-class fields, so you can set both universal and PhysX "
+"fields on the same instance."
+msgstr ""
+"适用于目标为 PhysX 后端、且资产需要 PhysX 特有参数的情况，例如逐刚体阻尼、TGS "
+"求解器迭代次数、休眠/稳定化阈值、扭转接触面摩擦和柔顺接触材质等。子类继承全部基类字段，因此可在同一实例上同时设置通用和 PhysX 字段。"
+
+#: source/concepts/schema_cfgs.rst:114
+msgid "**Use a Newton subclass** (``NewtonRigidBodyPropertiesCfg``, etc.)"
+msgstr "**使用 Newton 子类** （ ``NewtonRigidBodyPropertiesCfg`` 等）"
+
+#: source/concepts/schema_cfgs.rst:115
+msgid ""
+"when you target Newton and need Newton-native attributes "
+"(``newton:contactMargin``, ``newton:torsionalFriction``, "
+"``newton:selfCollisionEnabled``, etc.). The empty Newton base classes "
+"(``NewtonRigidBodyPropertiesCfg``, ``NewtonJointDrivePropertiesCfg``) "
+"reserve the ``newton:*`` namespace for future native fields and act as the "
+"parent for solver-specific subclasses."
+msgstr ""
+"适用于目标为 Newton，且需要 ``newton:contactMargin`` 、 ``newton:torsionalFriction`` 、 "
+"``newton:selfCollisionEnabled`` 等 Newton 原生属性的情况。空的 Newton 基类（ "
+"``NewtonRigidBodyPropertiesCfg`` 、 ``NewtonJointDrivePropertiesCfg`` "
+"）为未来原生字段预留 ``newton:*`` 命名空间，并作为求解器特有子类的父类。"
+
+#: source/concepts/schema_cfgs.rst:122
+msgid ""
+"**Use a MuJoCo subclass** (``MujocoRigidBodyPropertiesCfg``, "
+"``MujocoJointDrivePropertiesCfg``)"
+msgstr ""
+"**使用 MuJoCo 子类** （ ``MujocoRigidBodyPropertiesCfg`` 、 "
+"``MujocoJointDrivePropertiesCfg`` ）"
+
+#: source/concepts/schema_cfgs.rst:123
+msgid ""
+"when you specifically use Newton's **MuJoCo** solver and need MuJoCo-only "
+"knobs (gravity compensation via ``mjc:gravcomp`` / "
+"``mjc:actuatorgravcomp``). Inherits from the Newton base, so "
+"``isinstance(cfg, NewtonRigidBodyPropertiesCfg)`` is True."
+msgstr ""
+"适用于明确使用 Newton 的 **MuJoCo** 求解器，且需要 MuJoCo 专属参数的情况，例如通过 ``mjc:gravcomp`` / "
+"``mjc:actuatorgravcomp`` 实现重力补偿。它继承 Newton 基类，因此 ``isinstance(cfg, "
+"NewtonRigidBodyPropertiesCfg)`` 为 True。"
+
+#: source/concepts/schema_cfgs.rst:129
+msgid "What parameters live where"
+msgstr "参数分别属于哪些类"
+
+#: source/concepts/schema_cfgs.rst:133
+msgid ""
+"The tables below summarize which fields live on which cfg classes. The "
+"canonical source is the auto-generated API reference — see "
+":doc:`/source/api/lab/isaaclab.sim.schemas`, "
+":doc:`/source/api/lab_physx/isaaclab_physx.sim.schemas`, and "
+":doc:`/source/api/lab_newton/isaaclab_newton.sim.schemas`, which render the "
+"cfg class docstrings directly. Treat these tables as a navigation aid; if "
+"they drift from the source, the API docs win."
+msgstr ""
+"下表概括各配置类包含的字段。权威来源是自动生成的 API 参考： :doc:`/source/api/lab/isaaclab.sim.schemas`"
+" 、 :doc:`/source/api/lab_physx/isaaclab_physx.sim.schemas` 和 "
+":doc:`/source/api/lab_newton/isaaclab_newton.sim.schemas` "
+"直接呈现配置类的文档字符串。这些表格仅供查找；如果与源代码不一致，以 API 文档为准。"
+
+#: source/concepts/schema_cfgs.rst:142
+msgid "Universal physics (declared on the base class)"
+msgstr "通用物理（在基类上声明）"
+
+#: source/concepts/schema_cfgs.rst:144
+msgid ""
+"Lives on the **base class**. Most fields write to ``physics:*`` (the "
+"standard ``UsdPhysics.*API`` namespace), but a small set of \"exception\" "
+"fields are declared on the base for backend-portability yet route to a "
+"non-``physics:*`` namespace because that is the only USD path honored today "
+"(e.g., ``disable_gravity`` writes ``physxRigidBody:disableGravity`` because "
+"both PhysX and Newton's importer consume the PhysX attribute). The \"USD "
+"attribute\" column below is the actual emitted attribute, not the namespace "
+"family."
+msgstr ""
+"位于 **基类** 。大多数字段写入 ``physics:*`` （标准 ``UsdPhysics.*API`` "
+"命名空间），但少数“例外”字段为了跨后端可用而声明在基类上，实际却写入其他命名空间，因为目前只有这些 USD 路径受到支持。例如， "
+"``disable_gravity`` 写入 ``physxRigidBody:disableGravity`` ，因为 PhysX 和 Newton "
+"导入器都会读取这个 PhysX 属性。下表的“USD 属性”列给出实际写出的属性，而非命名空间类别。"
+
+#: source/concepts/schema_cfgs.rst:156
+msgid "Base class"
+msgstr "基类"
+
+#: source/concepts/schema_cfgs.rst:157 source/concepts/schema_cfgs.rst:275
+msgid "Field"
+msgstr "字段"
+
+#: source/concepts/schema_cfgs.rst:158
+msgid "USD attribute"
+msgstr "USD 属性"
+
+#: source/concepts/schema_cfgs.rst:159 source/concepts/schema_cfgs.rst:162
+msgid "``RigidBodyBaseCfg``"
+msgstr "``RigidBodyBaseCfg``"
+
+#: source/concepts/schema_cfgs.rst:160
+msgid "``rigid_body_enabled``, ``kinematic_enabled``"
+msgstr "``rigid_body_enabled``, ``kinematic_enabled``"
+
+#: source/concepts/schema_cfgs.rst:161
+msgid "``physics:rigidBodyEnabled``, ``physics:kinematicEnabled``"
+msgstr "``physics:rigidBodyEnabled``, ``physics:kinematicEnabled``"
+
+#: source/concepts/schema_cfgs.rst:163
+msgid "``disable_gravity``"
+msgstr "``disable_gravity``"
+
+#: source/concepts/schema_cfgs.rst:164
+msgid ""
+"``physxRigidBody:disableGravity`` (per-body on PhysX; scene-level partial "
+"honor on Newton)"
+msgstr "``physxRigidBody:disableGravity`` （PhysX 按刚体生效；Newton 在场景层面部分支持）"
+
+#: source/concepts/schema_cfgs.rst:165 source/concepts/schema_cfgs.rst:168
+msgid "``CollisionBaseCfg``"
+msgstr "``CollisionBaseCfg``"
+
+#: source/concepts/schema_cfgs.rst:166
+msgid "``collision_enabled``"
+msgstr "``collision_enabled``"
+
+#: source/concepts/schema_cfgs.rst:167
+msgid "``physics:collisionEnabled``"
+msgstr "``physics:collisionEnabled``"
+
+#: source/concepts/schema_cfgs.rst:169
+msgid "``contact_offset``, ``rest_offset``"
+msgstr "``contact_offset``, ``rest_offset``"
+
+#: source/concepts/schema_cfgs.rst:170
+msgid ""
+"``physxCollision:contactOffset``, ``physxCollision:restOffset`` (Newton "
+"consumes via PhysX bridge)"
+msgstr ""
+"``physxCollision:contactOffset`` 、 ``physxCollision:restOffset`` （Newton 通过 "
+"PhysX 桥接读取）"
+
+#: source/concepts/schema_cfgs.rst:171 source/concepts/schema_cfgs.rst:174
+msgid "``ArticulationRootBaseCfg``"
+msgstr "``ArticulationRootBaseCfg``"
+
+#: source/concepts/schema_cfgs.rst:172
+msgid "``articulation_enabled``"
+msgstr "``articulation_enabled``"
+
+#: source/concepts/schema_cfgs.rst:173
+msgid "``physxArticulation:articulationEnabled``"
+msgstr "``physxArticulation:articulationEnabled``"
+
+#: source/concepts/schema_cfgs.rst:175
+msgid "``fix_root_link``"
+msgstr "``fix_root_link``"
+
+#: source/concepts/schema_cfgs.rst:176
+msgid ""
+"synthesizes ``UsdPhysics.FixedJoint`` (writer-side, not a USD attribute)"
+msgstr "生成 ``UsdPhysics.FixedJoint`` （在写入端处理，不是 USD 属性）"
+
+#: source/concepts/schema_cfgs.rst:177 source/concepts/schema_cfgs.rst:180
+#: source/concepts/schema_cfgs.rst:183
+msgid "``JointDriveBaseCfg``"
+msgstr "``JointDriveBaseCfg``"
+
+#: source/concepts/schema_cfgs.rst:178
+msgid "``drive_type``, ``max_force``, ``stiffness``, ``damping``"
+msgstr "``drive_type``, ``max_force``, ``stiffness``, ``damping``"
+
+#: source/concepts/schema_cfgs.rst:179
+msgid "``drive:<axis>:physics:type/maxForce/stiffness/damping``"
+msgstr "``drive:<axis>:physics:type/maxForce/stiffness/damping``"
+
+#: source/concepts/schema_cfgs.rst:181
+msgid "``max_joint_velocity``"
+msgstr "``max_joint_velocity``"
+
+#: source/concepts/schema_cfgs.rst:182
+msgid ""
+"``physxJoint:maxJointVelocity`` (sole USD path; Newton consumes via PhysX "
+"bridge today)"
+msgstr "``physxJoint:maxJointVelocity`` （唯一的 USD 路径；Newton 目前通过 PhysX 桥接读取）"
+
+#: source/concepts/schema_cfgs.rst:184
+msgid "``ensure_drives_exist``"
+msgstr "``ensure_drives_exist``"
+
+#: source/concepts/schema_cfgs.rst:185
+msgid ""
+"writer-side only — when ``True``, ensures any drive with ``stiffness=0`` and"
+" ``damping=0`` gets a minimal ``stiffness=1e-3`` so backends like Newton "
+"recognize the joint as actively driven; not a USD attribute on its own"
+msgstr ""
+"仅在写入端处理 — 为 ``True`` 时，确保所有 ``stiffness=0`` 且 ``damping=0`` 的驱动具有最小 "
+"``stiffness=1e-3`` ，使 Newton 等后端将关节识别为主动驱动；本身不是独立的 USD 属性"
+
+#: source/concepts/schema_cfgs.rst:188
+msgid "``MassPropertiesCfg``"
+msgstr "``MassPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:189
+msgid "``mass``, ``density``"
+msgstr "``mass``, ``density``"
+
+#: source/concepts/schema_cfgs.rst:190
+msgid "``physics:mass``, ``physics:density``"
+msgstr "``physics:mass``, ``physics:density``"
+
+#: source/concepts/schema_cfgs.rst:191
+msgid "``RigidBodyMaterialBaseCfg``"
+msgstr "``RigidBodyMaterialBaseCfg``"
+
+#: source/concepts/schema_cfgs.rst:192
+msgid "``static_friction``, ``dynamic_friction``, ``restitution``"
+msgstr "``static_friction``, ``dynamic_friction``, ``restitution``"
+
+#: source/concepts/schema_cfgs.rst:193
+msgid ""
+"``physics:staticFriction``, ``physics:dynamicFriction``, "
+"``physics:restitution``"
+msgstr ""
+"``physics:staticFriction``, ``physics:dynamicFriction``, "
+"``physics:restitution``"
+
+#: source/concepts/schema_cfgs.rst:194
+msgid "``MeshCollisionBaseCfg``"
+msgstr "``MeshCollisionBaseCfg``"
+
+#: source/concepts/schema_cfgs.rst:195
+msgid "``mesh_approximation_name``"
+msgstr "``mesh_approximation_name``"
+
+#: source/concepts/schema_cfgs.rst:196
+msgid "``physics:approximation``"
+msgstr "``physics:approximation``"
+
+#: source/concepts/schema_cfgs.rst:199
+msgid "PhysX-specific (``physx*:*`` namespace, ``Physx*API`` schemas)"
+msgstr "PhysX 特有（ ``physx*:*`` 命名空间， ``Physx*API`` 模式）"
+
+#: source/concepts/schema_cfgs.rst:201
+msgid ""
+"Lives on the PhysX subclass. Only authored when the user opts in by setting "
+"the field on a PhysX cfg."
+msgstr "位于 PhysX 子类。只有用户在 PhysX 配置中显式设置字段时才写入。"
+
+#: source/concepts/schema_cfgs.rst:208
+msgid "PhysX subclass"
+msgstr "PhysX 子类"
+
+#: source/concepts/schema_cfgs.rst:209
+msgid "Fields (selection)"
+msgstr "字段（部分）"
+
+#: source/concepts/schema_cfgs.rst:210 source/concepts/schema_cfgs.rst:241
+msgid "USD namespace / schema"
+msgstr "USD 命名空间 / 模式"
+
+#: source/concepts/schema_cfgs.rst:211
+msgid "``PhysxRigidBodyPropertiesCfg``"
+msgstr "``PhysxRigidBodyPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:212
+msgid ""
+"``linear_damping``, ``angular_damping``, ``max_linear_velocity``, "
+"``max_angular_velocity``, ``solver_position_iteration_count``, "
+"``sleep_threshold``, ``enable_gyroscopic_forces``, …"
+msgstr ""
+"``linear_damping`` 、 ``angular_damping`` 、 ``max_linear_velocity`` 、 "
+"``max_angular_velocity`` 、 ``solver_position_iteration_count`` 、 "
+"``sleep_threshold`` 、 ``enable_gyroscopic_forces`` 等"
+
+#: source/concepts/schema_cfgs.rst:213
+msgid "``physxRigidBody:*`` / ``PhysxRigidBodyAPI``"
+msgstr "``physxRigidBody:*`` / ``PhysxRigidBodyAPI``"
+
+#: source/concepts/schema_cfgs.rst:214
+msgid "``PhysxJointDrivePropertiesCfg``"
+msgstr "``PhysxJointDrivePropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:215
+msgid "(currently empty; reserved for future PhysX-only drive knobs)"
+msgstr "（目前为空，为未来的 PhysX 专属驱动参数预留）"
+
+#: source/concepts/schema_cfgs.rst:216
+msgid "``physxJoint:*`` / ``PhysxJointAPI``"
+msgstr "``physxJoint:*`` / ``PhysxJointAPI``"
+
+#: source/concepts/schema_cfgs.rst:217
+msgid "``PhysxCollisionPropertiesCfg``"
+msgstr "``PhysxCollisionPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:218
+msgid "``torsional_patch_radius``, ``min_torsional_patch_radius``"
+msgstr "``torsional_patch_radius``, ``min_torsional_patch_radius``"
+
+#: source/concepts/schema_cfgs.rst:219
+msgid "``physxCollision:*`` / ``PhysxCollisionAPI``"
+msgstr "``physxCollision:*`` / ``PhysxCollisionAPI``"
+
+#: source/concepts/schema_cfgs.rst:220
+msgid "``PhysxArticulationRootPropertiesCfg``"
+msgstr "``PhysxArticulationRootPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:221
+msgid ""
+"``enabled_self_collisions``, ``solver_position_iteration_count``, "
+"``sleep_threshold``, ``stabilization_threshold``"
+msgstr ""
+"``enabled_self_collisions``, ``solver_position_iteration_count``, "
+"``sleep_threshold``, ``stabilization_threshold``"
+
+#: source/concepts/schema_cfgs.rst:222
+msgid "``physxArticulation:*`` / ``PhysxArticulationAPI``"
+msgstr "``physxArticulation:*`` / ``PhysxArticulationAPI``"
+
+#: source/concepts/schema_cfgs.rst:223
+msgid "``PhysxRigidBodyMaterialCfg``"
+msgstr "``PhysxRigidBodyMaterialCfg``"
+
+#: source/concepts/schema_cfgs.rst:224
+msgid ""
+"``compliant_contact_stiffness``, ``compliant_contact_damping``, "
+"``friction_combine_mode``, ``restitution_combine_mode``"
+msgstr ""
+"``compliant_contact_stiffness``, ``compliant_contact_damping``, "
+"``friction_combine_mode``, ``restitution_combine_mode``"
+
+#: source/concepts/schema_cfgs.rst:225
+msgid "``physxMaterial:*`` / ``PhysxMaterialAPI``"
+msgstr "``physxMaterial:*`` / ``PhysxMaterialAPI``"
+
+#: source/concepts/schema_cfgs.rst:226
+msgid "``PhysxConvexHullPropertiesCfg`` (and other mesh-cooking subclasses)"
+msgstr "``PhysxConvexHullPropertiesCfg`` （以及其他网格预处理子类）"
+
+#: source/concepts/schema_cfgs.rst:227
+msgid "``hull_vertex_limit``, ``min_thickness``, …"
+msgstr "``hull_vertex_limit`` 、 ``min_thickness`` 等"
+
+#: source/concepts/schema_cfgs.rst:228
+msgid "``physxConvexHullCollision:*`` / ``PhysxConvexHullCollisionAPI``"
+msgstr "``physxConvexHullCollision:*`` / ``PhysxConvexHullCollisionAPI``"
+
+#: source/concepts/schema_cfgs.rst:231
+msgid "Newton-targeted (``newton:*`` namespace, ``Newton*API`` schemas)"
+msgstr "面向 Newton（ ``newton:*`` 命名空间， ``Newton*API`` 模式）"
+
+#: source/concepts/schema_cfgs.rst:233
+msgid "Lives on the Newton subclass. Authored only when the user opts in."
+msgstr "位于 Newton 子类。仅在用户显式设置时写入。"
+
+#: source/concepts/schema_cfgs.rst:239
+msgid "Newton subclass"
+msgstr "Newton 子类"
+
+#: source/concepts/schema_cfgs.rst:240
+msgid "Fields"
+msgstr "字段"
+
+#: source/concepts/schema_cfgs.rst:242
+msgid "``NewtonRigidBodyPropertiesCfg``"
+msgstr "``NewtonRigidBodyPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:243
+msgid "(empty — reserved for future Newton-native rigid-body fields)"
+msgstr "（为空，为未来的 Newton 原生刚体字段预留）"
+
+#: source/concepts/schema_cfgs.rst:244 source/concepts/schema_cfgs.rst:247
+msgid "``newton:*``"
+msgstr "``newton:*``"
+
+#: source/concepts/schema_cfgs.rst:245
+msgid "``NewtonJointDrivePropertiesCfg``"
+msgstr "``NewtonJointDrivePropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:246
+msgid "(empty — reserved for future Newton-native joint-drive fields)"
+msgstr "（为空，为未来的 Newton 原生关节驱动字段预留）"
+
+#: source/concepts/schema_cfgs.rst:248
+msgid "``NewtonCollisionPropertiesCfg``"
+msgstr "``NewtonCollisionPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:249
+msgid "``contact_margin``, ``contact_gap``"
+msgstr "``contact_margin``, ``contact_gap``"
+
+#: source/concepts/schema_cfgs.rst:250
+msgid "``newton:*`` / ``NewtonCollisionAPI``"
+msgstr "``newton:*`` / ``NewtonCollisionAPI``"
+
+#: source/concepts/schema_cfgs.rst:251
+msgid "``NewtonMeshCollisionPropertiesCfg``"
+msgstr "``NewtonMeshCollisionPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:252
+msgid "``max_hull_vertices``"
+msgstr "``max_hull_vertices``"
+
+#: source/concepts/schema_cfgs.rst:253
+msgid "``newton:*`` / ``NewtonMeshCollisionAPI``"
+msgstr "``newton:*`` / ``NewtonMeshCollisionAPI``"
+
+#: source/concepts/schema_cfgs.rst:254
+msgid "``NewtonSDFCollisionPropertiesCfg``"
+msgstr "``NewtonSDFCollisionPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:255
+msgid ""
+"``sdf_max_resolution``, ``sdf_target_voxel_size``, ``sdf_texture_format``, "
+"``hydroelastic_enabled``, ..."
+msgstr ""
+"``sdf_max_resolution`` 、 ``sdf_target_voxel_size`` 、 ``sdf_texture_format`` "
+"、 ``hydroelastic_enabled`` 等"
+
+#: source/concepts/schema_cfgs.rst:256
+msgid "``newton:*`` / ``NewtonSDFCollisionAPI``"
+msgstr "``newton:*`` / ``NewtonSDFCollisionAPI``"
+
+#: source/concepts/schema_cfgs.rst:257
+msgid "``NewtonMaterialPropertiesCfg``"
+msgstr "``NewtonMaterialPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:258
+msgid "``torsional_friction``, ``rolling_friction``"
+msgstr "``torsional_friction``, ``rolling_friction``"
+
+#: source/concepts/schema_cfgs.rst:259
+msgid "``newton:*`` / ``NewtonMaterialAPI``"
+msgstr "``newton:*`` / ``NewtonMaterialAPI``"
+
+#: source/concepts/schema_cfgs.rst:260
+msgid "``NewtonArticulationRootPropertiesCfg``"
+msgstr "``NewtonArticulationRootPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:261
+msgid "``self_collision_enabled``"
+msgstr "``self_collision_enabled``"
+
+#: source/concepts/schema_cfgs.rst:262
+msgid "``newton:*`` / ``NewtonArticulationRootAPI``"
+msgstr "``newton:*`` / ``NewtonArticulationRootAPI``"
+
+#: source/concepts/schema_cfgs.rst:265
+msgid "MuJoCo-solver-specific (``mjc:*`` namespace)"
+msgstr "MuJoCo 求解器特有（ ``mjc:*`` 命名空间）"
+
+#: source/concepts/schema_cfgs.rst:267
+msgid ""
+"Lives on a MuJoCo subclass that extends a Newton subclass. Only consumed "
+"when running Newton's MuJoCo solver."
+msgstr "位于继承 Newton 子类的 MuJoCo 子类。仅在运行 Newton 的 MuJoCo 求解器时读取。"
+
+#: source/concepts/schema_cfgs.rst:274
+msgid "MuJoCo subclass"
+msgstr "MuJoCo 子类"
+
+#: source/concepts/schema_cfgs.rst:276
+msgid "USD attribute / schema"
+msgstr "USD 属性 / 模式"
+
+#: source/concepts/schema_cfgs.rst:277
+msgid "``MujocoRigidBodyPropertiesCfg``"
+msgstr "``MujocoRigidBodyPropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:278
+msgid "``gravcomp``"
+msgstr "``gravcomp``"
+
+#: source/concepts/schema_cfgs.rst:279
+msgid "``mjc:gravcomp`` (raw attribute, no applied schema)"
+msgstr "``mjc:gravcomp`` （原始属性，不应用模式）"
+
+#: source/concepts/schema_cfgs.rst:280
+msgid "``MujocoJointDrivePropertiesCfg``"
+msgstr "``MujocoJointDrivePropertiesCfg``"
+
+#: source/concepts/schema_cfgs.rst:281
+msgid "``actuatorgravcomp``"
+msgstr "``actuatorgravcomp``"
+
+#: source/concepts/schema_cfgs.rst:282
+msgid "``mjc:actuatorgravcomp`` via ``MjcJointAPI``"
+msgstr "通过 ``MjcJointAPI`` 写入 ``mjc:actuatorgravcomp``"
+
+#: source/concepts/schema_cfgs.rst:286
+msgid ""
+"The two MuJoCo rows differ in their USD applied-schema requirement: "
+"``mjc:actuatorgravcomp`` is part of the registered ``MjcJointAPI`` applied "
+"schema (so the writer calls ``prim.AddAppliedSchema(\"MjcJointAPI\")`` when "
+"the field is non-None). ``mjc:gravcomp`` has no registered Mjc applied "
+"schema for body-level gravity compensation, so the writer authors it as a "
+"raw USD attribute. Newton's MuJoCo solver consumes both via the same "
+"resolver path; the schema-application difference is purely a USD-side "
+"detail."
+msgstr ""
+"这两个 MuJoCo 条目对 USD 应用模式的要求不同： ``mjc:actuatorgravcomp`` 属于已注册的 "
+"``MjcJointAPI`` 应用模式，因此字段不是 None 时，写入器会调用 "
+"``prim.AddAppliedSchema(\"MjcJointAPI\")`` 。刚体级重力补偿的 ``mjc:gravcomp`` 没有已注册的"
+" Mjc 应用模式，因此写入器将其写为原始 USD 属性。Newton 的 MuJoCo 求解器通过同一解析路径读取两者；应用模式的区别仅是 USD "
+"端的细节。"
+
+#: source/concepts/schema_cfgs.rst:298
+msgid "Mixed-namespace authoring on a single instance"
+msgstr "在单个实例上写入多个命名空间"
+
+#: source/concepts/schema_cfgs.rst:300
+msgid ""
+"Because each cfg field is routed to its **declaring class's** namespace (not"
+" the instance's class), a subclass instance can author attributes across "
+"multiple namespaces on the same prim. For example:"
+msgstr ""
+"由于各配置字段分发到 **声明该字段的类** 对应的命名空间，而非实例所属类的命名空间，子类实例可以在同一 prim 上写入多个命名空间的属性。例如："
+
+#: source/concepts/schema_cfgs.rst:314
+msgid ""
+"The writer applies each field to the namespace of the class where the field "
+"is declared. The applied schemas (``PhysxRigidBodyAPI`` for "
+"``disable_gravity``, none for the Mjc raw attribute) are added only when the"
+" corresponding fields are non-None."
+msgstr ""
+"写入器将各字段应用到声明该字段的类对应的命名空间。只有相应字段不是 None 时，才添加应用模式（ ``disable_gravity`` 使用 "
+"``PhysxRigidBodyAPI`` ；Mjc 原始属性没有应用模式）。"
+
+#: source/concepts/schema_cfgs.rst:320
+msgid "Spawner usage"
+msgstr "生成器用法"
+
+#: source/concepts/schema_cfgs.rst:322
+msgid ""
+"Spawners (``UsdFileCfg``, ``MeshCuboidCfg``, ``MeshSphereCfg``, …) accept "
+"the base class type for each slot and use polymorphism to dispatch to the "
+"correct subclass at write time:"
+msgstr ""
+"生成器（ ``UsdFileCfg`` 、 ``MeshCuboidCfg`` 、 ``MeshSphereCfg`` "
+"等）的各槽位接受基类类型，并在写入时通过多态分发到正确的子类："
+
+#: source/concepts/schema_cfgs.rst:346
+msgid "Gravity compensation (MuJoCo solver)"
+msgstr "重力补偿（MuJoCo 求解器）"
+
+#: source/concepts/schema_cfgs.rst:348
+msgid "Gravity compensation has two halves and you typically need both:"
+msgstr "重力补偿包含两部分，通常两者都需要："
+
+#: source/concepts/schema_cfgs.rst:350
+msgid ""
+"**Body-level**: "
+":attr:`~isaaclab_newton.sim.schemas.MujocoRigidBodyPropertiesCfg.gravcomp` "
+"on each rigid body (writes ``mjc:gravcomp``). This is what *computes* the "
+"compensation force."
+msgstr ""
+"**刚体级** ：各刚体上的 "
+":attr:`~isaaclab_newton.sim.schemas.MujocoRigidBodyPropertiesCfg.gravcomp` "
+"（写入 ``mjc:gravcomp`` ），负责 *计算* 补偿力。"
+
+#: source/concepts/schema_cfgs.rst:354
+msgid ""
+"**Joint-level**: "
+":attr:`~isaaclab_newton.sim.schemas.MujocoJointDrivePropertiesCfg.actuatorgravcomp`"
+" on each joint (writes ``mjc:actuatorgravcomp``). This routes the "
+"compensation force through the actuator channel (``qfrc_actuator``) so it "
+"counts against ``actuatorfrcrange``; otherwise it goes to ``qfrc_passive``."
+msgstr ""
+"**关节级** ：各关节上的 "
+":attr:`~isaaclab_newton.sim.schemas.MujocoJointDrivePropertiesCfg.actuatorgravcomp`"
+" （写入 ``mjc:actuatorgravcomp`` ）。它将补偿力分配到执行器通道（ ``qfrc_actuator`` ），使其计入 "
+"``actuatorfrcrange`` ；否则补偿力进入 ``qfrc_passive`` 。"
+
+#: source/concepts/schema_cfgs.rst:360
+msgid ""
+"``actuatorgravcomp=True`` alone is a no-op — without body-level ``gravcomp``"
+" there are no forces to route. To prevent this footgun, the spawner **auto-"
+"enables** ``MujocoRigidBodyPropertiesCfg(gravcomp=1.0)`` whenever "
+"``joint_drive_props`` is a Mujoco cfg with ``actuatorgravcomp=True`` and "
+"``rigid_props`` is not already a Mujoco cfg. If you want a different "
+"``gravcomp`` value (or want to disable the auto-enable), pass an explicit "
+"``MujocoRigidBodyPropertiesCfg`` in ``rigid_props``."
+msgstr ""
+"仅设置 ``actuatorgravcomp=True`` 不会起作用 — 没有刚体级 ``gravcomp`` ，就没有可分配的力。为避免这一问题，当"
+" ``joint_drive_props`` 是设有 ``actuatorgravcomp=True`` 的 Mujoco 配置，且 "
+"``rigid_props`` 尚非 Mujoco 配置时，生成器会 **自动启用** "
+"``MujocoRigidBodyPropertiesCfg(gravcomp=1.0)`` 。如需其他 ``gravcomp`` "
+"值，或希望禁用自动启用行为，请在 ``rigid_props`` 中显式传入 ``MujocoRigidBodyPropertiesCfg`` 。"
+
+#: source/concepts/schema_cfgs.rst:369
+msgid "Naming convention"
+msgstr "命名约定"
+
+#: source/concepts/schema_cfgs.rst:371
+msgid ""
+"Cfg field names use ``snake_case``; the writer converts them to "
+"``camelCase`` USD attribute names (``contact_margin`` → "
+"``newton:contactMargin``). For single-token fields (``gravcomp``, "
+"``actuatorgravcomp``), the conversion is identity, which matches MuJoCo's "
+"lowercase convention."
+msgstr ""
+"配置字段名使用 ``snake_case`` ；写入器将其转换为 ``camelCase`` 的 USD 属性名（ ``contact_margin``"
+" → ``newton:contactMargin`` ）。单词字段（ ``gravcomp`` 、 ``actuatorgravcomp`` "
+"）转换后保持不变，符合 MuJoCo 的小写约定。"
+
+#: source/concepts/schema_cfgs.rst:376
+msgid ""
+"Field renames preserve backward compatibility via deprecation aliases. Two "
+"such aliases live on ``JointDriveBaseCfg`` today:"
+msgstr "字段重命名通过弃用别名保持向后兼容。目前 ``JointDriveBaseCfg`` 中有两个这样的别名："
+
+#: source/concepts/schema_cfgs.rst:379
+msgid ""
+"``max_velocity`` → ``max_joint_velocity`` (USD attribute is "
+"``physxJoint:maxJointVelocity``)"
+msgstr ""
+"``max_velocity`` → ``max_joint_velocity`` （USD 属性为 "
+"``physxJoint:maxJointVelocity`` ）"
+
+#: source/concepts/schema_cfgs.rst:380
+msgid ""
+"``max_effort`` → ``max_force`` (USD attribute is "
+"``drive:<axis>:physics:maxForce``)"
+msgstr ""
+"``max_effort`` → ``max_force`` （USD 属性为 ``drive:<axis>:physics:maxForce`` ）"
+
+#: source/concepts/schema_cfgs.rst:382
+msgid ""
+"The old names remain as real dataclass fields (so ``dataclasses.fields()`` "
+"sees them), defaulting to ``None``. ``__post_init__`` runs "
+"``deprecate_field_alias`` which, when the old field is set: emits a "
+"``DeprecationWarning``, copies the value into the canonical field if the "
+"canonical is ``None``, then nulls the old field. Setting **both** in the "
+"same constructor is silent — the canonical wins; the old name's value is "
+"discarded. Both aliases are scheduled for removal in 4.0."
+msgstr ""
+"旧名称仍作为真正的数据类字段保留（因此 ``dataclasses.fields()`` 能看到它们），默认值为 ``None`` 。 "
+"``__post_init__`` 运行 ``deprecate_field_alias`` ：如果设置了旧字段，会发出 "
+"``DeprecationWarning`` ；规范字段为 ``None`` 时，将旧值复制到规范字段，然后清空旧字段。如果在同一构造函数中 "
+"**同时设置两者** ，则不发出警告，以规范字段为准，丢弃旧名称的值。这两个别名计划在 4.0 中移除。"
+
+#: source/concepts/schema_cfgs.rst:391
+msgid "See also"
+msgstr "另请参阅"
+
+#: source/concepts/schema_cfgs.rst:393
+msgid ""
+":ref:`schema-fragments` — single-namespace fragments and expression-driven "
+"targeting"
+msgstr ":ref:`schema-fragments` — 单命名空间的片段和表达式驱动的目标选择"
+
+#: source/concepts/schema_cfgs.rst:394
+msgid ":doc:`/source/migration/migrating_to_isaaclab_3-0` — migration guide"
+msgstr ":doc:`/source/migration/migrating_to_isaaclab_3-0` — 迁移指南"
+
+#: source/concepts/schema_cfgs.rst:395
+msgid ""
+":doc:`/source/api/lab/isaaclab.sim.schemas` — solver-common base class API"
+msgstr ":doc:`/source/api/lab/isaaclab.sim.schemas` — 求解器通用基类 API"
+
+#: source/concepts/schema_cfgs.rst:396
+msgid ""
+":doc:`/source/api/lab_physx/isaaclab_physx.sim.schemas` — PhysX subclass API"
+msgstr ""
+":doc:`/source/api/lab_physx/isaaclab_physx.sim.schemas` — PhysX 子类 API"
+
+#: source/concepts/schema_cfgs.rst:397
+msgid ""
+":doc:`/source/api/lab_newton/isaaclab_newton.sim.schemas` — Newton/MuJoCo "
+"subclass API"
+msgstr ""
+":doc:`/source/api/lab_newton/isaaclab_newton.sim.schemas` — Newton/MuJoCo 子类"
+" API"

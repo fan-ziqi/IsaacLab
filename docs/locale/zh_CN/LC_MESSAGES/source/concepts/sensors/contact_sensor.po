@@ -1,0 +1,298 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/sensors/contact_sensor.rst:7
+msgid "Contact Sensor"
+msgstr "接触传感器"
+
+#: source/concepts/sensors/contact_sensor.rst:9
+msgid ""
+"A :class:`~sensors.ContactSensor` aggregates contacts on one or more rigid "
+"bodies into batched force measurements. The sensor scope is defined by "
+":attr:`~sensors.ContactSensorCfg.prim_path`: each matched body becomes one "
+"sensor body in every environment."
+msgstr ""
+":class:`~sensors.ContactSensor` 将一个或多个刚体上的接触汇总为批量力测量。传感器范围由 "
+":attr:`~sensors.ContactSensorCfg.prim_path` 定义：每个匹配的刚体都会成为各环境中的一个传感器刚体。"
+
+#: source/concepts/sensors/contact_sensor.rst:13
+msgid "A contact sensor reporting total and filtered contact forces"
+msgstr "报告总接触力和过滤后接触力的接触传感器"
+
+#: source/concepts/sensors/contact_sensor.rst:19
+msgid "Net and filtered forces"
+msgstr "合力与过滤后的力"
+
+#: source/concepts/sensors/contact_sensor.rst:21
+msgid ""
+":attr:`~sensors.ContactSensorData.net_normal_forces_w` is the aggregate "
+"normal force acting on each sensor body in the world frame. It includes "
+"contact with every body in the scene."
+msgstr ""
+":attr:`~sensors.ContactSensorData.net_normal_forces_w` "
+"是作用于各传感器刚体的法向合力，以世界坐标系表示。它包含与场景中所有刚体接触产生的力。"
+
+#: source/concepts/sensors/contact_sensor.rst:24
+msgid ""
+"When supported by the backend and enabled with ``track_friction_forces``, "
+":attr:`~sensors.ContactSensorData.net_friction_forces_w` reports the "
+"aggregate friction force. The total force is therefore"
+msgstr ""
+"如果后端支持且启用了 ``track_friction_forces`` ， "
+":attr:`~sensors.ContactSensorData.net_friction_forces_w` 会报告摩擦合力。因此，总力为"
+
+#: source/concepts/sensors/contact_sensor.rst:28
+msgid ""
+"\\boldsymbol{f}_{total} = \\boldsymbol{f}_{normal} + "
+"\\boldsymbol{f}_{friction}."
+msgstr ""
+"\\boldsymbol{f}_{total} = \\boldsymbol{f}_{normal} + "
+"\\boldsymbol{f}_{friction}."
+
+#: source/concepts/sensors/contact_sensor.rst:32
+msgid ""
+"On Newton, :attr:`~sensors.ContactSensorData.net_forces_w` reports this "
+"total. PhysX and OvPhysX cannot compute the aggregate friction component, so"
+" ``net_forces_w`` returns ``net_normal_forces_w`` with a warning. Use the "
+"explicit normal and friction properties when the split matters."
+msgstr ""
+"在 Newton 上， :attr:`~sensors.ContactSensorData.net_forces_w` 报告上述总力。PhysX 和 "
+"OvPhysX 无法计算摩擦合力分量，因此 ``net_forces_w`` 会返回 ``net_normal_forces_w`` "
+"并发出警告。如果需要区分两种分量，请使用明确的法向力和摩擦力属性。"
+
+#: source/concepts/sensors/contact_sensor.rst:37
+msgid ""
+"Set :attr:`~sensors.ContactSensorCfg.filter_prim_paths_expr` when forces "
+"from specific collision partners are also needed. "
+":attr:`~sensors.ContactSensorData.normal_force_matrix_w` and "
+":attr:`~sensors.ContactSensorData.friction_force_matrix_w` retain one entry "
+"per configured filter expression."
+msgstr ""
+"如果还需要特定碰撞对象产生的力，请设置 :attr:`~sensors.ContactSensorCfg.filter_prim_paths_expr`"
+" 。 :attr:`~sensors.ContactSensorData.normal_force_matrix_w` 和 "
+":attr:`~sensors.ContactSensorData.friction_force_matrix_w` "
+"为每个配置的过滤表达式保留一个条目。"
+
+#: source/concepts/sensors/contact_sensor.rst:42
+msgid ""
+"Summing a force matrix over its filter dimension reconstructs the "
+"corresponding aggregate force only when the filters cover every contacting "
+"object."
+msgstr "只有过滤条件覆盖了所有接触物体时，沿过滤维度对力矩阵求和才能还原对应的合力。"
+
+#: source/concepts/sensors/contact_sensor.rst:45
+msgid ""
+"Body-level filtering supports a many-to-one relationship: ``prim_path`` must"
+" resolve to one sensor body per environment when filters are configured. "
+"Define one sensor per source body when separate filtered forces are "
+"required, for example one sensor for each foot. Newton additionally supports"
+" shape-level sensing and filtering through ``sensor_shape_prim_expr`` and "
+"``filter_shape_prim_expr``."
+msgstr ""
+"刚体级过滤支持多对一关系：配置过滤条件时， ``prim_path`` "
+"必须在每个环境中解析为一个传感器刚体。如果需要分别获取过滤后的力，请为每个源刚体定义一个传感器，例如每只脚各一个。Newton 还支持通过 "
+"``sensor_shape_prim_expr`` 和 ``filter_shape_prim_expr`` 在碰撞形状级别进行感知和过滤。"
+
+#: source/concepts/sensors/contact_sensor.rst:52
+msgid "Configure the sensor"
+msgstr "配置传感器"
+
+#: source/concepts/sensors/contact_sensor.rst:54
+msgid ""
+"Add the configuration to an :class:`~isaaclab.scene.InteractiveSceneCfg`:"
+msgstr "将配置添加到 :class:`~isaaclab.scene.InteractiveSceneCfg` ："
+
+#: source/concepts/sensors/contact_sensor.rst:71
+msgid ""
+"``update_period=0.0`` samples every physics step. ``history_length`` stores "
+"earlier force samples. Enable optional buffers only when they are needed. "
+"Their backend support differs:"
+msgstr ""
+"``update_period=0.0`` 表示每个物理步都采样。 ``history_length`` "
+"用于存储历史力样本。仅在需要时启用可选缓冲区，各后端的支持情况不同："
+
+#: source/concepts/sensors/contact_sensor.rst:74
+msgid ""
+"Isaac Sim PhysX supports pose, filtered contact-point, and filtered "
+"friction-force tracking, but not aggregate friction-force tracking."
+msgstr "Isaac Sim PhysX 支持位姿、过滤后的接触点和摩擦力跟踪，但不支持摩擦合力跟踪。"
+
+#: source/concepts/sensors/contact_sensor.rst:76
+msgid ""
+"OvPhysX supports filtered contact-point and filtered friction-force "
+"tracking, but not aggregate friction-force tracking. Pose tracking is "
+"supported for a single sensor body per environment."
+msgstr "OvPhysX 支持过滤后的接触点和摩擦力跟踪，但不支持摩擦合力跟踪。每个环境只有一个传感器刚体时支持位姿跟踪。"
+
+#: source/concepts/sensors/contact_sensor.rst:78
+msgid ""
+"Newton supports filtered contact-point and aggregate or filtered friction-"
+"force tracking, but not pose tracking."
+msgstr "Newton 支持过滤后的接触点，以及摩擦合力或过滤后的摩擦力跟踪，但不支持位姿跟踪。"
+
+#: source/concepts/sensors/contact_sensor.rst:81
+msgid ""
+"Filtered contact points and friction-force matrices require filters. Isaac "
+"Sim PhysX and OvPhysX require a positive ``max_contact_data_count_per_prim``"
+" for these features. Contact-rich scenes may require a larger value. OvPhysX"
+" warns and truncates detailed contacts when capacity is exceeded; increase "
+"the configured capacity before recreating the sensor to retain all contacts."
+msgstr ""
+"过滤后的接触点和摩擦力矩阵要求设置过滤条件。Isaac Sim PhysX 和 OvPhysX 还要求 "
+"``max_contact_data_count_per_prim`` 为正值。接触较多的场景可能需要更大的值。超过容量时，OvPhysX "
+"会发出警告并截断详细接触数据；请在重新创建传感器前增大该容量，以保留全部接触数据。"
+
+#: source/concepts/sensors/contact_sensor.rst:86
+msgid ""
+"Contact positions are averaged over each sensor/filter pair and are ``NaN`` "
+"when the pair has no contacts. OvPhysX also resets contact positions to "
+"``NaN``. Filtered friction forces sum the pair's friction forces and are "
+"zero without contact. On PhysX and OvPhysX, contact points and friction "
+"anchors can have different counts."
+msgstr ""
+"接触位置取各传感器/过滤对象对的平均值；没有接触时为 ``NaN`` 。OvPhysX 在重置时也会将接触位置设为 ``NaN`` "
+"。过滤后的摩擦力为该对象对的摩擦力之和，没有接触时为零。在 PhysX 和 OvPhysX 中，接触点与摩擦锚点的数量可能不同。"
+
+#: source/concepts/sensors/contact_sensor.rst:92
+msgid "Read the data"
+msgstr "读取数据"
+
+#: source/concepts/sensors/contact_sensor.rst:94
+msgid ""
+"For ``E`` environments, ``S`` sensor bodies, ``F`` filter expressions, and "
+"history length ``H``, the principal Torch views have these contracts:"
+msgstr ""
+"对于 ``E`` 个环境、 ``S`` 个传感器刚体、 ``F`` 个过滤表达式和长度为 ``H`` 的历史，主要 Torch 视图遵循以下约定："
+
+#: source/concepts/sensors/contact_sensor.rst:101
+msgid "Buffer"
+msgstr "缓冲区"
+
+#: source/concepts/sensors/contact_sensor.rst:102
+msgid "Shape"
+msgstr "形状"
+
+#: source/concepts/sensors/contact_sensor.rst:103
+msgid "Meaning"
+msgstr "含义"
+
+#: source/concepts/sensors/contact_sensor.rst:104
+msgid "``net_normal_forces_w.torch``"
+msgstr "``net_normal_forces_w.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:105
+#: source/concepts/sensors/contact_sensor.rst:108
+#: source/concepts/sensors/contact_sensor.rst:111
+msgid "``(E, S, 3)``"
+msgstr "``(E, S, 3)``"
+
+#: source/concepts/sensors/contact_sensor.rst:106
+msgid "Net normal contact force [N] in world frame"
+msgstr "世界坐标系中的法向接触合力 [N]"
+
+#: source/concepts/sensors/contact_sensor.rst:107
+msgid "``net_friction_forces_w.torch``"
+msgstr "``net_friction_forces_w.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:109
+msgid "Net friction force [N] in world frame; Newton only"
+msgstr "世界坐标系中的摩擦合力 [N]；仅限 Newton"
+
+#: source/concepts/sensors/contact_sensor.rst:110
+msgid "``net_forces_w.torch``"
+msgstr "``net_forces_w.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:112
+msgid ""
+"Total force [N] on Newton; normal force with a warning on PhysX and OvPhysX"
+msgstr "Newton 上为总力 [N]；PhysX 和 OvPhysX 上为法向力，并发出警告"
+
+#: source/concepts/sensors/contact_sensor.rst:113
+msgid "``normal_force_matrix_w.torch``"
+msgstr "``normal_force_matrix_w.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:114
+#: source/concepts/sensors/contact_sensor.rst:117
+#: source/concepts/sensors/contact_sensor.rst:120
+msgid "``(E, S, F, 3)``"
+msgstr "``(E, S, F, 3)``"
+
+#: source/concepts/sensors/contact_sensor.rst:115
+msgid "Normal force [N] from each filtered partner"
+msgstr "各过滤对象产生的法向力 [N]"
+
+#: source/concepts/sensors/contact_sensor.rst:116
+msgid "``friction_force_matrix_w.torch``"
+msgstr "``friction_force_matrix_w.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:118
+msgid ""
+"Friction force [N] from each filtered partner; Isaac Sim PhysX, OvPhysX, and"
+" Newton"
+msgstr "各过滤对象产生的摩擦力 [N]；支持 Isaac Sim PhysX、OvPhysX 和 Newton"
+
+#: source/concepts/sensors/contact_sensor.rst:119
+msgid "``contact_pos_w.torch``"
+msgstr "``contact_pos_w.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:121
+msgid "Average filtered contact position [m] in world frame"
+msgstr "世界坐标系中的过滤后平均接触位置 [m]"
+
+#: source/concepts/sensors/contact_sensor.rst:122
+msgid "``current_air_time.torch`` / ``current_contact_time.torch``"
+msgstr "``current_air_time.torch`` / ``current_contact_time.torch``"
+
+#: source/concepts/sensors/contact_sensor.rst:123
+msgid "``(E, S)``"
+msgstr "``(E, S)``"
+
+#: source/concepts/sensors/contact_sensor.rst:124
+msgid "Current mode duration [s]"
+msgstr "当前状态的持续时间 [s]"
+
+#: source/concepts/sensors/contact_sensor.rst:126
+msgid ""
+"Supported optional buffers are ``None`` unless their matching tracking "
+"option or filter is enabled. Normal and friction force histories follow the "
+"same shapes with an added ``H`` dimension. Reading aggregate friction on "
+"PhysX or OvPhysX raises ``NotImplementedError``. The compatibility alias "
+"``friction_forces_w`` returns the aggregate on Newton; on PhysX and OvPhysX "
+"it returns ``friction_force_matrix_w`` with a warning. Reading pose data on "
+"Newton raises ``NotImplementedError``."
+msgstr ""
+"受支持的可选缓冲区在未启用对应跟踪选项或过滤条件时为 ``None`` 。法向力和摩擦力的历史数据沿用相同形状，但多一个 ``H`` 维度。在 "
+"PhysX 或 OvPhysX 上读取摩擦合力会抛出 ``NotImplementedError`` 。兼容别名 "
+"``friction_forces_w`` 在 Newton 上返回摩擦合力；在 PhysX 和 OvPhysX 上返回 "
+"``friction_force_matrix_w`` 并发出警告。在 Newton 上读取位姿数据会抛出 "
+"``NotImplementedError`` 。"
+
+#: source/concepts/sensors/contact_sensor.rst:139
+msgid ""
+"Use ``debug_vis=True`` while validating body expressions and filter "
+"partners. The visualization shows sensor contacts but does not change the "
+"reported data."
+msgstr "验证刚体表达式和过滤对象时，可使用 ``debug_vis=True`` 。可视化会显示传感器接触，但不会改变报告的数据。"
+
+#: source/concepts/sensors/contact_sensor.rst:142
+msgid "Contact sensor debug visualization"
+msgstr "接触传感器调试可视化"
+
+#: source/concepts/sensors/contact_sensor.rst:147
+msgid "A complete runnable example is available as ``contact-sensor``:"
+msgstr "完整的可运行示例名为 ``contact-sensor`` ："

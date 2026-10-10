@@ -1,0 +1,694 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/workflows/docker/index.rst:6
+msgid "Running Isaac Lab in Docker"
+msgstr "在 Docker 中运行 Isaac Lab"
+
+#: source/workflows/docker/index.rst:8
+msgid ""
+"Docker packages Isaac Lab and its dependencies into a reusable environment. "
+"``docker/container.py`` is the main entry point for running Isaac Lab in a "
+"container. It wraps ``docker compose`` so that you do not have to remember "
+"which Dockerfile, environment files, and volume mounts belong together -- "
+"you name a *profile*, and the script assembles the rest."
+msgstr ""
+"Docker 将 Isaac Lab 及其依赖打包为可复用环境。 ``docker/container.py`` 是在容器中运行 Isaac Lab "
+"的主要入口。它封装 ``docker compose`` ，无需记住哪些 Dockerfile、环境文件和卷挂载应搭配使用；只需指定一种 "
+"*配置*，脚本会组装其余内容。"
+
+#: source/workflows/docker/index.rst:13
+msgid ""
+"The image it builds is also the basis for the other workflows: "
+":ref:`deployment-cluster` converts it to an Apptainer image, and "
+":ref:`docker-cloud-cloud` provisions a machine that runs it."
+msgstr ""
+"构建的镜像也是其他工作流的基础： :ref:`deployment-cluster` 将其转换为 Apptainer 镜像， :ref:`docker-"
+"cloud-cloud` 配置运行它的机器。"
+
+#: source/workflows/docker/index.rst:18
+msgid ""
+"The standard Isaac Lab container depends on the Isaac Sim Docker image. By "
+"running that container, you are implicitly agreeing to the `NVIDIA Software "
+"License Agreement`_. If you do not agree to the EULA, do not run that "
+"container. The ``kitless`` image contains neither Isaac Sim nor Kit."
+msgstr ""
+"标准 Isaac Lab 容器依赖 Isaac Sim Docker 镜像。运行该容器即表示默认同意 `NVIDIA 软件许可协议 <NVIDIA "
+"Software License Agreement_>`_ 。如果不同意 EULA，请勿运行。 ``kitless`` 镜像不包含 Isaac Sim"
+" 或 Kit。"
+
+#: source/workflows/docker/index.rst:23
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/workflows/docker/index.rst:25
+msgid ""
+"Install `Docker Engine <https://docs.docker.com/engine/install/>`__, `Docker"
+" Compose <https://docs.docker.com/compose/install/>`__, and the `NVIDIA "
+"Container Toolkit <https://docs.nvidia.com/datacenter/cloud-"
+"native/container-toolkit/latest/install-guide.html>`__. The container is "
+"tested with Docker Engine 26.0.0 and Docker Compose 2.25.0; use these "
+"versions or newer. Follow the `post-installation steps`_ so that Docker runs"
+" without ``sudo``."
+msgstr ""
+"安装 `Docker Engine <https://docs.docker.com/engine/install/>`__ 、 `Docker "
+"Compose <https://docs.docker.com/compose/install/>`__ 和 `NVIDIA Container "
+"Toolkit <https://docs.nvidia.com/datacenter/cloud-native/container-"
+"toolkit/latest/install-guide.html>`__ 。容器已使用 Docker Engine 26.0.0 和 Docker "
+"Compose 2.25.0 测试，请使用这些或更新版本。完成 `安装后步骤 <post-installation steps_>`_ ，使 "
+"Docker 无需 ``sudo`` 即可运行。"
+
+#: source/workflows/docker/index.rst:31
+msgid ""
+"The Isaac Sim documentation on `container installation`_ covers the same "
+"prerequisites in more detail, including how to obtain access to the Isaac "
+"Sim image."
+msgstr ""
+"Isaac Sim 的 `容器安装 <container installation_>`_ 文档更详细地介绍了同样的前置要求，包括如何获得 Isaac "
+"Sim 镜像访问权限。"
+
+#: source/workflows/docker/index.rst:36
+msgid ""
+"Due to limitations with `snap <https://snapcraft.io/docs/home-outside-"
+"home>`_, please make sure the Isaac Lab directory is placed under the "
+"``/home`` directory tree when using docker."
+msgstr ""
+"由于对 `snap <https://snapcraft.io/docs/home-outside-home>`_ 的限制，请确保 Isaac Lab "
+"目录位于 ``/home`` 目录树下使用 docker 时。"
+
+#: source/workflows/docker/index.rst:40
+msgid "Container profiles"
+msgstr "容器配置"
+
+#: source/workflows/docker/index.rst:42
+msgid ""
+"A profile is a `Docker Compose profile <https://docs.docker.com/compose/how-"
+"tos/profiles/>`__: ``docker-compose.yaml`` tags each service with one, and "
+"Compose starts only the services whose profile is active. Naming a profile "
+"therefore selects a matched set -- one service, one Dockerfile, one set of "
+"environment files, and one image name:"
+msgstr ""
+"这里的配置是 `Docker Compose profile <https://docs.docker.com/compose/how-"
+"tos/profiles/>`__ ： ``docker-compose.yaml`` 为每个服务标记一种 profile，Compose 只启动已启用"
+" profile 对应的服务。因此，指定配置名会选择配套的一组内容：一个服务、一个 Dockerfile、一组环境文件和一个镜像名。"
+
+#: source/workflows/docker/index.rst:51
+msgid "Profile"
+msgstr "区域配置"
+
+#: source/workflows/docker/index.rst:52
+msgid "Compose service"
+msgstr "Compose 服务"
+
+#: source/workflows/docker/index.rst:53
+msgid "Dockerfile"
+msgstr "Dockerfile"
+
+#: source/workflows/docker/index.rst:54
+msgid "Environment files"
+msgstr "环境文件"
+
+#: source/workflows/docker/index.rst:55
+msgid "Built on top of"
+msgstr "基础镜像"
+
+#: source/workflows/docker/index.rst:56
+msgid "``base``"
+msgstr "``base``"
+
+#: source/workflows/docker/index.rst:57
+msgid "``isaac-lab-base``"
+msgstr "``isaac-lab-base``"
+
+#: source/workflows/docker/index.rst:58
+msgid "``Dockerfile.base``"
+msgstr "``Dockerfile.base``"
+
+#: source/workflows/docker/index.rst:59
+msgid "``.env.base``"
+msgstr "``.env.base``"
+
+#: source/workflows/docker/index.rst:60
+msgid "the Isaac Sim image"
+msgstr "Isaac Sim 镜像"
+
+#: source/workflows/docker/index.rst:61
+msgid "``ros2``"
+msgstr "``ros2``"
+
+#: source/workflows/docker/index.rst:62
+msgid "``isaac-lab-ros2``"
+msgstr "``isaac-lab-ros2``"
+
+#: source/workflows/docker/index.rst:63
+msgid "``Dockerfile.ros2``"
+msgstr "``Dockerfile.ros2``"
+
+#: source/workflows/docker/index.rst:64
+msgid "``.env.base`` + ``.env.ros2``"
+msgstr "``.env.base`` + ``.env.ros2``"
+
+#: source/workflows/docker/index.rst:65
+msgid "the ``base`` image, built first"
+msgstr "先构建的 ``base`` 镜像"
+
+#: source/workflows/docker/index.rst:66
+msgid "``kitless``"
+msgstr "``kitless``"
+
+#: source/workflows/docker/index.rst:67
+msgid "``isaac-lab-kitless``"
+msgstr "``isaac-lab-kitless``"
+
+#: source/workflows/docker/index.rst:68
+msgid "``Dockerfile.kitless``"
+msgstr "``Dockerfile.kitless``"
+
+#: source/workflows/docker/index.rst:69
+msgid "``.env.kitless``"
+msgstr "``.env.kitless``"
+
+#: source/workflows/docker/index.rst:70
+msgid "nothing -- standalone, no Isaac Sim"
+msgstr "独立镜像，不依赖 Isaac Sim"
+
+#: source/workflows/docker/index.rst:72
+msgid ""
+"Every command below takes the profile as its first positional argument and "
+"defaults to ``base``. Only one profile applies at a time, and the resulting "
+"image and container are both named ``isaac-lab-<profile>``. Pass "
+"``--suffix`` to append a name suffix when you want several variants of the "
+"same profile side by side. Do not use ``--suffix`` with cluster deployments,"
+" whose export commands expect the unsuffixed image name."
+msgstr ""
+"下文各命令的第一个位置参数是配置名，默认为 ``base`` 。一次只应用一种配置，生成镜像与容器均名为 ``isaac-lab-<profile>``"
+" 。如果希望并行保留同一配置的多个变体，传入 ``--suffix`` 添加名称后缀。集群部署的导出命令要求无后缀镜像名，因此不要使用 "
+"``--suffix`` 。"
+
+#: source/workflows/docker/index.rst:78
+msgid ""
+"For what each image actually contains and how to choose between them, see "
+":ref:`docker-images`."
+msgstr "各镜像的实际内容及选择方式见 :ref:`docker-images` 。"
+
+#: source/workflows/docker/index.rst:85
+msgid "Start, run, and retrieve results"
+msgstr "启动、运行与取回结果"
+
+#: source/workflows/docker/index.rst:87
+msgid ""
+"From the repository root on the host, build and start the default ``base`` "
+"container, then open a shell in it. Append a profile to target a different "
+"image:"
+msgstr "在宿主机仓库根目录构建并启动默认 ``base`` 容器，再打开其中的 shell。要使用其他镜像，追加配置名："
+
+#: source/workflows/docker/index.rst:95
+msgid "Inside the container, run the logging example without a visualizer:"
+msgstr "在容器中，不使用可视化器运行日志示例："
+
+#: source/workflows/docker/index.rst:101
+msgid ""
+"The script writes simulation time at each step to "
+"``/workspace/isaaclab/logs/docker_tutorial/log.txt``. Stop the script with "
+"``Ctrl+C`` and type ``exit`` to return to the host shell. Retrieve the "
+"results before stopping the container:"
+msgstr ""
+"脚本将每步仿真时间写入 ``/workspace/isaaclab/logs/docker_tutorial/log.txt`` 。按 "
+"``Ctrl+C`` 停止脚本，输入 ``exit`` 返回宿主机 shell。停止容器前取回结果："
+
+#: source/workflows/docker/index.rst:111
+msgid ""
+"The log is now at ``docker/artifacts/logs/docker_tutorial/log.txt`` on the "
+"host. The ``stop`` command removes the container and its Compose-managed "
+"volumes, including logs and caches; copy out anything you need first. The "
+"image remains. To remove it after stopping, run ``docker image rm isaac-lab-"
+"base``; the next ``start`` rebuilds it. See `Docker pruning "
+"<https://docs.docker.com/engine/manage-resources/pruning/>`__ for other "
+"cleanup options."
+msgstr ""
+"日志现位于宿主机的 ``docker/artifacts/logs/docker_tutorial/log.txt`` 。 ``stop`` "
+"命令删除容器及其 Compose 管理的卷，包括日志和缓存，因此应先复制所需内容。镜像会保留；停止后如需删除，运行 ``docker image rm "
+"isaac-lab-base`` ，下次 ``start`` 会重新构建。其他清理方式见 `Docker 清理 "
+"<https://docs.docker.com/engine/manage-resources/pruning/>`__ 。"
+
+#: source/workflows/docker/index.rst:0
+msgid "Code for log_time.py"
+msgstr "log_time.py 的代码"
+
+#: source/workflows/docker/index.rst:125
+msgid ""
+"The image copies the repository to ``/workspace/isaaclab`` at build time, so"
+" edits made after the build are not picked up automatically. To keep the "
+"development loop fast, the compose file bind-mounts ``source``, ``scripts``,"
+" ``docs``, and ``tools`` from the host, so changes to those directories "
+"appear inside the container immediately. Everything else requires a rebuild."
+msgstr ""
+"镜像在构建时将仓库复制到 ``/workspace/isaaclab`` ，因此不会自动包含构建后的修改。为加快开发迭代，Compose "
+"文件从宿主机绑定挂载 ``source`` 、 ``scripts`` 、 ``docs`` 和 ``tools`` "
+"，这些目录的修改会立即出现在容器内。其他内容需要重新构建。"
+
+#: source/workflows/docker/index.rst:131
+msgid "``container.py`` command reference"
+msgstr "``container.py`` 命令参考"
+
+#: source/workflows/docker/index.rst:133
+msgid ""
+"Run ``./docker/container.py --help`` to list commands and "
+"``./docker/container.py <command> --help`` for that command's arguments."
+msgstr ""
+"运行 ``./docker/container.py --help`` 列出命令，运行 ``./docker/container.py "
+"<command> --help`` 查看对应参数。"
+
+#: source/workflows/docker/index.rst:140
+msgid "Command"
+msgstr "命令"
+
+#: source/workflows/docker/index.rst:141 source/workflows/docker/index.rst:162
+#: source/workflows/docker/index.rst:227
+msgid "Description"
+msgstr "描述"
+
+#: source/workflows/docker/index.rst:142
+msgid "``build``"
+msgstr "``build``"
+
+#: source/workflows/docker/index.rst:143
+msgid "Build the image without creating a container."
+msgstr "构建镜像，不创建容器。"
+
+#: source/workflows/docker/index.rst:144
+msgid "``start``"
+msgstr "``start``"
+
+#: source/workflows/docker/index.rst:145
+msgid "Build the image and start the container in the background."
+msgstr "构建镜像，并在后台启动容器。"
+
+#: source/workflows/docker/index.rst:146
+msgid "``enter``"
+msgstr "``enter``"
+
+#: source/workflows/docker/index.rst:147
+msgid "Open a Bash shell in the running container."
+msgstr "在运行中的容器内打开 Bash shell。"
+
+#: source/workflows/docker/index.rst:148
+msgid "``config``"
+msgstr "``config``"
+
+#: source/workflows/docker/index.rst:149
+msgid ""
+"Print the merged Compose configuration. Use ``--output-yaml <path>`` to "
+"write it to a file instead."
+msgstr "打印合并后的 Compose 配置；使用 ``--output-yaml <path>`` 可改为写入文件。"
+
+#: source/workflows/docker/index.rst:150
+msgid "``copy``"
+msgstr "``copy``"
+
+#: source/workflows/docker/index.rst:151
+msgid ""
+"Copy logs, data, and built documentation to ``docker/artifacts`` on the "
+"host."
+msgstr "将日志、数据和构建的文档复制到宿主机 ``docker/artifacts`` 。"
+
+#: source/workflows/docker/index.rst:152
+msgid "``stop``"
+msgstr "``stop``"
+
+#: source/workflows/docker/index.rst:153
+msgid "Stop and remove the container and its Compose-managed volumes."
+msgstr "停止并删除容器及其 Compose 管理的卷。"
+
+#: source/workflows/docker/index.rst:155
+msgid "Every command accepts the following arguments:"
+msgstr "各命令均接受以下参数："
+
+#: source/workflows/docker/index.rst:161
+msgid "Argument"
+msgstr "参数"
+
+#: source/workflows/docker/index.rst:163
+msgid "``profile``"
+msgstr "``profile``"
+
+#: source/workflows/docker/index.rst:164
+msgid ""
+"Optional profile name; defaults to ``base``. Other profiles are ``ros2`` and"
+" ``kitless``."
+msgstr "可选配置名，默认为 ``base`` ；其他配置为 ``ros2`` 和 ``kitless`` 。"
+
+#: source/workflows/docker/index.rst:165
+msgid "``--files [FILE ...]``"
+msgstr "``--files [FILE ...]``"
+
+#: source/workflows/docker/index.rst:166
+msgid ""
+"Merge additional Compose YAML files after ``docker-compose.yaml``, in the "
+"supplied order."
+msgstr "按给定顺序，在 ``docker-compose.yaml`` 之后合并额外 Compose YAML 文件。"
+
+#: source/workflows/docker/index.rst:167
+msgid "``--env-files [FILE ...]``"
+msgstr "``--env-files [FILE ...]``"
+
+#: source/workflows/docker/index.rst:168
+msgid ""
+"Merge additional environment files after the profile defaults, in the "
+"supplied order."
+msgstr "按给定顺序，在配置默认值之后合并额外环境文件。"
+
+#: source/workflows/docker/index.rst:169
+msgid "``--suffix [SUFFIX]``"
+msgstr "``--suffix [SUFFIX]``"
+
+#: source/workflows/docker/index.rst:170
+msgid ""
+"Append ``-SUFFIX`` to the image and container names. Omit it for unsuffixed "
+"names."
+msgstr "向镜像与容器名称追加 ``-SUFFIX`` ；省略时无后缀。"
+
+#: source/workflows/docker/index.rst:171
+msgid "``--info``"
+msgstr "``--info``"
+
+#: source/workflows/docker/index.rst:172
+msgid ""
+"Print the resolved container interface configuration instead of running the "
+"command."
+msgstr "打印解析后的容器接口配置，不执行命令。"
+
+#: source/workflows/docker/index.rst:173
+msgid "``-h``, ``--help``"
+msgstr "``-h``, ``--help``"
+
+#: source/workflows/docker/index.rst:174
+msgid "Show help and exit."
+msgstr "显示帮助并退出。"
+
+#: source/workflows/docker/index.rst:177
+msgid "Extending the Compose configuration"
+msgstr "扩展 Compose 配置"
+
+#: source/workflows/docker/index.rst:186
+msgid ""
+"``--files`` and ``--env-files`` merge extra Compose and environment files "
+"into the generated configuration, which is how optional components are "
+"layered on without editing the checked-in files. Streaming to XR devices is "
+"the worked example -- it adds the CloudXR Runtime service alongside "
+"``base``:"
+msgstr ""
+"``--files`` 和 ``--env-files`` 将额外 Compose "
+"文件和环境文件合并到生成配置，无需编辑版本控制中的文件，即可叠加可选组件。向 XR 设备串流的示例会在 ``base`` 旁添加 CloudXR "
+"Runtime 服务："
+
+#: source/workflows/docker/index.rst:195
+msgid ""
+"Stop it with the same arguments. The teleoperation setup, firewall rules, "
+"and client connection steps are covered in :ref:`cloudxr-teleoperation`. Use"
+" ``./docker/container.py config`` to print the merged result when a "
+"combination does not behave as expected."
+msgstr ""
+"停止时使用同样参数。遥操作设置、防火墙规则和客户端连接步骤见 :ref:`cloudxr-teleoperation` 。组合行为不符合预期时，用 "
+"``./docker/container.py config`` 打印合并结果。"
+
+#: source/workflows/docker/index.rst:200
+msgid "What persists between runs"
+msgstr "运行之间保留的内容"
+
+#: source/workflows/docker/index.rst:202
+msgid ""
+"The compose file declares named volumes for Isaac Sim caches, logs, and your"
+" own data. They remain available while reusing a container, but "
+"``container.py stop`` runs ``docker compose down --volumes`` and removes "
+"them. Run ``container.py copy`` before ``stop`` to preserve your results on "
+"the host."
+msgstr ""
+"Compose 文件为 Isaac Sim 缓存、日志和用户数据声明命名卷。复用容器时，这些卷保持可用；但 ``container.py stop`` "
+"会运行 ``docker compose down --volumes`` 并删除它们。先运行 ``container.py copy`` ，再运行 "
+"``stop`` ，以将结果保存到宿主机。"
+
+#: source/workflows/docker/index.rst:207
+msgid ""
+"``container.py copy`` extracts the three volumes you are most likely to want"
+" on the host -- ``logs``, ``data_storage``, and ``docs/_build`` -- into "
+"``docker/artifacts``. For anything else, use ``docker cp``, for example "
+"``docker cp isaac-lab-base:/workspace/isaaclab/logs .``."
+msgstr ""
+"``container.py copy`` 将最常需要的三个卷——``logs`` 、 ``data_storage`` 和 "
+"``docs/_build``——提取到宿主机 ``docker/artifacts`` 。其他内容使用 ``docker cp`` ，例如 "
+"``docker cp isaac-lab-base:/workspace/isaaclab/logs .`` 。"
+
+#: source/workflows/docker/index.rst:211
+msgid ""
+"If you are upgrading from an Isaac Lab image that ran as ``root``, the "
+"existing volumes still hold root-owned files that the current uid/gid 1000 "
+"runtime user cannot write. Copy out anything worth keeping, then recreate "
+"them from the ``docker`` directory:"
+msgstr ""
+"如果从以 ``root`` 运行的旧 Isaac Lab 镜像升级，现有卷仍包含 root 所有的文件，当前 uid/gid 1000 "
+"运行时用户无法写入。先复制需要保留的内容，再从 ``docker`` 目录重新创建卷："
+
+#: source/workflows/docker/index.rst:0
+msgid "All named volumes and their container paths"
+msgstr "全部命名卷及其容器路径"
+
+#: source/workflows/docker/index.rst:226
+msgid "Volume Name"
+msgstr "卷名"
+
+#: source/workflows/docker/index.rst:228
+msgid "Container Path"
+msgstr "容器路径"
+
+#: source/workflows/docker/index.rst:229
+msgid "isaac-cache-kit"
+msgstr "isaac-cache-kit"
+
+#: source/workflows/docker/index.rst:230
+msgid "Stores cached Kit resources"
+msgstr "存储缓存的 Kit 资源"
+
+#: source/workflows/docker/index.rst:231
+msgid "/isaac-sim/kit/cache"
+msgstr "/isaac-sim/kit/cache"
+
+#: source/workflows/docker/index.rst:232
+msgid "isaac-data-kit"
+msgstr "isaac-data-kit"
+
+#: source/workflows/docker/index.rst:233
+msgid "Stores Kit data"
+msgstr "存储 Kit 数据"
+
+#: source/workflows/docker/index.rst:234
+msgid "/isaac-sim/kit/data"
+msgstr "/isaac-sim/kit/data"
+
+#: source/workflows/docker/index.rst:235
+msgid "isaac-cache-ov"
+msgstr "isaac-cache-ov"
+
+#: source/workflows/docker/index.rst:236
+msgid "Stores cached OV resources"
+msgstr "存储缓存的 OV 资源"
+
+#: source/workflows/docker/index.rst:237
+msgid "/root/.cache/ov"
+msgstr "/root/.cache/ov"
+
+#: source/workflows/docker/index.rst:238
+msgid "isaac-cache-pip"
+msgstr "isaac-cache-pip"
+
+#: source/workflows/docker/index.rst:239
+msgid "Stores cached pip resources"
+msgstr "存储缓存的 pip 资源"
+
+#: source/workflows/docker/index.rst:240
+msgid "/root/.cache/pip"
+msgstr "/root/.cache/pip"
+
+#: source/workflows/docker/index.rst:241
+msgid "isaac-cache-gl"
+msgstr "isaac-cache-gl"
+
+#: source/workflows/docker/index.rst:242
+msgid "Stores cached GLCache resources"
+msgstr "存储缓存的 GLCache 资源"
+
+#: source/workflows/docker/index.rst:243
+msgid "/root/.cache/nvidia/GLCache"
+msgstr "/root/.cache/nvidia/GLCache"
+
+#: source/workflows/docker/index.rst:244
+msgid "isaac-cache-compute"
+msgstr "isaac-cache-compute"
+
+#: source/workflows/docker/index.rst:245
+msgid "Stores cached compute resources"
+msgstr "存储缓存的计算资源"
+
+#: source/workflows/docker/index.rst:246
+msgid "/root/.nv/ComputeCache"
+msgstr "/root/.nv/ComputeCache"
+
+#: source/workflows/docker/index.rst:247
+msgid "isaac-cache-uv"
+msgstr "isaac-cache-uv"
+
+#: source/workflows/docker/index.rst:248
+msgid "Stores uv downloads for the kit-less profile"
+msgstr "存储 kitless 配置的 uv 下载缓存"
+
+#: source/workflows/docker/index.rst:249
+msgid "/home/isaaclab/.cache/uv"
+msgstr "/home/isaaclab/.cache/uv"
+
+#: source/workflows/docker/index.rst:250
+msgid "isaac-cache-warp"
+msgstr "isaac-cache-warp"
+
+#: source/workflows/docker/index.rst:251
+msgid "Stores Warp kernels for the kit-less profile"
+msgstr "存储 kitless 配置的 Warp 核函数缓存"
+
+#: source/workflows/docker/index.rst:252
+msgid "/home/isaaclab/.cache/warp"
+msgstr "/home/isaaclab/.cache/warp"
+
+#: source/workflows/docker/index.rst:253
+msgid "isaac-logs"
+msgstr "isaac-logs"
+
+#: source/workflows/docker/index.rst:254
+msgid "Stores logs generated by Omniverse"
+msgstr "存储由 Omniverse 生成的日志"
+
+#: source/workflows/docker/index.rst:255
+msgid "/root/.nvidia-omniverse/logs"
+msgstr "/root/.nvidia-omniverse/logs"
+
+#: source/workflows/docker/index.rst:256
+msgid "isaac-carb-logs"
+msgstr "isaac-carb-logs"
+
+#: source/workflows/docker/index.rst:257
+msgid "Stores logs generated by carb"
+msgstr "存储由 carb 生成的日志"
+
+#: source/workflows/docker/index.rst:258
+msgid "/isaac-sim/kit/logs/Kit/Isaac-Sim"
+msgstr "/isaac-sim/kit/logs/Kit/Isaac-Sim"
+
+#: source/workflows/docker/index.rst:259
+msgid "isaac-data"
+msgstr "isaac-data"
+
+#: source/workflows/docker/index.rst:260
+msgid "Stores data generated by Omniverse"
+msgstr "存储由 Omniverse 生成的数据"
+
+#: source/workflows/docker/index.rst:261
+msgid "/root/.local/share/ov/data"
+msgstr "/root/.local/share/ov/data"
+
+#: source/workflows/docker/index.rst:262
+msgid "isaac-docs"
+msgstr "isaac-docs"
+
+#: source/workflows/docker/index.rst:263
+msgid "Stores documents generated by Omniverse"
+msgstr "存储由 Omniverse 生成的文档"
+
+#: source/workflows/docker/index.rst:264
+msgid "/root/Documents"
+msgstr "/root/Documents"
+
+#: source/workflows/docker/index.rst:265
+msgid "isaac-lab-docs"
+msgstr "isaac-lab-docs"
+
+#: source/workflows/docker/index.rst:266
+msgid "Stores documentation of Isaac Lab when built inside the container"
+msgstr "存储 Isaac Lab 的文档，当在容器内构建时"
+
+#: source/workflows/docker/index.rst:267
+msgid "/workspace/isaaclab/docs/_build"
+msgstr "/workspace/isaaclab/docs/_build"
+
+#: source/workflows/docker/index.rst:268
+msgid "isaac-lab-logs"
+msgstr "isaac-lab-logs"
+
+#: source/workflows/docker/index.rst:269
+msgid ""
+"Stores logs generated by Isaac Lab workflows when run inside the container"
+msgstr "存储由 Isaac Lab 工作流生成的日志，当它们在容器内运行时"
+
+#: source/workflows/docker/index.rst:270
+msgid "/workspace/isaaclab/logs"
+msgstr "/workspace/isaaclab/logs"
+
+#: source/workflows/docker/index.rst:271
+msgid "isaac-lab-data"
+msgstr "isaac-lab-data"
+
+#: source/workflows/docker/index.rst:272
+msgid "Stores whatever data users may want to preserve between container runs"
+msgstr "存储用户可能希望在容器运行之间保留的所有数据"
+
+#: source/workflows/docker/index.rst:273
+msgid "/workspace/isaaclab/data_storage"
+msgstr "/workspace/isaaclab/data_storage"
+
+#: source/workflows/docker/index.rst:275
+msgid ""
+"Run ``docker volume ls`` on the host to find the actual names, which include"
+" the Compose project prefix, then use ``docker volume inspect <volume-"
+"name>``. The ``kitless`` profile uses the uv and Warp caches and shares the "
+"documentation, logs, and data volumes with the others."
+msgstr ""
+"在宿主机运行 ``docker volume ls`` ，查找带有 Compose 项目前缀的实际名称，再用 ``docker volume "
+"inspect <volume-name>`` 查看。 ``kitless`` 配置使用 uv 和 Warp 缓存，并与其他配置共享文档、日志和数据卷。"
+
+#: source/workflows/docker/index.rst:280
+msgid "Display forwarding with X11"
+msgstr "通过 X11 转发显示"
+
+#: source/workflows/docker/index.rst:282
+msgid ""
+"X11 forwarding lets GUI applications started inside the container display on"
+" the host. The first ``start`` asks whether to enable it and records the "
+"answer in ``docker/.container.cfg``. To change it later, set "
+"``X11_FORWARDING_ENABLED`` to ``0`` or ``1`` in that file and run ``start`` "
+"again -- the rebuild is what applies the change."
+msgstr ""
+"X11 转发使容器内启动的图形应用显示在宿主机上。首次 ``start`` 会询问是否启用，并将答案记录在 "
+"``docker/.container.cfg`` 。以后如需修改，将该文件的 ``X11_FORWARDING_ENABLED`` 设为 ``0`` "
+"或 ``1`` ，再运行 ``start`` ；修改在重新构建时生效。"
+
+#: source/workflows/docker/index.rst:181
+msgid ""
+"The CloudXR sidecar example below is retained from the Isaac Lab 2.x "
+"workflow. For Isaac Lab 3.0 teleoperation, use the single-container setup in"
+" :ref:`cloudxr-teleoperation`, which starts CloudXR automatically. Do not "
+"use the legacy Compose patch for the current teleoperation workflow."
+msgstr ""
+"以下 CloudXR 独立配套容器示例沿用 Isaac Lab 2.x 工作流。Isaac Lab 3.0 遥操作应使用 :ref:`cloudxr-"
+"teleoperation` 中的单容器配置，由它自动启动 CloudXR。当前遥操作工作流不要使用旧的 Compose 补丁。"

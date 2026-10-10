@@ -1,0 +1,413 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/refs/issues.rst:2
+msgid "Known Issues"
+msgstr "已知问题"
+
+#: source/refs/issues.rst:6
+msgid ""
+"Please also refer to the `Omniverse Isaac Sim documentation`_ for known "
+"issues and workarounds."
+msgstr "请参阅 `Omniverse Isaac Sim 文档`_ 以查看已知问题和解决方法。"
+
+#: source/refs/issues.rst:8
+msgid ""
+"Each entry below names the backends it affects. An issue listed under one "
+"backend does not apply to the others unless it says so."
+msgstr "下列每个问题都注明了受影响的后端。某一后端下列出的问题，除非另有说明，否则不适用于其他后端。"
+
+#: source/refs/issues.rst:17
+msgid "PhysX backends"
+msgstr "PhysX 后端"
+
+#: source/refs/issues.rst:20
+msgid "Surface grippers require CPU simulation"
+msgstr "表面夹爪需要在 CPU 上仿真"
+
+#: source/refs/issues.rst:22
+msgid "**Affects:** ``physics=isaacsim_physx`` surface-gripper tasks."
+msgstr "**受影响范围：** 使用 ``physics=isaacsim_physx`` 的表面夹爪任务。"
+
+#: source/refs/issues.rst:24
+msgid ""
+"Surface grippers require CPU simulation. This includes the UR10 Long/Short "
+"Suction stacking tasks, the Galbot Right Arm Suction stacking task, and its "
+"relative and absolute Mimic variants. Pass ``--device cpu`` when running "
+"teleoperation. Zero and random agents preserve these tasks' CPU defaults "
+"when ``--device`` is omitted; an explicit GPU override is unsupported."
+msgstr ""
+"表面夹爪需要在 CPU 上仿真，包括 UR10 Long/Short Suction 堆叠任务、Galbot Right Arm Suction "
+"堆叠任务，以及后者采用相对和绝对控制的 Mimic 变体。运行遥操作时请传入 ``--device cpu`` 。零动作和随机动作智能体在未指定 "
+"``--device`` 时会保留这些任务默认的 CPU 设置；不支持显式改用 GPU。"
+
+#: source/refs/issues.rst:30
+msgid "GPU articulation solver partition aliasing"
+msgstr "GPU 关节体求解器分区别名问题"
+
+#: source/refs/issues.rst:32
+msgid ""
+"**Affects:** ``physics=isaacsim_physx`` on CUDA when "
+"``PhysxCfg.gpu_max_num_partitions > 1``."
+msgstr ""
+"**受影响范围：** 在 CUDA 上运行且 ``PhysxCfg.gpu_max_num_partitions > 1`` 的 "
+"``physics=isaacsim_physx`` 。"
+
+#: source/refs/issues.rst:35
+msgid ""
+"The PhysX GPU articulation solver can corrupt articulation state when a "
+"scene contains more than 32 articulation instances and at least one "
+"articulation has more than 64 links. The corruption can appear as runaway "
+"joint velocities or NaNs in otherwise separate environments. See `Isaac Lab "
+"issue #8121`_ for the reported repro."
+msgstr ""
+"当场景中有超过 32 个关节体实例，且至少一个关节体包含超过 64 个连杆时，PhysX GPU "
+"关节体求解器可能破坏关节体状态。表现可能是本应互不影响的环境中，关节速度失控或出现 NaN。已报告的复现案例见 `Isaac Lab 问题 #8121 "
+"<Isaac Lab issue #8121_>`_ 。"
+
+#: source/refs/issues.rst:40
+msgid ""
+"As a workaround, set ``PhysxCfg(gpu_max_num_partitions=1)`` until the "
+"underlying PhysX issue is fixed. Isaac Lab logs a warning for managed PhysX "
+":class:`~isaaclab.assets.Articulation` assets when the known conditions are "
+"detected."
+msgstr ""
+"在底层 PhysX 问题修复之前，可设置 ``PhysxCfg(gpu_max_num_partitions=1)`` 作为临时解决办法。对于受管理的 "
+"PhysX :class:`~isaaclab.assets.Articulation` 资产，Isaac Lab 检测到上述已知条件时会记录警告。"
+
+#: source/refs/issues.rst:45
+msgid "Sensor readings are stale immediately after a reset"
+msgstr "重置后立即读取传感器，数据仍是旧值"
+
+#: source/refs/issues.rst:47
+msgid ""
+"**Affects:** ``physics=isaacsim_physx``, ``physics=ovphysx``, and any RTX-"
+"based renderer."
+msgstr ""
+"**受影响范围：** ``physics=isaacsim_physx`` 、 ``physics=ovphysx`` 及所有基于 RTX 的渲染器。"
+
+#: source/refs/issues.rst:49
+msgid ""
+"Many physics engines do a simulation step as a two-level call: ``forward()``"
+" and ``simulate()``, where the kinematic and dynamic states are updated "
+"respectively. PhysX has only a single ``step()`` call where the two "
+"operations are combined. Because of computations through GPU kernels, it is "
+"not straightforward to split them. As a result, writing a root or joint "
+"state does not by itself run a full forward pass."
+msgstr ""
+"许多物理引擎把一次仿真步分成 ``forward()`` 和 ``simulate()`` 两次调用，分别更新运动学状态和动力学状态。PhysX "
+"只有一个 ``step()`` 调用，将这两项操作合在一起。由于相关计算通过 GPU "
+"核函数完成，两者不易拆开。因此，写入根状态或关节状态本身并不会执行一次完整的前向计算。"
+
+#: source/refs/issues.rst:55
+msgid ""
+"For **articulation link poses** this is handled: reading "
+":attr:`~isaaclab.assets.ArticulationData.body_link_pose_w` (or the "
+"deprecated :attr:`~isaaclab.assets.ArticulationData.body_state_w`) triggers "
+"a PhysX kinematic update, so link poses reflect a preceding root-state or "
+"joint-state write without an intervening ``step()``."
+msgstr ""
+"对于 **关节体连杆位姿** ，这一问题已得到处理：读取 "
+":attr:`~isaaclab.assets.ArticulationData.body_link_pose_w` （或已弃用的 "
+":attr:`~isaaclab.assets.ArticulationData.body_state_w` ）会触发 PhysX "
+"运动学更新，因此即使没有在中间调用 ``step()`` ，连杆位姿也能反映此前写入的根状态或关节状态。"
+
+#: source/refs/issues.rst:61
+msgid ""
+"For **RTX rendering-based sensors** — cameras in particular — the data is "
+"still not refreshed by a state write. The rendering engine update is bundled"
+" with the simulator's ``step()`` call, so the sensor data is only refreshed "
+"when the simulation is stepped forward, and a read taken between a reset and"
+" the next step returns the previous frame."
+msgstr ""
+"对于 **基于 RTX 渲染的传感器** ，尤其是相机，写入状态仍不会刷新数据。渲染引擎更新与仿真器的 ``step()`` "
+"调用绑定，只有仿真向前推进时才会刷新传感器数据。因此，在重置后、下一步仿真前读取的数据仍是上一帧。"
+
+#: source/refs/issues.rst:66
+msgid ""
+"There is currently no direct workaround for the sensor case. From our "
+"experience, the reset values affect agent learning in proportion to how "
+"frequently the environment terminates; as an agent learns successfully, the "
+"termination rate drops and the effect becomes less significant."
+msgstr ""
+"目前，传感器这一情况还没有直接的解决办法。根据我们的经验，重置时的旧值对智能体学习的影响与环境终止频率有关；随着智能体逐渐学会任务，终止频率下降，这种影响也会减弱。"
+
+#: source/refs/issues.rst:71
+msgid "Exiting the process"
+msgstr "退出进程"
+
+#: source/refs/issues.rst:73
+msgid "**Affects:** ``physics=isaacsim_physx``."
+msgstr "**受影响范围：** ``physics=isaacsim_physx`` 。"
+
+#: source/refs/issues.rst:75
+msgid ""
+"When exiting a process with ``Ctrl+C``, occasionally the below error may "
+"appear:"
+msgstr "当使用 ``Ctrl+C`` 退出进程时，偶尔会出现以下错误: "
+
+#: source/refs/issues.rst:81
+msgid ""
+"This is due to the termination occurring in the middle of a physics event "
+"call and should not affect the functionality of Isaac Lab. It is safe to "
+"ignore the error message and continue with terminating the process. On "
+"Windows systems, please use ``Ctrl+Break`` or ``Ctrl+fn+B`` to terminate the"
+" process."
+msgstr ""
+"这是因为终止发生在物理事件调用中间，不应影响 Isaac Lab 的功能。可以安全地忽略错误消息并继续终止进程。在 Windows 系统上，请使用 "
+"``Ctrl+Break`` 或 ``Ctrl+fn+B`` 来终止进程。"
+
+#: source/refs/issues.rst:88
+msgid "Newton backends"
+msgstr "Newton 后端"
+
+#: source/refs/issues.rst:91
+msgid "OpenUSD can crash while parsing collider-rich rigid bodies"
+msgstr "OpenUSD 解析含大量碰撞体的刚体时可能崩溃"
+
+#: source/refs/issues.rst:93
+msgid ""
+"**Affects:** Kitless Newton workflows using OpenUSD releases earlier than "
+"26.05, and Isaac Sim releases earlier than 6.1. Isaac Sim 6.1 and later "
+"contain the upstream fix in their bundled OpenUSD runtime."
+msgstr ""
+"**受影响范围：** 使用早于 26.05 的 OpenUSD 版本且不依赖 Kit 的 Newton 工作流，以及早于 6.1 的 Isaac Sim"
+" 版本。Isaac Sim 6.1 及后续版本所附带的 OpenUSD 运行时已包含上游修复。"
+
+#: source/refs/issues.rst:97
+msgid ""
+"Older OpenUSD releases have a thread-safety issue in "
+"``UsdPhysics.LoadUsdPhysicsFromRange`` when multiple colliders belong to the"
+" same rigid body. Newton uses this API while importing a USD stage, so "
+"affected processes can terminate during scene creation with a segmentation "
+"fault, access violation, heap-corruption message, or hang. The issue and "
+"upstream fix are described in `OpenUSD PR #4002`_."
+msgstr ""
+"旧版 OpenUSD 的 ``UsdPhysics.LoadUsdPhysicsFromRange`` "
+"存在线程安全问题：多个碰撞体属于同一刚体时可能触发此问题。Newton 导入 USD 舞台时会调用这一 "
+"API，因此受影响的进程可能在创建场景时因段错误、访问冲突、堆损坏报错而退出，或陷入挂起。问题及上游修复详见 `OpenUSD PR #4002`_ 。"
+
+#: source/refs/issues.rst:105
+msgid ""
+"For kitless workflows, Isaac Lab obtains the ``pxr`` modules from ``usd-"
+"exchange``. ``usd-exchange`` and ``usd-core`` are alternative Python "
+"distributions of the same OpenUSD runtime and should not be installed "
+"together because both provide ``pxr``. They use different distribution "
+"version schemes: for example, ``usd-exchange==3.0.0`` provides OpenUSD "
+"26.08. Isaac Sim instead uses its own Kit-bundled OpenUSD runtime."
+msgstr ""
+"对于不依赖 Kit 的工作流，Isaac Lab 从 ``usd-exchange`` 获取 ``pxr`` 模块。 ``usd-exchange`` "
+"和 ``usd-core`` 是同一 OpenUSD 运行时的两种 Python 发行包，都提供 ``pxr`` "
+"，因此不应同时安装。两者的发行包版本编号不同：例如， ``usd-exchange==3.0.0`` 提供的是 OpenUSD 26.08。Isaac "
+"Sim 则使用随 Kit 附带的 OpenUSD 运行时。"
+
+#: source/refs/issues.rst:111
+msgid ""
+"As a workaround for an affected kitless or pre-6.1 Isaac Sim runtime, limit "
+"OpenUSD to one worker thread. Set ``PXR_WORK_THREAD_LIMIT`` before launching"
+" Python so the limit is present before any ``pxr`` module initializes:"
+msgstr ""
+"对于受影响的不依赖 Kit 的运行时，或早于 6.1 的 Isaac Sim 运行时，可将 OpenUSD 限制为使用一个工作线程。在启动 Python"
+" 之前设置 ``PXR_WORK_THREAD_LIMIT`` ，确保任何 ``pxr`` 模块初始化前该限制已经生效："
+
+#: source/refs/issues.rst:0
+msgid "Linux"
+msgstr "Linux"
+
+#: source/refs/issues.rst:0
+msgid "Windows"
+msgstr "Windows"
+
+#: source/refs/issues.rst:130
+msgid ""
+"This environment variable limits OpenUSD's process-wide worker pool to one "
+"thread and can reduce USD import performance. Use it only with affected "
+"runtimes, and remove it after upgrading to an OpenUSD provider that contains"
+" the fix or to Isaac Sim 6.1 or later."
+msgstr ""
+"这个环境变量会把 OpenUSD 的进程级工作线程池限制为一个线程，可能降低 USD 导入性能。仅在受影响的运行时中使用；升级到包含修复的 "
+"OpenUSD 发行包或 Isaac Sim 6.1 及后续版本后，请移除此设置。"
+
+#: source/refs/issues.rst:137
+msgid ""
+"Closed-loop articulations are not validated on Kamino (e.g. Agility Digit)"
+msgstr "Kamino 尚未验证闭环关节体（如 Agility Digit）"
+
+#: source/refs/issues.rst:139
+msgid "**Affects:** ``physics=newton_kamino``."
+msgstr "**受影响范围：** ``physics=newton_kamino`` 。"
+
+#: source/refs/issues.rst:141
+msgid ""
+"Robots whose USD encodes a closed kinematic loop — such as the achilles rod "
+"and toe push-rods on the Agility Digit — are not validated on "
+"``newton_kamino``."
+msgstr ""
+"对于 USD 中包含闭合运动学环路的机器人，例如 Agility Digit 的跟腱杆和脚趾推杆，目前尚未在 ``newton_kamino`` "
+"上完成验证。"
+
+#: source/refs/issues.rst:146
+msgid "Renderers"
+msgstr "渲染器"
+
+#: source/refs/issues.rst:149
+msgid "Blank initial frames from the camera"
+msgstr "相机前的空白初始帧"
+
+#: source/refs/issues.rst:151
+msgid ""
+"**Affects:** RTX-based renderers (``renderer=isaacsim_rtx``, "
+"``renderer=ovrtx``)."
+msgstr ""
+"**受影响范围：** 基于 RTX 的渲染器（ ``renderer=isaacsim_rtx`` 、 ``renderer=ovrtx`` ）。"
+
+#: source/refs/issues.rst:153
+msgid ""
+"When using the :class:`~isaaclab.sensors.Camera` sensor in standalone "
+"scripts, the first few frames may be blank. This is a known issue with the "
+"simulator where it needs a few steps to load the material textures properly "
+"and fill up the render targets. It is most likely on a cold asset cache and "
+"in scenes with many or large textures; simple scenes with locally cached "
+"assets often render content on the very first frame."
+msgstr ""
+"在独立脚本中使用 :class:`~isaaclab.sensors.Camera` "
+"传感器时，前几帧可能为空白。这是仿真器的已知问题：它需要几步才能正确加载材质纹理并填充渲染目标。资产尚未缓存、场景中纹理较多或较大时最容易出现；对于资产已在本地缓存的简单场景，第一帧通常就能正常显示。"
+
+#: source/refs/issues.rst:159
+msgid ""
+"If you do see blank frames, add the following after initializing the camera "
+"sensor and setting its pose:"
+msgstr "如果确实出现空白帧，请在初始化相机传感器并设置位姿后添加以下代码："
+
+#: source/refs/issues.rst:175
+msgid "Scene partitioning is capped at 15625 partitions"
+msgstr "场景分区上限为 15625 个"
+
+#: source/refs/issues.rst:177
+msgid ""
+"**Affects:** ``renderer=isaacsim_rtx`` with scene partitioning enabled, and "
+"``renderer=ovrtx``."
+msgstr ""
+"**受影响范围：** 启用了场景分区的 ``renderer=isaacsim_rtx`` ，以及 ``renderer=ovrtx`` 。"
+
+#: source/refs/issues.rst:179
+msgid ""
+"The underlying ``rtx.scenedb.plugin`` allocates a fixed-size pool of scene "
+"partitions and caps it at 15625, regardless of which renderer requests them."
+" Isaac Lab assigns one scene partition per environment when "
+":attr:`~isaaclab_physx.renderers.IsaacRtxRendererCfg.enable_scene_partitioning`"
+" is enabled for the Isaac RTX renderer, and OVRTX always assigns one scene "
+"partition per environment, so runs with more than 15625 environments exceed "
+"the pool on either backend. Once the cap is hit, ``rtx.scenedb.plugin`` logs"
+" a warning and discards the remaining partitions:"
+msgstr ""
+"底层 ``rtx.scenedb.plugin`` 分配的场景分区池大小固定，上限为 15625 个，与请求分区的渲染器无关。Isaac RTX "
+"渲染器启用 "
+":attr:`~isaaclab_physx.renderers.IsaacRtxRendererCfg.enable_scene_partitioning`"
+" 时，Isaac Lab 为每个环境分配一个场景分区；OVRTX 始终为每个环境分配一个。因此，任一后端运行超过 15625 "
+"个环境时都会超出分区池容量。达到上限后， ``rtx.scenedb.plugin`` 会记录警告并丢弃余下分区："
+
+#: source/refs/issues.rst:192
+msgid ""
+"Environments beyond the cap are left without their own partition and end up "
+"sharing one with another environment, so their tiled camera views can render"
+" another environment's geometry instead of their own."
+msgstr "超出上限的环境没有独立分区，会与其他环境共用分区，因此其平铺相机视图可能显示其他环境的几何体。"
+
+#: source/refs/issues.rst:197
+msgid "Using instanceable assets for markers"
+msgstr "使用实例化资产作为标记对象"
+
+#: source/refs/issues.rst:199
+msgid "**Affects:** all Kit-based renderers."
+msgstr "**受影响范围：** 所有基于 Kit 的渲染器。"
+
+#: source/refs/issues.rst:201
+msgid ""
+"When using `instanceable assets`_ for markers, the markers do not work "
+"properly, since Omniverse does not support instanceable assets when using "
+"the :class:`UsdGeom.PointInstancer` schema. This is a known issue and will "
+"hopefully be fixed in a future release."
+msgstr ""
+"使用 `instanceable assets`_ 作为标记对象时，标记对象不起作用，因为 Omniverse 在使用 "
+":class:`~UsdGeom.PointInstancer` 模式时不支持实例化资产。这是一个已知问题，将在将来的版本中修复。"
+
+#: source/refs/issues.rst:205
+msgid ""
+"If you use an instanceable assets for markers, the marker class removes all "
+"the physics properties of the asset. This is then replicated across other "
+"references of the same asset since physics properties of instanceable assets"
+" are stored in the instanceable asset's USD file and not in its stage "
+"reference's USD file."
+msgstr ""
+"如果使用实例化资产作为标记对象，则标记对象类会删除资产的所有物理属性。这会在相同资产的其他引用上复制，因为实例化资产的物理属性存储在实例化资产的 USD"
+" 文件中，而不是在其场景引用的 USD 文件中。"
+
+#: source/refs/issues.rst:216
+msgid "Asset import"
+msgstr "资产导入"
+
+#: source/refs/issues.rst:219
+msgid "URDF importer: unresolved references for fixed joints"
+msgstr "URDF 导入器：固定关节的引用无法解析"
+
+#: source/refs/issues.rst:221
+msgid "**Affects:** the URDF importer, independent of the physics backend."
+msgstr "**受影响范围：** URDF 导入器，与物理后端无关。"
+
+#: source/refs/issues.rst:223
+msgid ""
+"Links connected through ``fixed_joint`` elements are not merged when their "
+"URDF link entries specify mass and inertia, even if ``merge-joint`` is set "
+"to True. This is expected behaviour — those links are treated as full bodies"
+" rather than zero-mass reference frames. However, the USD importer currently"
+" raises ``ReportError`` warnings showing unresolved references for such "
+"links when they lack visuals or colliders. This is a known bug in the "
+"importer; it creates references to visuals that do not exist. The warnings "
+"can be safely ignored until the importer is updated."
+msgstr ""
+"如果 URDF 连杆条目指定了质量和惯量，通过 ``fixed_joint`` 元素连接的连杆即使在 ``merge-joint`` 为 True "
+"时也不会合并。这是预期行为：这些连杆被视为完整的刚体，而非质量为零的参考坐标系。不过，当这些连杆缺少可视几何体或碰撞体时，USD 导入器目前会发出 "
+"``ReportError`` "
+"警告，提示相关引用无法解析。这是导入器的已知错误，它创建了指向不存在的可视几何体的引用。在导入器修复之前，可以安全地忽略这些警告。"
+
+#: source/refs/issues.rst:232
+msgid "Environment and setup"
+msgstr "环境与安装"
+
+#: source/refs/issues.rst:235
+msgid "GLIBCXX errors in conda environments"
+msgstr "conda 环境中的 GLIBCXX 错误"
+
+#: source/refs/issues.rst:237
+msgid ""
+"**Affects:** conda-based installations, independent of the physics backend."
+msgstr "**受影响范围：** 基于 conda 的安装，与物理后端无关。"
+
+#: source/refs/issues.rst:239
+msgid ""
+"Some workflows exit with an ``OSError`` indicating ``version "
+"'GLIBCXX_3.4.30' not found`` when running from a conda environment. The "
+"issue appears to stem from importing torch or torch-related packages, such "
+"as tensorboard, before Isaac Sim starts. As a workaround, ensure that all "
+"torch imports happen inside :func:`~isaaclab.app.launch_simulation`, after "
+"the runtime has started, which should resolve the error."
+msgstr ""
+"某些工作流在 conda 环境中运行时，会因 ``OSError`` 退出，提示 ``version 'GLIBCXX_3.4.30' not "
+"found`` 。问题似乎源于在 Isaac Sim 启动前导入 torch 或 tensorboard 等与 torch "
+"相关的软件包。作为临时解决办法，请确保所有 torch 导入都在 :func:`~isaaclab.app.launch_simulation` "
+"内、运行时启动之后进行，这通常可以消除错误。"

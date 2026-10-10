@@ -1,0 +1,1013 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/renderers.rst:5
+msgid "Renderers"
+msgstr "渲染器"
+
+#: source/concepts/renderers.rst:7
+msgid ""
+"Renderers produce camera-sensor buffers for policy observations and "
+"synthetic-data workflows. They are distinct from :doc:`visualizers "
+"<visualization>`, which provide human-facing, interactive views for "
+"inspection, debugging, and recording. Isaac Lab uses a pluggable renderer "
+"architecture. All implementations follow the interface defined by "
+":class:`~isaaclab.renderers.BaseRenderer`."
+msgstr ""
+"渲染器为策略观测和合成数据流程生成相机传感器缓冲区。它们不同于 :doc:`可视化器 <visualization>` "
+"；后者为检查、调试和录制提供面向人的交互式视图。Isaac Lab 采用可插拔渲染器架构，所有实现均遵循 "
+":class:`~isaaclab.renderers.BaseRenderer` 定义的接口。"
+
+#: source/concepts/renderers.rst:13
+msgid ""
+"Isaac Lab supports three rendering backends. The table below summarizes "
+"their runtime requirements and primary use cases. See :ref:`renderer-"
+"details` for their execution models, output coverage, and limitations, and "
+":ref:`camera-supported-annotators` for the output-by-backend support matrix."
+msgstr ""
+"Isaac Lab 支持三种渲染后端。下表概括其运行时要求和主要用途。执行方式、输出支持与限制见 :ref:`renderer-details` "
+"，按后端划分的输出支持矩阵见 :ref:`camera-supported-annotators` 。"
+
+#: source/concepts/renderers.rst:18
+msgid "Choosing a renderer backend"
+msgstr "选择渲染后端"
+
+#: source/concepts/renderers.rst:21
+msgid "Backend"
+msgstr "后端"
+
+#: source/concepts/renderers.rst:21
+msgid "Requires Isaac Sim?"
+msgstr "是否需要 Isaac Sim？"
+
+#: source/concepts/renderers.rst:21
+msgid "Best For"
+msgstr "最适用于"
+
+#: source/concepts/renderers.rst:0 source/concepts/renderers.rst:23
+#: source/concepts/_renderer_gallery.rst:0
+msgid "Isaac RTX"
+msgstr "Isaac RTX"
+
+#: source/concepts/renderers.rst:23
+msgid "Yes"
+msgstr "Yes"
+
+#: source/concepts/renderers.rst:23
+msgid "Full sensor fidelity, RTX photorealism, PhysX backend"
+msgstr "完整传感器保真度、RTX 逼真渲染、PhysX 后端"
+
+#: source/concepts/renderers.rst:0 source/concepts/renderers.rst:26
+#: source/concepts/_renderer_gallery.rst:0
+msgid "OVRTX"
+msgstr "OVRTX"
+
+#: source/concepts/renderers.rst:26
+msgid "No (kit-less; needs ``isaaclab_ov`` + ``ovrtx``)"
+msgstr "不需要（不依赖 Kit；需要 ``isaaclab_ov`` + ``ovrtx`` ）"
+
+#: source/concepts/renderers.rst:26
+msgid "RTX-quality rendering without requiring Isaac Sim"
+msgstr "无需 Isaac Sim 即可获得 RTX 级渲染质量"
+
+#: source/concepts/renderers.rst:29 source/concepts/_renderer_gallery.rst:0
+msgid "Newton Warp"
+msgstr "Newton Warp"
+
+#: source/concepts/renderers.rst:29
+msgid "No (kit-less)"
+msgstr "不需要（不依赖 Kit）"
+
+#: source/concepts/renderers.rst:29
+msgid "Newton backend, fast training"
+msgstr "Newton 后端、快速训练"
+
+#: source/concepts/renderers.rst:35
+msgid "Renderer outputs at a glance"
+msgstr "渲染器输出概览"
+
+#: source/concepts/renderers.rst:37
+msgid ""
+"The galleries below use the same authored scene, camera, lights, materials, "
+"and initial conditions. Six spheres exercise mirror-like, transparent, semi-"
+"transparent, matte, glossy, and emissive materials. The RGB output is "
+"animated to show the spheres falling onto the table; the remaining outputs "
+"are still frames from the same run. Stills use the sixth rendered frame so "
+"temporal outputs, such as motion vectors, show useful motion while the "
+"spheres remain near their initial poses."
+msgstr ""
+"下方示例使用相同的场景、相机、光源、材质和初始条件。六个球体分别展示镜面、透明、半透明、哑光、光泽和自发光材质。RGB "
+"动画展示球体落到桌面上的过程，其余输出为同一次运行中的静帧。静帧取自第六个渲染帧，以便运动向量等时序输出包含有效运动，同时球体仍接近初始位姿。"
+
+#: source/concepts/renderers.rst:43
+msgid ""
+"Treat the images as a qualitative comparison of feature coverage and image "
+"character, not a performance benchmark. The kit-less renderers use Newton "
+"physics while Isaac RTX uses PhysX, so the exact sphere poses can differ. "
+"Display-only color maps make scalar, vector, and label outputs readable "
+"here; camera sensors still return their documented raw tensors. Closely "
+"related aliases and distance or ID variants are omitted because they do not "
+"add a visually distinct mode."
+msgstr ""
+"这些图像用于定性比较功能支持和画面特征，不是性能测试。不依赖 Kit 的渲染器使用 Newton 物理，Isaac RTX 使用 "
+"PhysX，因此球体的精确位姿可能不同。这里使用仅用于显示的色图，使标量、向量和标签输出易于观察；相机传感器仍返回文档所述的原始张量。相近的别名，以及距离或"
+" ID 的变体没有逐一列出，因为它们不会呈现明显不同的视觉模式。"
+
+#: source/concepts/_renderer_gallery.rst:5
+msgid "Six material spheres falling onto a table in Newton Warp RGB output."
+msgstr "Newton Warp RGB 输出：六个材质球落到桌面上。"
+
+#: source/concepts/_renderer_gallery.rst:10
+#: source/concepts/_renderer_gallery.rst:62
+#: source/concepts/_renderer_gallery.rst:147
+msgid "RGB animation"
+msgstr "RGB 动画"
+
+#: source/concepts/_renderer_gallery.rst:17
+msgid "Newton Warp albedo output for six material spheres."
+msgstr "Newton Warp 的六个材质球反照率输出。"
+
+#: source/concepts/_renderer_gallery.rst:21
+#: source/concepts/_renderer_gallery.rst:73
+#: source/concepts/_renderer_gallery.rst:158
+msgid "Albedo"
+msgstr "反照率"
+
+#: source/concepts/_renderer_gallery.rst:25
+msgid "Color-mapped Newton Warp depth output for six material spheres."
+msgstr "Newton Warp 的六个材质球深度输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:29
+#: source/concepts/_renderer_gallery.rst:81
+#: source/concepts/_renderer_gallery.rst:166
+msgid "Depth. Turbo colors progress from near (purple) to far (red)."
+msgstr "深度。Turbo 色图从近处的紫色逐渐过渡到远处的红色。"
+
+#: source/concepts/_renderer_gallery.rst:33
+msgid "Newton Warp surface-normal output for six material spheres."
+msgstr "Newton Warp 的六个材质球表面法线输出。"
+
+#: source/concepts/_renderer_gallery.rst:37
+#: source/concepts/_renderer_gallery.rst:89
+#: source/concepts/_renderer_gallery.rst:174
+msgid "Normals"
+msgstr "法线"
+
+#: source/concepts/_renderer_gallery.rst:41
+msgid ""
+"Color-mapped Newton Warp semantic-segmentation output for six material "
+"spheres."
+msgstr "Newton Warp 的六个材质球语义分割输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:45
+#: source/concepts/_renderer_gallery.rst:97
+#: source/concepts/_renderer_gallery.rst:182
+msgid "Semantic segmentation"
+msgstr "语义分割"
+
+#: source/concepts/_renderer_gallery.rst:49
+msgid ""
+"Color-mapped Newton Warp instance-segmentation output for six material "
+"spheres."
+msgstr "Newton Warp 的六个材质球实例分割输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:53
+#: source/concepts/_renderer_gallery.rst:105
+#: source/concepts/_renderer_gallery.rst:190
+msgid "Instance segmentation"
+msgstr "实例分割"
+
+#: source/concepts/renderers.rst:269 source/concepts/_renderer_gallery.rst:57
+msgid "Six material spheres falling onto a table in OVRTX RGB output."
+msgstr "OVRTX RGB 输出：六个材质球落到桌面上。"
+
+#: source/concepts/_renderer_gallery.rst:69
+msgid "OVRTX albedo output for six material spheres."
+msgstr "OVRTX 的六个材质球反照率输出。"
+
+#: source/concepts/_renderer_gallery.rst:77
+msgid "Color-mapped OVRTX depth output for six material spheres."
+msgstr "OVRTX 的六个材质球深度输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:85
+msgid "OVRTX surface-normal output for six material spheres."
+msgstr "OVRTX 的六个材质球表面法线输出。"
+
+#: source/concepts/_renderer_gallery.rst:93
+msgid ""
+"Color-mapped OVRTX semantic-segmentation output for six material spheres."
+msgstr "OVRTX 的六个材质球语义分割输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:101
+msgid ""
+"Color-mapped OVRTX instance-segmentation output for six material spheres."
+msgstr "OVRTX 的六个材质球实例分割输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:109
+msgid ""
+"Color-mapped OVRTX motion-vector output for six falling material spheres."
+msgstr "OVRTX 的六个下落材质球运动向量输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:113
+#: source/concepts/_renderer_gallery.rst:198
+msgid ""
+"Motion vectors. Color encodes direction and relative magnitude; arrows show "
+"sampled image-space motion."
+msgstr "运动向量。颜色表示方向和相对大小，箭头表示采样得到的图像空间运动。"
+
+#: source/concepts/_renderer_gallery.rst:118
+msgid "OVRTX constant-diffuse simple-shading output for six material spheres."
+msgstr "OVRTX 的六个材质球常量漫反射简化着色输出。"
+
+#: source/concepts/_renderer_gallery.rst:122
+#: source/concepts/_renderer_gallery.rst:207
+msgid "Constant diffuse shading"
+msgstr "常量漫反射着色"
+
+#: source/concepts/_renderer_gallery.rst:126
+msgid "OVRTX diffuse-MDL simple-shading output for six material spheres."
+msgstr "OVRTX 的六个材质球漫反射 MDL 简化着色输出。"
+
+#: source/concepts/_renderer_gallery.rst:130
+#: source/concepts/_renderer_gallery.rst:215
+msgid "Diffuse MDL shading"
+msgstr "漫反射 MDL 着色"
+
+#: source/concepts/_renderer_gallery.rst:134
+msgid "OVRTX full-MDL simple-shading output for six material spheres."
+msgstr "OVRTX 的六个材质球完整 MDL 简化着色输出。"
+
+#: source/concepts/_renderer_gallery.rst:138
+#: source/concepts/_renderer_gallery.rst:223
+msgid "Full MDL shading"
+msgstr "完整 MDL 着色"
+
+#: source/concepts/renderers.rst:286 source/concepts/_renderer_gallery.rst:142
+msgid "Six material spheres falling onto a table in Isaac RTX RGB output."
+msgstr "Isaac RTX RGB 输出：六个材质球落到桌面上。"
+
+#: source/concepts/_renderer_gallery.rst:154
+msgid "Isaac RTX albedo output for six material spheres."
+msgstr "Isaac RTX 的六个材质球反照率输出。"
+
+#: source/concepts/_renderer_gallery.rst:162
+msgid "Color-mapped Isaac RTX depth output for six material spheres."
+msgstr "Isaac RTX 的六个材质球深度输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:170
+msgid "Isaac RTX surface-normal output for six material spheres."
+msgstr "Isaac RTX 的六个材质球表面法线输出。"
+
+#: source/concepts/_renderer_gallery.rst:178
+msgid ""
+"Color-mapped Isaac RTX semantic-segmentation output for six material "
+"spheres."
+msgstr "Isaac RTX 的六个材质球语义分割输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:186
+msgid ""
+"Color-mapped Isaac RTX instance-segmentation output for six material "
+"spheres."
+msgstr "Isaac RTX 的六个材质球实例分割输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:194
+msgid ""
+"Color-mapped Isaac RTX motion-vector output for six falling material "
+"spheres."
+msgstr "Isaac RTX 的六个下落材质球运动向量输出（以伪彩色显示）。"
+
+#: source/concepts/_renderer_gallery.rst:203
+msgid ""
+"Isaac RTX constant-diffuse simple-shading output for six material spheres."
+msgstr "Isaac RTX 的六个材质球常量漫反射简化着色输出。"
+
+#: source/concepts/_renderer_gallery.rst:211
+msgid "Isaac RTX diffuse-MDL simple-shading output for six material spheres."
+msgstr "Isaac RTX 的六个材质球漫反射 MDL 简化着色输出。"
+
+#: source/concepts/_renderer_gallery.rst:219
+msgid "Isaac RTX full-MDL simple-shading output for six material spheres."
+msgstr "Isaac RTX 的六个材质球完整 MDL 简化着色输出。"
+
+#: source/concepts/renderers.rst:54
+msgid "Renderer details"
+msgstr "渲染器详情"
+
+#: source/concepts/renderers.rst:56
+msgid ""
+"Open a renderer below for its execution model, output coverage, limitations,"
+" and typical use case. The gallery above remains a visual comparison; the "
+"camera support matrix is the authoritative output-by-backend reference."
+msgstr "展开下方渲染器条目，查看执行方式、输出支持、限制和典型用途。上方图像只用于视觉比较，相机支持矩阵才是各后端输出支持的权威依据。"
+
+#: source/concepts/renderers.rst:0
+msgid "Newton Warp renderer"
+msgstr "Newton Warp 渲染器"
+
+#: source/concepts/renderers.rst:62
+msgid ""
+"**Runtime and physics:** A lightweight, kit-less rasterizer built on NVIDIA "
+"Warp and paired with Newton physics."
+msgstr "**运行时与物理：** 基于 NVIDIA Warp 的轻量光栅化渲染器，不依赖 Kit，与 Newton 物理配合使用。"
+
+#: source/concepts/renderers.rst:64
+msgid ""
+"**Output coverage:** Produces RGB, albedo, depth, normals, semantic "
+"segmentation, and instance segmentation. It does not produce motion vectors "
+"or RTX material transport. Its focused raster pipeline exposes fewer ground-"
+"truth outputs than the RTX renderers, which integrate broader RTX and "
+"annotator capabilities."
+msgstr ""
+"**输出支持：** 提供 RGB、反照率、深度、法线、语义分割和实例分割，不提供运动向量或 RTX 材质光传输。其精简的光栅化流程所提供的真值输出少于 "
+"RTX 渲染器，后者集成了更广泛的 RTX 和标注器功能。"
+
+#: source/concepts/renderers.rst:68
+msgid ""
+"**Best for:** Training workflows where throughput matters more than full RTX"
+" fidelity."
+msgstr "**适用场景：** 吞吐量比完整 RTX 保真度更重要的训练流程。"
+
+#: source/concepts/renderers.rst:0
+msgid "OVRTX renderer"
+msgstr "OVRTX 渲染器"
+
+#: source/concepts/renderers.rst:72
+msgid ""
+"**Runtime and physics:** Provides kit-less RTX rendering through the "
+"``isaaclab_ov`` extension and pairs with Newton physics."
+msgstr "**运行时与物理：** 通过 ``isaaclab_ov`` 扩展提供不依赖 Kit 的 RTX 渲染，与 Newton 物理配合使用。"
+
+#: source/concepts/renderers.rst:74
+msgid ""
+"**Output coverage:** Provides RTX Minimal and photo-real rendering with "
+"geometry, motion, and label outputs."
+msgstr "**输出支持：** 提供 RTX Minimal 和逼真渲染，以及几何、运动和标签输出。"
+
+#: source/concepts/renderers.rst:76
+msgid "**Best for:** RTX image quality without running Isaac Sim."
+msgstr "**适用场景：** 无需运行 Isaac Sim 即可获得 RTX 图像质量。"
+
+#: source/concepts/renderers.rst:0
+msgid "Isaac RTX renderer"
+msgstr "Isaac RTX 渲染器"
+
+#: source/concepts/renderers.rst:80
+msgid ""
+"**Runtime and physics:** Runs NVIDIA's Omniverse RTX rendering pipeline "
+"inside Isaac Sim and pairs with PhysX."
+msgstr "**运行时与物理：** 在 Isaac Sim 内运行 NVIDIA Omniverse RTX 渲染流程，与 PhysX 配合使用。"
+
+#: source/concepts/renderers.rst:82
+msgid ""
+"**Output coverage:** Provides RTX Minimal and photo-real rendering, plus the"
+" broadest camera-output coverage."
+msgstr "**输出支持：** 提供 RTX Minimal、逼真渲染，以及最广泛的相机输出支持。"
+
+#: source/concepts/renderers.rst:84
+msgid ""
+"**Best for:** Full RTX fidelity and workflows that already depend on Isaac "
+"Sim or Kit."
+msgstr "**适用场景：** 完整 RTX 保真度，以及已经依赖 Isaac Sim 或 Kit 的工作流程。"
+
+#: source/concepts/renderers.rst:87
+msgid "Choosing a rendering capability"
+msgstr "选择渲染功能"
+
+#: source/concepts/renderers.rst:89
+msgid ""
+"The overview above shows the complete range of visually distinct outputs in "
+"one place. The sections below regroup those outputs by purpose: simplified "
+"rendering for throughput-oriented training, photo-real rendering for full "
+"RTX image quality, and advanced outputs for geometry, motion, and labels. "
+"The detailed captions and commands use the suffixless ``Isaac-Cartpole-"
+"Camera`` task so each shown mode can be tried without editing Python."
+msgstr ""
+"上方概览集中展示了所有视觉上不同的输出。下方按用途重新分组：面向高吞吐量训练的简化渲染、提供完整 RTX "
+"图像质量的逼真渲染，以及几何、运动和标签等高级输出。详细图注和命令使用不带后缀的 ``Isaac-Cartpole-Camera`` 任务，无需修改 "
+"Python 即可尝试各模式。"
+
+#: source/concepts/renderers.rst:96
+msgid "Simplified rendering"
+msgstr "简化渲染"
+
+#: source/concepts/renderers.rst:98
+msgid ""
+"Simplified rendering prioritizes throughput and predictable image formation "
+"over full light transport. Newton Warp provides a lightweight rasterized RGB"
+" path. OVRTX and Isaac RTX provide RTX Minimal mode, which disables indirect"
+" lighting and offers three levels of material evaluation:"
+msgstr ""
+"简化渲染优先考虑吞吐量和可预测的成像，而非完整光传输。Newton Warp 提供轻量的光栅化 RGB 路径。OVRTX 和 Isaac RTX 提供 "
+"RTX Minimal 模式，关闭间接光照，并提供三个层级的材质求值："
+
+#: source/concepts/renderers.rst:102
+msgid "**Constant diffuse** uses one constant surface color."
+msgstr "**常量漫反射** 使用单一的恒定表面颜色。"
+
+#: source/concepts/renderers.rst:103
+msgid ""
+"**Diffuse MDL** is Isaac Lab's stable name for textured diffuse shading."
+msgstr "**漫反射 MDL** 是 Isaac Lab 对带纹理漫反射着色所采用的稳定名称。"
+
+#: source/concepts/renderers.rst:104
+msgid ""
+"**Full MDL** is Isaac Lab's stable name for diffuse, glossy, and emissive "
+"material evaluation."
+msgstr "**完整 MDL** 是 Isaac Lab 对漫反射、光泽和自发光材质求值所采用的稳定名称。"
+
+#: source/concepts/renderers.rst:106
+msgid ""
+"RTX Minimal uses the first distant light in the scene and hard shadows. See "
+"the upstream `OVRTX Minimal mode <https://nvidia-"
+"omniverse.github.io/ovrtx/sensors/cameras/render_modes/minimal.html>`_ and "
+"`RTX Minimal renderer <https://docs.omniverse.nvidia.com/materials-and-"
+"rendering/latest/rtx-renderer_minimal.html>`_ documentation for the "
+"renderer-level settings and limitations."
+msgstr ""
+"RTX Minimal 使用场景中的第一个远光源，并采用硬阴影。渲染器级设置和限制见上游 `OVRTX Minimal 模式 "
+"<https://nvidia-"
+"omniverse.github.io/ovrtx/sensors/cameras/render_modes/minimal.html>`_ 与 "
+"`RTX Minimal 渲染器 <https://docs.omniverse.nvidia.com/materials-and-"
+"rendering/latest/rtx-renderer_minimal.html>`_ 文档。"
+
+#: source/concepts/renderers.rst:0
+msgid "Newton Warp RGB"
+msgstr "Newton Warp RGB"
+
+#: source/concepts/renderers.rst:120
+msgid "Newton Warp RGB output with directional-light shadows disabled."
+msgstr "关闭方向光阴影的 Newton Warp RGB 输出。"
+
+#: source/concepts/renderers.rst:124
+msgid "Without shadows (default)"
+msgstr "无阴影（默认）"
+
+#: source/concepts/renderers.rst:128
+msgid "Newton Warp RGB output with directional-light shadows enabled."
+msgstr "启用方向光阴影的 Newton Warp RGB 输出。"
+
+#: source/concepts/renderers.rst:132
+msgid "With shadows"
+msgstr "有阴影"
+
+#: source/concepts/renderers.rst:134
+msgid ""
+"Newton Warp is the kit-less choice when a lightweight RGB observation is "
+"sufficient."
+msgstr "如果轻量 RGB 观测已经足够，Newton Warp 是不依赖 Kit 的选择。"
+
+#: source/concepts/renderers.rst:142
+msgid "Enable directional-light shadows explicitly:"
+msgstr "显式启用方向光阴影："
+
+#: source/concepts/renderers.rst:0
+msgid "OVRTX Minimal"
+msgstr "OVRTX Minimal"
+
+#: source/concepts/renderers.rst:159
+msgid "OVRTX constant-diffuse RTX Minimal output."
+msgstr "OVRTX 常量漫反射 RTX Minimal 输出。"
+
+#: source/concepts/renderers.rst:163 source/concepts/renderers.rst:214
+msgid "Constant diffuse — ``presets=simple_shading_constant_diffuse``"
+msgstr "常量漫反射： ``presets=simple_shading_constant_diffuse``"
+
+#: source/concepts/renderers.rst:167
+msgid "OVRTX textured-diffuse RTX Minimal output."
+msgstr "OVRTX 带纹理漫反射 RTX Minimal 输出。"
+
+#: source/concepts/renderers.rst:171 source/concepts/renderers.rst:222
+msgid "Diffuse MDL — ``presets=simple_shading_diffuse_mdl``"
+msgstr "漫反射 MDL： ``presets=simple_shading_diffuse_mdl``"
+
+#: source/concepts/renderers.rst:175
+msgid "OVRTX full-material RTX Minimal output."
+msgstr "OVRTX 完整材质 RTX Minimal 输出。"
+
+#: source/concepts/renderers.rst:179 source/concepts/renderers.rst:230
+msgid "Full MDL — ``presets=simple_shading_full_mdl``"
+msgstr "完整 MDL： ``presets=simple_shading_full_mdl``"
+
+#: source/concepts/renderers.rst:181 source/concepts/renderers.rst:232
+msgid "**Constant diffuse**"
+msgstr "**常量漫反射**"
+
+#: source/concepts/renderers.rst:188 source/concepts/renderers.rst:239
+msgid "**Textured diffuse**"
+msgstr "**带纹理漫反射**"
+
+#: source/concepts/renderers.rst:195 source/concepts/renderers.rst:246
+msgid "**Diffuse, glossy, and emissive material evaluation**"
+msgstr "**漫反射、光泽和自发光材质求值**"
+
+#: source/concepts/renderers.rst:0
+msgid "Isaac RTX Minimal"
+msgstr "Isaac RTX Minimal"
+
+#: source/concepts/renderers.rst:210
+msgid "Isaac RTX constant-diffuse RTX Minimal output."
+msgstr "Isaac RTX 常量漫反射 RTX Minimal 输出。"
+
+#: source/concepts/renderers.rst:218
+msgid "Isaac RTX textured-diffuse RTX Minimal output."
+msgstr "Isaac RTX 带纹理漫反射 RTX Minimal 输出。"
+
+#: source/concepts/renderers.rst:226
+msgid "Isaac RTX full-material RTX Minimal output."
+msgstr "Isaac RTX 完整材质 RTX Minimal 输出。"
+
+#: source/concepts/renderers.rst:254
+msgid "Photo-real rendering"
+msgstr "逼真渲染"
+
+#: source/concepts/renderers.rst:256
+msgid ""
+"Here, **photo-real rendering** means the regular RGB path from the full RTX "
+"Real-Time Path-Tracing mode; it is a capability grouping, not an Isaac Lab "
+"preset name. Choose it when material appearance, reflections, transparency, "
+"lighting, or the accompanying RTX AOVs matter more than the lowest possible "
+"render latency. OVRTX provides this path without Kit, while Isaac RTX "
+"provides it inside Isaac Sim. See the upstream `OVRTX render modes "
+"<https://nvidia-"
+"omniverse.github.io/ovrtx/sensors/cameras/render_modes.html>`_ and `Isaac "
+"Sim rendering modes "
+"<https://docs.isaacsim.omniverse.nvidia.com/latest/reference_material/rendering_modes.html>`_."
+msgstr ""
+"这里的 **逼真渲染** 指完整 RTX 实时路径追踪模式的常规 RGB 路径；它是功能分类，不是 Isaac Lab "
+"预设名称。当材质外观、反射、透明度、光照或附带的 RTX AOV 比最低渲染延迟更重要时，选择这种方式。OVRTX 在不使用 Kit "
+"的情况下提供此路径，Isaac RTX 则在 Isaac Sim 内提供。请参阅上游 `OVRTX 渲染模式 <https://nvidia-"
+"omniverse.github.io/ovrtx/sensors/cameras/render_modes.html>`_ 与 `Isaac Sim "
+"渲染模式 "
+"<https://docs.isaacsim.omniverse.nvidia.com/latest/reference_material/rendering_modes.html>`_"
+" 。"
+
+#: source/concepts/renderers.rst:274
+msgid "OVRTX photo-real RGB — ``renderer=ovrtx presets=rgb``"
+msgstr "OVRTX 逼真 RGB： ``renderer=ovrtx presets=rgb``"
+
+#: source/concepts/renderers.rst:276 source/concepts/renderers.rst:293
+msgid ""
+"The same renderer also produces the albedo, depth, normals, segmentation, "
+"and motion-vector outputs shown in the overview gallery."
+msgstr "同一渲染器也提供概览图中的反照率、深度、法线、分割和运动向量输出。"
+
+#: source/concepts/renderers.rst:291
+msgid "Isaac RTX photo-real RGB — ``renderer=isaacsim_rtx presets=rgb``"
+msgstr "Isaac RTX 逼真 RGB： ``renderer=isaacsim_rtx presets=rgb``"
+
+#: source/concepts/renderers.rst:302
+msgid "Advanced rendering outputs"
+msgstr "高级渲染输出"
+
+#: source/concepts/renderers.rst:304
+msgid ""
+"Beyond RGB, renderer-produced buffers expose material, geometry, motion, and"
+" labeling information:"
+msgstr "除 RGB 外，渲染器生成的缓冲区还提供材质、几何、运动和标注信息："
+
+#: source/concepts/renderers.rst:306
+msgid "**Albedo** isolates the material base color from lighting."
+msgstr "**反照率** 将材质基础色与光照分离。"
+
+#: source/concepts/renderers.rst:307
+msgid ""
+"**Depth** measures optical-axis distance for geometric perception and "
+"reconstruction."
+msgstr "**深度** 测量沿光轴的距离，用于几何感知和重建。"
+
+#: source/concepts/renderers.rst:308
+msgid "**Normals** encode local surface orientation."
+msgstr "**法线** 表示局部表面朝向。"
+
+#: source/concepts/renderers.rst:309
+msgid ""
+"**Semantic segmentation** groups pixels by class, while **instance "
+"segmentation** separates individual objects."
+msgstr "**语义分割** 按类别划分像素， **实例分割** 则区分各个物体。"
+
+#: source/concepts/renderers.rst:311
+msgid ""
+"**Motion vectors** encode image-space motion per pixel and require prior-"
+"frame history."
+msgstr "**运动向量** 表示每个像素在图像空间中的运动，需要前一帧历史信息。"
+
+#: source/concepts/renderers.rst:313
+msgid ""
+"Request one or more buffers through :attr:`~sensors.CameraCfg.data_types`. "
+"See :ref:`camera-configuration` for a configuration example and "
+":ref:`camera-output-types` for the available names, tensor shapes, data "
+"types, and meanings. Environment-level ``presets=...`` selectors are task-"
+"defined convenience shortcuts, not an exhaustive list of camera outputs."
+msgstr ""
+"通过 :attr:`~sensors.CameraCfg.data_types` 请求一个或多个缓冲区。配置示例见 :ref:`camera-"
+"configuration` ，可用名称、张量形状、数据类型和含义见 :ref:`camera-output-types` 。环境级 "
+"``presets=...`` 选择器是任务定义的便捷方式，不是全部相机输出的完整列表。"
+
+#: source/concepts/renderers.rst:318
+msgid ""
+"Output availability differs by backend. Check the :ref:`camera renderer "
+"support matrix <camera-supported-annotators>` before choosing a renderer; "
+"for example, OVRTX and Isaac RTX produce motion vectors, while Newton Warp "
+"does not. The :ref:`renderer visual comparison <renderer-visual-comparison>`"
+" above shows these outputs on the same scene."
+msgstr ""
+"各后端支持的输出不同。选择渲染器前，请检查 :ref:`相机渲染器支持矩阵 <camera-supported-annotators>` "
+"。例如，OVRTX 和 Isaac RTX 提供运动向量，Newton Warp 不提供。上方 :ref:`渲染器视觉比较 <renderer-"
+"visual-comparison>` 展示了同一场景中的这些输出。"
+
+#: source/concepts/renderers.rst:325
+msgid ""
+"Visualization markers are debug overlays provided by visualizers, not camera"
+" outputs. Their support is independent of the camera renderer: the Kit, "
+"Newton GL, Rerun, and Viser visualizers support markers, while the "
+"experimental Newton RTX visualizer does not. See "
+":doc:`/source/concepts/visualization` for the visualizer support matrix."
+msgstr ""
+"可视化标记是可视化器提供的调试叠加内容，不是相机输出。其支持情况独立于相机渲染器：Kit、Newton GL、Rerun 和 Viser "
+"可视化器支持标记，实验性的 Newton RTX 可视化器不支持。可视化器支持矩阵见 "
+":doc:`/source/concepts/visualization` 。"
+
+#: source/concepts/renderers.rst:331
+msgid ""
+"**Temporal information for camera-based RL.** Unlike RTX modes with temporal"
+" anti-aliasing (DLSS, DLAA, TAA), the Newton Warp renderer does not inject "
+"prior-frame information into the current image. Camera-control tasks that "
+"depend on velocity-like visual cues should add explicit temporal "
+"observations (e.g. task-local frame stacking) rather than relying on "
+"renderer-specific artifacts."
+msgstr ""
+"**基于相机的强化学习中的时序信息。** 与采用时序抗锯齿的 RTX 模式（DLSS、DLAA、TAA）不同，Newton Warp "
+"渲染器不会将前一帧信息引入当前图像。依赖速度等视觉线索的相机控制任务，应显式添加时序观测，例如在任务中叠帧，而不是依赖特定渲染器产生的画面特征。"
+
+#: source/concepts/renderers.rst:338
+msgid "Per-environment Isaac RTX scene partitioning"
+msgstr "Isaac RTX 按环境划分场景"
+
+#: source/concepts/renderers.rst:340
+msgid ""
+"The Isaac RTX renderer enables per-environment scene partitioning by "
+"default. It assigns matching scene-partition tokens to each "
+"``/World/envs/env_<index>`` hierarchy and its camera so tiled views render "
+"only that environment's geometry."
+msgstr ""
+"Isaac RTX 渲染器默认启用按环境划分场景，为每个 ``/World/envs/env_<index>`` "
+"层级及其相机分配匹配的场景分区标记，使平铺视图仅渲染对应环境的几何。"
+
+#: source/concepts/renderers.rst:344
+msgid ""
+"Configure the behavior through "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererCfg`:"
+msgstr "通过 :class:`~isaaclab_physx.renderers.IsaacRtxRendererCfg` 配置该行为："
+
+#: source/concepts/renderers.rst:352
+msgid ""
+"Scene partitioning and the all-environment spectator view are separate "
+"controls. :class:`~isaaclab_physx.app.KitLauncher` enables spectator support"
+" before RTX startup only when the Kit viewport is enabled or Kit "
+"visualization, recording, livestreaming, or XR is requested. Regular "
+"headless training and camera-sensor runs keep it disabled so tiled cameras "
+"are not exposed to the spectator mode's world-space layout constraints."
+msgstr ""
+"场景分区与显示所有环境的观察视图是两个独立设置。只有启用 Kit 视口，或请求 Kit 可视化、录制、直播流或 XR 时， "
+":class:`~isaaclab_physx.app.KitLauncher` 才会在 RTX "
+"启动前启用观察模式支持。常规无界面训练和相机传感器运行保持该功能关闭，使平铺相机不受观察模式世界空间布局约束的影响。"
+
+#: source/concepts/renderers.rst:358
+msgid ""
+"``global_settings.show_all_partitions_by_default`` maps to that same "
+"process-global RTX setting; it is not a separate feature. Its default value "
+"of ``None`` preserves the launch-time choice made by "
+":class:`~isaaclab_physx.app.KitLauncher`. An explicit value overrides that "
+"setting when the Isaac RTX renderer is constructed. When enabled, "
+"environments must remain spatially separated because overlapping partition "
+"bounds can make content leak into another environment or disappear. When "
+"disabled, the Kit viewport displays only the selected environment."
+msgstr ""
+"``global_settings.show_all_partitions_by_default`` 对应同一个进程级全局 RTX "
+"设置，并不是独立功能。其默认值 ``None`` 保留 :class:`~isaaclab_physx.app.KitLauncher` "
+"在启动时的选择。显式赋值会在构建 Isaac RTX "
+"渲染器时覆盖该设置。启用时，环境必须在空间上分开，因为分区边界重叠可能使内容出现在其他环境中或消失。关闭时，Kit 视口只显示选中的环境。"
+
+#: source/concepts/renderers.rst:366
+msgid ""
+"This setting does not affect OVRTX, which always partitions multi-"
+"environment scenes."
+msgstr "此设置不影响 OVRTX；OVRTX 始终对多环境场景进行分区。"
+
+#: source/concepts/renderers.rst:368
+msgid ""
+"Prims outside the environment hierarchies remain in the shared background "
+"partition. Environment-owned ``PointInstancer`` markers can carry one "
+"matching scene-partition token per instance; markers without that ownership "
+"information remain shared."
+msgstr ""
+"环境层级之外的 prim 保留在共享背景分区中。环境持有的 ``PointInstancer`` "
+"标记可以为每个实例携带一个匹配的场景分区标记；没有此类所有权信息的标记保持共享。"
+
+#: source/concepts/renderers.rst:374
+msgid ""
+"The Isaac RTX and OVRTX renderers cap the number of scene partitions at "
+"15625. Requesting more than 15625 environments with scene partitioning "
+"enabled discards the additional partitions, and ``rtx.scenedb.plugin`` logs "
+"``SceneDbContext : Maximum number of scene partitions (15625) reached. "
+"Additional scene partitions will be discarded.`` Environments beyond that "
+"count then share a partition with another environment, so their tiled camera"
+" views can show another environment's geometry. See :ref:`known-issues-"
+"scene-partition-count-cap` for details."
+msgstr ""
+"Isaac RTX 与 OVRTX 渲染器将场景分区数量限制为 15625。启用场景分区时，如果请求超过 15625 个环境，多出的分区会被丢弃， "
+"``rtx.scenedb.plugin`` 会记录 ``SceneDbContext : Maximum number of scene "
+"partitions (15625) reached. Additional scene partitions will be discarded.``"
+" 。超过该数量的环境会与其他环境共享分区，因此其平铺相机画面可能显示其他环境的几何。详情见 :ref:`known-issues-scene-"
+"partition-count-cap` 。"
+
+#: source/concepts/renderers.rst:383
+msgid "Architecture Overview"
+msgstr "架构概览"
+
+#: source/concepts/renderers.rst:385
+msgid "The renderer system consists of:"
+msgstr "渲染器系统由以下部分组成："
+
+#: source/concepts/renderers.rst:387
+msgid ""
+"**BaseRenderer** — Abstract base class defining the rendering lifecycle and "
+"interface"
+msgstr "**BaseRenderer** ：定义渲染生命周期和接口的抽象基类。"
+
+#: source/concepts/renderers.rst:388
+msgid ""
+"**RendererCfg** — A ``BackendCfg`` subclass; each backend extends it with "
+"backend-specific options and declares its implementation in ``class_type``"
+msgstr ""
+"**RendererCfg** ： ``BackendCfg`` 的子类；各后端扩展它以提供专用选项，并在 ``class_type`` "
+"中声明具体实现。"
+
+#: source/concepts/renderers.rst:390
+msgid ""
+"**Concrete implementations** — Backend-specific renderers in extension "
+"packages"
+msgstr "**具体实现** ：扩展软件包中的后端专用渲染器。"
+
+#: source/concepts/renderers.rst:391
+msgid ""
+"**SimulationContext** — Owns renderer instances in its backend registry and "
+"shares them across equal configurations of the same concrete type through "
+"``get_or_create_backend(renderer_cfg)``."
+msgstr ""
+"**SimulationContext** ：在后端注册表中持有渲染器实例，通过 "
+"``get_or_create_backend(renderer_cfg)`` ，在具体类型相同且配置相等的请求之间共享实例。"
+
+#: source/concepts/renderers.rst:393
+msgid ""
+"**RenderContext** — Coordinates initialization, stage preparation, scene "
+"updates, and material writers using a filtered view of the simulation "
+"registry. It does not construct, cache, or close renderer instances."
+msgstr ""
+"**RenderContext** ：通过仿真注册表的过滤视图，协调初始化、舞台准备、场景更新和材质写入器，不负责构建、缓存或关闭渲染器实例。"
+
+#: source/concepts/renderers.rst:408
+msgid "For the RTX renderer (requires Isaac Sim):"
+msgstr "使用 RTX 渲染器时（需要 Isaac Sim）："
+
+#: source/concepts/renderers.rst:421
+msgid ""
+"For RTX renderer settings, see :doc:`/source/how-to/configure_rendering`."
+msgstr "RTX 渲染器设置见 :doc:`/source/how-to/configure_rendering` 。"
+
+#: source/concepts/renderers.rst:427
+msgid "Batching camera renders"
+msgstr "批量渲染相机"
+
+#: source/concepts/renderers.rst:429
+msgid ""
+":meth:`~isaaclab.renderers.BaseRenderer.render_batch` accepts a sequence of "
+"render-data objects owned by the same renderer. Prepare the camera poses, "
+"intrinsics, and shared scene state before rendering, then read each camera's"
+" output. An empty sequence performs no rendering."
+msgstr ""
+":meth:`~isaaclab.renderers.BaseRenderer.render_batch` "
+"接受同一渲染器持有的一组渲染数据对象。渲染前准备相机位姿、内参和共享场景状态，之后读取各相机输出。空序列不会触发渲染。"
+
+#: source/concepts/renderers.rst:439
+msgid ""
+":meth:`~isaaclab.renderers.BaseRenderer.render` continues to accept a single"
+" render-data object. The default ``render_batch()`` implementation calls "
+"``render()`` for each entry, so existing custom renderers and single-camera "
+"callers need no changes. OVRTX steps all registered render products together"
+" but publishes only the requested cameras' observations."
+msgstr ""
+":meth:`~isaaclab.renderers.BaseRenderer.render` 仍接受单个渲染数据对象。默认的 "
+"``render_batch()`` 实现逐项调用 ``render()`` ，因此已有自定义渲染器和单相机调用方无需修改。OVRTX "
+"同时推进所有已注册渲染产品，但只发布所请求相机的观测。"
+
+#: source/concepts/renderers.rst:444
+msgid ""
+"With eager sensor updates (``scene.cfg.lazy_sensor_update=False``), "
+"``scene.update()`` advances sensor clocks in scene order and collects batch-"
+"capable sensors. After the loop, the camera batch implementation prepares "
+"the remaining due captures for submission. "
+":meth:`~isaaclab.renderers.RenderContext.render_into_cameras` groups these "
+"requests by renderer instance, renders each group, and reads its outputs. "
+"The context does not retain a pending-camera queue. Each camera retains its "
+"own update period and reset state."
+msgstr ""
+"主动更新传感器时（ ``scene.cfg.lazy_sensor_update=False`` ）， ``scene.update()`` "
+"按场景顺序推进传感器时钟，并收集支持批处理的传感器。循环结束后，相机批处理实现会准备其余到期的采集请求。 "
+":meth:`~isaaclab.renderers.RenderContext.render_into_cameras` "
+"按渲染器实例分组，渲染各组并读取输出。上下文不保留待处理相机队列，每个相机维护自己的更新周期和重置状态。"
+
+#: source/concepts/renderers.rst:451
+msgid ""
+"With lazy sensor updates, reading a camera's ``data`` refreshes only that "
+"camera's sensor buffers and capture timestamps. It does not refresh peer "
+"camera sensors sharing the renderer."
+msgstr "按需更新传感器时，读取相机的 ``data`` 只刷新该相机的传感器缓冲区和采集时间戳，不会刷新共享渲染器的其他相机传感器。"
+
+#: source/concepts/renderers.rst:455
+msgid "Core concepts"
+msgstr "核心概念"
+
+#: source/concepts/renderers.rst:457
+msgid ""
+"**Use the simulation registry**: Always acquire renderers with a renderer-"
+"specific config class through "
+"``sim_ctx.get_or_create_backend(IsaacRtxRendererCfg())``. Do not import or "
+"instantiate concrete backend classes (e.g. ``IsaacRtxRenderer``, "
+"``OVRTXRenderer``) directly—their names and package locations are "
+"implementation details and may change without notice."
+msgstr ""
+"**使用仿真注册表：** 始终通过 ``sim_ctx.get_or_create_backend(IsaacRtxRendererCfg())`` "
+"等方式，使用渲染器专用配置类获取渲染器。不要直接导入或实例化具体后端类，例如 ``IsaacRtxRenderer`` 、 "
+"``OVRTXRenderer`` ；类名和软件包位置属于实现细节，可能不经通知就改变。"
+
+#: source/concepts/renderers.rst:462
+msgid ""
+"**Lightweight config imports**: Importing a renderer configuration class "
+"does not pull in backend-specific dependencies. ``class_type`` is resolved "
+"lazily when the renderer is constructed, and construction may fail if the "
+"backend is not installed."
+msgstr ""
+"**轻量配置导入：** 导入渲染器配置类不会引入后端专用依赖。 ``class_type`` 在构建渲染器时按需解析，后端未安装时，构建可能失败。"
+
+#: source/concepts/renderers.rst:478
+msgid "Installing the OVRTX renderer"
+msgstr "安装 OVRTX 渲染器"
+
+#: source/concepts/renderers.rst:480
+msgid ""
+"The OVRTX renderer is provided by the ``isaaclab_ov`` extension. The "
+"extension's source package ships with the core install, but the renderer's "
+"``ovrtx`` runtime wheel (the `ovrtx <https://github.com/NVIDIA-"
+"Omniverse/ovrtx>`_ package, published on public PyPI) is **not** installed "
+"by default. You must request it explicitly — OVRTX does **not** require "
+"Isaac Sim."
+msgstr ""
+"OVRTX 渲染器由 ``isaaclab_ov`` 扩展提供。扩展源码包随核心安装发布，但渲染器的 ``ovrtx`` 运行时 wheel（公开 "
+"PyPI 上发布的 `ovrtx <https://github.com/NVIDIA-Omniverse/ovrtx>`_ 软件包）默认 **不会**"
+" 安装，必须显式选择。OVRTX **不需要** Isaac Sim。"
+
+#: source/concepts/renderers.rst:486
+msgid "Install via the Isaac Lab CLI using the ``ov[ovrtx]`` token:"
+msgstr "通过 Isaac Lab CLI 使用 ``ov[ovrtx]`` 选项安装："
+
+#: source/concepts/renderers.rst:495
+msgid ""
+"The bare ``ov`` token does **not** install any runtime wheel (the source "
+"packages are already part of the core install). Use ``ov[ovrtx]`` (or "
+"``ov[all]``) to pull in the ``ovrtx`` dependency."
+msgstr ""
+"单独使用 ``ov`` 选项 **不会** 安装任何运行时 wheel，因为源码包已包含在核心安装中。请使用 ``ov[ovrtx]`` 或 "
+"``ov[all]`` 安装 ``ovrtx`` 依赖。"
+
+#: source/concepts/renderers.rst:499
+msgid "Or install the public ``ovrtx`` package directly from PyPI:"
+msgstr "也可以直接从 PyPI 安装公开的 ``ovrtx`` 软件包："
+
+#: source/concepts/renderers.rst:503
+msgid ""
+"**Opaque render data**: The render data object returned by "
+":meth:`~isaaclab.renderers.BaseRenderer.create_render_data` is passed to "
+"subsequent renderer methods. It should be completely opaque to the caller: "
+"inspecting or modifying it via get/set attributes is an anti-pattern and "
+"breaks the API contract."
+msgstr ""
+"**不透明渲染数据：** :meth:`~isaaclab.renderers.BaseRenderer.create_render_data` "
+"返回的渲染数据对象传给后续渲染器方法。调用方应将其视为完全不透明的对象；通过属性读写检查或修改它是不恰当的用法，会破坏 API 约定。"
+
+#: source/concepts/renderers.rst:509
+msgid ""
+"The :class:`~isaaclab.renderers.BaseRenderer` class is under active "
+"development and may change without notice."
+msgstr ":class:`~isaaclab.renderers.BaseRenderer` 仍在积极开发，可能不经通知就改变。"
+
+#: source/concepts/renderers.rst:514
+msgid "Asynchronous Rendering"
+msgstr "异步渲染"
+
+#: source/concepts/renderers.rst:516
+msgid ""
+":attr:`~isaaclab_ov.renderers.OVRTXRendererCfg.async_rendering` returns a "
+"camera's previous capture while rendering its next image. This allows "
+"rendering to overlap simulation and Python work. The first capture, "
+"including after reset, waits for a fresh image. The ovstage path stays "
+"synchronous."
+msgstr ""
+":attr:`~isaaclab_ov.renderers.OVRTXRendererCfg.async_rendering` "
+"在渲染下一张图像时，返回相机的前一次采集结果，使渲染能够与仿真及 Python 工作重叠。首次采集（包括重置后的首次采集）会等待新图像，ovstage "
+"路径保持同步。"
+
+#: source/concepts/renderers.rst:520
+msgid ""
+"Latency is one capture, not necessarily one physics or control step. State "
+"observations remain current, so enabling this option changes the policy's "
+"observation timing; training may need to account for that delay. Physics and"
+" policy computation may also use the GPU."
+msgstr ""
+"延迟为一次采集，不一定等于一个物理步或控制步。状态观测仍是当前值，因此启用此选项会改变策略观测的时序，训练可能需要考虑该延迟。物理与策略计算也可能使用 "
+"GPU。"
+
+#: source/concepts/renderers.rst:524
+msgid ""
+"For a camera capturing once per environment step, steady-state operation is:"
+msgstr "对于每个环境步采集一次的相机，稳态运行过程如下："
+
+#: source/concepts/renderers.rst:533
+msgid ""
+"The first image is returned immediately after priming and repeated once on "
+"the next capture."
+msgstr "首次准备完成后立即返回第一张图像，下一次采集时会再返回一次。"
+
+#: source/concepts/renderers.rst:535
+msgid ""
+"Each camera owns its pending observations. Reading camera A never changes "
+"camera B's pixels or metadata, even when they share a native render "
+"submission. Reset discards that camera's pending observations. A partial "
+"environment reset re-primes the whole tiled camera product, without "
+"invalidating other cameras."
+msgstr ""
+"每个相机持有自己的待发布观测。读取相机 A 不会改变相机 B "
+"的像素或元数据，即使它们共享一次原生渲染提交。重置丢弃该相机的待发布观测。部分环境重置会重新准备整个平铺相机产品，不会使其他相机失效。"
+
+#: source/concepts/renderers.rst:540
+msgid ""
+"Live fields such as ``camera.data.pos_w`` and "
+"``camera.data.intrinsic_matrices`` remain current. Use the capture metadata "
+"when pairing delayed pixels with a pose or calibration, for example when "
+"deprojecting depth:"
+msgstr ""
+"``camera.data.pos_w`` 、 ``camera.data.intrinsic_matrices`` "
+"等实时字段仍是当前值。将延迟像素与位姿或标定配对时，应使用采集元数据，例如进行深度反投影时："
+
+#: source/concepts/renderers.rst:552
+msgid ""
+"Capture metadata remains unchanged on later captures. Direct renderer "
+"callers use :meth:`~isaaclab.renderers.BaseRenderer.prepare_capture` before "
+"submitting a capture and "
+":meth:`~isaaclab.renderers.BaseRenderer.read_output` to publish it."
+msgstr ""
+"之后的采集不会改变已有采集元数据。直接调用渲染器时，在提交采集前使用 "
+":meth:`~isaaclab.renderers.BaseRenderer.prepare_capture` ，通过 "
+":meth:`~isaaclab.renderers.BaseRenderer.read_output` 发布结果。"
+
+#: source/concepts/renderers.rst:556
+msgid ""
+"SDP fills renderer-owned transform and geometry buffers, including "
+"deformable meshes, particles, and cables. Two buffers alternate per write "
+"and are reused only after OVRTX consumes them. Physics can therefore update "
+"its live arrays while the previous capture renders."
+msgstr ""
+"SDP 填充渲染器持有的变换与几何缓冲区，包括可变形网格、粒子和线缆。两个缓冲区在每次写入时交替使用，只有 OVRTX "
+"消费完后才能复用。因此，物理仿真可以在前一次采集仍在渲染时更新实时数组。"
+
+#: source/concepts/renderers.rst:561
+msgid "See Also"
+msgstr "另请参阅"
+
+#: source/concepts/renderers.rst:563
+msgid ""
+":doc:`/source/developer-tools/scene_data_providers`: how scene data flows "
+"from physics backends to renderers"
+msgstr ""
+":doc:`/source/developer-tools/scene_data_providers` ：场景数据如何从物理后端流向渲染器。"
+
+#: source/concepts/renderers.rst:564
+msgid ""
+":doc:`/source/concepts/visualization` — lightweight visualizer backends for "
+"interactive feedback"
+msgstr ":doc:`/source/concepts/visualization` ：用于交互反馈的轻量可视化后端。"

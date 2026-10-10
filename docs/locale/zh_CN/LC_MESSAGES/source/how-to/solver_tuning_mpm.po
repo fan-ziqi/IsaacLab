@@ -1,0 +1,444 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/solver_tuning_mpm.rst:11
+msgid "MPM Solver"
+msgstr "MPM 求解器"
+
+#: source/how-to/solver_tuning_mpm.rst:13
+msgid ""
+"Start with :ref:`newton-using-mpm` for scene construction. These experiments"
+" help separate numerical accuracy from constitutive response. They are "
+"qualitative examples, not calibrated material models or performance "
+"benchmarks."
+msgstr ""
+"先参照 :ref:`newton-using-mpm` "
+"构建场景。以下实验有助于区分数值精度与本构响应。它们是定性示例，并非经过标定的材料模型或性能基准。"
+
+#: source/how-to/solver_tuning_mpm.rst:18
+msgid "Tune Resolution, Time, Then Convergence"
+msgstr "先调整分辨率，再调整时间步长和收敛参数"
+
+#: source/how-to/solver_tuning_mpm.rst:20
+msgid "Tune one group at a time in this order:"
+msgstr "按以下顺序，每次调整一组参数："
+
+#: source/how-to/solver_tuning_mpm.rst:22
+msgid ""
+"**Voxel and particle resolution.** ``MPMSolverCfg.voxel_size`` controls the "
+"background grid. Smaller voxels resolve thinner geometry but increase active"
+" cells and memory. ``MPMGridCfg.particles_per_cell`` controls particle "
+"density; doubling it along each axis creates about eight times as many "
+"particles in 3D. Start coarse, then refine until the measured behavior stops"
+" changing."
+msgstr ""
+"**体素与粒子分辨率。** ``MPMSolverCfg.voxel_size`` "
+"控制背景网格。更小的体素能分辨更薄的几何，但会增加活动网格单元数和内存用量。 ``MPMGridCfg.particles_per_cell`` "
+"控制粒子密度；三维中各轴的数量都加倍，粒子总数约增加到八倍。先用较粗的分辨率，再逐步细化，直到测得的行为不再变化。"
+
+#: source/how-to/solver_tuning_mpm.rst:27
+msgid ""
+"**Timestep and substeps.** Each Newton substep uses ``SimulationCfg.dt / "
+"NewtonCfg.num_substeps``. Reduce ``dt`` or increase ``num_substeps`` first "
+"when contacts tunnel, jitter, or become unstable. Substeps do not change the"
+" policy period, which also includes environment decimation."
+msgstr ""
+"**时间步长与子步数。** 每个 Newton 子步的时长为 ``SimulationCfg.dt / NewtonCfg.num_substeps``"
+" 。当接触发生穿透、抖动或不稳定时，先减小 ``dt`` 或增加 ``num_substeps`` "
+"。子步数不会改变策略周期；策略周期还取决于环境的控制降采样倍数。"
+
+#: source/how-to/solver_tuning_mpm.rst:32
+msgid ""
+"**Iterations and tolerance.** ``MPMSolverCfg.max_iterations`` caps the "
+"rheology solve; ``tolerance`` permits an earlier exit after convergence. "
+"Increase the cap only when the solver reaches it, and lower the tolerance "
+"only when tighter convergence improves a physical metric. These settings do "
+"not repair an unstable timestep, invalid reset, or incorrect collider."
+msgstr ""
+"**迭代次数与容差。** ``MPMSolverCfg.max_iterations`` 限制流变求解的迭代次数； ``tolerance`` "
+"允许收敛后提前退出。只有求解器达到上限时才提高迭代上限；只有更严格的收敛能改善物理指标时才减小容差。这些设置无法修复不稳定的时间步长、无效重置或错误碰撞体。"
+
+#: source/how-to/solver_tuning_mpm.rst:40
+msgid "Material Comparisons"
+msgstr "材料对比"
+
+#: source/how-to/solver_tuning_mpm.rst:42
+msgid ""
+"The recordings below hold the scene and solver configuration fixed within "
+"each comparison while varying one material parameter. The annotated values "
+"are examples for observing different responses, not calibrated material "
+"recommendations."
+msgstr "以下录像在每组对比中保持场景和求解器配置不变，只改变一个材料参数。标注的数值用于观察不同响应，并非经过标定的材料参数建议。"
+
+#: source/how-to/solver_tuning_mpm.rst:47
+msgid "Values shown in the material recordings"
+msgstr "材料录像中的参数值"
+
+#: source/how-to/solver_tuning_mpm.rst:51
+msgid "Preset"
+msgstr "预设"
+
+#: source/how-to/solver_tuning_mpm.rst:52
+msgid "Varied values"
+msgstr "变化的参数值"
+
+#: source/how-to/solver_tuning_mpm.rst:53
+msgid "Behavior to inspect"
+msgstr "需观察的行为"
+
+#: source/how-to/solver_tuning_mpm.rst:54
+msgid "``young_modulus``"
+msgstr "``young_modulus``"
+
+#: source/how-to/solver_tuning_mpm.rst:55
+msgid "100 kPa, 300 kPa, 1 MPa"
+msgstr "100 kPa、300 kPa、1 MPa"
+
+#: source/how-to/solver_tuning_mpm.rst:56
+msgid "Compression, recovery, and impact rebound"
+msgstr "压缩、恢复与冲击回弹"
+
+#: source/how-to/solver_tuning_mpm.rst:57
+msgid "``poisson_ratio``"
+msgstr "``poisson_ratio``"
+
+#: source/how-to/solver_tuning_mpm.rst:58
+msgid "0.05, 0.30, 0.499"
+msgstr "0.05, 0.30, 0.499"
+
+#: source/how-to/solver_tuning_mpm.rst:59
+msgid "Volume loss versus near-incompressibility"
+msgstr "体积损失与近似不可压缩性的对比"
+
+#: source/how-to/solver_tuning_mpm.rst:60
+msgid "``friction``"
+msgstr "``friction``"
+
+#: source/how-to/solver_tuning_mpm.rst:61
+msgid "0, 0.68, 2.0"
+msgstr "0, 0.68, 2.0"
+
+#: source/how-to/solver_tuning_mpm.rst:62
+msgid "Runout and the final angle of repose"
+msgstr "流动距离与最终休止角"
+
+#: source/how-to/solver_tuning_mpm.rst:63
+msgid "``tensile_yield_ratio``"
+msgstr "``tensile_yield_ratio``"
+
+#: source/how-to/solver_tuning_mpm.rst:64
+msgid "0, 0.01, 0.05"
+msgstr "0, 0.01, 0.05"
+
+#: source/how-to/solver_tuning_mpm.rst:65
+msgid "Fragmentation versus tensile cohesion"
+msgstr "碎裂与拉伸内聚力的对比"
+
+#: source/how-to/solver_tuning_mpm.rst:66
+msgid "``yield_pressure``"
+msgstr "``yield_pressure``"
+
+#: source/how-to/solver_tuning_mpm.rst:67
+msgid "100 kPa, 1 MPa, 4 MPa"
+msgstr "100 kPa、1 MPa、4 MPa"
+
+#: source/how-to/solver_tuning_mpm.rst:68
+msgid "Onset and amount of irreversible compression"
+msgstr "不可逆压缩的起始时刻与程度"
+
+#: source/how-to/solver_tuning_mpm.rst:69
+msgid "``hardening``"
+msgstr "``hardening``"
+
+#: source/how-to/solver_tuning_mpm.rst:70
+msgid "0, 0.05, 5.0"
+msgstr "0, 0.05, 5.0"
+
+#: source/how-to/solver_tuning_mpm.rst:71
+msgid "Strength gained after plastic compaction"
+msgstr "塑性压实后的强度增长"
+
+#: source/how-to/solver_tuning_mpm.rst:72
+msgid "``dilatancy``"
+msgstr "``dilatancy``"
+
+#: source/how-to/solver_tuning_mpm.rst:73
+msgid "0, 0.1, 1.0"
+msgstr "0, 0.1, 1.0"
+
+#: source/how-to/solver_tuning_mpm.rst:74
+msgid "Compaction versus expansion under shear"
+msgstr "剪切过程中的压实与膨胀"
+
+#: source/how-to/solver_tuning_mpm.rst:75
+msgid "``yield_stress``"
+msgstr "``yield_stress``"
+
+#: source/how-to/solver_tuning_mpm.rst:76
+msgid "0, 10 kPa, 20 kPa"
+msgstr "0、10 kPa、20 kPa"
+
+#: source/how-to/solver_tuning_mpm.rst:77
+msgid "Cohesive flow and retained shape"
+msgstr "内聚流动与形状保持"
+
+#: source/how-to/solver_tuning_mpm.rst:78
+msgid "``viscosity``"
+msgstr "``viscosity``"
+
+#: source/how-to/solver_tuning_mpm.rst:79
+msgid "0, 10 Pa·s, 500 Pa·s"
+msgstr "0、10 Pa·s、500 Pa·s"
+
+#: source/how-to/solver_tuning_mpm.rst:80
+msgid "Rate-dependent plastic flow"
+msgstr "与变形速率有关的塑性流动"
+
+#: source/how-to/solver_tuning_mpm.rst:81
+msgid "``particle_jitter``"
+msgstr "``particle_jitter``"
+
+#: source/how-to/solver_tuning_mpm.rst:82
+msgid "0%, 30% of particle spacing"
+msgstr "0%、粒子间距的 30%"
+
+#: source/how-to/solver_tuning_mpm.rst:83
+msgid "Grid-alignment artifacts and packing symmetry"
+msgstr "网格对齐伪影与堆积对称性"
+
+#: source/how-to/solver_tuning_mpm.rst:87
+msgid "Design a Useful Parameter Study"
+msgstr "设计有效的参数研究"
+
+#: source/how-to/solver_tuning_mpm.rst:89
+msgid "Use these practices when designing a comparison:"
+msgstr "设计对比实验时，采用以下做法："
+
+#: source/how-to/solver_tuning_mpm.rst:91
+msgid ""
+"Change one physical quantity at a time. Use the same generated positions, "
+"particle mass, collider, timestep, and camera for every variant."
+msgstr "每次只改变一个物理量。各组实验使用相同的生成位置、粒子质量、碰撞体、时间步长和相机。"
+
+#: source/how-to/solver_tuning_mpm.rst:93
+msgid ""
+"Choose values that bracket visibly different regimes. Geometric spacing is "
+"usually more informative than small linear increments for stiffness, yield, "
+"viscosity, and coupling mass scales."
+msgstr "选择能覆盖明显不同响应区间的数值。对于刚度、屈服、黏度和耦合质量尺度，按几何级数取值通常比小幅线性递增更有参考价值。"
+
+#: source/how-to/solver_tuning_mpm.rst:96
+msgid ""
+"Preserve the feature the comparison is meant to explain. If a soft elastic "
+"specimen loses its silhouette before rebound can be read, reduce the impact "
+"energy or raise the lower end of the stiffness range. Do not shorten a clip "
+"merely to hide later breakup."
+msgstr "保留对比所要说明的特征。如果软弹性试样在能够观察回弹之前就失去轮廓，应降低冲击能量或提高刚度范围的下限。不要仅为隐藏后续碎裂而缩短录像。"
+
+#: source/how-to/solver_tuning_mpm.rst:100
+msgid ""
+"Use deterministic jitter for constitutive comparisons so lattice alignment "
+"does not dominate the motion. Keep the no-jitter case as a separate packing "
+"diagnostic."
+msgstr "本构对比采用确定性的随机扰动，避免晶格对齐主导运动。将无扰动的情况作为单独的堆积诊断。"
+
+#: source/how-to/solver_tuning_mpm.rst:103
+msgid ""
+"Run until impact, peak deformation, recovery or flow, and the final settled "
+"state are all visible. A short clip can make different materials appear "
+"identical."
+msgstr "运行足够长时间，使冲击、最大变形、恢复或流动，以及最终静止状态都清晰可见。过短的录像可能让不同材料看起来相同。"
+
+#: source/how-to/solver_tuning_mpm.rst:106
+msgid ""
+"Tune numerical resolution and timestep before interpreting material values. "
+"Record the voxel size, particles per voxel axis, particle count, physics "
+"timestep, substeps, iterations, tolerance, random seed, and code revision."
+msgstr ""
+"解读材料参数前，先调整数值分辨率与时间步长。记录体素大小、每个体素轴上的粒子数、粒子总数、物理时间步长、子步数、迭代次数、容差、随机种子和代码版本。"
+
+#: source/how-to/solver_tuning_mpm.rst:109
+msgid ""
+"Check a quantitative signal alongside the video when possible: center of "
+"mass, runout distance, rebound height, retained volume, or settled height."
+msgstr "尽可能在观察录像的同时检查定量信号，例如质心、流动距离、回弹高度、保留体积或静止后的高度。"
+
+#: source/how-to/solver_tuning_mpm.rst:112
+msgid ""
+"``particles_per_cell`` is the number of particles along one voxel axis. A "
+"value of ``2`` therefore produces approximately eight particles per filled "
+"voxel in 3D, not two. Refining both voxel size and particle density can "
+"increase memory and runtime rapidly."
+msgstr ""
+"``particles_per_cell`` 表示一个体素轴上的粒子数量。因此，三维中取值 ``2`` "
+"会在每个填充体素中产生约八个粒子，而非两个。同时细化体素大小和粒子密度，可能使内存用量和运行耗时迅速增加。"
+
+#: source/how-to/solver_tuning_mpm.rst:119
+msgid "Interpret the Comparisons"
+msgstr "解读对比结果"
+
+#: source/how-to/solver_tuning_mpm.rst:121
+msgid ""
+"**Elastic response:** Poisson's ratio changes both bulk and shear moduli at "
+"fixed Young's modulus. Values close to 0.5 approach incompressibility; this "
+"is not an independent sweep of volume stiffness. The recording uses 50 kPa "
+"Young's modulus and a gentler drop so the impact produces visible strain "
+"without obscuring the comparison through loss of the specimen silhouette."
+msgstr ""
+"**弹性响应：** 在杨氏模量固定时，泊松比同时改变体积模量与剪切模量。接近 0.5 的值对应近似不可压缩的情况，因此这不是单独扫描体积刚度。录像采用 "
+"50 kPa 的杨氏模量和较缓和的落下过程，使冲击产生可见应变，同时避免试样失去轮廓而妨碍比较。"
+
+#: source/how-to/solver_tuning_mpm.rst:126
+msgid ""
+"**Plastic response:** yielding, hardening, friction, and dilatancy interact."
+" Keep the other fields fixed within a preset, not necessarily between "
+"presets. A high-friction label is not a water-content model; these sand, "
+"snow, and clay labels describe illustrative responses rather than measured "
+"materials."
+msgstr ""
+"**塑性响应：** "
+"屈服、硬化、摩擦和剪胀会相互影响。应在同一预设内部保持其他字段不变，而不一定要求不同预设之间也相同。高摩擦标签并不表示含水量模型；这里的沙、雪和黏土标签用于说明响应，并非实测材料。"
+
+#: source/how-to/solver_tuning_mpm.rst:130
+msgid ""
+"**Nearly rigid MPM:** high stiffness and yield limits suppress intended "
+"strain and plastic flow but do not impose rigid-body constraints. Residual "
+"shape drift, contact differences, and particle sampling error can remain. "
+"Compare silhouettes and mass as well as motion; increase resolution only "
+"after checking timestep and convergence. Higher particle density is more "
+"expensive than a coarse comparison."
+msgstr ""
+"**近似刚性的 MPM：** "
+"高刚度和高屈服限值能抑制应变与塑性流动，但不会施加刚体约束。仍可能存在形状漂移、接触差异和粒子采样误差。除了运动，还应比较轮廓和质量；检查时间步长和收敛后再提高分辨率。较高的粒子密度比粗分辨率对比更耗资源。"
+
+#: source/how-to/solver_tuning_mpm.rst:139
+msgid "Example Recordings"
+msgstr "录像示例"
+
+#: source/how-to/solver_tuning_mpm.rst:141
+msgid ""
+"Recordings are hosted outside Git on the Isaac Lab documentation media host,"
+" following the other deformable tuning examples."
+msgstr "与其他可变形物体调优示例一样，录像存放在 Git 仓库之外的 Isaac Lab 文档媒体服务器上。"
+
+#: source/how-to/solver_tuning_mpm.rst:145
+msgid "Material Response"
+msgstr "材料响应"
+
+#: source/how-to/solver_tuning_mpm.rst:147
+msgid ""
+"The selected material clips were recorded in Kit at 1920 × 1080. Their "
+"annotations belong to those recordings; do not treat video duration as "
+"simulation time."
+msgstr "所选材料录像由 Kit 以 1920 × 1080 分辨率录制。标注只对应各自的录像；不要将视频时长视为仿真时间。"
+
+#: source/how-to/solver_tuning_mpm.rst:154
+msgid "Elastic stiffness"
+msgstr "弹性刚度"
+
+#: source/how-to/solver_tuning_mpm.rst:162
+msgid "Plate compression at 100 kPa, 300 kPa, and 1 MPa."
+msgstr "平板压缩，参数分别为 100 kPa、300 kPa 和 1 MPa。"
+
+#: source/how-to/solver_tuning_mpm.rst:165
+msgid "Compressibility"
+msgstr "可压缩性"
+
+#: source/how-to/solver_tuning_mpm.rst:173
+msgid ""
+"Plate compression at Poisson ratios 0.05, 0.30, and 0.499 with E = 50 kPa."
+msgstr "平板压缩，泊松比分别为 0.05、0.30 和 0.499，E = 50 kPa。"
+
+#: source/how-to/solver_tuning_mpm.rst:176
+msgid "Granular friction"
+msgstr "颗粒摩擦"
+
+#: source/how-to/solver_tuning_mpm.rst:184
+msgid "Runout for internal friction 0, 0.68, and 2.0; cohesion is unchanged."
+msgstr "内摩擦分别为 0、0.68 和 2.0 时的流动距离；内聚力保持不变。"
+
+#: source/how-to/solver_tuning_mpm.rst:187
+msgid "Tensile cohesion"
+msgstr "拉伸内聚力"
+
+#: source/how-to/solver_tuning_mpm.rst:195
+msgid "Tensile yield ratios 0, 0.01, and 0.05."
+msgstr "拉伸屈服比分别为 0、0.01 和 0.05。"
+
+#: source/how-to/solver_tuning_mpm.rst:198
+msgid "Pressure yielding"
+msgstr "压力屈服"
+
+#: source/how-to/solver_tuning_mpm.rst:206
+msgid "Stronger impact reveals compression at 100 kPa, 1 MPa, and 4 MPa."
+msgstr "较强冲击下，观察 100 kPa、1 MPa 和 4 MPa 时的压缩。"
+
+#: source/how-to/solver_tuning_mpm.rst:209
+msgid "Plastic hardening"
+msgstr "塑性硬化"
+
+#: source/how-to/solver_tuning_mpm.rst:217
+msgid "Fixed strength (0) versus slow (0.05) and rapid (5) strength buildup."
+msgstr "固定强度（0）与缓慢（0.05）、快速（5）强度增长的对比。"
+
+#: source/how-to/solver_tuning_mpm.rst:220
+msgid "Shear dilatancy"
+msgstr "剪胀"
+
+#: source/how-to/solver_tuning_mpm.rst:228
+msgid "Spreading and packing for dilatancy 0, 0.1, and 1."
+msgstr "剪胀参数为 0、0.1 和 1 时的铺展与堆积。"
+
+#: source/how-to/solver_tuning_mpm.rst:231
+msgid "Cohesive yield stress"
+msgstr "内聚屈服应力"
+
+#: source/how-to/solver_tuning_mpm.rst:239
+msgid "Retained shape at 0, 10 kPa, and 20 kPa."
+msgstr "0、10 kPa 和 20 kPa 时的形状保持。"
+
+#: source/how-to/solver_tuning_mpm.rst:242
+msgid "Plastic viscosity"
+msgstr "塑性黏度"
+
+#: source/how-to/solver_tuning_mpm.rst:250
+msgid "Rate of plastic flow at 0, 10 Pa·s, and 500 Pa·s."
+msgstr "0、10 Pa·s 和 500 Pa·s 时的塑性流动速率。"
+
+#: source/how-to/solver_tuning_mpm.rst:253
+msgid "Initial packing"
+msgstr "初始堆积"
+
+#: source/how-to/solver_tuning_mpm.rst:261
+msgid "Aligned sampling versus deterministic 30% particle-spacing jitter."
+msgstr "对齐采样与确定性扰动的对比，扰动幅度为粒子间距的 30%。"
+
+#: source/how-to/solver_tuning_mpm.rst:265
+msgid "Nearly Rigid Limit"
+msgstr "近似刚性极限"
+
+#: source/how-to/solver_tuning_mpm.rst:270
+msgid "Nearly rigid MPM versus MJWarp"
+msgstr "近似刚性 MPM 与 MJWarp 的对比"
+
+#: source/how-to/solver_tuning_mpm.rst:278
+msgid ""
+"Inspect matched colored primitives rolling down separated inclines. This "
+"older presentation recording is not an accuracy claim for the current "
+"implementation; high stiffness does not enforce rigid shape constraints."
+msgstr "观察配对的彩色几何体沿分开的斜坡滚下。这段较早的演示录像不代表当前实现的精度；高刚度并不会强制保持刚体形状。"

@@ -1,0 +1,558 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/schema_fragments.rst:4
+msgid "Schema Fragments"
+msgstr "模式片段"
+
+#: source/concepts/schema_fragments.rst:6
+msgid ""
+"Isaac Lab authors physics properties onto USD prims through *schema "
+"fragments*: small configuration classes that each mirror exactly one USD "
+"applied schema and write into a single attribute namespace. Because "
+"fragments compose in lists, one asset configuration can carry OpenUSD "
+"physics (``physics:*``), PhysX (``physx*:*``), and Newton (``newton:*`` / "
+"``mjc:*``) attributes side by side and run on any backend."
+msgstr ""
+"Isaac Lab 通过 *模式片段* 将物理属性写入 USD prim。每个片段是一个小型配置类，恰好对应一个 USD "
+"应用模式，并写入单一属性命名空间。片段可以在列表中组合，因此一个资产配置能够并列包含 OpenUSD 物理（ ``physics:*`` "
+"）、PhysX（ ``physx*:*`` ）和 Newton（ ``newton:*`` / ``mjc:*`` ）属性，并在任意后端运行。"
+
+#: source/concepts/schema_fragments.rst:12
+msgid ""
+"This page explains the fragment model, the prim-path expressions that target"
+" fragments at prims, and the spawner-level configuration surface. For the "
+"solver-common vs. backend-specific class tiers, see :ref:`schema-cfgs`. For "
+"the full class and function reference, see "
+":doc:`/source/api/lab/isaaclab.sim.schemas`."
+msgstr ""
+"本页介绍片段模型、将片段定位到 prim 的路径表达式，以及生成器层的配置接口。求解器通用类与后端特有类的分层见 :ref:`schema-cfgs` "
+"；完整的类和函数参考见 :doc:`/source/api/lab/isaaclab.sim.schemas` 。"
+
+#: source/concepts/schema_fragments.rst:18
+msgid "The fragment model"
+msgstr "片段模型"
+
+#: source/concepts/schema_fragments.rst:20
+msgid ""
+"Every fragment subclasses :class:`~isaaclab.sim.schemas.SchemaFragment` and "
+"declares which USD namespace its fields write to and which applied schema, "
+"if any, it owns. A fragment's "
+":attr:`~isaaclab.sim.schemas.SchemaFragment.func` names the callable that "
+"applies it to a prim; the default applier "
+"(:func:`~isaaclab.sim.schemas.apply_namespaced`) writes each non-``None`` "
+"field as ``<namespace>:<camelCase(field)>`` and leaves ``None`` fields "
+"untouched (partial update). Irregular APIs override ``func`` — for example "
+":class:`~isaaclab.sim.schemas.UsdPhysicsDriveCfg` dispatches through "
+":func:`~isaaclab.sim.schemas.apply_drive` to handle the multi-instance "
+"``UsdPhysics.DriveAPI``."
+msgstr ""
+"各片段继承 :class:`~isaaclab.sim.schemas.SchemaFragment` ，声明字段写入的 USD "
+"命名空间，以及自己负责的应用模式（如果有）。片段的 :attr:`~isaaclab.sim.schemas.SchemaFragment.func` "
+"指定将其应用到 prim 的可调用对象。默认应用函数（ :func:`~isaaclab.sim.schemas.apply_namespaced` "
+"）将各非 ``None`` 字段写为 ``<namespace>:<camelCase(field)>`` ，不修改 ``None`` "
+"字段（部分更新）。特殊 API 会覆盖 ``func`` ，例如 "
+":class:`~isaaclab.sim.schemas.UsdPhysicsDriveCfg` 通过 "
+":func:`~isaaclab.sim.schemas.apply_drive` 分发，处理多实例 ``UsdPhysics.DriveAPI`` 。"
+
+#: source/concepts/schema_fragments.rst:31
+msgid ""
+"Fragments are grouped into *families*, one per spawner slot. Each family has"
+" a writer that resolves target prims from an expression and dispatches every"
+" fragment via its ``func``. Backend fragments carry backend-specific "
+"appliers, so the core package never imports a backend:"
+msgstr ""
+"片段分为多个 *属性族*，每个生成器槽位对应一个属性族。各族有自己的写入器，根据表达式解析目标 prim，再通过各片段的 ``func`` "
+"分发。后端片段携带后端特有的应用函数，因此核心包无需导入后端："
+
+#: source/concepts/schema_fragments.rst:40
+msgid "Spawner field"
+msgstr "生成器字段"
+
+#: source/concepts/schema_fragments.rst:41
+msgid "Family writer"
+msgstr "属性族写入器"
+
+#: source/concepts/schema_fragments.rst:42
+msgid "Valid targets"
+msgstr "有效目标"
+
+#: source/concepts/schema_fragments.rst:43
+msgid "``rigid_props``"
+msgstr "``rigid_props``"
+
+#: source/concepts/schema_fragments.rst:44
+msgid ":func:`~isaaclab.sim.schemas.apply_rigid_body_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_rigid_body_properties`"
+
+#: source/concepts/schema_fragments.rst:45
+msgid "prims with ``UsdPhysics.RigidBodyAPI``"
+msgstr "带有 ``UsdPhysics.RigidBodyAPI`` 的 prim"
+
+#: source/concepts/schema_fragments.rst:46
+msgid "``collision_props``"
+msgstr "``collision_props``"
+
+#: source/concepts/schema_fragments.rst:47
+msgid ":func:`~isaaclab.sim.schemas.apply_collision_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_collision_properties`"
+
+#: source/concepts/schema_fragments.rst:48
+msgid "prims with ``UsdPhysics.CollisionAPI``"
+msgstr "带有 ``UsdPhysics.CollisionAPI`` 的 prim"
+
+#: source/concepts/schema_fragments.rst:49
+msgid "``mass_props``"
+msgstr "``mass_props``"
+
+#: source/concepts/schema_fragments.rst:50
+msgid ":func:`~isaaclab.sim.schemas.apply_mass_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_mass_properties`"
+
+#: source/concepts/schema_fragments.rst:51
+msgid "prims with ``UsdPhysics.MassAPI``"
+msgstr "带有 ``UsdPhysics.MassAPI`` 的 prim"
+
+#: source/concepts/schema_fragments.rst:52
+msgid "``articulation_props``"
+msgstr "``articulation_props``"
+
+#: source/concepts/schema_fragments.rst:53
+msgid ":func:`~isaaclab.sim.schemas.apply_articulation_root_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_articulation_root_properties`"
+
+#: source/concepts/schema_fragments.rst:54
+msgid "prims with ``UsdPhysics.ArticulationRootAPI``"
+msgstr "带有 ``UsdPhysics.ArticulationRootAPI`` 的 prim"
+
+#: source/concepts/schema_fragments.rst:55
+msgid "``joint_drive_props``"
+msgstr "``joint_drive_props``"
+
+#: source/concepts/schema_fragments.rst:56
+msgid ":func:`~isaaclab.sim.schemas.apply_joint_drive_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_joint_drive_properties`"
+
+#: source/concepts/schema_fragments.rst:57
+msgid "revolute / prismatic joint prims"
+msgstr "旋转 / 移动关节 prim"
+
+#: source/concepts/schema_fragments.rst:58
+msgid "``fixed_tendons_props``"
+msgstr "``fixed_tendons_props``"
+
+#: source/concepts/schema_fragments.rst:59
+msgid ":func:`~isaaclab.sim.schemas.apply_fixed_tendon_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_fixed_tendon_properties`"
+
+#: source/concepts/schema_fragments.rst:60
+msgid "tendon-bearing prims (existing tendon instances)"
+msgstr "带有肌腱的 prim（已有肌腱实例）"
+
+#: source/concepts/schema_fragments.rst:61
+msgid "``spatial_tendons_props``"
+msgstr "``spatial_tendons_props``"
+
+#: source/concepts/schema_fragments.rst:62
+msgid ":func:`~isaaclab.sim.schemas.apply_spatial_tendon_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_spatial_tendon_properties`"
+
+#: source/concepts/schema_fragments.rst:63
+msgid "tendon attachment root prims"
+msgstr "肌腱附着点根 prim"
+
+#: source/concepts/schema_fragments.rst:64
+msgid "``volume_deformable_props``"
+msgstr "``volume_deformable_props``"
+
+#: source/concepts/schema_fragments.rst:65
+msgid ":func:`~isaaclab.sim.schemas.apply_volume_deformable_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_volume_deformable_properties`"
+
+#: source/concepts/schema_fragments.rst:66
+msgid "volume deformable-body prims (``UsdGeom.TetMesh`` simulation mesh)"
+msgstr "体积可变形物体 prim（ ``UsdGeom.TetMesh`` 仿真网格）"
+
+#: source/concepts/schema_fragments.rst:67
+msgid "``surface_deformable_props``"
+msgstr "``surface_deformable_props``"
+
+#: source/concepts/schema_fragments.rst:68
+msgid ":func:`~isaaclab.sim.schemas.apply_surface_deformable_properties`"
+msgstr ":func:`~isaaclab.sim.schemas.apply_surface_deformable_properties`"
+
+#: source/concepts/schema_fragments.rst:69
+msgid "surface deformable-body prims (triangle-mesh simulation mesh)"
+msgstr "表面可变形物体 prim（三角仿真网格）"
+
+#: source/concepts/schema_fragments.rst:71
+msgid ""
+"The tendon families are *tune-not-apply*: the tendon topology is authored in"
+" the source asset, so their writers only tune existing instances and never "
+"create them. The deformable families sit at the other end of that spectrum: "
+"see :ref:`schema-fragments-deformable`. PhysX tendon fragments use "
+"``instance_names`` to select one or more instances on each matching prim; "
+"``None`` (the default) broadcasts to all existing instances."
+msgstr ""
+"肌腱属性族遵循 *只调整、不创建* 的原则：肌腱拓扑在源资产中编写，其写入器只调整已有实例，从不创建实例。可变形属性族则相反，参见 "
+":ref:`schema-fragments-deformable` 。PhysX 肌腱片段使用 ``instance_names`` 在每个匹配 "
+"prim 上选择一个或多个实例； ``None`` （默认值）表示应用到所有已有实例。"
+
+#: source/concepts/schema_fragments.rst:78
+msgid ""
+"A fixed tendon is split at the same boundary as the PhysX schemas: the root "
+"fragment owns whole-tendon dynamics and limits, while the axis fragment owns"
+" each joint's contribution. Prim-path matching chooses the joints and "
+"``instance_names`` chooses the tendon on those joints:"
+msgstr ""
+"固定肌腱按 PhysX 模式的边界拆分：根片段负责整个肌腱的动力学和限制，轴片段负责各关节的贡献。prim 路径匹配选择关节， "
+"``instance_names`` 选择这些关节上的肌腱："
+
+#: source/concepts/schema_fragments.rst:98
+msgid "Targeting expressions"
+msgstr "目标表达式"
+
+#: source/concepts/schema_fragments.rst:100
+msgid ""
+"Target prims are resolved with "
+":func:`~isaaclab.sim.utils.queries.find_matching_prims`. The expression is a"
+" plain Python regular expression matched against the *whole* prim path. "
+"Standard regex semantics apply: ``.`` matches any character including ``/``,"
+" so ``/World/Robot/.*`` selects every descendant at any depth, while "
+"``[^/]+`` confines a wildcard to a single path segment and "
+"``/World/Robot(/.*)?`` selects the prim together with its descendants. The "
+"traversal includes inactive and undefined prims as well as instance proxies."
+msgstr ""
+"目标 prim 通过 :func:`~isaaclab.sim.utils.queries.find_matching_prims` 解析。表达式是普通"
+" Python 正则表达式，与 *整个* prim 路径匹配，遵循标准正则语义： ``.`` 匹配任意字符，包括 ``/`` 。因此 "
+"``/World/Robot/.*`` 选择任意深度的所有后代， ``[^/]+`` 将通配范围限制为一个路径段， "
+"``/World/Robot(/.*)?`` 则选择该 prim 及其后代。遍历包含未激活、未定义的 prim，以及实例代理。"
+
+#: source/concepts/schema_fragments.rst:108
+msgid ""
+"The matched set is then filtered to valid family targets (see the table "
+"above): API carriers for the rigid-body, collision, mass, and articulation "
+"families; revolute and prismatic joint prims for the joint-drive family; "
+"tendon-bearing prims for the tendon families. Non-joint matches of a joint-"
+"drive expression are ignored silently, since a subtree expression "
+"legitimately sweeps whole subtrees."
+msgstr ""
+"随后按属性族的有效目标过滤匹配集合（见上表）：刚体、碰撞、质量和关节体属性族要求目标带有相应 API；关节驱动属性族要求旋转或移动关节 "
+"prim；肌腱属性族要求带有肌腱的 prim。关节驱动表达式匹配到的非关节目标会被静默忽略，因为对子树使用表达式时，匹配整棵子树是合理的。"
+
+#: source/concepts/schema_fragments.rst:114
+msgid "Edge cases behave as follows:"
+msgstr "边界情况如下："
+
+#: source/concepts/schema_fragments.rst:116
+msgid ""
+"**Instanced matches** cannot be authored on (prototypes are read-only) and "
+"are skipped with a warning."
+msgstr "**实例化的匹配项** 不可写入（原型为只读），会被跳过并发出警告。"
+
+#: source/concepts/schema_fragments.rst:118
+msgid ""
+"**Zero targets** emit a warning and the writer returns ``False`` without "
+"authoring anything."
+msgstr "**没有目标** 时发出警告，写入器不写入任何内容并返回 ``False`` 。"
+
+#: source/concepts/schema_fragments.rst:120
+msgid "**An empty fragment list** is an authoring no-op and returns ``True``."
+msgstr "**片段列表为空** 时不执行写入，返回 ``True`` 。"
+
+#: source/concepts/schema_fragments.rst:123
+msgid "Configuring fragments on spawners"
+msgstr "在生成器上配置片段"
+
+#: source/concepts/schema_fragments.rst:125
+msgid ""
+"Spawner configurations "
+"(:class:`~isaaclab.sim.spawners.from_files.UsdFileCfg`, "
+":class:`~isaaclab.sim.spawners.shapes.CuboidCfg`, ...) expose one field per "
+"family. Each field accepts either a mapping from target pattern to a list of"
+" fragments, a bare fragment or list of fragments (see the shorthand below), "
+"a single legacy dataclass cfg (e.g. "
+":class:`~isaaclab.sim.schemas.RigidBodyBaseCfg` or a backend "
+"``*PropertiesCfg``, routed to the legacy writers), or ``None``."
+msgstr ""
+"生成器配置（ :class:`~isaaclab.sim.spawners.from_files.UsdFileCfg` 、 "
+":class:`~isaaclab.sim.spawners.shapes.CuboidCfg` "
+"等）为每个属性族提供一个字段。字段接受：目标模式到片段列表的映射；单个片段或片段列表（见下方简写）；单个旧式数据类配置（例如 "
+":class:`~isaaclab.sim.schemas.RigidBodyBaseCfg` 或后端的 ``*PropertiesCfg`` "
+"，分发到旧式写入器）；或者 ``None`` 。"
+
+#: source/concepts/schema_fragments.rst:133
+msgid ""
+"Mapping keys are regular-expression suffixes appended to *the prim the "
+"spawner authors that family on*: the spawn prim for USD, URDF, and MJCF "
+"assets; for shape and mesh spawners, the geometry prim for the collision "
+"family and the container prim for the rigid-body and mass families. A key "
+"therefore carries its own leading ``/`` when it targets descendants: "
+"``\"\"`` selects the anchor prim itself, ``\"/[^/]+\"`` its direct children,"
+" and ``\"/.*\"`` everything beneath it. Prefer ``\"/.*\"`` for a whole-"
+"subtree rule: the anchor is usually a plain ``Xform`` that carries no family"
+" API, so including it changes nothing — except under ``create_if_missing``, "
+"where ``\"(/.*)?\"`` would also apply the API to the anchor itself. Reach "
+"for ``\"(/.*)?\"`` only when the anchor is genuinely a target too. Entries "
+"apply in insertion order, so when two patterns match the same prim, "
+"fragments from later entries override attributes authored by earlier ones."
+msgstr ""
+"映射键是正则表达式后缀，附加在 *生成器写入该属性族的 prim* 之后：USD、URDF 和 MJCF 资产使用生成 "
+"prim；形状和网格生成器的碰撞属性族使用几何 prim，刚体和质量属性族使用容器 prim。因此，选择后代时键自身需要带前导 ``/`` ： "
+"``\"\"`` 选择锚定 prim 本身， ``\"/[^/]+\"`` 选择直接子节点， ``\"/.*\"`` "
+"选择其下方所有节点。整棵子树的规则优先使用 ``\"/.*\"`` ：锚点通常是没有属性族 API 的普通 ``Xform`` "
+"，包含它不会改变结果；但启用 ``create_if_missing`` 时， ``\"(/.*)?\"`` 还会将 API "
+"应用到锚点本身。只有锚点也确实是目标时才使用 ``\"(/.*)?\"`` 。条目按插入顺序应用；两个模式匹配同一 prim "
+"时，后面的片段会覆盖前面写入的属性。"
+
+#: source/concepts/schema_fragments.rst:145
+msgid ""
+"The bare fragment (or list of fragments) shorthand skips the mapping when a "
+"rule needs no targeting of its own. On the shape and mesh spawners it "
+"targets the anchor prim, the only prim those spawners author. On the file "
+"spawners it targets the spawn prim together with its descendants, so it "
+"reaches the schema carriers wherever the asset puts them; and when the "
+"subtree carries no prim with the family's defining API at all — the usual "
+"shape of an art asset shipped without physics schemas — the file spawners "
+"apply that API to the spawn prim and author there, turning the asset into a "
+"single body."
+msgstr ""
+"规则无需单独指定目标时，可直接传入片段或片段列表，省略映射。在形状和网格生成器上，这种简写作用于锚定 prim，也是这些生成器唯一编写的 "
+"prim。在文件生成器上，它作用于生成 prim 及其后代，因此无论资产将模式放在哪里，都能找到带模式的 prim。如果整棵子树完全没有带该属性族基础 "
+"API 的 prim（不含物理模式的美术资产通常如此），文件生成器会将该 API 应用到生成 prim 并在那里写入，将资产变为单个刚体。"
+
+#: source/concepts/schema_fragments.rst:153
+msgid "A robot spawned from USD, with a broad rule and a narrowing override:"
+msgstr "从 USD 生成机器人，先应用宽泛规则，再通过更小范围的规则覆盖："
+
+#: source/concepts/schema_fragments.rst:180
+msgid ""
+"A primitive shape, where every family targets the anchor prim, so the "
+"mapping can be dropped entirely:"
+msgstr "对于基本形状，各属性族都以锚定 prim 为目标，因此可以完全省略映射："
+
+#: source/concepts/schema_fragments.rst:196
+msgid ""
+"Reach for the mapping when a rule must target something other than the "
+"anchor prim — the usual situation for assets spawned from USD, URDF, or MJCF"
+" files, where the spawn prim is a container and the schema carriers sit "
+"beneath it."
+msgstr ""
+"规则需要作用于锚点以外的目标时，使用映射。从 USD、URDF 或 MJCF 文件生成资产时通常如此：生成 prim 是容器，带模式的 prim "
+"位于其下方。"
+
+#: source/concepts/schema_fragments.rst:201
+msgid "Creating missing APIs"
+msgstr "创建缺失的 API"
+
+#: source/concepts/schema_fragments.rst:203
+msgid ""
+"By default, the family writers only *modify* prims that already carry the "
+"family's defining USD API. Three per-family spawner flags — "
+"``mass_props_create_if_missing``, ``articulation_props_create_if_missing``, "
+"and ``joint_drive_props_create_if_missing`` — additionally apply the "
+"defining API to matched prims that lack it before the fragments are authored"
+" (for the joint-drive family, the axis-appropriate ``UsdPhysics.DriveAPI`` "
+"instance). Shape and mesh spawners always create the APIs on the bare prims "
+"they author, since freshly created geometry carries no physics APIs yet."
+msgstr ""
+"默认情况下，属性族写入器只 *修改* 已带有该族基础 USD API 的 prim。生成器提供三个逐属性族开关： "
+"``mass_props_create_if_missing`` 、 ``articulation_props_create_if_missing`` "
+"和 ``joint_drive_props_create_if_missing`` ，可在写入片段前，为匹配但缺少 API 的 prim 应用基础 "
+"API（关节驱动属性族使用适合该轴的 ``UsdPhysics.DriveAPI`` 实例）。形状和网格生成器总会为其编写的原始 prim 创建 "
+"API，因为新创建的几何体尚无物理 API。"
+
+#: source/concepts/schema_fragments.rst:211
+msgid ""
+"The writers trust the expression as written: with creation enabled, every "
+"matched prim receives the API, so a too-broad pattern can, for example, give"
+" every mesh in a subtree its own mass. Which bodies participate in an "
+"articulation is still decided by the asset's joints, not by the expression. "
+"Scope creation patterns deliberately."
+msgstr ""
+"写入器严格按表达式执行：启用创建后，每个匹配 prim 都会得到 "
+"API。因此，过宽的模式可能为子树中的每个网格分别设置质量。哪些刚体参与关节体仍由资产的关节决定，而非表达式。请仔细限定创建模式的范围。"
+
+#: source/concepts/schema_fragments.rst:219
+msgid "Deformable bodies"
+msgstr "可变形物体"
+
+#: source/concepts/schema_fragments.rst:221
+msgid ""
+"The deformable families invert the \"modify existing\" default: the "
+"``volume_deformable_props`` / ``surface_deformable_props`` writers "
+"(:func:`~isaaclab.sim.schemas.apply_volume_deformable_properties` / "
+":func:`~isaaclab.sim.schemas.apply_surface_deformable_properties`) always "
+"create a full deformable-body setup on a matched prim that lacks one, with "
+"no opt-in flag to set. Fragments for both slots subclass "
+":class:`~isaaclab.sim.schemas.DeformableBodyFragment`; the core-owned "
+":class:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg` carries the "
+"solver-common fields (``deformable_body_enabled``, ``kinematic_enabled``, "
+"``mass``). PhysX adds its own body-tuning fragments "
+"(``PhysxDeformableBodyCfg`` for shared solver/damping attributes, "
+"``PhysxSurfaceDeformableBodyCfg`` narrowed to surface deformables) in "
+":mod:`isaaclab_physx.sim.schemas`. Newton needs no additional body fragment."
+msgstr ""
+"可变形属性族与默认的“修改已有对象”行为相反： ``volume_deformable_props`` / "
+"``surface_deformable_props`` 写入器（ "
+":func:`~isaaclab.sim.schemas.apply_volume_deformable_properties` / "
+":func:`~isaaclab.sim.schemas.apply_surface_deformable_properties` "
+"）总会为尚无相应配置的匹配 prim 创建完整的可变形物体，无需额外启用开关。两个槽位的片段都继承 "
+":class:`~isaaclab.sim.schemas.DeformableBodyFragment` ；核心包中的 "
+":class:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg` 提供求解器通用字段（ "
+"``deformable_body_enabled`` 、 ``kinematic_enabled`` 、 ``mass`` ）。PhysX 在 "
+":mod:`isaaclab_physx.sim.schemas` 中增加自己的调整片段： ``PhysxDeformableBodyCfg`` "
+"提供共享的求解器/阻尼属性， ``PhysxSurfaceDeformableBodyCfg`` 仅用于表面可变形物体。Newton "
+"不需要额外的物体片段。"
+
+#: source/concepts/schema_fragments.rst:233
+msgid ""
+"At most one of the two slots may be set on a spawner: a mesh is spawned as "
+"either a volume deformable (tetrahedralized interior) or a surface "
+"deformable (cloth-like), never both. The slot's mapping keys are regular-"
+"expression suffixes appended to the *spawn* prim — unlike the other "
+"families, this holds for every spawner type, including shape and mesh "
+"spawners whose other families anchor at the geometry or container prim "
+"instead. The empty string ``\"\"`` again selects the spawn prim itself, and "
+"``\"(/.*)?\"`` selects it together with its subtree."
+msgstr ""
+"生成器最多只能设置这两个槽位中的一个：网格要么生成为体积可变形物体（内部四面体划分），要么生成为表面可变形物体（类似布料），不能同时采用两者。槽位的映射键是附加到"
+" *生成 prim* 后的正则表达式后缀；与其他属性族不同，这对所有生成器类型都成立，包括其他属性族以几何或容器 prim "
+"为锚点的形状和网格生成器。空字符串 ``\"\"`` 同样选择生成 prim 本身， ``\"(/.*)?\"`` 选择它及其子树。"
+
+#: source/concepts/schema_fragments.rst:240
+msgid ""
+"Creating the deformable setup on a matched prim without the anchor happens "
+"in three steps:"
+msgstr "对于没有基础模式的匹配 prim，创建可变形物体配置分为三步："
+
+#: source/concepts/schema_fragments.rst:242
+msgid ""
+"**Simulation mesh.** A ``sim_mesh`` child prim is authored under the target "
+"(the name is configurable via the writer's ``sim_mesh_name`` argument). For "
+"surface deformables this is a triangle-mesh copy of the visual mesh; for "
+"volume deformables it is a tetrahedralized ``UsdGeom.TetMesh`` — reused in "
+"place, without re-tetrahedralizing, when the source asset already ships a "
+"pre-tetrahedralized ``UsdGeom.TetMesh`` child."
+msgstr ""
+"**仿真网格。** 在目标下编写 ``sim_mesh`` 子 prim（名称可通过写入器的 ``sim_mesh_name`` "
+"参数配置）。表面可变形物体使用可视网格的三角网格副本；体积可变形物体使用经过四面体划分的 ``UsdGeom.TetMesh`` 。源资产已有预先划分的"
+" ``UsdGeom.TetMesh`` 子节点时，原地复用，不重复划分。"
+
+#: source/concepts/schema_fragments.rst:247
+msgid ""
+"**Backend anchor.** The active physics backend applies its own anchor "
+"schemas through ``PhysicsManager.setup_deformable_body``: PhysX applies the "
+"real ``OmniPhysicsDeformableBodyAPI`` to the body prim (the same single "
+"schema for both deformable types) and the type-dependent "
+"``OmniPhysicsVolumeDeformableSimAPI`` / "
+"``OmniPhysicsSurfaceDeformableSimAPI`` to the simulation-mesh prim, while "
+"Newton applies its own (currently token-only) ``Physics*`` schemas. Core "
+"fragments own no applied schema of their own — "
+":class:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg` only writes into"
+" the ``omniphysics:*`` namespace once the anchor exists."
+msgstr ""
+"**后端基础模式。** 当前物理后端通过 ``PhysicsManager.setup_deformable_body`` "
+"应用自己的基础模式。PhysX 在物体 prim 上应用真正的 ``OmniPhysicsDeformableBodyAPI`` "
+"（两种可变形类型使用同一个模式），并在仿真网格 prim 上根据类型应用 ``OmniPhysicsVolumeDeformableSimAPI`` /"
+" ``OmniPhysicsSurfaceDeformableSimAPI`` 。Newton 应用自己的 ``Physics*`` 模式（目前仅为 "
+"token）。核心片段没有自己的应用模式； "
+":class:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg` 只在基础模式存在后写入 "
+"``omniphysics:*`` 命名空间。"
+
+#: source/concepts/schema_fragments.rst:255
+msgid ""
+"**Fragment dispatch.** Every fragment in the matched slot is applied to the "
+"target, in list order, exactly like the other families."
+msgstr "**片段分发。** 将匹配槽位中的每个片段按列表顺序应用到目标，与其他属性族完全相同。"
+
+#: source/concepts/schema_fragments.rst:258
+msgid ""
+"``UsdPhysics.MassAPI`` is not honored for deformables: set mass through "
+":attr:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg.mass` instead."
+msgstr ""
+"可变形物体不读取 ``UsdPhysics.MassAPI`` ；请通过 "
+":attr:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg.mass` 设置质量。"
+
+#: source/concepts/schema_fragments.rst:261
+msgid ""
+"Because the simulation mesh already carries ``UsdPhysics.CollisionAPI`` once"
+" created, its collision offsets ride the existing collision family rather "
+"than a deformable-specific one: key ``collision_props`` to the simulation-"
+"mesh child (``\"/sim_mesh\"`` by default), anchored the same way as the "
+"deformable slot itself, relative to the spawn prim."
+msgstr ""
+"仿真网格创建后已带有 ``UsdPhysics.CollisionAPI`` ，因此碰撞偏移使用现有碰撞属性族，而非可变形物体专属属性族：将 "
+"``collision_props`` 的键指向仿真网格子节点（默认为 ``\"/sim_mesh\"`` ），与可变形槽位一样，相对于生成 prim "
+"定位。"
+
+#: source/concepts/schema_fragments.rst:266
+msgid ""
+"Physics materials widen the same way: ``physics_material`` accepts "
+"deformable material fragments (subclasses of ``DeformableMaterialFragment`` "
+"in :mod:`isaaclab.sim.spawners.materials`, e.g. "
+"``OmniPhysicsDeformableMaterialCfg`` / "
+"``OmniPhysicsSurfaceDeformableMaterialCfg``) and mixed lists that combine a "
+"rigid-body material fragment with a deformable one. The "
+"``UsdPhysics.MaterialAPI`` anchor is applied only when the list contains a "
+"rigid-body material fragment; deformable material fragments apply their own "
+"schema (e.g. ``OmniPhysicsDeformableMaterialAPI``) independently, since a "
+"material prim bound only to deformable bodies has no rigid-body material "
+"semantics to anchor."
+msgstr ""
+"物理材质也采用同样的扩展方式： ``physics_material`` 接受可变形材质片段（ "
+":mod:`isaaclab.sim.spawners.materials` 中 ``DeformableMaterialFragment`` "
+"的子类，例如 ``OmniPhysicsDeformableMaterialCfg`` / "
+"``OmniPhysicsSurfaceDeformableMaterialCfg`` "
+"），也接受将刚体材质片段与可变形片段组合的混合列表。只有列表包含刚体材质片段时，才应用 ``UsdPhysics.MaterialAPI`` "
+"基础模式；可变形材质片段独立应用自身模式（例如 ``OmniPhysicsDeformableMaterialAPI`` "
+"），因为仅绑定到可变形物体的材质 prim 不具有需要该基础模式的刚体材质语义。"
+
+#: source/concepts/schema_fragments.rst:275
+msgid ""
+"A cuboid mesh spawned as a volume deformable, with PhysX solver tuning, a "
+"collision offset on the simulation mesh, and a mixed PhysX/Newton material:"
+msgstr "将长方体网格生成为体积可变形物体，配置 PhysX 求解器参数、仿真网格上的碰撞偏移，以及混合的 PhysX/Newton 材质："
+
+#: source/concepts/schema_fragments.rst:299
+msgid "See also"
+msgstr "另请参阅"
+
+#: source/concepts/schema_fragments.rst:301
+msgid ""
+":ref:`schema-cfgs` — solver-common vs. backend-specific configuration tiers"
+msgstr ":ref:`schema-cfgs` — 求解器通用和后端特有配置的分层"
+
+#: source/concepts/schema_fragments.rst:302
+msgid ""
+":doc:`/source/api/lab/isaaclab.sim.schemas` — fragment base classes and "
+"family writers"
+msgstr ":doc:`/source/api/lab/isaaclab.sim.schemas` — 片段基类和属性族写入器"
+
+#: source/concepts/schema_fragments.rst:303
+msgid ""
+":doc:`/source/api/lab_physx/isaaclab_physx.sim.schemas` — PhysX fragments"
+msgstr ":doc:`/source/api/lab_physx/isaaclab_physx.sim.schemas` — PhysX 片段"
+
+#: source/concepts/schema_fragments.rst:304
+msgid ""
+":doc:`/source/api/lab_newton/isaaclab_newton.sim.schemas` — Newton / MuJoCo "
+"fragments"
+msgstr ""
+":doc:`/source/api/lab_newton/isaaclab_newton.sim.schemas` — Newton / MuJoCo "
+"片段"

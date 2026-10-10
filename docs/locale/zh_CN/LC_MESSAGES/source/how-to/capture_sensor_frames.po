@@ -1,0 +1,476 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/capture_sensor_frames.rst:6
+msgid "Capturing sensor frames during training"
+msgstr "在训练期间采集传感器帧"
+
+#: source/how-to/capture_sensor_frames.rst:8
+msgid ""
+"Isaac Lab supports saving image-like outputs from scene sensors during "
+"training using the ``CaptureEnvSensors`` Gymnasium wrapper. When "
+"``--capture_env_sensors`` is set to a positive value, Isaac Lab iterates "
+"over the environment's :class:`~isaaclab.scene.InteractiveScene` sensors and"
+" writes each sensor's ``data.output`` tensors (for example, ``rgb``, "
+"``depth``, or ``normals`` from a :class:`~isaaclab.sensors.Camera`). The "
+"flag value is the number of parallel environment views to tile into each "
+"saved frame grid. This differs from :doc:`/source/features/record_video`, "
+"which records a single perspective viewport clip of the scene."
+msgstr ""
+"Isaac Lab 支持通过 ``CaptureEnvSensors`` Gymnasium 包装器，在训练期间保存场景传感器的图像类输出。将 "
+"``--capture_env_sensors`` 设为正值后，Isaac Lab 会遍历环境的 "
+":class:`~isaaclab.scene.InteractiveScene` 传感器，并写出各传感器的 ``data.output`` 张量（例如"
+" :class:`~isaaclab.sensors.Camera` 的 ``rgb`` 、 ``depth`` 或 ``normals`` "
+"）。该参数值指定每张保存的帧网格中拼接的并行环境视图数量。这与 :doc:`/source/features/record_video` "
+"不同，后者录制场景中单一透视视口的视频片段。"
+
+#: source/how-to/capture_sensor_frames.rst:16
+msgid ""
+"The capture flags are registered on the shared training entrypoints for RSL-"
+"RL, RL-Games, Stable Baselines3, and skrl. They are not available on "
+"``play`` scripts."
+msgstr ""
+"采集参数已注册到 RSL-RL、RL-Games、Stable Baselines3 和 skrl 的共享训练入口中， ``play`` "
+"脚本不支持这些参数。"
+
+#: source/how-to/capture_sensor_frames.rst:19
+msgid ""
+"This feature can be enabled using the following command line arguments with "
+"``./isaaclab.sh train``:"
+msgstr "使用 ``./isaaclab.sh train`` 时，可通过以下命令行参数启用此功能："
+
+#: source/how-to/capture_sensor_frames.rst:22
+msgid ""
+"``--capture_env_sensors``: number of parallel environments to include in "
+"each saved frame grid (default: ``0``, which disables capture)"
+msgstr "``--capture_env_sensors`` ：每张保存的帧网格包含的并行环境数量（默认 ``0`` ，表示禁用采集）"
+
+#: source/how-to/capture_sensor_frames.rst:24
+msgid ""
+"``--capture_env_sensors_length``: length of each captured sensor frame "
+"window in **per-episode** steps (default: ``200``). Set to ``0`` to disable "
+"saving even when ``--capture_env_sensors`` is positive."
+msgstr ""
+"``--capture_env_sensors_length`` ：每个传感器帧采集窗口的长度，以 **每回合内的** 步数计（默认 ``200`` "
+"）。设为 ``0`` 时，即使 ``--capture_env_sensors`` 为正值，也不会保存。"
+
+#: source/how-to/capture_sensor_frames.rst:27
+msgid ""
+"``--capture_env_sensors_interval``: interval between captured sensor frame "
+"windows in **per-episode** steps (default: ``2000``)"
+msgstr ""
+"``--capture_env_sensors_interval`` ：传感器帧采集窗口之间的间隔，以 **每回合内的** 步数计（默认 "
+"``2000`` ）"
+
+#: source/how-to/capture_sensor_frames.rst:29
+msgid ""
+"``--capture_env_sensors_format``: output format, either ``tensorboard`` "
+"(default) or ``file``"
+msgstr ""
+"``--capture_env_sensors_format`` ：输出格式，为 ``tensorboard`` （默认）或 ``file``"
+
+#: source/how-to/capture_sensor_frames.rst:31
+msgid ""
+"Enabling sensor capture automatically enables camera rendering during "
+"training, the same as ``--video``, which slows down both startup and runtime"
+" performance. Sensor capture can also be used at the same time as "
+"``--video`` when both per-sensor frames and a perspective viewport clip are "
+"needed."
+msgstr ""
+"启用传感器采集会自动开启训练中的相机渲染，与 ``--video`` "
+"相同，因此启动和运行速度都会降低。如果既需要逐传感器帧，又需要透视视口视频片段，可以同时使用传感器采集和 ``--video`` 。"
+
+#: source/how-to/capture_sensor_frames.rst:36
+msgid "Example usage:"
+msgstr "示例用法: "
+
+#: source/how-to/capture_sensor_frames.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/capture_sensor_frames.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/capture_sensor_frames.rst:54
+msgid ""
+"The captured frames will be saved in the same directory as the training "
+"checkpoints, under ``logs/<rl_workflow>/<task>/<run>/sensor_frames/train``. "
+"Here ``<run>`` is the training run directory (the same timestamped folder "
+"used for checkpoints and ``run.json``), not the per-episode index used in "
+"output tags and file names."
+msgstr ""
+"采集的帧与训练检查点保存在同一目录下，具体位置为 "
+"``logs/<rl_workflow>/<task>/<run>/sensor_frames/train`` 。其中 ``<run>`` "
+"是本次训练的运行目录（即保存检查点和 ``run.json`` 的带时间戳文件夹），不是输出标签和文件名中使用的回合索引。"
+
+#: source/how-to/capture_sensor_frames.rst:61
+msgid "Overview"
+msgstr "概述"
+
+#: source/how-to/capture_sensor_frames.rst:63
+msgid ""
+"The sensor capture feature wraps the training environment through "
+"``wrap_sensor_capture`` in ``isaaclab_rl.entrypoints.common`` and saves "
+"frames on reset and step when the current **per-episode** step falls inside "
+"a capture window. For each image-like scene sensor, the wrapper:"
+msgstr ""
+"传感器采集功能通过 ``isaaclab_rl.entrypoints.common`` 中的 ``wrap_sensor_capture`` "
+"包装训练环境。当当前 **回合内的** 步数落在采集窗口内时，在重置和步进时保存帧。对每个具有图像类输出的场景传感器，该包装器会："
+
+#: source/how-to/capture_sensor_frames.rst:67
+msgid ""
+"reads ``sensor.data.output`` and skips sensors whose output is not a "
+"dictionary of tensors"
+msgstr "读取 ``sensor.data.output`` ，跳过输出不是张量字典的传感器"
+
+#: source/how-to/capture_sensor_frames.rst:68
+msgid ""
+"resolves each output to a :class:`torch.Tensor`, including "
+":class:`~isaaclab.utils.warp.ProxyArray` buffers through their ``.torch`` "
+"accessor"
+msgstr ""
+"将各输出解析为 :class:`torch.Tensor` ，其中 :class:`~isaaclab.utils.warp.ProxyArray` "
+"缓冲区通过 ``.torch`` 访问器读取"
+
+#: source/how-to/capture_sensor_frames.rst:70
+msgid ""
+"selects the first ``capture_num_envs`` parallel environments from each "
+"tensor"
+msgstr "从各张量中选取前 ``capture_num_envs`` 个并行环境"
+
+#: source/how-to/capture_sensor_frames.rst:71
+msgid "replaces non-finite values with zero before display normalization"
+msgstr "在显示归一化前，将非有限值替换为零"
+
+#: source/how-to/capture_sensor_frames.rst:72
+msgid ""
+"normalizes each output for display using "
+":func:`~isaaclab.utils.images.normalize_camera_output_for_display` and tiles"
+" the selected views into a single image grid with "
+":func:`~isaaclab.utils.images.make_camera_output_grid`"
+msgstr ""
+"使用 :func:`~isaaclab.utils.images.normalize_camera_output_for_display` "
+"对各输出进行显示归一化，再通过 :func:`~isaaclab.utils.images.make_camera_output_grid` "
+"将所选视图拼成一张图像网格"
+
+#: source/how-to/capture_sensor_frames.rst:75
+msgid ""
+"writes the grid to TensorBoard or to disk as a PNG, depending on "
+"``--capture_env_sensors_format``"
+msgstr ""
+"根据 ``--capture_env_sensors_format`` ，将网格写入 TensorBoard 或保存为磁盘上的 PNG 文件"
+
+#: source/how-to/capture_sensor_frames.rst:77
+msgid ""
+"Sensors with ``None`` for a given data type are skipped. Only tasks that "
+"define scene sensors with image-like outputs (such as camera-based RL "
+"environments) produce captured frames."
+msgstr ""
+"如果某种数据类型的传感器输出为 ``None`` ，则跳过它。只有定义了图像类场景传感器输出的任务（例如基于相机的强化学习环境）才会生成采集帧。"
+
+#: source/how-to/capture_sensor_frames.rst:82
+msgid "Command-line options"
+msgstr "命令行选项"
+
+#: source/how-to/capture_sensor_frames.rst:84
+msgid ""
+"The training entrypoints register the capture flags in "
+"``add_common_train_args``:"
+msgstr "训练入口在 ``add_common_train_args`` 中注册采集参数："
+
+#: source/how-to/capture_sensor_frames.rst:92
+msgid "Capture schedule"
+msgstr "采集时机"
+
+#: source/how-to/capture_sensor_frames.rst:94
+msgid ""
+"A frame is saved on every environment reset and after each step while the "
+"current **per-episode** step is inside an active capture window. The episode"
+" step counter resets to ``0`` on every environment reset. A step is inside "
+"the window when:"
+msgstr ""
+"每次环境重置时，以及当前 **回合内的** 步数位于有效采集窗口内时的每一步之后，都会保存一帧。每次环境重置都会将回合步数计数器重置为 ``0`` "
+"。满足以下条件时，该步位于采集窗口内："
+
+#: source/how-to/capture_sensor_frames.rst:102
+msgid ""
+"For example, with ``--capture_env_sensors_length 100`` and "
+"``--capture_env_sensors_interval 2000``, the wrapper saves episode steps "
+"``0-99`` after each reset. If an episode lasts longer than 2000 steps, "
+"another capture window opens at episode steps ``2000-2099``, then "
+"``4000-4099``, and so on."
+msgstr ""
+"例如，设置 ``--capture_env_sensors_length 100`` 和 "
+"``--capture_env_sensors_interval 2000`` 后，包装器会在每次重置后保存回合内第 ``0-99`` "
+"步的画面。如果一回合超过 2000 步，会在第 ``2000-2099`` 步再次开启采集窗口，随后是 ``4000-4099`` 步，依此类推。"
+
+#: source/how-to/capture_sensor_frames.rst:108
+msgid ""
+"This schedule uses a **per-episode** step counter. "
+":doc:`/source/features/record_video` instead keys off the Gymnasium "
+"``RecordVideo`` wrapper's **global** environment-step counter across "
+"episodes."
+msgstr ""
+"该采集计划使用 **每回合内的** 步数计数器，而 :doc:`/source/features/record_video` 根据 Gymnasium "
+"``RecordVideo`` 包装器中跨回合累积的 **全局** 环境步数计数器触发。"
+
+#: source/how-to/capture_sensor_frames.rst:113
+msgid "Episode indexing"
+msgstr "回合索引"
+
+#: source/how-to/capture_sensor_frames.rst:115
+msgid ""
+"Each environment reset increments an episode index that starts at ``1`` on "
+"the first reset. Captured frames are grouped by this index so consecutive "
+"episodes can be compared:"
+msgstr "每次环境重置都会递增回合索引，第一次重置时索引为 ``1`` 。采集帧按该索引分组，便于比较连续回合："
+
+#: source/how-to/capture_sensor_frames.rst:118
+msgid ""
+"TensorBoard tags use ``<sensor_name>/<data_type>/episode_<index>`` with a "
+"five-digit zero-padded episode index (for example, ``episode_00001``)"
+msgstr ""
+"TensorBoard 标签使用 ``<sensor_name>/<data_type>/episode_<index>`` ，回合索引补零至五位（例如"
+" ``episode_00001`` ）"
+
+#: source/how-to/capture_sensor_frames.rst:120
+msgid ""
+"File output uses ``episode_<index>_step_<step>.png`` under each sensor and "
+"data-type directory, with a five-digit episode index and an eight-digit step"
+" index (for example, ``episode_00001_step_00000042.png``)"
+msgstr ""
+"文件输出保存在各传感器和数据类型目录下，文件名为 ``episode_<index>_step_<step>.png`` "
+"，回合索引为五位，步数索引为八位（例如 ``episode_00001_step_00000042.png`` ）"
+
+#: source/how-to/capture_sensor_frames.rst:124
+msgid ""
+"The ``<step>`` value is the per-episode step counter (reset to ``0`` on "
+"every environment reset). In TensorBoard, images are logged with "
+"``global_step`` set to the total number of environment steps since training "
+"started."
+msgstr ""
+"``<step>`` 是回合内的步数计数器（每次环境重置时归零）。在 TensorBoard 中记录图像时， ``global_step`` "
+"设置为从训练开始累计的环境总步数。"
+
+#: source/how-to/capture_sensor_frames.rst:130
+msgid "Image processing"
+msgstr "图像处理"
+
+#: source/how-to/capture_sensor_frames.rst:132
+msgid ""
+"Before tiling, each selected environment view is passed through "
+":func:`~isaaclab.utils.images.normalize_camera_output_for_display`, which "
+"maps common camera data types to a ``[0, 1]`` float range suitable for PNG "
+"export:"
+msgstr ""
+"拼接之前，各所选环境视图会经过 "
+":func:`~isaaclab.utils.images.normalize_camera_output_for_display` "
+"处理，将常见相机数据类型映射为适合导出 PNG 的 ``[0, 1]`` 浮点范围："
+
+#: source/how-to/capture_sensor_frames.rst:136
+msgid ""
+"``rgb`` and unrecognized output types are divided by ``255`` to produce "
+"``[0, 1]`` floats"
+msgstr "``rgb`` 和未识别的输出类型除以 ``255`` ，生成 ``[0, 1]`` 范围的浮点数"
+
+#: source/how-to/capture_sensor_frames.rst:137
+msgid ""
+"Depth-like outputs (``depth``, ``distance_to_camera``, "
+"``distance_to_image_plane``) are divided by their per-frame maximum"
+msgstr ""
+"深度类输出（ ``depth`` 、 ``distance_to_camera`` 、 ``distance_to_image_plane`` "
+"）除以各自的逐帧最大值"
+
+#: source/how-to/capture_sensor_frames.rst:139
+msgid "``albedo`` keeps the first three channels and divides by ``255``"
+msgstr "``albedo`` 保留前三个通道并除以 ``255``"
+
+#: source/how-to/capture_sensor_frames.rst:140
+msgid "``normals`` are remapped from ``[-1, 1]`` to ``[0, 1]``"
+msgstr "``normals`` 从 ``[-1, 1]`` 重新映射到 ``[0, 1]``"
+
+#: source/how-to/capture_sensor_frames.rst:141
+msgid ""
+"``motion_vectors`` are clamped to ``[-1, 1]``, remapped to ``[0, 1]``, and "
+"packed into the RG channels of an RGB image (B channel set to zero)"
+msgstr ""
+"``motion_vectors`` 先截断至 ``[-1, 1]`` ，再映射到 ``[0, 1]`` ，随后放入 RGB 图像的 R、G 通道（B "
+"通道设为零）"
+
+#: source/how-to/capture_sensor_frames.rst:144
+msgid ""
+":func:`~isaaclab.utils.images.make_camera_output_grid` arranges the "
+"``capture_num_envs`` views into a roughly square grid (``nrow = "
+"round(sqrt(num_envs))``) before the image is written."
+msgstr ""
+"写入图像前， :func:`~isaaclab.utils.images.make_camera_output_grid` 将 "
+"``capture_num_envs`` 个视图排列成近似正方形的网格（ ``nrow = round(sqrt(num_envs))`` ）。"
+
+#: source/how-to/capture_sensor_frames.rst:149
+msgid "Output formats"
+msgstr "输出格式"
+
+#: source/how-to/capture_sensor_frames.rst:151
+msgid ""
+"**TensorBoard (default).** Each sensor output is logged as a separate image "
+"series per episode with the tag "
+"``<sensor_name>/<data_type>/episode_<index>``. View the captures alongside "
+"other training metrics by pointing TensorBoard at the training log directory"
+" or the ``sensor_frames/train`` subdirectory:"
+msgstr ""
+"**TensorBoard（默认）。** 每个传感器输出按回合记录为独立的图像序列，标签为 "
+"``<sensor_name>/<data_type>/episode_<index>`` 。将 TensorBoard 指向训练日志目录或 "
+"``sensor_frames/train`` 子目录，即可将采集画面与其他训练指标一起查看："
+
+#: source/how-to/capture_sensor_frames.rst:170
+msgid ""
+"**File.** PNG images are written per sensor, data type, episode, and step:"
+msgstr "**文件。** 按传感器、数据类型、回合和步数写入 PNG 图像："
+
+#: source/how-to/capture_sensor_frames.rst:172
+msgid "``<sensor_name>/<data_type>/episode_<index>_step_<step>.png``"
+msgstr "``<sensor_name>/<data_type>/episode_<index>_step_<step>.png``"
+
+#: source/how-to/capture_sensor_frames.rst:174
+msgid ""
+"Sensor and data-type names are sanitized for file output so they are safe as"
+" path components. For example, a frame from the first episode at step ``42``"
+" for sensor ``front/camera`` and data type ``rgb`` is written as "
+"``front_camera/rgb/episode_00001_step_00000042.png``."
+msgstr ""
+"写入文件时会清理传感器和数据类型名称，确保它们可安全用作路径组成部分。例如，传感器 ``front/camera`` 的 ``rgb`` "
+"数据类型在第一回合第 ``42`` 步的画面，会保存为 "
+"``front_camera/rgb/episode_00001_step_00000042.png`` 。"
+
+#: source/how-to/capture_sensor_frames.rst:180
+msgid "Summary"
+msgstr "总结"
+
+#: source/how-to/capture_sensor_frames.rst:186
+msgid "``--capture_env_sensors_format``"
+msgstr "``--capture_env_sensors_format``"
+
+#: source/how-to/capture_sensor_frames.rst:187
+msgid "Output location"
+msgstr "输出位置"
+
+#: source/how-to/capture_sensor_frames.rst:188
+msgid "How to view"
+msgstr "查看方式"
+
+#: source/how-to/capture_sensor_frames.rst:189
+msgid "``tensorboard`` (default)"
+msgstr "``tensorboard`` （默认）"
+
+#: source/how-to/capture_sensor_frames.rst:190
+msgid "``sensor_frames/train`` event files"
+msgstr "``sensor_frames/train`` 事件文件"
+
+#: source/how-to/capture_sensor_frames.rst:191
+msgid "TensorBoard image tab (tagged by sensor, data type, and episode index)"
+msgstr "TensorBoard 图像标签页（按传感器、数据类型和回合索引标记）"
+
+#: source/how-to/capture_sensor_frames.rst:192
+msgid "``file``"
+msgstr "``file``"
+
+#: source/how-to/capture_sensor_frames.rst:193
+msgid ""
+"``sensor_frames/train/<sensor>/<data_type>/episode_<index>_step_<step>.png``"
+msgstr ""
+"``sensor_frames/train/<sensor>/<data_type>/episode_<index>_step_<step>.png``"
+
+#: source/how-to/capture_sensor_frames.rst:194
+msgid "Any image viewer or filesystem browser"
+msgstr "任意图像查看器或文件浏览器"
+
+#: source/how-to/capture_sensor_frames.rst:198
+msgid "Choosing a capture method"
+msgstr "选择采集方式"
+
+#: source/how-to/capture_sensor_frames.rst:204
+msgid "Goal"
+msgstr "目标"
+
+#: source/how-to/capture_sensor_frames.rst:205
+msgid "Use"
+msgstr "用途"
+
+#: source/how-to/capture_sensor_frames.rst:206
+msgid "Output"
+msgstr "输出"
+
+#: source/how-to/capture_sensor_frames.rst:207
+msgid "Inspect sensor outputs during training"
+msgstr "在训练期间查看传感器输出"
+
+#: source/how-to/capture_sensor_frames.rst:208
+msgid "This page (``--capture_env_sensors``)"
+msgstr "本页（ ``--capture_env_sensors`` ）"
+
+#: source/how-to/capture_sensor_frames.rst:209
+msgid "PNG files or TensorBoard images"
+msgstr "PNG 文件或 TensorBoard 图像"
+
+#: source/how-to/capture_sensor_frames.rst:210
+msgid "Record or share a video"
+msgstr "录制或分享视频"
+
+#: source/how-to/capture_sensor_frames.rst:211
+msgid ":doc:`/source/features/record_video` (``VideoRecorderCfg``)"
+msgstr ":doc:`/source/features/record_video` （ ``VideoRecorderCfg`` ）"
+
+#: source/how-to/capture_sensor_frames.rst:212
+msgid "MP4 video"
+msgstr "MP4 视频"
+
+#: source/how-to/capture_sensor_frames.rst:216
+msgid "See also"
+msgstr "另请参阅"
+
+#: source/how-to/capture_sensor_frames.rst:218
+msgid ""
+":doc:`/source/features/record_video` - record a perspective viewport clip "
+"with ``--video``"
+msgstr ":doc:`/source/features/record_video` — 通过 ``--video`` 录制透视视口的视频片段"
+
+#: source/how-to/capture_sensor_frames.rst:219
+msgid ""
+":doc:`/source/concepts/reinforcement_learning` - the shared "
+"``train``/``play`` entrypoints that register the capture flags"
+msgstr ""
+":doc:`/source/concepts/reinforcement_learning` — 注册采集参数的共享 ``train`` / "
+"``play`` 入口"
+
+#: source/how-to/capture_sensor_frames.rst:221
+msgid ""
+":doc:`/source/concepts/visualization` - visualizers and rendering during "
+"training"
+msgstr ":doc:`/source/concepts/visualization` — 可视化器与训练期间的渲染"
+
+#: source/how-to/capture_sensor_frames.rst:222
+msgid ""
+":doc:`/source/concepts/sensors/camera` - camera sensors and annotator data "
+"types"
+msgstr ":doc:`/source/concepts/sensors/camera` — 相机传感器与标注器数据类型"
+
+#: source/how-to/capture_sensor_frames.rst:223
+msgid ""
+":doc:`proxy_array` - dual CPU/GPU sensor buffers read through ``.torch``"
+msgstr ":doc:`proxy_array` — 通过 ``.torch`` 读取的 CPU/GPU 双接口传感器缓冲区"

@@ -1,0 +1,136 @@
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+name: gh-pages-zhcn
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-zhcn
+  cancel-in-progress: true
+
+jobs:
+  gh-pages-zhcn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout the triggering commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Fetch documentation media from upstream
+        run: |
+          git remote add upstream https://github.com/isaac-sim/IsaacLab.git
+          git lfs pull upstream --include 'docs/source/_static/**' --exclude ''
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: docs/requirements-translation.txt
+
+      - name: Install documentation dependencies
+        run: python -m pip install -r docs/requirements-translation.txt
+
+      - name: Build translated HTML
+        run: sphinx-build -j auto -b html docs "$RUNNER_TEMP/docs-html" -D language=zh_CN
+
+      - name: Record the published source revision
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          output = Path(os.environ['RUNNER_TEMP']) / 'docs-html'
+          metadata = {'source_commit': os.environ['SOURCE_SHA'], 'upstream_ref': 'release/3.0.0',
+                      'language': 'zh_CN', 'workflow_run': os.environ['RUN_URL']}
+          (output / 'build-info.json').write_text(json.dumps(metadata, indent=2) + '\n')
+          (output / '.nojekyll').touch()
+          PY
+
+      - name: Upload the HTML artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: isaaclab-3.0.0-zh-cn-html
+          path: ${{ runner.temp }}/docs-html
+          include-hidden-files: true
+          retention-days: 7
+
+      - name: Publish to gh-pages-zhcn
+        run: |
+          git fetch origin gh-pages-zhcn
+          git worktree add --detach "$RUNNER_TEMP/docs-publish" FETCH_HEAD
+          rsync -a --delete --exclude='.git' "$RUNNER_TEMP/docs-html/" "$RUNNER_TEMP/docs-publish/"
+          cd "$RUNNER_TEMP/docs-publish"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish Chinese documentation for $GITHUB_SHA"
+            git push origin HEAD:gh-pages-zhcn
+          fi
+
+      - name: Verify the live deployment
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import time
+          from urllib.parse import urljoin
+          from urllib.request import Request, urlopen
+
+          base = 'https://docs.robotsfan.com/isaaclab/'
+          revision = os.environ['SOURCE_SHA']
+
+          def fetch(path):
+              url = urljoin(base, path) + '?revision=' + revision
+              with urlopen(Request(url, headers={'Cache-Control': 'no-cache'}), timeout=20) as response:
+                  return response.read()
+
+          for attempt in range(40):
+              try:
+                  metadata = json.loads(fetch('build-info.json'))
+                  if metadata.get('source_commit') != revision:
+                      raise ValueError('The live site still serves an earlier revision')
+                  break
+              except Exception as error:
+                  print(f'Waiting for the live deployment ({attempt + 1}/40): {error}', flush=True)
+                  if attempt == 39:
+                      raise
+                  time.sleep(15)
+
+          home = fetch('index.html').decode()
+          assert 'Isaac Lab' in home and '3.0' in home, 'The homepage version is incorrect'
+          about = fetch('source/setup/translation.html').decode()
+          assert 'isaaclab_v2/' in about and 'buymeacoffee.com/robotsfan' in about
+          page_path = 'source/setup/oneclick_installation.html'
+          installation = fetch(page_path).decode()
+          assert '3.0.0' in installation and 'Newton' in installation and '3.12' in installation
+          for filename in ('install.py', 'install_isaaclab.sh'):
+              href = re.search(r'href="([^"]*/' + re.escape(filename) + ')"', installation)
+              assert href, f'Missing download link: {filename}'
+              published = fetch(urljoin(page_path, href.group(1)))
+              with open(filename, 'rb') as source:
+                  assert hashlib.sha256(published).digest() == hashlib.sha256(source.read()).digest(), filename
+          print(f'Live deployment verified: {base} ({revision})')
+          PY

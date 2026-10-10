@@ -1,0 +1,364 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:2
+msgid "Export Direct-Workflow Policies with LEAPP"
+msgstr "使用 LEAPP 导出 Direct 工作流策略"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:6
+msgid ""
+"This advanced tutorial shows how to prepare a Direct workflow policy for "
+"export with LEAPP. If your policy is manager-based, follow the "
+":doc:`standard LEAPP deployment workflow <exporting_policies_with_leapp>` "
+"instead."
+msgstr ""
+"本进阶教程介绍如何为 Direct 工作流策略添加 LEAPP 导出支持。如果策略采用基于管理器的工作流，请参阅 :doc:`标准 LEAPP "
+"部署工作流 <exporting_policies_with_leapp>` 。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:10
+msgid ""
+"For background on LEAPP concepts, supported node patterns, state feedback, "
+"and runtime validation, see the `LEAPP documentation <https://nvidia-"
+"isaac.github.io/leapp/>`__."
+msgstr ""
+"LEAPP 概念、支持的节点模式、状态反馈及运行时验证等背景知识，见 `LEAPP 文档 <https://nvidia-"
+"isaac.github.io/leapp/>`__ 。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:15
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:17
+msgid ""
+"To export a Direct workflow policy with LEAPP, you add LEAPP annotations to "
+"the environment code. During export, LEAPP traces the annotated tensors and "
+"builds an intermediate representation of the full policy pipeline. These "
+"annotations remain dormant during normal environment execution and only add "
+"a small amount of overhead until export time. They are activated by "
+"``isaaclab leapp export --rl_library rsl_rl`` when you run the export flow."
+msgstr ""
+"要通过 LEAPP 导出 Direct 工作流策略，需要在环境代码中添加 LEAPP 标注。导出时，LEAPP "
+"会跟踪已标注的张量，构建完整策略流水线的中间表示。这些标注在环境正常运行时不启用，仅带来少量开销，直到导出阶段才被激活。运行导出流程时，由 "
+"``isaaclab leapp export --rl_library rsl_rl`` 激活它们。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:24
+msgid ""
+"This tutorial uses ``scripts/tutorials/06_deploy/anymal_c_env.py`` as a "
+"concrete example of adding LEAPP annotations to a Direct workflow "
+"environment. Apply the same annotation pattern to your own Direct RL "
+"environment."
+msgstr ""
+"本教程以 ``scripts/tutorials/06_deploy/anymal_c_env.py`` 为例，说明如何在 Direct "
+"工作流环境中添加 LEAPP 标注。您可以将同样的标注方法用于自己的 Direct RL 环境。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:28
+msgid ""
+"This export flow requires ``leapp``. ``leapp`` is a specialized optional "
+"extra (it is not part of ``--extra all``). Select extras the same way as "
+"``isaaclab train``: add ``--extra leapp`` on every ``uv run``, and add the "
+"backend extra that matches your task (``isaacsim``, ``ovphysx``, or none for"
+" kitless Newton). See :ref:`uv-run-training` and "
+":doc:`/source/policy_deployment/05_leapp/exporting_policies_with_leapp`."
+msgstr ""
+"这一导出流程需要 ``leapp`` 。它是专用的可选额外依赖，不包含在 ``--extra all`` 中。额外依赖的选择方式与 ``isaaclab"
+" train`` 相同：每次 ``uv run`` 都添加 ``--extra leapp`` ，并添加与任务匹配的后端额外依赖（ "
+"``isaacsim`` 、 ``ovphysx`` ，不依赖 Kit 的 Newton 则无需添加）。见 :ref:`uv-run-training`"
+" 及 :doc:`/source/policy_deployment/05_leapp/exporting_policies_with_leapp` 。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:35
+msgid ""
+"If you want to run the exported example with the existing ``IsaacContrib-"
+"Velocity-Rough-AnymalC-Direct`` task registration, copy the annotated "
+"tutorial environment into the task package:"
+msgstr ""
+"如果希望使用现有的 ``IsaacContrib-Velocity-Rough-AnymalC-Direct`` "
+"任务注册来运行导出的示例，请将已标注的教程环境复制到任务包中："
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:0
+msgid ":icon:`fa-brands fa-linux` Linux"
+msgstr ":icon:`fa-brands fa-linux` Linux"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:0
+msgid ":icon:`fa-brands fa-windows` Windows"
+msgstr ":icon:`fa-brands fa-windows` Windows"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:58
+msgid ""
+"After your environment includes the required LEAPP input, output, and state "
+"annotations, export a trained policy with the same backend extra pattern as "
+"training. For example, on Isaac Sim PhysX:"
+msgstr ""
+"环境具备所需的 LEAPP 输入、输出及状态标注后，可按与训练相同的后端额外依赖设置导出已训练策略。例如，使用 Isaac Sim PhysX 时："
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:95
+msgid ""
+"The ``--task`` argument is the registered task name, such as ``IsaacContrib-"
+"Velocity-Rough-AnymalC-Direct``. The ``--checkpoint`` argument points to the"
+" trained RSL-RL checkpoint to export. Train with ``uv run isaaclab train "
+"--rl_library rsl_rl --task <TASK_NAME>`` (see :ref:`uv-run-training`); do "
+"not use the removed per-backend ``train.py`` scripts. The optional "
+"``--export_save_path`` argument selects the output directory for the "
+"exported artifacts. If you omit it, the export is written next to the "
+"checkpoint."
+msgstr ""
+"``--task`` 参数是已注册的任务名，如 ``IsaacContrib-Velocity-Rough-AnymalC-Direct`` 。 "
+"``--checkpoint`` 指向要导出的已训练 RSL-RL 检查点。训练请使用 ``uv run isaaclab train "
+"--rl_library rsl_rl --task <TASK_NAME>`` （见 :ref:`uv-run-training` "
+"），不要使用已移除的各后端 ``train.py`` 脚本。可选的 ``--export_save_path`` "
+"指定导出产物的输出目录；省略时，导出到检查点所在目录。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:105
+msgid ""
+"Unlike with managed environments, ``export_method`` is not a command-line "
+"option. Set the export backend in the output annotation itself, for example "
+"``annotate.output_tensors(..., export_with=\"onnx-dynamo\")``. See the "
+"following output annotation example for guidance."
+msgstr ""
+"与受管理的环境不同，这里的 ``export_method`` 不是命令行选项。请在输出标注中指定导出后端，例如 "
+"``annotate.output_tensors(..., export_with=\"onnx-dynamo\")`` "
+"。具体用法见下文的输出标注示例。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:112
+msgid ""
+"This tutorial covers exporting direct rl policies only. direct rl policies "
+"are not currently supported by ``isaaclab leapp deploy``."
+msgstr "本教程仅介绍 Direct RL 策略的导出。 ``isaaclab leapp deploy`` 目前不支持 Direct RL 策略。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:116
+msgid ""
+"For more information on the export arguments, see the :doc:`standard LEAPP "
+"deployment workflow <exporting_policies_with_leapp>`."
+msgstr "导出参数的更多信息，见 :doc:`标准 LEAPP 部署工作流 <exporting_policies_with_leapp>` 。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:0
+msgid "Full example script"
+msgstr "完整示例脚本"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:130
+msgid "How the Annotations Work"
+msgstr "标注的工作原理"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:132
+msgid ""
+"The main task is to identify the inputs, outputs, and persistent state in "
+"the environment and register them with LEAPP. In this example, the script "
+"uses four annotation helpers:"
+msgstr "主要工作是识别环境中的输入、输出和持久状态，并向 LEAPP 注册。本示例使用四个标注辅助函数："
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:136
+msgid ""
+":func:`annotate.input_tensors` marks tensors that enter the policy pipeline."
+msgstr ":func:`annotate.input_tensors` 标记进入策略流水线的张量。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:137
+msgid ""
+":func:`annotate.output_tensors` marks tensors that leave the environment-"
+"side part of the pipeline."
+msgstr ":func:`annotate.output_tensors` 标记离开流水线中环境侧部分的张量。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:139
+msgid ""
+":func:`annotate.state_tensors` marks tensors that behave like persistent "
+"state."
+msgstr ":func:`annotate.state_tensors` 标记作为持久状态的张量。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:140
+msgid ""
+":func:`annotate.update_state` updates that persistent state after each step."
+msgstr ":func:`annotate.update_state` 在每步之后更新该持久状态。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:144
+msgid "Input Annotations"
+msgstr "输入标注"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:146
+msgid ""
+"Input annotations usually belong in ``_get_observations()``, because that "
+"method collects the tensors that are passed to the policy."
+msgstr "输入标注通常放在 ``_get_observations()`` 中，因为该方法负责收集传给策略的张量。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:156
+msgid ""
+"``annotate.input_tensors()`` wraps a tensor so LEAPP can trace all "
+"downstream operations that depend on it. The function takes two important "
+"arguments:"
+msgstr ""
+"``annotate.input_tensors()`` 包装一个张量，使 LEAPP 能跟踪依赖该张量的所有下游操作。该函数有两个重要参数："
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:159
+msgid ""
+"``self.spec.id`` identifies the node that owns the tensor. When you run "
+"``isaaclab leapp export``, this ID matches the exported policy node."
+msgstr ""
+"``self.spec.id`` 标识张量所属的节点。运行 ``isaaclab leapp export`` 时，该 ID 与导出的策略节点对应。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:161
+msgid ""
+"The second argument is a dictionary that maps a unique tensor name to the "
+"tensor itself. LEAPP uses these names in the exported metadata and for "
+"debugging."
+msgstr "第二个参数是字典，将唯一的张量名映射到张量本身。LEAPP 在导出元数据和调试中使用这些名称。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:165
+msgid ""
+"In this example, the observation tensors are registered one by one for "
+"readability, but ``annotate.input_tensors()`` can also register multiple "
+"tensors in a single call."
+msgstr "为便于阅读，本例逐个注册观测张量； ``annotate.input_tensors()`` 也支持一次注册多个张量。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:170
+msgid ""
+"Any inputs not explicitly annotated will be automatically inlined as a "
+"constant. This may be desired for certain values such as constant transforms"
+" or default values."
+msgstr "未显式标注的输入会自动作为常量内联。对于固定变换或默认值等数据，这可能正是所需行为。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:175
+msgid "Output Annotations"
+msgstr "输出标注"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:177
+msgid ""
+"Output annotations should be placed where the environment has finished "
+"preparing the command that will be applied to the robot. In this example, "
+"that happens in ``_pre_physics_step()``."
+msgstr "输出标注应放在环境已完成机器人指令准备的位置。本例中，该位置在 ``_pre_physics_step()`` 中。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:187
+msgid ""
+"``annotate.output_tensors()`` marks the tensors that leave the environment-"
+"side part of the pipeline. As with input annotations, the call uses "
+"``self.spec.id`` together with a dictionary that maps tensor names to "
+"tensors."
+msgstr ""
+"``annotate.output_tensors()`` 标记离开流水线中环境侧部分的张量。与输入标注一样，调用时使用 "
+"``self.spec.id`` ，以及将张量名映射到张量的字典。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:191
+msgid ""
+"The ``export_with`` argument restricts an output annotation to specific "
+"export backends. The supported backend names are ``onnx-dynamo``, ``onnx-"
+"torchscript``, ``jit-script``, and ``jit-trace``. This argument is needed to"
+" actually generate the IR based on the tracing."
+msgstr ""
+"``export_with`` 参数将输出标注限定为特定导出后端。支持的后端名有 ``onnx-dynamo`` 、 ``onnx-"
+"torchscript`` 、 ``jit-script`` 和 ``jit-trace`` "
+"。必须提供该参数，才能根据跟踪结果实际生成中间表示（IR）。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:196
+msgid ""
+"Unlike ``annotate.input_tensors()``, output annotation should happen once "
+"for the final outputs of the pipeline stage. In this example, "
+"``processed_actions`` is the tensor that should be exported. After calling "
+"``annotate.output_tensors()``, you do not need to use a return value."
+msgstr ""
+"与 ``annotate.input_tensors()`` 不同，输出标注应只对流水线阶段的最终输出执行一次。本例中，要导出的张量是 "
+"``processed_actions`` 。调用 ``annotate.output_tensors()`` 后，无需使用返回值。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:202
+msgid ""
+"All tensors passed to ``annotate.output_tensors()`` must be traced tensors. "
+"These tensors are created from inputs or tensors derived from inputs."
+msgstr "传入 ``annotate.output_tensors()`` 的所有张量都必须是已跟踪的张量，即由输入或输入派生的张量创建。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:207
+msgid ""
+"Do not place output annotations in ``_apply_action()``. That method may be "
+"called multiple times per environment step, depending on the decimation "
+"setting, which would make the traced pipeline incorrect."
+msgstr ""
+"不要在 ``_apply_action()`` "
+"中添加输出标注。根据控制降采样倍数设置，该方法可能在每个环境步内被调用多次，从而导致跟踪出的流水线不正确。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:213
+msgid "State Annotations"
+msgstr "状态标注"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:215
+msgid ""
+"If your policy depends on internal state or feedback loops, register that "
+"data explicitly with ``annotate.state_tensors()`` and update it with "
+"``annotate.update_state()``."
+msgstr ""
+"如果策略依赖内部状态或反馈环路，请用 ``annotate.state_tensors()`` 显式注册这些数据，并通过 "
+"``annotate.update_state()`` 更新。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:219
+msgid ""
+"In this example, the environment uses the previous action as part of the "
+"observation. That makes ``previous_actions`` a feedback state:"
+msgstr "本例将前一步动作作为观测的一部分，因此 ``previous_actions`` 是反馈状态："
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:222
+msgid ""
+"``annotate.state_tensors()`` is called in ``_get_observations()`` so the "
+"state can participate in the traced observation pipeline."
+msgstr ""
+"在 ``_get_observations()`` 中调用 ``annotate.state_tensors()`` ，使状态参与被跟踪的观测流水线。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:224
+msgid ""
+"``annotate.update_state()`` is called in ``_pre_physics_step()`` so the "
+"stored value is updated for the next step."
+msgstr "在 ``_pre_physics_step()`` 中调用 ``annotate.update_state()`` ，为下一步更新存储值。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:227
+msgid ""
+"The state name must match across both calls. Here, both functions use the "
+"name ``previous_actions``, which lets LEAPP route the feedback tensor "
+"correctly."
+msgstr "两次调用的状态名必须一致。本例中，两者都使用 ``previous_actions`` ，使 LEAPP 能正确传递反馈张量。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:232
+msgid "Semantic Annotations"
+msgstr "语义标注"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:234
+msgid ""
+"This example covers the minimum annotations needed to trace the pipeline. In"
+" more advanced export workflows, you may also want to attach semantic "
+"metadata so downstream runtimes know what each tensor represents. Semantic "
+"Annotations is a prerequisite for being able to deploy to a downstream "
+"deployment library."
+msgstr ""
+"本例介绍跟踪流水线所需的最少标注。更复杂的导出工作流还可以附加语义元数据，让下游运行时了解每个张量的含义。要部署到下游部署库，必须提供语义标注。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:239
+msgid ""
+"For direct environments, semantic annotations are optional and need to be "
+"authored explicitly by the user. Unlike the manager-based export path, Isaac"
+" Lab does not infer tensor semantics automatically for direct environments, "
+"instead it is up to the user to provide this data. LEAPP provides this "
+"through ``TensorSemantics``. You can use it to describe the meaning of "
+"tensors more precisely and make the exported pipeline easier to inspect, "
+"validate, and integrate into deployment systems."
+msgstr ""
+"对于 Direct 环境，语义标注是可选的，需由用户显式编写。与基于管理器的导出方式不同，Isaac Lab 不会自动推断 Direct "
+"环境的张量语义，用户需自行提供这些数据。LEAPP 通过 ``TensorSemantics`` "
+"支持这一功能。可用它更精确地描述张量含义，使导出流水线更易于检查、验证和集成到部署系统。"
+
+#: source/policy_deployment/05_leapp/exporting_direct_workflow_policies_with_leapp.rst:249
+msgid ""
+"Refer to the `LEAPP semantic annotation guide <https://nvidia-"
+"isaac.github.io/leapp/semantics/usage.html>`_ and `LEAPP API reference "
+"<https://nvidia-isaac.github.io/leapp/api/index.html>`_ for details on "
+"authoring semantic annotations."
+msgstr ""
+"语义标注的编写方法，见 `LEAPP 语义标注指南 <https://nvidia-"
+"isaac.github.io/leapp/semantics/usage.html>`_ 及 `LEAPP API 参考 "
+"<https://nvidia-isaac.github.io/leapp/api/index.html>`_ 。"

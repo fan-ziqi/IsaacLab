@@ -1,0 +1,464 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/features/population_based_training.rst:4
+msgid "Population-Based Training"
+msgstr "基于种群的训练"
+
+#: source/features/population_based_training.rst:6
+msgid ""
+"Population-based training (PBT) is an online optimization loop around "
+"regular reinforcement learning (RL) training. Instead of choosing one set of"
+" hyperparameters and training one policy, PBT trains a population of "
+"independent policies on the same task. It periodically ranks them by a task-"
+"level objective. An underperforming learner copies a promising learner's "
+"checkpoint, mutates selected hyperparameters, and continues training from "
+"the copied weights."
+msgstr ""
+"基于种群的训练（PBT）是在常规强化学习（RL）训练外层运行的在线优化循环。它不只选择一组超参数、训练一个策略，而是在同一任务上训练一组独立策略，并定期根据任务级目标排序。表现不佳的学习器会复制有潜力的学习器检查点，变异所选超参数，再从复制的权重继续训练。"
+
+#: source/features/population_based_training.rst:12
+msgid "This cycle combines two ideas:"
+msgstr "这一循环结合了两种思路："
+
+#: source/features/population_based_training.rst:14
+msgid ""
+"**Explore:** different seeds and hyperparameters let the learners discover "
+"different behaviors."
+msgstr "**探索：** 不同种子和超参数使学习器发现不同的行为。"
+
+#: source/features/population_based_training.rst:15
+msgid ""
+"**Exploit:** checkpoint replacement redirects compute from stalled learners "
+"to behaviors that are already working."
+msgstr "**利用：** 替换检查点，将计算资源从停滞的学习器转向已有效的行为。"
+
+#: source/features/population_based_training.rst:17
+msgid ""
+"Unlike a fixed random or grid search, PBT can change hyperparameters during "
+"training and reuse the weights from a successful run. The final artifact is "
+"still a normal policy checkpoint; PBT changes how it is trained, not how it "
+"is deployed."
+msgstr ""
+"与固定的随机搜索或网格搜索不同，PBT 可以在训练中改变超参数，并复用成功运行的权重。最终产物仍是普通策略检查点；PBT 改变训练方式，不改变部署方式。"
+
+#: source/features/population_based_training.rst:23
+msgid ""
+"If you are new to RL workflows in Isaac Lab, first read :ref:`tutorial-run-"
+"rl-training` and :ref:`tutorial-configure-rl-training`."
+msgstr ""
+"如果刚开始使用 Isaac Lab 的强化学习流程，请先阅读 :ref:`tutorial-run-rl-training` 和 "
+":ref:`tutorial-configure-rl-training` 。"
+
+#: source/features/population_based_training.rst:28
+msgid "Isaac Lab currently supports PBT only with the **RL-Games** library."
+msgstr "Isaac Lab 目前仅在 **RL-Games** 库中支持 PBT。"
+
+#: source/features/population_based_training.rst:32
+msgid "When to Use PBT"
+msgstr "何时使用 PBT"
+
+#: source/features/population_based_training.rst:34
+msgid "PBT is most useful when:"
+msgstr "PBT 尤其适用于："
+
+#: source/features/population_based_training.rst:36
+msgid ""
+"independent seeds frequently converge to very different results or stall in "
+"local optima;"
+msgstr "不同种子经常收敛到差异很大的结果，或停留在局部最优；"
+
+#: source/features/population_based_training.rst:37
+msgid ""
+"a task has a stable scalar success metric that can rank policies while they "
+"train;"
+msgstr "任务具有稳定的标量成功指标，可在训练期间对策略排序；"
+
+#: source/features/population_based_training.rst:38
+msgid ""
+"useful hyperparameters may need different values in early and late training;"
+" and"
+msgstr "有用的超参数在训练早期和后期可能需要不同值；以及"
+
+#: source/features/population_based_training.rst:39
+msgid "enough compute is available to train several policies concurrently."
+msgstr "有足够计算资源并发训练多个策略。"
+
+#: source/features/population_based_training.rst:41
+msgid ""
+"Start with ordinary single-policy training when a known configuration "
+"converges reliably, when compute only supports one or two runs, or when "
+"policies cannot be compared with a meaningful objective. PBT adds checkpoint"
+" I/O and coordination overhead, and a population of *N* learners consumes "
+"approximately the aggregate compute of *N* ordinary runs. A fair experiment "
+"therefore compares PBT with the same number of independent fixed-"
+"configuration runs, not with one run."
+msgstr ""
+"如果已知配置能够可靠收敛、计算资源只支持一两次运行，或无法通过有意义的目标比较策略，应先使用普通单策略训练。PBT 增加检查点 I/O 和协调开销，包含"
+" *N* 个学习器的种群约消耗 *N* 次普通运行的总计算量。因此，公平实验应将 PBT 与相同数量的独立固定配置运行比较，而非只与一次运行比较。"
+
+#: source/features/population_based_training.rst:47
+msgid ""
+"PBT is also different from :doc:`multi-GPU training "
+"</source/features/multi_gpu>`. Distributed data-parallel training uses "
+"several devices to update one policy. PBT gives each learner its own policy,"
+" optimizer state, experience, and checkpoint, and only exchanges checkpoints"
+" during selection."
+msgstr ""
+"PBT 也不同于 :doc:`多 GPU 训练 </source/features/multi_gpu>` "
+"。分布式数据并行训练使用多个设备更新一个策略；PBT 中各学习器拥有自己的策略、优化器状态、经验和检查点，仅在选择阶段交换检查点。"
+
+#: source/features/population_based_training.rst:53
+msgid "Example Where PBT Was Enabling"
+msgstr "PBT 使任务得以解决的示例"
+
+#: source/features/population_based_training.rst:55
+msgid ""
+"The `DexPBT study`_ tested contact-rich manipulation tasks with large "
+"observation and action spaces, sparse task success, and many locally useful "
+"behaviors that did not lead to a complete solution. For its PBT-versus-PPO "
+"comparison, the authors held aggregate compute constant: the best learner in"
+" an eight-policy PBT population was compared with the best of eight "
+"independent PPO seeds, with every learner trained for five billion "
+"environment steps."
+msgstr ""
+"`DexPBT study`_ 测试了多接触操作任务，其观测和动作空间较大、任务成功稀疏，且存在许多局部有效但无法完成整个任务的行为。在 PBT 与 "
+"PPO 的对比中，作者保持总计算量相同：将八策略 PBT 种群中的最佳学习器，与八个独立 PPO 种子中的最佳结果比较，每个学习器都训练五十亿个环境步。"
+
+#: source/features/population_based_training.rst:61
+msgid ""
+"Single-arm object reorientation comparison reported in Figure 4 of the "
+"`DexPBT study`_"
+msgstr "`DexPBT study`_ 图 4 中报告的单臂物体重定向对比"
+
+#: source/features/population_based_training.rst:65
+msgid "Condition"
+msgstr "条件"
+
+#: source/features/population_based_training.rst:66
+msgid "Training behavior"
+msgstr "训练行为"
+
+#: source/features/population_based_training.rst:67
+msgid "Outcome under the study budget"
+msgstr "研究预算内的结果"
+
+#: source/features/population_based_training.rst:68
+msgid "PPO without PBT"
+msgstr "不使用 PBT 的 PPO"
+
+#: source/features/population_based_training.rst:69
+msgid ""
+"Eight policies trained independently with fixed hyperparameters; discoveries"
+" were not shared."
+msgstr "八个策略使用固定超参数独立训练，不共享发现。"
+
+#: source/features/population_based_training.rst:70
+msgid "None of the eight runs reached the final 1 cm success tolerance."
+msgstr "八次运行均未达到最终 1 cm 的成功容差。"
+
+#: source/features/population_based_training.rst:71
+msgid "PPO with PBT"
+msgstr "使用 PBT 的 PPO"
+
+#: source/features/population_based_training.rst:72
+msgid ""
+"Eight learners periodically shared promising weights and explored mutated "
+"hyperparameters."
+msgstr "八个学习器定期共享有潜力的权重，并探索变异后的超参数。"
+
+#: source/features/population_based_training.rst:73
+msgid ""
+"The population reached the final tolerance and continued improving the "
+"number of consecutive successes."
+msgstr "种群达到最终容差，并继续提高连续成功次数。"
+
+#: source/features/population_based_training.rst:75
+msgid ""
+"The study reported improvement in every tested scenario and found PBT to be "
+"an enabling factor for non-trivial performance in three of them. In the "
+"harder dual-arm reorientation task, its best PBT policy reached almost 40 of"
+" 50 consecutive successes. See the paper's `training curves`_ and "
+"`supplementary policy videos`_ for the full comparison and learned "
+"behaviors."
+msgstr ""
+"该研究在每个测试场景中都观察到改善，并发现 PBT 是其中三个场景获得有效性能的关键因素。在更困难的双臂重定向任务中，最佳 PBT 策略在 50 "
+"次尝试中实现近 40 次连续成功。完整对比和学得的行为见论文的 `training curves`_ 和 `supplementary policy "
+"videos`_ 。"
+
+#: source/features/population_based_training.rst:80
+msgid ""
+"No task mathematically requires PBT. Here, \"enabling\" means that fixed PPO"
+" did not solve the task within the tested budget while PBT did. These "
+"experiments used the Isaac Gym DexPBT tasks; they motivate the Isaac Lab "
+"workflow below but are not benchmark results for the included Shadow Hand "
+"example."
+msgstr ""
+"没有任务在数学上必须使用 PBT。这里“使任务得以解决”是指：在测试预算内，固定 PPO 没有解决任务，而 PBT 解决了。这些实验使用 Isaac "
+"Gym DexPBT 任务，为下述 Isaac Lab 工作流程提供依据，但不是随附 Shadow Hand 示例的基准结果。"
+
+#: source/features/population_based_training.rst:86
+msgid "How Isaac Lab Selects Policies"
+msgstr "Isaac Lab 如何选择策略"
+
+#: source/features/population_based_training.rst:88
+msgid ""
+"Every ``interval_steps``, each learner saves its checkpoint and current "
+"objective to a shared workspace. For the initialized policies, let the "
+"objective mean and standard deviation be :math:`\\mu` and :math:`\\sigma`. "
+"Isaac Lab computes the leader and underperformer cuts as:"
+msgstr ""
+"每隔 ``interval_steps`` ，各学习器将检查点和当前目标值保存到共享工作目录。对于已初始化的策略，设目标均值和标准差为 "
+":math:`\\mu` 和 :math:`\\sigma` 。Isaac Lab 按以下公式计算领先者和表现不佳者的阈值："
+
+#: source/features/population_based_training.rst:92
+msgid "U = \\max(\\mu + \\mathtt{threshold\\_std}\\,\\sigma,\\ \\mu + \\mathtt{threshold\\_abs})"
+msgstr "U = \\max(\\mu + \\mathtt{threshold\\_std}\\,\\sigma,\\ \\mu + \\mathtt{threshold\\_abs})"
+
+#: source/features/population_based_training.rst:96
+msgid "L = \\min(\\mu - \\mathtt{threshold\\_std}\\,\\sigma,\\ \\mu - \\mathtt{threshold\\_abs})"
+msgstr "L = \\min(\\mu - \\mathtt{threshold\\_std}\\,\\sigma,\\ \\mu - \\mathtt{threshold\\_abs})"
+
+#: source/features/population_based_training.rst:100
+msgid ""
+"Policies with an objective greater than :math:`U` are leaders; policies "
+"below :math:`L` are underperformers. Only an underperformer is changed. It "
+"copies a randomly selected leader and mutates each whitelisted "
+"hyperparameter with probability ``mutation_rate``. If there is no leader, it"
+" keeps its own checkpoint and mutates its hyperparameters. All other "
+"policies continue unchanged."
+msgstr ""
+"目标值高于 :math:`U` 的策略为领先者，低于 :math:`L` 的为表现不佳者。只修改后者：随机复制一个领先者，并以 "
+"``mutation_rate`` 的概率变异每个白名单超参数。如果没有领先者，则保留自身检查点并变异超参数。其他策略保持原状继续训练。"
+
+#: source/features/population_based_training.rst:105
+msgid ""
+"The learners coordinate through checkpoint and YAML metadata files rather "
+"than a central process. They may progress asynchronously: a learner compares"
+" checkpoints from the latest PBT iteration available at or before its own. "
+"Every learner must still use the same ``num_policies`` and must see the "
+"shared directory at the same absolute path because checkpoint paths stored "
+"in the metadata are absolute."
+msgstr ""
+"学习器通过检查点和 YAML 元数据文件协调，无需中央进程。它们可以异步推进：各学习器比较不晚于自身 PBT "
+"迭代的最新可用检查点。所有学习器仍必须使用相同的 ``num_policies`` "
+"，并通过相同绝对路径访问共享目录，因为元数据中的检查点路径为绝对路径。"
+
+#: source/features/population_based_training.rst:112
+msgid "Choose the Ranking Objective"
+msgstr "选择排序目标"
+
+#: source/features/population_based_training.rst:114
+msgid ""
+"The objective controls selection pressure, so choose a metric that measures "
+"the behavior you ultimately want and is comparable across the population. "
+"Higher values are always considered better. A task-success metric is usually"
+" more suitable than a dense shaped reward whose scale changes during "
+"training."
+msgstr ""
+"目标决定选择压力，应选择能衡量最终期望行为、且种群内可比较的指标，值越高始终视为越好。任务成功指标通常比训练中尺度变化的密集塑形奖励更适合。"
+
+#: source/features/population_based_training.rst:118
+msgid "The included reorientation configuration uses:"
+msgstr "随附的重定向配置使用："
+
+#: source/features/population_based_training.rst:124
+msgid ""
+"This dotted path resolves to "
+"``infos[\"episode\"][\"consecutive_successes\"]``. The RL-Games wrapper "
+"remaps ``extras[\"log\"]`` to ``infos[\"episode\"]``, so use the "
+"``episode.`` prefix even when the environment writes the metric to "
+"``extras[\"log\"]``."
+msgstr ""
+"该点分隔路径解析为 ``infos[\"episode\"][\"consecutive_successes\"]`` 。RL-Games 包装器将 "
+"``extras[\"log\"]`` 映射到 ``infos[\"episode\"]`` ，因此即使环境将指标写入 "
+"``extras[\"log\"]`` ，也应使用 ``episode.`` 前缀。"
+
+#: source/features/population_based_training.rst:128
+msgid ""
+"Before a long run, verify that the objective is present, scalar, and "
+"increases when policy behavior improves. A noisy or non-stationary objective"
+" can repeatedly replace useful policies. PBT population members also stop "
+"being independent after checkpoint exchange, so evaluate the selected "
+"checkpoint separately across held-out seeds and conditions."
+msgstr ""
+"长时间运行前，确认目标存在、为标量，且策略行为改善时会增大。噪声较大或非平稳的目标可能反复替换有效策略。检查点交换后，PBT "
+"种群成员也不再独立，因此应在留出的种子和条件下单独评估所选检查点。"
+
+#: source/features/population_based_training.rst:135
+msgid "Configure PBT"
+msgstr "配置 PBT"
+
+#: source/features/population_based_training.rst:137
+msgid ""
+"The ``Isaac-Reorient-Cube-Shadow-Direct`` RL-Games configuration provides a "
+"complete PBT example. PBT is disabled by default; the launch command in the "
+"next section enables it."
+msgstr ""
+"``Isaac-Reorient-Cube-Shadow-Direct`` 的 RL-Games 配置提供了完整 PBT 示例。PBT "
+"默认关闭，下一节的启动命令会启用它。"
+
+#: source/features/population_based_training.rst:144
+msgid "The main controls are:"
+msgstr "主要设置如下："
+
+#: source/features/population_based_training.rst:146
+msgid "``directory`` and ``workspace``"
+msgstr "``directory`` 和 ``workspace``"
+
+#: source/features/population_based_training.rst:147
+msgid ""
+"Identify the shared storage root and the PBT run within that root. Use a new"
+" workspace for each population."
+msgstr "指定共享存储根目录，以及根目录内的 PBT 运行位置。每个种群应使用新工作目录。"
+
+#: source/features/population_based_training.rst:149
+msgid "``num_policies`` and ``policy_idx``"
+msgstr "``num_policies`` 和 ``policy_idx``"
+
+#: source/features/population_based_training.rst:150
+msgid "Define the population size and this learner's unique zero-based index."
+msgstr "定义种群大小和当前学习器唯一的零起始索引。"
+
+#: source/features/population_based_training.rst:152
+msgid "``objective``"
+msgstr "``objective``"
+
+#: source/features/population_based_training.rst:153
+msgid ""
+"Selects the scalar from the environment info dictionary used to rank "
+"learners."
+msgstr "从环境信息字典中选择用于学习器排序的标量。"
+
+#: source/features/population_based_training.rst:155
+msgid "``interval_steps``"
+msgstr "``interval_steps``"
+
+#: source/features/population_based_training.rst:156
+msgid ""
+"Sets the number of environment steps between checkpoint comparisons. Shorter"
+" intervals react sooner but cause more checkpoint I/O and give a mutated "
+"learner less time to adapt."
+msgstr "设置检查点比较之间的环境步数。间隔更短，响应更早，但检查点 I/O 更多，变异后的学习器适应时间也更少。"
+
+#: source/features/population_based_training.rst:159
+msgid "``threshold_std`` and ``threshold_abs``"
+msgstr "``threshold_std`` 和 ``threshold_abs``"
+
+#: source/features/population_based_training.rst:160
+msgid ""
+"Control how far a policy must be from the population mean to be classified "
+"as a leader or underperformer. If no policy crosses both effective margins, "
+"the population continues without replacement."
+msgstr "控制策略偏离种群均值多少才归类为领先者或表现不佳者。如果没有策略同时越过两个有效边界，种群继续运行，不进行替换。"
+
+#: source/features/population_based_training.rst:163
+msgid "``mutation_rate``, ``change_range``, and ``mutation``"
+msgstr "``mutation_rate`` 、 ``change_range`` 和 ``mutation``"
+
+#: source/features/population_based_training.rst:164
+msgid ""
+"Control which hyperparameters may change and how often. ``mutate_float`` "
+"multiplies or divides by a random factor in ``change_range``; "
+"``mutate_discount`` conservatively changes the distance from 1.0 for "
+"discount-like values. Parameters absent from ``mutation`` remain fixed."
+msgstr ""
+"控制哪些超参数可改变，以及改变频率。 ``mutate_float`` 乘以或除以 ``change_range`` 中的随机因子； "
+"``mutate_discount`` 保守地改变折扣类值与 1.0 的距离。未包含在 ``mutation`` 中的参数保持固定。"
+
+#: source/features/population_based_training.rst:170
+msgid "Launch the Population"
+msgstr "启动种群"
+
+#: source/features/population_based_training.rst:172
+msgid ""
+"Start one process per policy. The example below launches policy 0 of the "
+"default eight-policy population. Run it in eight terminals or scheduler "
+"jobs, changing only ``PBT_POLICY_IDX`` from 0 through 7. Keep "
+"``PBT_NUM_POLICIES``, ``PBT_DIRECTORY``, and ``agent.pbt.workspace`` "
+"identical for every process."
+msgstr ""
+"为每个策略启动一个进程。下例启动默认八策略种群中的策略 0。在八个终端或调度器作业中运行，只将 ``PBT_POLICY_IDX`` 从 0 改到 "
+"7。各进程的 ``PBT_NUM_POLICIES`` 、 ``PBT_DIRECTORY`` 和 ``agent.pbt.workspace`` "
+"保持一致。"
+
+#: source/features/population_based_training.rst:192
+msgid ""
+"Assign each process a GPU with your scheduler or ``CUDA_VISIBLE_DEVICES`` "
+"when running several workers on one host. Weights & Biases tracking is "
+"optional; if enabled, give each worker a unique run name while keeping the "
+"same project."
+msgstr ""
+"同一主机上运行多个工作进程时，通过调度器或 ``CUDA_VISIBLE_DEVICES`` 为各进程分配 GPU。Weights & Biases "
+"跟踪可选；启用时，各进程使用唯一运行名称，但保留相同项目。"
+
+#: source/features/population_based_training.rst:196
+msgid ""
+"During training, each policy writes numbered ``.pth`` checkpoints and "
+"matching ``.yaml`` metadata under its policy directory in the shared "
+"workspace. The metadata records the objective and mutated parameter values. "
+"At the end of the run, select the checkpoint with the best validated "
+"objective, then evaluate it as a normal RL-Games policy."
+msgstr ""
+"训练期间，各策略在共享工作目录内的策略目录下写入编号 ``.pth`` 检查点及对应的 ``.yaml`` "
+"元数据，记录目标值和变异参数。运行结束后，选择经过验证、目标值最佳的检查点，再按普通 RL-Games 策略评估。"
+
+#: source/features/population_based_training.rst:202
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: source/features/population_based_training.rst:204
+msgid ""
+"**No policies are replaced:** the population may not yet have crossed the "
+"configured margins. Inspect the objectives before reducing the thresholds; "
+"identical low scores can also mean the ranking metric is uninformative."
+msgstr "**没有策略被替换：** 种群可能尚未越过配置的边界。减小阈值前先检查目标值；相同的低分也可能表示排序指标无法提供有效信息。"
+
+#: source/features/population_based_training.rst:206
+msgid ""
+"**An objective lookup fails:** verify the dotted path against the keys "
+"emitted in ``infos[\"episode\"]``."
+msgstr "**目标查找失败：** 根据 ``infos[\"episode\"]`` 输出的键核对点分隔路径。"
+
+#: source/features/population_based_training.rst:207
+msgid ""
+"**Workers cannot load one another's checkpoints:** confirm that every worker"
+" uses the same absolute shared path, workspace name, and population size."
+msgstr "**工作进程无法加载其他进程的检查点：** 确认各进程使用相同的共享绝对路径、工作目录名称和种群大小。"
+
+#: source/features/population_based_training.rst:209
+msgid ""
+"**Training spends too much time checkpointing:** increase ``interval_steps``"
+" or place the workspace on faster shared storage."
+msgstr "**保存检查点耗时过多：** 增大 ``interval_steps`` ，或将工作目录放到更快的共享存储上。"
+
+#: source/features/population_based_training.rst:214
+msgid "References"
+msgstr "参考文献"
+
+#: source/features/population_based_training.rst:216
+msgid ""
+"Jaderberg et al., `Population Based Training of Neural Networks`_ (2017)."
+msgstr "Jaderberg 等， `Population Based Training of Neural Networks`_ （2017）。"
+
+#: source/features/population_based_training.rst:217
+msgid ""
+"Petrenko et al., `DexPBT: Scaling up Dexterous Manipulation for Hand-Arm "
+"Systems with Population Based Training`_ (2023)."
+msgstr ""
+"Petrenko 等， `DexPBT: Scaling up Dexterous Manipulation for Hand-Arm Systems "
+"with Population Based Training`_ （2023）。"

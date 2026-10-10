@@ -1,0 +1,649 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:4
+msgid "Transfer Policies Between PhysX and Newton"
+msgstr "在 PhysX 和 Newton 之间迁移策略"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:8
+msgid ""
+"This guide is the source of truth for the ``isaaclab-transferring-policies-"
+"sim-to-sim`` agent skill (`skill source <../../../skills/user/isaaclab-"
+"transferring-policies-sim-to-sim/SKILL.md>`__). When you change this page, "
+"update the skill so agent guidance stays in sync. See "
+":doc:`/source/developer-tools/agent_skills`."
+msgstr ""
+"本指南是 ``isaaclab-transferring-policies-sim-to-sim`` 智能体技能的权威参考（ `技能源文件 "
+"<../../../skills/user/isaaclab-transferring-policies-sim-to-sim/SKILL.md>`__"
+" ）。修改本页时，也应更新该技能，使智能体指导保持一致。参见 :doc:`/source/developer-tools/agent_skills` 。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:15
+msgid ""
+"First make every robot and object MJWarp-clean by following "
+":doc:`/source/how-to/prepare_asset_for_newton` and the ``isaaclab-preparing-"
+"assets-for-newton`` `skill <https://github.com/isaac-"
+"sim/IsaacLab/blob/develop/skills/user/prepare-assets-for-"
+"newton/SKILL.md>`__."
+msgstr ""
+"先按 :doc:`/source/how-to/prepare_asset_for_newton` 和 ``isaaclab-preparing-"
+"assets-for-newton`` `技能 <https://github.com/isaac-"
+"sim/IsaacLab/blob/develop/skills/user/prepare-assets-for-newton/SKILL.md>`__"
+" 的说明，确保每个机器人和物体都符合 MJWarp 要求。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:21
+msgid ""
+"Sim-to-sim transfer evaluates one policy checkpoint in a physics backend "
+"different from the one used for training. This guide covers both PhysX-"
+"trained policies deployed in Newton and Newton-trained policies deployed in "
+"PhysX."
+msgstr ""
+"仿真间迁移是在不同于训练所用的物理后端中评估同一策略检查点。本指南同时介绍将 PhysX 训练策略部署到 Newton，以及将 Newton "
+"训练策略部署到 PhysX。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:25
+msgid ""
+"The checkpoint maps ordered observations to actions; it does not include the"
+" physics engine. Transfer works when both backends expose the same policy "
+"inputs and outputs. Expect similar behavior, not identical trajectories. "
+"Successful transfer can be a first step toward sim-to-real deployment."
+msgstr ""
+"检查点将有序观测映射到动作，不包含物理引擎。两个后端提供相同策略输入和输出时，才能迁移。应期待相近行为，而非完全相同的轨迹。成功迁移可以是迈向仿真到现实部署的第一步。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:32
+msgid "Task readiness and checkpoint compatibility"
+msgstr "任务准备与检查点兼容性"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:34
+msgid ""
+"The same registered task should describe the same Markov decision process "
+"(MDP) in both physics engines. Selecting ``physics=isaacsim_physx`` or "
+"``physics=newton_mjwarp`` resolves a backend alternative through "
+":class:`~isaaclab_tasks.utils.PresetCfg`. Use that mechanism for intentional"
+" backend-specific physics, asset, and control configuration. A physics "
+"preset should not silently change policy-facing action, observation, reward,"
+" termination, command, or reset terms. If a ``PresetCfg`` used by an MDP "
+"term does select different behavior, treat the resolved configurations as "
+"different tasks: restore one checkpoint contract or retrain for the new "
+"contract."
+msgstr ""
+"同一注册任务应在两个物理引擎中描述相同的马尔可夫决策过程（MDP）。选择 ``physics=isaacsim_physx`` 或 "
+"``physics=newton_mjwarp`` ，会通过 :class:`~isaaclab_tasks.utils.PresetCfg` "
+"解析对应后端选项。应通过该机制配置有意区分后端的物理、资产和控制设置。物理预设不应静默改变策略侧的动作、观测、奖励、终止、指令或重置项。如果 MDP "
+"项使用的 ``PresetCfg`` 确实选择了不同的行为，应将解析后配置视为不同任务：恢复统一的检查点接口约定，或根据新约定重新训练。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:42
+msgid ""
+"Before attempting transfer, ensure that the same task can be trained "
+"successfully in both engines. Then resolve each backend configuration and "
+"audit the policy interface. The following values must match exactly:"
+msgstr "尝试迁移前，确认同一任务可在两个引擎中成功训练。然后解析各后端配置，检查策略接口。以下值必须完全一致："
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:50
+msgid "Contract"
+msgstr "约定"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:51
+msgid "Required equality"
+msgstr "必须一致的内容"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:52
+msgid "Actions"
+msgstr "动作"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:53
+msgid ""
+"Term order, ordered joint or body names, width, target type, scale, offset, "
+"and clipping."
+msgstr "项顺序、有序关节或刚体名称、维度、目标类型、缩放、偏移和限幅。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:54
+msgid "Observations"
+msgstr "观测"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:55
+msgid ""
+"Group and term order, tensor width, history length, units, frames, clipping,"
+" and corruption behavior."
+msgstr "组与项顺序、张量维度、历史长度、单位、坐标系、限幅和扰动行为。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:57
+msgid "Policy state"
+msgstr "策略状态"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:58
+msgid ""
+"Normalization statistics, recurrent-state shape and reset, commands, and "
+"privileged inputs used by the actor."
+msgstr "归一化统计量、循环状态形状与重置、指令，以及 actor 使用的特权输入。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:60
+msgid "Timing"
+msgstr "时序"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:61
+msgid ""
+"Physics ``dt``, decimation, policy period, and action-hold behavior. Newton "
+"substeps may differ inside the same policy period."
+msgstr "物理 ``dt`` 、控制降采样倍数、策略周期和动作保持行为。同一策略周期内，Newton 子步数可以不同。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:63
+msgid "Mechanism"
+msgstr "机械结构"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:64
+msgid ""
+"Ordered bodies and joints, active degrees of freedom, and mimic or equality "
+"coupling."
+msgstr "有序刚体与关节、主动自由度，以及 mimic 或等式耦合。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:65
+msgid "Episode"
+msgstr "回合"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:66
+msgid ""
+"Reset and command distributions, reward and termination meanings, horizon, "
+"and success definition."
+msgstr "重置与指令分布、奖励和终止含义、时域及成功定义。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:71
+msgid "Mimic-joint action nuance"
+msgstr "mimic 关节动作的细节"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:73
+msgid ""
+"PhysX and Newton MJWarp preserve the leader and follower joint coordinates, "
+"but they do not create the same drive graph. Newton imports the authored "
+"mimic relation as a mimic constraint, and ``SolverMuJoCo`` lowers it to a "
+"MuJoCo ``mjEQ_JOINT`` equality constraint for MJWarp. The Franka finger pair"
+" therefore has one active joint drive: ``panda_finger_joint1`` is driven and"
+" the constraint moves ``panda_finger_joint2``. PhysX creates a native two-"
+"way articulation mimic constraint, but the mimic follower still counts as a "
+"driveable joint. The constraint does not disable a drive authored on that "
+"joint."
+msgstr ""
+"PhysX 和 Newton MJWarp 都保留主动与从动关节坐标，但不创建相同驱动图。Newton 将已编写的 mimic 关系导入为 mimic "
+"约束， ``SolverMuJoCo`` 再将其转换为 MJWarp 使用的 MuJoCo ``mjEQ_JOINT`` 等式约束。因此，Franka "
+"两个指关节只有一个主动驱动：驱动 ``panda_finger_joint1`` ，由约束带动 ``panda_finger_joint2`` "
+"。PhysX 创建原生双向关节体 mimic 约束，但从动关节仍被视为可驱动关节；约束不会禁用该关节上已有的驱动。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:81
+msgid ""
+"This distinction matters when an actuator expression such as "
+"``panda_finger_joint.*`` assigns nonzero stiffness and damping to both "
+"fingers. PhysX then has two active PD drives in addition to the mimic "
+"coupling. When one logical gripper command is written to both finger "
+"targets, PhysX applies drive effort through both joints, effectively "
+"applying the command twice relative to MJWarp's single driven finger. For "
+"the franka asset, we removed that discrepancy by driving only the leader and"
+" explicitly making the follower passive:"
+msgstr ""
+"当 ``panda_finger_joint.*`` 等执行器表达式为两根手指都分配非零刚度和阻尼时，这一区别就很重要。PhysX 除 mimic "
+"耦合外还有两个主动 PD 驱动。将同一逻辑夹爪指令写入两个手指目标时，PhysX 通过两个关节施加驱动力，相对于 MJWarp "
+"单个受驱动手指，实际上应用了两次指令。对于 Franka 资产，我们通过只驱动主动关节、显式将从动关节设为被动来消除差异："
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:101
+msgid ""
+"Zero stiffness and damping are what disable the second PD drive. The "
+"follower remains in the articulation so the mimic constraint can move it."
+msgstr "零刚度和零阻尼会禁用第二个 PD 驱动。从动关节仍保留在关节体中，由 mimic 约束带动。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:106
+msgid "Articulation joint and body ordering"
+msgstr "关节体的关节与刚体排序"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:108
+msgid ""
+"PhysX and MJWarp may order joints and bodies differently for branched "
+"robots. For cross-backend playback, set **both** ``joint_ordering`` and "
+"``body_ordering`` to the backend used for training; ``physics=`` still "
+"selects the target backend. The task table below lists which tasks need the "
+"overrides and which do not."
+msgstr ""
+"对于分支机器人，PhysX 与 MJWarp 的关节和刚体顺序可能不同。跨后端回放时，应将 ``joint_ordering`` 和 "
+"``body_ordering`` **两者都** 设为训练所用后端， ``physics=`` "
+"仍选择目标后端。下方任务表列出哪些任务需要覆盖，哪些不需要。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:113
+msgid ""
+"See :doc:`/source/concepts/joint_and_body_ordering` for the full ordering "
+"contract, accepted values, and troubleshooting."
+msgstr "完整排序约定、可接受值和故障排查见 :doc:`/source/concepts/joint_and_body_ordering` 。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:116
+msgid ""
+"A scrambled axis has a distinctive signature: a locomotion policy falls "
+"within a few dozen steps in every environment rather than degrading "
+"gracefully. Rule ordering out before attributing such a collapse to "
+"contacts, friction, or actuator response. Once the axes agree, the "
+"transferred policy should survive on a timescale comparable to its source "
+"baseline, and whatever gap remains is solver dynamics."
+msgstr ""
+"索引顺序错乱有明显特征：运动策略在每个环境中都在几十步内摔倒，而不是逐渐表现变差。在将这种崩溃归因于接触、摩擦或执行器响应前，应先排除排序问题。各维度顺序一致后，迁移策略的存续时间应与源基线相当，剩余差距才属于求解器动力学。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:124
+msgid "Transferring control behavior"
+msgstr "迁移控制行为"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:126
+msgid "Match the nominal actuator response before tuning the policy:"
+msgstr "调节策略前，先匹配标称执行器响应："
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:128
+msgid ""
+"distinguish the physical ``actuator_velocity_limit`` from the solver "
+"``joint_velocity_limit``;"
+msgstr "区分物理 ``actuator_velocity_limit`` 与求解器 ``joint_velocity_limit`` ；"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:129
+msgid "use per-joint effort, stiffness, damping, friction, and armature;"
+msgstr "按关节设置驱动力、刚度、阻尼、摩擦和电枢惯量；"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:130
+msgid "preserve ``dt * decimation`` and action hold;"
+msgstr "保持 ``dt * decimation`` 和动作保持行为；"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:131
+msgid "keep targets away from hard joint stops;"
+msgstr "使目标远离关节硬限位；"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:132
+msgid "monitor saturation and consecutive action sign changes."
+msgstr "监测饱和与连续动作符号变化。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:134
+msgid ""
+"Increased damping is often necessary to prevent bang-bang control. With too "
+"little damping, a position policy can alternate saturated commands and "
+"exploit one solver's drive integration or limit response. Armature is "
+"equally important in MJWarp: it adds reflected inertia to the generalized "
+"mass matrix and prevents small contact or drive impulses from producing "
+"excessive joint or angular velocity. Retune damping after increasing "
+"armature because the effective natural frequency and damping ratio change. "
+"See :ref:`prepare-asset-for-newton` for the actuator audit and physical "
+"sourcing guidance."
+msgstr ""
+"通常需要增大阻尼以避免开关式控制。阻尼过小时，位置策略可能交替输出饱和指令，利用某一求解器的驱动积分或限位响应。电枢惯量在 MJWarp "
+"中同样重要：它为广义质量矩阵添加折算惯量，避免小接触或驱动冲量产生过大的关节速度或角速度。增大电枢惯量后，应重新调整阻尼，因为有效固有频率和阻尼比会改变。执行器检查与物理参数来源指南见"
+" :ref:`prepare-asset-for-newton` 。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:144
+msgid "Introducing domain randomization"
+msgstr "引入域随机化"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:146
+msgid ""
+"Domain randomization is a useful technique for preventing policies from "
+"overfitting to a specific solver. Adding randomization to solver-relevant "
+"attributes, such as joint gains and friction, improves the policy's ability "
+"to adapt to variations in solver behavior."
+msgstr "域随机化有助于防止策略过拟合特定求解器。对关节增益、摩擦等与求解器相关的属性加入随机化，可提高策略适应求解器行为变化的能力。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:154
+msgid "Family"
+msgstr "类别"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:155
+msgid "Transfer purpose"
+msgstr "迁移用途"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:156
+msgid "Important nuance"
+msgstr "注意事项"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:157
+msgid "Robot and object friction"
+msgstr "机器人和物体摩擦"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:158
+msgid "Covers material and contact-model uncertainty."
+msgstr "覆盖材质与接触模型的不确定性。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:159
+msgid ""
+"Current Newton event behavior uses one friction coefficient. PhysX "
+"static/dynamic values and buckets do not map one-to-one."
+msgstr "当前 Newton 事件只使用一个摩擦系数，PhysX 的静/动摩擦值和分桶不能一一对应。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:161
+msgid "Object mass and inertia"
+msgstr "物体质量与惯量"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:162
+msgid "Covers payload and geometry variation."
+msgstr "覆盖负载与几何变化。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:163
+msgid ""
+"Keep inertia positive and physically consistent. Decide explicitly whether "
+"changing mass recomputes inertia."
+msgstr "保持惯量为正且物理一致，明确改变质量时是否重新计算惯量。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:165
+msgid "Joint gains and friction"
+msgstr "关节增益与摩擦"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:166
+msgid "Covers actuator identification and loss uncertainty."
+msgstr "覆盖执行器辨识和损耗的不确定性。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:167
+msgid ""
+"Accommodate variations in solver behavior even when the same attributes are "
+"used across engines."
+msgstr "即使引擎间使用相同属性，也要考虑求解器行为的变化。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:168
+msgid "Joint armature"
+msgstr "关节电枢惯量"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:169
+msgid ""
+"Covers reflected-inertia uncertainty and MJWarp-sensitive acceleration."
+msgstr "覆盖折算惯量的不确定性，以及 MJWarp 敏感的加速度行为。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:170
+msgid ""
+"Use positive, physically supported ranges and randomize coupled mechanisms "
+"coherently."
+msgstr "使用有物理依据的正值范围，并一致地随机化耦合机构。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:171
+msgid "Gravity"
+msgstr "重力"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:172
+msgid "Eases lift learning and covers load variation."
+msgstr "简化抬升学习，覆盖负载变化。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:173
+msgid ""
+"Progress to full nominal gravity and evaluate there. Zero gravity is not the"
+" deployment condition."
+msgstr "逐步恢复完整标称重力，并在该条件下评估。零重力不是部署条件。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:175
+msgid "Actuator response"
+msgstr "执行器响应"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:176
+msgid "Covers gripper closing speed or motor response."
+msgstr "覆盖夹爪闭合速度或电机响应。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:177
+msgid "Randomize the drive to accommodate differences in solver behavior."
+msgstr "随机化驱动，以适应求解器行为差异。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:178
+msgid "Reset pose and geometry"
+msgstr "重置位姿与几何"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:179
+msgid "Covers grasp and contact diversity."
+msgstr "覆盖抓取和接触的多样性。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:180
+msgid "Re-run collision-valid reset checks for every geometry variant."
+msgstr "对每种几何变体重新执行碰撞有效性重置检查。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:181
+msgid "Observation noise"
+msgstr "观测噪声"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:182
+msgid "Reduces dependence on backend-specific state estimates."
+msgstr "减少对后端特有状态估计的依赖。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:183
+msgid "Match a plausible sensor and never change tensor shape or ordering."
+msgstr "匹配合理的传感器，始终保持张量形状和顺序不变。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:185
+msgid ""
+"Domain randomization should span plausible modeling uncertainty, not "
+"arbitrarily wide values. If a distribution must become extreme for transfer "
+"to work, revisit the nominal model and the feature the policy is exploiting."
+msgstr "域随机化应覆盖合理的建模不确定性，而不是任意宽的取值。如果必须采用极端分布才能迁移，应重新检查标称模型，以及策略利用的特性。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:189
+msgid ""
+"Use curriculum when the final distribution prevents early learning. Zero "
+"gravity, low observation noise, tighter reset ranges, or easier termination "
+"bounds can form the initial stage, but the curriculum must promote to the "
+"final deployment distribution. Keep a separate deterministic nominal "
+"evaluation so random draws do not obscure backend differences."
+msgstr ""
+"最终分布妨碍早期学习时，可使用课程学习。零重力、低观测噪声、更窄的重置范围或更宽松的终止边界可以作为初始阶段，但课程必须推进到最终部署分布。应保留独立、确定性的标称评估，避免随机采样掩盖后端差异。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:195
+msgid "Validate the full matrix"
+msgstr "验证完整组合矩阵"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:197
+msgid "Evaluate every training/deployment combination:"
+msgstr "评估每种训练/部署组合："
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:202
+msgid "Training backend"
+msgstr "训练后端"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:203
+msgid "Deployment backend"
+msgstr "部署后端"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:204
+msgid "Label and purpose"
+msgstr "标记与用途"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:205
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:206
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:208
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:215
+msgid "PhysX"
+msgstr "PhysX"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:207
+msgid "PP: PhysX source baseline."
+msgstr "PP：PhysX 源基线。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:209
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:211
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:212
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:214
+msgid "Newton"
+msgstr "Newton"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:210
+msgid "PN: PhysX-to-Newton transfer."
+msgstr "PN：PhysX 到 Newton 的迁移。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:213
+msgid "NN: Newton source baseline."
+msgstr "NN：Newton 源基线。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:216
+msgid "NP: Newton-to-PhysX transfer."
+msgstr "NP：Newton 到 PhysX 的迁移。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:218
+msgid ""
+"The exact entry point can vary by RL library. With the unified Isaac Lab "
+"entry point:"
+msgstr "具体入口可能因强化学习库而异。使用统一 Isaac Lab 入口时："
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:220
+msgid "**1. Train in PhysX:**"
+msgstr "**1. 在 PhysX 中训练：**"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:226
+msgid "**PP: reproduce source baseline in PhysX**"
+msgstr "**PP：在 PhysX 中复现源基线**"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:233
+msgid "**PN: deploy PhysX checkpoint in Newton**"
+msgstr "**PN：在 Newton 中部署 PhysX 检查点**"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:241
+msgid "**2. Train in Newton:**"
+msgstr "**2. 在 Newton 中训练：**"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:247
+msgid "**NN: reproduce source baseline in Newton**"
+msgstr "**NN：在 Newton 中复现源基线**"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:254
+msgid "**NP: deploy Newton checkpoint in PhysX**"
+msgstr "**NP：在 PhysX 中部署 Newton 检查点**"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:262
+msgid ""
+"Drop the two ordering overrides when the task's joint and body order already"
+" agrees across backends. See `Articulation joint and body ordering`_."
+msgstr ""
+"任务的关节和刚体顺序在后端间已经一致时，删除两项排序覆盖。见 `关节体的关节与刚体排序 <Articulation joint and body "
+"ordering_>`_ 。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:267
+msgid "Validated transfer examples"
+msgstr "经过验证的迁移示例"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:269
+msgid ""
+"The following tasks have been validated for cross-backend transfer. "
+"Substitute ``TRAIN_TASK`` / ``PLAY_TASK`` with the task ID and "
+"``EXPERIMENT_DIRECTORY`` with the directory below into the generic commands "
+"above."
+msgstr ""
+"以下任务已验证跨后端迁移。将上述通用命令中的 ``TRAIN_TASK`` / ``PLAY_TASK`` 替换为任务 ID，将 "
+"``EXPERIMENT_DIRECTORY`` 替换为下列目录。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:277
+msgid "Task"
+msgstr "任务"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:278
+msgid "Experiment directory"
+msgstr "实验目录"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:279
+msgid "Notes"
+msgstr "说明"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:280
+msgid "``Isaac-Lift-Franka``"
+msgstr "``Isaac-Lift-Franka``"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:281
+msgid "``lift_franka``"
+msgstr "``lift_franka``"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:282
+msgid ""
+"No ordering override needed; joint and body order is identical in both "
+"backends. The ``play`` entry point applies ``play_mode`` overrides "
+"automatically."
+msgstr "无需覆盖排序，两种后端的关节和刚体顺序相同。 ``play`` 入口自动应用 ``play_mode`` 覆盖。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:284
+msgid "``Isaac-Velocity-Rough-G1``"
+msgstr "``Isaac-Velocity-Rough-G1``"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:285
+msgid "``g1_rough``"
+msgstr "``g1_rough``"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:286
+msgid ""
+"Branched topology: add ``env.scene.robot.joint_ordering=physx "
+"env.scene.robot.body_ordering=physx`` for PN, and the ``mjwarp`` equivalents"
+" for NP."
+msgstr ""
+"分支拓扑：PN 添加 ``env.scene.robot.joint_ordering=physx "
+"env.scene.robot.body_ordering=physx`` ，NP 添加对应的 ``mjwarp`` 设置。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:288
+msgid "``Isaac-Velocity-Rough-AnymalD``"
+msgstr "``Isaac-Velocity-Rough-AnymalD``"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:289
+msgid "``anymal_d_rough``"
+msgstr "``anymal_d_rough``"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:290
+msgid "Branched topology: same ordering overrides as G1."
+msgstr "分支拓扑：使用与 G1 相同的排序覆盖。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:295
+msgid "Transfer demonstrations"
+msgstr "迁移演示"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:297
+msgid ""
+"These videos demonstrate PhysX-trained policies running in Newton MJWarp "
+"without retraining. They do not represent full PP/PN/NN/NP validation. The "
+"backends are shown side by side."
+msgstr ""
+"这些视频展示了 PhysX 训练的策略在 Newton MJWarp 中无需重新训练即可运行，但不代表完整的 PP/PN/NN/NP "
+"验证。两个后端并排显示。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:300
+msgid ""
+"**ANYmal-D rough-terrain locomotion** (``Isaac-Velocity-Rough-AnymalD``)"
+msgstr "**ANYmal-D 崎岖地形运动** （ ``Isaac-Velocity-Rough-AnymalD`` ）"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:308
+msgid ""
+"**Allegro hand cube reorientation** (``Isaac-Reorient-Cube-Allegro``, PhysX-"
+"to-Newton direction only)"
+msgstr ""
+"**Allegro 手立方体重定向** （ ``Isaac-Reorient-Cube-Allegro`` ，仅展示 PhysX 到 Newton "
+"的方向）"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:318
+msgid ""
+"For Allegro transfer, contact stiffness (``ke``), contact damping (``kd``), "
+"contact friction, joint damping, and joint friction are the key parameters "
+"to tune. Increasing solver substeps to 4–16 significantly improves contact "
+"stability during in-hand manipulation."
+msgstr ""
+"对于 Allegro 迁移，关键参数是接触刚度（ ``ke`` ）、接触阻尼（ ``kd`` ）、接触摩擦、关节阻尼和关节摩擦。将求解器子步数增加至 "
+"4–16，可显著提高手内操作的接触稳定性。"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:324
+msgid "See also"
+msgstr "另请参阅"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:326
+msgid ":doc:`/source/concepts/reinforcement_learning`"
+msgstr ":doc:`/source/concepts/reinforcement_learning`"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:327
+msgid ":doc:`/source/features/hydra`"
+msgstr ":doc:`/source/features/hydra`"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:328
+msgid ":doc:`/source/concepts/joint_and_body_ordering`"
+msgstr ":doc:`/source/concepts/joint_and_body_ordering`"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:329
+msgid ":doc:`/source/how-to/solver_tuning_mjwarp`"
+msgstr ":doc:`/source/how-to/solver_tuning_mjwarp`"
+
+#: source/how-to/transfer_policies_between_physx_and_newton.rst:330
+msgid ":ref:`physics-backends-newton`"
+msgstr ":ref:`physics-backends-newton`"

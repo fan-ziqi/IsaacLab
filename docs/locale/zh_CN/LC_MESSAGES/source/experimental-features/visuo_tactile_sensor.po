@@ -1,0 +1,425 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:6
+msgid "Visuo-Tactile Sensor"
+msgstr "视触觉传感器"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:9
+msgid ""
+"The visuo-tactile sensor in Isaac Lab provides realistic tactile feedback "
+"through integration with TacSL (Tactile Sensor Learning) [Akinola2025]_. It "
+"is designed to simulate high-fidelity tactile interactions, generating both "
+"visual and force-based data that mirror real-world tactile sensors like "
+"GelSight devices. The sensor can provide tactile RGB images, force field "
+"distributions, and other intermediate tactile measurements essential for "
+"robotic manipulation tasks requiring fine tactile feedback."
+msgstr ""
+"Isaac Lab 的视触觉传感器通过集成 TacSL（Tactile Sensor Learning） "
+"[Akinola2025]_，提供逼真的触觉反馈。它模拟高保真的触觉交互，生成与 GelSight 等真实触觉传感器相对应的视觉和力数据，能够输出触觉 "
+"RGB 图像、力场分布及其他中间触觉测量值，适用于需要精细触觉反馈的机器人操作任务。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:12
+msgid "Tactile sensor with RGB visualization and force fields"
+msgstr "带有 RGB 可视化和力场的触觉传感器"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:19
+msgid "Configuration"
+msgstr "配置"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:21
+msgid ""
+"Tactile sensors require specific configuration parameters to define their "
+"behavior and data collection properties. The sensor can be configured with "
+"various parameters including sensor resolution, force sensitivity, and "
+"output data types."
+msgstr "触觉传感器需要特定的配置参数来定义其行为和数据采集属性。传感器可以配置各种参数，包括传感器分辨率、力敏感度和输出数据类型。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:58
+msgid "The configuration supports customization of:"
+msgstr "配置支持自定义以下内容: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:60
+msgid ""
+"**Render Configuration**: Specify the GelSight sensor rendering parameters "
+"using predefined configs (e.g., ``GELSIGHT_R15_CFG``, ``GELSIGHT_MINI_CFG`` "
+"from ``isaaclab_assets.sensors``)"
+msgstr ""
+"**渲染配置**: 使用预定义配置（例如来自 ``isaaclab_assets.sensors`` 的 ``GELSIGHT_R15_CFG`` 、 "
+"``GELSIGHT_MINI_CFG`` ）指定 GelSight 传感器渲染参数"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:62
+msgid "**Tactile Modalities**:"
+msgstr "**触觉模态**:"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:63
+msgid ""
+"``enable_camera_tactile`` - Enable tactile RGB imaging through camera "
+"sensors"
+msgstr "``enable_camera_tactile`` - 通过相机传感器启用触觉 RGB 成像"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:64
+msgid ""
+"``enable_force_field`` - Enable force field computation and visualization"
+msgstr "``enable_force_field`` - 启用力场计算和可视化"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:65
+msgid ""
+"**Force Field Grid**: Set tactile grid dimensions (``tactile_array_size``) "
+"and margins, which directly affects the spatial resolution of the computed "
+"force field"
+msgstr "**力场网格**: 设置触觉网格尺寸（ ``tactile_array_size`` ）和边距，这直接影响计算力场的空间分辨率"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:66
+msgid ""
+"**Contact Object Configuration**: Define properties of interacting objects "
+"using prim path expressions to locate objects with SDF collision meshes"
+msgstr "**接触对象配置**: 使用 prim 路径表达式定义交互对象的属性，以定位具有 SDF 碰撞网格的对象"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:67
+msgid "**Physics Parameters**: Control the sensor's force field computation:"
+msgstr "**物理参数**: 控制传感器的力场计算:"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:68
+msgid ""
+"``normal_contact_stiffness``, ``friction_coefficient``, "
+"``tangential_stiffness`` - Normal stiffness, friction coefficient, and "
+"tangential stiffness"
+msgstr ""
+"``normal_contact_stiffness``, ``friction_coefficient``, "
+"``tangential_stiffness`` - 法向刚度、摩擦系数和切向刚度"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:69
+msgid ""
+"**Camera Settings**: Configure resolution, update rates, and data types "
+"using :class:`~sensors.CameraCfg`. Currently only "
+"``distance_to_image_plane`` (alias for ``depth``) is supported."
+msgstr ""
+"**相机设置** ：使用 :class:`~sensors.CameraCfg` 配置分辨率、更新频率和数据类型。目前只支持 "
+"``distance_to_image_plane`` （ ``depth`` 的别名）。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:70
+msgid ""
+"``spawn`` is set to ``None`` by default, which means that the camera is "
+"already spawned in the USD file. If you want to spawn the camera yourself "
+"and set focal length, etc., you can set the spawn configuration to a valid "
+"spawn configuration."
+msgstr ""
+"``spawn`` 默认设置为 ``None`` ，这意味着相机已在 USD 文件中生成。如果您想自己生成相机并设置焦距等，可以将 spawn "
+"配置设置为有效的生成配置。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:74
+msgid "Configuration Requirements"
+msgstr "配置要求"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:77
+msgid ""
+"The following requirements must be satisfied for proper sensor operation:"
+msgstr "传感器正常运行必须满足以下要求:"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:79
+msgid "**Camera Tactile Imaging**"
+msgstr "**相机触觉成像**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:80
+msgid ""
+"If ``enable_camera_tactile=True``, a valid ``camera_cfg`` (CameraCfg) must "
+"be provided with appropriate camera parameters."
+msgstr ""
+"如果 ``enable_camera_tactile=True`` ，必须提供有效的 ``camera_cfg`` "
+"（CameraCfg），并设置合适的相机参数。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:82
+msgid "**Force Field Computation**"
+msgstr "**力场计算**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:83
+msgid "If ``enable_force_field=True``, the following parameters are required:"
+msgstr "如果 ``enable_force_field=True`` ，需要以下参数: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:85
+msgid ""
+"``contact_object_prim_path_expr`` - Prim path expression to locate contact "
+"objects with SDF collision meshes"
+msgstr "``contact_object_prim_path_expr`` - 用于定位具有 SDF 碰撞网格的接触对象的 Prim 路径表达式"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:87
+msgid "**SDF Computation**"
+msgstr "**SDF 计算**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:88
+msgid ""
+"When force field computation is enabled, penalty-based normal and shear "
+"forces are computed using Signed Distance Field (SDF) queries. To achieve "
+"GPU acceleration:"
+msgstr "当启用力场计算时，使用符号距离场（SDF）查询计算基于惩罚的法向力和剪切力。要实现 GPU 加速: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:90
+msgid "Interacting objects should have SDF collision meshes"
+msgstr "交互对象应具有 SDF 碰撞网格"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:91
+msgid ""
+"An SDFView must be defined during initialization, therefore interacting "
+"objects should be specified before simulation."
+msgstr "必须在初始化期间定义 SDFView，因此应在仿真之前指定交互对象。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:93
+msgid "**Elastomer Configuration**"
+msgstr "**弹性体配置**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:94
+msgid ""
+"The sensor's ``prim_path`` must be configured as a child of the elastomer "
+"prim in the USD hierarchy. The query points for the force field computation "
+"is computed from the surface of the elastomer mesh, which is searched for "
+"under the prim path of the elastomer."
+msgstr ""
+"传感器的 ``prim_path`` 必须配置为 USD 层次结构中弹性体 prim 的子级。力场计算的查询点是从弹性体网格表面计算的，该网格在弹性体的"
+" prim 路径下搜索。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:97
+msgid "**Physics Materials**"
+msgstr "**物理材质**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:98
+msgid ""
+"The sensor uses physics materials to configure the compliant contact "
+"properties of the elastomer. By default, physics material properties are "
+"pre-configured in the USD asset. However, you can override these properties "
+"by specifying the following parameters in ``UsdFileWithCompliantContactCfg``"
+" when spawning the robot:"
+msgstr ""
+"传感器使用物理材质来配置弹性体的柔顺接触属性。默认情况下，物理材质属性已在 USD 资产中预配置。但是，您可以在生成机器人时通过在 "
+"``UsdFileWithCompliantContactCfg`` 中指定以下参数来覆盖这些属性: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:103
+msgid ""
+"``compliant_contact_stiffness`` - Contact stiffness for the elastomer "
+"surface"
+msgstr "``compliant_contact_stiffness`` - 弹性体表面的接触刚度"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:104
+msgid ""
+"``compliant_contact_damping`` - Contact damping for the elastomer surface"
+msgstr "``compliant_contact_damping`` - 弹性体表面的接触阻尼"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:105
+msgid ""
+"``physics_material_prim_path`` - Prim path where physics material is applied"
+" (typically ``\"elastomer\"``)"
+msgstr "``physics_material_prim_path`` - 应用物理材质的 Prim 路径（通常为 ``\"elastomer\"`` ）"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:107
+msgid ""
+"If any parameter is set to ``None``, the corresponding property from the USD"
+" asset will be retained."
+msgstr "如果任何参数设置为 ``None`` ，将保留 USD 资产中的相应属性。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:111
+msgid "Usage Example"
+msgstr "使用示例"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:113
+msgid ""
+"To use the tactile sensor in a simulation environment, run the example:"
+msgstr "在仿真环境中使用触觉传感器，可运行以下示例："
+
+#: source/experimental-features/visuo_tactile_sensor.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:129
+msgid "Available command-line options include:"
+msgstr "可用的命令行选项包括: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:131
+msgid "``--use_tactile_rgb``: Enable camera-based tactile sensing"
+msgstr "``--use_tactile_rgb``: 启用基于相机的触觉感知"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:132
+msgid "``--use_tactile_ff``: Enable force field tactile sensing"
+msgstr "``--use_tactile_ff``: 启用力场触觉感知"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:133
+msgid ""
+"``--contact_object_type``: Specify the type of contact object (nut, cube, "
+"etc.)"
+msgstr "``--contact_object_type``: 指定接触对象的类型（螺母、立方体等）"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:134
+msgid "``--num_envs``: Number of parallel environments"
+msgstr "``--num_envs``: 并行环境数量"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:135
+msgid "``--save_viz``: Save visualization outputs for analysis"
+msgstr "``--save_viz``: 保存可视化输出以供分析"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:136
+msgid ""
+"``--tactile_compliance_stiffness``: Override compliant contact stiffness "
+"(default: use USD asset values)"
+msgstr "``--tactile_compliance_stiffness``: 覆盖柔顺接触刚度（默认: 使用 USD 资产值）"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:137
+msgid ""
+"``--tactile_compliant_damping``: Override compliant contact damping "
+"(default: use USD asset values)"
+msgstr "``--tactile_compliant_damping``: 覆盖柔顺接触阻尼（默认: 使用 USD 资产值）"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:138
+msgid ""
+"``--normal_contact_stiffness``: Normal contact stiffness for force field "
+"computation"
+msgstr "``--normal_contact_stiffness``: 力场计算的法向接触刚度"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:139
+msgid "``--tangential_stiffness``: Tangential stiffness for shear forces"
+msgstr "``--tangential_stiffness``: 剪切力的切向刚度"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:140
+msgid "``--friction_coefficient``: Friction coefficient for shear forces"
+msgstr "``--friction_coefficient``: 剪切力的摩擦系数"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:141
+msgid ""
+"``--viz``: Select one or more visualizers, such as ``kit`` or ``newton``"
+msgstr "``--viz`` ：选择一个或多个可视化器，例如 ``kit`` 或 ``newton``"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:142
+msgid ""
+"``--debug_sdf_closest_pts``: Visualize closest SDF points for debugging"
+msgstr "``--debug_sdf_closest_pts``: 可视化最近的 SDF 点以进行调试"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:143
+msgid ""
+"``--debug_tactile_sensor_pts``: Visualize tactile sensor points for "
+"debugging"
+msgstr "``--debug_tactile_sensor_pts``: 可视化触觉传感器点以进行调试"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:144
+msgid ""
+"``--trimesh_vis_tactile_points``: Enable trimesh-based visualization of "
+"tactile points"
+msgstr "``--trimesh_vis_tactile_points``: 启用基于 trimesh 的触觉点可视化"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:148
+msgid ""
+"Since Isaac Lab 3.0, visualizers are selected independently from the "
+"simulation backend. Use the ``--viz`` argument to choose the visualizer "
+"backend, such as ``kit`` or ``newton``. The TacSL example currently supports"
+" only the PhysX simulation backend; running the tactile sensor simulation "
+"with the Newton backend is not supported."
+msgstr ""
+"从 Isaac Lab 3.0 开始，可视化器与仿真后端分别选择。通过 ``--viz`` 指定 ``kit`` 或 ``newton`` "
+"等可视化后端。TacSL 示例目前只支持 PhysX 仿真后端，不支持使用 Newton 后端运行触觉传感器仿真。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:154
+msgid "For a complete list of available options:"
+msgstr "要获取完整的可用选项列表: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:171
+msgid ""
+"The examples are based on the Gelsight R1.5, which is a prototype sensor "
+"that is now discontinued. The same procedure can be adapted for other "
+"visuotactile sensors."
+msgstr "示例基于 Gelsight R1.5，这是一款现已停产的原型传感器。同样的流程可适配其他视觉触觉传感器。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:173
+msgid ""
+"TacSL tactile sensor demo showing RGB tactile images and force field "
+"visualizations"
+msgstr "TacSL 触觉传感器演示，展示 RGB 触觉图像和力场可视化"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:178
+msgid ""
+"The tactile sensor supports multiple data modalities that provide "
+"comprehensive information about contact interactions:"
+msgstr "触觉传感器支持多种数据模态，提供关于接触交互的全面信息: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:182
+msgid "Output Tactile Data"
+msgstr "输出触觉数据"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:183
+msgid "**RGB Tactile Images**"
+msgstr "**RGB 触觉图像**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:184
+msgid ""
+"Real-time generation of tactile RGB images as objects make contact with the "
+"sensor surface. These images show deformation patterns and contact geometry "
+"similar to gel-based tactile sensors [Si2022]_"
+msgstr "当物体与传感器表面接触时实时生成触觉 RGB 图像。这些图像显示变形模式和接触几何形状，类似于凝胶基触觉传感器 [Si2022]_"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:187
+msgid "**Force Fields**"
+msgstr "**力场**"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:188
+msgid ""
+"Detailed contact force field and pressure distributions across the sensor "
+"surface, including normal and shear components."
+msgstr "传感器表面详细的接触力场和压力分布，包括法向和剪切分量。"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:194
+msgid "Tactile output with RGB visualization"
+msgstr "带有 RGB 可视化的触觉输出"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:199
+msgid "Tactile output with force field visualization"
+msgstr "带有力场可视化的触觉输出"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:205
+msgid "Integration with Learning Frameworks"
+msgstr "与学习框架集成"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:207
+msgid ""
+"The tactile sensor is designed to integrate seamlessly with reinforcement "
+"learning and imitation learning frameworks. The structured tensor outputs "
+"can be directly used as observations in learning algorithms:"
+msgstr "触觉传感器设计为与强化学习和模仿学习框架无缝集成。结构化的张量输出可以直接用作学习算法中的观测值: "
+
+#: source/experimental-features/visuo_tactile_sensor.rst:230
+msgid "References"
+msgstr "参考文献"
+
+#: source/experimental-features/visuo_tactile_sensor.rst:232
+msgid ""
+"Akinola, I., Xu, J., Carius, J., Fox, D., & Narang, Y. (2025). TacSL: A "
+"library for visuotactile sensor simulation and learning. *IEEE Transactions "
+"on Robotics*."
+msgstr ""
+"Akinola, I., Xu, J., Carius, J., Fox, D., & Narang, Y. (2025). TacSL: A "
+"library for visuotactile sensor simulation and learning. *IEEE Transactions "
+"on Robotics*."
+
+#: source/experimental-features/visuo_tactile_sensor.rst:233
+msgid ""
+"Si, Z., & Yuan, W. (2022). Taxim: An example-based simulation model for "
+"GelSight tactile sensors. *IEEE Robotics and Automation Letters*, 7(2), "
+"2361-2368."
+msgstr ""
+"Si, Z., & Yuan, W. (2022). Taxim: An example-based simulation model for "
+"GelSight tactile sensors. *IEEE Robotics and Automation Letters*, 7(2), "
+"2361-2368."

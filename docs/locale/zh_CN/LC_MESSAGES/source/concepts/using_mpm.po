@@ -1,0 +1,268 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/using_mpm.rst:4
+msgid "Using Implicit MPM"
+msgstr "使用隐式 MPM"
+
+#: source/concepts/using_mpm.rst:6
+msgid ""
+"Newton's implicit Material Point Method (MPM) solver models particle "
+"materials such as granular media. MPM support and rigid-MPM coupling are "
+"experimental. Start with the compact ``mpm-granular`` example; the "
+"``snowball-smash`` and ``teapot-fill`` demos provide polished coupling and "
+"cavity-sampling showcases."
+msgstr ""
+"Newton 的隐式物质点法（MPM）求解器用于模拟颗粒介质等粒子材料。MPM 支持以及刚体-MPM 耦合仍处于实验阶段。建议先运行简洁的 ``mpm-"
+"granular`` 示例； ``snowball-smash`` 和 ``teapot-fill`` 演示则更完整地展示了耦合和空腔采样。"
+
+#: source/concepts/using_mpm.rst:11
+msgid ""
+"The launcher uses ``cuda:0`` by default. Pass ``--device cuda:N`` to select "
+"a different GPU."
+msgstr "启动器默认使用 ``cuda:0`` 。传入 ``--device cuda:N`` 可选择其他 GPU。"
+
+#: source/concepts/using_mpm.rst:16
+msgid "Explore MPM Scenes"
+msgstr "探索 MPM 场景"
+
+#: source/concepts/using_mpm.rst:18
+msgid ""
+"These examples and demos introduce MPM construction and interaction before "
+"any parameter study. They default to Newton GL for interactive viewing:"
+msgstr "这些示例和演示先介绍 MPM 的构建与交互，再进行参数研究。它们默认使用 Newton GL 进行交互式查看："
+
+#: source/concepts/using_mpm.rst:24
+msgid "Granular drop"
+msgstr "颗粒下落"
+
+#: source/concepts/using_mpm.rst:36
+msgid "Two-way sphere pit"
+msgstr "双向耦合球坑"
+
+#: source/concepts/using_mpm.rst:48
+msgid "Snowball smash"
+msgstr "雪球撞击"
+
+#: source/concepts/using_mpm.rst:60
+msgid "Teapot fill"
+msgstr "填充茶壶"
+
+#: source/concepts/using_mpm.rst:75
+msgid "Train and Regenerate Franka Pour"
+msgstr "训练 Franka 倾倒任务并重新生成重置数据"
+
+#: source/concepts/using_mpm.rst:77
+msgid ""
+"The ``IsaacContrib-Franka-Pour`` task restores episodes from a reset "
+"artifact containing the connected 14-phase reset distribution. The canonical"
+" 20,000-row artifact downloads from the standard Isaac Lab asset root on "
+"first use, so training needs no artifact setup:"
+msgstr ""
+"``IsaacContrib-Franka-Pour`` 任务从重置数据文件恢复回合，该文件包含相互衔接的 14 阶段重置分布。首次使用时，会从标准 "
+"Isaac Lab 资产根目录下载含 20,000 行的标准数据文件，因此训练无需另行准备该文件："
+
+#: source/concepts/using_mpm.rst:87
+msgid ""
+"The checked-in generator remains the executable reference for reproducing or"
+" customizing the distribution. It takes about two minutes on an L40S-class "
+"GPU and writes a local artifact that can be selected explicitly:"
+msgstr "仓库中的生成器是复现或自定义该分布的可执行参考。在 L40S 级别的 GPU 上约需两分钟，它会写入一个可显式选择的本地数据文件："
+
+#: source/concepts/using_mpm.rst:98
+msgid ""
+"The task validates the payload's stored content digest automatically. "
+"Setting ``ISAACSIM_ASSET_ROOT`` redirects the canonical artifact to a "
+"compatible local or self-hosted asset tree. Digest pinning remains available"
+" for custom reproducible experiments."
+msgstr ""
+"任务会自动验证数据中保存的内容摘要。设置 ``ISAACSIM_ASSET_ROOT`` "
+"可将标准数据文件的查找位置改为兼容的本地或自托管资产目录树。自定义的可复现实验仍可固定摘要。"
+
+#: source/concepts/using_mpm.rst:103
+msgid ""
+"The source uses a non-colliding analytic fill volume whose height is "
+"controlled by ``env.source_fill_level`` in ``(0, 1]``. The default ``0.70`` "
+"fills roughly 70% of the cup height; the particle count follows the "
+"requested fill level while voxel size and particle spacing stay fixed. "
+"``env.pour_target_frac`` independently controls the fraction of that live "
+"payload that must reach the receiver."
+msgstr ""
+"源容器使用不参与碰撞的解析填充体积，其高度由 ``env.source_fill_level`` 控制，取值范围为 ``(0, 1]`` 。默认 "
+"``0.70`` 表示填充至约 70% 的杯高；粒子数量随指定填充比例变化，而体素大小和粒子间距保持固定。 "
+"``env.pour_target_frac`` 独立控制当前粒子总量中必须到达接收容器的比例。"
+
+#: source/concepts/using_mpm.rst:110
+msgid ""
+"Play a checkpoint in Kit with the canonical task configuration; no external "
+"callback or particle override is required:"
+msgstr "使用标准任务配置，在 Kit 中运行检查点；无需外部回调或粒子覆盖配置："
+
+#: source/concepts/using_mpm.rst:120
+msgid "Minimal Setup"
+msgstr "最小配置"
+
+#: source/concepts/using_mpm.rst:122
+msgid ""
+"Use the same voxel size for the solver grid and particle generator. Add the "
+"generated object to an :class:`~isaaclab.scene.InteractiveSceneCfg` like any"
+" other declarative asset."
+msgstr ""
+"求解器网格与粒子生成器应使用相同体素大小。像其他声明式资产一样，将生成的物体添加到 "
+":class:`~isaaclab.scene.InteractiveSceneCfg` 。"
+
+#: source/concepts/using_mpm.rst:158
+msgid ""
+"Tune the particle material separately through "
+":class:`~isaaclab_newton.sim.MPMParticleMaterialCfg`. The implicit solve "
+"already resolves collider contact. ``project_outside_colliders`` adds a hard"
+" post-step correction for particles that remain inside colliders; use it "
+"only when that geometric correction is intentional, and not as a substitute "
+"for valid initial states, collision geometry, or a stable timestep. Coupled "
+"MPM entries do not support this manager-level projection pass."
+msgstr ""
+"通过 :class:`~isaaclab_newton.sim.MPMParticleMaterialCfg` "
+"单独调整粒子材质。隐式求解本身已经处理碰撞体接触。 ``project_outside_colliders`` "
+"会在步进后对仍位于碰撞体内部的粒子执行硬性修正；仅在确实需要该几何修正时使用，不应以它替代有效初始状态、碰撞几何或稳定的时间步长。耦合 MPM "
+"条目不支持这一管理器级投影步骤。"
+
+#: source/concepts/using_mpm.rst:166
+msgid ""
+"Both :class:`~isaaclab_newton.sim.MPMGridCfg` and "
+":class:`~isaaclab_newton.sim.MPMPointsCfg` author schema-valid "
+"``UsdGeom.Points`` simulation geometry. Grid configurations still generate "
+"the lattice in Isaac Lab before authoring explicit points, widths, "
+"velocities, and masses. Materials use ``NewtonMPMMaterialAPI``; damping [s] "
+"is authored as ``damping * young_modulus`` [Pa·s]. ``critical_fraction`` "
+"remains solver-global on :class:`~isaaclab_newton.physics.MPMSolverCfg` and "
+"is authored on the owning ``NewtonMPMSceneAPI`` physics scene."
+msgstr ""
+":class:`~isaaclab_newton.sim.MPMGridCfg` 和 "
+":class:`~isaaclab_newton.sim.MPMPointsCfg` 都会编写符合模式的 ``UsdGeom.Points`` "
+"仿真几何。网格配置仍先在 Isaac Lab 中生成点阵，再写入显式点、宽度、速度和质量。材质使用 ``NewtonMPMMaterialAPI`` "
+"；阻尼 [s] 以 ``damping * young_modulus`` [Pa·s] 写入。 ``critical_fraction`` 仍是 "
+":class:`~isaaclab_newton.physics.MPMSolverCfg` 上的求解器全局参数，写入所属的 "
+"``NewtonMPMSceneAPI`` 物理场景。"
+
+#: source/concepts/using_mpm.rst:175
+msgid ""
+"Grid jitter is generated once in asset-local coordinates with a fixed seed, "
+"so USD clones share the same local particle distribution. Use reset events "
+"or domain randomization when each environment needs an independent "
+"distribution."
+msgstr ""
+"网格扰动使用固定种子，在资产局部坐标系中只生成一次，因此 USD 克隆共享相同的局部粒子分布。如果各环境需要独立分布，请使用重置事件或域随机化。"
+
+#: source/concepts/using_mpm.rst:180
+msgid ""
+"Controlled material experiments, comparison demos, and practical solver "
+"advice are collected in :ref:`newton-tuning-mpm`."
+msgstr "受控材质实验、对比演示和实用求解器建议见 :ref:`newton-tuning-mpm` 。"
+
+#: source/concepts/using_mpm.rst:185
+msgid "Render a Particle Surface"
+msgstr "渲染粒子表面"
+
+#: source/concepts/using_mpm.rst:187
+msgid ""
+"MPM simulation state remains a set of particles. Surface reconstruction is "
+"an optional visualization pass: it does not change particle motion, "
+"collisions, or material behavior. Run the teapot demo to compare the "
+"available modes:"
+msgstr "MPM 仿真状态始终是一组粒子。表面重建是可选的可视化步骤，不会改变粒子运动、碰撞或材质行为。运行茶壶演示可对比可用模式："
+
+#: source/concepts/using_mpm.rst:203
+msgid ""
+"The teapot demo defaults to the reconstructed surface. Select ``particles`` "
+"or ``both`` to inspect the source MPM state in Newton GL or Newton RTX."
+msgstr ""
+"茶壶演示默认显示重建表面。选择 ``particles`` 或 ``both`` ，可在 Newton GL 或 Newton RTX 中查看原始 "
+"MPM 状态。"
+
+#: source/concepts/using_mpm.rst:206
+msgid ""
+"Surface rendering is available in the Newton GL and Newton RTX visualizers. "
+"The Kit visualizer continues to render the MPM particles directly."
+msgstr "Newton GL 和 Newton RTX 可视化器支持表面渲染，Kit 可视化器仍直接渲染 MPM 粒子。"
+
+#: source/concepts/using_mpm.rst:215
+msgid ""
+"This recording demonstrates rendering appearance, not a different "
+"constitutive model."
+msgstr "这段录制展示的是渲染外观，并非另一种本构模型。"
+
+#: source/concepts/using_mpm.rst:218
+msgid ""
+"The teapot demo configures ``newton.geometry.ParticleSurface`` after "
+"``sim.reset()`` and updates the mesh before ``sim.render()``. Its renderer "
+"captures extraction on CUDA when enabled and stages the dynamic mesh inside "
+"the viewer's frame lifecycle."
+msgstr ""
+"茶壶演示在 ``sim.reset()`` 后配置 ``newton.geometry.ParticleSurface`` ，并在 "
+"``sim.render()`` 前更新网格。启用 CUDA 捕获时，其渲染器会捕获表面提取操作，并在查看器的帧生命周期内暂存动态网格。"
+
+#: source/concepts/using_mpm.rst:223
+msgid "Tune reconstruction independently from the simulation:"
+msgstr "重建参数应独立于仿真调节："
+
+#: source/concepts/using_mpm.rst:225
+msgid ""
+"``voxel_size`` controls surface detail and memory use. It can be smaller "
+"than the MPM solver voxel size."
+msgstr "``voxel_size`` 控制表面细节和内存用量，可以小于 MPM 求解器的体素大小。"
+
+#: source/concepts/using_mpm.rst:227
+msgid ""
+"``kernel_radius`` controls how far each particle contributes to the surface."
+" Start near three times the particle spacing."
+msgstr "``kernel_radius`` 控制每个粒子对表面的影响范围。建议从粒子间距的三倍左右开始。"
+
+#: source/concepts/using_mpm.rst:229
+msgid ""
+"``max_grid_cells`` provides fixed-capacity storage for CUDA graph capture. "
+"Increase it if the reconstructed domain outgrows the reserved grid."
+msgstr "``max_grid_cells`` 为 CUDA 图捕获提供固定容量的存储。如果重建区域超出预留网格，请增大该值。"
+
+#: source/concepts/using_mpm.rst:231
+msgid ""
+"Anisotropic kernels preserve sheets and stretched fluid features better, but"
+" cost more than isotropic kernels."
+msgstr "各向异性核能更好地保留薄片和拉长的流体特征，但开销高于各向同性核。"
+
+#: source/concepts/using_mpm.rst:234
+msgid ""
+"The teapot demo handles CUDA graph capture, empty surfaces, inactive "
+"particles, and dynamic topology:"
+msgstr "茶壶演示处理了 CUDA 图捕获、空表面、未激活粒子和动态拓扑："
+
+#: source/concepts/using_mpm.rst:0
+msgid "Teapot surface renderer implementation"
+msgstr "茶壶表面渲染器的实现"
+
+#: source/concepts/using_mpm.rst:246
+msgid "Next Steps"
+msgstr "后续步骤"
+
+#: source/concepts/using_mpm.rst:248
+msgid ""
+"See :ref:`newton-tuning-mpm` for resolution and convergence tuning, "
+"controlled material comparisons, and the nearly rigid MPM limit. See "
+":ref:`newton-coupled-solvers` for rigid--MPM coupling."
+msgstr ""
+"分辨率与收敛调节、受控材质对比，以及近刚性的 MPM 极限，见 :ref:`newton-tuning-mpm` 。刚体-MPM 耦合见 "
+":ref:`newton-coupled-solvers` 。"

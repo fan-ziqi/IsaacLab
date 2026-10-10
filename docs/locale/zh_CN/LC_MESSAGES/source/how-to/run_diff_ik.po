@@ -1,0 +1,259 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/run_diff_ik.rst:4
+msgid "Using a task-space controller"
+msgstr "使用任务空间控制器"
+
+#: source/how-to/run_diff_ik.rst:8
+msgid ""
+"In the previous tutorials, we have joint-space controllers to control the "
+"robot. However, in many cases, it is more intuitive to control the robot "
+"using a task-space controller. For example, if we want to teleoperate the "
+"robot, it is easier to specify the desired end-effector pose rather than the"
+" desired joint positions."
+msgstr ""
+"此前的教程使用关节空间控制器控制机器人。但在许多场景中，任务空间控制更直观。例如，遥操作机器人时，直接指定期望的末端执行器位姿，比指定各关节的位置更方便。"
+
+#: source/how-to/run_diff_ik.rst:13
+msgid ""
+"In this tutorial, we will learn how to use a task-space controller to "
+"control the robot. We will use the "
+":class:`controllers.DifferentialIKController` class to track a desired end-"
+"effector pose command."
+msgstr ""
+"本教程介绍如何用任务空间控制器控制机器人，使用 :class:`controllers.DifferentialIKController` "
+"跟踪期望的末端执行器位姿指令。"
+
+#: source/how-to/run_diff_ik.rst:17
+msgid ""
+"This tutorial uses Isaac Sim PhysX and requires an Isaac Sim installation."
+msgstr "本教程使用 Isaac Sim PhysX，需要安装 Isaac Sim。"
+
+#: source/how-to/run_diff_ik.rst:21
+msgid "The Code"
+msgstr "代码"
+
+#: source/how-to/run_diff_ik.rst:23
+msgid ""
+"The tutorial corresponds to the ``run_diff_ik.py`` script in the "
+"``scripts/tutorials/05_controllers`` directory."
+msgstr ""
+"该教程对应于 ``scripts/tutorials/05_controllers`` 目录中的 ``run_diff_ik.py`` 脚本。"
+
+#: source/how-to/run_diff_ik.rst:0
+msgid "Code for run_diff_ik.py"
+msgstr "run_diff_ik.py 的代码"
+
+#: source/how-to/run_diff_ik.rst:37
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: source/how-to/run_diff_ik.rst:39
+msgid ""
+"While using any task-space controller, it is important to ensure that the "
+"provided quantities are in the correct frames. When parallelizing "
+"environment instances, they are all existing in the same unique simulation "
+"world frame. However, typically, we want each environment itself to have its"
+" own local frame. This is accessible through the "
+":attr:`scene.InteractiveScene.env_origins` attribute."
+msgstr ""
+"使用任务空间控制器时，必须确保输入量采用正确的坐标系。多个并行环境实例位于同一个仿真世界坐标系中，但通常希望各环境有自己的局部坐标系。可通过 "
+":attr:`scene.InteractiveScene.env_origins` 获取各环境的原点。"
+
+#: source/how-to/run_diff_ik.rst:45
+msgid "In our APIs, we use the following notation for frames:"
+msgstr "API 使用以下符号表示坐标系："
+
+#: source/how-to/run_diff_ik.rst:47
+msgid ""
+"The simulation world frame (denoted as ``w``), which is the frame of the "
+"entire simulation."
+msgstr "仿真世界坐标系（记为 ``w`` ）：整个仿真的坐标系。"
+
+#: source/how-to/run_diff_ik.rst:48
+msgid ""
+"The local environment frame (denoted as ``e``), which is the frame of the "
+"local environment."
+msgstr "环境局部坐标系（记为 ``e`` ）：各环境自身的坐标系。"
+
+#: source/how-to/run_diff_ik.rst:49
+msgid ""
+"The robot's base frame (denoted as ``b``), which is the frame of the robot's"
+" base link."
+msgstr "机器人基座坐标系（记为 ``b`` ）：机器人基座连杆的坐标系。"
+
+#: source/how-to/run_diff_ik.rst:51
+msgid ""
+"Since the asset instances are not \"aware\" of the local environment frame, "
+"they return their states in the simulation world frame. Thus, we need to "
+"convert the obtained quantities to the local environment frame. This is done"
+" by subtracting the local environment origin from the obtained quantities."
+msgstr "资产实例不感知环境的局部坐标系，返回的状态采用仿真世界坐标系。因此，需要将这些量转换到环境局部坐标系；对于这里的位置量，减去环境原点即可。"
+
+#: source/how-to/run_diff_ik.rst:58
+msgid "Creating an IK controller"
+msgstr "创建一个 IK 控制器"
+
+#: source/how-to/run_diff_ik.rst:60
+msgid ""
+"The :class:`~controllers.DifferentialIKController` class computes the "
+"desired joint positions for a robot to reach a desired end-effector pose. "
+"The included implementation performs the computation in a batched format and"
+" uses PyTorch operations. It supports different types of inverse kinematics "
+"solvers, including the damped least-squares method and the pseudo-inverse "
+"method. These solvers can be specified using the "
+":attr:`~controllers.DifferentialIKControllerCfg.ik_method` argument. "
+"Additionally, the controller can handle commands as both relative and "
+"absolute poses."
+msgstr ""
+":class:`~controllers.DifferentialIKController` 计算机器人达到期望末端位姿所需的关节位置。实现采用 "
+"PyTorch 批量运算，支持阻尼最小二乘法、伪逆法等逆运动学求解器，可通过 "
+":attr:`~controllers.DifferentialIKControllerCfg.ik_method` "
+"选择。控制器既支持相对位姿指令，也支持绝对位姿指令。"
+
+#: source/how-to/run_diff_ik.rst:68
+msgid ""
+"In this tutorial, we will use the damped least-squares method to compute the"
+" desired joint positions. Additionally, since we want to track desired end-"
+"effector poses, we will use the absolute pose command mode."
+msgstr "本教程使用阻尼最小二乘法计算期望关节位置，并采用绝对位姿指令模式跟踪末端执行器的目标位姿。"
+
+#: source/how-to/run_diff_ik.rst:78
+msgid "Obtaining the robot's joint and body indices"
+msgstr "获取机器人的关节和刚体索引"
+
+#: source/how-to/run_diff_ik.rst:80
+msgid ""
+"The IK controller implementation is a computation-only class. Thus, it "
+"expects the user to provide the necessary information about the robot. This "
+"includes the robot's joint positions, current end-effector pose, and the "
+"Jacobian matrix."
+msgstr "IK 控制器只负责计算，需要用户提供机器人的关节位置、当前末端执行器位姿和雅可比矩阵。"
+
+#: source/how-to/run_diff_ik.rst:84
+msgid ""
+"While the attribute :attr:`assets.ArticulationData.joint_pos` provides the "
+"joint positions, we only want the joint positions of the robot's arm, and "
+"not the gripper. Similarly, while the attribute "
+":attr:`assets.ArticulationData.body_state_w` provides the state of all the "
+"robot's bodies, we only want the state of the robot's end-effector. Thus, we"
+" need to index into these arrays to obtain the desired quantities."
+msgstr ""
+":attr:`assets.ArticulationData.joint_pos` "
+"提供所有关节的位置，但这里仅需机械臂关节的数据，不需要夹爪关节。同样， "
+":attr:`assets.ArticulationData.body_state_w` "
+"提供所有刚体的状态，而这里只需末端执行器的状态。因此，需要通过索引从数组中取出所需数据。"
+
+#: source/how-to/run_diff_ik.rst:90
+msgid ""
+"For this, the articulation class provides the methods "
+":meth:`~assets.Articulation.find_joints` and "
+":meth:`~assets.Articulation.find_bodies`. These methods take in the names of"
+" the joints and bodies and return their corresponding indices."
+msgstr ""
+"关节体类提供 :meth:`~assets.Articulation.find_joints` 和 "
+":meth:`~assets.Articulation.find_bodies` 方法，根据关节和刚体名称返回对应索引。"
+
+#: source/how-to/run_diff_ik.rst:94
+msgid ""
+"While you may directly use these methods to obtain the indices, we recommend"
+" using the :attr:`~managers.SceneEntityCfg` class to resolve the indices. "
+"This class is used in various places in the APIs to extract certain "
+"information from a scene entity. Internally, it calls the above methods to "
+"obtain the indices. However, it also performs some additional checks to "
+"ensure that the provided names are valid. Thus, it is a safer option to use "
+"this class."
+msgstr ""
+"可以直接调用上述方法获取索引，但更推荐使用 :attr:`~managers.SceneEntityCfg` 解析索引。该类在 API "
+"多处用于提取场景实体的信息：内部调用上述方法，并额外检查名称是否合法，因此使用起来更稳妥。"
+
+#: source/how-to/run_diff_ik.rst:108
+msgid "Computing robot command"
+msgstr "计算机器人命令"
+
+#: source/how-to/run_diff_ik.rst:110
+msgid ""
+"The IK controller separates the operation of setting the desired command and"
+" computing the desired joint positions. This is done to allow for the user "
+"to run the IK controller at a different frequency than the robot's control "
+"frequency."
+msgstr "IK 控制器将设置目标指令与计算目标关节位置分为两个操作，以便用户以不同于机器人控制频率的频率运行 IK 计算。"
+
+#: source/how-to/run_diff_ik.rst:114
+msgid ""
+"The :meth:`~controllers.DifferentialIKController.set_command` method takes "
+"in the desired end-effector pose as a single batched array. The pose is "
+"specified in the robot's base frame."
+msgstr ""
+":meth:`~controllers.DifferentialIKController.set_command` "
+"接收批量数组形式的期望末端执行器位姿，位姿采用机器人基座坐标系。"
+
+#: source/how-to/run_diff_ik.rst:123
+msgid ""
+"We can then compute the desired joint positions using the "
+":meth:`~controllers.DifferentialIKController.compute` method. The method "
+"takes in the current end-effector pose (in base frame), Jacobian, and "
+"current joint positions. We read the Jacobian matrix from the robot's data, "
+"which uses its value computed from the physics engine."
+msgstr ""
+"随后，通过 :meth:`~controllers.DifferentialIKController.compute` "
+"计算期望关节位置。输入包括基座坐标系下的当前末端执行器位姿、雅可比矩阵和当前关节位置。雅可比矩阵从机器人数据中读取，其数值由物理引擎计算。"
+
+#: source/how-to/run_diff_ik.rst:135
+msgid ""
+"The computed joint position targets can then be applied on the robot, as "
+"done in the previous tutorials."
+msgstr "与此前教程一样，将计算得到的关节位置目标应用到机器人即可。"
+
+#: source/how-to/run_diff_ik.rst:145
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/run_diff_ik.rst:148
+msgid ""
+"Now that we have gone through the code, let's run the script and see the "
+"result:"
+msgstr "运行脚本，查看结果："
+
+#: source/how-to/run_diff_ik.rst:0
+msgid "Isaac Sim PhysX (uv)"
+msgstr "Isaac Sim PhysX（uv）"
+
+#: source/how-to/run_diff_ik.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/run_diff_ik.rst:164
+msgid ""
+"The script will start a simulation with 128 robots. The robots will be "
+"controlled using the IK controller. The current and desired end-effector "
+"poses should be displayed using frame markers. When the robot reaches the "
+"desired pose, the command should cycle through to the next pose specified in"
+" the script."
+msgstr ""
+"脚本会启动包含 128 个机器人的仿真，并使用 IK "
+"控制器控制它们。坐标系标记显示当前和期望的末端执行器位姿。当机器人到达目标位姿时，指令会切换到脚本指定的下一个位姿。"
+
+#: source/how-to/run_diff_ik.rst:168
+msgid "result of run_diff_ik.py"
+msgstr "run_diff_ik.py 的结果"
+
+#: source/how-to/run_diff_ik.rst:173
+msgid "Press ``Ctrl+C`` in the terminal to stop the simulation."
+msgstr "在终端按 ``Ctrl+C`` 可停止仿真。"

@@ -1,0 +1,247 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/multi_asset_spawning.rst:4
+msgid "Spawning Multiple Assets"
+msgstr "生成多个资产"
+
+#: source/how-to/multi_asset_spawning.rst:8
+msgid ""
+"Typical spawning configurations (introduced in the :ref:`tutorial-spawn-"
+"prims` tutorial) copy one asset across all prim paths resolved from an "
+"expression. Multi-asset workflows cover two related composition needs:"
+msgstr ""
+"典型的生成配置（见 :ref:`tutorial-spawn-prims` 教程）会将同一个资产复制到表达式解析出的所有 prim "
+"路径。多资产工作流满足两种相关的组合需求："
+
+#: source/how-to/multi_asset_spawning.rst:11
+msgid ""
+"A rigid object collection batches several rigid objects in every environment"
+" behind one data and command API."
+msgstr "刚性物体集合将每个环境中的多个刚性物体批量组织起来，通过统一的数据和命令 API 访问。"
+
+#: source/how-to/multi_asset_spawning.rst:12
+msgid ""
+"A multi-asset spawner declares several variants for one scene asset binding,"
+" allowing environments to contain different geometry or robot variants."
+msgstr "多资产生成器为一个场景资产绑定声明多个变体，使不同环境可包含不同几何体或机器人变体。"
+
+#: source/how-to/multi_asset_spawning.rst:15
+msgid ""
+"This guide demonstrates both mechanisms and explains how their execution "
+"differs between PhysX and Newton."
+msgstr "本指南演示这两种机制，并解释它们在 PhysX 和 Newton 中的执行差异。"
+
+#: source/how-to/multi_asset_spawning.rst:17
+msgid ""
+"The packaged ``multi-asset`` example provides the reference script, "
+"``multi_asset.py``."
+msgstr "打包提供的 ``multi-asset`` 示例包含参考脚本 ``multi_asset.py`` 。"
+
+#: source/how-to/multi_asset_spawning.rst:0
+msgid "Code for multi_asset.py"
+msgstr "multi_asset.py 的代码"
+
+#: source/how-to/multi_asset_spawning.rst:26
+msgid ""
+"With the default Newton configuration, this script creates multiple "
+"environments containing:"
+msgstr "使用默认 Newton 配置时，此脚本会创建多个环境，其中包含："
+
+#: source/how-to/multi_asset_spawning.rst:28
+msgid "a rigid object collection containing a sphere, a cube, and a cylinder"
+msgstr "由球体、立方体和圆柱体组成的刚性物体集合"
+
+#: source/how-to/multi_asset_spawning.rst:29
+msgid ""
+"a rigid object selected from nine geometry and material variants by the "
+"clone plan"
+msgstr "由克隆计划从九种几何和材料变体中选择的刚性物体"
+
+#: source/how-to/multi_asset_spawning.rst:30
+msgid ""
+"an articulation selected from the ANYmal-C and ANYmal-D variants by the "
+"clone plan"
+msgstr "由克隆计划从 ANYmal-C 和 ANYmal-D 变体中选择的关节体"
+
+#: source/how-to/multi_asset_spawning.rst:32
+msgid "result of multi_asset.py"
+msgstr "multi_asset.py 的结果"
+
+#: source/how-to/multi_asset_spawning.rst:38
+msgid "Rigid object collections"
+msgstr "刚性物体集合"
+
+#: source/how-to/multi_asset_spawning.rst:40
+msgid ""
+"Use a rigid object collection when every environment contains the same set "
+"of independently moving rigid bodies and you want to access them as one "
+"batch. The collection exposes data with an ``(env, object, ...)`` layout and"
+" accepts ``(env_ids, obj_ids)`` selections for commands. Compared with "
+"managing each object separately, the collection uses one batched physics "
+"view."
+msgstr ""
+"如果每个环境都包含同一组独立运动的刚体，且希望以一个批次访问它们，可使用刚性物体集合。集合以 ``(env, object, ...)`` "
+"布局提供数据，并接受 ``(env_ids, obj_ids)`` 选择来执行命令。与分别管理各物体相比，集合只使用一个批量物理视图。"
+
+#: source/how-to/multi_asset_spawning.rst:51
+msgid ""
+"The :class:`~assets.RigidObjectCollectionCfg` configuration owns a "
+"dictionary of :class:`~assets.RigidObjectCfg` instances. Each dictionary key"
+" is the object's stable identifier within the collection."
+msgstr ""
+":class:`~assets.RigidObjectCollectionCfg` 配置持有一个由 "
+":class:`~assets.RigidObjectCfg` 实例组成的字典。每个字典键都是对应物体在集合中的稳定标识。"
+
+#: source/how-to/multi_asset_spawning.rst:54
+msgid ""
+"The example resets all collection members through the same API used by both "
+"physics backends:"
+msgstr "本例通过两个物理后端共用的 API 重置集合中的所有成员："
+
+#: source/how-to/multi_asset_spawning.rst:64
+msgid "Spawning variants for one scene asset"
+msgstr "为一个场景资产生成不同变体"
+
+#: source/how-to/multi_asset_spawning.rst:66
+msgid ""
+"Use :class:`~sim.spawners.wrappers.MultiAssetSpawnerCfg` and "
+":class:`~sim.spawners.wrappers.MultiUsdFileCfg` to declare the available "
+"variants for one scene asset binding. :class:`~scene.InteractiveScene` "
+"includes these variants in its clone plan and assigns one valid prototype "
+"combination to each environment."
+msgstr ""
+"使用 :class:`~sim.spawners.wrappers.MultiAssetSpawnerCfg` 和 "
+":class:`~sim.spawners.wrappers.MultiUsdFileCfg` ，为一个场景资产绑定声明可用变体。 "
+":class:`~scene.InteractiveScene` 将这些变体纳入克隆计划，并为每个环境分配一个有效的原型组合。"
+
+#: source/how-to/multi_asset_spawning.rst:70
+msgid ""
+"For configuration-based assets, assign "
+":class:`~sim.spawners.wrappers.MultiAssetSpawnerCfg` to the "
+":class:`~assets.RigidObjectCfg` spawn configuration:"
+msgstr ""
+"对于通过配置构建的资产，将 :class:`~sim.spawners.wrappers.MultiAssetSpawnerCfg` 赋给 "
+":class:`~assets.RigidObjectCfg` 的生成配置："
+
+#: source/how-to/multi_asset_spawning.rst:79
+msgid ""
+"The ``assets_cfg`` list defines the prototypes available to the clone plan. "
+"Variant assignment is controlled by :attr:`~cloner.CloneCfg.clone_strategy`;"
+" the default :func:`~cloner.sequential` strategy assigns combinations in "
+"round-robin order. To sample combinations randomly instead, set the strategy"
+" before constructing the scene:"
+msgstr ""
+"``assets_cfg`` 列表定义克隆计划可用的原型。变体分配由 :attr:`~cloner.CloneCfg.clone_strategy` "
+"控制；默认的 :func:`~cloner.sequential` 策略按轮转顺序分配组合。如果希望随机采样组合，应在构建场景前设置策略："
+
+#: source/how-to/multi_asset_spawning.rst:89
+msgid ""
+"For USD assets, assign :class:`~sim.spawners.wrappers.MultiUsdFileCfg` to "
+"the :class:`~assets.ArticulationCfg` spawn configuration:"
+msgstr ""
+"对于 USD 资产，将 :class:`~sim.spawners.wrappers.MultiUsdFileCfg` 赋给 "
+":class:`~assets.ArticulationCfg` 的生成配置："
+
+#: source/how-to/multi_asset_spawning.rst:99
+msgid "Variant compatibility"
+msgstr "变体兼容性"
+
+#: source/how-to/multi_asset_spawning.rst:101
+msgid ""
+"All variants behind one batched asset interface must have a compatible "
+"structure. Articulation variants must have the same links, joints, "
+"collision-body count, and names. Rigid object variants can differ in "
+"geometry and material while retaining a compatible rigid-body layout. Model "
+"structurally different assets as separate scene bindings."
+msgstr ""
+"同一批量资产接口下的所有变体必须结构兼容。关节体变体必须具有相同的连杆、关节、碰撞刚体数量及名称。刚性物体变体可以有不同的几何和材料，但必须保留兼容的刚体布局。结构不同的资产应建模为独立的场景绑定。"
+
+#: source/how-to/multi_asset_spawning.rst:106
+msgid "Clone planning and physics replication"
+msgstr "克隆规划与物理复制"
+
+#: source/how-to/multi_asset_spawning.rst:108
+msgid ""
+":class:`~scene.InteractiveScene` represents multi-asset variants as clone-"
+"plan prototypes. It can therefore keep "
+":attr:`~scene.InteractiveSceneCfg.replicate_physics` enabled and replicate "
+"each prototype only to its assigned environments. Do not disable physics "
+"replication merely because a scene uses a multi-asset spawner. Reserve "
+"``replicate_physics=False`` for per-environment stage differences that "
+"cannot be represented as clone variants; that mode is not supported by the "
+"Newton backend."
+msgstr ""
+":class:`~scene.InteractiveScene` 将多资产变体表示为克隆计划中的原型，因此可以保持 "
+":attr:`~scene.InteractiveSceneCfg.replicate_physics` "
+"开启，只向各原型所分配的环境复制该原型。不要仅因为场景使用多资产生成器，就禁用物理复制。只有无法表示为克隆变体的逐环境舞台差异，才使用 "
+"``replicate_physics=False`` ；Newton 后端不支持该模式。"
+
+#: source/how-to/multi_asset_spawning.rst:114
+msgid ""
+"The example keeps physics replication enabled. For Newton, it also narrows "
+"the standalone object and articulation to one variant because their batched "
+"Newton views currently require a uniform body layout across worlds:"
+msgstr ""
+"本例保持物理复制开启。对于 Newton，还会将独立物体和关节体分别缩减为一个变体，因为它们的批量 Newton 视图目前要求各世界的刚体布局一致："
+
+#: source/how-to/multi_asset_spawning.rst:123
+msgid ""
+"For more detail on prototype assignment and replication, see :doc:`cloning`."
+msgstr "原型分配与复制的更多细节见 :doc:`cloning` 。"
+
+#: source/how-to/multi_asset_spawning.rst:126
+msgid "Run the example"
+msgstr "运行示例"
+
+#: source/how-to/multi_asset_spawning.rst:128
+msgid ""
+"The physics backend and visualizer are selected independently. Run one of "
+"these commands from the repository root:"
+msgstr "物理后端与可视化器分别选择。从仓库根目录运行以下任一命令："
+
+#: source/how-to/multi_asset_spawning.rst:0
+msgid "PhysX with Kit"
+msgstr "PhysX 配合 Kit"
+
+#: source/how-to/multi_asset_spawning.rst:0
+msgid "Newton MJWarp with Kit"
+msgstr "Newton MJWarp 配合 Kit"
+
+#: source/how-to/multi_asset_spawning.rst:0
+msgid "Newton MJWarp with Newton GL"
+msgstr "Newton MJWarp 配合 Newton GL"
+
+#: source/how-to/multi_asset_spawning.rst:153
+msgid ""
+"The Newton commands exercise the same "
+":class:`~assets.RigidObjectCollectionCfg` and ``(env_ids, obj_ids)`` APIs as"
+" the PhysX command. They do not demonstrate per-environment object or "
+"articulation variants because of the uniform-layout restriction described "
+"above; use the PhysX command to inspect that part of the example. See the "
+":doc:`installation guide </source/setup/installation/index>` before running "
+"the kitless command."
+msgstr ""
+"Newton 命令使用与 PhysX 命令相同的 :class:`~assets.RigidObjectCollectionCfg` 和 "
+"``(env_ids, obj_ids)`` API。由于上述布局一致性限制，它们不会演示不同环境的物体或关节体变体；要查看示例的这一部分，请使用 "
+"PhysX 命令。运行不依赖 Kit 的命令前，参阅 :doc:`安装指南 </source/setup/installation/index>` 。"
+
+#: source/how-to/multi_asset_spawning.rst:159
+msgid ""
+"To stop the simulation, you can close the window, or press ``Ctrl+C`` in the"
+" terminal."
+msgstr "关闭窗口或在终端按 ``Ctrl+C`` ，即可停止仿真。"

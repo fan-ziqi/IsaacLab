@@ -176,6 +176,13 @@ Every command accepts the following arguments:
 Extending the Compose configuration
 -----------------------------------
 
+.. note::
+
+   The CloudXR sidecar example below is retained from the Isaac Lab 2.x workflow.
+   For Isaac Lab 3.0 teleoperation, use the single-container setup in
+   :ref:`cloudxr-teleoperation`, which starts CloudXR automatically. Do not use
+   the legacy Compose patch for the current teleoperation workflow.
+
 ``--files`` and ``--env-files`` merge extra Compose and environment files into the generated
 configuration, which is how optional components are layered on without editing the checked-in files.
 Streaming to XR devices is the worked example -- it adds the CloudXR Runtime service alongside
