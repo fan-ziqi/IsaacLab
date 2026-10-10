@@ -1,0 +1,246 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/solver_tuning_physx.rst:11
+msgid "Tune the PhysX Solver"
+msgstr "PhysX 求解器调优"
+
+#: source/how-to/solver_tuning_physx.rst:13
+msgid ""
+"Use this guide after the PhysX backend can construct the task and its "
+"assets. Before changing solver settings, reproduce one issue with a fixed "
+"initial state, seed, and action sequence. Record the failure, contact "
+"behavior, and task metric for that reproduction, then change one scene-level"
+" setting at a time. The generated API documentation for "
+":class:`~isaaclab_physx.physics.PhysxCfg` remains authoritative for exact "
+"fields and current defaults."
+msgstr ""
+"本指南适用于 PhysX "
+"后端已能构建任务和资产的情况。修改求解器设置前，用固定的初始状态、随机种子和动作序列复现一个问题。记录该复现场景中的故障、接触行为和任务指标，再逐项调整场景级设置。具体字段及其当前默认值，以"
+" :class:`~isaaclab_physx.physics.PhysxCfg` 的自动生成 API 文档为准。"
+
+#: source/how-to/solver_tuning_physx.rst:22
+msgid "Start from an explicit baseline"
+msgstr "建立明确的基准配置"
+
+#: source/how-to/solver_tuning_physx.rst:24
+msgid ""
+"Make the scene-level PhysX choices visible in the task configuration first. "
+"This baseline is a representative starting point for a contact-rich task, "
+"not a universal recommendation:"
+msgstr "先在任务配置中明确场景级 PhysX 设置。以下基准配置是接触密集任务的一个代表性起点，并非通用建议："
+
+#: source/how-to/solver_tuning_physx.rst:48
+msgid ""
+"Keep per-actor properties such as contact materials, articulation iteration "
+"counts, and USD-authored collision settings on the schema configuration "
+"side; scene-level PhysX tuning does not replace that authoring path."
+msgstr "接触材料、关节体迭代次数和 USD 中编写的碰撞设置等各对象属性，仍应放在模式配置中；场景级 PhysX 调优不能替代这些属性的编写。"
+
+#: source/how-to/solver_tuning_physx.rst:53
+msgid "Choose TGS or PGS"
+msgstr "选择 TGS 或 PGS"
+
+#: source/how-to/solver_tuning_physx.rst:55
+msgid ""
+"Keep ``solver_type=1`` (TGS) as the first candidate for articulated robots "
+"and contact-rich manipulation. TGS is the established default and usually "
+"gives the best stability for modern Isaac Lab tasks. Compare "
+"``solver_type=0`` (PGS) only when the fixed reproduction still shows poor "
+"behavior after validating the asset, controller, and contact geometry, or "
+"when a stiff legacy asset behaves better with PGS."
+msgstr ""
+"对于关节式机器人和接触密集的操作任务，优先尝试 ``solver_type=1`` （TGS）。TGS 是既有默认选项，通常能为较新的 Isaac "
+"Lab 任务提供最佳稳定性。只有验证资产、控制器和接触几何后，固定的复现场景仍表现不佳，或较早的高刚度资产在 PGS 下表现更好时，才比较 "
+"``solver_type=0`` （PGS）。"
+
+#: source/how-to/solver_tuning_physx.rst:62
+msgid ""
+"If a grasping or stiff-contact workload remains sensitive after the solver "
+"choice is fixed, test ``solve_articulation_contact_last`` on the same "
+"reproduction and keep it only when it measurably improves the recorded "
+"contact or task metric."
+msgstr ""
+"如果确定求解器类型后，抓取或高刚度接触负载仍然敏感，可在同一复现场景中测试 ``solve_articulation_contact_last`` "
+"。只有它确实改善了记录的接触或任务指标，才保留这一设置。"
+
+#: source/how-to/solver_tuning_physx.rst:68
+msgid "Tune solver iterations"
+msgstr "调整求解迭代次数"
+
+#: source/how-to/solver_tuning_physx.rst:70
+msgid ""
+"PhysX clamps each actor's solver work through the scene-level iteration "
+"ranges: ``min_position_iteration_count`` and "
+"``max_position_iteration_count`` for position iterations, plus "
+"``min_velocity_iteration_count`` and ``max_velocity_iteration_count`` for "
+"velocity iterations."
+msgstr ""
+"PhysX 通过场景级迭代范围限制各对象的求解计算量：位置迭代使用 ``min_position_iteration_count`` 和 "
+"``max_position_iteration_count`` ，速度迭代使用 ``min_velocity_iteration_count`` 和 "
+"``max_velocity_iteration_count`` 。"
+
+#: source/how-to/solver_tuning_physx.rst:75
+msgid ""
+"Increase position iterations first when the fixed reproduction shows "
+"penetration, joint constraint drift, or grasp instability. Increase velocity"
+" iterations only when the same reproduction shows unstable restitution or a "
+"velocity-level convergence issue that position iterations do not correct. "
+"Stop when the measured behavior plateaus; more iterations cannot repair "
+"invalid collision geometry, reset overlap, or a controller that injects "
+"instability."
+msgstr ""
+"当固定的复现场景出现穿透、关节约束漂移或抓取不稳定时，先增加位置迭代次数。只有同一场景出现不稳定的恢复响应，或位置迭代无法解决的速度层面收敛问题时，才增加速度迭代次数。在实测行为不再改善时停止；更多迭代无法修复无效碰撞几何、重置时的重叠，或由控制器引入的不稳定。"
+
+#: source/how-to/solver_tuning_physx.rst:83
+msgid "Tune contacts and stability"
+msgstr "调整接触与稳定性"
+
+#: source/how-to/solver_tuning_physx.rst:85
+msgid ""
+"Validate colliders, material properties, and reset overlap before changing "
+"scene-wide contact settings. Then use the same fixed reproduction to tune:"
+msgstr "修改场景全局接触设置前，先验证碰撞体、材料属性和重置时的重叠，再使用同一固定复现场景调整以下参数："
+
+#: source/how-to/solver_tuning_physx.rst:88
+msgid ""
+"``enable_ccd`` for fast-moving bodies that tunnel through thin geometry when"
+" using CPU dynamics. CCD is not supported with GPU dynamics; Isaac Lab "
+"forces it off and emits a warning if ``enable_ccd=True`` is requested on a "
+"GPU simulation."
+msgstr ""
+"``enable_ccd`` 适用于 CPU 动力学中穿过薄几何体的高速运动刚体。GPU 动力学不支持 CCD；如果 GPU 仿真请求 "
+"``enable_ccd=True`` ，Isaac Lab 会强制关闭它并发出警告。"
+
+#: source/how-to/solver_tuning_physx.rst:92
+msgid ""
+"``enable_stabilization`` only for low-rate simulations where ``dt`` is "
+"larger than about ``1 / 30`` seconds; this extra pass can make reported "
+"contact-sensor force magnitudes inaccurate, so keep it disabled when those "
+"forces are part of the observation or evaluation path."
+msgstr ""
+"``enable_stabilization`` 仅适用于 ``dt`` 大于约 ``1 / 30`` "
+"秒的低频仿真。这项额外处理可能使接触传感器报告的力大小不准确；如果观测或评估使用这些力，应保持禁用。"
+
+#: source/how-to/solver_tuning_physx.rst:96
+msgid ""
+"``bounce_threshold_velocity`` [m/s] for the relative speed above which "
+"contacts bounce."
+msgstr "``bounce_threshold_velocity`` [m/s]：接触发生回弹所需的相对速度阈值。"
+
+#: source/how-to/solver_tuning_physx.rst:98
+msgid ""
+"``friction_offset_threshold`` [m] for the contact distance at which PhysX "
+"starts applying friction forces."
+msgstr "``friction_offset_threshold`` [m]：PhysX 开始施加摩擦力的接触距离。"
+
+#: source/how-to/solver_tuning_physx.rst:100
+msgid ""
+"``friction_correlation_distance`` [m] for the distance used to merge nearby "
+"contacts into one friction anchor."
+msgstr "``friction_correlation_distance`` [m]：将邻近接触合并到同一摩擦锚点所使用的距离。"
+
+#: source/how-to/solver_tuning_physx.rst:103
+msgid ""
+"Treat each of these as a measured contact-model change. Recheck penetration,"
+" slip, bounce, contact counts, task success, and runtime after every "
+"adjustment."
+msgstr "这些设置都会改变接触模型，应以测量为依据。每次调整后，重新检查穿透、滑移、回弹、接触数、任务成功率和运行耗时。"
+
+#: source/how-to/solver_tuning_physx.rst:107
+msgid "Size GPU buffers"
+msgstr "确定 GPU 缓冲区容量"
+
+#: source/how-to/solver_tuning_physx.rst:109
+msgid ""
+"Most PhysX GPU scene-buffer capacities are fixed and do not grow "
+"dynamically. When a scene exceeds one of these capacities, PhysX can drop "
+"contacts or fail with a ``[PhysX]`` warning. Treat those warnings as hard "
+"failures for the reproduction and increase only the capacity that "
+"overflowed."
+msgstr ""
+"多数 PhysX GPU 场景缓冲区的容量固定，不会动态增长。当场景超出其中某项容量时，PhysX 可能丢弃接触，或发出 ``[PhysX]`` "
+"警告并失败。在复现场景中，应将这类警告视为必须解决的故障，只增加溢出的那项容量。"
+
+#: source/how-to/solver_tuning_physx.rst:114
+msgid ""
+"The most common fixed capacities to raise for large vectorized or contact-"
+"rich scenes are:"
+msgstr "对于大型向量化场景或接触密集场景，最常需要提高的固定容量如下："
+
+#: source/how-to/solver_tuning_physx.rst:117
+msgid "``gpu_max_rigid_contact_count``"
+msgstr "``gpu_max_rigid_contact_count``"
+
+#: source/how-to/solver_tuning_physx.rst:118
+msgid "``gpu_max_rigid_patch_count``"
+msgstr "``gpu_max_rigid_patch_count``"
+
+#: source/how-to/solver_tuning_physx.rst:119
+msgid "``gpu_found_lost_pairs_capacity``"
+msgstr "``gpu_found_lost_pairs_capacity``"
+
+#: source/how-to/solver_tuning_physx.rst:120
+msgid "``gpu_found_lost_aggregate_pairs_capacity``"
+msgstr "``gpu_found_lost_aggregate_pairs_capacity``"
+
+#: source/how-to/solver_tuning_physx.rst:121
+msgid "``gpu_total_aggregate_pairs_capacity``"
+msgstr "``gpu_total_aggregate_pairs_capacity``"
+
+#: source/how-to/solver_tuning_physx.rst:122
+msgid "``gpu_collision_stack_size``"
+msgstr "``gpu_collision_stack_size``"
+
+#: source/how-to/solver_tuning_physx.rst:124
+msgid ""
+"``gpu_heap_capacity`` is different: it sets the initial capacity of the GPU "
+"and pinned-host-memory heaps, and PhysX allocates additional memory when "
+"those heaps need to grow. Increase the initial heap capacity when "
+"measurements show that repeated growth is undesirable, not because it is a "
+"fixed upper bound."
+msgstr ""
+"``gpu_heap_capacity`` 不同：它设置 GPU 内存堆和页锁定主机内存堆的初始容量；需要扩容时，PhysX "
+"会继续分配内存。只有测量表明反复扩容不合适时，才提高初始堆容量，不应把它当作固定上限。"
+
+#: source/how-to/solver_tuning_physx.rst:129
+msgid ""
+"Measure the busiest reset and contact state, add task-specific headroom, and"
+" then verify that the same fixed reproduction remains stable. Buffer sizing "
+"cannot correct invalid geometry, solver divergence, or a controller issue."
+msgstr "测量重置和接触最密集的状态，为任务预留余量，再验证相同的固定复现场景仍然稳定。调整缓冲区容量无法修复无效几何、求解器发散或控制器问题。"
+
+#: source/how-to/solver_tuning_physx.rst:134
+msgid "See also"
+msgstr "另请参阅"
+
+#: source/how-to/solver_tuning_physx.rst:136
+msgid ":class:`~isaaclab_physx.physics.PhysxCfg`"
+msgstr ":class:`~isaaclab_physx.physics.PhysxCfg`"
+
+#: source/how-to/solver_tuning_physx.rst:137
+msgid ":doc:`/source/concepts/schema_cfgs`"
+msgstr ":doc:`/source/concepts/schema_cfgs`"
+
+#: source/how-to/solver_tuning_physx.rst:138
+msgid ":ref:`physics-backends-physx`"
+msgstr ":ref:`physics-backends-physx`"
+
+#: source/how-to/solver_tuning_physx.rst:139
+msgid ":doc:`/source/concepts/solver_differences`"
+msgstr ":doc:`/source/concepts/solver_differences`"

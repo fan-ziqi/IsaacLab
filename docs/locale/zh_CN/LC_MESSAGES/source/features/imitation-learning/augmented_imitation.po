@@ -1,0 +1,933 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/features/imitation-learning/augmented_imitation.rst:4
+msgid "Augmented Imitation Learning"
+msgstr "增强模仿学习"
+
+#: source/features/imitation-learning/augmented_imitation.rst:6
+msgid ""
+"This section describes how to use Isaac Lab's imitation learning "
+"capabilities with the visual augmentation capabilities of `Cosmos "
+"<https://www.nvidia.com/en-us/ai/cosmos/>`_ models to generate "
+"demonstrations at scale to train visuomotor policies robust against visual "
+"variations."
+msgstr ""
+"本节描述了如何使用 Isaac Lab 的模仿学习功能，结合 `Cosmos <https://www.nvidia.com/en-"
+"us/ai/cosmos/>`_ 模型的视觉增强功能，以生成大规模演示以训练对抗视觉变化的视觉动作策略。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:10
+msgid ""
+"The `Cosmos Transfer1 <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a>`_ model used in "
+"this tutorial is `supported <https://huggingface.co/nvidia/Cosmos-"
+"Transfer1-7B#software-integration>`_ on Ampere and Hopper GPUs."
+msgstr ""
+"本教程使用的 `Cosmos Transfer1 <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a>`_ 模型 `支持 "
+"<https://huggingface.co/nvidia/Cosmos-Transfer1-7B#software-integration>`_ "
+"Ampere 和 Hopper GPU。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:13
+msgid "Generating Demonstrations"
+msgstr "生成演示"
+
+#: source/features/imitation-learning/augmented_imitation.rst:15
+msgid ""
+"We use the Isaac Lab Mimic feature that allows the generation of additional "
+"demonstrations automatically from a handful of annotated demonstrations."
+msgstr "我们使用 Isaac Lab Mimic 功能，该功能允许从少数标注的演示中自动生成额外演示。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:18
+msgid ""
+"This section assumes you already have an annotated dataset of collected "
+"demonstrations. If you don't, you can follow the instructions in "
+":ref:`teleoperation-imitation-learning` to collect and annotate your own "
+"demonstrations."
+msgstr ""
+"本节假设您已经有一个收集到的演示数据集。如果没有，您可以按照 :ref:`teleoperation-imitation-learning` "
+"中的说明来收集和标注您自己的演示。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:20
+msgid ""
+"In the following example, we will show you how to use Isaac Lab Mimic to "
+"generate additional demonstrations that can be used to train a visuomotor "
+"policy directly or can be augmented with visual variations using Cosmos "
+"(using the ``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0`` "
+"environment)."
+msgstr ""
+"在以下示例中，我们将向您展示如何使用 Isaac Lab Mimic 生成额外的演示，这些演示可直接用于训练视觉运动策略，或者可以使用 Cosmos "
+"进行视觉变化增强（使用 ``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0`` "
+"环境）。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:23
+msgid ""
+"The ``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0`` "
+"environment is similar to the standard visuomotor environment (``Isaac-"
+"Stack-Cube-Franka-IK-Rel-Visuomotor-Mimic-v0``), but with the addition of "
+"segmentation masks, depth maps, and normal maps in the generated dataset. "
+"These additional modalities are required to get the best results from the "
+"visual augmentation done using Cosmos."
+msgstr ""
+"``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-Mimic-v0`` "
+"环境类似于标准的视觉动作环境（ ``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Mimic-v0`` "
+"），但在生成的数据集中添加了分割蒙版、深度图和法线图。这些额外的模态是使用 Cosmos 进行视觉增强时获得最佳结果所必需的。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/features/imitation-learning/augmented_imitation.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/features/imitation-learning/augmented_imitation.rst:45
+msgid ""
+"The number of demonstrations can be increased or decreased, 1000 "
+"demonstrations have been shown to provide good training results for this "
+"task."
+msgstr "展示的数量可以增加或减少，1000 个展示已被证明能够为此任务提供良好的训练结果。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:47
+msgid ""
+"Additionally, the number of environments in the ``--num_envs`` parameter can"
+" be adjusted to speed up data generation. The suggested number of 10 can be "
+"executed on a moderate laptop CPU. On a more powerful desktop machine, use a"
+" larger number of environments for a significant speedup of this step. When "
+"running large camera-heavy jobs, switch to the RTX Minimal renderer for "
+"higher throughput, or override the task's high-fidelity RTX settings "
+"directly if they are more expensive than your workflow requires."
+msgstr ""
+"还可以调整 ``--num_envs`` 中的环境数量，加快数据生成。建议值 10 可在性能中等的笔记本 CPU "
+"上运行；性能更强的台式机可增加环境数，显著加快此步骤。运行大量依赖相机的任务时，可切换到 RTX Minimal 渲染器来提高吞吐量；如果任务的高保真 "
+"RTX 设置超出工作流需求，也可直接覆盖这些设置。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:55
+msgid "Cosmos Augmentation"
+msgstr "Cosmos 增强"
+
+#: source/features/imitation-learning/augmented_imitation.rst:58
+msgid ""
+"The ``hdf5_to_mp4.py`` and ``mp4_to_hdf5.py`` scripts below read and write "
+"MP4 files through OpenCV's video I/O, which requires ffmpeg support. Recent "
+"Isaac Sim releases ship an OpenCV build without ffmpeg, so install the full "
+"OpenCV package into the environment before running these conversions:"
+msgstr ""
+"下面的 ``hdf5_to_mp4.py`` 和 ``mp4_to_hdf5.py`` 脚本通过 OpenCV 视频 I/O 读写 MP4 文件，需要 "
+"FFmpeg 支持。近期 Isaac Sim 版本附带的 OpenCV 构建不包含 FFmpeg，因此转换前需在环境中安装完整 OpenCV 包："
+
+#: source/features/imitation-learning/augmented_imitation.rst:76
+msgid ""
+"Without it, the conversion scripts fail to open or write the video files."
+msgstr "否则，转换脚本将无法打开或写入视频文件。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:79
+msgid "HDF5 to MP4 Conversion"
+msgstr "HDF5 到 MP4 转换"
+
+#: source/features/imitation-learning/augmented_imitation.rst:81
+msgid ""
+"The ``hdf5_to_mp4.py`` script converts camera frames stored in HDF5 "
+"demonstration files to MP4 videos. It supports multiple camera modalities "
+"including RGB, segmentation, depth and normal maps. This conversion is "
+"necessary for visual augmentation using Cosmos as it only works with video "
+"files rather than HDF5 data."
+msgstr ""
+"``hdf5_to_mp4.py`` 脚本将存储在 HDF5 示范文件中的摄像头帧转换为 MP4 视频。它支持多种摄像头模式，包括 "
+"RGB、分割、深度和法线图。使用 Cosmos 进行视觉增强时，此转换是必要的，因为它仅适用于视频文件而不是 HDF5 数据。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:84
+#: source/features/imitation-learning/augmented_imitation.rst:179
+#: source/features/imitation-learning/augmented_imitation.rst:261
+#: source/features/imitation-learning/augmented_imitation.rst:318
+#: source/features/imitation-learning/augmented_imitation.rst:433
+msgid "Required Arguments"
+msgstr "必需参数"
+
+#: source/features/imitation-learning/augmented_imitation.rst:89
+#: source/features/imitation-learning/augmented_imitation.rst:266
+msgid "``--input_file``"
+msgstr "``--input_file``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:90
+msgid "Path to the input HDF5 file."
+msgstr "输入 HDF5 文件的路径。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:91
+msgid "``--output_dir``"
+msgstr "``--output_dir``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:92
+msgid "Directory to save the output MP4 files."
+msgstr "保存输出 MP4 文件的目录。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:95
+#: source/features/imitation-learning/augmented_imitation.rst:188
+#: source/features/imitation-learning/augmented_imitation.rst:327
+#: source/features/imitation-learning/augmented_imitation.rst:444
+msgid "Optional Arguments"
+msgstr "可选参数"
+
+#: source/features/imitation-learning/augmented_imitation.rst:100
+msgid "``--input_keys``"
+msgstr "``--input_keys``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:101
+msgid ""
+"List of input keys to process from the HDF5 file. (default: [\"table_cam\", "
+"\"wrist_cam\", \"table_cam_segmentation\", \"table_cam_normals\", "
+"\"table_cam_shaded_segmentation\", \"table_cam_depth\"])"
+msgstr ""
+"从 HDF5 文件中处理的输入键列表。 (默认值: [\"table_cam\", \"wrist_cam\", "
+"\"table_cam_segmentation\", \"table_cam_normals\", "
+"\"table_cam_shaded_segmentation\", \"table_cam_depth\"])"
+
+#: source/features/imitation-learning/augmented_imitation.rst:102
+msgid "``--video_height``"
+msgstr "``--video_height``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:103
+msgid "Height of the output video in pixels. (default: 704)"
+msgstr "输出视频的高度，以像素为单位。 (默认值: 704)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:104
+msgid "``--video_width``"
+msgstr "``--video_width``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:105
+msgid "Width of the output video in pixels. (default: 1280)"
+msgstr "输出视频的宽度（以像素为单位）。（默认值: 1280）"
+
+#: source/features/imitation-learning/augmented_imitation.rst:106
+msgid "``--framerate``"
+msgstr "``--framerate``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:107
+msgid "Frames per second for the output video. (default: 30)"
+msgstr "输出视频的帧率。 (默认值: 30)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:110
+msgid ""
+"The default input keys cover all camera modalities as per the naming "
+"convention followed in the ``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-"
+"Cosmos-Mimic-v0`` environment. We include an additional modality "
+"\"table_cam_shaded_segmentation\" which is not a part of the generated "
+"modalities from simulation in the HDF5 data file. Instead, it is "
+"automatically generated by this script using a combination of the "
+"segmentation and normal maps to get a pseudo-textured segmentation video for"
+" better controlling the Cosmos augmentation."
+msgstr ""
+"默认输入键覆盖所有相机模式，按照 ``Isaac-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos-"
+"Mimic-v0`` 环境中遵循的命名约定。我们包括一个额外的模式 \"table_cam_shaded_segmentation\" ，这不是从 "
+"HDF5 数据文件中通过仿真生成的模式的一部分。相反，它是由该脚本自动生成的，使用分割和法线贴图的组合来获取一个伪纹理分割视频，以更好地控制 "
+"Cosmos 增强。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:113
+msgid ""
+"We recommend using the default values given above for the output video "
+"height, width and framerate for the best results with Cosmos augmentation."
+msgstr "我们建议使用上面给出的默认值来获得与 Cosmos 增强最佳效果的输出视频高度、宽度和帧速率。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:115
+#: source/features/imitation-learning/augmented_imitation.rst:285
+#: source/features/imitation-learning/augmented_imitation.rst:338
+#: source/features/imitation-learning/augmented_imitation.rst:473
+msgid "Example usage for the cube stacking task:"
+msgstr "立方体堆叠任务的示例用法:"
+
+#: source/features/imitation-learning/augmented_imitation.rst:138
+msgid "Running Cosmos for Visual Augmentation"
+msgstr "运行 Cosmos 用于视觉增强"
+
+#: source/features/imitation-learning/augmented_imitation.rst:140
+msgid ""
+"After converting the demonstrations to MP4 format, you can use a `Cosmos`_ "
+"model to visually augment the videos. Follow the Cosmos documentation for "
+"details on the augmentation process. Visual augmentation can include changes"
+" to lighting, textures, backgrounds, and other visual elements while "
+"preserving the essential task-relevant features."
+msgstr ""
+"将示范转换为 MP4 格式后，您可以使用 `Cosmos`_ 模型对视频进行视觉增强。请参考 Cosmos "
+"文档以了解增强过程的详细信息。视觉增强可以包括对光照、纹理、背景和其他视觉元素的更改，同时保留基本的任务相关特征。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:142
+msgid ""
+"We use the RGB, depth and shaded segmentation videos from the previous step "
+"as input to the Cosmos model as seen below:"
+msgstr "我们将上一步的 RGB、深度和阴影分割视频作为输入，输入到 Cosmos 模型中，如下所示: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:144
+msgid "RGB, depth and segmentation control inputs to Cosmos"
+msgstr "RGB、深度和分割控制输入到 Cosmos"
+
+#: source/features/imitation-learning/augmented_imitation.rst:149
+msgid ""
+"We provide an example augmentation output from `Cosmos Transfer1 "
+"<https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a>`_ below:"
+msgstr ""
+"我们在下面提供了来自 `Cosmos Transfer1 <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a>`_ 的示例增强输出:"
+
+#: source/features/imitation-learning/augmented_imitation.rst:151
+msgid "Cosmos Transfer1 augmentation output"
+msgstr "Cosmos Transfer1 增强输出"
+
+#: source/features/imitation-learning/augmented_imitation.rst:156
+msgid ""
+"We recommend using the `Cosmos Transfer1 <https://github.com/nvidia-"
+"cosmos/cosmos-transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a>`_ "
+"model for visual augmentation as we found it to produce the best results in "
+"the form of a highly diverse dataset with a wide range of visual variations."
+" You can refer to the `installation instructions <https://github.com/nvidia-"
+"cosmos/cosmos-"
+"transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/INSTALL.md#environment-"
+"setup>`_, the `checkpoint download instructions <https://github.com/nvidia-"
+"cosmos/cosmos-"
+"transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/examples/inference_cosmos_transfer1_7b.md#download-"
+"checkpoints>`_ and `this example <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/examples/inference_cosmos_transfer1_7b.md#example-2-multimodal-"
+"control>`_ for reference on how to use Transfer1 for this usecase. We "
+"further recommend the following settings to be used with the Transfer1 model"
+" for this task:"
+msgstr ""
+"我们建议使用 `Cosmos Transfer1 <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/tree/e4055e39ee9c53165e85275bdab84ed20909714a>`_ "
+"模型进行视觉增强，因为我们发现它能够产生最佳结果，即高度多样化的数据集和广泛的视觉变化范围。您可以参考 `安装说明 "
+"<https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/INSTALL.md#environment-"
+"setup>`_ ， `下载检查点的说明 <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/examples/inference_cosmos_transfer1_7b.md#download-"
+"checkpoints>`_ 和 `这个例子 <https://github.com/nvidia-cosmos/cosmos-"
+"transfer1/blob/e4055e39ee9c53165e85275bdab84ed20909714a/examples/inference_cosmos_transfer1_7b.md#example-2-multimodal-"
+"control>`_ 以了解如何在这种用例中使用 Transfer1。我们进一步建议在这个任务中使用 Transfer1 模型的以下设置："
+
+#: source/features/imitation-learning/augmented_imitation.rst:159
+msgid ""
+"This workflow has been tested with commit "
+"``e4055e39ee9c53165e85275bdab84ed20909714a`` of the Cosmos Transfer1 "
+"repository, and it is the recommended version to use. After cloning the "
+"Cosmos Transfer1 repository, checkout to this specific commit by running "
+"``git checkout e4055e39ee9c53165e85275bdab84ed20909714a``."
+msgstr ""
+"此工作流程已使用 Cosmos Transfer1 存储库的提交 "
+"``e4055e39ee9c53165e85275bdab84ed20909714a`` 进行测试，这是推荐使用的版本。克隆 Cosmos "
+"Transfer1 存储库后，通过运行 ``git checkout "
+"e4055e39ee9c53165e85275bdab84ed20909714a`` 切换到此特定提交。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:162
+msgid "Hyperparameters"
+msgstr "超参数"
+
+#: source/features/imitation-learning/augmented_imitation.rst:167
+msgid "``negative_prompt``"
+msgstr "``negative_prompt``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:168
+msgid ""
+"\"The video captures a game playing, with bad crappy graphics and cartoonish"
+" frames. It represents a recording of old outdated games. The images are "
+"very pixelated and of poor CG quality. There are many subtitles in the "
+"footage. Overall, the video is unrealistic and appears cg. Plane "
+"background.\""
+msgstr ""
+"\"The video captures a game playing, with bad crappy graphics and cartoonish"
+" frames. It represents a recording of old outdated games. The images are "
+"very pixelated and of poor CG quality. There are many subtitles in the "
+"footage. Overall, the video is unrealistic and appears cg. Plane "
+"background.\""
+
+#: source/features/imitation-learning/augmented_imitation.rst:169
+msgid "``sigma_max``"
+msgstr "``sigma_max``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:170
+msgid "50"
+msgstr "50"
+
+#: source/features/imitation-learning/augmented_imitation.rst:171
+msgid "``control_weight``"
+msgstr "``control_weight``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:172
+msgid "\"0.3,0.3,0.6,0.7\""
+msgstr "\"0.3,0.3,0.6,0.7\""
+
+#: source/features/imitation-learning/augmented_imitation.rst:173
+msgid "``hint_key``"
+msgstr "``hint_key``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:174
+msgid "\"blur,canny,depth,segmentation\""
+msgstr "\"blur,canny,depth,segmentation\""
+
+#: source/features/imitation-learning/augmented_imitation.rst:176
+msgid ""
+"Another crucial aspect to get good augmentations is the set of prompts used "
+"to control the Cosmos generation. We provide a script, "
+"``cosmos_prompt_gen.py``, to construct prompts from a set of carefully "
+"chosen templates that handle various aspects of the augmentation process."
+msgstr ""
+"另一个关键方面是获取良好的增强的关键是用于控制 Cosmos 生成的 prompts 集。我们提供了一个脚本， "
+"``cosmos_prompt_gen.py`` ，用于从一组精心选择的模板中构建 prompts，处理增强过程的各个方面。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:184
+msgid "``--templates_path``"
+msgstr "``--templates_path``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:185
+msgid "Path to the file containing templates for the prompts."
+msgstr "包含 prompts 模板的文件路径。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:193
+msgid "``--num_prompts``"
+msgstr "``--num_prompts``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:194
+msgid "Number of prompts to generate (default: 1)."
+msgstr "生成 prompts 数量（默认值: 1）。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:195
+msgid "``--output_path``"
+msgstr "``--output_path``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:196
+msgid ""
+"Path to the output file to write generated prompts. (default: prompts.txt)"
+msgstr "生成 prompts 写入的输出文件路径。 (默认值: prompts.txt)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:204
+msgid ""
+"In case you want to create your own prompts, we suggest you refer to the "
+"following guidelines:"
+msgstr "如果您想要创建自己的 prompts，则建议您参考以下准则: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:206
+msgid ""
+"Keep the prompts as detailed as possible. It is best to have some "
+"instruction on how the generation should handle each visible object/region "
+"of interest. For instance, the prompts that we provide cover explicit "
+"details for the table, lighting, background, robot arm, cubes, and the "
+"general setting."
+msgstr ""
+"尽量详细地保留 prompts。最好对生成过程中每个可见对象/感兴趣区域都有一些指导。例如，我们提供的 prompts "
+"涵盖了桌子、灯光、背景、机械臂、立方体和整体布景的细节。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:208
+msgid ""
+"Try to keep the augmentation instructions as realistic and coherent as "
+"possible. The more unrealistic or unconventional the prompt is, the worse "
+"the model does at retaining key features of the input control video(s)."
+msgstr "尽量使增强指令尽可能地真实和连贯。模型在保留输入控制视频的关键特征方面做得越不真实或不传统，它的表现就越糟糕。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:210
+msgid ""
+"Keep the augmentation instructions in-sync for each aspect. What we mean by "
+"this is that the augmentation for all the objects/regions of interest should"
+" be coherent and conventional with respect to each other. For example, it is"
+" better to have a prompt such as \"The table is of old dark wood with faded "
+"polish and food stains and the background consists of a suburban home\" "
+"instead of something like \"The table is of old dark wood with faded polish "
+"and food stains and the background consists of a spaceship hurtling through "
+"space\"."
+msgstr ""
+"保持每个方面的增强指令同步。我们的意思是，所有感兴趣对象/区域的增强应彼此协调一致并符合常规。例如，使用诸如 \"The table is of old"
+" dark wood with faded polish and food stains and the background consists of "
+"a suburban home\" 这样的提示，要好于 \"The table is of old dark wood with faded "
+"polish and food stains and the background consists of a spaceship hurtling "
+"through space\" 这样的提示。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:212
+msgid ""
+"It is vital to include details on key aspects of the input control video(s) "
+"that should be retained or left unchanged. In our prompts, we very clearly "
+"mention that the cube colors should be left unchanged such that the bottom "
+"cube is blue, the middle is red and the top is green. Note that we not only "
+"mention what should be left unchanged but also give details on what form "
+"that aspect currently has."
+msgstr ""
+"在输入控制视频的关键方面，必须包括应保留或保持不变的细节。在我们的 prompts "
+"中，我们非常明确地提到立方体的颜色应保持不变，使得底部立方体是蓝色，中间是红色，顶部是绿色。请注意，我们不仅提到了应该保持不变的内容，还详细说明了该方面当前的形式。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:214
+msgid "Example command to use the Cosmos Transfer1 model for this usecase:"
+msgstr "示例命令，用于在此用例中使用 Cosmos Transfer1 模型: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:229
+msgid ""
+"Example ``./controlnet_specs/demo_0.json`` json file to use with the above "
+"command:"
+msgstr "示例 ``./controlnet_specs/demo_0.json`` json 文件可用于上述命令: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:256
+msgid "MP4 to HDF5 Conversion"
+msgstr "MP4 到 HDF5 转换"
+
+#: source/features/imitation-learning/augmented_imitation.rst:258
+msgid ""
+"The ``mp4_to_hdf5.py`` script converts the visually augmented MP4 videos "
+"back to HDF5 format for training. This step is crucial as it ensures the "
+"augmented visual data is in the correct format for training visuomotor "
+"policies in Isaac Lab and pairs the videos with the corresponding "
+"demonstration data from the original dataset."
+msgstr ""
+"``mp4_to_hdf5.py`` 脚本将经过视觉增强的 MP4 视频转换回 HDF5 "
+"格式，用于训练。这一步非常关键，因为它确保了增强的视觉数据以正确格式用于在 Isaac Lab "
+"中训练视觉动作策略，并将视频与原始数据集中相应的演示数据配对。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:267
+msgid "Path to the input HDF5 file containing the original demonstrations."
+msgstr "包含原始演示的输入 HDF5 文件的路径。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:268
+msgid "``--videos_dir``"
+msgstr "``--videos_dir``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:269
+msgid "Directory containing the visually augmented MP4 videos."
+msgstr "包含视觉增强的 MP4 视频的目录。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:270
+#: source/features/imitation-learning/augmented_imitation.rst:332
+msgid "``--output_file``"
+msgstr "``--output_file``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:271
+msgid "Path to save the new HDF5 file with augmented videos."
+msgstr "保存新的带有增强视频的 HDF5 文件的路径。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:274
+msgid ""
+"The input HDF5 file is used to preserve the non-visual data (such as robot "
+"states and actions) while replacing the visual data with the augmented "
+"versions."
+msgstr "输入 HDF5 文件用于保留非视觉数据（例如机器人状态和动作），同时用增强版本替换视觉数据。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:277
+msgid ""
+"The visually augmented MP4 files must follow the naming convention "
+"``demo_{demo_id}_*.mp4``, where:"
+msgstr "视觉增强的 MP4 文件必须遵循命名约定 ``demo_{demo_id}_*.mp4`` ，其中: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:279
+msgid "``demo_id`` matches the demonstration ID from the original MP4 file"
+msgstr "``demo_id`` 匹配原始 MP4 文件中的演示 ID"
+
+#: source/features/imitation-learning/augmented_imitation.rst:281
+msgid ""
+"``*`` signifies that the file name can be as per user preference starting "
+"from this point"
+msgstr "``*`` 表示文件名可以根据用户的偏好从此处开始。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:283
+msgid ""
+"This naming convention is required for the script to correctly pair the "
+"augmented videos with their corresponding demonstrations."
+msgstr "这种命名惯例是为了让脚本能够正确地将增强视频与相应的演示配对。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:308
+msgid "Pre-generated Dataset"
+msgstr "预生成的数据集"
+
+#: source/features/imitation-learning/augmented_imitation.rst:310
+msgid ""
+"We provide a pre-generated dataset in HDF5 format containing visually "
+"augmented demonstrations for the cube stacking task. This dataset can be "
+"used if you do not wish to run Cosmos locally to generate your own augmented"
+" data. The dataset is available on `Hugging Face "
+"<https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-Manipulation-"
+"Augmented>`_ and contains both (as separate dataset files), original and "
+"augmented demonstrations, that can be used for training visuomotor policies."
+msgstr ""
+"我们提供了一个预先生成的数据集，其中包含了用于立方体堆叠任务的视觉增强演示，格式为 HDF5。 如果您不希望在本地运行 Cosmos "
+"来生成自己的增强数据，可以使用此数据集。 该数据集位于 `Hugging Face "
+"<https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-Manipulation-"
+"Augmented>`_ ，包含原始和增强演示（作为单独的数据集文件），可用于训练视觉动作策略。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:313
+msgid "Merging Datasets"
+msgstr "合并数据集"
+
+#: source/features/imitation-learning/augmented_imitation.rst:315
+msgid ""
+"The ``merge_hdf5_datasets.py`` script combines multiple HDF5 datasets into a"
+" single file. This is useful when you want to combine the original "
+"demonstrations with the augmented ones to create a larger, more diverse "
+"training dataset."
+msgstr ""
+"``merge_hdf5_datasets.py`` 脚本将多个 HDF5 "
+"数据集合并为单个文件。当您希望将原始演示与增强演示合并以创建更大、更多样化的训练数据集时，这将非常有用。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:323
+msgid "``--input_files``"
+msgstr "``--input_files``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:324
+msgid "A list of paths to HDF5 files to merge."
+msgstr "将要合并的 HDF5 文件路径列表。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:333
+msgid "File path to merged output. (default: merged_dataset.hdf5)"
+msgstr "合并输出的文件路径。（默认值: merged_dataset.hdf5）"
+
+#: source/features/imitation-learning/augmented_imitation.rst:336
+msgid ""
+"Merging datasets can help improve policy robustness by exposing the model to"
+" both original and augmented visual conditions during training."
+msgstr "合并数据集可以通过在训练过程中使模型接触原始和增强的视觉条件，从而帮助提高政策的稳健性。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:359
+msgid "Model Training and Evaluation"
+msgstr "模型训练和评估"
+
+#: source/features/imitation-learning/augmented_imitation.rst:362
+msgid "Robomimic Setup"
+msgstr "Robomimic 设置"
+
+#: source/features/imitation-learning/augmented_imitation.rst:364
+msgid ""
+"As an example, we will train a BC agent implemented in `Robomimic "
+"<https://robomimic.github.io/>`__ to train a policy. Any other framework or "
+"training method could be used."
+msgstr ""
+"作为一个例子，我们将训练一个在 `Robomimic <https://robomimic.github.io/>`__ 中实现的 BC "
+"智能体来训练一个策略。可以使用任何其他框架或训练方法。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:366
+msgid "To install the robomimic framework, use the following commands:"
+msgstr "要安装 robomimic 框架，请使用以下命令:"
+
+#: source/features/imitation-learning/augmented_imitation.rst:375
+msgid ""
+"For a legacy environment, install the same dependencies with ``./isaaclab.sh"
+" -i mimic``."
+msgstr "旧版环境可通过 ``./isaaclab.sh -i mimic`` 安装相同依赖。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:379
+msgid "Training an agent"
+msgstr "训练一个智能体"
+
+#: source/features/imitation-learning/augmented_imitation.rst:381
+msgid ""
+"Using the generated data, we can now train a visuomotor BC agent for "
+"``IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos``:"
+msgstr ""
+"使用生成的数据，现在可以为 ``IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos`` "
+"训练视觉运动行为克隆（BC）智能体："
+
+#: source/features/imitation-learning/augmented_imitation.rst:404
+msgid ""
+"By default the trained models and logs will be saved to "
+"``IsaacLab/logs/robomimic``."
+msgstr "默认情况下，训练后的模型和日志保存在 ``IsaacLab/logs/robomimic`` 。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:407
+msgid "Evaluation"
+msgstr "评估"
+
+#: source/features/imitation-learning/augmented_imitation.rst:409
+msgid ""
+"The ``robust_eval.py`` script evaluates trained visuomotor policies in "
+"simulation. This evaluation helps assess how well the policy generalizes to "
+"different visual variations and whether the visually augmented data has "
+"improved the policy's robustness."
+msgstr ""
+"``robust_eval.py`` "
+"脚本在仿真环境中评估经过训练的视觉动作策略。这种评估有助于评估策略在不同视觉变化下的泛化能力，以及视觉增强数据是否提高了策略的稳健性。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:411
+msgid "Below is an explanation of the different settings used for evaluation:"
+msgstr "以下是用于评估的不同设置的解释: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:414
+msgid "Evaluation Settings"
+msgstr "评估设置"
+
+#: source/features/imitation-learning/augmented_imitation.rst:419
+#: source/features/imitation-learning/augmented_imitation.rst:519
+msgid "``Vanilla``"
+msgstr "``Vanilla``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:420
+msgid "Exact same setting as that used during Mimic data generation."
+msgstr "与生成 Mimic 数据时使用的完全相同设置。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:421
+#: source/features/imitation-learning/augmented_imitation.rst:523
+msgid "``Light Intensity``"
+msgstr "``Light Intensity``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:422
+msgid ""
+"Light intensity/brightness is varied, all other aspects remain the same."
+msgstr "光强/亮度变化，其他方面保持不变。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:423
+#: source/features/imitation-learning/augmented_imitation.rst:527
+msgid "``Light Color``"
+msgstr "``Light Color``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:424
+msgid "Light color is varied, all other aspects remain the same."
+msgstr "浅色变化，其他方面保持不变。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:425
+#: source/features/imitation-learning/augmented_imitation.rst:531
+msgid "``Light Texture (Background)``"
+msgstr "``Light Texture (Background)``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:426
+msgid "Light texture/background is varied, all other aspects remain the same."
+msgstr "轻质纹理/背景多样化，所有其他方面保持不变。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:427
+#: source/features/imitation-learning/augmented_imitation.rst:535
+msgid "``Table Texture``"
+msgstr "``Table Texture``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:428
+msgid "Table's visual texture is varied, all other aspects remain the same."
+msgstr "桌子的视觉质感多种多样，其他方面保持不变。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:429
+#: source/features/imitation-learning/augmented_imitation.rst:539
+msgid "``Robot Arm Texture``"
+msgstr "``Robot Arm Texture``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:430
+msgid ""
+"Robot arm's visual texture is varied, all other aspects remain the same."
+msgstr "机器人手臂的视觉纹理是多样的，其他所有方面保持不变。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:438
+msgid "``--task``"
+msgstr "``--task``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:439
+msgid "Name of the environment."
+msgstr "环境名称。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:440
+msgid "``--input_dir``"
+msgstr "``--input_dir``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:441
+msgid "Directory containing the model checkpoints to evaluate."
+msgstr "包含要评估的模型检查点的目录。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:449
+msgid "``--start_epoch``"
+msgstr "``--start_epoch``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:450
+msgid "Epoch of the checkpoint to start the evaluation from. (default: 100)"
+msgstr "开始评估的检查点纪元。(默认值: 100)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:451
+msgid "``--horizon``"
+msgstr "``--horizon``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:452
+msgid "Step horizon of each rollout. (default: 400)"
+msgstr "每次执行的步骤范围。 (默认值: 400)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:453
+msgid "``--num_rollouts``"
+msgstr "``--num_rollouts``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:454
+msgid "Number of rollouts per model per setting. (default: 15)"
+msgstr "每个模型每个设置的 rollout 次数。 (默认值: 15)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:455
+msgid "``--num_seeds``"
+msgstr "``--num_seeds``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:456
+msgid "Number of random seeds to evaluate. (default: 3)"
+msgstr "要评估的随机种子数量。 （默认值: 3）"
+
+#: source/features/imitation-learning/augmented_imitation.rst:457
+msgid "``--seeds``"
+msgstr "``--seeds``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:458
+msgid "List of specific seeds to use instead of random ones."
+msgstr "替代随机种子使用的特定种子列表。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:459
+msgid "``--log_dir``"
+msgstr "``--log_dir``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:460
+msgid ""
+"Directory to write results to. (default: /tmp/policy_evaluation_results)"
+msgstr "写入结果的目录。 (默认: /tmp/policy_evaluation_results)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:461
+msgid "``--log_file``"
+msgstr "``--log_file``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:462
+msgid "Name of the output file. (default: results)"
+msgstr "输出文件的名称。 (默认: results)"
+
+#: source/features/imitation-learning/augmented_imitation.rst:463
+msgid "``--norm_factor_min``"
+msgstr "``--norm_factor_min``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:464
+msgid "Minimum value of the action space normalization factor."
+msgstr "动作空间归一化因子的最小值。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:465
+msgid "``--norm_factor_max``"
+msgstr "``--norm_factor_max``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:466
+msgid "Maximum value of the action space normalization factor."
+msgstr "动作空间归一化因子的最大值。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:467
+msgid "``--disable_fabric``"
+msgstr "``--disable_fabric``"
+
+#: source/features/imitation-learning/augmented_imitation.rst:468
+msgid "Whether to disable fabric and use USD I/O operations."
+msgstr "是否禁用 fabric 并使用 USD I/O 操作。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:471
+msgid ""
+"The evaluation results will help you understand if the visual augmentation "
+"has improved the policy's performance and robustness. Compare these results "
+"with evaluations on the original dataset to measure the impact of "
+"augmentation."
+msgstr "评估结果将帮助您了解视觉增强是否提高了策略的性能和鲁棒性。将这些结果与在原始数据集上的评估结果进行比较，以衡量增强的影响。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:502
+msgid ""
+"Verify that the models directory is not empty. By default, the training "
+"script saves models every 20 epochs starting from epoch 100."
+msgstr "请确认模型目录非空。默认情况下，训练脚本从第 100 个 epoch 开始，每 20 个 epoch 保存一次模型。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:505
+msgid ""
+"This script can take over a day or even longer to run (depending on the "
+"hardware being used). This behavior is expected."
+msgstr "这个脚本可能需要一天甚至更长的时间才能运行（取决于使用的硬件）。这种行为是正常的。"
+
+#: source/features/imitation-learning/augmented_imitation.rst:507
+msgid ""
+"We use the above script to compare models trained with 1000 Mimic-generated "
+"demonstrations, 2000 Mimic-generated demonstrations and 2000 Cosmos-Mimic-"
+"generated demonstrations (1000 original mimic + 1000 Cosmos augmented) "
+"respectively. We use the same seeds (0, 1000 and 5000) for all three models "
+"and provide the metrics (averaged across best checkpoints for each seed) "
+"below:"
+msgstr ""
+"我们使用上述脚本来比较分别经过 1000 次 Mimic 生成的演示、2000 次 Mimic 生成的演示和 2000 次 Cosmos-Mimic "
+"生成的演示（1000 个原始 mimic + 1000 个 Cosmos 增强）训练的模型。我们对这三个模型使用相同的种子（0、1000 和 "
+"5000），并提供以下度量指标（在每个种子的最佳检查点上进行平均）: "
+
+#: source/features/imitation-learning/augmented_imitation.rst:510
+msgid "Model Comparison"
+msgstr "模型比较"
+
+#: source/features/imitation-learning/augmented_imitation.rst:515
+msgid "**Evaluation Setting**"
+msgstr "**评估设置**"
+
+#: source/features/imitation-learning/augmented_imitation.rst:516
+msgid "**Mimic 1k Baseline**"
+msgstr "**Mimic 1k 基线**"
+
+#: source/features/imitation-learning/augmented_imitation.rst:517
+msgid "**Mimic 2k Baseline**"
+msgstr "**Mimic 2k 基线**"
+
+#: source/features/imitation-learning/augmented_imitation.rst:518
+msgid "**Cosmos-Mimic 2k**"
+msgstr "**Cosmos-Mimic 2k**"
+
+#: source/features/imitation-learning/augmented_imitation.rst:520
+msgid "62%"
+msgstr "62%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:521
+msgid "96.6%"
+msgstr "96.6%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:522
+msgid "86.6%"
+msgstr "86.6%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:524
+msgid "11.1%"
+msgstr "11.1%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:525
+#: source/features/imitation-learning/augmented_imitation.rst:533
+#: source/features/imitation-learning/augmented_imitation.rst:538
+msgid "20%"
+msgstr "20%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:526
+msgid "62.2%"
+msgstr "62.2%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:528
+msgid "24.6%"
+msgstr "24.6%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:529
+msgid "30%"
+msgstr "30%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:530
+msgid "77.7%"
+msgstr "77.7%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:532
+msgid "16.6%"
+msgstr "16.6%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:534
+msgid "68.8%"
+msgstr "68.8%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:536
+#: source/features/imitation-learning/augmented_imitation.rst:537
+#: source/features/imitation-learning/augmented_imitation.rst:540
+#: source/features/imitation-learning/augmented_imitation.rst:541
+msgid "0%"
+msgstr "0%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:542
+msgid "4.4%"
+msgstr "4.4%"
+
+#: source/features/imitation-learning/augmented_imitation.rst:544
+msgid ""
+"The above trained models' checkpoints can be accessed `here "
+"<https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-Manipulation-"
+"Augmented/tree/main/robomimic_bc_rnn_visuomotor_models>`_ in case you wish "
+"to use the models directly."
+msgstr ""
+"以上训练模型的检查点可以通过 `这里 <https://huggingface.co/datasets/nvidia/PhysicalAI-"
+"Robotics-Manipulation-"
+"Augmented/tree/main/robomimic_bc_rnn_visuomotor_models>`_ 进行访问，以便直接使用模型。"

@@ -9,15 +9,11 @@ Currently, the following spawners are supported:
 
 * :class:`UsdFileCfg`: Spawn an asset from a USD file.
 * :class:`UrdfFileCfg`: Spawn an asset from a URDF file.
+* :class:`MeshFileCfg`: Spawn a mesh from a mesh file or from in-memory triangle data.
 * :class:`GroundPlaneCfg`: Spawn a ground plane using the grid-world USD file.
 
 """
 
-from .from_files import (
-    spawn_from_mjcf,
-    spawn_from_urdf,
-    spawn_from_usd,
-    spawn_from_usd_with_compliant_contact_material,
-    spawn_ground_plane,
-)
-from .from_files_cfg import GroundPlaneCfg, MjcfFileCfg, UrdfFileCfg, UsdFileCfg, UsdFileWithCompliantContactCfg
+from isaaclab.utils.module import lazy_export
+
+lazy_export()

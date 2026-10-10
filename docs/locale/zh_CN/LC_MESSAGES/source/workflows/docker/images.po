@@ -1,0 +1,320 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/workflows/docker/images.rst:4
+msgid "Container images"
+msgstr "容器镜像"
+
+#: source/workflows/docker/images.rst:6
+msgid ""
+"Each :ref:`profile <deployment-docker>` builds a different image. They "
+"differ in what simulation and rendering stack they carry, which decides how "
+"large they are and what they can run. This page describes the images "
+"themselves; to build or run one, name its profile in the :ref:`container "
+"lifecycle <container-lifecycle>`."
+msgstr ""
+"每种 :ref:`配置 <deployment-docker>` "
+"构建不同镜像。它们所包含的仿真与渲染栈不同，决定镜像大小及可运行内容。本页介绍镜像本身；构建或运行时，在 :ref:`容器生命周期 "
+"<container-lifecycle>` 中指定其配置名称。"
+
+#: source/workflows/docker/images.rst:12
+msgid "Choosing an image"
+msgstr "选择镜像"
+
+#: source/workflows/docker/images.rst:18
+msgid "Profile"
+msgstr "区域配置"
+
+#: source/workflows/docker/images.rst:19
+msgid "Contains"
+msgstr "包含内容"
+
+#: source/workflows/docker/images.rst:20
+msgid "Use it when"
+msgstr "适用情况"
+
+#: source/workflows/docker/images.rst:21
+msgid "``base``"
+msgstr "``base``"
+
+#: source/workflows/docker/images.rst:22
+msgid "Isaac Lab on the NVIDIA Isaac Sim image, with Kit and RTX rendering"
+msgstr "基于 NVIDIA Isaac Sim 镜像的 Isaac Lab，包含 Kit 和 RTX 渲染"
+
+#: source/workflows/docker/images.rst:23
+msgid ""
+"You want the default environment, GUI rendering, or anything that needs "
+"Isaac Sim"
+msgstr "需要默认环境、图形界面渲染，或任何依赖 Isaac Sim 的功能"
+
+#: source/workflows/docker/images.rst:24
+msgid "``ros2``"
+msgstr "``ros2``"
+
+#: source/workflows/docker/images.rst:25
+msgid "The ``base`` image plus ROS 2 Humble"
+msgstr "``base`` 镜像加 ROS 2 Humble"
+
+#: source/workflows/docker/images.rst:26
+msgid "You are bridging Isaac Lab to ROS 2 nodes"
+msgstr "需要将 Isaac Lab 与 ROS 2 节点连接"
+
+#: source/workflows/docker/images.rst:27
+msgid "``kitless``"
+msgstr "``kitless``"
+
+#: source/workflows/docker/images.rst:28
+msgid ""
+"Ubuntu 24.04, Python 3.12, Newton and OVPhysX physics, OVRTX rendering, four"
+" RL libraries"
+msgstr "Ubuntu 24.04、Python 3.12、Newton 和 OVPhysX 物理、OVRTX 渲染，以及四种强化学习库"
+
+#: source/workflows/docker/images.rst:29
+msgid ""
+"You are training with Newton and want the smallest image; also the only one "
+"with no Isaac Sim EULA"
+msgstr "使用 Newton 训练，希望镜像尽量小；也是唯一没有 Isaac Sim EULA 的镜像"
+
+#: source/workflows/docker/images.rst:32
+msgid "Base image"
+msgstr "基础镜像"
+
+#: source/workflows/docker/images.rst:34
+msgid ""
+"``Dockerfile.base`` overlays Isaac Lab's dependencies onto the Isaac Sim "
+"container, so it inherits Kit, RTX rendering, and the Isaac Sim asset "
+"pipeline. The Isaac Sim version it builds against is set by "
+"``ISAACSIM_VERSION`` in ``.env.base``; the other variables in that file "
+"control paths inside the container."
+msgstr ""
+"``Dockerfile.base`` 在 Isaac Sim 容器上添加 Isaac Lab 依赖，因此继承 Kit、RTX 渲染和 Isaac "
+"Sim 资产管线。构建所用 Isaac Sim 版本由 ``.env.base`` 中的 ``ISAACSIM_VERSION`` "
+"指定；该文件的其他变量控制容器内路径。"
+
+#: source/workflows/docker/images.rst:40
+msgid "ROS 2 image"
+msgstr "ROS 2 镜像"
+
+#: source/workflows/docker/images.rst:42
+msgid ""
+"``Dockerfile.ros2`` installs ROS 2 Humble from an `apt package`_ and sources"
+" it in the runtime user's ``.bashrc``. ``ROS2_APT_PACKAGE`` in ``.env.ros2``"
+" selects the package set, defaulting to ``ros-base``. The image defaults to "
+"the ``FastRTPS`` middleware; ``CycloneDDS`` is also supported, and both can "
+"be `tuned`_ through their ``.xml`` files under ``docker/.ros``. See `various"
+" middleware`_ for the trade-offs."
+msgstr ""
+"``Dockerfile.ros2`` 通过 `apt 软件包 <apt package_>`_ 安装 ROS 2 Humble，并在运行时用户的 "
+"``.bashrc`` 中加载其环境。 ``.env.ros2`` 的 ``ROS2_APT_PACKAGE`` 选择软件包集合，默认为 ``ros-"
+"base`` 。镜像默认使用 ``FastRTPS`` 中间件，也支持 ``CycloneDDS`` 。二者均可通过 ``docker/.ros`` "
+"下的 ``.xml`` 文件 `调优 <tuned_>`_ ，取舍见 `不同中间件 <various middleware_>`_ 。"
+
+#: source/workflows/docker/images.rst:0
+msgid "Parameters in .env.ros2"
+msgstr ".env.ros2 中的参数"
+
+#: source/workflows/docker/images.rst:55
+msgid "Kit-less image"
+msgstr "不依赖 Kit 的镜像"
+
+#: source/workflows/docker/images.rst:57
+msgid ""
+"The kit-less image drops Isaac Sim entirely and builds on Ubuntu 24.04 with "
+"Python 3.12. It carries Newton physics, OVPhysX physics, OVRTX rendering, "
+"and the four core RL frameworks: RL Games, RSL-RL, Stable-Baselines3, and "
+"SKRL. The ``newton_gl``, ``newton_rtx``, ``viser``, and ``rerun`` "
+"visualizers are included. Use ``--viz newton_gl`` for local visualization "
+"with a display available in the container. ``--viz newton_gl`` selects the "
+"OpenGL rasterizer; ``--viz newton_rtx`` selects the OVRTX path tracer. Both "
+"can render offscreen without Isaac Sim. Windowed use additionally needs a "
+"display server accessible inside the container. The deprecated ``--viz "
+"newton`` alias selects GL; it does not choose between GL and RTX "
+"automatically."
+msgstr ""
+"此镜像完全移除 Isaac Sim，基于 Ubuntu 24.04 和 Python 3.12 构建。它包含 Newton 物理、OVPhysX "
+"物理、OVRTX 渲染，以及 RL Games、RSL-RL、Stable-Baselines3、SKRL 四种核心强化学习框架，也包含 "
+"``newton_gl`` 、 ``newton_rtx`` 、 ``viser`` 和 ``rerun`` 可视化器。容器可访问显示器时，使用 "
+"``--viz newton_gl`` 进行本地可视化。 ``--viz newton_gl`` 选择 OpenGL 光栅化器， ``--viz "
+"newton_rtx`` 选择 OVRTX 路径追踪器；两者都可不依赖 Isaac Sim 进行离屏渲染。窗口模式还要求容器内可访问显示服务器。已弃用的"
+" ``--viz newton`` 别名选择 GL，不会自动在 GL 和 RTX 之间选择。"
+
+#: source/workflows/docker/images.rst:66
+msgid ""
+"Rendering needs NVIDIA graphics driver capabilities in addition to compute. "
+"For direct ``docker run`` commands, pass ``--gpus all -e "
+"NVIDIA_DRIVER_CAPABILITIES=all``. The NVIDIA Container Toolkit exposes the "
+"host driver; avoid mounting a second copy of its Vulkan ICD. If multiple "
+"drivers are discovered, select the NVIDIA ICD available inside the container"
+" with ``VK_DRIVER_FILES`` (for example, "
+"``/etc/vulkan/icd.d/nvidia_icd.json``)."
+msgstr ""
+"除计算能力外，渲染还需要 NVIDIA 图形驱动能力。直接使用 ``docker run`` 时，传入 ``--gpus all -e "
+"NVIDIA_DRIVER_CAPABILITIES=all`` 。NVIDIA Container Toolkit 会提供宿主机驱动，不要再挂载一份 "
+"Vulkan ICD。如果发现多个驱动，通过 ``VK_DRIVER_FILES`` 选择容器内可用的 NVIDIA ICD，例如 "
+"``/etc/vulkan/icd.d/nvidia_icd.json`` 。"
+
+#: source/workflows/docker/images.rst:72
+msgid ""
+"No visualizer is selected by default, so training runs headless unless you "
+"ask for one. The ``kit`` visualizer is the exception: it comes from "
+"Omniverse Kit, which this image does not contain."
+msgstr ""
+"默认不选择可视化器，因此除非显式请求，训练以无界面模式运行。 ``kit`` 可视化器不可用，因为它来自本镜像未包含的 Omniverse Kit。"
+
+#: source/workflows/docker/images.rst:76
+msgid ""
+"Unlike the other two, it bind-mounts ``apps`` in addition to ``source``, "
+"``scripts``, ``tools``, and ``docs``, and it keeps a uv cache and a Warp "
+"cache of its own."
+msgstr ""
+"与另两种镜像相比，它除了绑定挂载 ``source`` 、 ``scripts`` 、 ``tools`` 和 ``docs`` ，还挂载 "
+"``apps`` ，并维护独立的 uv 与 Warp 缓存。"
+
+#: source/workflows/docker/images.rst:79
+msgid ""
+"You do not have to build it locally. It is published alongside each Isaac "
+"Lab release in the same registry repository, distinguished by a ``-kitless``"
+" tag suffix:"
+msgstr "无需在本地构建。它随每个 Isaac Lab 版本发布在同一镜像仓库，用 ``-kitless`` 标签后缀区分："
+
+#: source/workflows/docker/images.rst:86
+msgid ""
+"Running it directly, outside the Compose workflow, is a convenient way to "
+"verify the image and your NVIDIA Container Toolkit setup. ``--interactive`` "
+"and ``--tty`` keep the container's shell alive so that several commands can "
+"share it:"
+msgstr ""
+"在 Compose 工作流之外直接运行，便于验证镜像和 NVIDIA Container Toolkit 配置。 ``--interactive`` 和"
+" ``--tty`` 保持容器 shell 运行，使多个命令可以共用它："
+
+#: source/workflows/docker/images.rst:100
+msgid "Replay in a browser with:"
+msgstr "通过以下命令在浏览器中回放："
+
+#: source/workflows/docker/images.rst:108
+msgid ""
+"Viser is reachable through the host network without forwarding a desktop "
+"display. Stop playback with ``Ctrl+C`` without stopping the container. To "
+"build the image from the checkout instead of pulling it, run ``docker build "
+"--file docker/Dockerfile.kitless --tag isaac-lab-kitless .``."
+msgstr ""
+"Viser 可通过宿主机网络访问，无需转发桌面显示。按 ``Ctrl+C`` 停止回放，不会停止容器。要从检出目录构建镜像而非拉取，运行 "
+"``docker build --file docker/Dockerfile.kitless --tag isaac-lab-kitless .`` "
+"。"
+
+#: source/workflows/docker/images.rst:113
+msgid ""
+"Only ``linux/amd64`` images are published. The Dockerfile itself is "
+"architecture-agnostic, but the published manifest is limited to the "
+"architecture that is validated in CI."
+msgstr "只发布 ``linux/amd64`` 镜像。Dockerfile 本身不限定架构，但发布清单只包含 CI 已验证的架构。"
+
+#: source/workflows/docker/images.rst:117
+msgid "Pre-built image from NGC"
+msgstr "NGC 预构建镜像"
+
+#: source/workflows/docker/images.rst:119
+msgid ""
+"A minimal pre-built container carries a small set of Isaac Sim and Omniverse"
+" dependencies with Isaac Lab already built in, under "
+"``/workspace/isaaclab``. The example below runs without a forwarded desktop "
+"display. Choose the image profile for the physics and rendering stack you "
+"need, and configure graphics access separately when rendering."
+msgstr ""
+"精简的预构建容器包含少量 Isaac Sim 和 Omniverse 依赖，并已在 ``/workspace/isaaclab`` 中内置 Isaac "
+"Lab。以下示例无需转发桌面显示。根据所需物理与渲染栈选择镜像配置，渲染时另行配置图形访问。"
+
+#: source/workflows/docker/images.rst:126
+msgid ""
+"Use an explicit published version tag for reproducible runs. The examples "
+"below use ``3.0.0-rc1``; the corresponding kit-less image uses "
+"``3.0.0-rc1-kitless``."
+msgstr ""
+"使用明确的已发布版本标签，以便复现运行。下例使用 ``3.0.0-rc1`` ，对应的不依赖 Kit 的镜像标签为 "
+"``3.0.0-rc1-kitless`` 。"
+
+#: source/workflows/docker/images.rst:131
+msgid ""
+"Images from 3.0.0-beta2 onward run as a **non-root** user, so those bind-"
+"mount directories must be writable by uid/gid 1000. Docker creates any "
+"missing one as ``root``, which the runtime user cannot write to, producing "
+"errors such as ``PermissionError: [Errno 13] Permission denied: "
+"'/root/.local/share/ov/data/exts'``. Create them first:"
+msgstr ""
+"从 3.0.0-beta2 开始，镜像以 **非 root** 用户运行，因此绑定挂载目录必须允许 uid/gid 1000 写入。Docker 会以 "
+"``root`` 创建不存在的目录，运行时用户无法写入，可能出现 ``PermissionError: [Errno 13] Permission "
+"denied: '/root/.local/share/ov/data/exts'`` 等错误。应先创建目录："
+
+#: source/workflows/docker/images.rst:142
+msgid ""
+"Because it is run outside Compose, the Isaac Sim cache directories have to "
+"be mounted by hand, otherwise every start recompiles shaders:"
+msgstr "由于在 Compose 之外运行，需手动挂载 Isaac Sim 缓存目录，否则每次启动都重新编译着色器："
+
+#: source/workflows/docker/images.rst:159
+msgid ""
+"For windowed use, follow the X11 setup in :ref:`deployment-docker`; the "
+"container needs access to the host display and matching authorization. For "
+"direct ``docker run`` use, add ``-e DISPLAY -e "
+"XAUTHORITY=/tmp/isaaclab.xauth`` and the mounts ``-v "
+"/tmp/.X11-unix:/tmp/.X11-unix:rw`` and ``-v "
+"\"${XAUTHORITY:-$HOME/.Xauthority}\":/tmp/isaaclab.xauth:ro`` to the command"
+" above. The host authority file must exist and be readable by the container "
+"user. Offscreen Newton rendering does not require X11. Follow the graphics-"
+"driver requirements above for GL or RTX."
+msgstr ""
+"窗口模式按 :ref:`deployment-docker` 配置 X11；容器需要访问宿主机显示，并获得相应授权。直接使用 ``docker "
+"run`` 时，在上述命令中加入 ``-e DISPLAY -e XAUTHORITY=/tmp/isaaclab.xauth`` ，以及挂载 ``-v"
+" /tmp/.X11-unix:/tmp/.X11-unix:rw`` 和 ``-v "
+"\"${XAUTHORITY:-$HOME/.Xauthority}\":/tmp/isaaclab.xauth:ro`` "
+"。宿主机授权文件必须存在，且容器用户可读取。Newton 离屏渲染无需 X11。GL 或 RTX 应遵循上述图形驱动要求。"
+
+#: source/workflows/docker/images.rst:168
+msgid "Runtime user"
+msgstr "运行时用户"
+
+#: source/workflows/docker/images.rst:170
+msgid ""
+"The base, ROS 2, cuRobo, and kit-less images all run as a non-root user with"
+" uid/gid 1000, which keeps bind-mounted workspaces writable on GitHub "
+"runners. When running one of these images directly with ``docker run`` from "
+"a host account whose uid differs, pass ``--user \"$(id -u):1000\"`` so that "
+"new files on bind mounts belong to your host user while the runtime home "
+"stays accessible."
+msgstr ""
+"基础、ROS 2、cuRobo 和不依赖 Kit 的镜像，均以 uid/gid 1000 的非 root 用户运行，使 GitHub runner "
+"上绑定挂载的工作区可写。如果宿主机账号 uid 不同，直接通过 ``docker run`` 运行时，传入 ``--user \"$(id "
+"-u):1000\"`` ，使绑定挂载中新建文件归宿主机用户所有，同时保持运行时主目录可访问。"
+
+#: source/workflows/docker/images.rst:176
+msgid "Python interpreter"
+msgstr "Python 解释器"
+
+#: source/workflows/docker/images.rst:178
+msgid ""
+"Every image installs from ``uv.lock`` into a Python 3.12 virtual environment"
+" at ``/opt/isaaclab-venv``. On the Isaac Sim-based images the environment is"
+" built on Isaac Sim's own interpreter, and Isaac Sim itself stays outside "
+"it, reached through the ``_isaac_sim`` symlink; ``isaaclab.sh`` puts it on "
+"the path. In either case ``python`` on the container's ``PATH`` resolves to "
+"the right one, so scripts are run the same way regardless of image."
+msgstr ""
+"各镜像均根据 ``uv.lock`` ，将依赖安装到 ``/opt/isaaclab-venv`` 下的 Python 3.12 虚拟环境。基于 "
+"Isaac Sim 的镜像使用 Isaac Sim 自带解释器构建环境；Isaac Sim 本身位于环境之外，通过 ``_isaac_sim`` "
+"符号链接访问，由 ``isaaclab.sh`` 加入路径。所有镜像中，容器 ``PATH`` 上的 ``python`` "
+"都指向正确解释器，因此运行脚本的方式相同。"

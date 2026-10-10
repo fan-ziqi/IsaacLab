@@ -1,0 +1,377 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/proxy_array.rst:6
+msgid "Working with ProxyArray"
+msgstr "使用 ProxyArray"
+
+#: source/how-to/proxy_array.rst:10
+msgid ""
+"Isaac Lab data classes return :class:`ProxyArray` — a lightweight, warp-"
+"first wrapper that provides zero-copy access to simulation data as either a "
+":class:`warp.array` or a :class:`torch.Tensor`."
+msgstr ""
+"Isaac Lab 数据类返回 :class:`ProxyArray` ，这是以 Warp 为基础的轻量封装，可将仿真数据作为 "
+":class:`warp.array` 或 :class:`torch.Tensor` 零拷贝访问。"
+
+#: source/how-to/proxy_array.rst:16
+msgid ""
+"``ProxyArray`` is inspired by the ``ProxyArray`` class from `mujocolab/mjlab"
+" <https://github.com/mujocolab/mjlab>`_ (BSD-3-Clause). The design adapts "
+"the same dual-accessor pattern to Isaac Lab's warp-based data pipeline."
+msgstr ""
+"``ProxyArray`` 的设计参考了 `mujocolab/mjlab "
+"<https://github.com/mujocolab/mjlab>`_ 中的 ``ProxyArray`` 类（BSD-3-Clause "
+"许可），将同样的双访问器模式用于 Isaac Lab 基于 Warp 的数据管线。"
+
+#: source/how-to/proxy_array.rst:22
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/how-to/proxy_array.rst:24
+msgid ""
+"Every property on asset and sensor data classes (e.g., "
+"``robot.data.joint_pos``, ``sensor.data.net_normal_forces_w``) returns a "
+"``ProxyArray``:"
+msgstr ""
+"资产和传感器数据类的每个属性，例如 ``robot.data.joint_pos`` 、 "
+"``sensor.data.net_normal_forces_w`` ，都会返回 ``ProxyArray`` ："
+
+#: source/how-to/proxy_array.rst:43
+msgid "The ``.torch`` and ``.warp`` Accessors"
+msgstr "``.torch`` 与 ``.warp`` 访问器"
+
+#: source/how-to/proxy_array.rst:45
+msgid ""
+"``.torch`` returns a cached, zero-copy :class:`torch.Tensor` view of the "
+"underlying warp array (via :func:`warp.to_torch`). The tensor is created on "
+"first access and reused on subsequent calls. Since it is a zero-copy view, "
+"writes to the tensor are visible through the warp array and vice versa."
+msgstr ""
+"``.torch`` 通过 :func:`warp.to_torch` ，返回底层 Warp 数组的缓存式零拷贝 "
+":class:`torch.Tensor` 视图。张量在首次访问时创建，后续调用复用。由于是零拷贝视图，修改张量也会反映在 Warp 数组中，反之亦然。"
+
+#: source/how-to/proxy_array.rst:50
+msgid ""
+"``.warp`` returns the original :class:`warp.array`. Use this when you need "
+"to pass data to warp kernels explicitly or access warp-specific attributes "
+"(``ptr``, ``strides``, etc.)."
+msgstr ""
+"``.warp`` 返回原始 :class:`warp.array` 。需要显式向 Warp 核函数传入数据，或访问 ``ptr`` 、 "
+"``strides`` 等 Warp 专用属性时，使用此访问器。"
+
+#: source/how-to/proxy_array.rst:55
+msgid "Deprecation Bridge"
+msgstr "弃用过渡兼容机制"
+
+#: source/how-to/proxy_array.rst:57
+msgid ""
+"To ease migration, ``ProxyArray`` includes a deprecation bridge that allows "
+"existing code to treat it as a ``torch.Tensor`` temporarily:"
+msgstr "为方便迁移， ``ProxyArray`` 提供弃用过渡兼容机制，让旧代码可以暂时将其当作 ``torch.Tensor`` 使用："
+
+#: source/how-to/proxy_array.rst:74
+msgid ""
+"The ``wp.to_torch()`` compatibility path is a temporary shim for code that "
+"was migrated before ``ProxyArray`` exposed explicit accessors. It returns "
+"the same zero-copy tensor as ``.torch`` and emits a one-time "
+"``DeprecationWarning``. The shim and the other deprecation bridges will be "
+"removed in a future release. Migrate to explicit ``.torch`` access now."
+msgstr ""
+"``wp.to_torch()`` 兼容路径是临时适配层，用于在 ``ProxyArray`` 提供显式访问器之前已迁移的代码。它返回与 "
+"``.torch`` 相同的零拷贝张量，并发出一次 ``DeprecationWarning`` "
+"。此适配层和其他弃用兼容机制将在后续版本移除。请现在迁移到显式 ``.torch`` 访问。"
+
+#: source/how-to/proxy_array.rst:81
+msgid "Migrating from Isaac Lab 2.x"
+msgstr "从 Isaac Lab 2.x 迁移"
+
+#: source/how-to/proxy_array.rst:83
+msgid ""
+"In Isaac Lab 2.x, data properties returned ``torch.Tensor`` directly. In "
+"3.0, they return ``ProxyArray``. Append ``.torch`` to get the tensor:"
+msgstr ""
+"Isaac Lab 2.x 的数据属性直接返回 ``torch.Tensor`` ；3.0 则返回 ``ProxyArray`` 。追加 "
+"``.torch`` 即可获取张量："
+
+#: source/how-to/proxy_array.rst:98
+msgid ""
+"Passing a ``ProxyArray`` to ``wp.to_torch()`` is temporarily supported by a "
+"compatibility shim and returns the same cached zero-copy tensor as "
+"``.torch``. This path emits a one-time ``DeprecationWarning`` and will be "
+"removed in a future release. Use ``.torch`` in new code."
+msgstr ""
+"临时兼容层允许向 ``wp.to_torch()`` 传入 ``ProxyArray`` ，返回与 ``.torch`` "
+"相同的缓存式零拷贝张量。该路径会发出一次 ``DeprecationWarning`` ，并将在后续版本移除。新代码应使用 ``.torch`` 。"
+
+#: source/how-to/proxy_array.rst:105
+msgid "Backend Differences"
+msgstr "后端差异"
+
+#: source/how-to/proxy_array.rst:107
+msgid ""
+"While the ``ProxyArray`` interface is identical across backends, the "
+"underlying data refresh model differs:"
+msgstr "各后端的 ``ProxyArray`` 接口相同，但底层数据刷新方式不同："
+
+#: source/how-to/proxy_array.rst:110
+msgid "**PhysX (pull-to-refresh):**"
+msgstr "**PhysX（访问时拉取刷新）：**"
+
+#: source/how-to/proxy_array.rst:111
+msgid ""
+"Properties pull fresh data from the PhysX tensor API on first access per "
+"simulation step, then cache the result. The underlying GPU buffers are "
+"stable and pre-allocated — the ``ProxyArray`` wrapper is created once and "
+"reused safely across steps."
+msgstr ""
+"每个仿真步中首次访问属性时，会从 PhysX 张量 API 拉取最新数据并缓存结果。底层 GPU 缓冲区稳定且已预分配，因此 "
+"``ProxyArray`` 封装只创建一次，可安全地跨步复用。"
+
+#: source/how-to/proxy_array.rst:115
+msgid "**Newton (auto-refresh with wrapper replacement):**"
+msgstr "**Newton（自动刷新并替换封装）：**"
+
+#: source/how-to/proxy_array.rst:116
+msgid ""
+"The simulation automatically refreshes GPU buffers each step. On full "
+"simulation resets, buffers may be re-created. The Newton backend creates new"
+" ``ProxyArray`` wrappers for the new warp arrays, invalidating any "
+"previously cached torch tensors."
+msgstr ""
+"仿真每步自动刷新 GPU 缓冲区。完整仿真重置时，可能重新创建缓冲区。Newton 后端会为新的 Warp 数组创建新的 ``ProxyArray`` "
+"封装，使此前缓存的 Torch 张量失效。"
+
+#: source/how-to/proxy_array.rst:120
+msgid ""
+"In both cases, ``.torch`` always returns a view of the current simulation "
+"state for the current step."
+msgstr "两种情况下， ``.torch`` 始终返回当前步中当前仿真状态的视图。"
+
+#: source/how-to/proxy_array.rst:125
+msgid ""
+"Do not cache ``.torch`` results across simulation resets. After a reset "
+"(especially on Newton), previously obtained tensors may point to stale or "
+"freed GPU memory. Always re-access the property after a reset."
+msgstr ""
+"不要跨仿真重置缓存 ``.torch`` 的结果。重置后（尤其是 Newton），此前获取的张量可能指向过时或已释放的 GPU "
+"内存。重置后务必重新访问属性。"
+
+#: source/how-to/proxy_array.rst:131
+msgid "API Reference"
+msgstr "API 参考"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:1
+msgid ""
+"Warp-first array wrapper providing cached zero-copy ``.torch`` and ``.warp``"
+" accessors."
+msgstr ""
+"Warp-first array wrapper providing cached zero-copy ``.torch`` and ``.warp``"
+" accessors."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:3
+msgid "This class wraps a :class:`warp.array` and provides:"
+msgstr "This class wraps a :class:`warp.array` and provides:"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:5
+msgid ""
+"A ``.warp`` property that returns the original warp array (for kernel "
+"interop)."
+msgstr ""
+"A ``.warp`` property that returns the original warp array (for kernel "
+"interop)."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:6
+msgid ""
+"A ``.torch`` property that returns a cached, zero-copy :class:`torch.Tensor`"
+" view (via :func:`warp.to_torch`)."
+msgstr ""
+"A ``.torch`` property that returns a cached, zero-copy :class:`torch.Tensor`"
+" view (via :func:`warp.to_torch`)."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:8
+msgid ""
+"Convenience properties (``shape``, ``dtype``, ``device``) delegated to the "
+"warp array."
+msgstr ""
+"Convenience properties (``shape``, ``dtype``, ``device``) delegated to the "
+"warp array."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:9
+msgid ""
+"A deprecation bridge for common torch functions, indexing, and "
+"arithmetic/comparison operators while emitting a one-time "
+":class:`DeprecationWarning`. Tensor instance methods such as ``clone()`` are"
+" not forwarded; use explicit ``.torch`` access for those."
+msgstr ""
+"A deprecation bridge for common torch functions, indexing, and "
+"arithmetic/comparison operators while emitting a one-time "
+":class:`DeprecationWarning`. Tensor instance methods such as ``clone()`` are"
+" not forwarded; use explicit ``.torch`` access for those."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:13
+msgid "Example:"
+msgstr "Example:"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:1
+msgid "**Methods:**"
+msgstr "**Methods:**"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:1:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <isaaclab.utils.warp.ProxyArray.__init__>`\\ "
+"\\(wp\\_array\\)"
+msgstr ""
+":py:obj:`__init__ <isaaclab.utils.warp.ProxyArray.__init__>`\\ "
+"\\(wp\\_array\\)"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:1:<autosummary>:1
+msgid "Initialize the ProxyArray wrapper."
+msgstr "Initialize the ProxyArray wrapper."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray:1
+msgid "**Attributes:**"
+msgstr "**Attributes:**"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid ":py:obj:`warp <isaaclab.utils.warp.ProxyArray.warp>`\\"
+msgstr ":py:obj:`warp <isaaclab.utils.warp.ProxyArray.warp>`\\"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.warp:1
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid "The underlying warp array."
+msgstr "The underlying warp array."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid ":py:obj:`torch <isaaclab.utils.warp.ProxyArray.torch>`\\"
+msgstr ":py:obj:`torch <isaaclab.utils.warp.ProxyArray.torch>`\\"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.torch:1
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid "A cached, zero-copy :class:`torch.Tensor` view of the warp array."
+msgstr "A cached, zero-copy :class:`torch.Tensor` view of the warp array."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid ":py:obj:`shape <isaaclab.utils.warp.ProxyArray.shape>`\\"
+msgstr ":py:obj:`shape <isaaclab.utils.warp.ProxyArray.shape>`\\"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.shape:1
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid "Shape of the underlying warp array."
+msgstr "Shape of the underlying warp array."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid ":py:obj:`dtype <isaaclab.utils.warp.ProxyArray.dtype>`\\"
+msgstr ":py:obj:`dtype <isaaclab.utils.warp.ProxyArray.dtype>`\\"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.dtype:1
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid "Warp dtype of the underlying array."
+msgstr "Warp dtype of the underlying array."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid ":py:obj:`device <isaaclab.utils.warp.ProxyArray.device>`\\"
+msgstr ":py:obj:`device <isaaclab.utils.warp.ProxyArray.device>`\\"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.device:1
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:1:<autosummary>:1
+msgid "Device string of the underlying warp array."
+msgstr "Device string of the underlying warp array."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:3
+msgid ""
+"The instance is immutable after construction: the wrapped ``wp.array`` "
+"cannot be reassigned. If the underlying simulation memory is re-allocated, "
+"construct a new :class:`ProxyArray` instead of mutating an existing one."
+msgstr ""
+"The instance is immutable after construction: the wrapped ``wp.array`` "
+"cannot be reassigned. If the underlying simulation memory is re-allocated, "
+"construct a new :class:`ProxyArray` instead of mutating an existing one."
+
+#: source/how-to/proxy_array.rst:0
+msgid "Parameters"
+msgstr "Parameters"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:7
+msgid "The warp array to wrap."
+msgstr "The warp array to wrap."
+
+#: source/how-to/proxy_array.rst:0
+msgid "Raises"
+msgstr "Raises"
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.proxy_array.ProxyArray.__init__:9
+msgid "If ``wp_array`` is not a :class:`warp.array`."
+msgstr "If ``wp_array`` is not a :class:`warp.array`."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.torch:3
+msgid ""
+"The tensor is created on first access and cached for subsequent calls. Since"
+" this is a zero-copy view, modifications to the tensor are visible through "
+"the warp array and vice versa."
+msgstr ""
+"The tensor is created on first access and cached for subsequent calls. Since"
+" this is a zero-copy view, modifications to the tensor are visible through "
+"the warp array and vice versa."
+
+#: ../../IsaacLab/source/isaaclab/isaaclab/utils/warp/proxy_array.py:docstring
+#: of isaaclab.utils.warp.ProxyArray.torch:7
+msgid ""
+"When the underlying warp array has dtype ``wp.quatf`` and the "
+"``WARN_ON_TORCH_QUATF_ACCESS`` environment variable is set to ``\"1\"``, "
+"each read emits a :class:`UserWarning` pointing at the call site. This is a "
+"runtime aid for migrating Isaac Lab 2.x code (which used the ``(w, x, y, "
+"z)`` quaternion convention) to Isaac Lab 3.x's ``(x, y, z, w)`` convention."
+msgstr ""
+"When the underlying warp array has dtype ``wp.quatf`` and the "
+"``WARN_ON_TORCH_QUATF_ACCESS`` environment variable is set to ``\"1\"``, "
+"each read emits a :class:`UserWarning` pointing at the call site. This is a "
+"runtime aid for migrating Isaac Lab 2.x code (which used the ``(w, x, y, "
+"z)`` quaternion convention) to Isaac Lab 3.x's ``(x, y, z, w)`` convention."

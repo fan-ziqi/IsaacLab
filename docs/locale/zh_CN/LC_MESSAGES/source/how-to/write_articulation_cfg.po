@@ -1,38 +1,37 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
-# This file is distributed under the same license as the Isaac Lab package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
 msgid ""
 msgstr ""
-"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-30 10:41+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
-"Language-Team: zh_CN <LL@li.org>\n"
+"Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/how-to/write_articulation_cfg.rst:5
-msgid "Writing an Asset Configuration"
-msgstr "编写资产配置"
+#: source/how-to/write_articulation_cfg.rst:12
+msgid "Robot and articulation configuration"
+msgstr "机器人与关节体配置"
 
-#: ../../source/how-to/write_articulation_cfg.rst:9
+#: source/how-to/write_articulation_cfg.rst:16
 msgid ""
-"This guide walks through the process of creating an "
+"A jointed robot is represented as an articulation in Isaac Lab. This guide "
+"covers reusing an existing robot configuration and authoring a new "
 ":class:`~assets.ArticulationCfg`. The :class:`~assets.ArticulationCfg` is a "
 "configuration object that defines the properties of an "
 ":class:`~assets.Articulation` in Isaac Lab."
 msgstr ""
-"本指南详细介绍了创建 :class:`~assets.ArticulationCfg` 的过程。 "
-":class:`~assets.ArticulationCfg` 是定义Isaac Lab中 :class:`~assets.Articulation`"
-" 属性的配置对象。"
+"Isaac Lab 将带有关节的机器人表示为关节体。本指南介绍如何复用已有机器人配置，以及编写新的 "
+":class:`~assets.ArticulationCfg` 。 :class:`~assets.ArticulationCfg` 是定义 "
+"Isaac Lab 中 :class:`~assets.Articulation` 属性的配置对象。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:15
+#: source/how-to/write_articulation_cfg.rst:23
 msgid ""
 "While we only cover the creation of an :class:`~assets.ArticulationCfg` in "
 "this guide, the process is similar for creating any other asset "
@@ -40,7 +39,37 @@ msgid ""
 msgstr ""
 "在本指南中，我们只涵盖了创建 :class:`~assets.ArticulationCfg` 的过程，但创建任何其他资产配置对象的过程类似。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:18
+#: source/how-to/write_articulation_cfg.rst:27
+msgid "Reusing a robot configuration"
+msgstr "复用机器人配置"
+
+#: source/how-to/write_articulation_cfg.rst:29
+msgid ""
+"Maintained robot configurations live in "
+"``source/isaaclab_assets/isaaclab_assets/robots``. Import a configuration "
+"from ``isaaclab_assets`` and copy it before changing its spawn properties, "
+"initial state, or actuators. Keep project-specific configurations in a "
+"Python module in your own project; they do not need to be added to Isaac "
+"Lab."
+msgstr ""
+"持续维护的机器人配置位于 ``source/isaaclab_assets/isaaclab_assets/robots`` 。从 "
+"``isaaclab_assets`` 导入配置后，先复制，再修改生成属性、初始状态或执行器。项目专用配置可放在自己项目的 Python "
+"模块中，无需加入 Isaac Lab。"
+
+#: source/how-to/write_articulation_cfg.rst:34
+msgid ""
+"Import ``clone`` and ``replace`` from ``isaaclab.utils``. For example, "
+"``robot_cfg = clone(CARTPOLE_CFG)`` creates an independent configuration. "
+"Use ``replace(robot_cfg, prim_path=\"{ENV_REGEX_NS}/Robot\")`` when adding "
+"it to an :class:`~scene.InteractiveSceneCfg`. The physics backend is "
+"selected separately from this robot configuration, as explained below."
+msgstr ""
+"从 ``isaaclab.utils`` 导入 ``clone`` 和 ``replace`` 。例如， ``robot_cfg = "
+"clone(CARTPOLE_CFG)`` 创建独立配置。将它添加到 :class:`~scene.InteractiveSceneCfg` 时，使用 "
+"``replace(robot_cfg, prim_path=\"{ENV_REGEX_NS}/Robot\")`` "
+"。物理后端与机器人配置分别选择，下文会说明。"
+
+#: source/how-to/write_articulation_cfg.rst:40
 msgid ""
 "We will use the Cartpole example to demonstrate how to create an "
 ":class:`~assets.ArticulationCfg`. The Cartpole is a simple robot that "
@@ -49,19 +78,71 @@ msgid ""
 "this configuration example is "
 "``source/isaaclab_assets/isaaclab_assets/robots/cartpole.py``."
 msgstr ""
-"我们将使用Cartpole示例来演示如何创建 :class:`~assets.ArticulationCfg` 。 "
-"Cartpole是一个简单的机器人，由一个连接到杆的小车组成。 小车可以沿着轨道自由移动，杆可以在小车周围自由旋转。该配置示例的文件为 "
+"我们将使用 Cartpole 示例来演示如何创建 :class:`~assets.ArticulationCfg` 。 Cartpole "
+"是一个简单的机器人，由一个连接到杆的小车组成。 小车可以沿着轨道自由移动，杆可以在小车周围自由旋转。该配置示例的文件为 "
 "``source/isaaclab_assets/isaaclab_assets/robots/cartpole.py``."
 
-#: ../../source/how-to/write_articulation_cfg.rst
+#: source/how-to/write_articulation_cfg.rst:0
 msgid "Code for Cartpole configuration"
-msgstr "Cartpole配置代码"
+msgstr "Cartpole 配置代码"
 
-#: ../../source/how-to/write_articulation_cfg.rst:32
+#: source/how-to/write_articulation_cfg.rst:56
+msgid "Choosing shared and backend-specific settings"
+msgstr "选择共享设置与后端专用设置"
+
+#: source/how-to/write_articulation_cfg.rst:58
+msgid ""
+"Use the shared :class:`~assets.ArticulationCfg` for the robot's initial "
+"state and actuators. The simulation selects the physics backend separately."
+msgstr "使用共享的 :class:`~assets.ArticulationCfg` 配置机器人的初始状态与执行器。仿真单独选择物理后端。"
+
+#: source/how-to/write_articulation_cfg.rst:61
+msgid ""
+"For common USD properties, use classes from ``isaaclab.sim.schemas``, such "
+"as :class:`~sim.schemas.RigidBodyBaseCfg` and "
+":class:`~sim.schemas.ArticulationRootBaseCfg`. Use "
+"``isaaclab_physx.sim.schemas.Physx*Cfg`` for PhysX tuning and "
+"``isaaclab_newton.sim.schemas.Newton*Cfg`` / ``Mujoco*Cfg`` for Newton and "
+"MJWarp-specific settings. The :ref:`schema-cfgs` guide explains the "
+"available classes and their USD namespaces; "
+":doc:`../concepts/schema_fragments` shows how to author both backends' "
+"attributes in one spawn configuration."
+msgstr ""
+"通用 USD 属性使用 ``isaaclab.sim.schemas`` 中的类，例如 "
+":class:`~sim.schemas.RigidBodyBaseCfg` 和 "
+":class:`~sim.schemas.ArticulationRootBaseCfg` 。PhysX 调优使用 "
+"``isaaclab_physx.sim.schemas.Physx*Cfg`` ；Newton 和 MJWarp 专用设置使用 "
+"``isaaclab_newton.sim.schemas.Newton*Cfg`` / ``Mujoco*Cfg`` 。 :ref:`schema-"
+"cfgs` 指南解释了可用类及其 USD 命名空间； :doc:`../concepts/schema_fragments` "
+"展示了如何在同一生成配置中写入两个后端的属性。"
+
+#: source/how-to/write_articulation_cfg.rst:69
+msgid ""
+"The Cartpole below uses the compatibility names ``RigidBodyPropertiesCfg`` "
+"and ``ArticulationRootPropertiesCfg``. Its PhysX solver iterations and sleep"
+" thresholds do not configure Newton's solver. When adapting it to Newton, "
+"retain the shared initial-state and actuator configuration and configure the"
+" Newton solver separately. For example, to override Newton's self-collision "
+"setting:"
+msgstr ""
+"下文 Cartpole 使用兼容名称 ``RigidBodyPropertiesCfg`` 和 "
+"``ArticulationRootPropertiesCfg`` 。其中 PhysX 求解迭代次数与休眠阈值不会配置 Newton 求解器。适配 "
+"Newton 时，保留共享的初始状态与执行器配置，并单独配置 Newton 求解器。例如，覆盖 Newton 的自碰撞设置："
+
+#: source/how-to/write_articulation_cfg.rst:85
+msgid ""
+"See :doc:`solver_tuning_mjwarp` for solver settings, "
+":doc:`prepare_asset_for_newton` for asset tuning, and :ref:`import-new-"
+"asset-multi-backend` for converted USD variants."
+msgstr ""
+"求解器设置见 :doc:`solver_tuning_mjwarp` ，资产调优见 :doc:`prepare_asset_for_newton` "
+"，转换后的 USD 变体见 :ref:`import-new-asset-multi-backend` 。"
+
+#: source/how-to/write_articulation_cfg.rst:91
 msgid "Defining the spawn configuration"
 msgstr "定义生成配置"
 
-#: ../../source/how-to/write_articulation_cfg.rst:34
+#: source/how-to/write_articulation_cfg.rst:93
 msgid ""
 "As explained in :ref:`tutorial-spawn-prims` tutorials, the spawn "
 "configuration defines the properties of the assets to be spawned. This "
@@ -69,58 +150,60 @@ msgid ""
 "USD or URDF). In this example, we will spawn the Cartpole from a USD file."
 msgstr ""
 "如 :ref:`tutorial-spawn-prims` "
-"教程中所述，生成配置定义要生成的资产的属性。此生成可能以程序方式进行，也可能通过现有的资产文件（例如USD或URDF）进行。在本例中，我们将从USD文件生成Cartpole。"
+"教程中所述，生成配置定义要生成的资产的属性。此生成可能以程序方式进行，也可能通过现有的资产文件（例如 USD 或 URDF）进行。在本例中，我们将从 "
+"USD 文件生成 Cartpole。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:39
+#: source/how-to/write_articulation_cfg.rst:98
 msgid ""
 "When spawning an asset from a USD file, we define its "
 ":class:`~sim.spawners.from_files.UsdFileCfg`. This configuration object "
 "takes in the following parameters:"
 msgstr ""
-"从USD文件生成资产时，我们定义其 :class:`~sim.spawners.from_files.UsdFileCfg` 。此配置对象接收以下参数:"
-" "
+"从 USD 文件生成资产时，我们定义其 :class:`~sim.spawners.from_files.UsdFileCfg` "
+"。此配置对象接收以下参数: "
 
-#: ../../source/how-to/write_articulation_cfg.rst:42
+#: source/how-to/write_articulation_cfg.rst:101
 msgid ""
 ":class:`~sim.spawners.from_files.UsdFileCfg.usd_path`: The USD file path to "
 "spawn from"
-msgstr ":class:`~sim.spawners.from_files.UsdFileCfg.usd_path`: 要生成的USD文件路径"
+msgstr ":class:`~sim.spawners.from_files.UsdFileCfg.usd_path`: 要生成的 USD 文件路径"
 
-#: ../../source/how-to/write_articulation_cfg.rst:43
+#: source/how-to/write_articulation_cfg.rst:102
 msgid ""
 ":class:`~sim.spawners.from_files.UsdFileCfg.rigid_props`: The properties of "
-"the articulation's root"
-msgstr ":class:`~sim.spawners.from_files.UsdFileCfg.rigid_props`: 关节根部的属性"
+"the articulation's rigid-body links"
+msgstr ""
+":class:`~sim.spawners.from_files.UsdFileCfg.rigid_props` ：关节体各刚体连杆的属性。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:44
+#: source/how-to/write_articulation_cfg.rst:103
 msgid ""
 ":class:`~sim.spawners.from_files.UsdFileCfg.articulation_props`: The "
-"properties of all the articulation's links"
+"properties of the articulation root"
 msgstr ""
-":class:`~sim.spawners.from_files.UsdFileCfg.articulation_props`: 所有关节链接的属性"
+":class:`~sim.spawners.from_files.UsdFileCfg.articulation_props` ：关节体根的属性。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:46
+#: source/how-to/write_articulation_cfg.rst:105
 msgid ""
 "The last two parameters are optional. If not specified, they are kept at "
 "their default values in the USD file."
-msgstr "最后两个参数是可选的。如果未指定，它们将保持在USD文件中的默认值。"
+msgstr "最后两个参数是可选的。如果未指定，它们将保持在 USD 文件中的默认值。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:53
+#: source/how-to/write_articulation_cfg.rst:113
 msgid ""
 "To import articulation from a URDF file instead of a USD file, you can "
 "replace the :class:`~sim.spawners.from_files.UsdFileCfg` with a "
 ":class:`~sim.spawners.from_files.UrdfFileCfg`. For more details, please "
 "check the API documentation."
 msgstr ""
-"如要从URDF文件中导入关节而不是从USD文件中导入，你可以用 "
+"如要从 URDF 文件中导入关节而不是从 USD 文件中导入，你可以用 "
 ":class:`~sim.spawners.from_files.UrdfFileCfg` 替换 "
-":class:`~sim.spawners.from_files.UsdFileCfg` 。更多详情，请查看API文档。"
+":class:`~sim.spawners.from_files.UsdFileCfg` 。更多详情，请查看 API 文档。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:59
+#: source/how-to/write_articulation_cfg.rst:119
 msgid "Defining the initial state"
 msgstr "定义初始状态"
 
-#: ../../source/how-to/write_articulation_cfg.rst:61
+#: source/how-to/write_articulation_cfg.rst:121
 msgid ""
 "Every asset requires defining their initial or *default* state in the "
 "simulation through its configuration. This configuration is stored into the "
@@ -129,7 +212,7 @@ msgid ""
 msgstr ""
 "每个资产都需要通过其配置在仿真中定义其初始或 *默认* 状态。此配置存储在资产的默认状态缓冲区中，当需要重置资产状态时，可以访问这些缓冲区。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:66
+#: source/how-to/write_articulation_cfg.rst:126
 msgid ""
 "The initial state of an asset is defined w.r.t. its local environment frame."
 " This then needs to be transformed into the global simulation frame when "
@@ -139,7 +222,7 @@ msgstr ""
 "资产的初始状态是根据其本地环境框架定义的。然后，当重置资产状态时，需要将其转换为全局仿真框架。更多详情，请查看 :ref:`tutorial-"
 "interact-articulation` 教程。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:71
+#: source/how-to/write_articulation_cfg.rst:131
 msgid ""
 "For an articulation, the :class:`~assets.ArticulationCfg.InitialStateCfg` "
 "object defines the initial state of the root of the articulation and the "
@@ -148,13 +231,14 @@ msgid ""
 "joint positions and velocities are set to 0.0."
 msgstr ""
 "对于关节， :class:`~assets.ArticulationCfg.InitialStateCfg` "
-"对象定义了关节根部的初始状态以及所有关节的初始状态。在本例中，我们将在XY平面的原点处生成Cartpole，在Z高度为2.0米处。同时，关节位置和速度设置为0.0。"
+"对象定义了关节根部的初始状态以及所有关节的初始状态。在本例中，我们将在 XY 平面的原点处生成 Cartpole，在 Z 高度为 2.0 "
+"米处。同时，关节位置和速度设置为 0.0。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:82
+#: source/how-to/write_articulation_cfg.rst:143
 msgid "Defining the actuator configuration"
 msgstr "定义执行器配置"
 
-#: ../../source/how-to/write_articulation_cfg.rst:84
+#: source/how-to/write_articulation_cfg.rst:145
 msgid ""
 "Actuators are a crucial component of an articulation. Through this "
 "configuration, it is possible to define the type of actuator model to use. "
@@ -166,7 +250,7 @@ msgstr ""
 "执行器是关节中的关键组件。通过此配置，可以定义要使用的执行器模型类型。我们可以使用物理引擎提供的内部执行器模型（即隐式执行器模型），也可以使用用户定义的方程系统控制的自定义执行器模型（即显式执行器模型）。有关执行器的更多详情，请参见"
 " :ref:`overview-actuators` 。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:90
+#: source/how-to/write_articulation_cfg.rst:151
 msgid ""
 "The cartpole's articulation has two actuators, one corresponding to its each"
 " joint: ``cart_to_pole`` and ``slider_to_cart``. We use two different "
@@ -174,157 +258,151 @@ msgid ""
 "both using the same actuator model, it is possible to combine them into a "
 "single actuator model."
 msgstr ""
-"cartpole的关节具有两个执行器，分别对应于它的每个关节:``cart_to_pole`` 和 ``slider_to_cart`` "
+"cartpole 的关节具有两个执行器，分别对应于它的每个关节:``cart_to_pole`` 和 ``slider_to_cart`` "
 "。我们对这些执行器使用两种不同的执行器模型作为示例。但是，由于它们都使用相同的执行器模型，可以将它们组合成一个单独的执行器模型。"
 
-#: ../../source/how-to/write_articulation_cfg.rst
+#: source/how-to/write_articulation_cfg.rst:0
 msgid "Actuator model configuration with separate actuator models"
 msgstr "使用分开的执行器模型进行执行器模型配置"
 
-#: ../../source/how-to/write_articulation_cfg.rst
+#: source/how-to/write_articulation_cfg.rst:0
 msgid "Actuator model configuration with a single actuator model"
 msgstr "使用单个执行器模型进行执行器模型配置"
 
-#: ../../source/how-to/write_articulation_cfg.rst:121
+#: source/how-to/write_articulation_cfg.rst:182
+msgid ""
+"Newton resolves the target mode of joints configured with "
+":class:`~isaaclab.actuators.ImplicitActuatorCfg` before solver construction:"
+" stiffness-only selects position mode, damping-only velocity mode, both "
+"gains combined position/velocity mode, and zero gains effort mode. A gain of"
+" ``None`` retains the imported USD value; explicit actuator configurations "
+"use effort mode. Zero-gain USD drives therefore need no placeholder solely "
+"for a configured actuator. See :ref:`import-new-asset-ensure-drives-exist` "
+"for when "
+":attr:`~isaaclab.sim.schemas.JointDrivePropertiesCfg.ensure_drives_exist` "
+"remains useful."
+msgstr ""
+"Newton 在构建求解器前，为通过 :class:`~isaaclab.actuators.ImplicitActuatorCfg` "
+"配置的关节解析目标模式：仅有刚度时选择位置模式，仅有阻尼时选择速度模式，两项增益都有时选择位置与速度组合模式，零增益时选择驱动力模式。增益为 "
+"``None`` 时保留导入的 USD 值；显式执行器配置使用驱动力模式。因此，仅为已配置执行器工作，无需给零增益 USD 驱动添加占位值。 "
+":attr:`~isaaclab.sim.schemas.JointDrivePropertiesCfg.ensure_drives_exist` "
+"仍适用的场景见 :ref:`import-new-asset-ensure-drives-exist` 。"
+
+#: source/how-to/write_articulation_cfg.rst:194
 msgid "ActuatorCfg velocity/effort limits considerations"
 msgstr "ActuatorCfg 速度/力矩限制考虑"
 
-#: ../../source/how-to/write_articulation_cfg.rst:123
+#: source/how-to/write_articulation_cfg.rst:196
 msgid ""
-"In IsaacLab v1.4.0, the plain ``velocity_limit`` and ``effort_limit`` "
-"attributes were **not** consistently pushed into the physics solver:"
+"Use the following fields in an actuator configuration. They select joints "
+"and are resolved when the articulation is constructed; the canonical runtime"
+" values live on :class:`~isaaclab.assets.ArticulationData`. See "
+":ref:`actuators-joint-property-ownership` for the ownership model and "
+"runtime mutation paths."
 msgstr ""
-"在 IsaacLab v1.4.0 中，普通的 ``velocity_limit`` 和 ``effort_limit`` 属性 **没有** "
-"被一致地传入物理求解器中: "
+"在执行器配置中使用以下字段。它们选择关节，并在构建关节体时解析；运行时的权威值存放在 "
+":class:`~isaaclab.assets.ArticulationData` 上。归属模型和运行时修改方式见 :ref:`actuators-"
+"joint-property-ownership` 。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:126
-msgid ""
-"**Implicit actuators** - velocity_limit was ignored (never set in "
-"simulation) - effort_limit was set into simulation"
-msgstr "**隐式执行器** - 速度限制被忽略（在仿真中从未设置） - effort_limit 已设置到仿真中"
+#: source/how-to/write_articulation_cfg.rst:201
+msgid "Limit configuration"
+msgstr "限制配置"
 
-#: ../../source/how-to/write_articulation_cfg.rst:130
-msgid ""
-"**Explicit actuators** - both velocity_limit and effort_limit were used only"
-" by the drive model, not by the solver"
-msgstr "**显式执行器** - velocity_limit 和 effort_limit 仅由驱动模型使用，而不是由求解器使用"
+#: source/how-to/write_articulation_cfg.rst:205
+msgid "Field"
+msgstr "字段"
 
-#: ../../source/how-to/write_articulation_cfg.rst:134
-msgid ""
-"In v2.0.1 we accidentally changed this: all velocity_limit & effort_limit, "
-"implicit or explicit, were being applied to the solver. That caused many "
-"training under the old default uncaped solver limits to break."
-msgstr ""
-"在 v2.0.1 中，我们意外地更改了这一点: 所有 velocity_limit 和 effort_limit "
-"，无论是隐式还是显式，都被应用到了求解器上。这导致许多在旧的默认无上限求解器限制下进行训练的任务出现问题。"
-
-#: ../../source/how-to/write_articulation_cfg.rst:138
-msgid ""
-"To restore the original behavior while still giving users full control over "
-"solver limits, we introduced two new flags:"
-msgstr "为了恢复原始行为，同时仍然给用户完全控制求解器限制，我们引入了两个新标志: "
-
-#: ../../source/how-to/write_articulation_cfg.rst:140
-msgid ""
-"**velocity_limit_sim** Sets the physics-solver's maximum joint-velocity cap "
-"in simulation."
-msgstr "**velocity_limit_sim** 设置物理求解器在仿真中的最大关节速度上限。"
-
-#: ../../source/how-to/write_articulation_cfg.rst:143
-msgid ""
-"**effort_limit_sim** Sets the physics-solver's maximum joint-effort cap in "
-"simulation."
-msgstr "**effort_limit_sim** 设置仿真中物理求解器的最大关节力矩上限。"
-
-#: ../../source/how-to/write_articulation_cfg.rst:147
-msgid ""
-"These explicitly set the solver's joint-velocity and joint-effort caps at "
-"simulation level."
-msgstr "这些明确定义了求解器在仿真级别上的关节速度和关节力矩的限制。"
-
-#: ../../source/how-to/write_articulation_cfg.rst:149
-msgid ""
-"On the other hand, velocity_limit and effort_limit model the motor's "
-"hardware-level constraints in torque computation for all explicit actuators "
-"rather than limiting simulation-level constraint. For implicit actuators, "
-"since they do not model motor hardware limitations, ``velocity_limit`` were "
-"removed in v2.1.1 and marked as deprecated. This preserves same behavior as "
-"they did in v1.4.0. Eventually, ``velocity_limit`` and ``effort_limit`` will"
-" be deprecated for implicit actuators, preserving only "
-"``velocity_limit_sim`` and ``effort_limit_sim``"
-msgstr ""
-"另一方面， velocity_limit 和 effort_limit "
-"对所有显式执行器中的扭矩计算仿真了电机的硬件级约束，而不是限制仿真级约束。对于隐式执行器，由于它们不仿真电动机硬件限制，``velocity_limit``"
-" 在 v2.1.1 版本中被移除，并标记为不推荐使用。这保持了与 v1.4.0 版本相同的行为。 "
-"最终，对于隐式执行器，``velocity_limit`` 和 ``effort_limit`` 将被标记为不推荐使用，仅保留 "
-"``velocity_limit_sim`` 和 ``effort_limit_sim`` 。"
-
-#: ../../source/how-to/write_articulation_cfg.rst:157
-msgid "Limit Options Comparison"
-msgstr "限制选项比较"
-
-#: ../../source/how-to/write_articulation_cfg.rst:163
-msgid "**Attribute**"
-msgstr "**属性**"
-
-#: ../../source/how-to/write_articulation_cfg.rst:164
-msgid "**Implicit Actuator**"
+#: source/how-to/write_articulation_cfg.rst:206
+msgid "Implicit actuator"
 msgstr "隐式执行器"
 
-#: ../../source/how-to/write_articulation_cfg.rst:165
-msgid "**Explicit Actuator**"
-msgstr "**显式执行器**"
+#: source/how-to/write_articulation_cfg.rst:207
+msgid "Explicit actuator"
+msgstr "显式执行器"
 
-#: ../../source/how-to/write_articulation_cfg.rst:166
-msgid "``velocity_limit``"
-msgstr "``velocity_limit``"
+#: source/how-to/write_articulation_cfg.rst:208
+msgid "``joint_effort_limit``"
+msgstr "``joint_effort_limit``"
 
-#: ../../source/how-to/write_articulation_cfg.rst:167
-msgid "Deprecated (alias for ``velocity_limit_sim``)"
-msgstr "已弃用（ ``velocity_limit_sim`` 的别名）"
+#: source/how-to/write_articulation_cfg.rst:209
+msgid "Writes the solver drive effort limit."
+msgstr "写入求解器驱动的驱动力上限。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:168
-msgid "Used by the model (e.g. DC motor), not set into simulation"
-msgstr "被模型（例如直流电机）使用，未设置到仿真中"
+#: source/how-to/write_articulation_cfg.rst:210
+msgid ""
+"Writes the solver effort limit; defaults high to avoid a second model clip."
+msgstr "写入求解器驱动力上限；默认值较高，以免模型输出受到第二次限幅。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:169
+#: source/how-to/write_articulation_cfg.rst:211
+msgid "``actuator_effort_limit``"
+msgstr "``actuator_effort_limit``"
+
+#: source/how-to/write_articulation_cfg.rst:212
+msgid "Not supported."
+msgstr "不支持。"
+
+#: source/how-to/write_articulation_cfg.rst:213
+msgid "Clips actuator-model output."
+msgstr "限制执行器模型的输出幅度。"
+
+#: source/how-to/write_articulation_cfg.rst:214
+msgid "``joint_velocity_limit``"
+msgstr "``joint_velocity_limit``"
+
+#: source/how-to/write_articulation_cfg.rst:215
+#: source/how-to/write_articulation_cfg.rst:216
+msgid "Requests a solver velocity constraint."
+msgstr "请求求解器施加速度约束。"
+
+#: source/how-to/write_articulation_cfg.rst:217
+msgid "``actuator_velocity_limit``"
+msgstr "``actuator_velocity_limit``"
+
+#: source/how-to/write_articulation_cfg.rst:218
+msgid "Creates the soft velocity-limit snapshot; it is not a solver request."
+msgstr "创建软速度限制快照，不向求解器请求约束。"
+
+#: source/how-to/write_articulation_cfg.rst:219
+msgid ""
+"Describes the actuator rated speed; speed-dependent models use it in their "
+"torque curve."
+msgstr "描述执行器额定速度；与速度有关的模型在力矩曲线中使用它。"
+
+#: source/how-to/write_articulation_cfg.rst:220
 msgid "``effort_limit``"
 msgstr "``effort_limit``"
 
-#: ../../source/how-to/write_articulation_cfg.rst:170
-msgid "Deprecated (alias for ``effort_limit_sim``)"
-msgstr "已弃用（ ``effort_limit_sim`` 的别名）"
+#: source/how-to/write_articulation_cfg.rst:221
+msgid "Deprecated alias for ``joint_effort_limit``."
+msgstr "``joint_effort_limit`` 的已弃用别名。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:171
-msgid "Used by the model, not set into simulation"
-msgstr "被模型使用，未设置到仿真中。"
+#: source/how-to/write_articulation_cfg.rst:222
+msgid "Deprecated alias for ``actuator_effort_limit``."
+msgstr "``actuator_effort_limit`` 的已弃用别名。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:172
-msgid "``velocity_limit_sim``"
-msgstr "``velocity_limit_sim``"
+#: source/how-to/write_articulation_cfg.rst:223
+msgid "``velocity_limit``"
+msgstr "``velocity_limit``"
 
-#: ../../source/how-to/write_articulation_cfg.rst:173
-#: ../../source/how-to/write_articulation_cfg.rst:174
-#: ../../source/how-to/write_articulation_cfg.rst:176
-#: ../../source/how-to/write_articulation_cfg.rst:177
-msgid "Set into simulation"
-msgstr "设置到仿真中"
+#: source/how-to/write_articulation_cfg.rst:224
+#: source/how-to/write_articulation_cfg.rst:225
+msgid "Deprecated alias for ``actuator_velocity_limit``."
+msgstr "``actuator_velocity_limit`` 的已弃用别名。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:175
-msgid "``effort_limit_sim``"
-msgstr "``effort_limit_sim``"
-
-#: ../../source/how-to/write_articulation_cfg.rst:181
+#: source/how-to/write_articulation_cfg.rst:227
 msgid ""
-"Users who want to tune the underlying physics-solver limits should set the "
-"``_sim`` flags."
-msgstr "想要调整基础物理求解器限制的用户应当设置 ``_sim`` 标志。"
+"Solver velocity enforcement is backend-dependent. ``joint_velocity_limit`` "
+"records the requested joint state but is not a backend-independent safety "
+"clamp; see :ref:`newton-velocity-limits`."
+msgstr ""
+"求解器对速度限制的实施方式因后端而异。 ``joint_velocity_limit`` 记录请求的关节状态，但不是独立于后端的安全限幅；参见 "
+":ref:`newton-velocity-limits` 。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:185
+#: source/how-to/write_articulation_cfg.rst:232
 msgid "USD vs. ActuatorCfg discrepancy resolution"
 msgstr "USD vs. ActuatorCfg 差异解决"
 
-#: ../../source/how-to/write_articulation_cfg.rst:187
+#: source/how-to/write_articulation_cfg.rst:234
 msgid ""
 "USD having default value and the fact that ActuatorCfg can be specified with"
 " None, or a overriding value can sometime be confusing what exactly gets "
@@ -334,47 +412,47 @@ msgstr ""
 "USD 具有默认值，并且 ActuatorCfg 可以指定为 "
 "None，或者有时会令人困惑的是覆盖值实际写入仿真中的规则。解决方案遵循这些简单规则，每个关节和每个属性:"
 
-#: ../../source/how-to/write_articulation_cfg.rst:191
+#: source/how-to/write_articulation_cfg.rst:238
 msgid "Resolution Rules for USD vs. ActuatorCfg"
 msgstr "USD vs. ActuatorCfg 的分辨率规则"
 
-#: ../../source/how-to/write_articulation_cfg.rst:194
+#: source/how-to/write_articulation_cfg.rst:241
 msgid "**Condition**"
 msgstr "**条件**"
 
-#: ../../source/how-to/write_articulation_cfg.rst:194
+#: source/how-to/write_articulation_cfg.rst:241
 msgid "**ActuatorCfg Value**"
 msgstr "**驱动器配置值**"
 
-#: ../../source/how-to/write_articulation_cfg.rst:194
+#: source/how-to/write_articulation_cfg.rst:241
 msgid "**Applied**"
 msgstr "**应用**"
 
-#: ../../source/how-to/write_articulation_cfg.rst:196
+#: source/how-to/write_articulation_cfg.rst:243
 msgid "No override provided"
 msgstr "未提供覆盖"
 
-#: ../../source/how-to/write_articulation_cfg.rst:196
+#: source/how-to/write_articulation_cfg.rst:243
 msgid "Not Specified"
 msgstr "未指定"
 
-#: ../../source/how-to/write_articulation_cfg.rst:196
+#: source/how-to/write_articulation_cfg.rst:243
 msgid "USD Value"
-msgstr "USD Value"
+msgstr "USD 值"
 
-#: ../../source/how-to/write_articulation_cfg.rst:198
+#: source/how-to/write_articulation_cfg.rst:245
 msgid "Override provided"
 msgstr "提供覆盖"
 
-#: ../../source/how-to/write_articulation_cfg.rst:198
+#: source/how-to/write_articulation_cfg.rst:245
 msgid "User's ActuatorCfg"
 msgstr "用户的 ActuatorCfg"
 
-#: ../../source/how-to/write_articulation_cfg.rst:198
+#: source/how-to/write_articulation_cfg.rst:245
 msgid "Same as ActuatorCfg"
 msgstr "与 ActuatorCfg 相同"
 
-#: ../../source/how-to/write_articulation_cfg.rst:202
+#: source/how-to/write_articulation_cfg.rst:249
 msgid ""
 "Digging into USD can sometime be unconvinent, to help clarify what exact "
 "value is written, we designed a flag "
@@ -385,41 +463,40 @@ msgstr ""
 ":attr:`~isaaclab.assets.ArticulationCfg.actuator_value_resolution_debug_print`"
 " ，以帮助用户弄清楚在仿真中使用了哪个确切值。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:206
+#: source/how-to/write_articulation_cfg.rst:253
 msgid ""
 "Whenever an actuator parameter is overridden in the user's ActuatorCfg (or "
 "left unspecified), we compare it to the value read from the USD definition "
 "and record any differences.  For each joint and each property, if unmatching"
 " value is found, we log the resolution:"
 msgstr ""
-"每当在用户的 "
-"ActuatorCfg（或未指定）中覆盖执行器参数时，我们将其与从USD定义中读取的值进行比较，并记录任何差异。对于每个关节和每个属性，如果找到不匹配的值，我们记录下解决方案:"
-" "
+"每当在用户的 ActuatorCfg（或未指定）中覆盖执行器参数时，我们将其与从 USD "
+"定义中读取的值进行比较，并记录任何差异。对于每个关节和每个属性，如果找到不匹配的值，我们记录下解决方案: "
 
-#: ../../source/how-to/write_articulation_cfg.rst:210
+#: source/how-to/write_articulation_cfg.rst:257
 msgid "**USD Value** The default limit or gain parsed from the USD asset."
-msgstr "**USD 值** USD资产解析的默认限制或增益。"
+msgstr "**USD 值** USD 资产解析的默认限制或增益。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:213
+#: source/how-to/write_articulation_cfg.rst:260
 msgid ""
 "**ActuatorCfg Value** The user-provided override (or “Not Specified” if none"
 " was given)."
 msgstr "**ActuatorCfg 值** 用户提供的覆盖值（如果没有提供则为 “未指定” ）。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:216
+#: source/how-to/write_articulation_cfg.rst:263
 msgid ""
 "**Applied** The final value actually used for simulation: if the user didn't"
 " override it, this matches the USD value; otherwise it reflects the user's "
 "setting."
-msgstr "**应用** 实际用于仿真的最终数值: 如果用户没有覆盖它，这将与USD值匹配；否则，它将反映用户的设置。"
+msgstr "**应用** 实际用于仿真的最终数值: 如果用户没有覆盖它，这将与 USD 值匹配；否则，它将反映用户的设置。"
 
-#: ../../source/how-to/write_articulation_cfg.rst:220
+#: source/how-to/write_articulation_cfg.rst:267
 msgid ""
 "This resolution info is emitted as a warning table only when discrepancies "
 "exist. Here's an example of what you'll see::"
 msgstr "此解决方案信息仅在存在差异时作为警告表格发出。以下是您将看到的示例: "
 
-#: ../../source/how-to/write_articulation_cfg.rst:267
+#: source/how-to/write_articulation_cfg.rst:314
 msgid ""
 "To keep the cleaniness of logging, "
 ":attr:`~isaaclab.assets.ArticulationCfg.actuator_value_resolution_debug_print`"
@@ -428,3 +505,74 @@ msgstr ""
 "为保持日志的清晰， "
 ":attr:`~isaaclab.assets.ArticulationCfg.actuator_value_resolution_debug_print`"
 " 默认为 False，请在需要时记得将其打开。"
+
+#: source/how-to/write_articulation_cfg.rst:323
+msgid "Example: configure and run two robots"
+msgstr "示例：配置并运行两个机器人"
+
+#: source/how-to/write_articulation_cfg.rst:325
+msgid ""
+"The runnable example ``scripts/tutorials/01_assets/add_new_robot.py`` "
+"contrasts a minimal Jetbot configuration with a more detailed Dofbot "
+"configuration. Start with an imported USD asset (see "
+":doc:`import_new_asset`) and define its spawn properties and actuators. "
+"Jetbot retains the joint gains authored in the USD by setting stiffness and "
+"damping to ``None``. Both fields must be specified, even when using these "
+"USD defaults:"
+msgstr ""
+"可运行示例 ``scripts/tutorials/01_assets/add_new_robot.py`` 对比了精简的 Jetbot 配置与较详细的"
+" Dofbot 配置。从导入的 USD 资产开始（见 :doc:`import_new_asset` ），定义生成属性和执行器。Jetbot "
+"将刚度与阻尼设为 ``None`` ，保留 USD 中编写的关节增益。即使使用这些 USD 默认值，也必须指定这两个字段："
+
+#: source/how-to/write_articulation_cfg.rst:336
+msgid ""
+"Dofbot additionally sets initial joint positions, groups joints by name, and"
+" specifies actuator gains and limits. Its solver iterations and maximum "
+"depenetration velocity are PhysX-specific; use :ref:`asset-config-backends` "
+"when adapting these properties to Newton. The keys in "
+"``init_state.joint_pos`` identify USD joints, not actuator groups. Joint "
+"names can be matched with regular expressions; for example, ``.*`` selects "
+"all joints."
+msgstr ""
+"Dofbot 还设置了初始关节位置、按名称分组的关节，以及执行器增益和限制。其中求解迭代次数与最大去穿透速度是 PhysX 专用属性；适配 Newton"
+" 时参阅 :ref:`asset-config-backends` 。 ``init_state.joint_pos`` 中的键标识 USD "
+"关节，而非执行器组。关节名可以用正则表达式匹配，例如 ``.*`` 选择所有关节。"
+
+#: source/how-to/write_articulation_cfg.rst:0
+msgid "Expanded Dofbot configuration from the runnable example"
+msgstr "可运行示例中的完整 Dofbot 配置"
+
+#: source/how-to/write_articulation_cfg.rst:350
+msgid ""
+"The example adds both configurations to an ``InteractiveSceneCfg``, assigns "
+"each robot a path under every environment, and constructs the scene. Its "
+"loop resets root and joint states, sets joint targets, writes commands, "
+"steps physics, and updates the scene buffers. See :ref:`tutorial-"
+"interactive-scene` for scene construction and :ref:`tutorial-interact-"
+"articulation` for the reset and control loop."
+msgstr ""
+"示例将两个配置添加到 ``InteractiveSceneCfg`` "
+"，为各环境中的机器人指定路径，并构建场景。循环依次重置根状态与关节状态、设置关节目标、写入命令、推进物理并更新场景缓冲区。场景构建见 "
+":ref:`tutorial-interactive-scene` ，重置与控制循环见 :ref:`tutorial-interact-"
+"articulation` 。"
+
+#: source/how-to/write_articulation_cfg.rst:0
+msgid "Complete runnable example"
+msgstr "完整的可运行示例"
+
+#: source/how-to/write_articulation_cfg.rst:363
+msgid "Run the example in the Isaac Sim viewport:"
+msgstr "在 Isaac Sim 视口中运行示例："
+
+#: source/how-to/write_articulation_cfg.rst:369
+msgid ""
+"This example uses PhysX physics and requires Isaac Sim. The Dofbot gripper "
+"is not actuated in this example, so a warning about unconfigured joints is "
+"expected. Stop the example with ``Ctrl+C``."
+msgstr ""
+"本例使用 PhysX 物理，需要 Isaac Sim。示例未驱动 Dofbot 夹爪，因此出现关节未配置的警告是预期行为。按 ``Ctrl+C`` "
+"停止示例。"
+
+#: source/how-to/write_articulation_cfg.rst:372
+msgid "Jetbot and Dofbot running in the example scene."
+msgstr "Jetbot 和 Dofbot 在示例场景中运行。"

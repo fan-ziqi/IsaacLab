@@ -9,13 +9,15 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import threading
 import time
 from collections.abc import Callable
-from dataclasses import dataclass
 
 import numpy as np
 import torch
+
+from ...utils import configclass
 
 try:
     import websockets
@@ -26,6 +28,8 @@ except ImportError:
 
 from ..device_base import DeviceBase, DeviceCfg
 from ..retargeter_base import RetargeterBase
+
+logger = logging.getLogger(__name__)
 
 
 class HaplyDevice(DeviceBase):
@@ -89,7 +93,7 @@ class HaplyDevice(DeviceBase):
         # Current data cache
         self.cached_data = {
             "position": np.zeros(3, dtype=np.float32),
-            "quaternion": np.array([0.0, 0.0, 0.0, 1.0], dtype=np.float32),
+            "quaternion": np.array([0.0, 0.0, 1.0, 0.0], dtype=np.float32),
             "buttons": {"a": False, "b": False, "c": False},
             "inverse3_connected": False,
             "versegrip_connected": False,
@@ -101,7 +105,7 @@ class HaplyDevice(DeviceBase):
         self.feedback_force = {"x": 0.0, "y": 0.0, "z": 0.0}
         self.force_lock = threading.Lock()
 
-        self._additional_callbacks = dict()
+        self._additional_callbacks = {}
 
         # Button state tracking
         self._prev_buttons = {"a": False, "b": False, "c": False}
@@ -238,14 +242,9 @@ class HaplyDevice(DeviceBase):
         if forces.shape[0] == 0:
             raise ValueError("No forces provided")
 
-        # Select forces using position indices
-        selected_forces = forces[position] if position.ndim > 0 else forces[position].unsqueeze(0)
-        force = selected_forces.sum(dim=0)
-        force = force.cpu().numpy() if force.is_cuda else force.numpy()
-
-        fx = np.clip(force[0], -self.limit_force, self.limit_force)
-        fy = np.clip(force[1], -self.limit_force, self.limit_force)
-        fz = np.clip(force[2], -self.limit_force, self.limit_force)
+        # Sum the selected forces and clip each component to the safety limit
+        force = forces[position].reshape(-1, 3).sum(dim=0).cpu().numpy()
+        fx, fy, fz = np.clip(force, -self.limit_force, self.limit_force)
 
         with self.force_lock:
             self.feedback_force = {"x": float(fx), "y": float(fy), "z": float(fz)}
@@ -359,7 +358,7 @@ class HaplyDevice(DeviceBase):
                                     self.connected = False
                             continue
                         except Exception as e:
-                            print(f"[ERROR] Error in WebSocket receive loop: {e}")
+                            logger.error("Error in WebSocket receive loop: %s", e)
                             break
 
             except Exception:
@@ -377,7 +376,7 @@ class HaplyDevice(DeviceBase):
                     break
 
 
-@dataclass
+@configclass
 class HaplyDeviceCfg(DeviceCfg):
     """Configuration for Haply device.
 

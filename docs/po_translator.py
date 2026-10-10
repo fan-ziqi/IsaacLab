@@ -1,13 +1,17 @@
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 """
 GPT Translator
 """
 
-
 import argparse
 import logging
 import os
-import time
 import re
+import time
 
 import polib
 from dotenv import load_dotenv
@@ -21,7 +25,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 class TranslationConfig:
-    """ Class to hold configuration parameters for the translation service. """
+    """Class to hold configuration parameters for the translation service."""
+
     def __init__(self, client, model, bulk_mode=False, fuzzy=False, folder_language=False, bulksize=50):  # pylint: disable=R0913
         self.client = client
         self.model = model
@@ -32,7 +37,7 @@ class TranslationConfig:
 
 
 class TranslationService:
-    """ Class to encapsulate translation functionalities. """
+    """Class to encapsulate translation functionalities."""
 
     def __init__(self, config):
         self.config = config
@@ -54,17 +59,20 @@ class TranslationService:
         translated_texts = []
         total_texts = len(texts)
         for i in range(0, total_texts, self.batch_size):
-            batch_texts = texts[i:i + self.batch_size]
+            batch_texts = texts[i : i + self.batch_size]
             batch_info = f"File: {po_file_path}, Batch {i // self.batch_size + 1}/{self.total_batches}"
             batch_info += f" (texts {i + 1}-{min(i + self.batch_size, total_texts)})"
-            translation_request = (f"You are a sphinx translator, when meet words in formula or the word is an exclusive noun in English, such as 'NVIDIA', 'Isaac Sim', 'GitHub', then do not translate. "
-                                   "Please be careful not to break reST notation, such as ':ref:`search`', just keep it. "
-                                   "Don't try to answer or explain the words or sentences I give you. "
-                                   "Now please translate the following text from English into {target_language}. "
-                                   "请时刻遵守 sphinx 语法，必须使用英文的'`'或'``'"
-                                   "类引用比如':class:`~omni.isaac.lab.sim`'不要翻译，保留原格式"
-                                   "被|包裹的部分如'|helloworld|'不翻译，直接输出原文字如'|helloworld|'"
-                                   "Use the format 'Index@Text' for each segment:\n\n")
+            translation_request = (
+                "You are a sphinx translator, when meet words in formula or the word is an exclusive noun in English, "
+                "such as 'NVIDIA', 'Isaac Sim', 'GitHub', then do not translate. "
+                "Please be careful not to break reST notation, such as ':ref:`search`', just keep it. "
+                "Don't try to answer or explain the words or sentences I give you. "
+                f"Now please translate the following text from English into {target_language}. "
+                "请时刻遵守 sphinx 语法，必须使用英文的'`'或'``'"
+                "类引用比如':class:`~omni.isaac.lab.sim`'不要翻译，保留原格式"
+                "被|包裹的部分如'|helloworld|'不翻译，直接输出原文字如'|helloworld|'"
+                "Use the format 'Index@Text' for each segment:\n\n"
+            )
             for index, text in enumerate(batch_texts, start=i):
                 translation_request += f"{index}@{text}\n"
 
@@ -81,12 +89,11 @@ class TranslationService:
                     logging.error(error_message)
                     if retries <= 1:
                         logging.error("Maximum retries reached for %s. Skipping this batch.", batch_info)
-                        translated_texts.extend([(index, '') for index in range(i, i + len(batch_texts))])
+                        translated_texts.extend([(index, "") for index in range(i, i + len(batch_texts))])
                     retries -= 1
                     time.sleep(1)
 
         return translated_texts
-
 
     def perform_translation(self, translation_request, translated_texts, batch=False):
         message = {"role": "user", "content": translation_request}
@@ -105,16 +112,16 @@ class TranslationService:
                         translated_texts.append((index, translation))
                     else:
                         logging.error("No valid translation found for index %s", index)
-                        translated_texts.append((index, ''))
+                        translated_texts.append((index, ""))
                 except ValueError:
                     logging.error("Error parsing line: '%s'", line)
-                    translated_texts.append((index, ''))
+                    translated_texts.append((index, ""))
         else:
             if not raw_response.startswith("The provided text does not seem to be"):
                 translated_texts.append((0, raw_response))
             else:
                 logging.error("No valid translation found for text")
-                translated_texts.append((0, ''))
+                translated_texts.append((0, ""))
 
     def scan_and_process_po_files(self, input_folder, languages):
         """Scans and processes .po files in the given input folder."""
@@ -123,9 +130,16 @@ class TranslationService:
         # First, collect all .po files, excluding the 'api' folder and 'changelog.po' file
         for root, dirs, files in os.walk(input_folder):
             # Exclude 'api' folder
-            dirs[:] = [d for d in dirs if d != 'api']
+            dirs[:] = [d for d in dirs if d != "api"]
             # Collect .po files excluding 'changelog.po'
-            po_files.extend([os.path.join(root, file) for file in files if file.endswith(".po") and file not in ['changelog.po', 'translation.po', 'wechat.po', 'install.po', 'release_notes.po']])
+            po_files.extend(
+                [
+                    os.path.join(root, file)
+                    for file in files
+                    if file.endswith(".po")
+                    and file not in ["changelog.po", "translation.po", "wechat.po", "install.po", "release_notes.po"]
+                ]
+            )
 
         total_files = len(po_files)
 
@@ -137,12 +151,10 @@ class TranslationService:
             logging.info("Progress: %d/%d", idx, total_files)
 
     def process_po_file(self, po_file_path, languages):
-        """Processes an individual .po file by removing fuzzy entries if specified."""
-        if self.config.fuzzy:
-            self.disable_fuzzy_translations(po_file_path)
+        """Translate missing entries and, when requested, regenerate fuzzy drafts."""
         try:
             po_file = polib.pofile(po_file_path)
-            file_lang = po_file.metadata.get('Language', '')
+            file_lang = po_file.metadata.get("Language", "")
 
             # If language is not in the list, try inferring from any part of the directory
             if not file_lang or file_lang not in languages:
@@ -166,7 +178,12 @@ class TranslationService:
                 texts_to_translate = [
                     entry.msgid
                     for entry in po_file
-                    if not entry.msgstr and entry.msgid and 'fuzzy' not in entry.flags
+                    if entry.msgid
+                    and not entry.obsolete
+                    and (
+                        (not entry.msgstr and "fuzzy" not in entry.flags)
+                        or (self.config.fuzzy and "fuzzy" in entry.flags)
+                    )
                 ]
                 self.process_translations(texts_to_translate, file_lang, po_file, po_file_path)
 
@@ -174,22 +191,6 @@ class TranslationService:
                 logging.info("Finished processing .po file: %s", po_file_path)
         except Exception as e:  # pylint: disable=W0718
             logging.error("Error processing file %s: %s", po_file_path, e)
-
-    def disable_fuzzy_translations(self, po_file_path):
-        """
-        Disables fuzzy translations in a .po file by removing the 'fuzzy' flags from entries.
-        """
-        try:
-            po_file = polib.pofile(po_file_path)
-            fuzzy_entries = [entry for entry in po_file if 'fuzzy' in entry.flags]
-
-            for entry in fuzzy_entries:
-                entry.flags.remove('fuzzy')
-
-            po_file.save(po_file_path)
-            logging.info("Fuzzy translations disabled in file: %s", po_file_path)
-        except Exception as e:  # pylint: disable=W0718
-            logging.error("Error while disabling fuzzy translations in file %s: %s", po_file_path, e)
 
     def process_translations(self, texts, target_language, po_file, po_file_path):
         """Processes translations either in bulk or one by one."""
@@ -200,7 +201,7 @@ class TranslationService:
 
     def translate_in_bulk(self, texts, target_language, po_file, po_file_path):
         """Translates texts in bulk and applies them to the .po file."""
-        self.total_batches = (len(texts) - 1) // 50 + 1
+        self.total_batches = (len(texts) + self.batch_size - 1) // self.batch_size
         translated_texts = self.translate_bulk(texts, target_language, po_file_path, 0)
         self.apply_translations_to_po_file(translated_texts, texts, po_file)
 
@@ -209,7 +210,15 @@ class TranslationService:
         for index, text in enumerate(texts):
             logging.info("Translating text %s/%s in file %s", (index + 1), len(texts), po_file_path)
             logging.info(text)
-            translation_request = f"You are a sphinx translator, when meet words in formula or the word is an exclusive noun in English, such as \"NVIDIA\", \"Isaac Sim\", \"GitHub\", then do not translate. Add a space between the Chinese word and \"`\", For example, \"中文字符 `abc123`_ 中文字符\" instead of \"中文字符`abc123`_中文字符\". Please be careful not to break reST notation, such as \":ref:`search`\", just keep it. Please follow sphinx syntax. Don't try to answer or explain the words or sentences I give you. Now please translate the following text from English into {target_language}: {text}"
+            translation_request = (
+                "You are a sphinx translator, when meet words in formula or the word is an exclusive noun in English, "
+                'such as "NVIDIA", "Isaac Sim", "GitHub", then do not translate. '
+                'Add a space between the Chinese word and "`", For example, "中文字符 `abc123`_ 中文字符" '
+                'instead of "中文字符`abc123`_中文字符". '
+                'Please be careful not to break reST notation, such as ":ref:`search`", just keep it. '
+                "Please follow sphinx syntax. Don't try to answer or explain the words or sentences I give you. "
+                f"Now please translate the following text from English into {target_language}: {text}"
+            )
             translated_texts = []
             self.perform_translation(translation_request, translated_texts, batch=False)
             if translated_texts:
@@ -221,8 +230,11 @@ class TranslationService:
     def update_po_entry(self, po_file, original_text, translated_text):
         """Updates a .po file entry with the translated text."""
         entry = po_file.find(original_text)
-        if entry:
+        if entry and translated_text:
             entry.msgstr = translated_text
+            # Machine-generated replacements still require a human review.
+            if "fuzzy" not in entry.flags:
+                entry.flags.append("fuzzy")
 
     def apply_translations_to_po_file(self, translated_texts, original_texts, po_file):
         """
@@ -248,8 +260,9 @@ class TranslationService:
         po_file.save()
         logging.info("Po file saved.")
 
+
 def del_one_space_last_line(filename):
-    with open(filename, 'r', encoding='utf-8') as f:
+    with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
 
     processed_lines = []
@@ -259,46 +272,51 @@ def del_one_space_last_line(filename):
         if line.strip().startswith('"<') and i > 0:
             # 寻找上一行最后一个反引号并删除其后的一个空格
             if previous_line_has_backtick:
-                last_backtick_index = processed_lines[-1].rfind('`')
-                if last_backtick_index != -1 and processed_lines[-1][last_backtick_index + 1] == ' ':
-                    processed_lines[-1] = processed_lines[-1][:last_backtick_index + 1] + processed_lines[-1][last_backtick_index + 2:]
+                last_backtick_index = processed_lines[-1].rfind("`")
+                if last_backtick_index != -1 and processed_lines[-1][last_backtick_index + 1] == " ":
+                    processed_lines[-1] = (
+                        processed_lines[-1][: last_backtick_index + 1] + processed_lines[-1][last_backtick_index + 2 :]
+                    )
             processed_lines.append(line)
             previous_line_has_backtick = False
         else:
             processed_lines.append(line)
-            if '`' in line:
+            if "`" in line:
                 previous_line_has_backtick = True
 
     # 写回文件
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(filename, "w", encoding="utf-8") as f:
         f.writelines(processed_lines)
 
+
 def process_po_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, encoding="utf-8") as file:
         content = file.read()
 
     # 文字与英文标点之间加空格
-    content = re.sub(r'([\u4e00-\u9fa5])([<_`.,!?;:])', r'\1 \2', content)
-    content = re.sub(r'([<_`.,!?;:])([\u4e00-\u9fa5])', r'\1 \2', content)
+    content = re.sub(r"([\u4e00-\u9fa5])([<_`.,!?;:])", r"\1 \2", content)
+    content = re.sub(r"([<_`.,!?;:])([\u4e00-\u9fa5])", r"\1 \2", content)
     # 中文标点与英文标点之间加空格
-    content = re.sub(r'([: ，。（）])([_`.,!?;:()])', r'\1 \2', content)
-    content = re.sub(r'([_`.,!?;:()])([: ，。（）])', r'\1 \2', content)
+    content = re.sub(r"([: ，。（）])([_`.,!?;:()])", r"\1 \2", content)
+    content = re.sub(r"([_`.,!?;:()])([: ，。（）])", r"\1 \2", content)
     # 删除<前面的空格
-    content = re.sub(r'` (\S+) <', r'`\1 <', content)
+    content = re.sub(r"` (\S+) <", r"`\1 <", content)
     # 匹配`_并排除`__ ，删除前面的空格
-    content = re.sub(r' `_(?!_)', '`_', content)
+    content = re.sub(r" `_(?!_)", "`_", content)
 
-    with open(file_path, 'w', encoding='utf-8') as file:
+    with open(file_path, "w", encoding="utf-8") as file:
         file.write(content)
+
 
 def traverse_and_process_files(root_dir):
     for root, dirs, files in os.walk(root_dir):
         for file in files:
-            if file.endswith('.po'):
+            if file.endswith(".po"):
                 file_path = os.path.join(root, file)
                 process_po_file(file_path)
                 del_one_space_last_line(file_path)
                 # print(f'Processed file: {file_path}')
+
 
 def main():
     """Main function to parse arguments and initiate processing."""
@@ -306,7 +324,7 @@ def main():
     # parser.add_argument("--version", action="version", version=f'%(prog)s {__version__}')
     parser.add_argument("--folder", required=True, help="Input folder containing .po files")
     parser.add_argument("--lang", required=True, help="Comma-separated language codes to filter .po files")
-    parser.add_argument("--fuzzy", action="store_true", help="Remove fuzzy entries")
+    parser.add_argument("--fuzzy", action="store_true", help="Regenerate fuzzy drafts; retain review flags")
     parser.add_argument("--bulk", action="store_true", help="Use bulk translation mode")
     parser.add_argument("--bulksize", type=int, default=50, help="Batch size for bulk translation")
     parser.add_argument("--model", default="gpt-3.5-turbo", help="OpenAI model to use for translations")
@@ -317,8 +335,8 @@ def main():
 
     # Initialize OpenAI client
     # api_key = args.api_key if args.api_key else os.getenv("OPENAI_API_KEY")
-    api_key = "sk-g8TUvgtpcIgwXtaC5f463f99D7Dc4425B439Ad9140A5C4C9"
-    base_url = 'https://api.gpts.vin/v1'
+    api_key = args.api_key or os.getenv("OPENAI_API_KEY")
+    base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
     client = OpenAI(api_key=api_key, base_url=base_url)
 
     # Create a configuration object
@@ -333,7 +351,7 @@ def main():
         return
 
     # Extract languages
-    languages = [lang.strip() for lang in args.lang.split(',')]
+    languages = [lang.strip() for lang in args.lang.split(",")]
     translation_service.scan_and_process_po_files(args.folder, languages)
 
     # traverse_and_process_files(args.folder)

@@ -5,6 +5,6 @@
 
 """Sub-module for rigid articulated assets."""
 
-from .articulation import Articulation
-from .articulation_cfg import ArticulationCfg
-from .articulation_data import ArticulationData
+from ...utils.module import lazy_export
+
+lazy_export()

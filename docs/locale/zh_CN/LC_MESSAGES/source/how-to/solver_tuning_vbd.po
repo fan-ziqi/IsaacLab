@@ -1,0 +1,1131 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/solver_tuning_vbd.rst:6
+msgid "VBD Solver"
+msgstr "VBD 求解器"
+
+#: source/how-to/solver_tuning_vbd.rst:8
+msgid ""
+"Vertex Block Descent (VBD) is a Newton solver for cloth and soft-body "
+"simulation. In Isaac Lab, VBD is enabled by selecting a "
+":class:`~isaaclab_newton.physics.NewtonCfg` whose ``solver_cfg`` is a "
+":class:`~isaaclab_newton.physics.VBDSolverCfg`."
+msgstr ""
+"顶点块下降（Vertex Block Descent，VBD）是用于布料和软体仿真的 Newton 求解器。在 Isaac Lab 中，选择 "
+"``solver_cfg`` 为 :class:`~isaaclab_newton.physics.VBDSolverCfg` 的 "
+":class:`~isaaclab_newton.physics.NewtonCfg` ，即可启用 VBD。"
+
+#: source/how-to/solver_tuning_vbd.rst:13
+msgid ""
+"A task that works with PhysX or with Newton's MuJoCo-Warp solver may still "
+"need deformable assets, materials, contacts, and coupling tuned before it "
+"works well with VBD."
+msgstr ""
+"一个能在 PhysX 或 Newton 的 MuJoCo-Warp 求解器下运行的任务，仍可能需要调整可变形资产、材料、接触和耦合设置，才能在 VBD "
+"下取得良好效果。"
+
+#: source/how-to/solver_tuning_vbd.rst:17
+msgid ""
+"VBD is usually exposed through a task-specific physics preset rather than a "
+"general ``newton_vbd`` preset. Deformable-only scenes can use "
+":class:`~isaaclab_newton.physics.VBDSolverCfg` directly. For robot or rigid-"
+"body scenes, the named-entry coupling options are:"
+msgstr ""
+"VBD 通常通过任务专用物理预设提供，而不是通用的 ``newton_vbd`` 预设。只有可变形物体的场景可以直接使用 "
+":class:`~isaaclab_newton.physics.VBDSolverCfg` "
+"。对于包含机器人或刚体的场景，可使用以下具名求解器条目耦合方案："
+
+#: source/how-to/solver_tuning_vbd.rst:22
+msgid ""
+":class:`~isaaclab_contrib.coupling.CouplerProxyCfg` for the proxy coupling "
+"used by the core Franka tasks."
+msgstr ""
+":class:`~isaaclab_contrib.coupling.CouplerProxyCfg` ：核心 Franka 任务采用的代理耦合。"
+
+#: source/how-to/solver_tuning_vbd.rst:24
+msgid ""
+":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` for linearized ADMM "
+"coupling between named solver entries."
+msgstr ""
+":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` ：具名求解器条目之间的线性化 ADMM 耦合。"
+
+#: source/how-to/solver_tuning_vbd.rst:28
+msgid "Start from a Supported Deformable Task"
+msgstr "从已支持的可变形任务开始"
+
+#: source/how-to/solver_tuning_vbd.rst:32
+msgid ""
+"The ``Isaac-Lift-Soft-Franka`` task requires automatic tetrahedralization. "
+"The uv commands below select the ``tetrahedralization`` extra when needed."
+msgstr ""
+"``Isaac-Lift-Soft-Franka`` 任务需要自动四面体化。以下 uv 命令在需要时选择 ``tetrahedralization`` "
+"可选依赖组。"
+
+#: source/how-to/solver_tuning_vbd.rst:35
+msgid "With the legacy installer:"
+msgstr "使用传统安装程序时："
+
+#: source/how-to/solver_tuning_vbd.rst:41
+msgid ""
+"Before adding VBD to a new task, first run one of the Franka deformable "
+"tasks:"
+msgstr "为新任务添加 VBD 前，先运行一个 Franka 可变形任务："
+
+#: source/how-to/solver_tuning_vbd.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/solver_tuning_vbd.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/solver_tuning_vbd.rst:57
+msgid "For the surface-deformable cloth variant, use:"
+msgstr "对于表面可变形的布料变体，使用："
+
+#: source/how-to/solver_tuning_vbd.rst:73
+msgid ""
+"Both tasks configure MJWarp for the rigid Franka and VBD for the deformable "
+"object through :class:`~isaaclab_contrib.coupling.CouplerProxyCfg`. Use "
+"these tasks as starting points for asset setup, solver coupling, and contact"
+" tuning."
+msgstr ""
+"两个任务都通过 :class:`~isaaclab_contrib.coupling.CouplerProxyCfg` ，为刚性 Franka 配置 "
+"MJWarp，为可变形物体配置 VBD。可将它们作为资产设置、求解器耦合和接触调优的起点。"
+
+#: source/how-to/solver_tuning_vbd.rst:80
+msgid "Add a VBD Physics Preset"
+msgstr "添加 VBD 物理预设"
+
+#: source/how-to/solver_tuning_vbd.rst:82
+msgid ""
+"Tasks that support multiple physics options usually store "
+"``SimulationCfg.physics`` as a "
+":class:`~isaaclab_tasks.utils.hydra.PresetCfg`. For deformable Newton tasks,"
+" the preset is a plain :class:`~isaaclab_newton.physics.NewtonCfg`. "
+"Standalone VBD and soft-contact configuration live in "
+":mod:`isaaclab_newton.physics`, while proxy and ADMM coupling live in "
+":mod:`isaaclab_contrib.coupling`."
+msgstr ""
+"支持多种物理配置的任务，通常将 ``SimulationCfg.physics`` 存为 "
+":class:`~isaaclab_tasks.utils.hydra.PresetCfg` 。对于使用 Newton 的可变形任务，预设值是普通的 "
+":class:`~isaaclab_newton.physics.NewtonCfg` 。独立 VBD 和软接触配置位于 "
+":mod:`isaaclab_newton.physics` ，代理耦合与 ADMM 耦合位于 "
+":mod:`isaaclab_contrib.coupling` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:88
+msgid ""
+"The Franka soft-body and cloth tasks define task-specific proxy presets."
+msgstr "Franka 软体和布料任务定义了各自专用的代理预设。"
+
+#: source/how-to/solver_tuning_vbd.rst:90
+msgid "The important pieces are:"
+msgstr "关键配置如下："
+
+#: source/how-to/solver_tuning_vbd.rst:92
+msgid ""
+"Add a Newton physics preset whose value is a "
+":class:`~isaaclab_newton.physics.NewtonCfg`."
+msgstr "添加一个值为 :class:`~isaaclab_newton.physics.NewtonCfg` 的 Newton 物理预设。"
+
+#: source/how-to/solver_tuning_vbd.rst:94
+msgid ""
+"Use :class:`~isaaclab_contrib.coupling.CouplerProxyCfg` with named "
+":class:`~isaaclab_contrib.coupling.CouplerEntryCfg` entries to partition the"
+" rigid bodies and deformable particles between MJWarp and VBD."
+msgstr ""
+"使用 :class:`~isaaclab_contrib.coupling.CouplerProxyCfg` 和具名的 "
+":class:`~isaaclab_contrib.coupling.CouplerEntryCfg` 条目，将刚体和可变形粒子分别分配给 MJWarp"
+" 与 VBD。"
+
+#: source/how-to/solver_tuning_vbd.rst:97
+msgid ""
+"Add :class:`~isaaclab_contrib.coupling.CouplerProxyMappingCfg` entries for "
+"the collidable rigid bodies exposed to VBD. Leave "
+"``integrate_with_external_rigid_solver=False`` for proxy-coupled VBD "
+"entries."
+msgstr ""
+"为暴露给 VBD 的可碰撞刚体添加 :class:`~isaaclab_contrib.coupling.CouplerProxyMappingCfg`"
+" 条目。代理耦合的 VBD 条目应保持 ``integrate_with_external_rigid_solver=False`` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:100
+msgid ""
+"Set the outer :attr:`~isaaclab_newton.physics.NewtonCfg.soft_contact_cfg` to"
+" a :class:`~isaaclab_newton.physics.NewtonSoftContactCfg` when body-particle"
+" or self-contact values need task-level tuning."
+msgstr ""
+"需要在任务层面调整刚体与粒子的接触或自接触参数时，将外层 "
+":attr:`~isaaclab_newton.physics.NewtonCfg.soft_contact_cfg` 设为 "
+":class:`~isaaclab_newton.physics.NewtonSoftContactCfg` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:103
+msgid ""
+"Keep the preset at the same config path used by the task's "
+":class:`~isaaclab.sim.SimulationCfg`, for example ``env.sim.physics``."
+msgstr ""
+"预设应放在任务的 :class:`~isaaclab.sim.SimulationCfg` 所使用的同一配置路径下，例如 "
+"``env.sim.physics`` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:106
+msgid "You can select the deformable Newton preset globally:"
+msgstr "可以全局选择可变形 Newton 预设："
+
+#: source/how-to/solver_tuning_vbd.rst:122
+msgid "or select the physics field directly:"
+msgstr "也可以直接选择物理字段："
+
+#: source/how-to/solver_tuning_vbd.rst:138
+msgid ""
+"Use the direct path override when only one task field should use the VBD "
+"preset. Use ``physics=newton_mjwarp_vbd_proxy`` when you want every matching"
+" preset field in the task config to resolve to that preset. Isaac Lab "
+"training commands accept these Hydra overrides after the regular command "
+"line flags; no separator is needed for the examples above."
+msgstr ""
+"如果只有一个任务字段需要使用 VBD 预设，应直接覆盖该字段路径。如果希望任务配置中所有匹配的预设字段都解析为该预设，则使用 "
+"``physics=newton_mjwarp_vbd_proxy`` 。Isaac Lab 训练命令接受放在常规命令行参数之后的 Hydra "
+"覆盖项；上述示例不需要分隔符。"
+
+#: source/how-to/solver_tuning_vbd.rst:146
+msgid "Check Task and Asset Compatibility"
+msgstr "检查任务与资产兼容性"
+
+#: source/how-to/solver_tuning_vbd.rst:148
+msgid ""
+"VBD uses the Newton model built from the task assets. When adding VBD to a "
+"new task, validate the following before tuning solver parameters:"
+msgstr "VBD 使用由任务资产构建的 Newton 模型。为新任务添加 VBD 时，先验证以下事项，再调整求解器参数："
+
+#: source/how-to/solver_tuning_vbd.rst:151
+msgid ""
+"The task must already be compatible with the Newton backend. If a rigid-only"
+" ``newton_mjwarp`` preset fails during model construction, fix the asset or "
+"task configuration first."
+msgstr "任务必须已兼容 Newton 后端。如果只包含刚体的 ``newton_mjwarp`` 预设在构建模型时失败，应先修复资产或任务配置。"
+
+#: source/how-to/solver_tuning_vbd.rst:154
+msgid ""
+"The scene must include Newton-compatible deformable assets and materials. "
+"Use "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonDeformableBodyMaterialCfg`"
+" for volume deformables and "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonSurfaceDeformableBodyMaterialCfg`"
+" for cloth or surface deformables."
+msgstr ""
+"场景必须包含兼容 Newton 的可变形资产与材料。体积可变形物体使用 "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonDeformableBodyMaterialCfg`"
+" ，布料或表面可变形物体使用 "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonSurfaceDeformableBodyMaterialCfg`"
+" 。"
+
+#: source/how-to/solver_tuning_vbd.rst:159
+msgid ""
+"Proxy-coupled robot tasks should expose only the collidable bodies needed "
+"for deformable contact."
+msgstr "采用代理耦合的机器人任务，只应暴露可变形接触所需的可碰撞刚体。"
+
+#: source/how-to/solver_tuning_vbd.rst:161
+msgid ""
+"Contact-heavy scenes usually need task-specific ``num_substeps``, "
+":class:`~isaaclab_newton.physics.VBDSolverCfg`, and "
+":class:`~isaaclab_newton.physics.NewtonSoftContactCfg` values. Start from "
+"the Franka soft-body or cloth preset that most closely resembles the scene."
+msgstr ""
+"接触密集的场景通常需要任务专用的 ``num_substeps`` 、 "
+":class:`~isaaclab_newton.physics.VBDSolverCfg` 和 "
+":class:`~isaaclab_newton.physics.NewtonSoftContactCfg` 参数值。先从与场景最接近的 Franka "
+"软体或布料预设开始。"
+
+#: source/how-to/solver_tuning_vbd.rst:165
+msgid ""
+"Use a small visual smoke test before training. Confirm that the deformable "
+"spawns, renders, deforms, and contacts rigid bodies as expected."
+msgstr "训练前运行小规模的可视化冒烟测试，确认可变形物体的生成、渲染、变形及其与刚体的接触符合预期。"
+
+#: source/how-to/solver_tuning_vbd.rst:169
+msgid "VBD Solver Parameters"
+msgstr "VBD 求解器参数"
+
+#: source/how-to/solver_tuning_vbd.rst:171
+msgid ""
+"The following fields are specific to "
+":class:`~isaaclab_newton.physics.VBDSolverCfg`. They are grouped by the part"
+" of the solver they affect."
+msgstr "以下字段属于 :class:`~isaaclab_newton.physics.VBDSolverCfg` ，按其影响的求解器环节分组。"
+
+#: source/how-to/solver_tuning_vbd.rst:176
+msgid "Core Solve"
+msgstr "核心求解"
+
+#: source/how-to/solver_tuning_vbd.rst:182
+#: source/how-to/solver_tuning_vbd.rst:228
+#: source/how-to/solver_tuning_vbd.rst:262
+#: source/how-to/solver_tuning_vbd.rst:363
+#: source/how-to/solver_tuning_vbd.rst:430
+#: source/how-to/solver_tuning_vbd.rst:456
+#: source/how-to/solver_tuning_vbd.rst:481
+msgid "Parameter"
+msgstr "参数"
+
+#: source/how-to/solver_tuning_vbd.rst:183
+#: source/how-to/solver_tuning_vbd.rst:229
+#: source/how-to/solver_tuning_vbd.rst:263
+#: source/how-to/solver_tuning_vbd.rst:364
+#: source/how-to/solver_tuning_vbd.rst:431
+#: source/how-to/solver_tuning_vbd.rst:457
+#: source/how-to/solver_tuning_vbd.rst:482
+msgid "Description"
+msgstr "描述"
+
+#: source/how-to/solver_tuning_vbd.rst:184
+msgid "``iterations``"
+msgstr "``iterations``"
+
+#: source/how-to/solver_tuning_vbd.rst:185
+msgid ""
+"Default: ``10``. Number of VBD iterations per substep. Increasing this value"
+" improves deformation and contact convergence, especially for stiff "
+"materials or rigid gripper contacts, but increases runtime."
+msgstr ""
+"默认值： ``10`` 。每个子步的 VBD 迭代次数。增加此值可改善变形与接触的收敛，尤其适用于高刚度材料或刚性夹爪接触，但会增加运行耗时。"
+
+#: source/how-to/solver_tuning_vbd.rst:186
+msgid "``rigid_compliant_alm``"
+msgstr "``rigid_compliant_alm``"
+
+#: source/how-to/solver_tuning_vbd.rst:187
+msgid ""
+"Default: ``None``. Preserves Newton's rigid solver mode. In Newton 1.6, "
+"``None`` selects deprecated legacy AVBD. Set to ``True`` to use compliant "
+"ALM for rigid joints and body-body contacts, or ``False`` to explicitly "
+"retain legacy AVBD."
+msgstr ""
+"默认值： ``None`` 。保留 Newton 的刚体求解器模式。在 Newton 1.6 中， ``None`` 会选择已弃用的传统 AVBD。设为"
+" ``True`` 可为刚性关节和刚体间接触使用柔顺 ALM；设为 ``False`` 则显式保留传统 AVBD。"
+
+#: source/how-to/solver_tuning_vbd.rst:188
+msgid "``rigid_body_contact_buffer_size``"
+msgstr "``rigid_body_contact_buffer_size``"
+
+#: source/how-to/solver_tuning_vbd.rst:189
+msgid ""
+"Default: ``64``. Per-body capacity for body-body contacts when VBD "
+"integrates rigid bodies. Increase it if Newton reports a per-body body-body "
+"contact buffer overflow."
+msgstr ""
+"默认值： ``64`` 。VBD 对刚体进行积分时，每个刚体的刚体间接触容量。如果 Newton 报告单个刚体的刚体间接触缓冲区溢出，应增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:190
+msgid "``rigid_body_particle_contact_buffer_size``"
+msgstr "``rigid_body_particle_contact_buffer_size``"
+
+#: source/how-to/solver_tuning_vbd.rst:191
+msgid ""
+"Default: ``256``. Per-body capacity for particle, edge, and face soft "
+"contacts. Increase it if Newton reports a per-body contact buffer overflow."
+msgstr "默认值： ``256`` 。每个刚体的粒子、边和面软接触容量。如果 Newton 报告单个刚体的接触缓冲区溢出，应增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:192
+msgid "``integrate_with_external_rigid_solver``"
+msgstr "``integrate_with_external_rigid_solver``"
+
+#: source/how-to/solver_tuning_vbd.rst:193
+msgid ""
+"Default: ``False``. Set to ``True`` only when a manual manager integrates "
+"rigid bodies in the shared model. Proxy-coupled entries use partitioned "
+"model views and leave this ``False``."
+msgstr ""
+"默认值： ``False`` 。仅在手动管理器对共享模型中的刚体进行积分时设为 ``True`` 。代理耦合条目使用分区模型视图，应保持 "
+"``False`` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:197
+msgid "Rigid Cables"
+msgstr "刚性缆绳"
+
+#: source/how-to/solver_tuning_vbd.rst:199
+msgid "For new rigid-cable configurations, explicitly enable compliant ALM:"
+msgstr "新建刚性缆绳配置时，显式启用柔顺 ALM："
+
+#: source/how-to/solver_tuning_vbd.rst:210
+msgid ""
+"Compliant ALM uses finite material stiffness for rigid joints and body-body "
+"contacts. Validate the cable's stretch, bend, and contact stiffness under "
+"the intended loads and timestep when switching from legacy AVBD. Increasing "
+"contact capacity only increases the available storage; it does not change "
+"stiffness."
+msgstr ""
+"柔顺 ALM 为刚性关节和刚体间接触使用有限的材料刚度。从传统 AVBD "
+"切换时，应在预期载荷和时间步长下验证缆绳的拉伸、弯曲及接触刚度。增加接触容量只会增加可用存储空间，不会改变刚度。"
+
+#: source/how-to/solver_tuning_vbd.rst:215
+msgid ""
+"``VBDSolverCfg`` leaves Newton's C0 stabilization parameter "
+"``rigid_avbd_alpha`` unset. Newton 1.6 defaults it to ``0.0`` for compliant "
+"ALM and ``0.95`` for legacy AVBD, for both rigid joints and body-body "
+"contacts. Setting alpha to zero alone does not enable ALM."
+msgstr ""
+"``VBDSolverCfg`` 不设置 Newton 的 C0 稳定化参数 ``rigid_avbd_alpha`` 。Newton 1.6 "
+"中，对于刚性关节和刚体间接触，柔顺 ALM 的默认值均为 ``0.0`` ，传统 AVBD 的默认值均为 ``0.95`` 。仅将 alpha "
+"设为零并不会启用 ALM。"
+
+#: source/how-to/solver_tuning_vbd.rst:222
+msgid "Self-Contact"
+msgstr "自接触"
+
+#: source/how-to/solver_tuning_vbd.rst:230
+msgid "``particle_enable_self_contact``"
+msgstr "``particle_enable_self_contact``"
+
+#: source/how-to/solver_tuning_vbd.rst:231
+msgid ""
+"Default: ``False``. Enables deformable self-contact. Use this for cloth "
+"folds or soft bodies that collide with themselves. It increases contact work"
+" and usually needs additional tuning."
+msgstr "默认值： ``False`` 。启用可变形物体自接触，用于布料折叠或与自身碰撞的软体。它会增加接触计算量，通常需要额外调优。"
+
+#: source/how-to/solver_tuning_vbd.rst:232
+msgid "``particle_self_contact_radius``"
+msgstr "``particle_self_contact_radius``"
+
+#: source/how-to/solver_tuning_vbd.rst:233
+msgid ""
+"Default: ``0.005`` [m]. Effective self-contact thickness. VBD applies "
+"vertex-triangle and edge-edge self-contact response when the current "
+"primitive distance is smaller than this radius."
+msgstr "默认值： ``0.005`` [m]。有效自接触厚度。当当前几何基元间距小于此半径时，VBD 会施加顶点与三角形、边与边之间的自接触响应。"
+
+#: source/how-to/solver_tuning_vbd.rst:234
+msgid "``particle_self_contact_margin``"
+msgstr "``particle_self_contact_margin``"
+
+#: source/how-to/solver_tuning_vbd.rst:235
+msgid ""
+"Default: ``0.005`` [m]. Self-contact candidate search distance. VBD uses "
+"this envelope when building self-contact lists, then applies contact "
+"response using ``particle_self_contact_radius``. Keep this greater than or "
+"equal to the radius to avoid missed contacts."
+msgstr ""
+"默认值： ``0.005`` [m]。自接触候选的搜索距离。VBD 用这一包络范围构建自接触列表，再依据 "
+"``particle_self_contact_radius`` 施加接触响应。此值应大于或等于接触半径，以免漏检。"
+
+#: source/how-to/solver_tuning_vbd.rst:236
+msgid "``particle_collision_detection_interval``"
+msgstr "``particle_collision_detection_interval``"
+
+#: source/how-to/solver_tuning_vbd.rst:237
+msgid ""
+"Default: ``-1``. Controls how often self-contact detection runs. A negative "
+"value detects before initialization only. ``0`` detects before and "
+"immediately after initialization. A positive value ``k`` detects before "
+"every ``k`` VBD iterations."
+msgstr ""
+"默认值： ``-1`` 。控制自接触检测频率。负值表示只在初始化前检测； ``0`` 表示在初始化前及初始化后立即检测；正值 ``k`` 表示每 "
+"``k`` 次 VBD 迭代前检测一次。"
+
+#: source/how-to/solver_tuning_vbd.rst:238
+msgid "``particle_vertex_contact_buffer_size``"
+msgstr "``particle_vertex_contact_buffer_size``"
+
+#: source/how-to/solver_tuning_vbd.rst:239
+msgid ""
+"Default: ``32``. Preallocation size for each vertex's vertex-triangle self-"
+"contact buffer. Increase it if dense folds or high-resolution cloth exceed "
+"the default capacity."
+msgstr "默认值： ``32`` 。每个顶点的顶点与三角形自接触缓冲区预分配容量。如果密集折叠或高分辨率布料超出默认容量，应增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:240
+msgid "``particle_edge_contact_buffer_size``"
+msgstr "``particle_edge_contact_buffer_size``"
+
+#: source/how-to/solver_tuning_vbd.rst:241
+msgid ""
+"Default: ``64``. Preallocation size for each edge's edge-edge self-contact "
+"buffer. Increase it if dense folds or high-resolution cloth exceed the "
+"default capacity."
+msgstr "默认值： ``64`` 。每条边的边与边自接触缓冲区预分配容量。如果密集折叠或高分辨率布料超出默认容量，应增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:242
+msgid "``particle_topological_contact_filter_threshold``"
+msgstr "``particle_topological_contact_filter_threshold``"
+
+#: source/how-to/solver_tuning_vbd.rst:243
+msgid ""
+"Default: ``2``. Filters contacts between mesh primitives that are close in "
+"topology. Increase this to suppress contact between neighboring elements of "
+"the same surface. Values greater than ``3`` can significantly increase "
+"compute time."
+msgstr ""
+"默认值： ``2`` 。过滤网格中拓扑关系相近的几何基元之间的接触。增加此值可抑制同一表面的邻近元素相互接触。大于 ``3`` "
+"时，计算耗时可能显著增加。"
+
+#: source/how-to/solver_tuning_vbd.rst:244
+msgid "``particle_rest_shape_contact_exclusion_radius``"
+msgstr "``particle_rest_shape_contact_exclusion_radius``"
+
+#: source/how-to/solver_tuning_vbd.rst:245
+msgid ""
+"Default: ``0.0`` [m]. Filters self-contact candidates whose rest-"
+"configuration distance is shorter than this distance. Increase it when rest-"
+"neighbor contacts produce unwanted resistance."
+msgstr "默认值： ``0.0`` [m]。过滤静止构型中距离小于此值的自接触候选。当静止状态下相邻元素的接触产生不必要的阻力时，可增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:249
+msgid "Custom MJWarp + VBD Parameters"
+msgstr "自定义 MJWarp + VBD 参数"
+
+#: source/how-to/solver_tuning_vbd.rst:251
+msgid ""
+"The opt-in "
+":class:`~isaaclab_contrib.custom_coupling.newton_manager_cfg.CoupledMJWarpVBDSolverCfg`"
+" runs MJWarp and VBD over one shared model. Import "
+":mod:`isaaclab_contrib.custom_coupling.tasks` explicitly to register "
+"``IsaacContrib-Lift-Soft-Franka-Custom-Coupling``, which selects the "
+"``newton_mjwarp_vbd`` preset."
+msgstr ""
+"可选的 "
+":class:`~isaaclab_contrib.custom_coupling.newton_manager_cfg.CoupledMJWarpVBDSolverCfg`"
+" 在同一共享模型上运行 MJWarp 和 VBD。显式导入 :mod:`isaaclab_contrib.custom_coupling.tasks` "
+"，以注册选择 ``newton_mjwarp_vbd`` 预设的 ``IsaacContrib-Lift-Soft-Franka-Custom-"
+"Coupling`` 任务。"
+
+#: source/how-to/solver_tuning_vbd.rst:264
+msgid "``rigid_solver_cfg``"
+msgstr "``rigid_solver_cfg``"
+
+#: source/how-to/solver_tuning_vbd.rst:265
+msgid "MJWarp configuration for rigid bodies."
+msgstr "刚体的 MJWarp 配置。"
+
+#: source/how-to/solver_tuning_vbd.rst:266
+msgid "``soft_solver_cfg``"
+msgstr "``soft_solver_cfg``"
+
+#: source/how-to/solver_tuning_vbd.rst:267
+msgid ""
+"VBD configuration. Set ``integrate_with_external_rigid_solver=True`` so VBD "
+"advances only particles."
+msgstr ""
+"VBD 配置。设置 ``integrate_with_external_rigid_solver=True`` ，使 VBD 只推进粒子状态。"
+
+#: source/how-to/solver_tuning_vbd.rst:269
+msgid "``coupling_mode=\"one_way\"``"
+msgstr "``coupling_mode=\"one_way\"``"
+
+#: source/how-to/solver_tuning_vbd.rst:270
+msgid ""
+"Advance rigid bodies first, then particles without rigid reaction forces."
+msgstr "先推进刚体，再推进粒子，不施加来自刚体的反作用力。"
+
+#: source/how-to/solver_tuning_vbd.rst:272
+msgid "``coupling_mode=\"two_way\"``"
+msgstr "``coupling_mode=\"two_way\"``"
+
+#: source/how-to/solver_tuning_vbd.rst:273
+msgid ""
+"Inject particle reactions before MJWarp, then advance VBD with the same "
+"contacts."
+msgstr "在 MJWarp 求解前注入粒子反作用力，再使用同一组接触推进 VBD。"
+
+#: source/how-to/solver_tuning_vbd.rst:276
+msgid ""
+"MJWarp ``nconmax`` and ``njmax`` must cover the rigid contacts and "
+"constraints in the scene. ``ccd_iterations`` can affect fast rigid contacts "
+"near deformables. See :doc:`/source/how-to/solver_tuning_mjwarp` for the "
+"rigid-solver parameters."
+msgstr ""
+"MJWarp 的 ``nconmax`` 和 ``njmax`` 必须覆盖场景中的刚体接触与约束。 ``ccd_iterations`` "
+"可能影响可变形物体附近的高速刚体接触。刚体求解器参数见 :doc:`/source/how-to/solver_tuning_mjwarp` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:281
+msgid ""
+"Use the custom manager for direct shared-model substep ordering. Use proxy "
+"coupling when deformable contact is localized to selected rigid bodies."
+msgstr "需要直接控制共享模型的子步顺序时，使用自定义管理器；当可变形接触集中在选定刚体上时，使用代理耦合。"
+
+#: source/how-to/solver_tuning_vbd.rst:284
+msgid ""
+"Start from ``coupling_mode=\"two_way\"``. With two-way coupling the body-"
+"particle reaction acts on the arm as well as the deformable, so the gripper "
+"is less likely to clip through the object than under one-way coupling. If it"
+" still clips, lower the arm actuator stiffness so the arm can yield to those"
+" reactions, and command the gripper to close fully, letting the actuator's "
+"maximum effort limit the squeeze."
+msgstr ""
+"先使用 ``coupling_mode=\"two_way\"`` "
+"。双向耦合中，刚体与粒子接触的反作用力同时作用于机械臂和可变形物体，因此夹爪比单向耦合时更不容易穿过物体。如果仍有穿透，降低机械臂执行器刚度，使其能在反作用力下让步；同时令夹爪完全闭合，由执行器的最大驱动力限制夹持力。"
+
+#: source/how-to/solver_tuning_vbd.rst:295
+msgid "Coupled MJWarp + VBD"
+msgstr "MJWarp + VBD 耦合"
+
+#: source/how-to/solver_tuning_vbd.rst:297
+msgid ""
+":class:`~isaaclab_contrib.coupling.CouplerProxyCfg` is the coupling used by "
+"the core Franka tasks. It partitions the model between named solver entries "
+"and exposes selected source bodies to the destination solver as proxies. "
+"Contact feedback returns to the source solver as lagged impulses. This keeps"
+" deformable contact work localized to the rigid bodies that need it, such as"
+" a gripper hand and fingers. The pinned proxy solver supports at most two "
+"entries and rejects joints that cross entry boundaries."
+msgstr ""
+":class:`~isaaclab_contrib.coupling.CouplerProxyCfg` 是核心 Franka "
+"任务采用的耦合方式。它在具名求解器条目之间划分模型，并将选定的源刚体作为代理暴露给目标求解器。接触反馈以滞后冲量的形式返回源求解器。这样，可变形接触计算就能集中在需要它的刚体上，例如夹爪的手掌和手指。当前锁定版本的代理求解器最多支持两个条目，且不接受跨条目边界的关节。"
+
+#: source/how-to/solver_tuning_vbd.rst:305
+msgid ""
+"See :ref:`newton-coupled-solvers` for a high-level comparison of proxy and "
+"ADMM coupling before choosing an approach."
+msgstr "选择方案前，参阅 :ref:`newton-coupled-solvers` 中对代理耦合与 ADMM 耦合的总体比较。"
+
+#: source/how-to/solver_tuning_vbd.rst:308
+msgid "The core Franka soft-body task demonstrates the proxy configuration:"
+msgstr "核心 Franka 软体任务展示了代理配置："
+
+#: source/how-to/solver_tuning_vbd.rst:316
+msgid "What the selectors do:"
+msgstr "各选择器的作用："
+
+#: source/how-to/solver_tuning_vbd.rst:318
+msgid ""
+"``entries`` contains one :class:`~isaaclab_contrib.coupling.CouplerEntryCfg`"
+" per sub-solver. Each entry has a stable ``name``, its own ``solver_cfg``, "
+"and explicit model ownership selectors."
+msgstr ""
+"``entries`` 为每个子求解器包含一个 :class:`~isaaclab_contrib.coupling.CouplerEntryCfg` "
+"。每个条目都有稳定的 ``name`` 、独立的 ``solver_cfg`` 和显式的模型归属选择器。"
+
+#: source/how-to/solver_tuning_vbd.rst:322
+msgid ""
+"An entry's ``bodies`` selectors are full Newton body-label regex strings. By"
+" default, joints inherit their child body's owner and shapes inherit their "
+"body's owner. Use ``all_particles=True`` to own all deformable particles and"
+" ``include_static_shapes=True`` to own world geometry. Bodies, particles, "
+"joints, and shapes may be assigned to at most one entry; unassigned elements"
+" remain outside the nested solver views."
+msgstr ""
+"条目的 ``bodies`` 选择器是匹配完整 Newton 刚体标签的正则表达式字符串。默认情况下，关节继承其子刚体的归属，形状继承其刚体的归属。使用"
+" ``all_particles=True`` 可取得所有可变形粒子的归属，使用 ``include_static_shapes=True`` "
+"可取得世界几何体的归属。刚体、粒子、关节和形状最多只能归属于一个条目；未分配元素不在嵌套求解器视图中。"
+
+#: source/how-to/solver_tuning_vbd.rst:328
+msgid ""
+"``proxies`` contains directed "
+":class:`~isaaclab_contrib.coupling.CouplerProxyMappingCfg` mappings. Each "
+"mapping names its ``source`` and ``destination`` entries, then uses "
+"``bodies`` to select the source bodies that the destination solver should "
+"collide against. Only bodies that own at least one "
+"``newton.ShapeFlags.COLLIDE_SHAPES`` shape are kept."
+msgstr ""
+"``proxies`` 包含有方向的 "
+":class:`~isaaclab_contrib.coupling.CouplerProxyMappingCfg` 映射。每个映射指定 "
+"``source`` 和 ``destination`` 条目，再用 ``bodies`` 选择目标求解器应与之碰撞的源刚体。只保留拥有至少一个带 "
+"``newton.ShapeFlags.COLLIDE_SHAPES`` 标志的形状的刚体。"
+
+#: source/how-to/solver_tuning_vbd.rst:334
+msgid ""
+"In the snippet above, the entire Franka articulation is routed to MJWarp, "
+"while the deformable particles and static table/world shapes are routed to "
+"VBD. Only the ``panda_hand`` and the two fingers are exposed as proxies, so "
+"VBD sees three rigid proxies regardless of the number of arm links."
+msgstr ""
+"在上述代码中，整个 Franka 关节体交给 MJWarp，可变形粒子以及静态桌面和世界形状交给 VBD。只有 ``panda_hand`` "
+"和两个手指作为代理暴露，因此不论机械臂有多少连杆，VBD 都只看到三个刚体代理。"
+
+#: source/how-to/solver_tuning_vbd.rst:339
+msgid ""
+"Full-surface rigid-soft contact includes edge and triangle-interior "
+"contacts. Analytic proxy shapes support it directly, while mesh and convex "
+"proxy shapes require a volume SDF."
+msgstr "完整表面的刚体与软体接触包括边接触和三角形内部接触。解析代理形状可直接支持，网格代理和凸代理形状则需要体积 SDF。"
+
+#: source/how-to/solver_tuning_vbd.rst:345
+msgid ""
+"The coupler currently rejects "
+":class:`~isaaclab_newton.physics.KaminoPADMMSolverCfg` or "
+":class:`~isaaclab_newton.physics.KaminoDVISolverCfg` entries and "
+":class:`~isaaclab_newton.physics.MPMSolverCfg` entries configured with "
+"``project_outside_colliders=True``, as well as "
+":class:`~isaaclab_newton.physics.MJWarpSolverCfg` entries configured with "
+"``use_mujoco_cpu=True``. These configurations require manager-specific "
+"build, forward-kinematics, reset, or per-step lifecycle hooks that are not "
+"yet available to nested solvers. Use MPM with "
+"``project_outside_colliders=False`` and GPU MJWarp, or run these solvers "
+"through their standalone managers until nested lifecycle support is added."
+msgstr ""
+"耦合器目前不接受 :class:`~isaaclab_newton.physics.KaminoPADMMSolverCfg` 或 "
+":class:`~isaaclab_newton.physics.KaminoDVISolverCfg` 条目，也不接受配置为 "
+"``project_outside_colliders=True`` 的 "
+":class:`~isaaclab_newton.physics.MPMSolverCfg` 条目，以及配置为 "
+"``use_mujoco_cpu=True`` 的 :class:`~isaaclab_newton.physics.MJWarpSolverCfg` "
+"条目。这些配置需要管理器专用的构建、正向运动学、重置或逐步生命周期钩子，而嵌套求解器尚不具备这些钩子。可使用 "
+"``project_outside_colliders=False`` 的 MPM 和 GPU "
+"MJWarp，或在添加嵌套生命周期支持之前，通过各自的独立管理器运行这些求解器。"
+
+#: source/how-to/solver_tuning_vbd.rst:357
+msgid "Key proxy-specific parameters:"
+msgstr "代理专用的关键参数："
+
+#: source/how-to/solver_tuning_vbd.rst:365
+msgid "``CouplerProxyMappingCfg.mode``"
+msgstr "``CouplerProxyMappingCfg.mode``"
+
+#: source/how-to/solver_tuning_vbd.rst:366
+msgid ""
+"Default: ``\"lagged\"``. ``\"lagged\"`` syncs source begin poses and end "
+"velocities, then rewinds lagged feedback before the destination solve. "
+"``\"staggered\"`` syncs source end poses and end velocities directly. Lagged"
+" is the safer default; staggered can be tighter but is more sensitive to "
+"timestep."
+msgstr ""
+"默认值： ``\"lagged\"`` 。 ``\"lagged\"`` 同步源端起始位姿和结束速度，然后在目标求解前回退滞后反馈。 "
+"``\"staggered\"`` 则直接同步源端结束位姿和结束速度。滞后模式是更稳妥的默认选择；交错模式可能耦合更紧密，但对时间步长更敏感。"
+
+#: source/how-to/solver_tuning_vbd.rst:371
+msgid "``CouplerProxyCfg.iterations``"
+msgstr "``CouplerProxyCfg.iterations``"
+
+#: source/how-to/solver_tuning_vbd.rst:372
+msgid ""
+"Default: ``1``. Number of relaxation iterations per coupled substep. "
+"Increase it when proxy contact feedback needs more accuracy."
+msgstr "默认值： ``1`` 。每个耦合子步的松弛迭代次数。需要更精确的代理接触反馈时，可增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:374
+msgid "``CouplerProxyMappingCfg.collide_interval``"
+msgstr "``CouplerProxyMappingCfg.collide_interval``"
+
+#: source/how-to/solver_tuning_vbd.rst:375
+msgid ""
+"Default: ``None`` (every proxy pass). How often the proxy collision pipeline"
+" rebuilds candidate pairs. Increase it for cheaper but slightly staler proxy"
+" contacts."
+msgstr "默认值： ``None`` （每次代理处理）。控制代理碰撞管线重建候选对的频率。增大间隔可降低开销，但代理接触信息会略有滞后。"
+
+#: source/how-to/solver_tuning_vbd.rst:378
+msgid "``CouplerProxyMappingCfg.mass_scale``"
+msgstr "``CouplerProxyMappingCfg.mass_scale``"
+
+#: source/how-to/solver_tuning_vbd.rst:379
+msgid ""
+"Default: ``1.0``. Multiplier for the virtual inertia of proxy bodies in the "
+"VBD view. Increase it to make proxies behave more like fixed obstacles to "
+"VBD."
+msgstr "默认值： ``1.0`` 。VBD 视图中代理刚体虚拟惯量的乘数。增加此值可使代理在 VBD 中更接近固定障碍物。"
+
+#: source/how-to/solver_tuning_vbd.rst:383
+msgid ""
+"Body selectors must use full Newton body-label regexes, such as "
+"``/World/envs/env_.*/Robot``. Proxy mappings also accept raw Newton body "
+"ids."
+msgstr ""
+"刚体选择器必须使用完整 Newton 刚体标签的正则表达式，例如 ``/World/envs/env_.*/Robot`` 。代理映射也接受原始 "
+"Newton 刚体 ID。"
+
+#: source/how-to/solver_tuning_vbd.rst:386
+msgid ""
+":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` provides linearized ADMM "
+"coupling between the same named solver entries. Set ``contact_pairs`` to "
+"select entry pairs explicitly, or leave it as ``None`` to detect every "
+"distinct pair. Use ``iterations`` and ``rho`` to tune the ADMM solve."
+msgstr ""
+":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` 在同样的具名求解器条目之间提供线性化 ADMM "
+"耦合。设置 ``contact_pairs`` 可显式选择条目对；保留 ``None`` 则检测所有不同条目组成的对。使用 ``iterations``"
+" 和 ``rho`` 调整 ADMM 求解。"
+
+#: source/how-to/solver_tuning_vbd.rst:391
+msgid "Try the demo:"
+msgstr "尝试演示："
+
+#: source/how-to/solver_tuning_vbd.rst:417
+msgid "Contact and Material Parameters"
+msgstr "接触与材料参数"
+
+#: source/how-to/solver_tuning_vbd.rst:420
+msgid "Contact Model"
+msgstr "接触模型"
+
+#: source/how-to/solver_tuning_vbd.rst:422
+msgid ""
+":class:`~isaaclab_newton.physics.NewtonSoftContactCfg` applies contact "
+"parameters to the finalized Newton model through "
+":attr:`~isaaclab_newton.physics.NewtonCfg.soft_contact_cfg`:"
+msgstr ""
+":class:`~isaaclab_newton.physics.NewtonSoftContactCfg` 通过 "
+":attr:`~isaaclab_newton.physics.NewtonCfg.soft_contact_cfg` ，将接触参数应用于最终构建完成的"
+" Newton 模型："
+
+#: source/how-to/solver_tuning_vbd.rst:432
+msgid "``soft_contact_ke``"
+msgstr "``soft_contact_ke``"
+
+#: source/how-to/solver_tuning_vbd.rst:433
+msgid ""
+"Default: ``1.0e3`` [N/m]. Stiffness for body-particle and particle self-"
+"contact. Increase it to reduce clipping through rigid shapes or through "
+"other deformable particles. If it is too high, the object can stop visibly "
+"deforming or require more VBD iterations and substeps."
+msgstr ""
+"默认值： ``1.0e3`` "
+"[N/m]。刚体与粒子接触、粒子自接触的刚度。增加此值可减少粒子穿过刚体形状或其他可变形粒子的情况。如果过高，物体可能不再明显变形，或需要更多 VBD "
+"迭代和子步。"
+
+#: source/how-to/solver_tuning_vbd.rst:434
+msgid "``soft_contact_kd``"
+msgstr "``soft_contact_kd``"
+
+#: source/how-to/solver_tuning_vbd.rst:435
+msgid ""
+"Default: ``1.0e1`` [N*s/m]. Contact damping. Increase it to reduce chatter "
+"or bouncing. Too much damping can make contact response sticky or "
+"overdamped."
+msgstr "默认值： ``1.0e1`` [N*s/m]。接触阻尼。增加此值可减少抖动或回弹，但阻尼过大可能使接触响应黏滞或过阻尼。"
+
+#: source/how-to/solver_tuning_vbd.rst:436
+msgid "``soft_contact_mu``"
+msgstr "``soft_contact_mu``"
+
+#: source/how-to/solver_tuning_vbd.rst:437
+msgid ""
+"Default: ``0.5``. Friction coefficient for body-particle and particle self-"
+"contact. Increase it when a gripper cannot carry the deformable object "
+"without slipping."
+msgstr "默认值： ``0.5`` 。刚体与粒子接触、粒子自接触的摩擦系数。当夹爪携带可变形物体时发生滑移，可增加此值。"
+
+#: source/how-to/solver_tuning_vbd.rst:439
+msgid ""
+"To set rigid collision-shape contact properties (``ke``, ``kd``, ``mu``) for"
+" shapes that lack an explicit per-asset material, use "
+":class:`~isaaclab_newton.physics.NewtonShapeCfg` on "
+"``NewtonCfg.default_shape_cfg`` instead. Per-asset materials override these "
+"defaults."
+msgstr ""
+"对于未显式指定资产材料的形状，如需设置刚性碰撞形状的接触属性（ ``ke`` 、 ``kd`` 、 ``mu`` ），应改用 "
+"``NewtonCfg.default_shape_cfg`` 上的 "
+":class:`~isaaclab_newton.physics.NewtonShapeCfg` 。各资产的材料会覆盖这些默认值。"
+
+#: source/how-to/solver_tuning_vbd.rst:446
+msgid "Volume Deformable Materials"
+msgstr "体积可变形材料"
+
+#: source/how-to/solver_tuning_vbd.rst:448
+msgid ""
+"Use "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonDeformableBodyMaterialCfg`"
+" for volume deformables:"
+msgstr ""
+"体积可变形物体使用 "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonDeformableBodyMaterialCfg`"
+" ："
+
+#: source/how-to/solver_tuning_vbd.rst:458
+#: source/how-to/solver_tuning_vbd.rst:483
+msgid "``density``"
+msgstr "``density``"
+
+#: source/how-to/solver_tuning_vbd.rst:459
+msgid ""
+"Default: ``1.0`` [kg/m^3]. Material density. Higher density increases "
+"particle mass and inertia, so the object accelerates and deforms less for "
+"the same contact forces."
+msgstr "默认值： ``1.0`` [kg/m^3]。材料密度。较高密度会增加粒子质量和惯量，因此在相同接触力下，物体加速和变形的程度更小。"
+
+#: source/how-to/solver_tuning_vbd.rst:460
+#: source/how-to/solver_tuning_vbd.rst:485
+msgid "``particle_radius``"
+msgstr "``particle_radius``"
+
+#: source/how-to/solver_tuning_vbd.rst:461
+msgid ""
+"Default: ``0.008`` [m]. Particle contact radius used by Newton. Increase it "
+"when contacts are missed or detected too late. If it is too large relative "
+"to the mesh resolution, contacts can start too early."
+msgstr ""
+"默认值： ``0.008`` [m]。Newton 使用的粒子接触半径。当接触漏检或检测过迟时，可增加此值。如果相对于网格分辨率过大，接触可能过早开始。"
+
+#: source/how-to/solver_tuning_vbd.rst:462
+msgid "``k_mu``"
+msgstr "``k_mu``"
+
+#: source/how-to/solver_tuning_vbd.rst:463
+msgid ""
+"Default: ``1.0e5`` [Pa]. First Lame material parameter. Higher values make "
+"the deformable object stiffer and usually require more VBD iterations, more "
+"substeps, or a smaller timestep."
+msgstr "默认值： ``1.0e5`` [Pa]。第一拉梅参数。较高值使可变形物体更硬，通常需要更多 VBD 迭代、更多子步或更小的时间步长。"
+
+#: source/how-to/solver_tuning_vbd.rst:464
+msgid "``k_lambda``"
+msgstr "``k_lambda``"
+
+#: source/how-to/solver_tuning_vbd.rst:465
+msgid ""
+"Default: ``1.0e5`` [Pa]. Second Lame material parameter. Higher values make "
+"the deformable object stiffer and usually require more VBD iterations, more "
+"substeps, or a smaller timestep."
+msgstr "默认值： ``1.0e5`` [Pa]。第二拉梅参数。较高值使可变形物体更硬，通常需要更多 VBD 迭代、更多子步或更小的时间步长。"
+
+#: source/how-to/solver_tuning_vbd.rst:466
+msgid "``k_damp``"
+msgstr "``k_damp``"
+
+#: source/how-to/solver_tuning_vbd.rst:467
+msgid ""
+"Default: ``0.0`` [Pa*s]. Damping for tetrahedral elements. Increase it to "
+"reduce oscillations after deformation, but avoid overdamping if the object "
+"should rebound."
+msgstr "默认值： ``0.0`` [Pa*s]。四面体单元的阻尼。增加此值可减少变形后的振荡；如果物体应有回弹，则应避免过阻尼。"
+
+#: source/how-to/solver_tuning_vbd.rst:471
+msgid "Surface Deformable Materials"
+msgstr "表面可变形材料"
+
+#: source/how-to/solver_tuning_vbd.rst:473
+msgid ""
+"Use "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonSurfaceDeformableBodyMaterialCfg`"
+" for cloth or surface deformables:"
+msgstr ""
+"布料或表面可变形物体使用 "
+":class:`~isaaclab_newton.sim.spawners.materials.NewtonSurfaceDeformableBodyMaterialCfg`"
+" ："
+
+#: source/how-to/solver_tuning_vbd.rst:484
+msgid ""
+"Default: ``1.0`` [kg/m^3]. Material density. Higher density increases "
+"particle mass and inertia."
+msgstr "默认值： ``1.0`` [kg/m^3]。材料密度。较高密度会增加粒子质量和惯量。"
+
+#: source/how-to/solver_tuning_vbd.rst:486
+msgid "Default: ``0.008`` [m]. Particle contact radius used by Newton."
+msgstr "默认值： ``0.008`` [m]。Newton 使用的粒子接触半径。"
+
+#: source/how-to/solver_tuning_vbd.rst:487
+msgid "``tri_ke``"
+msgstr "``tri_ke``"
+
+#: source/how-to/solver_tuning_vbd.rst:488
+msgid ""
+"Default: ``1.0e4`` [Pa]. Triangle area-preserving stiffness. Increase it to "
+"reduce cloth stretch."
+msgstr "默认值： ``1.0e4`` [Pa]。三角形面积保持刚度。增加此值可减少布料拉伸。"
+
+#: source/how-to/solver_tuning_vbd.rst:489
+msgid "``tri_ka``"
+msgstr "``tri_ka``"
+
+#: source/how-to/solver_tuning_vbd.rst:490
+msgid ""
+"Default: ``1.0e4`` [Pa]. Triangle area stiffness. Increase it to reduce "
+"cloth area change."
+msgstr "默认值： ``1.0e4`` [Pa]。三角形面积刚度。增加此值可减少布料面积变化。"
+
+#: source/how-to/solver_tuning_vbd.rst:491
+msgid "``tri_kd``"
+msgstr "``tri_kd``"
+
+#: source/how-to/solver_tuning_vbd.rst:492
+msgid ""
+"Default: ``1.5e-6`` [Pa*s]. Triangle area damping. Increase it to reduce "
+"cloth vibration after stretching."
+msgstr "默认值： ``1.5e-6`` [Pa*s]。三角形面积阻尼。增加此值可减少拉伸后的布料振动。"
+
+#: source/how-to/solver_tuning_vbd.rst:493
+msgid "``edge_ke``"
+msgstr "``edge_ke``"
+
+#: source/how-to/solver_tuning_vbd.rst:494
+msgid ""
+"Default: ``5.0`` [N*m]. Bending stiffness. Increase it for stiffer cloth "
+"folds; decrease it for softer draping."
+msgstr "默认值： ``5.0`` [N*m]。弯曲刚度。增加此值会使布料折叠更硬；减小则使垂坠更柔软。"
+
+#: source/how-to/solver_tuning_vbd.rst:495
+msgid "``edge_kd``"
+msgstr "``edge_kd``"
+
+#: source/how-to/solver_tuning_vbd.rst:496
+msgid ""
+"Default: ``1.0e-2`` [N*m*s]. Bending damping. Increase it to damp fold "
+"oscillations."
+msgstr "默认值： ``1.0e-2`` [N*m*s]。弯曲阻尼。增加此值可抑制折叠振荡。"
+
+#: source/how-to/solver_tuning_vbd.rst:499
+msgid "Tuning Workflow"
+msgstr "调优流程"
+
+#: source/how-to/solver_tuning_vbd.rst:501
+msgid "Use the following sequence when bringing up a new VBD task:"
+msgstr "搭建新的 VBD 任务时，按以下顺序操作："
+
+#: source/how-to/solver_tuning_vbd.rst:503
+msgid ""
+"Run one of the supported Franka deformable tasks and confirm your "
+"installation, visualizer, and deformable rendering path work."
+msgstr "运行一个已支持的 Franka 可变形任务，确认安装、可视化器和可变形渲染路径正常。"
+
+#: source/how-to/solver_tuning_vbd.rst:505
+msgid ""
+"Add a task-specific VBD or proxy-coupled VBD preset copied from the closest "
+"supported task."
+msgstr "从最接近的已支持任务复制配置，添加任务专用的 VBD 或代理耦合 VBD 预设。"
+
+#: source/how-to/solver_tuning_vbd.rst:507
+msgid "Run a small visual smoke test with ``--num_envs 1`` before training."
+msgstr "训练前，使用 ``--num_envs 1`` 运行小规模的可视化冒烟测试。"
+
+#: source/how-to/solver_tuning_vbd.rst:508
+msgid ""
+"Tune deformable material stiffness and damping until the object deforms in "
+"the expected range without rigid contact."
+msgstr "调整可变形材料的刚度和阻尼，使物体在没有刚体接触时，变形程度处于预期范围。"
+
+#: source/how-to/solver_tuning_vbd.rst:510
+msgid ""
+"Increase ``num_substeps`` or decrease ``dt`` if the object is unstable "
+"before increasing stiffness further."
+msgstr "如果物体不稳定，先增加 ``num_substeps`` 或减小 ``dt`` ，再进一步提高刚度。"
+
+#: source/how-to/solver_tuning_vbd.rst:512
+msgid ""
+"Increase :attr:`~isaaclab_newton.physics.VBDSolverCfg.iterations` when "
+"contacts or stiff materials do not converge within a substep."
+msgstr ""
+"当接触或高刚度材料在一个子步内无法收敛时，增加 "
+":attr:`~isaaclab_newton.physics.VBDSolverCfg.iterations` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:514
+msgid ""
+"Tune :attr:`~isaaclab_newton.physics.NewtonSoftContactCfg.soft_contact_ke` "
+"to reduce rigid/deformable clipping, then tune "
+":attr:`~isaaclab_newton.physics.NewtonSoftContactCfg.soft_contact_mu` for "
+"grip and "
+":attr:`~isaaclab_newton.physics.NewtonSoftContactCfg.soft_contact_kd` for "
+"chatter."
+msgstr ""
+"先调整 :attr:`~isaaclab_newton.physics.NewtonSoftContactCfg.soft_contact_ke` "
+"以减少刚体与可变形物体的相互穿透，再调整 "
+":attr:`~isaaclab_newton.physics.NewtonSoftContactCfg.soft_contact_mu` "
+"改善抓握，并调整 "
+":attr:`~isaaclab_newton.physics.NewtonSoftContactCfg.soft_contact_kd` 抑制抖动。"
+
+#: source/how-to/solver_tuning_vbd.rst:519
+msgid ""
+"Enable self-contact only after body-particle contact is stable, then tune "
+"``particle_self_contact_radius`` for active self-contact thickness, "
+"``particle_self_contact_margin`` for missed contacts, and "
+"``particle_collision_detection_interval`` for detection frequency."
+msgstr ""
+"刚体与粒子的接触稳定后再启用自接触。随后用 ``particle_self_contact_radius`` 调整有效自接触厚度，用 "
+"``particle_self_contact_margin`` 处理漏检，用 "
+"``particle_collision_detection_interval`` 调整检测频率。"
+
+#: source/how-to/solver_tuning_vbd.rst:523
+msgid ""
+"Increase ``num_envs`` and profile only after the single-environment scene is"
+" stable."
+msgstr "单环境场景稳定后，再增加 ``num_envs`` 并进行性能分析。"
+
+#: source/how-to/solver_tuning_vbd.rst:528
+msgid "Symptoms and First Parameters to Check"
+msgstr "常见现象与优先检查的参数"
+
+#: source/how-to/solver_tuning_vbd.rst:534
+msgid "Symptom"
+msgstr "现象"
+
+#: source/how-to/solver_tuning_vbd.rst:535
+msgid "First parameters to check"
+msgstr "优先检查的参数"
+
+#: source/how-to/solver_tuning_vbd.rst:536
+msgid "Rigid bodies visibly clip through the deformable."
+msgstr "刚体明显穿过可变形物体。"
+
+#: source/how-to/solver_tuning_vbd.rst:537
+msgid ""
+"Increase ``soft_contact_ke``, VBD ``iterations``, ``num_substeps``, or the "
+"deformable material ``particle_radius``."
+msgstr ""
+"增加 ``soft_contact_ke`` 、VBD 的 ``iterations`` 、 ``num_substeps`` 或可变形材料的 "
+"``particle_radius`` 。"
+
+#: source/how-to/solver_tuning_vbd.rst:538
+msgid "The robot cannot lift the deformable."
+msgstr "机器人无法举起可变形物体。"
+
+#: source/how-to/solver_tuning_vbd.rst:539
+msgid ""
+"Check that the gripper bodies are included in the proxy, then increase "
+"``soft_contact_mu`` and rigid-side shape friction (per-asset material ``mu``"
+" or ``NewtonShapeCfg.mu``). Also check gripper actuator stiffness and effort"
+" limits."
+msgstr ""
+"检查夹爪刚体是否包含在代理中，再增加 ``soft_contact_mu`` 和刚体侧形状摩擦（各资产材料的 ``mu`` 或 "
+"``NewtonShapeCfg.mu`` ）。同时检查夹爪执行器的刚度和驱动力限制。"
+
+#: source/how-to/solver_tuning_vbd.rst:540
+msgid "The deformable barely deforms."
+msgstr "可变形物体几乎不变形。"
+
+#: source/how-to/solver_tuning_vbd.rst:541
+msgid ""
+"Reduce material stiffness, ``soft_contact_ke``, or shape contact stiffness."
+msgstr "降低材料刚度、 ``soft_contact_ke`` 或形状接触刚度。"
+
+#: source/how-to/solver_tuning_vbd.rst:542
+msgid "Contact chatters or bounces."
+msgstr "接触发生抖动或回弹。"
+
+#: source/how-to/solver_tuning_vbd.rst:543
+msgid ""
+"Increase ``soft_contact_kd`` or material damping, and consider using more "
+"substeps."
+msgstr "增加 ``soft_contact_kd`` 或材料阻尼，并考虑增加子步数。"
+
+#: source/how-to/solver_tuning_vbd.rst:544
+msgid "Cloth passes through itself."
+msgstr "布料穿过自身。"
+
+#: source/how-to/solver_tuning_vbd.rst:545
+msgid ""
+"Enable ``particle_enable_self_contact``, increase "
+"``particle_self_contact_radius`` if the active self-contact thickness is too"
+" small, increase ``particle_self_contact_margin`` if contacts are missed, "
+"and use a positive ``particle_collision_detection_interval``."
+msgstr ""
+"启用 ``particle_enable_self_contact`` ；有效自接触厚度过小时增加 "
+"``particle_self_contact_radius`` ；接触漏检时增加 ``particle_self_contact_margin`` "
+"；并为 ``particle_collision_detection_interval`` 使用正值。"
+
+#: source/how-to/solver_tuning_vbd.rst:546
+msgid "Self-contact is too expensive."
+msgstr "自接触开销过高。"
+
+#: source/how-to/solver_tuning_vbd.rst:547
+msgid ""
+"Increase ``particle_collision_detection_interval``, reduce mesh resolution, "
+"or disable self-contact until the rest of the scene is tuned."
+msgstr ""
+"增大 ``particle_collision_detection_interval`` 、降低网格分辨率，或在场景其他部分调优完成前禁用自接触。"
+
+#: source/how-to/solver_tuning_vbd.rst:549
+msgid ""
+"For implementation details of the VBD managers and Newton coupler, see "
+":ref:`newton-extending-solvers`."
+msgstr "VBD 管理器和 Newton 耦合器的实现细节见 :ref:`newton-extending-solvers` 。"

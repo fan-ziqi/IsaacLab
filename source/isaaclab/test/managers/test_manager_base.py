@@ -1,0 +1,361 @@
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# ignore private usage of variables warning
+# pyright: reportPrivateUsage=none
+
+"""Tests for recursive manager term configuration resolution.
+
+These tests exercise ManagerBase's parameter resolution logic and do NOT
+require an Isaac Sim launch, so they can run without Kit.
+"""
+
+from collections import namedtuple
+from collections.abc import Sequence
+from types import SimpleNamespace
+from unittest.mock import MagicMock
+
+import pytest
+import torch
+
+from isaaclab.envs import ManagerBasedEnv
+from isaaclab.managers import ManagerTermBase, ManagerTermBaseCfg, SceneEntityCfg
+from isaaclab.managers.manager_base import ManagerBase
+from isaaclab.physics import PhysicsEvent
+from isaaclab.utils import configclass, modifiers, to_dict, update_from_dict
+
+pytestmark = pytest.mark.unit
+
+DummyEnv = namedtuple("ManagerBasedRLEnv", ["num_envs", "dt", "device", "sim", "dummy1", "dummy2"])
+"""Dummy environment for testing."""
+
+
+class SimpleManager(ManagerBase):
+    """Minimal concrete ManagerBase for testing term resolution."""
+
+    def __init__(self, cfg: dict, env):
+        self._term_cfgs: list[tuple[str, ManagerTermBaseCfg]] = []
+        super().__init__(cfg, env)
+
+    @property
+    def active_terms(self) -> list[str]:
+        return [name for name, _ in self._term_cfgs]
+
+    def _prepare_terms(self):
+        if isinstance(self.cfg, dict):
+            cfg_items = self.cfg.items()
+        else:
+            cfg_items = self.cfg.__dict__.items()
+        for term_name, term_cfg in cfg_items:
+            if term_cfg is None:
+                continue
+            self._resolve_common_term_cfg(term_name, term_cfg, min_argc=2)
+            self._term_cfgs.append((term_name, term_cfg))
+
+    def apply(self, env_ids: torch.Tensor):
+        """Call each registered term with the environment."""
+        for _, term_cfg in self._term_cfgs:
+            term_cfg.func(self._env, env_ids, **term_cfg.params)
+
+
+def increment_dummy1_by_one(env, env_ids: torch.Tensor):
+    env.dummy1[env_ids] += 1
+
+
+def change_dummy1_by_value(env, env_ids: torch.Tensor, value: int = 10):
+    env.dummy1[env_ids] += value
+
+
+def reset_dummy2_to_zero(env, env_ids: torch.Tensor):
+    env.dummy2[env_ids] = 0
+
+
+@configclass
+class OpaqueCfg:
+    """Configuration that is outside ``ManagerBase`` ownership."""
+
+    func: str = f"{__name__}:reset_dummy2_to_zero"
+
+
+@configclass
+class NestedFieldTermCfg(ManagerTermBaseCfg):
+    """Manager term with owned and opaque fields outside ``params``."""
+
+    nested_term: ManagerTermBaseCfg = ManagerTermBaseCfg(func=increment_dummy1_by_one)
+    modifier: modifiers.ModifierCfg = modifiers.ModifierCfg(func=increment_dummy1_by_one)
+    metadata: dict[str, str] = {"func": f"{__name__}:reset_dummy2_to_zero"}
+    opaque: OpaqueCfg = OpaqueCfg()
+
+
+class reset_dummy2_to_zero_class(ManagerTermBase):
+    def __init__(self, cfg: ManagerTermBaseCfg, env: ManagerBasedEnv):
+        super().__init__(cfg, env)
+
+    def reset(self, env_ids: Sequence[int] | None = None) -> None:
+        pass
+
+    def __call__(
+        self,
+        env: ManagerBasedEnv,
+        env_ids: torch.Tensor,
+    ) -> None:
+        env.dummy2[env_ids] = 0
+
+
+class chained_terms_class(ManagerTermBase):
+    """A class-based term whose params contain nested ManagerTermBaseCfg dicts."""
+
+    def __init__(self, cfg: ManagerTermBaseCfg, env: ManagerBasedEnv):
+        super().__init__(cfg, env)
+        self.sub_terms: dict[str, ManagerTermBaseCfg] = cfg.params["terms"]
+
+    def reset(self, env_ids: Sequence[int] | None = None) -> None:
+        pass
+
+    def __call__(self, env: ManagerBasedEnv, env_ids: torch.Tensor, terms: dict) -> None:
+        for term_cfg in terms.values():
+            term_cfg.func(env, env_ids, **term_cfg.params)
+
+
+class list_terms_class(ManagerTermBase):
+    """A class-based term whose params contain a list of nested ManagerTermBaseCfg."""
+
+    def __init__(self, cfg: ManagerTermBaseCfg, env: ManagerBasedEnv):
+        super().__init__(cfg, env)
+        self.sub_terms: list[ManagerTermBaseCfg] = cfg.params["term_list"]
+
+    def reset(self, env_ids: Sequence[int] | None = None) -> None:
+        pass
+
+    def __call__(self, env: ManagerBasedEnv, env_ids: torch.Tensor, term_list: list) -> None:
+        for term_cfg in term_list:
+            term_cfg.func(env, env_ids, **term_cfg.params)
+
+
+class record_joint_selection_class(ManagerTermBase):
+    """A class-based term that records the joint selection seen during construction."""
+
+    def __init__(self, cfg: ManagerTermBaseCfg, env: ManagerBasedEnv):
+        super().__init__(cfg, env)
+        self.init_joint_ids = cfg.params["asset_cfg"].joint_ids
+
+    def __call__(
+        self,
+        env: ManagerBasedEnv,
+        env_ids: torch.Tensor,
+        asset_cfg: SceneEntityCfg = SceneEntityCfg("robot", joint_ids=[2, 0]),
+    ) -> None:
+        pass
+
+
+@pytest.fixture
+def env():
+    num_envs = 2
+    device = "cpu"
+    dummy1 = torch.zeros((num_envs, 2), device=device)
+    dummy2 = torch.zeros((num_envs, 10), device=device)
+    sim = MagicMock()
+    sim.is_playing.return_value = True
+    return DummyEnv(num_envs, 0.01, device, sim, dummy1, dummy2)
+
+
+def test_string_func_in_nested_term_cfg(env):
+    """Test that string-based func references inside nested term cfgs are resolved."""
+    this_module = __name__
+
+    cfg = {
+        "chained": ManagerTermBaseCfg(
+            func=chained_terms_class,
+            params={
+                "terms": {
+                    "step_a": ManagerTermBaseCfg(
+                        func=f"{this_module}:increment_dummy1_by_one",
+                    ),
+                    "step_b": ManagerTermBaseCfg(
+                        func=f"{this_module}:change_dummy1_by_value",
+                    ),
+                }
+            },
+        ),
+    }
+    manager = SimpleManager(cfg, env)
+
+    # String funcs in nested terms should be resolved to actual callables.
+    outer_cfg = manager._term_cfgs[0][1]
+    inner_terms = outer_cfg.params["terms"]
+    assert inner_terms["step_a"].func is increment_dummy1_by_one
+    assert inner_terms["step_b"].func is change_dummy1_by_value
+    assert inner_terms["step_b"].params["value"] == 10
+
+    # Apply and verify: +1 then +10 -> 11
+    manager.apply(torch.arange(env.num_envs, device=env.device))
+    torch.testing.assert_close(env.dummy1, 11 * torch.ones_like(env.dummy1))
+
+
+def test_resolution_walks_declared_term_fields_outside_params(env):
+    """Resolve nested term and modifier callables without interpreting arbitrary ``func`` keys."""
+    outer_cfg = NestedFieldTermCfg(
+        func=increment_dummy1_by_one,
+        nested_term=ManagerTermBaseCfg(func=f"{__name__}:reset_dummy2_to_zero"),
+    )
+    update_from_dict(outer_cfg, to_dict(outer_cfg))
+    cfg = {"outer": outer_cfg}
+    manager = SimpleManager(cfg, env)
+
+    term_cfg = manager._term_cfgs[0][1]
+    assert isinstance(term_cfg, NestedFieldTermCfg)
+    assert term_cfg.nested_term.func is reset_dummy2_to_zero
+    assert term_cfg.modifier.func is increment_dummy1_by_one
+    assert isinstance(term_cfg.metadata["func"], str)
+    assert isinstance(term_cfg.opaque.func, str)
+
+
+def test_string_func_top_level_class_term(env):
+    """Test that a top-level string-based func pointing to a class is properly instantiated."""
+    this_module = __name__
+
+    cfg = {
+        "term_class_str": ManagerTermBaseCfg(
+            func=f"{this_module}:reset_dummy2_to_zero_class",
+        ),
+    }
+    manager = SimpleManager(cfg, env)
+
+    # The string func should be resolved and the class instantiated.
+    outer_cfg = manager._term_cfgs[0][1]
+    assert isinstance(outer_cfg.func, reset_dummy2_to_zero_class)
+
+    # Verify it works: set dummy2 to non-zero, apply, check it's zero.
+    env.dummy2[:] = 42.0
+    manager.apply(torch.arange(env.num_envs, device=env.device))
+    torch.testing.assert_close(env.dummy2, torch.zeros_like(env.dummy2))
+
+
+def test_chained_containing_chained_and_list(env):
+    """Test multi-level nesting: a chained term whose children are chained and list terms."""
+    cfg = {
+        "outer": ManagerTermBaseCfg(
+            func=chained_terms_class,
+            params={
+                "terms": {
+                    "inner_chain": ManagerTermBaseCfg(
+                        func=chained_terms_class,
+                        params={
+                            "terms": {
+                                "add_1": ManagerTermBaseCfg(func=increment_dummy1_by_one),
+                                "add_2": ManagerTermBaseCfg(func=change_dummy1_by_value, params={"value": 2}),
+                            }
+                        },
+                    ),
+                    "inner_list": ManagerTermBaseCfg(
+                        func=list_terms_class,
+                        params={
+                            "term_list": [
+                                ManagerTermBaseCfg(func=change_dummy1_by_value, params={"value": 10}),
+                                # string funcs inside lists must be resolved as well
+                                ManagerTermBaseCfg(func=f"{__name__}:change_dummy1_by_value", params={"value": 20}),
+                            ]
+                        },
+                    ),
+                }
+            },
+        ),
+    }
+    manager = SimpleManager(cfg, env)
+
+    # Outer term should be instantiated.
+    outer_cfg = manager._term_cfgs[0][1]
+    assert isinstance(outer_cfg.func, chained_terms_class)
+
+    # Mid-level terms should also be instantiated class instances.
+    inner_chain_cfg = outer_cfg.params["terms"]["inner_chain"]
+    inner_list_cfg = outer_cfg.params["terms"]["inner_list"]
+    assert isinstance(inner_chain_cfg.func, chained_terms_class)
+    assert isinstance(inner_list_cfg.func, list_terms_class)
+
+    # Leaf-level funcs inside the inner chain should be resolved callables.
+    leaf_terms = inner_chain_cfg.params["terms"]
+    assert leaf_terms["add_1"].func is increment_dummy1_by_one
+    assert leaf_terms["add_2"].func is change_dummy1_by_value
+
+    # Leaf-level funcs inside the inner list should be resolved callables.
+    leaf_list = inner_list_cfg.params["term_list"]
+    assert leaf_list[0].func is change_dummy1_by_value
+    assert leaf_list[1].func is change_dummy1_by_value
+
+    # Apply and verify: inner_chain adds (1 + 2) = 3, inner_list adds (10 + 20) = 30 -> total 33
+    manager.apply(torch.arange(env.num_envs, device=env.device))
+    torch.testing.assert_close(env.dummy1, 33 * torch.ones_like(env.dummy1))
+
+
+def test_terms_resolve_when_physics_is_ready_if_created_before_play(env):
+    """A manager created before the simulation plays defers term resolution to the physics-ready callback."""
+    env.sim.is_playing.return_value = False
+    cfg = {"term_class": ManagerTermBaseCfg(func=reset_dummy2_to_zero_class)}
+    manager = SimpleManager(cfg, env)
+
+    # class terms are not instantiated until the physics-ready callback fires
+    term_cfg = manager._term_cfgs[0][1]
+    assert term_cfg.func is reset_dummy2_to_zero_class
+    callback, event = env.sim.physics_manager.register_callback.call_args.args
+    assert event == PhysicsEvent.PHYSICS_READY
+
+    callback(None)
+    assert isinstance(term_cfg.func, reset_dummy2_to_zero_class)
+    env.dummy2[:] = 42.0
+    manager.apply(torch.arange(env.num_envs, device=env.device))
+    torch.testing.assert_close(env.dummy2, torch.zeros_like(env.dummy2))
+
+
+@pytest.mark.parametrize("playing", [True, False])
+def test_scene_entities_finalize_after_class_terms_are_constructed(env, playing):
+    """Class terms read host selections during construction; term calls receive device selections."""
+    env.sim.is_playing.return_value = playing
+    env = SimpleNamespace(**env._asdict(), scene=dict(robot=SimpleNamespace(joint_names=["a", "b", "c"])))
+    cfg = {"term": ManagerTermBaseCfg(func=record_joint_selection_class)}
+    manager = SimpleManager(cfg, env)
+    if not playing:
+        callback, _ = env.sim.physics_manager.register_callback.call_args.args
+        callback(None)
+
+    term_cfg = manager._term_cfgs[0][1]
+    assert term_cfg.func.init_joint_ids == [2, 0]
+    assert isinstance(term_cfg.params["asset_cfg"].joint_ids, torch.Tensor)
+    assert term_cfg.params["asset_cfg"].joint_ids.tolist() == [2, 0]
+    assert cfg["term"].params == {}
+
+
+def test_term_defaults_are_isolated_and_explicit_values_win(env):
+    """Construction and invocation share defaults without aliasing terms or the function signature."""
+
+    class Accumulate(ManagerTermBase):
+        def __init__(self, cfg, env):
+            super().__init__(cfg, env)
+            self.weights = cfg.params["weights"]
+            self.bias = cfg.params["bias"]
+
+        def __call__(self, env, env_ids, weights=[1], *, bias=2):
+            env.dummy1[env_ids] += sum(weights) + (0 if bias is None else bias)
+
+    cfg = {
+        "default": ManagerTermBaseCfg(func=Accumulate),
+        "explicit": ManagerTermBaseCfg(func=Accumulate, params={"bias": None}),
+    }
+    manager = SimpleManager(cfg, env)
+    first, second = (term_cfg for _, term_cfg in manager._term_cfgs)
+    assert first.func.bias == 2
+    assert second.func.bias is None
+    first.func.weights.append(4)
+    assert first.params["weights"] == [1, 4]
+    assert second.func.weights == [1]
+    manager.apply(torch.arange(env.num_envs))
+    torch.testing.assert_close(env.dummy1, torch.full_like(env.dummy1, 8))
+
+    direct_cfg = ManagerTermBaseCfg(func=Accumulate)
+    direct_term = Accumulate(direct_cfg, env)
+    assert direct_term.weights == [1]
+    direct_cfg.params["bias"] = 5
+    direct_term(env, torch.arange(env.num_envs), **direct_cfg.params)
+    torch.testing.assert_close(env.dummy1, torch.full_like(env.dummy1, 14))

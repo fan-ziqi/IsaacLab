@@ -1,0 +1,198 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/cloning.rst:6
+msgid "Cloning Environments"
+msgstr "克隆环境"
+
+#: source/how-to/cloning.rst:10
+msgid ""
+"Cloning builds many simulation environments from a small set of reusable "
+"asset prototypes. A :class:`~isaaclab.cloner.ClonePlan` describes which "
+"assets belong in each environment. Physics and rendering use the same plan."
+msgstr ""
+"克隆通过少量可复用的资产原型，构建多个仿真环境。 :class:`~isaaclab.cloner.ClonePlan` "
+"描述每个环境包含哪些资产，物理与渲染使用同一份计划。"
+
+#: source/how-to/cloning.rst:16
+msgid "The cloning lifecycle"
+msgstr "克隆生命周期"
+
+#: source/how-to/cloning.rst:18
+msgid "Scene construction follows one sequence:"
+msgstr "场景构建遵循以下顺序："
+
+#: source/how-to/cloning.rst:20
+msgid ""
+"Declare assets, sensors, physics, renderers, and visualizers in "
+"configuration. Consumers register their required representations before "
+"planning."
+msgstr "在配置中声明资产、传感器、物理、渲染器和可视化器。各使用方在规划前注册所需的表示。"
+
+#: source/how-to/cloning.rst:22
+msgid ""
+"Build and publish the clone plan, then construct assets at the planned "
+"prototype paths."
+msgstr "构建并发布克隆计划，再在计划指定的原型路径上构建资产。"
+
+#: source/how-to/cloning.rst:23
+msgid ""
+"Replicate the declared prototypes through the required backends using that "
+"same plan."
+msgstr "通过所需后端，使用同一计划复制已声明的原型。"
+
+#: source/how-to/cloning.rst:24
+msgid "Initialize consumers and bind them to the resulting native resources."
+msgstr "初始化各使用方，并将它们绑定到生成的原生资源。"
+
+#: source/how-to/cloning.rst:26
+msgid ""
+"For tasks and demos, :class:`~isaaclab.scene.InteractiveScene` handles "
+"planning, asset construction, and replication. Given existing ``banana_cfg``"
+" and ``franka_cfg`` asset configurations and an active simulation context "
+"``sim``:"
+msgstr ""
+"对于任务和演示， :class:`~isaaclab.scene.InteractiveScene` 负责规划、资产构建和复制。假设已有 "
+"``banana_cfg`` 、 ``franka_cfg`` 资产配置，以及正在运行的仿真上下文 ``sim`` ："
+
+#: source/how-to/cloning.rst:43
+msgid ""
+"This creates sixteen environments, each with one banana and one Franka. "
+"Declare cameras alongside the assets so they participate in the same "
+"lifecycle. For varying assets across environments, see "
+":doc:`multi_asset_spawning`."
+msgstr ""
+"这会创建十六个环境，每个包含一个香蕉和一个 Franka。相机应与资产一同声明，以参与相同的生命周期。不同环境使用不同资产的方式见 "
+":doc:`multi_asset_spawning` 。"
+
+#: source/how-to/cloning.rst:49
+msgid "Walking through a ClonePlan"
+msgstr "理解 ClonePlan"
+
+#: source/how-to/cloning.rst:51
+msgid ""
+"An **asset prototype** is one reusable asset definition. A **world "
+"prototype** is a composition of those assets. For example, two asset "
+"prototypes can describe four different world prototypes:"
+msgstr "**资产原型** 是一份可复用的资产定义； **世界原型** 是这些资产的一种组合。例如，两个资产原型可描述四种不同的世界原型："
+
+#: source/how-to/cloning.rst:69
+msgid ""
+"Repeating an asset index creates another instance, not another prototype "
+"definition. With the default equal weights and sequential allocation, each "
+"world prototype is used by four of the sixteen destination worlds."
+msgstr "重复一个资产索引会创建另一个实例，而不是新增原型定义。使用默认等权重和顺序分配时，十六个目标世界中，每个世界原型对应四个世界。"
+
+#: source/how-to/cloning.rst:73
+msgid "``ClonePlan`` keeps four things:"
+msgstr "``ClonePlan`` 保存四类内容："
+
+#: source/how-to/cloning.rst:75
+msgid "``asset_cfgs``: the asset definitions, stored once."
+msgstr "``asset_cfgs`` ：资产定义，只存储一次。"
+
+#: source/how-to/cloning.rst:76
+msgid "``topology``: numeric asset membership and world-prototype selection."
+msgstr "``topology`` ：以数值表示的资产成员关系和世界原型选择。"
+
+#: source/how-to/cloning.rst:77
+msgid ""
+"``env_template``: the destination naming template, with one ``{}`` slot for "
+"the world ID."
+msgstr "``env_template`` ：目标名称模板，其中一个 ``{}`` 占位符用于世界 ID。"
+
+#: source/how-to/cloning.rst:78
+msgid ""
+"``positions``: optional destination-world origins [m], separate from "
+"topology."
+msgstr "``positions`` ：可选的目标世界原点 [m]，与拓扑分开存储。"
+
+#: source/how-to/cloning.rst:80
+msgid "The example's topology is stored as flat arrays:"
+msgstr "本例的拓扑以一维数组存储："
+
+#: source/how-to/cloning.rst:89
+msgid ""
+"``world_prototype_starts`` separates the asset lists. Its first slice "
+"belongs to the shared world ``-1``; the leading ``[0, 0]`` means there are "
+"no shared assets. For a shared ground, append its cfg to ``asset_cfgs`` and "
+"pass ``shared_assets=(2,)``. That asset is instantiated once, outside the "
+"replicated environments."
+msgstr ""
+"``world_prototype_starts`` 分隔各资产列表。其第一个切片属于共享世界 ``-1`` ；开头的 ``[0, 0]`` "
+"表示没有共享资产。如果需要共享地面，将其配置追加到 ``asset_cfgs`` ，并传入 ``shared_assets=(2,)`` "
+"。该资产只实例化一次，位于复制出的环境之外。"
+
+#: source/how-to/cloning.rst:94
+msgid ""
+"``world_prototype_layout`` selects a prototype for each destination world: "
+"worlds 0–3 use prototype 0, worlds 4–7 use prototype 1, and so on. Optional "
+"``weights`` change how worlds are distributed among prototypes."
+msgstr ""
+"``world_prototype_layout`` 为每个目标世界选择原型：世界 0–3 使用原型 0，世界 4–7 使用原型 1，依此类推。可选的 "
+"``weights`` 改变世界在各原型间的分配比例。"
+
+#: source/how-to/cloning.rst:98
+msgid ""
+"``make_clone_plan`` only describes the scene; it does not spawn or replicate"
+" assets. ``InteractiveScene`` prepares and executes the plan as part of "
+"scene construction. Only declared asset subtrees participate, not undeclared"
+" siblings found on the stage."
+msgstr ""
+"``make_clone_plan`` 只描述场景，不生成或复制资产。 ``InteractiveScene`` "
+"在构建场景时准备并执行该计划。只有已声明的资产子树参与，舞台上未声明的同级节点不参与。"
+
+#: source/how-to/cloning.rst:104
+msgid "Explicit cloning for tests and tools"
+msgstr "测试与工具中的显式克隆"
+
+#: source/how-to/cloning.rst:106
+msgid ""
+"Without ``InteractiveScene``, a homogeneous scene can use the same lifecycle"
+" explicitly. Set the asset paths to ``{ENV_REGEX_NS}/Banana`` and "
+"``{ENV_REGEX_NS}/Franka``, then plan before constructing them:"
+msgstr ""
+"不使用 ``InteractiveScene`` 时，同构场景也可显式执行同一生命周期。将资产路径设为 "
+"``{ENV_REGEX_NS}/Banana`` 和 ``{ENV_REGEX_NS}/Franka`` ，然后在构建资产前进行规划："
+
+#: source/how-to/cloning.rst:120
+msgid ""
+"Pass a flat collection of asset and sensor cfgs, including shared assets "
+"such as ground and lights. Prefer ``InteractiveScene`` for maintained tasks "
+"and demos; it also handles backend-specific setup such as PhysX collision "
+"filtering."
+msgstr ""
+"传入一维的资产与传感器配置集合，其中也包括地面、灯光等共享资产。对于持续维护的任务和演示，优先使用 ``InteractiveScene`` "
+"，它还会处理 PhysX 碰撞过滤等后端专用设置。"
+
+#: source/how-to/cloning.rst:124
+msgid ""
+"Setting ``replicate_physics=False`` skips the active physics replication "
+"context. Other declared contexts still run, including USD replication when "
+"configured, so they can create the per-environment prims without replicating"
+" the physics model. The physics backend can then parse those prims "
+"independently."
+msgstr ""
+"设置 ``replicate_physics=False`` 会跳过当前物理复制上下文。其他已声明的上下文仍会运行，包括已配置的 USD "
+"复制，因此它们可创建各环境的 prim，而不复制物理模型。之后，物理后端可分别解析这些 prim。"
+
+#: source/how-to/cloning.rst:129
+msgid ""
+"See the :doc:`cloner API reference <../api/lab/isaaclab.cloner>` for "
+"individual functions, topology queries, and path utilities."
+msgstr "各函数、拓扑查询及路径工具见 :doc:`克隆器 API 参考 <../api/lab/isaaclab.cloner>` 。"

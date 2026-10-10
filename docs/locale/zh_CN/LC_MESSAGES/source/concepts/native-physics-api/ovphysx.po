@@ -1,0 +1,193 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/native-physics-api/ovphysx.rst:7
+msgid "OvPhysX Tensor Bindings"
+msgstr "OvPhysX 张量绑定"
+
+#: source/concepts/native-physics-api/ovphysx.rst:10
+msgid "Mental model"
+msgstr "基本概念"
+
+#: source/concepts/native-physics-api/ovphysx.rst:12
+msgid ""
+"OvPhysX exposes generic ``TensorBinding`` objects. A binding combines a prim"
+" selection with one installed ``TensorType``; it is not an asset-specific "
+"native storage object. Callers explicitly pull values into their own buffer "
+"with ``read()`` and push a buffer back with ``write()``. Isaac Lab "
+"optionally wraps these bindings in "
+":class:`~isaaclab_ov.sim.views.OvPhysxView` for a string-keyed, guarded "
+"convenience surface."
+msgstr ""
+"OvPhysX 暴露通用的 ``TensorBinding`` 对象。一个绑定将 prim 选择与已安装的一种 ``TensorType`` "
+"结合，并不是某个资源专用的原生存储对象。调用方通过 ``read()`` 显式将值读入自己的缓冲区，再通过 ``write()`` "
+"将缓冲区写回。Isaac Lab 可以选择使用 :class:`~isaaclab_ov.sim.views.OvPhysxView` "
+"包装这些绑定，提供以字符串为键、带检查的便捷接口。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:20
+msgid "Lifecycle prerequisite"
+msgstr "生命周期前提"
+
+#: source/concepts/native-physics-api/ovphysx.rst:22
+msgid ""
+"Create bindings only after the OvPhysX simulation has initialized and reset,"
+" when its native runtime is live. A stage reload, a reset path that rebuilds"
+" the stage or runtime, and manager teardown invalidate all existing bindings"
+" and views. Reacquire them afterwards."
+msgstr ""
+"仅在 OvPhysX 仿真完成初始化和重置、原生运行时已就绪后创建绑定。重新加载 USD "
+"舞台、重建舞台或运行时的重置流程，以及管理器清理，都会使所有已有绑定和视图失效，之后需要重新获取。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:27
+msgid ""
+"Get the active OvPhysX handle from the manager after the lifecycle "
+"prerequisite:"
+msgstr "满足生命周期前提后，从管理器获取当前 OvPhysX 句柄："
+
+#: source/concepts/native-physics-api/ovphysx.rst:37
+msgid ""
+"A non-``None`` handle proves only that the manager constructed an OvPhysX "
+"instance; it is not a readiness predicate for the current simulation "
+"context. Manager teardown releases the instance and clears this handle. "
+"Initialize and reset the current context before access, and always reacquire"
+" the handle before creating new bindings or views."
+msgstr ""
+"句柄非 ``None`` 只说明管理器已构建 OvPhysX "
+"实例，并不表示当前仿真上下文已经就绪。管理器清理时会释放实例并清空句柄。访问前先初始化并重置当前上下文，创建新绑定或视图前始终重新获取句柄。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:43
+msgid "Reuse Isaac Lab-owned access"
+msgstr "复用 Isaac Lab 持有的访问对象"
+
+#: source/concepts/native-physics-api/ovphysx.rst:45
+msgid ""
+"Reuse the convenience view already owned by an Isaac Lab asset when its "
+"selection matches:"
+msgstr "如果选择符合需要，复用 Isaac Lab 资源已经持有的便捷视图："
+
+#: source/concepts/native-physics-api/ovphysx.rst:54
+msgid "Create raw access"
+msgstr "创建底层访问"
+
+#: source/concepts/native-physics-api/ovphysx.rst:56
+msgid ""
+"Create a raw binding when the desired selection is not already owned by an "
+"Isaac Lab asset. The following representative pose binding is float32 and "
+"uses the simulation device; it is not a generic allocator for every tensor "
+"type:"
+msgstr ""
+"所需选择尚未由 Isaac Lab 资源持有时，创建原始绑定。以下示例位姿绑定使用 float32 和仿真设备，并不是适用于所有张量类型的通用分配器："
+
+#: source/concepts/native-physics-api/ovphysx.rst:82
+msgid ""
+"Before allocating a buffer, inspect ``binding.shape``, ``binding.dtype``, "
+"the binding's count, and its path metadata. Match the binding shape and "
+"DLPack scalar metadata exactly, and respect the binding's native device and "
+"access mode. ``RIGID_BODY_POSE`` has the float32 layout used above, but "
+"another tensor type can have a different scalar dtype, shape, native device,"
+" or write permission."
+msgstr ""
+"分配缓冲区前，检查 ``binding.shape`` 、 ``binding.dtype`` 、绑定数量和路径元数据。必须精确匹配绑定形状与 "
+"DLPack 标量元数据，并遵守原生设备和访问模式要求。 ``RIGID_BODY_POSE`` 使用上方的 float32 "
+"布局，但其他张量类型的数据类型、形状、原生设备或写入权限可能不同。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:88
+msgid ""
+"For a new selection, construct :class:`~isaaclab_ov.sim.views.OvPhysxView` "
+"with the native runtime and a Tensor API pattern:"
+msgstr ""
+"对于新选择，使用原生运行时和 Tensor API 模式构建 :class:`~isaaclab_ov.sim.views.OvPhysxView` ："
+
+#: source/concepts/native-physics-api/ovphysx.rst:109
+msgid ""
+"``try_binding_for`` attempts to create a binding for this selection and "
+"returns ``None`` when a valid type is unavailable. ``binding_for`` returns a"
+" raw binding and bypasses the view's device, dtype, shape, and read-only "
+"guards."
+msgstr ""
+"``try_binding_for`` 尝试为该选择创建绑定，没有有效类型时返回 ``None`` 。 ``binding_for`` "
+"返回原始绑定，会绕过视图的设备、数据类型、形状和只读检查。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:114
+msgid "Read/write semantics"
+msgstr "读写语义"
+
+#: source/concepts/native-physics-api/ovphysx.rst:116
+msgid ""
+"Raw ``binding.read(buffer)`` calls pull values into caller-owned buffers, "
+"while ``binding.write(buffer)`` calls push values to the simulation. Editing"
+" a local buffer alone does not change the simulation. The guarded "
+":meth:`~isaaclab_ov.sim.views.OvPhysxView.get_attribute`, "
+":meth:`~isaaclab_ov.sim.views.OvPhysxView.read_into`, and "
+":meth:`~isaaclab_ov.sim.views.OvPhysxView.set_attribute` paths provide the "
+"same pull/push boundary while validating the binding's shape, scalar dtype, "
+"native device, and writable access."
+msgstr ""
+"原始 ``binding.read(buffer)`` 将值读入调用方持有的缓冲区， ``binding.write(buffer)`` "
+"则将值写入仿真。仅修改本地缓冲区不会改变仿真。带检查的 "
+":meth:`~isaaclab_ov.sim.views.OvPhysxView.get_attribute` 、 "
+":meth:`~isaaclab_ov.sim.views.OvPhysxView.read_into` 和 "
+":meth:`~isaaclab_ov.sim.views.OvPhysxView.set_attribute` "
+"具有相同的读取与写回边界，同时验证绑定形状、标量数据类型、原生设备和写入权限。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:126
+msgid "Ownership, synchronization, and invalidation"
+msgstr "所有权、同步与失效"
+
+#: source/concepts/native-physics-api/ovphysx.rst:128
+msgid ""
+"Allocate buffers on the binding's required device and match its shape and "
+"DLPack scalar metadata. State tensors normally use the simulation device, "
+"while some property tensors are CPU-only. "
+":class:`~isaaclab_ov.sim.views.OvPhysxView` validates these requirements and"
+" can reinterpret supported flat scalar layouts as structured Warp values, "
+"but it does not move data between CPU and GPU."
+msgstr ""
+"在绑定要求的设备上分配缓冲区，并匹配其形状与 DLPack 标量元数据。状态张量通常使用仿真设备，部分属性张量则仅支持 CPU。 "
+":class:`~isaaclab_ov.sim.views.OvPhysxView` 验证这些要求，并可将受支持的平坦标量布局重新解释为结构化 "
+"Warp 值，但不会在 CPU 与 GPU 之间移动数据。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:134
+msgid ""
+"Use ``try_binding_for`` when a tensor type might not apply to the selected "
+"prims. Reacquire raw bindings and convenience views after reset paths that "
+"rebuild the stage or runtime, or after teardown. Destroy raw bindings and "
+"close custom views before they are no longer needed. Manager teardown closes"
+" tracked ``OvPhysxView`` instances before releasing the runtime, but "
+"explicit cleanup avoids retaining their bindings for the rest of a long-"
+"lived simulation."
+msgstr ""
+"如果某个张量类型可能不适用于选定 prim，请使用 ``try_binding_for`` "
+"。重置流程重建舞台或运行时之后，以及清理之后，应重新获取原始绑定和便捷视图。不再需要时，应销毁原始绑定并关闭自定义视图。管理器清理会先关闭已跟踪的 "
+"``OvPhysxView`` 实例，再释放运行时；显式清理可以避免在长时间运行的仿真中一直保留这些绑定。"
+
+#: source/concepts/native-physics-api/ovphysx.rst:142
+msgid "Authoritative references"
+msgstr "权威参考"
+
+#: source/concepts/native-physics-api/ovphysx.rst:144
+msgid ""
+"The generated Isaac Lab reference for "
+":class:`~isaaclab_ov.sim.views.OvPhysxView` documents the convenience view. "
+"The repository metadata pins OvPhysX to a version but does not provide a "
+"versioned official OvPhysX documentation URL, so inspect the installed "
+"``TensorType`` and binding metadata at runtime."
+msgstr ""
+"生成的 Isaac Lab :class:`~isaaclab_ov.sim.views.OvPhysxView` "
+"参考文档介绍了便捷视图。仓库元数据固定了 OvPhysX 版本，但没有提供带版本的官方 OvPhysX 文档 URL，因此应在运行时检查已安装的 "
+"``TensorType`` 与绑定元数据。"

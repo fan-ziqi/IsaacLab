@@ -1,0 +1,435 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/motion_generators.rst:2
+msgid "Motion Generators"
+msgstr "运动生成器"
+
+#: source/concepts/motion_generators.rst:6
+msgid ""
+"Robotic tasks are typically defined in task-space in terms of desired end-"
+"effector trajectory, while control actions are executed in the joint-space. "
+"This naturally leads to *joint-space* and *task-space* (operational-space) "
+"control methods. However, successful execution of interaction tasks using "
+"motion control often requires an accurate model of both the robot "
+"manipulator as well as its environment. While a sufficiently precise "
+"manipulator's model might be known, detailed description of environment is "
+"hard to obtain :cite:p:`siciliano2009force`. Planning errors caused by this "
+"mismatch can be overcome by introducing a *compliant* behavior during "
+"interaction."
+msgstr ""
+"机器人任务通常在任务空间中定义，通常以期望的末端执行器轨迹来表示，而控制动作则在关节空间中执行。这自然导致了 *关节空间* 和 *任务空间* "
+"（操作空间）控制方法。然而，使用运动控制成功执行交互任务通常需要一个准确的模型，既包括机器人操纵器，也包括其环境。虽然足够精确的操纵器模型可能是已知的，但环境的详细描述却很难获得"
+" :cite:p:`siciliano2009force` 。通过在交互过程中引入 *顺应性* 行为，可以克服由这种不匹配引起的规划错误。"
+
+#: source/concepts/motion_generators.rst:17
+msgid ""
+"While compliance is achievable passively through robot's structure (such as "
+"elastic actuators, soft robot arms), we are more interested in controller "
+"designs that focus on active interaction control. These are broadly "
+"categorized into:"
+msgstr "尽管合规性可以通过机器人结构（如弹性驱动器、软体机器人手臂）被动实现，但我们更感兴趣的是专注于主动交互控制的控制器设计。这些大致可分为:"
+
+#: source/concepts/motion_generators.rst:22
+msgid ""
+"**impedance control:** indirect control method where motion deviations "
+"caused during interaction relates to contact force as a mass-spring-damper "
+"system with adjustable parameters (stiffness and damping). A specialized "
+"case of this is *stiffness* control where only the static relationship "
+"between position error and contact force is considered."
+msgstr ""
+"**阻抗控制:** 一种间接控制方法，其中在交互过程中产生的运动偏差与接触力之间的关系可以通过一个具有可调参数（刚度和阻尼）的质量-弹簧-"
+"阻尼器系统来表示。其专门化形式是 *刚度* 控制，其中仅考虑位置误差与接触力之间的静态关系。"
+
+#: source/concepts/motion_generators.rst:28
+msgid ""
+"**hybrid force/motion control:** active control method which controls motion"
+" and force along unconstrained and constrained task directions respectively."
+" Among the various schemes for hybrid motion control, the provided "
+"implementation is based on inverse dynamics control in the operational space"
+" :cite:p:`khatib1987osc`."
+msgstr ""
+"**混合力/运动控制:** "
+"一种主动控制方法，分别沿着不受约束和受约束的任务方向控制运动和力。在各种混合运动控制方案中，提供的实现基于操作空间中的逆向动力学控制 "
+":cite:p:`khatib1987osc` 。"
+
+#: source/concepts/motion_generators.rst:35
+msgid ""
+"To provide an even broader set of motion generators, we welcome "
+"contributions from the community. If you are interested, please open an "
+"issue to start a discussion!"
+msgstr "为了提供更广泛的运动生成器，我们欢迎社区的贡献。如果您感兴趣，请打开一个问题来开始讨论！"
+
+#: source/concepts/motion_generators.rst:40
+msgid "Joint-space controllers"
+msgstr "关节空间控制器"
+
+#: source/concepts/motion_generators.rst:42
+msgid ""
+"There is no dedicated configuration class for selecting a joint-space "
+"control mode. Instead, the control mode follows from which targets you set "
+"through ``articulation.actuators``: effort targets for torque control, "
+"velocity targets for velocity control, and position targets for position "
+"control. See :ref:`actuators-runtime-api` for the runtime API."
+msgstr ""
+"没有专门用于选择关节空间控制模式的配置类。控制模式取决于通过 ``articulation.actuators`` "
+"设置哪些目标：驱动力目标对应力矩控制，速度目标对应速度控制，位置目标对应位置控制。运行时 API 见 :ref:`actuators-runtime-"
+"api` 。"
+
+#: source/concepts/motion_generators.rst:48
+msgid "Torque control"
+msgstr "扭矩矩控制控制"
+
+#: source/concepts/motion_generators.rst:50
+#: source/concepts/motion_generators.rst:63
+#: source/concepts/motion_generators.rst:83
+msgid "Action dimensions: ``\"n\"`` (number of joints)"
+msgstr "动作维度: ``\"n\"`` （关节数量）"
+
+#: source/concepts/motion_generators.rst:52
+msgid ""
+"In torque control mode, the input actions are directly set as feed-forward "
+"joint torque commands, i.e. at every time-step,"
+msgstr "在扭矩控制模式下，输入动作被直接设置为前馈关节扭矩命令，即在每个时间步，"
+
+#: source/concepts/motion_generators.rst:55
+msgid "\\tau = \\tau_{des}"
+msgstr "\\tau = \\tau_{des}"
+
+#: source/concepts/motion_generators.rst:61
+msgid "Velocity control"
+msgstr "速度控制"
+
+#: source/concepts/motion_generators.rst:65
+msgid ""
+"In velocity control mode, a proportional control law is required to reduce "
+"the error between the current and desired joint velocities. Based on input "
+"actions, the joint torques commands are computed as:"
+msgstr "在速度控制模式下，需要一个比例控制律来减少当前与期望关节速度之间的误差。基于输入动作，关节扭矩命令计算如下:"
+
+#: source/concepts/motion_generators.rst:68
+msgid "\\tau = k_d (\\dot{q}_{des} - \\dot{q})"
+msgstr "\\tau = k_d (\\dot{q}_{des} - \\dot{q})"
+
+#: source/concepts/motion_generators.rst:72
+msgid "where :math:`k_d` are the gains parsed from configuration."
+msgstr "在这里 :math:`k_d` 是从配置中解析得到的增益。"
+
+#: source/concepts/motion_generators.rst:76
+msgid ""
+"While performing velocity control, in many cases, gravity compensation is "
+"required to ensure better tracking of the command. In this case, we suggest "
+"disabling gravity for the links in the articulation in simulation."
+msgstr "在执行速度控制时，在许多情况下，需要进行重力补偿以确保更好地跟踪命令。在这种情况下，我们建议在仿真中禁用关节中链节的重力。"
+
+#: source/concepts/motion_generators.rst:81
+msgid "Position control with fixed impedance"
+msgstr "位置控制与固定阻抗"
+
+#: source/concepts/motion_generators.rst:85
+msgid ""
+"In position control mode, a proportional-damping (PD) control law is "
+"employed to track the desired joint positions and ensuring the articulation "
+"remains still at the desired location (i.e., desired joint velocities are "
+"zero). Based on the input actions, the joint torque commands are computed "
+"as:"
+msgstr ""
+"在位置控制模式下，采用比例-阻尼 (PD) "
+"控制律来跟踪期望的关节位置，并确保关节保持在期望位置（即期望的关节速度为零）。根据输入动作，关节扭矩命令计算如下:"
+
+#: source/concepts/motion_generators.rst:89
+msgid "\\tau = k_p (q_{des} - q)  - k_d \\dot{q}"
+msgstr "\\tau = k_p (q_{des} - q)  - k_d \\dot{q}"
+
+#: source/concepts/motion_generators.rst:93
+msgid ""
+"where :math:`k_p` and :math:`k_d` are the gains parsed from configuration."
+msgstr "其中 :math:`k_p` 和 :math:`k_d` 是从配置中解析出的增益。"
+
+#: source/concepts/motion_generators.rst:95
+msgid ""
+"A more complete formulation which considers the dynamics of the articulation"
+" would be:"
+msgstr "考虑关节体动力学后，更完整的表达式为："
+
+#: source/concepts/motion_generators.rst:97
+msgid "\\tau = M \\left( k_p (q_{des} - q)  - k_d \\dot{q} \\right) + g"
+msgstr "\\tau = M \\left( k_p (q_{des} - q)  - k_d \\dot{q} \\right) + g"
+
+#: source/concepts/motion_generators.rst:101
+msgid ""
+"where :math:`M` is the joint-space inertia matrix of size :math:`n \\times "
+"n`, and :math:`g` is the joint-space gravity vector. This implementation is "
+"available through the :class:`JointImpedanceController` class by setting the"
+" impedance mode to ``\"fixed\"``. The gains :math:`k_p` are parsed from the "
+"input configuration and :math:`k_d` are computed while considering the "
+"system as a decoupled point-mass oscillator, i.e.,"
+msgstr ""
+"其中 :math:`M` 是大小为 :math:`n \\times n` 的关节空间惯性矩阵， :math:`g` "
+"是关节空间重力向量。通过将阻抗模式设置为 ``\"fixed\"`` ，可以通过 :class:`JointImpedanceController` "
+"类来实现此功能。增益 :math:`k_p` 从输入配置中解析， :math:`k_d` 则在将系统视为解耦的点质量振荡器时计算得出，即，"
+
+#: source/concepts/motion_generators.rst:106
+msgid "k_d = 2 \\sqrt{k_p} \\times D"
+msgstr "k_d = 2 \\sqrt{k_p} \\times D"
+
+#: source/concepts/motion_generators.rst:110
+msgid ""
+"where :math:`D` is the damping ratio of the system. Critical damping is "
+"achieved for :math:`D = 1`, overcritical damping for :math:`D > 1` and "
+"undercritical damping for :math:`D < 1`."
+msgstr ""
+"其中 :math:`D` 是系统的阻尼比。当 :math:`D = 1` 时，系统达到临界阻尼；当 :math:`D > 1` 时，系统为过阻尼；当 "
+":math:`D < 1` 时，系统为欠阻尼。"
+
+#: source/concepts/motion_generators.rst:113
+msgid ""
+"Additionally, it is possible to disable the inertial or gravity compensation"
+" in the controller by setting the flags :attr:`inertial_compensation` and  "
+":attr:`gravity_compensation` in the configuration to :obj:`False`, "
+"respectively."
+msgstr ""
+"此外，可以通过将配置中的标志 :attr:`inertial_compensation` 和 :attr:`gravity_compensation` "
+"分别设置为 :obj:`False` 来禁用控制器中的惯性补偿或重力补偿。"
+
+#: source/concepts/motion_generators.rst:118
+msgid "Position control with variable stiffness"
+msgstr "变位控制与可变刚度"
+
+#: source/concepts/motion_generators.rst:120
+msgid "Action dimensions: ``\"2n\"`` (number of joints)"
+msgstr "动作维度: ``\"2n\"`` （关节数）"
+
+#: source/concepts/motion_generators.rst:122
+msgid ""
+"In stiffness control, the same formulation as above is employed, however, "
+"the gains :math:`k_p` are part of the input commands. This implementation is"
+" available through the :class:`JointImpedanceController` class by setting "
+"the impedance mode to ``\"variable_kp\"``."
+msgstr ""
+"在刚度控制中，采用与上述相同的公式，然而，增益 :math:`k_p` 是输入命令的一部分。此实现可以通过 "
+":class:`JointImpedanceController` 类实现，方法是将阻抗模式设置为 ``\"variable_kp\"`` 。"
+
+#: source/concepts/motion_generators.rst:127
+msgid "Position control with variable impedance"
+msgstr "位置控制与可变阻抗"
+
+#: source/concepts/motion_generators.rst:129
+msgid "Action dimensions: ``\"3n\"`` (number of joints)"
+msgstr "动作维度: ``\"3n\"`` （关节数）"
+
+#: source/concepts/motion_generators.rst:131
+msgid ""
+"In impedance control, the same formulation as above is employed, however, "
+"both :math:`k_p` and :math:`k_d` are part of the input commands. This "
+"implementation is available through the :class:`JointImpedanceController` "
+"class by setting the impedance mode to ``\"variable\"``."
+msgstr ""
+"在阻抗控制中，采用与上述相同的公式，然而， :math:`k_p` 和 :math:`k_d` 都是输入命令的一部分。通过将阻抗模式设置为 "
+"``\"variable\"`` ，可以通过 :class:`JointImpedanceController` 类来实现此功能。"
+
+#: source/concepts/motion_generators.rst:136
+msgid "Task-space controllers"
+msgstr "任务空间控制器"
+
+#: source/concepts/motion_generators.rst:139
+msgid "Differential inverse kinematics (IK)"
+msgstr "差分逆向运动学 (IK)"
+
+#: source/concepts/motion_generators.rst:141
+msgid ""
+"Action dimensions:  ``\"3\"`` (relative/absolute position), ``\"6\"`` "
+"(relative pose), or ``\"7\"`` (absolute pose)"
+msgstr "动作维度: ``\"3\"`` （相对/绝对位置）， ``\"6\"`` （相对姿态），或 ``\"7\"`` （绝对姿态）"
+
+#: source/concepts/motion_generators.rst:143
+msgid ""
+"Inverse kinematics converts the task-space tracking error to joint-space "
+"error. In its most typical implementation, the pose error in the task-sace, "
+":math:`\\Delta \\chi_e = (\\Delta p_e, \\Delta \\phi_e)`, is computed as the"
+" cartesian distance between the desired and current task-space positions, "
+"and the shortest distance in :math:`\\mathbb{SO}(3)` between the desired and"
+" current task-space orientations."
+msgstr ""
+"逆向运动学将任务空间的跟踪误差转换为关节空间的误差。在其最典型的实现中，任务空间中的位姿误差， :math:`\\Delta \\chi_e = "
+"(\\Delta p_e, \\Delta \\phi_e)` "
+"，被计算为期望任务空间位置与当前任务空间位置之间的笛卡尔距离，以及期望任务空间方向与当前任务空间方向之间在 "
+":math:`\\mathbb{SO}(3)` 中的最短距离。"
+
+#: source/concepts/motion_generators.rst:148
+msgid ""
+"Using the geometric Jacobian :math:`J_{eO} \\in \\mathbb{R}^{6 \\times n}`, "
+"that relates task-space velocity to joint-space velocities, we design the "
+"control law to obtain the desired joint positions as:"
+msgstr ""
+"使用几何雅可比矩阵 :math:`J_{eO} \\in \\mathbb{R}^{6 \\times n}` "
+"，它将任务空间的速度与关节空间的速度关联起来，我们设计控制律以获得期望的关节位置，如下所示:"
+
+#: source/concepts/motion_generators.rst:151
+msgid "q_{des} = q + \\eta J_{eO}^{-} \\Delta \\chi_e"
+msgstr "q_{des} = q + \\eta J_{eO}^{-} \\Delta \\chi_e"
+
+#: source/concepts/motion_generators.rst:155
+msgid ""
+"where :math:`\\eta` is a scaling parameter and :math:`J_{eO}^{-}` is the "
+"pseudo-inverse of the Jacobian."
+msgstr "其中 :math:`\\eta` 是一个缩放参数，而 :math:`J_{eO}^{-}` 是雅可比矩阵的伪逆。"
+
+#: source/concepts/motion_generators.rst:157
+msgid ""
+"It is possible to compute the pseudo-inverse of the Jacobian using different"
+" formulations:"
+msgstr "可以使用不同的公式计算雅可比矩阵的伪逆:"
+
+#: source/concepts/motion_generators.rst:159
+msgid "Moore-Penrose pseduo-inverse: :math:`A^{-} = A^T(AA^T)^{-1}`."
+msgstr "摩尔-彭罗斯伪逆: :math:`A^{-} = A^T(AA^T)^{-1}` 。"
+
+#: source/concepts/motion_generators.rst:160
+msgid ""
+"Levenberg-Marquardt pseduo-inverse (damped least-squares): :math:`A^{-} = "
+"A^T (AA^T + \\lambda \\mathbb{I})^{-1}`."
+msgstr ""
+"Levenberg-Marquardt 伪逆 (阻尼最小二乘法): :math:`A^{-} = A^T (AA^T + \\lambda "
+"\\mathbb{I})^{-1}`."
+
+#: source/concepts/motion_generators.rst:161
+msgid "Tanspose pseudo-inverse: :math:`A^{-} = A^T`."
+msgstr "转置伪逆: :math:`A^{-} = A^T` 。"
+
+#: source/concepts/motion_generators.rst:162
+msgid ""
+"Adaptive singular-vale decomposition (SVD) pseduo-inverse from "
+":cite:t:`buss2004ik`."
+msgstr "自适应奇异值分解（SVD）伪逆来自 :cite:t:`buss2004ik` 。"
+
+#: source/concepts/motion_generators.rst:164
+msgid ""
+"These implementations are available through the "
+":class:`DifferentialIKController` class. See :doc:`../how-to/run_diff_ik` "
+"for a runnable example."
+msgstr ""
+"这些实现通过 :class:`DifferentialIKController` 提供。可运行示例见 :doc:`../how-"
+"to/run_diff_ik` 。"
+
+#: source/concepts/motion_generators.rst:168
+msgid "Impedance controller"
+msgstr "阻抗控制器"
+
+#: source/concepts/motion_generators.rst:171
+msgid ""
+"It uses task-space pose error and Jacobian to compute join torques through "
+"mass-spring-damper system with a) fixed stiffness, b) variable stiffness "
+"(stiffness control), and c) variable stiffness and damping (impedance "
+"control)."
+msgstr ""
+"它使用任务空间位姿误差和雅可比矩阵，通过质量-弹簧-阻尼系统计算关节扭矩，其中包括 a) 固定刚度，b) 变量刚度（刚度控制），以及 c) "
+"变量刚度和阻尼（阻抗控制）。"
+
+#: source/concepts/motion_generators.rst:176
+msgid "Operational-space controller"
+msgstr "操作空间控制器"
+
+#: source/concepts/motion_generators.rst:178
+msgid ""
+"Similar to task-space impedance control but uses the Equation of Motion "
+"(EoM) for computing the task-space force. See :doc:`../how-to/run_osc` for a"
+" runnable example."
+msgstr "与任务空间阻抗控制类似，但使用运动方程（EoM）计算任务空间力。可运行示例见 :doc:`../how-to/run_osc` 。"
+
+#: source/concepts/motion_generators.rst:183
+msgid "Closed-loop proportional force controller"
+msgstr "闭环比例力控制器"
+
+#: source/concepts/motion_generators.rst:185
+msgid ""
+"It uses a proportional term to track the desired wrench command with respect"
+" to current wrench at the end-effector."
+msgstr "它使用比例项来跟踪相对于末端执行器当前扭矩的期望扭矩命令。"
+
+#: source/concepts/motion_generators.rst:190
+msgid "Hybrid force-motion controller"
+msgstr "混合力-运动控制器"
+
+#: source/concepts/motion_generators.rst:192
+msgid ""
+"It combines closed-loop force control and operational-space motion control "
+"to compute the desired wrench at the end-effector. It uses selection "
+"matrices that define the unconstrainted and constrained task directions."
+msgstr "它结合了闭环力控制和操作空间运动控制，以计算末端执行器所需的扭矩。它使用选择矩阵来定义无约束和受约束的任务方向。"
+
+#: source/concepts/motion_generators.rst:199
+msgid "Reactive planners"
+msgstr "反应式规划器"
+
+#: source/concepts/motion_generators.rst:201
+msgid ""
+"Typical task-space controllers do not account for motion constraints such as"
+" joint limits, self-collision and environment collision. Instead they rely "
+"on high-level planners (such as RRT) to handle these non-Euclidean "
+"constraints and give joint/task-space way-points to the controller. However,"
+" these methods are often conservative and have undesirable deceleration when"
+" close to an object. More recently, different approaches combine the "
+"constraints directly into an optimization problem, thereby providing a "
+"holistic solution for motion generation and control."
+msgstr ""
+"典型的任务空间控制器并没有考虑诸如关节限制、自碰撞和环境碰撞等运动约束。相反，它们依赖于高级规划器（例如 RRT "
+"）来处理这些非欧几里得约束，并将关节/任务空间的路径点传递给控制器。然而，这些方法通常比较保守，并且在靠近物体时会出现不理想的减速。最近，不同的方法将约束直接整合到优化问题中，从而为运动生成和控制提供了一个整体解决方案。"
+
+#: source/concepts/motion_generators.rst:211
+msgid "Examples of reactive planners include:"
+msgstr "反应式规划器的示例包括："
+
+#: source/concepts/motion_generators.rst:213
+msgid ""
+"**RMPFlow (lula):** An acceleration-based policy that composes various "
+"Reimannian Motion Policies (RMPs) to solve a hierarchy of tasks "
+":cite:p:`cheng2021rmpflow`. It is capable of performing dynamic collision "
+"avoidance while navigating the end-effector to a target."
+msgstr ""
+"**RMPFlow (lula):** 一种基于加速度的策略，通过组合各种黎曼运动策略（RMPs）来解决任务层次结构 "
+":cite:p:`cheng2021rmpflow` 。它能够在将末端执行器导航到目标的同时执行动态避碰。"
+
+#: source/concepts/motion_generators.rst:217
+msgid ""
+"**MPC (OCS2):** A receding horizon control policy based on sequential "
+"linear-quadratic (SLQ) programming. It formulates various constraints into a"
+" single optimization problem via soft-penalties and uses automatic "
+"differentiation to compute derivatives of the system dynamics, constraints "
+"and costs. The MPC formulation for end-effector trajectory tracking in "
+"fixed-arm and mobile manipulators described in "
+":cite:p:`mittal2021articulated` considers a kinematic system model with "
+"joint limits and self-collision avoidance. See the `OCS2 documentation "
+"<https://leggedrobotics.github.io/ocs2/>`_ for the external toolbox and "
+"examples."
+msgstr ""
+"**MPC（OCS2）：** "
+"基于序贯线性二次（SLQ）规划的滚动时域控制策略。它通过软惩罚将各类约束纳入同一优化问题，并使用自动微分计算系统动力学、约束和代价的导数。 "
+":cite:p:`mittal2021articulated` 中用于固定机械臂和移动操作机器人末端轨迹跟踪的 MPC "
+"采用运动学系统模型，考虑关节限位和自碰撞规避。外部工具包和示例见 `OCS2 文档 "
+"<https://leggedrobotics.github.io/ocs2/>`_ 。"
+
+#: source/concepts/motion_generators.rst:227
+msgid ""
+":class:`RmpFlowController` wraps the CPU-based Lula bindings, so its "
+"computation can limit throughput in large batches. It also needs the Lula "
+"library and robot description files; these dependencies are separate from "
+"the selected physics backend."
+msgstr ""
+":class:`RmpFlowController` 包装基于 CPU 的 Lula 绑定，因此大批量计算时可能限制吞吐量。它还需要 Lula "
+"库和机器人描述文件；这些依赖与所选物理后端相互独立。"

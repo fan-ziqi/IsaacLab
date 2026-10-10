@@ -12,27 +12,24 @@ mass matricescomputed by PhysX.
 .. code-block:: bash
 
     # Usage
-    ./isaaclab.sh -p scripts/tutorials/05_controllers/run_osc.py
+    uv run python scripts/tutorials/05_controllers/run_osc.py
 
 """
 
-"""Launch Isaac Sim Simulator first."""
+"""Parse the command-line arguments first."""
 
 import argparse
+from typing import TYPE_CHECKING
 
-from isaaclab.app import AppLauncher
+from isaaclab.app import add_launcher_args, launch_simulation
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Tutorial on using the operational space controller.")
 parser.add_argument("--num_envs", type=int, default=128, help="Number of environments to spawn.")
-# append AppLauncher cli args
-AppLauncher.add_app_launcher_args(parser)
+# append simulation launcher cli args
+add_launcher_args(parser)
 # parse the arguments
 args_cli = parser.parse_args()
-
-# launch omniverse app
-app_launcher = AppLauncher(args_cli)
-simulation_app = app_launcher.app
 
 """Rest everything follows."""
 
@@ -43,9 +40,9 @@ from isaaclab.assets import Articulation, AssetBaseCfg
 from isaaclab.controllers import OperationalSpaceController, OperationalSpaceControllerCfg
 from isaaclab.markers import VisualizationMarkers
 from isaaclab.markers.config import FRAME_MARKER_CFG
-from isaaclab.scene import InteractiveScene, InteractiveSceneCfg
+from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.sensors import ContactSensorCfg
-from isaaclab.utils import configclass
+from isaaclab.utils import clone, configclass, instantiate, replace
 from isaaclab.utils.math import (
     combine_frame_transforms,
     matrix_from_quat,
@@ -53,6 +50,9 @@ from isaaclab.utils.math import (
     quat_inv,
     subtract_frame_transforms,
 )
+
+if TYPE_CHECKING:
+    from isaaclab.scene import InteractiveScene
 
 ##
 # Pre-defined configs
@@ -80,13 +80,13 @@ class SceneCfg(InteractiveSceneCfg):
         prim_path="{ENV_REGEX_NS}/TiltedWall",
         spawn=sim_utils.CuboidCfg(
             size=(2.0, 1.5, 0.01),
-            collision_props=sim_utils.CollisionPropertiesCfg(),
+            collision_props=sim_utils.UsdPhysicsCollisionCfg(),
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0), opacity=0.1),
-            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+            rigid_props=sim_utils.UsdPhysicsRigidBodyCfg(kinematic_enabled=True),
             activate_contact_sensors=True,
         ),
         init_state=AssetBaseCfg.InitialStateCfg(
-            pos=(0.6 + 0.085, 0.0, 0.3), rot=(0.9238795325, 0.0, -0.3826834324, 0.0)
+            pos=(0.6 + 0.085, 0.0, 0.3), rot=(0.0, -0.3826834324, 0.0, 0.9238795325)
         ),
     )
 
@@ -97,15 +97,14 @@ class SceneCfg(InteractiveSceneCfg):
         debug_vis=False,
     )
 
-    robot = FRANKA_PANDA_HIGH_PD_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
-    robot.actuators["panda_shoulder"].stiffness = 0.0
-    robot.actuators["panda_shoulder"].damping = 0.0
-    robot.actuators["panda_forearm"].stiffness = 0.0
-    robot.actuators["panda_forearm"].damping = 0.0
+    robot = replace(FRANKA_PANDA_HIGH_PD_CFG, prim_path="{ENV_REGEX_NS}/Robot")
+    robot.spawn.variants["Physics"] = "physx"
+    robot.actuators["panda_arm"].stiffness = 0.0
+    robot.actuators["panda_arm"].damping = 0.0
     robot.spawn.rigid_props.disable_gravity = True
 
 
-def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
+def run_simulator(sim: sim_utils.SimulationContext, scene: "InteractiveScene"):
     """Runs the simulation loop.
 
     Args:
@@ -139,17 +138,17 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
     osc = OperationalSpaceController(osc_cfg, num_envs=scene.num_envs, device=sim.device)
 
     # Markers
-    frame_marker_cfg = FRAME_MARKER_CFG.copy()
+    frame_marker_cfg = clone(FRAME_MARKER_CFG)
     frame_marker_cfg.markers["frame"].scale = (0.1, 0.1, 0.1)
-    ee_marker = VisualizationMarkers(frame_marker_cfg.replace(prim_path="/Visuals/ee_current"))
-    goal_marker = VisualizationMarkers(frame_marker_cfg.replace(prim_path="/Visuals/ee_goal"))
+    ee_marker = VisualizationMarkers(replace(frame_marker_cfg, prim_path="/Visuals/ee_current"))
+    goal_marker = VisualizationMarkers(replace(frame_marker_cfg, prim_path="/Visuals/ee_goal"))
 
-    # Define targets for the arm
+    # Define targets for the arm (x,y,z,qx,qy,qz,qw)
     ee_goal_pose_set_tilted_b = torch.tensor(
         [
-            [0.6, 0.15, 0.3, 0.0, 0.92387953, 0.0, 0.38268343],
-            [0.6, -0.3, 0.3, 0.0, 0.92387953, 0.0, 0.38268343],
-            [0.8, 0.0, 0.5, 0.0, 0.92387953, 0.0, 0.38268343],
+            [0.6, 0.15, 0.3, 0.92387953, 0.0, 0.38268343, 0.0],
+            [0.6, -0.3, 0.3, 0.92387953, 0.0, 0.38268343, 0.0],
+            [0.8, 0.0, 0.5, 0.92387953, 0.0, 0.38268343, 0.0],
         ],
         device=sim.device,
     )
@@ -179,7 +178,7 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
     robot.update(dt=sim_dt)
 
     # Get the center of the robot soft joint limits
-    joint_centers = torch.mean(robot.data.soft_joint_pos_limits[:, arm_joint_ids, :], dim=-1)
+    joint_centers = torch.mean(robot.data.soft_joint_pos_limits.torch[:, arm_joint_ids, :], dim=-1)
 
     # get the updated states
     (
@@ -209,14 +208,15 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
 
     count = 0
     # Simulation loop
-    while simulation_app.is_running():
+    while sim.is_running():
         # reset every 500 steps
         if count % 500 == 0:
             # reset joint state to default
-            default_joint_pos = robot.data.default_joint_pos.clone()
-            default_joint_vel = robot.data.default_joint_vel.clone()
-            robot.write_joint_state_to_sim(default_joint_pos, default_joint_vel)
-            robot.set_joint_effort_target(zero_joint_efforts)  # Set zero torques in the initial step
+            default_joint_pos = robot.data.default_joint_pos.torch.clone()
+            default_joint_vel = robot.data.default_joint_vel.torch.clone()
+            robot.write_joint_position_to_sim_index(position=default_joint_pos)
+            robot.write_joint_velocity_to_sim_index(velocity=default_joint_vel)
+            robot.set_joint_effort_target_index(target=zero_joint_efforts)  # Set zero torques in the initial step
             robot.write_data_to_sim()
             robot.reset()
             # reset contact sensor
@@ -260,7 +260,7 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
                 nullspace_joint_pos_target=joint_centers,
             )
             # apply actions
-            robot.set_joint_effort_target(joint_efforts, joint_ids=arm_joint_ids)
+            robot.set_joint_effort_target_index(target=joint_efforts, joint_ids=arm_joint_ids)
             robot.write_data_to_sim()
 
         # update marker positions
@@ -280,7 +280,7 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
 # Update robot states
 def update_states(
     sim: sim_utils.SimulationContext,
-    scene: InteractiveScene,
+    scene: "InteractiveScene",
     robot: Articulation,
     ee_frame_idx: int,
     arm_joint_ids: list[int],
@@ -313,31 +313,35 @@ def update_states(
     """
     # obtain dynamics related quantities from simulation
     ee_jacobi_idx = ee_frame_idx - 1
-    jacobian_w = robot.root_physx_view.get_jacobians()[:, ee_jacobi_idx, :, arm_joint_ids]
-    mass_matrix = robot.root_physx_view.get_generalized_mass_matrices()[:, arm_joint_ids, :][:, :, arm_joint_ids]
-    gravity = robot.root_physx_view.get_gravity_compensation_forces()[:, arm_joint_ids]
+    # The J / M / g DoF axis prepends ``num_base_dofs`` floating-base columns
+    # (0 for fixed-base, 6 for floating-base); shift the actuated-joint ids by
+    # ``num_base_dofs`` to address the actuated-joint columns directly.
+    jacobi_joint_ids = [j + robot.num_base_dofs for j in arm_joint_ids]
+    jacobian_w = robot.data.body_link_jacobian_w.torch[:, ee_jacobi_idx, :, jacobi_joint_ids]
+    mass_matrix = robot.data.mass_matrix.torch[:, jacobi_joint_ids, :][:, :, jacobi_joint_ids]
+    gravity = robot.data.gravity_compensation_forces.torch[:, jacobi_joint_ids]
     # Convert the Jacobian from world to root frame
     jacobian_b = jacobian_w.clone()
-    root_rot_matrix = matrix_from_quat(quat_inv(robot.data.root_quat_w))
+    root_rot_matrix = matrix_from_quat(quat_inv(robot.data.root_quat_w.torch))
     jacobian_b[:, :3, :] = torch.bmm(root_rot_matrix, jacobian_b[:, :3, :])
     jacobian_b[:, 3:, :] = torch.bmm(root_rot_matrix, jacobian_b[:, 3:, :])
 
     # Compute current pose of the end-effector
-    root_pos_w = robot.data.root_pos_w
-    root_quat_w = robot.data.root_quat_w
-    ee_pos_w = robot.data.body_pos_w[:, ee_frame_idx]
-    ee_quat_w = robot.data.body_quat_w[:, ee_frame_idx]
+    root_pos_w = robot.data.root_pos_w.torch
+    root_quat_w = robot.data.root_quat_w.torch
+    ee_pos_w = robot.data.body_pos_w.torch[:, ee_frame_idx]
+    ee_quat_w = robot.data.body_quat_w.torch[:, ee_frame_idx]
     ee_pos_b, ee_quat_b = subtract_frame_transforms(root_pos_w, root_quat_w, ee_pos_w, ee_quat_w)
     root_pose_w = torch.cat([root_pos_w, root_quat_w], dim=-1)
     ee_pose_w = torch.cat([ee_pos_w, ee_quat_w], dim=-1)
     ee_pose_b = torch.cat([ee_pos_b, ee_quat_b], dim=-1)
 
     # Compute the current velocity of the end-effector
-    ee_vel_w = robot.data.body_vel_w[:, ee_frame_idx, :]  # Extract end-effector velocity in the world frame
-    root_vel_w = robot.data.root_vel_w  # Extract root velocity in the world frame
+    ee_vel_w = robot.data.body_vel_w.torch[:, ee_frame_idx, :]  # Extract end-effector velocity in the world frame
+    root_vel_w = robot.data.root_vel_w.torch  # Extract root velocity in the world frame
     relative_vel_w = ee_vel_w - root_vel_w  # Compute the relative velocity in the world frame
-    ee_lin_vel_b = quat_apply_inverse(robot.data.root_quat_w, relative_vel_w[:, 0:3])  # From world to root frame
-    ee_ang_vel_b = quat_apply_inverse(robot.data.root_quat_w, relative_vel_w[:, 3:6])
+    ee_lin_vel_b = quat_apply_inverse(robot.data.root_quat_w.torch, relative_vel_w[:, 0:3])  # From world to root frame
+    ee_ang_vel_b = quat_apply_inverse(robot.data.root_quat_w.torch, relative_vel_w[:, 3:6])
     ee_vel_b = torch.cat([ee_lin_vel_b, ee_ang_vel_b], dim=-1)
 
     # Calculate the contact force
@@ -346,14 +350,14 @@ def update_states(
     contact_forces.update(sim_dt)  # update contact sensor
     # Calculate the contact force by averaging over last four time steps (i.e., to smoothen) and
     # taking the max of three surfaces as only one should be the contact of interest
-    ee_force_w, _ = torch.max(torch.mean(contact_forces.data.net_forces_w_history, dim=1), dim=1)
+    ee_force_w, _ = torch.max(torch.mean(contact_forces.data.net_normal_forces_w_history, dim=1), dim=1)
 
     # This is a simplification, only for the sake of testing.
     ee_force_b = ee_force_w
 
     # Get joint positions and velocities
-    joint_pos = robot.data.joint_pos[:, arm_joint_ids]
-    joint_vel = robot.data.joint_vel[:, arm_joint_ids]
+    joint_pos = robot.data.joint_pos.torch[:, arm_joint_ids]
+    joint_vel = robot.data.joint_vel.torch[:, arm_joint_ids]
 
     return (
         jacobian_b,
@@ -372,7 +376,7 @@ def update_states(
 # Update the target commands
 def update_target(
     sim: sim_utils.SimulationContext,
-    scene: InteractiveScene,
+    scene: "InteractiveScene",
     osc: OperationalSpaceController,
     root_pose_w: torch.tensor,
     ee_target_set: torch.tensor,
@@ -461,24 +465,25 @@ def convert_to_task_frame(osc: OperationalSpaceController, command: torch.tensor
 
 def main():
     """Main function."""
-    # Load kit helper
+    # Configure the simulation
     sim_cfg = sim_utils.SimulationCfg(dt=0.01, device=args_cli.device)
-    sim = sim_utils.SimulationContext(sim_cfg)
-    # Set main camera
-    sim.set_camera_view([2.5, 2.5, 2.5], [0.0, 0.0, 0.0])
-    # Design scene
-    scene_cfg = SceneCfg(num_envs=args_cli.num_envs, env_spacing=2.0)
-    scene = InteractiveScene(scene_cfg)
-    # Play the simulator
-    sim.reset()
-    # Now we are ready!
-    print("[INFO]: Setup complete...")
-    # Run the simulator
-    run_simulator(sim, scene)
+    # Launch the simulator runtime that the configuration needs
+    with launch_simulation(sim_cfg, args_cli):
+        # Initialize the simulation context
+        sim = sim_utils.SimulationContext(sim_cfg)
+        # Set main camera
+        sim.set_camera_view([2.5, 2.5, 2.5], [0.0, 0.0, 0.0])
+        # Design scene
+        scene_cfg = SceneCfg(num_envs=args_cli.num_envs, env_spacing=2.0)
+        scene = instantiate(scene_cfg)
+        # Play the simulator
+        sim.reset()
+        # Now we are ready!
+        print("[INFO]: Setup complete...")
+        # Run the simulator
+        run_simulator(sim, scene)
 
 
 if __name__ == "__main__":
     # run the main function
     main()
-    # close sim app
-    simulation_app.close()

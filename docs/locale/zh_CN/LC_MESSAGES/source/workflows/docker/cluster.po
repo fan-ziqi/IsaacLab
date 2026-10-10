@@ -1,0 +1,422 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/workflows/docker/cluster.rst:4
+msgid "Running on HPC clusters"
+msgstr "在 HPC 集群上运行"
+
+#: source/workflows/docker/cluster.rst:6
+msgid ""
+"Clusters are a great way to speed up training and evaluation of learning "
+"algorithms. While the Isaac Lab Docker image can be used to run jobs on a "
+"cluster, many clusters only support singularity images. This is because "
+"`singularity`_ is designed for ease-of-use on shared multi-user systems and "
+"high performance computing (HPC) environments. It does not require root "
+"privileges to run containers and can be used to run user-defined containers."
+msgstr ""
+"集群是加快训练和学习算法评估的好方法。尽管 Isaac Lab Docker 镜像可用于在集群上运行作业，但许多集群只支持 singularity "
+"镜像。这是因为 `singularity`_ 专为共享多用户系统和高性能计算（HPC）环境的易用性而设计。它不需要 root "
+"权限来运行容器，并且可以用于运行用户定义的容器。"
+
+#: source/workflows/docker/cluster.rst:13
+msgid ""
+"Singularity is compatible with all Docker images. This page describes how to"
+" convert the :ref:`Isaac Lab Docker image <deployment-docker>` into a "
+"singularity image and use it to submit jobs to a cluster."
+msgstr ""
+"Singularity 兼容所有 Docker 镜像。本页介绍如何将 :ref:`Isaac Lab Docker 镜像 <deployment-"
+"docker>` 转换为 Singularity 镜像，并用它向集群提交作业。"
+
+#: source/workflows/docker/cluster.rst:19
+msgid ""
+"Cluster setup varies across different institutions. The following "
+"instructions have been tested on the `ETH Zurich Euler`_ cluster (which uses"
+" the SLURM workload manager), and the IIT Genoa Franklin cluster (which uses"
+" PBS workload manager)."
+msgstr ""
+"集群设置因不同的机构而异。以下说明已在使用 SLURM 工作负载管理器的 `ETH Zurich Euler`_ 集群和使用 PBS 工作负载管理器的 "
+"IIT Genoa Franklin 集群上进行了测试。"
+
+#: source/workflows/docker/cluster.rst:23
+msgid ""
+"The instructions may need to be adapted for other clusters. If you have "
+"successfully adapted the instructions for another cluster, please consider "
+"contributing to the documentation."
+msgstr "指示可能需要针对其他集群进行调整。如果您已成功地为另一个集群调整了指示，请考虑为文档做出贡献。"
+
+#: source/workflows/docker/cluster.rst:28
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/workflows/docker/cluster.rst:30
+msgid ""
+"In order to export the Docker Image to a singularity image, `apptainer`_ is "
+"required. A detailed overview of the installation procedure for "
+"``apptainer`` can be found in its `documentation`_. For convenience, we "
+"summarize the steps here for a local installation:"
+msgstr ""
+"为了将 Docker 镜像导出为 singularity 镜像，需要使用 `apptainer`_ 。关于 ``apptainer`` "
+"的安装过程的详细概述可以在其 `文档`_ 中找到。为方便起见，我们在这里总结了本地安装的步骤: "
+
+#: source/workflows/docker/cluster.rst:42
+msgid ""
+"For simplicity, we recommend that an SSH connection is set up between the "
+"local development machine and the cluster. Such a connection will simplify "
+"the file transfer and prevent the user cluster password from being requested"
+" multiple times."
+msgstr "为简单起见，我们建议在本地开发机器和集群之间建立 SSH 连接。这样的连接将简化文件传输，避免用户多次请求用户集群密码。"
+
+#: source/workflows/docker/cluster.rst:47
+msgid "The workflow has been tested with:"
+msgstr "工作流已针对以下进行了测试"
+
+#: source/workflows/docker/cluster.rst:49
+msgid "``apptainer version 1.2.5-1.el7`` and ``docker version 24.0.7``"
+msgstr "``apptainer version 1.2.5-1.el7`` 和 ``docker version 24.0.7``"
+
+#: source/workflows/docker/cluster.rst:50
+msgid "``apptainer version 1.3.4`` and ``docker version 27.3.1``"
+msgstr "``apptainer version 1.3.4`` 和 ``docker version 27.3.1``"
+
+#: source/workflows/docker/cluster.rst:52
+msgid "In the case of issues, please try to switch to those versions."
+msgstr "在出现问题的情况下，请尝试切换到这些版本。"
+
+#: source/workflows/docker/cluster.rst:55
+msgid "Cluster configuration"
+msgstr "集群配置"
+
+#: source/workflows/docker/cluster.rst:57
+msgid ""
+"Configure the cluster-specific parameters in "
+"``docker/cluster/.env.cluster``. Each parameter is documented inline in the "
+"file:"
+msgstr "在 ``docker/cluster/.env.cluster`` 中配置集群专用参数。文件内有各参数的说明："
+
+#: source/workflows/docker/cluster.rst:63
+msgid "A few constraints are worth calling out:"
+msgstr "需注意以下约束："
+
+#: source/workflows/docker/cluster.rst:65
+msgid ""
+"``CLUSTER_ISAAC_SIM_CACHE_DIR`` must end in ``docker-isaac-sim``. It is "
+"copied to the compute node and mounted into the singularity container, which"
+" speeds up simulation startup."
+msgstr ""
+"``CLUSTER_ISAAC_SIM_CACHE_DIR`` 必须以 ``docker-isaac-sim`` 结尾。它会复制到计算节点，并挂载到 "
+"Singularity 容器内，以加快仿真启动。"
+
+#: source/workflows/docker/cluster.rst:67
+msgid ""
+"``CLUSTER_ISAACLAB_DIR`` must end in ``isaaclab``. On submission, the latest"
+" local changes are copied to ``${CLUSTER_ISAACLAB_DIR}_${datetime}``, so "
+"several jobs can run different code versions at once. Logs are written back "
+"to the permanent ``CLUSTER_ISAACLAB_DIR``."
+msgstr ""
+"``CLUSTER_ISAACLAB_DIR`` 必须以 ``isaaclab`` 结尾。提交时，最新本地修改复制到 "
+"``${CLUSTER_ISAACLAB_DIR}_${datetime}`` ，使多个作业能同时运行不同代码版本。日志写回固定的 "
+"``CLUSTER_ISAACLAB_DIR`` 。"
+
+#: source/workflows/docker/cluster.rst:70
+msgid ""
+"``REMOVE_CODE_COPY_AFTER_JOB`` deletes only that code copy, never the logs. "
+"Enable it to save disk space on the cluster."
+msgstr "``REMOVE_CODE_COPY_AFTER_JOB`` 只删除该代码副本，不删除日志。启用它可节省集群磁盘空间。"
+
+#: source/workflows/docker/cluster.rst:73
+msgid ""
+"When a ``job`` is submitted, it will also use variables defined in "
+"``docker/.env.base``, though these should be correct by default."
+msgstr ""
+"当一个 ``job`` 被提交时，它还会使用在 ``docker/.env.base`` 中定义的变量，尽管这些变量默认情况下应该是正确的。"
+
+#: source/workflows/docker/cluster.rst:77
+msgid "Exporting the Apptainer image"
+msgstr "导出 Apptainer 镜像"
+
+#: source/workflows/docker/cluster.rst:79
+msgid ""
+"Next, we need to export the Docker image to a singularity image and upload "
+"it to the cluster. This step is only required once when the first job is "
+"submitted or when the Docker image is updated. For instance, due to an "
+"upgrade of the Isaac Sim version, or additional requirements for your "
+"project."
+msgstr ""
+"接下来，我们需要将 Docker 镜像导出为 singularity 镜像并上传到 Cluster。这一步仅在首次提交作业或更新 Docker "
+"镜像时需要。例如，由于升级 Isaac Sim 版本，或者项目的其他要求。"
+
+#: source/workflows/docker/cluster.rst:84
+msgid "To export to a singularity image, execute the following command:"
+msgstr "要导出为 singularity 镜像，请执行以下命令: "
+
+#: source/workflows/docker/cluster.rst:90
+msgid ""
+"This command will create a singularity image under ``docker/exports`` "
+"directory and upload it to the defined location on the cluster. It requires "
+"that you have previously built the image with the ``container.py`` "
+"interface. Be aware that creating the singularity image can take a while. "
+"``[profile]`` is an optional argument that specifies the container profile "
+"to be used. If no profile is specified, the default profile ``base`` will be"
+" used."
+msgstr ""
+"该命令将在 ``docker/exports`` 目录下创建一个 singularity 镜像，并将其上传到集群上定义的位置。它要求您先前使用 "
+"``container.py`` 接口构建了镜像。请注意，创建 singularity 镜像可能需要一段时间。 ``[profile]`` "
+"是一个可选参数，用于指定要使用的容器配置文件。如果未指定配置文件，则将使用默认配置文件 ``base`` 。"
+
+#: source/workflows/docker/cluster.rst:98
+msgid ""
+"By default, the singularity image is created without root access by "
+"providing the ``--fakeroot`` flag to the ``apptainer build`` command. In "
+"case the image creation fails, you can try to create it with root access by "
+"removing the flag in ``docker/cluster/cluster_interface.sh``."
+msgstr ""
+"默认情况下，通过在 ``apptainer build`` 命令中提供 ``--fakeroot`` 标志，无需 root 访问权限即可创建 "
+"singularity 镜像。如果镜像创建失败，您可以尝试通过在 ``docker/cluster/cluster_interface.sh`` "
+"中删除该标志以带有 root 访问权限创建它。"
+
+#: source/workflows/docker/cluster.rst:103
+msgid "Defining job parameters"
+msgstr "定义作业参数"
+
+#: source/workflows/docker/cluster.rst:105
+msgid ""
+"The job parameters need to be defined based on the job scheduler used by "
+"your cluster. You only need to update the appropriate script for the "
+"scheduler available to you."
+msgstr "作业参数需要根据集群使用的作业调度器进行定义。您只需要更新适用于您的调度器的适当脚本。"
+
+#: source/workflows/docker/cluster.rst:109
+msgid "SLURM"
+msgstr "SLURM"
+
+#: source/workflows/docker/cluster.rst:111
+msgid ""
+"The job parameters are defined inside the "
+"``docker/cluster/submit_job_slurm.sh``. A typical SLURM operation requires "
+"specifying the number of CPUs and GPUs, the memory, and the time limit. For "
+"more information, please check the `SLURM documentation`_."
+msgstr ""
+"作业参数在 ``docker/cluster/submit_job_slurm.sh`` 中定义。典型的 SLURM 操作需要指定 CPU 和 GPU "
+"的数量，内存和时间限制。有关更多信息，请查看 `SLURM 文档`_ 。"
+
+#: source/workflows/docker/cluster.rst:115
+#: source/workflows/docker/cluster.rst:143
+msgid "The default configuration is as follows:"
+msgstr "默认配置如下: "
+
+#: source/workflows/docker/cluster.rst:123
+msgid ""
+"An essential requirement for the cluster is that the compute node has access"
+" to the internet at all times. This is required to load assets from the "
+"Nucleus server. For some cluster architectures, extra modules must be loaded"
+" to allow internet access."
+msgstr ""
+"集群的一个重要要求是计算节点始终可以访问互联网。这是从 Nucleus "
+"服务器加载资产所需的。对于某些集群体系结构，必须加载额外的模块才能允许访问互联网。"
+
+#: source/workflows/docker/cluster.rst:127
+msgid ""
+"For instance, on ETH Zurich Euler cluster, the ``eth_proxy`` module needs to"
+" be loaded. This can be done by adding the following line to the "
+"``submit_job_slurm.sh`` script:"
+msgstr ""
+"例如，在 ETH Zurich Euler 集群上，需要加载 ``eth_proxy`` 模块。这可以通过向 "
+"``submit_job_slurm.sh`` 脚本添加以下行来完成: "
+
+#: source/workflows/docker/cluster.rst:137
+msgid "PBS"
+msgstr "PBS"
+
+#: source/workflows/docker/cluster.rst:139
+msgid ""
+"The job parameters are defined inside the "
+"``docker/cluster/submit_job_pbs.sh``. A typical PBS operation requires "
+"specifying the number of CPUs and GPUs, and the time limit. For more "
+"information, please check the `PBS Official Site`_."
+msgstr ""
+"作业参数在 ``docker/cluster/submit_job_pbs.sh`` 中定义。典型的 PBS 操作需要指定 CPU 和 GPU "
+"的数量以及时间限制。有关更多信息，请查看 `PBS 官方网站`_ 。"
+
+#: source/workflows/docker/cluster.rst:152
+msgid "Submitting a job"
+msgstr "提交作业"
+
+#: source/workflows/docker/cluster.rst:154
+msgid "To submit a job on the cluster, the following command can be used:"
+msgstr "要在集群上提交作业，可以使用以下命令: "
+
+#: source/workflows/docker/cluster.rst:160
+msgid ""
+"This command will copy the latest changes in your code to the cluster and "
+"submit a job. Please ensure that your Python executable's output is stored "
+"under ``isaaclab/logs`` as this directory is synced between the compute node"
+" and ``CLUSTER_ISAACLAB_DIR``."
+msgstr ""
+"此命令将会将您代码的最新更改复制到集群并提交一个作业。请确保您的 Python 可执行文件的输出存储在 ``isaaclab/logs`` "
+"下，因为该目录将再次从计算节点复制到 ``CLUSTER_ISAACLAB_DIR`` 。"
+
+#: source/workflows/docker/cluster.rst:164
+msgid ""
+"``[profile]`` is an optional argument that specifies which singularity image"
+" corresponding to the  container profile will be used. If no profile is "
+"specified, the default profile ``base`` will be used. The profile has be "
+"defined directlty after the ``job`` command. All other arguments are passed "
+"to the Python executable. If no profile is defined, all arguments are passed"
+" to the Python executable."
+msgstr ""
+"``[profile]`` 是一个可选参数，用于指定使用哪个与容器配置文件对应的 singularity 镜像。如果未指定配置文件，将使用默认配置文件 "
+"``base`` 。该配置文件必须紧跟在 ``job`` 命令之后定义。所有其他参数都会传递给 Python "
+"可执行文件。如果未定义配置文件，则所有参数都会传递给 Python 可执行文件。"
+
+#: source/workflows/docker/cluster.rst:169
+msgid ""
+"The training arguments are passed to the Python executable. As an example, "
+"the standard ANYmal rough terrain locomotion training can be executed with "
+"the following command:"
+msgstr "训练参数将传递给 Python 可执行文件。例如，标准的 ANYmal 粗糙地形运动训练可以使用以下命令执行: "
+
+#: source/workflows/docker/cluster.rst:176
+msgid ""
+"The above will, in addition, also render videos of the training progress and"
+" store them under ``isaaclab/logs`` directory."
+msgstr "上述命令还会渲染训练进度的视频，并将其存储在 ``isaaclab/logs`` 目录下。"
+
+#: source/workflows/docker/cluster.rst:179
+msgid "Submitting to OSMO"
+msgstr "提交到 OSMO"
+
+#: source/workflows/docker/cluster.rst:181
+msgid ""
+"`NVIDIA OSMO`_ is a cloud-native orchestration platform for scheduling "
+"robotics workloads. Unlike the SLURM and PBS workflows above, it runs the "
+"Isaac Lab Docker image directly, so no singularity conversion is needed and "
+"there is no code copy step -- the image is the unit of deployment."
+msgstr ""
+"`NVIDIA OSMO`_ 是调度机器人负载的云原生编排平台。与上述 SLURM、PBS 工作流不同，它直接运行 Isaac Lab Docker "
+"镜像，无需转换为 Singularity，也不复制代码；镜像本身就是部署单元。"
+
+#: source/workflows/docker/cluster.rst:185
+msgid ""
+"The workflow definition lives in "
+"``docker/cluster/osmo_multi_gpu_workflow.yaml``. It requests a single node "
+"and scales training across the GPUs on that node through the "
+":ref:`train_multigpu <train_multigpu-command>` command. The following "
+"parameters can be overridden at submission time:"
+msgstr ""
+"工作流定义位于 ``docker/cluster/osmo_multi_gpu_workflow.yaml`` 。它申请单个节点，并通过 "
+":ref:`train_multigpu <train_multigpu-command>` 在节点内多个 GPU 上扩展训练。提交时可覆盖以下参数："
+
+#: source/workflows/docker/cluster.rst:194
+msgid "Parameter"
+msgstr "参数"
+
+#: source/workflows/docker/cluster.rst:195
+msgid "Description"
+msgstr "描述"
+
+#: source/workflows/docker/cluster.rst:196
+msgid "image"
+msgstr "image"
+
+#: source/workflows/docker/cluster.rst:197
+msgid ""
+"The Isaac Lab container image to run. Defaults to the released "
+"``nvcr.io/nvidia/isaac-lab:3.0.0-rc1`` image. Note that the repository does "
+"not publish a ``latest`` tag, so this must name an explicit version."
+msgstr ""
+"要运行的 Isaac Lab 容器镜像，默认为已发布的 ``nvcr.io/nvidia/isaac-lab:3.0.0-rc1`` 。该仓库不发布 "
+"``latest`` 标签，必须指定明确版本。"
+
+#: source/workflows/docker/cluster.rst:200
+msgid "rl_library"
+msgstr "rl_library"
+
+#: source/workflows/docker/cluster.rst:201
+msgid "The RL library used for training. Defaults to ``rsl_rl``."
+msgstr "训练使用的强化学习库，默认为 ``rsl_rl`` 。"
+
+#: source/workflows/docker/cluster.rst:202
+msgid "num_gpu"
+msgstr "num_gpu"
+
+#: source/workflows/docker/cluster.rst:203
+msgid ""
+"The number of GPUs to train on. When set to ``1``, the single-process "
+"``train`` entry point is used instead of ``train_multigpu``."
+msgstr "用于训练的 GPU 数量。设为 ``1`` 时，使用单进程 ``train`` 入口，而非 ``train_multigpu`` 。"
+
+#: source/workflows/docker/cluster.rst:205
+msgid "num_cpu"
+msgstr "num_cpu"
+
+#: source/workflows/docker/cluster.rst:206
+msgid ""
+"The number of CPUs requested for the node. These are split evenly across the"
+" per-GPU worker processes via ``OMP_NUM_THREADS``."
+msgstr "为节点申请的 CPU 数量，通过 ``OMP_NUM_THREADS`` 平均分配到各 GPU 工作进程。"
+
+#: source/workflows/docker/cluster.rst:208
+msgid "memory"
+msgstr "memory"
+
+#: source/workflows/docker/cluster.rst:209
+msgid "The amount of memory requested for the node, in GiB."
+msgstr "为节点申请的内存，单位为 GiB。"
+
+#: source/workflows/docker/cluster.rst:210
+msgid "storage"
+msgstr "storage"
+
+#: source/workflows/docker/cluster.rst:211
+msgid "The amount of scratch storage requested for the node, in GiB."
+msgstr "为节点申请的临时存储空间，单位为 GiB。"
+
+#: source/workflows/docker/cluster.rst:212
+msgid "platform"
+msgstr "platform"
+
+#: source/workflows/docker/cluster.rst:213
+msgid "The OSMO platform (node type) to schedule on, e.g. ``dgx-h100``."
+msgstr "作业调度到的 OSMO 平台（节点类型），例如 ``dgx-h100`` 。"
+
+#: source/workflows/docker/cluster.rst:214
+msgid "master_port"
+msgstr "master_port"
+
+#: source/workflows/docker/cluster.rst:215
+msgid ""
+"The port used by the torchrun rendezvous. Only relevant when ``num_gpu`` is "
+"greater than 1."
+msgstr "torchrun 汇合使用的端口，仅在 ``num_gpu`` 大于 1 时相关。"
+
+#: source/workflows/docker/cluster.rst:216
+msgid "args"
+msgstr "args"
+
+#: source/workflows/docker/cluster.rst:217
+msgid ""
+"The arguments forwarded to the training script, e.g. ``--task <task-name> "
+"--num_envs 4096``. No visualizer is requested by the workflow, so training "
+"runs headless."
+msgstr ""
+"转交给训练脚本的参数，例如 ``--task <task-name> --num_envs 4096`` "
+"。工作流不请求可视化器，因此训练以无界面模式运行。"
+
+#: source/workflows/docker/cluster.rst:220
+msgid "To submit a job, use the ``osmo`` CLI:"
+msgstr "通过 ``osmo`` 命令行提交作业："

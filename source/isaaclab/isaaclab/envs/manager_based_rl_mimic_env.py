@@ -8,8 +8,8 @@ from collections.abc import Sequence
 
 import torch
 
-import isaaclab.utils.math as PoseUtils
-from isaaclab.envs import ManagerBasedRLEnv
+from ..utils import math as PoseUtils
+from . import ManagerBasedRLEnv
 
 
 def optional_method(func):
@@ -117,13 +117,14 @@ class ManagerBasedRLMimicEnv(ManagerBasedRLEnv):
             env_ids = slice(None)
 
         rigid_object_states = self.scene.get_state(is_relative=True)["rigid_object"]
-        object_pose_matrix = dict()
+        object_pose_matrix = {}
         for obj_name, obj_state in rigid_object_states.items():
             object_pose_matrix[obj_name] = PoseUtils.make_pose(
                 obj_state["root_pose"][env_ids, :3], PoseUtils.matrix_from_quat(obj_state["root_pose"][env_ids, 3:7])
             )
         return object_pose_matrix
 
+    @optional_method
     def get_subtask_start_signals(self, env_ids: Sequence[int] | None = None) -> dict[str, torch.Tensor]:
         """
         Gets a dictionary of start signal flags for each subtask in a task. The flag is 1
@@ -140,6 +141,7 @@ class ManagerBasedRLMimicEnv(ManagerBasedRLEnv):
         """
         raise NotImplementedError
 
+    @optional_method
     def get_subtask_term_signals(self, env_ids: Sequence[int] | None = None) -> dict[str, torch.Tensor]:
         """
         Gets a dictionary of termination signal flags for each subtask in a task. The flag is 1

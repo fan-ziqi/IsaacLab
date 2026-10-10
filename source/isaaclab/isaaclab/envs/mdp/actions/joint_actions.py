@@ -14,14 +14,13 @@ import torch
 import isaaclab.utils.string as string_utils
 from isaaclab.assets.articulation import Articulation
 from isaaclab.managers.action_manager import ActionTerm
+from isaaclab.utils import index_fill_
 
 if TYPE_CHECKING:
-    from isaaclab.envs import ManagerBasedEnv
-    from isaaclab.envs.utils.io_descriptors import GenericActionIODescriptor
-
+    from ... import ManagerBasedEnv
+    from ...utils.io_descriptors import GenericActionIODescriptor
     from . import actions_cfg
 
-# import logger
 logger = logging.getLogger(__name__)
 
 
@@ -62,10 +61,11 @@ class JointAction(ActionTerm):
         super().__init__(cfg, env)
 
         # resolve the joints over which the action term is applied
-        self._joint_ids, self._joint_names = self._asset.find_joints(
-            self.cfg.joint_names, preserve_order=self.cfg.preserve_order
+        joint_ids, self._joint_names = self._asset.find_joints(
+            self.cfg.joint_names, preserve_order=self.cfg.preserve_order, as_proxy=True
         )
-        self._num_joints = len(self._joint_ids)
+        self._num_joints = len(joint_ids)
+        self._joint_ids = joint_ids.torch
         # log the resolved joint names for debugging
         logger.info(
             f"Resolved joint names for the action term {self.__class__.__name__}:"
@@ -170,15 +170,14 @@ class JointAction(ActionTerm):
         # store the raw actions
         self._raw_actions[:] = actions
         # apply the affine transformations
-        self._processed_actions = self._raw_actions * self._scale + self._offset
+        self._processed_actions = self._raw_actions * self._scale
+        self._processed_actions.add_(self._offset)
         # clip actions
         if self.cfg.clip is not None:
-            self._processed_actions = torch.clamp(
-                self._processed_actions, min=self._clip[:, :, 0], max=self._clip[:, :, 1]
-            )
+            self._processed_actions.clamp_(min=self._clip[:, :, 0], max=self._clip[:, :, 1])
 
     def reset(self, env_ids: Sequence[int] | None = None) -> None:
-        self._raw_actions[env_ids] = 0.0
+        index_fill_(self._raw_actions, env_ids, 0.0)
 
 
 class JointPositionAction(JointAction):
@@ -192,11 +191,11 @@ class JointPositionAction(JointAction):
         super().__init__(cfg, env)
         # use default joint positions as offset
         if cfg.use_default_offset:
-            self._offset = self._asset.data.default_joint_pos[:, self._joint_ids].clone()
+            self._offset = self._asset.data.default_joint_pos.torch[:, self._joint_ids].clone()
 
     def apply_actions(self):
         # set position targets
-        self._asset.set_joint_position_target(self.processed_actions, joint_ids=self._joint_ids)
+        self._asset.set_joint_position_target_index(target=self.processed_actions, joint_ids=self._joint_ids)
 
 
 class RelativeJointPositionAction(JointAction):
@@ -227,9 +226,9 @@ class RelativeJointPositionAction(JointAction):
 
     def apply_actions(self):
         # add current joint positions to the processed actions
-        current_actions = self.processed_actions + self._asset.data.joint_pos[:, self._joint_ids]
+        current_actions = self.processed_actions + self._asset.data.joint_pos.torch[:, self._joint_ids]
         # set position targets
-        self._asset.set_joint_position_target(current_actions, joint_ids=self._joint_ids)
+        self._asset.set_joint_position_target_index(target=current_actions, joint_ids=self._joint_ids)
 
 
 class JointVelocityAction(JointAction):
@@ -243,11 +242,11 @@ class JointVelocityAction(JointAction):
         super().__init__(cfg, env)
         # use default joint velocity as offset
         if cfg.use_default_offset:
-            self._offset = self._asset.data.default_joint_vel[:, self._joint_ids].clone()
+            self._offset = self._asset.data.default_joint_vel.torch[:, self._joint_ids].clone()
 
     def apply_actions(self):
         # set joint velocity targets
-        self._asset.set_joint_velocity_target(self.processed_actions, joint_ids=self._joint_ids)
+        self._asset.set_joint_velocity_target_index(target=self.processed_actions, joint_ids=self._joint_ids)
 
 
 class JointEffortAction(JointAction):
@@ -261,4 +260,4 @@ class JointEffortAction(JointAction):
 
     def apply_actions(self):
         # set joint effort targets
-        self._asset.set_joint_effort_target(self.processed_actions, joint_ids=self._joint_ids)
+        self._asset.set_joint_effort_target_index(target=self.processed_actions, joint_ids=self._joint_ids)

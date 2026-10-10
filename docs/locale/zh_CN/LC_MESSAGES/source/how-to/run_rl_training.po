@@ -1,0 +1,271 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/run_rl_training.rst:6
+msgid "Training with an RL Agent"
+msgstr "与 RL Agent 进行训练"
+
+#: source/how-to/run_rl_training.rst:10
+msgid ""
+"In the previous tutorials, we covered how to define an RL task environment, "
+"register it into the ``gym`` registry, and interact with it using a random "
+"agent. We now move on to the next step: training an RL agent to solve the "
+"task."
+msgstr ""
+"在之前的教程中，我们介绍了如何定义一个 RL 任务环境、将其注册到 ``gym`` 注册表中，并使用一个随机 agent "
+"与其交互。现在我们继续进行下一步: 训练一个 RL agent 来解决这个任务。"
+
+#: source/how-to/run_rl_training.rst:14
+msgid ""
+"Although the :class:`envs.ManagerBasedRLEnv` conforms to the "
+":class:`gymnasium.Env` interface, it is not exactly a ``gym`` environment. "
+"The input and outputs of the environment are not numpy arrays, but rather "
+"based on torch tensors with the first dimension being the number of "
+"environment instances."
+msgstr ""
+"尽管 :class:`envs.ManagerBasedRLEnv` 符合 :class:`gymnasium.Env` 接口，但它并不完全是一个 "
+"``gym`` 环境。环境的输入和输出不是 numpy 数组，而是基于 torch tensors，其中第一个维度是环境实例的数量。"
+
+#: source/how-to/run_rl_training.rst:19
+msgid ""
+"Additionally, most RL libraries expect their own variation of an environment"
+" interface. For example, `Stable-Baselines3`_ expects the environment to "
+"conform to its `VecEnv API`_ which expects a list of numpy arrays instead of"
+" a single tensor. Similarly, `RSL-RL`_, `RL-Games`_ and `SKRL`_ expect a "
+"different interface. Since there is no one-size-fits-all solution, we do not"
+" base the :class:`envs.ManagerBasedRLEnv` on any particular learning "
+"library. Instead, we implement wrappers to convert the environment into the "
+"expected interface. These are specified in the :mod:`isaaclab_rl` module."
+msgstr ""
+"此外，大多数 RL 库都期望其自己的环境接口变体。例如， `Stable-Baselines3`_ 期望环境符合其 `VecEnv API`_ ，该 "
+"API 期望接收一个 numpy 数组列表而不是一个单一的张量。类似地， `RSL-RL`_ 、 `RL-Games`_ 和 `SKRL`_ "
+"也预期另一个接口。由于没有一种适合所有情况的解决方案，我们不将 :class:`envs.ManagerBasedRLEnv` "
+"基于任何特定的学习库。相反，我们实现了包装器来将环境转换为所期望的接口。这些包装器在 :mod:`isaaclab_rl` 模块中指定。"
+
+#: source/how-to/run_rl_training.rst:27
+msgid ""
+"In this tutorial, we will use `Stable-Baselines3`_ to train an RL agent to "
+"solve the cartpole balancing task."
+msgstr "在本教程中，我们将使用 `Stable-Baselines3`_ 来训练一个 RL agent 来解决 cartpole 平衡任务。"
+
+#: source/how-to/run_rl_training.rst:32
+msgid ""
+"Wrapping the environment with the respective learning framework's wrapper "
+"should happen in the end, i.e. after all other wrappers have been applied. "
+"This is because the learning framework's wrapper modifies the interpretation"
+" of environment's APIs which may no longer be compatible with "
+":class:`gymnasium.Env`."
+msgstr ""
+"在应用所有其他包装器后，应在最后使用相应学习框架的包装器包装环境。这是因为学习框架的包装器会修改环境 API 的解释，这可能不再与 "
+":class:`gymnasium.Env` 兼容。"
+
+#: source/how-to/run_rl_training.rst:37
+msgid "The Code"
+msgstr "代码"
+
+#: source/how-to/run_rl_training.rst:39
+msgid ""
+"For this tutorial, we use the training implementation from `Stable-"
+"Baselines3`_ workflow in the ``isaaclab_rl.entrypoints.backends.train_sb3`` "
+"module."
+msgstr ""
+"本教程使用 `Stable-Baselines3`_ 工作流的训练实现，位于 "
+"``isaaclab_rl.entrypoints.backends.train_sb3`` 模块。"
+
+#: source/how-to/run_rl_training.rst:0
+msgid "Code for train_sb3.py"
+msgstr "train_sb3.py 代码"
+
+#: source/how-to/run_rl_training.rst:51
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: source/how-to/run_rl_training.rst:55
+msgid ""
+"Most of the code above is boilerplate code to create logging directories, "
+"saving the parsed configurations, and setting up different Stable-Baselines3"
+" components. For this tutorial, the important part is creating the "
+"environment and wrapping it with the Stable-Baselines3 wrapper."
+msgstr ""
+"上面的大部分代码是创建日志目录、保存解析的配置和设置不同的 Stable-Baselines3 组件的样板代码。对于本教程，重要的部分是创建环境并使用 "
+"Stable-Baselines3 包装器对其进行包装。"
+
+#: source/how-to/run_rl_training.rst:59
+msgid "There are three wrappers used in the code above:"
+msgstr "代码中使用了三个包装器: "
+
+#: source/how-to/run_rl_training.rst:61
+msgid ""
+":class:`gymnasium.wrappers.RecordVideo`: This wrapper records a video of the"
+" environment and saves it to the specified directory. This is useful for "
+"visualizing the agent's behavior during training."
+msgstr ""
+":class:`gymnasium.wrappers.RecordVideo`: 这个包装器记录环境的视频并将其保存到指定目录。这对于在训练过程中可视化"
+" agent 的行为非常有用。"
+
+#: source/how-to/run_rl_training.rst:64
+msgid ""
+":class:`wrappers.sb3.Sb3VecEnvWrapper`: This wrapper converts the "
+"environment into a Stable-Baselines3 compatible environment."
+msgstr ""
+":class:`wrappers.sb3.Sb3VecEnvWrapper`: 这个包装器将环境转换为 Stable-Baselines3 兼容的环境。"
+
+#: source/how-to/run_rl_training.rst:66
+msgid ""
+"`stable_baselines3.common.vec_env.VecNormalize`_: This wrapper normalizes "
+"the environment's observations and rewards."
+msgstr ""
+"`stable_baselines3.common.vec_env.VecNormalize`_: 这个包装器对环境的观测和奖励进行标准化。"
+
+#: source/how-to/run_rl_training.rst:69
+msgid ""
+"Each of these wrappers wrap around the previous wrapper by following ``env ="
+" wrapper(env, *args, **kwargs)`` repeatedly. The final environment is then "
+"used to train the agent. For more information on how these wrappers work, "
+"please refer to the :ref:`how-to-env-wrappers` documentation."
+msgstr ""
+"这些包装器中的每一个都通过反复执行 ``env = wrapper(env, *args, **kwargs)`` "
+"来包装前一个包装器。然后使用最终的环境来训练 agent。有关这些包装器如何工作的更多信息，请参考 :ref:`how-to-env-wrappers`"
+" 文档。"
+
+#: source/how-to/run_rl_training.rst:74
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/run_rl_training.rst:76
+msgid ""
+"We train a PPO agent from Stable-Baselines3 to solve the cartpole balancing "
+"task."
+msgstr "我们训练一个从 Stable-Baselines3 学习的 PPO agent 来解决 cartpole 平衡任务。"
+
+#: source/how-to/run_rl_training.rst:79
+msgid "Training the agent"
+msgstr "训练 agent"
+
+#: source/how-to/run_rl_training.rst:81
+msgid ""
+"There are three main ways to train the agent. Each of them has their own "
+"advantages and disadvantages. It is up to you to decide which one you prefer"
+" based on your use case."
+msgstr "训练 agent 有三种主要方法。每种方法都有其自己的优点和缺点。根据您的用例，您可以决定使用哪种方法。"
+
+#: source/how-to/run_rl_training.rst:85
+msgid "Headless execution"
+msgstr "无界面执行"
+
+#: source/how-to/run_rl_training.rst:87
+msgid ""
+"When no visualizer is requested, no interactive visualizer window is opened "
+"during training. This is useful when training on a remote server or when you"
+" do not need live visual feedback, which can add some compute cost. "
+"Rendering can still be active for sensor/camera data capture when enabled by"
+" the workflow."
+msgstr ""
+"未请求可视化器时，训练期间不会打开交互式可视化窗口。这适用于远程服务器训练，或不需要实时画面反馈的情况，因为实时反馈会增加一些计算开销。工作流启用传感器或相机数据采集后，渲染仍可保持运行。"
+
+#: source/how-to/run_rl_training.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/run_rl_training.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/run_rl_training.rst:108
+msgid "Headless execution with off-screen render"
+msgstr "无界面执行与离屏渲染"
+
+#: source/how-to/run_rl_training.rst:110
+msgid ""
+"Since the above command does not open an interactive visualizer, it is not "
+"possible to monitor behavior live in a viewport window. To capture visual "
+"output during training, enable camera/sensor rendering in the workflow and "
+"pass ``--video`` to record the agent behavior."
+msgstr ""
+"上述命令不会打开交互式可视化器，因此无法在视口窗口中实时观察行为。如果需要在训练中捕获画面，应在工作流中启用相机或传感器渲染，并传入 "
+"``--video`` 录制智能体行为。"
+
+#: source/how-to/run_rl_training.rst:128
+msgid ""
+"The videos are saved to the ``logs/sb3/Isaac-Cartpole/<run-"
+"dir>/videos/train`` directory. You can open these videos using any video "
+"player."
+msgstr ""
+"视频保存在 ``logs/sb3/Isaac-Cartpole/<run-dir>/videos/train`` 目录，可以用任意视频播放器打开。"
+
+#: source/how-to/run_rl_training.rst:131
+msgid ""
+"For tasks with on-scene cameras, you can also save the sensor image outputs "
+"directly during training with ``--capture_env_sensors``. See "
+":doc:`/source/how-to/capture_sensor_frames` for the available options and "
+"output formats."
+msgstr ""
+"对于场景中带有相机的任务，还可以通过 ``--capture_env_sensors`` 在训练期间直接保存传感器图像输出。可用选项和输出格式见 "
+":doc:`/source/how-to/capture_sensor_frames` 。"
+
+#: source/how-to/run_rl_training.rst:136
+msgid "Interactive execution"
+msgstr "交互式执行"
+
+#: source/how-to/run_rl_training.rst:140
+msgid ""
+"While the above two methods are useful for training the agent, they don't "
+"allow you to interact with the simulation to see what is happening. In this "
+"case, run the training command as follows:"
+msgstr "上述两种方式可用于训练智能体，但无法与仿真交互、观察实时情况。如果需要交互，可按以下方式运行训练命令："
+
+#: source/how-to/run_rl_training.rst:158
+msgid ""
+"This will open the Kit visualizer window and you can see the agent training "
+"in the environment. However, this can slow down the training process because"
+" interactive visual feedback is enabled. As a workaround, you can switch "
+"between different render modes in the ``\"Isaac Lab\"`` window that is "
+"docked on the bottom-right corner of the screen. To learn more about these "
+"render modes, please check the :class:`sim.SimulationContext.RenderMode` "
+"class."
+msgstr ""
+"这会打开 Kit 可视化窗口，可以看到智能体在环境中训练。不过，启用交互式画面反馈可能降低训练速度。可以在屏幕右下角停靠的 ``\"Isaac "
+"Lab\"`` 窗口中切换不同渲染模式。更多信息见 :class:`sim.SimulationContext.RenderMode` 。"
+
+#: source/how-to/run_rl_training.rst:165
+msgid "Viewing the logs"
+msgstr "查看日志"
+
+#: source/how-to/run_rl_training.rst:167
+msgid ""
+"On a separate terminal, you can monitor the training progress by executing "
+"the following command:"
+msgstr "在单独的终端中，您可以通过执行以下命令监视训练进度: "
+
+#: source/how-to/run_rl_training.rst:186
+msgid "Playing the trained agent"
+msgstr "播放经过训练的 agent"
+
+#: source/how-to/run_rl_training.rst:188
+msgid ""
+"Once the training is complete, you can visualize the trained agent by "
+"executing the following command:"
+msgstr "一旦训练完成，您可以通过执行以下命令来可视化经过训练的 agent: "
+
+#: source/how-to/run_rl_training.rst:206
+msgid ""
+"The above command will load the latest checkpoint from the ``logs/sb3/Isaac-"
+"Cartpole`` directory. You can also specify a specific checkpoint by passing "
+"the ``--checkpoint`` flag."
+msgstr ""
+"上述命令加载 ``logs/sb3/Isaac-Cartpole`` 目录中的最新检查点。也可以用 ``--checkpoint`` 指定某个检查点。"

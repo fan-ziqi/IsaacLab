@@ -1,0 +1,306 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/launch_app.rst:4
+msgid "Deep-dive into the simulation launcher"
+msgstr "深入了解仿真启动器"
+
+#: source/how-to/launch_app.rst:8
+msgid ""
+"In this tutorial, we will dive into how a standalone script launches the "
+"simulator and configures it using CLI arguments and environment variables "
+"(envars). Particularly, we will demonstrate how to use "
+":func:`app.add_launcher_args` and :func:`app.launch_simulation` to enable "
+"livestreaming and to configure the "
+":class:`isaacsim.simulation_app.SimulationApp` instance that runs Isaac Sim,"
+" while also allowing user-provided options."
+msgstr ""
+"本教程深入介绍独立脚本如何启动仿真器，并通过命令行参数和环境变量进行配置。我们将重点展示如何用 "
+":func:`app.add_launcher_args` 和 :func:`app.launch_simulation` 启用实时串流、配置运行 "
+"Isaac Sim 的 :class:`isaacsim.simulation_app.SimulationApp` 实例，同时支持用户自定义选项。"
+
+#: source/how-to/launch_app.rst:14
+msgid ""
+"Launching is split into two steps. First, :func:`app.add_launcher_args` "
+"appends the launch-related options to the script's own "
+":class:`argparse.ArgumentParser`. Then, the :func:`app.launch_simulation` "
+"context manager takes the simulation configuration and the parsed arguments,"
+" and starts only the runtime that they need. The default PhysX physics "
+"backend, Kit-based RTX cameras, the Kit visualizer (``--visualizer kit``) "
+"and livestreaming all run inside Isaac Sim (Kit), so for these "
+":func:`~app.launch_simulation` starts a "
+":class:`~isaacsim.simulation_app.SimulationApp`. A kitless configuration, "
+"for example Newton physics without a Kit visualizer, starts no Isaac Sim at "
+"all. The runtime is closed automatically when the ``with`` block exits."
+msgstr ""
+"启动分为两步。首先， :func:`app.add_launcher_args` 向脚本自身的 "
+":class:`argparse.ArgumentParser` 添加启动相关选项。随后， :func:`app.launch_simulation` "
+"上下文管理器接收仿真配置和已解析的参数，只启动实际需要的运行时。默认 PhysX 物理后端、基于 Kit 的 RTX 相机、Kit 可视化器（ "
+"``--visualizer kit`` ）和实时串流都运行在 Isaac Sim（Kit）内，因此这些情况会由 "
+":func:`~app.launch_simulation` 启动 "
+":class:`~isaacsim.simulation_app.SimulationApp` 。不依赖 Kit 的配置，例如不使用 Kit 可视化器的"
+" Newton 物理，则完全不会启动 Isaac Sim。离开 ``with`` 块时，运行时自动关闭。"
+
+#: source/how-to/launch_app.rst:23
+msgid ""
+"The :class:`~isaacsim.simulation_app.SimulationApp` has many extensions that"
+" must be loaded to enable different capabilities, and some of these "
+"extensions are order- and inter-dependent. Additionally, there are startup "
+"options such as ``headless`` which must be set at instantiation time, and "
+"which have an implied relationship with some extensions, e.g. the "
+"livestreaming extensions. The launcher handles these extensions and startup "
+"options in a portable manner across a variety of use cases. To achieve this,"
+" we offer CLI and envar flags which can be merged with user-defined CLI "
+"args, while passing forward arguments intended for "
+":class:`~isaacsim.simulation_app.SimulationApp`."
+msgstr ""
+":class:`~isaacsim.simulation_app.SimulationApp` "
+"必须加载相应扩展才能启用不同功能，有些扩展还存在加载顺序要求或相互依赖。此外， ``headless`` "
+"等启动选项必须在实例化时设置，并与某些扩展（例如实时串流扩展）存在关联。启动器以适用于多种场景的统一方式处理这些扩展和启动选项。为此，我们提供可与用户自定义命令行参数合并的命令行和环境变量选项，并转交面向"
+" :class:`~isaacsim.simulation_app.SimulationApp` 的参数。"
+
+#: source/how-to/launch_app.rst:33
+msgid "The Code"
+msgstr "代码"
+
+#: source/how-to/launch_app.rst:35
+msgid ""
+"The tutorial corresponds to the ``launch_app.py`` script in the "
+"``scripts/tutorials/00_sim`` directory."
+msgstr "该教程对应于 ``scripts/tutorials/00_sim`` 目录中的 ``launch_app.py`` 脚本。"
+
+#: source/how-to/launch_app.rst:0
+msgid "Code for launch_app.py"
+msgstr "launch_app.py 的代码"
+
+#: source/how-to/launch_app.rst:47
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: source/how-to/launch_app.rst:50
+msgid "Adding arguments to the argparser"
+msgstr "向 argparser 添加参数"
+
+#: source/how-to/launch_app.rst:52
+msgid ""
+"The launcher is designed to be compatible with custom CLI args that users "
+"need for their own scripts, while still providing a portable CLI interface."
+msgstr "启动器兼容用户脚本所需的自定义命令行参数，同时提供统一的命令行接口。"
+
+#: source/how-to/launch_app.rst:55
+msgid ""
+"In this tutorial, a standard :class:`argparse.ArgumentParser` is "
+"instantiated and given the script-specific ``--size`` argument, as well as "
+"the arguments ``--height`` and ``--width``. The latter are ingested by "
+":class:`~isaacsim.simulation_app.SimulationApp`."
+msgstr ""
+"在本教程中，实例化了一个标准的 :class:`argparse.ArgumentParser` ，并赋予了特定脚本的 ``--size`` "
+"参数，以及参数 ``--height`` 和 ``--width`` 。后者被 "
+":class:`~isaacsim.simulation_app.SimulationApp` 所列取。"
+
+#: source/how-to/launch_app.rst:59
+msgid ""
+"The argument ``--size`` is not used by the launcher, but merges seamlessly "
+"with the launcher interface. In-script arguments are merged with the "
+"launcher interface via the :func:`~app.add_launcher_args` function, which "
+"appends the launcher arguments to the given "
+":class:`~argparse.ArgumentParser`. This can then be processed into an "
+":class:`argparse.Namespace` using the standard "
+":meth:`argparse.ArgumentParser.parse_args` method."
+msgstr ""
+"启动器不使用 ``--size`` 参数，但它可以直接与启动器接口共同使用。通过 :func:`~app.add_launcher_args` "
+"，可将启动器参数添加到给定的 :class:`~argparse.ArgumentParser` 中，与脚本内参数合并。随后使用标准 "
+":meth:`argparse.ArgumentParser.parse_args` 方法，解析为 "
+":class:`argparse.Namespace` 。"
+
+#: source/how-to/launch_app.rst:71
+msgid "Launching the simulator"
+msgstr "启动仿真器"
+
+#: source/how-to/launch_app.rst:73
+msgid ""
+"The parsed arguments are passed, together with the simulation configuration,"
+" to :func:`~app.launch_simulation`. The configuration tells it which runtime"
+" is needed (here, the default PhysX physics backend, which runs inside Isaac"
+" Sim), and the arguments configure that runtime. Everything that uses the "
+"simulator runs inside the ``with`` block."
+msgstr ""
+"已解析的参数与仿真配置一起传给 :func:`~app.launch_simulation` 。配置决定需要哪种运行时（这里是运行于 Isaac Sim"
+" 中的默认 PhysX 物理后端），参数则配置该运行时。所有使用仿真器的代码均位于 ``with`` 块内。"
+
+#: source/how-to/launch_app.rst:84
+msgid "Understanding the output of --help"
+msgstr "理解--help 的输出"
+
+#: source/how-to/launch_app.rst:86
+msgid ""
+"While executing the script, we can pass the ``--help`` argument and see the "
+"combined outputs of the custom arguments and the launcher options "
+"(abbreviated below)."
+msgstr "执行脚本时，传入 ``--help`` 即可查看自定义参数和启动器选项的合并输出（下面有所省略）。"
+
+#: source/how-to/launch_app.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/launch_app.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/launch_app.rst:163
+msgid ""
+"This readout details the ``--size``, ``--height``, and ``--width`` arguments"
+" defined in the script directly, as well as the launcher arguments."
+msgstr "该输出列出了脚本直接定义的 ``--size`` 、 ``--height`` 、 ``--width`` 参数，以及启动器参数。"
+
+#: source/how-to/launch_app.rst:166
+msgid ""
+"Script arguments whose name and type match an argument of "
+":class:`~isaacsim.simulation_app.SimulationApp`, in this case ``--height`` "
+"and ``--width``, are forwarded to the "
+":class:`~isaacsim.simulation_app.SimulationApp` instance when "
+":func:`~app.launch_simulation` starts Isaac Sim. Please refer to the "
+"`specification`_ for such arguments for more examples."
+msgstr ""
+"如果脚本参数的名称和类型与 :class:`~isaacsim.simulation_app.SimulationApp` 的某个参数一致，这里的例子是"
+" ``--height`` 和 ``--width`` ，那么 :func:`~app.launch_simulation` 启动 Isaac Sim "
+"时，会将它们转交给 :class:`~isaacsim.simulation_app.SimulationApp` 实例。更多示例见 `参数说明 "
+"<specification_>`_ 。"
+
+#: source/how-to/launch_app.rst:172
+msgid "Using environment variables"
+msgstr "使用环境变量"
+
+#: source/how-to/launch_app.rst:174
+msgid ""
+"As noted in the help message, launcher arguments such as ``--livestream`` "
+"have corresponding environment variables (envar) as well. These are detailed"
+" in :mod:`isaaclab.app` documentation. Providing any of these arguments "
+"through CLI is equivalent to running the script in a shell environment where"
+" the corresponding envar is set."
+msgstr ""
+"如帮助信息所示， ``--livestream`` 等启动器参数也有对应的环境变量，详见 :mod:`isaaclab.app` "
+"文档。通过命令行提供这些参数，等价于在已设置对应环境变量的 shell 中运行脚本。"
+
+#: source/how-to/launch_app.rst:179
+msgid ""
+"The support for launcher envars is simply a convenience to provide session-"
+"persistent configurations, and can be set in the user's ``${HOME}/.bashrc`` "
+"for persistent settings between sessions. In the case where these arguments "
+"are provided from the CLI, they will override their corresponding envar, as "
+"we will demonstrate later in this tutorial."
+msgstr ""
+"启动器支持环境变量，是为了方便保留会话中的配置。可以将其写入用户的 ``${HOME}/.bashrc`` "
+"，使设置在不同会话间持续生效。如果同时通过命令行提供参数，则命令行值会覆盖对应环境变量；本教程稍后会演示这一点。"
+
+#: source/how-to/launch_app.rst:184
+msgid ""
+"These arguments can be used with any script that starts the simulation using"
+" :func:`~app.launch_simulation`. Camera and offscreen rendering support is "
+"configured automatically."
+msgstr "任何使用 :func:`~app.launch_simulation` 启动仿真的脚本都能使用这些参数。相机和离屏渲染支持会自动配置。"
+
+#: source/how-to/launch_app.rst:189
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/launch_app.rst:191
+msgid "We will now run the example script:"
+msgstr "现在我们将运行示例脚本: "
+
+#: source/how-to/launch_app.rst:0
+msgid ":icon:`fa-brands fa-linux` Linux x86_64"
+msgstr ":icon:`fa-brands fa-linux` Linux x86_64"
+
+#: source/how-to/launch_app.rst:0
+msgid ":icon:`fa-brands fa-linux` Linux aarch64 (DGX Spark)"
+msgstr ":icon:`fa-brands fa-linux` Linux aarch64（DGX Spark）"
+
+#: source/how-to/launch_app.rst:232 source/how-to/launch_app.rst:307
+#: source/how-to/launch_app.rst:376
+msgid ""
+"Direct Python commands that import Isaac Sim on aarch64 require the "
+"``LD_PRELOAD=/lib/aarch64-linux-gnu/libgomp.so.1`` prefix shown above. See "
+":ref:`installation-method-uv`."
+msgstr ""
+"在 aarch64 上，直接导入 Isaac Sim 的 Python 命令需要加上上述 "
+"``LD_PRELOAD=/lib/aarch64-linux-gnu/libgomp.so.1`` 前缀。参见 :ref:`installation-"
+"method-uv` 。"
+
+#: source/how-to/launch_app.rst:0
+msgid ":icon:`fa-brands fa-windows` Windows"
+msgstr ":icon:`fa-brands fa-windows` Windows"
+
+#: source/how-to/launch_app.rst:255
+msgid ""
+"This will spawn a 0.5m\\ :sup:`3` volume cuboid in the simulation. No GUI "
+"will appear, equivalent to omitting ``--visualizer`` in this setup because "
+"headlessness is implied by our ``LIVESTREAM`` envar. If a visualization is "
+"desired, we could get one via Isaac's `WebRTC Livestreaming`_. Streaming is "
+"currently the only supported method of visualization from within the "
+"container. The process can be killed by pressing ``Ctrl+C`` in the launching"
+" terminal."
+msgstr ""
+"这会在仿真中生成一个体积为 0.5 m\\ :sup:`3` 的长方体。不会出现图形界面；在这一配置下，这等价于省略 ``--visualizer`` "
+"，因为 ``LIVESTREAM`` 环境变量已隐含无界面运行。如果需要可视化，可以使用 Isaac 的 `WebRTC 实时串流 <WebRTC "
+"Livestreaming_>`_ 。串流目前是容器内唯一受支持的可视化方式。在启动终端按 ``Ctrl+C`` 可结束进程。"
+
+#: source/how-to/launch_app.rst:261
+msgid "result of launch_app.py"
+msgstr "launch_app.py 的结果"
+
+#: source/how-to/launch_app.rst:266
+msgid "Now, let's look at how the launcher handles conflicting commands:"
+msgstr "接下来看看启动器如何处理相互冲突的命令："
+
+#: source/how-to/launch_app.rst:330
+msgid ""
+"This will cause the same behavior as in the previous run, because although "
+"we have set ``LIVESTREAM=0`` in our envars, CLI args such as "
+"``--livestream`` take precedence in determining behavior. The process can be"
+" killed by pressing ``Ctrl+C`` in the launching terminal."
+msgstr ""
+"这会导致与上次运行相同的行为，因为虽然我们在 envars 中设置了 ``LIVESTREAM=0`` ，但 CLI 参数如 "
+"``--livestream`` 优先确定行为。可以通过在启动终端中按 ``Ctrl+C`` 键来终止该进程。"
+
+#: source/how-to/launch_app.rst:334
+msgid ""
+"Finally, we will examine passing arguments to "
+":class:`~isaacsim.simulation_app.SimulationApp` through "
+":func:`~app.launch_simulation`:"
+msgstr ""
+"最后，看看如何通过 :func:`~app.launch_simulation` 向 "
+":class:`~isaacsim.simulation_app.SimulationApp` 传入参数："
+
+#: source/how-to/launch_app.rst:399
+msgid ""
+"This will cause the same behavior as before, but now the viewport will be "
+"rendered at 1920x1080p resolution. This can be useful when we want to gather"
+" high-resolution video, or we can specify a lower resolution if we want our "
+"simulation to be more performant. The process can be killed by pressing "
+"``Ctrl+C`` in the launching terminal."
+msgstr ""
+"这将导致与之前的行为相同，但现在视口将以 1920x1080p "
+"分辨率进行渲染。在希望收集高分辨率视频或者希望使仿真更具性能时，这可能非常有用。可以通过在启动终端中按 ``Ctrl+C`` 键来终止该进程。"
+
+#: source/how-to/launch_app.rst:404
+msgid ""
+"For more details on headless mode and launching visualizers, see "
+":doc:`/source/migration/migrating_to_isaaclab_3-0`."
+msgstr ""
+"无界面模式和可视化器启动的更多信息见 :doc:`/source/migration/migrating_to_isaaclab_3-0` 。"

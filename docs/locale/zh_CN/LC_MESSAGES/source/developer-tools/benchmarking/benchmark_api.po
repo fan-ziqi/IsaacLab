@@ -1,0 +1,697 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:4
+msgid "Use the benchmark API"
+msgstr "使用性能测试 API"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:6
+msgid ""
+"This guide is for automation authors who need to run supported benchmarks "
+"from Python, consume typed results, or add a benchmark producer. For day-to-"
+"day benchmarking, start with the CLI workflows and interpretation guidance "
+"in :ref:`developer_tools_benchmarking_run`. To isolate one asset method, "
+"cached property, or sensor update, use "
+":ref:`developer_tools_benchmarking_micro`."
+msgstr ""
+"本指南面向需要通过 Python 运行受支持的性能测试、读取带类型的结果，或添加性能测试数据生成器的自动化开发者。日常测试先参阅 "
+":ref:`developer_tools_benchmarking_run` "
+"中的命令行工作流和结果解读。要单独测量某个资产方法、缓存属性或传感器更新，使用 "
+":ref:`developer_tools_benchmarking_micro` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:13
+msgid "Run one workflow"
+msgstr "运行一个工作流"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:15
+msgid ""
+"Use a typed request for a supported workflow. It applies the same launch, "
+"task, timing, schema, and output behavior as the CLI. The following runtime "
+"example measures 1000 steps after 50 warm-up steps. It disables visualizers "
+"and requests both stable schema and human-readable summary output:"
+msgstr ""
+"对受支持工作流使用带类型的请求。它采用与命令行相同的启动、任务、计时、数据结构和输出行为。以下运行时示例在预热 50 步后测量 1000 "
+"步，禁用可视化器，并同时输出稳定数据结构和便于阅读的摘要："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:51
+msgid "Run the file through the Isaac Lab Python wrapper:"
+msgstr "通过 Isaac Lab Python 包装脚本运行该文件："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:57
+msgid ""
+"The command prints the summary report. The paths in ``result.output_paths`` "
+"identify the schema and summary JSON files that were written. Use these "
+"paths in automation instead of reconstructing the timestamped names."
+msgstr ""
+"命令打印摘要报告。 ``result.output_paths`` 中的路径指向已写入的数据结构 JSON 和摘要 "
+"JSON。自动化中应使用这些路径，而不是自行重建带时间戳的文件名。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:61
+msgid ""
+"With a non-``None`` task ``benchmark_mode`` and "
+"``ISAACLAB_RENDER_PROFILE=1`` or ``ISAACLAB_PHYSICS_PROFILE=1``, the runtime"
+" workflow also includes scalar profiling summaries in "
+"``result.bundle.extra``: ``physics_mean_ms``, ``physics_std_ms``, "
+"``physics_max_ms``, ``physics_calls``, and the corresponding ``render_*`` "
+"keys. These report mean, standard deviation, maximum time per call [ms], and"
+" call count over the captured samples. Disabled scopes contribute no keys. "
+"The summaries are included in schema and OmniPerf output without changing "
+"schema version 1.4. Raw ordered samples remain in "
+"``<output_path>/profile_timings.json`` for local analysis."
+msgstr ""
+"当任务的 ``benchmark_mode`` 不为 ``None`` ，且设置 ``ISAACLAB_RENDER_PROFILE=1`` 或 "
+"``ISAACLAB_PHYSICS_PROFILE=1`` 时，运行时工作流还会在 ``result.bundle.extra`` "
+"中提供标量性能摘要： ``physics_mean_ms`` 、 ``physics_std_ms`` 、 ``physics_max_ms`` 、 "
+"``physics_calls`` 及对应的 ``render_*`` 键。它们报告采样中每次调用的平均耗时、标准差、最大耗时 [ms] "
+"和调用次数。禁用的范围不会生成对应键。这些摘要会写入 schema 和 OmniPerf 输出，数据结构版本仍为 1.4。按顺序保留的原始样本位于 "
+"``<output_path>/profile_timings.json`` ，供本地分析使用。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:71
+msgid "Choose a request"
+msgstr "选择请求"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:73
+msgid ""
+"Choose the request and dedicated runner that match the measurement question."
+" :func:`~isaaclab.benchmark.run_benchmark` accepts any request type when "
+"generic dispatch is more convenient."
+msgstr ""
+"根据要测量的问题，选择对应请求及专用运行器。如果通用分派更方便， :func:`~isaaclab.benchmark.run_benchmark` "
+"可接受任意请求类型。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:81
+msgid "Question"
+msgstr "要回答的问题"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:82
+msgid "Request"
+msgstr "请求"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:83
+msgid "Runner"
+msgstr "运行器"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:84
+msgid "Environment-step capacity"
+msgstr "环境步进能力"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:85
+msgid ":class:`~isaaclab.benchmark.BenchmarkRuntimeRequest`"
+msgstr ":class:`~isaaclab.benchmark.BenchmarkRuntimeRequest`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:86
+msgid ":func:`~isaaclab.benchmark.run_runtime_benchmark`"
+msgstr ":func:`~isaaclab.benchmark.run_runtime_benchmark`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:87
+msgid "Application and task startup"
+msgstr "应用与任务启动"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:88
+msgid ":class:`~isaaclab.benchmark.BenchmarkStartupRequest`"
+msgstr ":class:`~isaaclab.benchmark.BenchmarkStartupRequest`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:89
+msgid ":func:`~isaaclab.benchmark.run_startup_benchmark`"
+msgstr ":func:`~isaaclab.benchmark.run_startup_benchmark`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:90
+msgid "RL training and learning"
+msgstr "强化学习训练与学习过程"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:91
+msgid ":class:`~isaaclab.benchmark.BenchmarkTrainingRequest`"
+msgstr ":class:`~isaaclab.benchmark.BenchmarkTrainingRequest`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:92
+msgid ":func:`~isaaclab.benchmark.run_training_benchmark`"
+msgstr ":func:`~isaaclab.benchmark.run_training_benchmark`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:93
+msgid "Trained-policy playback"
+msgstr "已训练策略回放"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:94
+msgid ":class:`~isaaclab.benchmark.BenchmarkPlayRequest`"
+msgstr ":class:`~isaaclab.benchmark.BenchmarkPlayRequest`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:95
+msgid ":func:`~isaaclab.benchmark.run_play_benchmark`"
+msgstr ":func:`~isaaclab.benchmark.run_play_benchmark`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:97
+msgid ""
+"The examples below reuse the runtime workflow's output and launcher objects."
+msgstr "以下示例复用运行时工作流的输出和启动器对象。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:0
+msgid "Run startup profiling"
+msgstr "分析启动性能"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:101
+msgid ""
+"Startup profiling records wall time and the most expensive functions for "
+"each phase:"
+msgstr "启动性能分析记录每个阶段的实际耗时，以及耗时最多的函数："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:0
+msgid "Run training"
+msgstr "运行训练"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:132
+msgid "Training returns the checkpoint produced by the selected RL library:"
+msgstr "训练返回所选强化学习库生成的检查点："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:0
+msgid "Run playback"
+msgstr "运行回放"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:166
+msgid ""
+"Pass the persisted ``checkpoint_path`` to a play request in a **new "
+"process**:"
+msgstr "在 **新进程** 中，将已保存的 ``checkpoint_path`` 传给回放请求："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:201
+msgid "Configure a request"
+msgstr "配置请求"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:203
+msgid ""
+"All requests share the task identifier, optional environment count and seed,"
+" task configuration, output configuration, and launcher configuration."
+msgstr "所有请求共享任务标识、可选环境数量和随机种子、任务配置、输出配置与启动器配置。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:206
+msgid "Shared request fields"
+msgstr "共享请求字段"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:210
+msgid "Field"
+msgstr "字段"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:211
+msgid "Purpose"
+msgstr "用途"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:212
+msgid "``task``"
+msgstr "``task``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:213
+msgid "Registered Gym task identifier, for example ``Isaac-Cartpole-Direct``."
+msgstr "已注册的 Gym 任务标识，例如 ``Isaac-Cartpole-Direct`` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:214
+msgid "``num_envs`` and ``seed``"
+msgstr "``num_envs`` 和 ``seed``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:215
+msgid "Environment count and random seed. Keep both fixed for comparisons."
+msgstr "环境数量与随机种子。比较时，两者都应保持固定。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:216
+msgid "``presets``"
+msgstr "``presets``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:217
+msgid "Typed task presets, such as ``(\"newton_mjwarp\",)``."
+msgstr "带类型的任务预设，例如 ``(\"newton_mjwarp\",)`` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:218
+msgid "``hydra_args``"
+msgstr "``hydra_args``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:219
+msgid "Additional Hydra overrides, represented as a tuple of strings."
+msgstr "额外的 Hydra 覆盖项，以字符串元组表示。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:220
+msgid "``output``"
+msgstr "``output``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:221
+msgid ""
+":class:`~isaaclab.benchmark.BenchmarkOutputConfig` controlling the output "
+"directory and formatter set."
+msgstr ":class:`~isaaclab.benchmark.BenchmarkOutputConfig` ，控制输出目录和格式化器集合。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:223
+msgid "``launcher``"
+msgstr "``launcher``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:224
+msgid ""
+":class:`~isaaclab.benchmark.BenchmarkLauncherConfig` controlling device, "
+"cameras, visualizers, Kit, livestream, and logging options."
+msgstr ""
+":class:`~isaaclab.benchmark.BenchmarkLauncherConfig` "
+"，控制设备、相机、可视化器、Kit、实时串流和日志选项。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:227
+msgid "Workflow-specific fields"
+msgstr "工作流专用字段"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:231
+msgid "Workflow"
+msgstr "工作流程"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:232
+msgid "Fields"
+msgstr "字段"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:233
+msgid "Meaning"
+msgstr "含义"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:234
+msgid "Runtime"
+msgstr "运行时"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:235
+msgid "``num_steps``, ``warmup_steps``"
+msgstr "``num_steps``, ``warmup_steps``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:236
+msgid "Measured environment steps and preceding excluded steps."
+msgstr "测量的环境步数，以及之前不计入测量的步数。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:237
+msgid "Startup"
+msgstr "启动"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:238
+msgid "``top_n``, ``whitelist_config``"
+msgstr "``top_n``, ``whitelist_config``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:239
+msgid "Number and optional filter of profiled functions retained per phase."
+msgstr "每个阶段保留的分析函数数量，以及可选过滤条件。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:240
+msgid "Training"
+msgstr "训练"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:241
+msgid "``backend``, ``max_iterations``, ``warmup_steps``"
+msgstr "``backend``, ``max_iterations``, ``warmup_steps``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:242
+msgid ""
+"RL library, learning iterations, and initial environment steps excluded from"
+" environment-step timing."
+msgstr "强化学习库、学习迭代次数，以及不计入环境步计时的初始步数。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:244
+msgid "Play"
+msgstr "回放"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:245
+msgid "``backend``, ``checkpoint``, ``num_steps``, ``warmup_steps``"
+msgstr "``backend``, ``checkpoint``, ``num_steps``, ``warmup_steps``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:246
+msgid ""
+"RL library, policy, measured inference steps, and initial excluded steps."
+msgstr "强化学习库、策略、测量的推理步数，以及不计入测量的初始步数。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:248
+msgid ""
+"Training exposes additional learning, video, sensor capture, and convergence"
+" options. Training and play also expose ``backend_args`` for options that "
+"truly belong to one RL library. Use typed fields, presets, and "
+"``hydra_args`` for supported options. ``backend_args`` bypasses the common "
+"request contract. See the :mod:`isaaclab.benchmark` API reference for the "
+"exhaustive field list."
+msgstr ""
+"训练还提供学习、视频、传感器采集与收敛相关选项。训练和回放也提供 ``backend_args`` "
+"，用于确实只属于某个强化学习库的选项。受支持选项应优先使用带类型的字段、预设和 ``hydra_args`` 。 ``backend_args`` "
+"绕过通用请求约定。完整字段列表见 :mod:`isaaclab.benchmark` API 参考。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:254
+msgid ""
+"An empty ``visualizers`` tuple explicitly disables every visualizer. "
+"``None`` preserves task and environment defaults. Enabling cameras, "
+"rendering, livestreaming, deterministic behavior, or animation recording "
+"changes the workload and must be kept identical across compared runs."
+msgstr ""
+"空的 ``visualizers`` 元组显式禁用全部可视化器； ``None`` "
+"保留任务与环境的默认设置。启用相机、渲染、实时串流、确定性行为或动画录制会改变负载，比较的运行必须保持这些设置一致。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:260
+msgid "Choose output formats"
+msgstr "选择输出格式"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:262
+msgid ""
+"Select one or more formatter names in "
+":class:`~isaaclab.benchmark.BenchmarkOutputConfig`:"
+msgstr "在 :class:`~isaaclab.benchmark.BenchmarkOutputConfig` 中选择一个或多个格式化器名称："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:269
+msgid "Formatter"
+msgstr "格式化器"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:270
+msgid "Contract"
+msgstr "约定"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:271
+msgid "``schema``"
+msgstr "``schema``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:272
+msgid ""
+"Writes the stable typed bundle. Use this for programmatic comparison and "
+"long-lived result storage."
+msgstr "写入稳定的带类型结果包，适合程序化比较和长期结果存储。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:274
+msgid "``summary``"
+msgstr "``summary``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:275
+msgid "Prints a compact terminal report and writes a flat metrics JSON file."
+msgstr "打印精简的终端报告，并写入扁平指标 JSON 文件。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:276
+msgid "``json``"
+msgstr "``json``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:277
+msgid ""
+"Writes the lower-level phase, measurement, and metadata representation."
+msgstr "写入更底层的阶段、测量与元数据表示。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:278
+msgid "``osmo``"
+msgstr "``osmo``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:279
+msgid "Writes phase-oriented KPI files for Osmo consumers."
+msgstr "为 Osmo 使用方写入按阶段组织的 KPI 文件。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:280
+msgid "``omniperf``"
+msgstr "``omniperf``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:281
+msgid "Writes the OmniPerf KPI representation."
+msgstr "写入 OmniPerf KPI 表示。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:283
+msgid ""
+"Use ``(\"schema\", \"summary\")`` for results intended for review or "
+"publication. The summary gives immediate feedback. The schema preserves "
+"typed data for analysis. With multiple formatters, each output filename "
+"includes its formatter name, so JSON outputs cannot overwrite each other."
+msgstr ""
+"需要审阅或发布的结果应使用 ``(\"schema\", \"summary\")`` 。摘要提供即时反馈，schema "
+"保留供分析使用的带类型数据。使用多个格式化器时，各输出文件名包含格式化器名称，因此 JSON 输出不会互相覆盖。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:289
+msgid "Read the result"
+msgstr "读取结果"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:291
+msgid ""
+"Every workflow returns :class:`~isaaclab.benchmark.BenchmarkResult` with two"
+" members:"
+msgstr "每个工作流都返回 :class:`~isaaclab.benchmark.BenchmarkResult` ，包含两个成员："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:294
+msgid ""
+"``bundle`` is a :class:`~isaaclab.benchmark.RuntimeBundle`, "
+":class:`~isaaclab.benchmark.StartupBundle`, "
+":class:`~isaaclab.benchmark.TrainingBundle`, or "
+":class:`~isaaclab.benchmark.PlayBundle`."
+msgstr ""
+"``bundle`` 是 :class:`~isaaclab.benchmark.RuntimeBundle` 、 "
+":class:`~isaaclab.benchmark.StartupBundle` 、 "
+":class:`~isaaclab.benchmark.TrainingBundle` 或 "
+":class:`~isaaclab.benchmark.PlayBundle` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:298
+msgid ""
+"``output_paths`` is the exact tuple of :class:`pathlib.Path` objects written"
+" by the selected formatters."
+msgstr "``output_paths`` 是所选格式化器实际写入的 :class:`pathlib.Path` 对象元组。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:301
+msgid ""
+"Consume typed fields rather than scraping terminal text or depending on keys"
+" in ``bundle.extra``:"
+msgstr "应读取带类型的字段，而不是解析终端文本，或依赖 ``bundle.extra`` 中的键："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:321
+msgid ""
+"The common ``run``, ``versions``, and ``hardware`` fields carry the "
+"comparison context. ``runtime`` separates collection throughput, total "
+"throughput, startup time, and environment-step timing. For measurement "
+"definitions, see :ref:`developer_tools_benchmarking_run`. See the public API"
+" reference for every schema field."
+msgstr ""
+"通用的 ``run`` 、 ``versions`` 和 ``hardware`` 字段保存比较所需的上下文。 ``runtime`` "
+"区分采集吞吐量、总吞吐量、启动时间和环境步计时。测量定义见 :ref:`developer_tools_benchmarking_run` "
+"；所有数据结构字段见公共 API 参考。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:328
+msgid "Handle errors and process lifetime"
+msgstr "处理错误与进程生命周期"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:330
+msgid ""
+"If a workflow parser rejects a typed request, the API raises ``ValueError``."
+" If a workflow exits without returning a result, the API raises "
+"``RuntimeError``. Invalid output configuration also raises an error. "
+"Examples include an empty formatter tuple and an unknown formatter."
+msgstr ""
+"如果工作流解析器拒绝带类型请求，API 抛出 ``ValueError`` ；如果工作流退出却没有返回结果，则抛出 ``RuntimeError`` "
+"。无效输出配置也会报错，例如格式化器元组为空或包含未知名称。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:335
+msgid ""
+"Run each workflow in a separate process. This gives each benchmark a clean "
+"simulator lifecycle and prevents state from carrying over between workflows."
+" It also matches the CLI execution model. Process startup is reported "
+"separately from steady-state throughput. Save "
+"``result.bundle.checkpoint_path`` before starting playback."
+msgstr ""
+"每个工作流应在独立进程中运行，使各性能测试拥有完整、独立的仿真器生命周期，避免状态在工作流之间遗留，也与命令行执行模型一致。进程启动时间与稳态吞吐量分别报告。开始回放前，先保存"
+" ``result.bundle.checkpoint_path`` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:343
+msgid ""
+"``measure_synchronized_step_breakdown=True`` inserts device synchronizations"
+" around environment and simulation step boundaries. This serializes work and"
+" changes the schedule being measured, especially on Newton. Every rate from "
+"that run is diagnostic and must not be reported as throughput. Time outside "
+"``SimulationContext.step()`` includes required action, actuator, state, "
+"manager, reset, wrapper, and synchronization work. It is not equivalent to "
+"removable Isaac Lab overhead."
+msgstr ""
+"``measure_synchronized_step_breakdown=True`` "
+"在环境与仿真步边界插入设备同步。这会使计算串行化，改变被测调度，Newton 尤其明显。该次运行的所有速率均属诊断数据，不能作为吞吐量报告。 "
+"``SimulationContext.step()`` 之外的时间包含必要的动作、执行器、状态、管理器、重置、包装器和同步工作，不能直接视为可移除的 "
+"Isaac Lab 开销。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:352
+msgid "Add a custom producer"
+msgstr "添加自定义数据生成器"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:354
+msgid ""
+"Use :class:`~isaaclab.benchmark.BaseIsaacLabBenchmark` when a producer's "
+"lifecycle cannot be represented by a supported workflow. The framework "
+"provides phases, typed measurement and metadata records, system recorders, "
+"and formatters. You must define the timing boundary."
+msgstr ""
+"如果数据生成器的生命周期无法用受支持的工作流表示，可使用 "
+":class:`~isaaclab.benchmark.BaseIsaacLabBenchmark` "
+"。框架提供阶段、带类型的测量与元数据记录、系统记录器和格式化器，但计时边界必须由你定义。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:359
+msgid "Measurement and metadata types"
+msgstr "测量与元数据类型"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:363
+msgid "Type"
+msgstr "类型"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:364
+msgid "Use"
+msgstr "用途"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:365
+msgid ":class:`~isaaclab.benchmark.SingleMeasurement`"
+msgstr ":class:`~isaaclab.benchmark.SingleMeasurement`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:366
+msgid ""
+"One scalar with a unit, such as total duration or completed operations."
+msgstr "带有单位的单个标量，例如总时长或完成的操作数。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:367
+msgid ":class:`~isaaclab.benchmark.StatisticalMeasurement`"
+msgstr ":class:`~isaaclab.benchmark.StatisticalMeasurement`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:368
+msgid "Mean, standard deviation, sample count, and unit for repeated samples."
+msgstr "重复样本的均值、标准差、样本数和单位。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:369
+msgid ":class:`~isaaclab.benchmark.BooleanMeasurement`"
+msgstr ":class:`~isaaclab.benchmark.BooleanMeasurement`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:370
+msgid "A status or correctness outcome."
+msgstr "状态或正确性结果。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:371
+msgid ":class:`~isaaclab.benchmark.DictMeasurement`"
+msgstr ":class:`~isaaclab.benchmark.DictMeasurement`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:372
+msgid "Structured measurement data that is not a scalar sample."
+msgstr "非标量样本的结构化测量数据。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:373
+msgid ":class:`~isaaclab.benchmark.ListMeasurement`"
+msgstr ":class:`~isaaclab.benchmark.ListMeasurement`"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:374
+msgid "A retained sample or learning series."
+msgstr "保留的样本序列或学习序列。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:375
+msgid ""
+"``StringMetadata``, ``IntMetadata``, ``FloatMetadata``, ``DictMetadata``"
+msgstr ""
+"``StringMetadata``, ``IntMetadata``, ``FloatMetadata``, ``DictMetadata``"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:376
+msgid "Configuration and identity needed to compare the measurement."
+msgstr "比较测量结果所需的配置与身份信息。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:378
+msgid ""
+"This executable example measures a CPU workload, records the sample "
+"distribution and configuration, updates system recorders, and always "
+"finalizes the benchmark:"
+msgstr "以下可执行示例测量 CPU 负载，记录样本分布与配置，更新系统记录器，并确保最终完成性能测试的收尾："
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:434
+msgid ""
+"Choose a meaningful phase name and state units explicitly. Warm up before "
+"sampling. Report the sample count with the mean and standard deviation. For "
+"GPU work, state whether the metric is submission latency or synchronized "
+"completion latency. Place synchronization at deliberate boundaries."
+msgstr ""
+"选择有意义的阶段名，并明确单位。采样前先预热，报告均值与标准差时同时报告样本数。对于 GPU "
+"计算，说明指标是提交延迟，还是设备同步后的完成延迟，并有意识地选择同步边界。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:439
+msgid ""
+"When a custom producer creates one of the stable workflow bundles, call "
+"``attach_bundle(bundle)`` before ``finalize()`` and select ``schema``. "
+"Otherwise, use the lower-level ``json`` representation. ``finalize()`` stops"
+" optional Kit frametime recorders and gathers recorder data. It writes every"
+" selected formatter and returns the paths written."
+msgstr ""
+"自定义数据生成器创建稳定工作流结果包时，应先调用 ``attach_bundle(bundle)`` ，再调用 ``finalize()`` ，并选择 "
+"``schema`` 。否则，使用底层 ``json`` 表示。 ``finalize()`` 停止可选的 Kit "
+"帧耗时记录器，收集记录器数据，写入所有选定格式，并返回写入路径。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:445
+msgid ""
+"With ``use_recorders=True`` (the default), the base class captures CPU, GPU,"
+" memory, and version metadata. Call ``update_manual_recorders()`` at least "
+"once before ``finalize()``, and update during long workloads when current "
+"utilization samples are needed."
+msgstr ""
+"``use_recorders=True`` （默认值）时，基类采集 CPU、GPU、内存及版本元数据。在 ``finalize()`` 前至少调用一次"
+" ``update_manual_recorders()`` ；长时间负载需要当前利用率样本时，也应在运行中更新。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:450
+msgid ""
+"Set ``frametime_recorders=True`` only when a Kit application is running and "
+"the workload needs physics, render, application, or GPU frametime data. The "
+"framework enables the available Isaac Sim benchmark services and skips "
+"unavailable recorders. Frametime instrumentation is part of the workload. "
+"Keep its setting fixed across comparisons."
+msgstr ""
+"只有 Kit 应用正在运行，且负载需要物理、渲染、应用或 GPU 帧耗时数据时，才设置 ``frametime_recorders=True`` "
+"。框架启用可用的 Isaac Sim 性能测试服务，并跳过不可用记录器。帧耗时插桩本身也是负载的一部分，比较时应保持设置不变。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:457
+msgid "Choose a lower-level runner"
+msgstr "选择底层运行器"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:459
+msgid ""
+":class:`~isaaclab.benchmark.MethodBenchmarkRunner` repeats one method or "
+"property across input modes, warm-up steps, and instance counts. Use "
+":func:`~isaaclab.benchmark.measure_latency` to define paired host-submission"
+" and device-synchronized timing boundaries. Use "
+":class:`~isaaclab.benchmark.LatencyBenchmarkRunner` to report those "
+"structured latency samples. Neither isolated result predicts end-to-end "
+"environment or training throughput. The command matrices and extension "
+"protocol are in :ref:`developer_tools_benchmarking_micro`."
+msgstr ""
+":class:`~isaaclab.benchmark.MethodBenchmarkRunner` "
+"在不同输入模式、预热步数和实例数量下，重复运行某个方法或属性。使用 "
+":func:`~isaaclab.benchmark.measure_latency` 定义成对的主机提交与设备同步计时边界；使用 "
+":class:`~isaaclab.benchmark.LatencyBenchmarkRunner` "
+"报告这些结构化延迟样本。这些单项结果都不能预测端到端环境或训练吞吐量。命令矩阵与扩展协议见 "
+":ref:`developer_tools_benchmarking_micro` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:469
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:471
+msgid ""
+"Run scripts through ``./isaaclab.sh -p`` so the Isaac Lab and simulator "
+"Python environment is active. If output is missing, inspect returned "
+"``output_paths`` and make sure custom producers call ``finalize()``. "
+"Formatter names are lowercase and case-sensitive. Valid names are "
+"``schema``, ``summary``, ``json``, ``osmo``, and ``omniperf``."
+msgstr ""
+"通过 ``./isaaclab.sh -p`` 运行脚本，确保 Isaac Lab 和仿真器 Python 环境已启用。如果缺少输出，检查返回的 "
+"``output_paths`` ，确认自定义数据生成器调用了 ``finalize()`` 。格式化器名称使用小写且区分大小写，有效名称为 "
+"``schema`` 、 ``summary`` 、 ``json`` 、 ``osmo`` 和 ``omniperf`` 。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:477
+msgid ""
+"Missing GPU metadata usually means ``nvidia-smi`` or CUDA device discovery "
+"is unavailable. Missing Kit frametime measurements can instead mean the "
+"relevant benchmark service is not present. It does not invalidate non-"
+"frametime phases."
+msgstr ""
+"缺少 GPU 元数据通常表示 ``nvidia-smi`` 或 CUDA 设备发现不可用。缺少 Kit "
+"帧耗时测量，则可能是对应性能测试服务不存在，这并不影响非帧耗时阶段的有效性。"
+
+#: source/developer-tools/benchmarking/benchmark_api.rst:481
+msgid ""
+"For a new supported end-to-end workflow, keep typed request construction, "
+"dispatch, schema output, summary output, and CLI behavior aligned. For an "
+"isolated operation, follow :ref:`developer_tools_benchmarking_micro` before "
+"adding a new runner or timing convention."
+msgstr ""
+"新增受支持的端到端工作流时，应保持带类型请求的构建、分派、schema 输出、摘要输出及命令行行为一致。对于单项操作，先参照 "
+":ref:`developer_tools_benchmarking_micro` ，再添加新运行器或计时约定。"

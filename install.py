@@ -1,457 +1,297 @@
 #!/usr/bin/env python3
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Copyright (c) 2024, Ziqi Fan
 # All rights reserved.
 # 该脚本完整实现了原始Bash脚本的所有功能，包含完整的错误处理和用户交互
+#
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["InquirerPy>=0.3.4,<0.4", "rich>=13"]
+# ///
 
+"""Install a selected Isaac Lab release in an isolated Linux environment."""
+
+import argparse
+import json
 import os
+import platform
 import re
-import sys
+import shlex
+import shutil
 import subprocess
-from enum import Enum
+import sys
 from pathlib import Path
-from functools import partial
-from typing import Callable, List, Dict, Tuple
 
-from InquirerPy import inquirer, separator
-from InquirerPy.validator import PathValidator
+from InquirerPy import inquirer
 from rich.console import Console
 from rich.panel import Panel
-from rich.style import Style
-from rich.table import Table
 
-
-class Color(Enum):
-    RED = "red"
-    GREEN = "green"
-    YELLOW = "yellow"
-    BLUE = "blue"
-    CYAN = "cyan"
-    RESET = "reset"
+REPOSITORY_URL = "https://github.com/isaac-sim/IsaacLab.git"
+RELEASES = {
+    "3.0.0": {"revision": "release/3.0.0", "python": "3.12", "glibc": "2.35"},
+    "2.3.2": {
+        "revision": "v2.3.2",
+        "python": "3.11",
+        "glibc": "2.35",
+        "isaacsim": "5.1.0",
+        "torch": "2.7.0",
+        "torchvision": "0.22.0",
+        "cuda": "cu128",
+    },
+    "1.4.1": {
+        "revision": "v1.4.1",
+        "python": "3.10",
+        "glibc": "2.34",
+        "isaacsim": "4.2.0.2",
+        "torch": "2.4.0",
+        "torchvision": "0.19.0",
+        "cuda": "cu118",
+    },
+}
 
 
 class IsaacInstaller:
-    def __init__(self):
+    def __init__(self, args: argparse.Namespace):
         self.console = Console()
-        self.conda_env = "isaaclab"
-        self.isaac_version = "2"
-        self.cuda_version = ""
-        self.glibc_version = ""
-        self.project_path = Path.cwd()
-        self.pytorch_index_url = ""
-        self.required_glibc = "2.34"
+        self.version = args.version
+        self.manager = args.manager
+        self.backend = args.backend
+        self.repo_path = args.directory
+        self.env_name = args.env_name
+        self.dry_run = args.dry_run
+        self.command_env = os.environ.copy()
+        # Do not let the environment running this installer select the install target.
+        for key in (
+            "VIRTUAL_ENV",
+            "CONDA_PREFIX",
+            "CONDA_DEFAULT_ENV",
+            "PYTHONPATH",
+            "UV_PROJECT_ENVIRONMENT",
+            "UV_PYTHON",
+        ):
+            self.command_env.pop(key, None)
 
-        # 配置颜色样式
-        self.styles = {
-            "error": Style(color=Color.RED.value, bold=True),
-            "warning": Style(color=Color.YELLOW.value),
-            "success": Style(color=Color.GREEN.value),
-            "info": Style(color=Color.CYAN.value),
-            "prompt": Style(color="cyan", bold=True),
-        }
+    def run_cmd(self, cmd: list[str], *, capture: bool = False, cwd: Path | None = None):
+        """Run an argument vector, or print it without executing in dry-run mode."""
+        self.console.print(f"$ {shlex.join(cmd)}", markup=False)
+        if self.dry_run:
+            return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+        return subprocess.run(cmd, check=True, text=True, capture_output=capture, cwd=cwd, env=self.command_env)
 
-    def run_cmd(
-        self,
-        cmd: str,
-        error_msg: str = "",
-        capture: bool = False,
-        check: bool = True,
-    ) -> subprocess.CompletedProcess:
-        """执行系统命令并进行错误处理"""
-        try:
-            result = subprocess.run(
-                cmd,
-                shell=True,
-                check=check,
-                executable="/bin/bash",
-                capture_output=capture,
-                text=True,  # Ensure the output is captured as text
+    def select_options(self):
+        if self.version is None:
+            self.version = inquirer.select(message="选择 Isaac Lab 版本：", choices=list(RELEASES)).execute()
+        if self.manager is None:
+            self.manager = inquirer.select(message="选择包管理器：", choices=["uv", "conda"]).execute()
+        if self.backend is None:
+            self.backend = (
+                inquirer.select(
+                    message="选择安装内容：",
+                    choices=[
+                        {"name": "完整 Isaac Sim 工作流", "value": "isaacsim"},
+                        {"name": "Newton（不安装 Isaac Sim）", "value": "newton"},
+                    ],
+                ).execute()
+                if self.version == "3.0.0"
+                else "isaacsim"
             )
-            return result
-        except subprocess.CalledProcessError as e:
-            self.console.print(
-                f"[{Color.RED.value}]Error executing command: {e.cmd}", style="bold"
+        if self.version != "3.0.0" and self.backend != "isaacsim":
+            raise ValueError("Newton 安装选项仅支持 Isaac Lab 3.0.0。")
+        if self.repo_path is None:
+            self.repo_path = Path(
+                inquirer.text(message="Isaac Lab 安装目录：", default=str(Path.cwd() / "IsaacLab")).execute()
             )
-            self.console.print(f"Error message: {e.stderr}", style=self.styles["error"])
-            if error_msg:
-                self.console.print(error_msg, style=self.styles["error"])
-            sys.exit(1)
-
-
-    def prompt_confirm(self, message: str, default: bool = True) -> bool:
-        """确认对话框"""
-        return inquirer.confirm(
-            message=message,
-            default=default,
-            transformer=lambda x: "Yes" if x else "No",
-            # style=self.styles["prompt"],
-        ).execute()
-
-    def prompt_select(self, message: str, choices: List[str]) -> str:
-        """选择对话框"""
-        return inquirer.select(
-            message=message,
-            choices=choices,
-            # style=self.styles["prompt"],
-        ).execute()
-
-    # 安装步骤
-    def print_header(self):
-        """打印头部信息"""
+        self.repo_path = self.repo_path.expanduser().resolve()
+        if not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9_-]*", self.env_name):
+            raise ValueError("Conda 环境名只能包含字母、数字、下划线和连字符，不能以连字符开头。")
+        self.release = RELEASES[self.version]
         self.console.print(
-            Panel.fit(
-                "One-click Installation Script for IsaacSim and IsaacLab (pip only)\n"
-                "Version: v2.0.0\n"
-                "Author: Ziqi Fan\n"
-                "Email: fanziqi614@gmail.com\n"
-                "GitHub: https://github.com/fan-ziqi\n"
-                "CN Document: https://docs.robotsfan.com/isaaclab\n"
-                "Feedback: https://github.com/fan-ziqi/IsaacLab/issues",
-                title="Installation Information",
-                border_style=Color.CYAN.value,
+            Panel(
+                f"Isaac Lab {self.version} · {self.release['revision']}\n"
+                f"Python {self.release['python']} · {self.manager} · {self.backend}\n{self.repo_path}",
+                title="一键安装（非官方）" if not self.dry_run else "安装预览（不执行命令）",
             )
         )
 
-    def check_nvidia(self):
-        """步骤1：检查NVIDIA驱动"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 1] Checking NVIDIA GPU and drivers...[/]"
-        )
-
-        try:
-            result = self.run_cmd("nvidia-smi", capture=True)
-            table = Table(show_header=False, box=None)
-            table.add_column("Info", style=Color.CYAN.value)
-            table.add_column("Value", style=Color.GREEN.value)
-
-            # 在输出中查找包含驱动版本和CUDA版本的行
-            for line in result.stdout.split("\n"):
-                if "Driver Version" in line:
-                    driver_ver = line.split("Driver Version:")[-1].strip().split()[0]
-                    table.add_row("Driver Version", driver_ver)
-                if "CUDA Version" in line:
-                    cuda_ver = line.split("CUDA Version:")[-1].strip().split()[0]
-                    table.add_row("Minimal CUDA Version", cuda_ver)
-
-            self.console.print(table)
-        except FileNotFoundError:
-            self.console.print(
-                "[bold red]NVIDIA drivers not found![/]\n"
-                "Please install NVIDIA drivers first.\n"
-                "Download: https://www.nvidia.com/Download/index.aspx",
-                style=self.styles["error"],
-            )
-            sys.exit(1)
-
-    def check_cuda(self):
-        """步骤2：检查CUDA安装"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 2] Checking CUDA installation...[/]"
-        )
-
-        result = self.run_cmd("nvcc --version", capture=True)
-        cuda_full_ver = re.search(r"release (\d+\.\d+)", result.stdout).group(1)
-        self.cuda_version = cuda_full_ver.split(".")[0]
-
-        table = Table(show_header=False, box=None)
-        table.add_column(style=Color.CYAN.value)
-        table.add_column(style=Color.GREEN.value)
-        table.add_row("Full Version", cuda_full_ver)
-        self.console.print(table)
-
-        if self.cuda_version not in ["11", "12"]:
-            self.console.print(
-                f"[{Color.RED.value}]Unsupported CUDA version: {cuda_full_ver}[/]",
-                style=self.styles["error"],
-            )
-            sys.exit(1)
-
-    def check_glibc(self):
-        """步骤4：检查GLIBC版本"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 4] Checking GLIBC version...[/]"
-        )
-
-        result = self.run_cmd("ldd --version | head -n1", capture=True)
-        self.glibc_version = re.search(r"(\d+\.\d+)", result.stdout).group(1)
-
-        table = Table(show_header=False, box=None)
-        table.add_column(style=Color.CYAN.value)
-        table.add_column(style=Color.GREEN.value)
-        table.add_row("Current Version", self.glibc_version)
-        table.add_row("Minimal Required Version", self.required_glibc)
-        self.console.print(table)
-
-        if self.glibc_version < self.required_glibc:
-            self.console.print(
-                Panel.fit(
-                    "WARNING: Upgrading GLIBC may cause system instability!\n"
-                    "Only proceed if you understand the risks.",
-                    title="! RISK WARNING !",
-                    style=Style(color="red", bold=True),
-                    border_style="red",
-                )
-            )
-
-            if not self.prompt_confirm(
-                "Proceed with GLIBC upgrade?", default=False
-            ):
-                self.console.print(
-                    "Installation aborted by user.", style=self.styles["warning"]
-                )
-                sys.exit(1)
-
-            self._upgrade_glibc()
-
-    def _upgrade_glibc(self):
-        """执行GLIBC升级"""
-        self.console.print("Starting GLIBC upgrade...", style=self.styles["info"])
-
-        try:
-            # 备份源列表
-            self.run_cmd(
-                "sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak",
-                "Failed to backup sources.list",
-            )
-
-            # 添加临时源
-            with open("/etc/apt/sources.list", "a") as f:
-                f.write("\ndeb http://th.archive.ubuntu.com/ubuntu jammy main\n")
-
-            # 更新并安装
-            self.run_cmd("sudo apt update", "Failed to update package list")
-            self.run_cmd("sudo apt install -y libc6", "Failed to install libc6")
-
-            # 验证版本
-            result = self.run_cmd("ldd --version | head -n1", capture=True)
-            new_version = re.search(r"(\d+\.\d+)", result.stdout).group(1)
-            if new_version < self.required_glibc:
-                raise Exception("GLIBC upgrade failed")
-
-        except Exception as e:
-            self.console.print(
-                f"[{Color.RED.value}]GLIBC upgrade failed: {str(e)}[/]",
-                style=self.styles["error"],
-            )
-            # 恢复备份
-            self.run_cmd(
-                "sudo mv /etc/apt/sources.list.bak /etc/apt/sources.list",
-                "Failed to restore sources.list",
-            )
-            sys.exit(1)
-        finally:
-            self.run_cmd("sudo apt update")
-
-    def manage_conda_env(self):
-        """步骤5：管理Conda环境"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 5] Managing Conda environment...[/]"
-        )
-
-        # 获取环境名称
-        self.conda_env = inquirer.text(
-            message="Enter Conda environment name:",
-            default=self.conda_env,
-            validate=lambda x: re.match(r"^\w+$", x),
-            invalid_message="Invalid environment name (letters, numbers, underscores only)",
-        ).execute()
-
-        # 检查环境是否存在
-        result = self.run_cmd(
-            f"conda env list | grep '^{self.conda_env}\s'",
-            check=False,
-            capture=True,
-        )
-
-        if result.returncode == 0:
-            choice = self.prompt_select(
-                f"Environment '{self.conda_env}' exists:",
-                ["Delete and recreate", "Use existing", "Exit"],
-            )
-
-            if choice == "Delete and recreate":
-                self.run_cmd(f"conda remove -n {self.conda_env} --all -y")
-                self.run_cmd(f"conda create -n {self.conda_env} python=3.10 -y")
-            elif choice == "Exit":
-                return  # 不退出 shell，避免终止整个进程
-        else:
-            self.run_cmd(f"conda create -n {self.conda_env} python=3.10 -y")
-
-        # **关键1：获取 Conda 基路径**
-        conda_base = subprocess.check_output("conda info --base", shell=True).decode().strip()
-        if not conda_base:
-            self.console.print("[bold red]Failed to detect Conda base path. Make sure Conda is installed and available.[/]")
+    def check_system(self):
+        if self.dry_run:
+            self.console.print("实际安装前将检查 Linux、GLIBC、NVIDIA 驱动和包管理器。")
             return
-
-        # **关键2：手动 source conda.sh 并激活环境**
-        activate_cmd = f'source "{conda_base}/etc/profile.d/conda.sh" && conda activate {self.conda_env} && echo "Activated {self.conda_env}"'
-
-        # **关键3：在当前进程中执行，不新开 shell**
-        result = subprocess.run(activate_cmd, shell=True, executable="/bin/bash", capture_output=True, text=True)
-
-        if "Activated" in result.stdout:
-            self.console.print(f"[bold green]Environment '{self.conda_env}' activated successfully![/]")
-        else:
-            self.console.print(f"[bold red]Failed to activate environment '{self.conda_env}'. Try running manually:[/]")
-            self.console.print(f'    source "{conda_base}/etc/profile.d/conda.sh" && conda activate {self.conda_env}')
-
-
-    def install_pytorch(self):
-        """步骤6：安装PyTorch"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 6] Installing PyTorch...[/]"
-        )
-
-        # 根据CUDA版本确定PyTorch索引
-        cuda_map = {"11": "cu118", "12": "cu121"}
-        self.pytorch_index_url = (
-            f"https://download.pytorch.org/whl/{cuda_map[self.cuda_version]}"
-        )
-
-        torch_version = "2.5.1" if self.isaac_version == "2" else "2.4.0"
-        self.run_cmd(
-            f"conda run -n {self.conda_env} pip install torch=={torch_version} "
-            f"--index-url {self.pytorch_index_url}",
-            "Failed to install PyTorch",
-        )
-
-    def install_isaacsim(self):
-        """安装IsaacSim"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}]Installing IsaacSim...[/]"
-        )
-
-        version_map = {
-            "1": "4.2.0.2",
-            "2": "4.5.0"
-        }
-        packages = {
-            "1": [
-                "isaacsim==4.2.0.2",
-                "isaacsim-extscache-physics==4.2.0.2",
-                "isaacsim-extscache-kit==4.2.0.2",
-                "isaacsim-extscache-kit-sdk==4.2.0.2",
-            ],
-            "2": ["isaacsim[all,extscache]==4.5.0"]
-        }
-
-        install_cmd = (
-            f"conda run -n {self.conda_env} pip install --upgrade "
-            f"{' '.join(packages[self.isaac_version])} "
-            "--extra-index-url https://pypi.nvidia.com"
-        )
-
-        self.run_cmd(install_cmd, "Failed to install IsaacSim")
+        if platform.system() != "Linux" or platform.machine() not in ("x86_64", "aarch64"):
+            raise RuntimeError("此脚本支持 Linux x86_64 和 aarch64；其他平台请使用官方安装指南。")
+        if self.version != "3.0.0" and platform.machine() != "x86_64":
+            raise RuntimeError("旧版本安装组合仅支持 Linux x86_64。")
+        libc, version = platform.libc_ver()
+        if libc != "glibc" or tuple(map(int, version.split("."))) < tuple(map(int, self.release["glibc"].split("."))):
+            raise RuntimeError(
+                f"需要 GLIBC >= {self.release['glibc']}，当前为 {libc} {version}。"
+                "请使用受支持的系统；脚本不会修改系统软件源或升级 GLIBC。"
+            )
+        for command in ("git", "nvidia-smi", self.manager):
+            if not shutil.which(command):
+                raise RuntimeError(f"未找到 {command}，请先安装并将其加入 PATH。")
+        result = self.run_cmd(["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"], capture=True)
+        drivers = result.stdout.splitlines()
+        if not drivers:
+            raise RuntimeError("未检测到 NVIDIA GPU。")
+        if self.version == "3.0.0":
+            if any(tuple(map(int, driver.strip().split("."))) < (580, 65, 6) for driver in drivers):
+                raise RuntimeError("CUDA 13.0 需要 NVIDIA 驱动 >= 580.65.06；建议使用官方指南推荐的生产驱动。")
+        self.console.print("系统检查通过。预编译 PyTorch 包包含 CUDA 运行时，无需预先安装 nvcc。")
 
     def clone_isaaclab(self):
-        """步骤8：克隆IsaacLab仓库"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 8] Cloning IsaacLab repository...[/]"
+        revision = self.release["revision"]
+        if self.repo_path.exists():
+            root = self.run_cmd(["git", "rev-parse", "--show-toplevel"], capture=True, cwd=self.repo_path)
+            if not self.dry_run and Path(root.stdout.strip()).resolve() != self.repo_path:
+                raise RuntimeError("安装目录不是独立的 Git 仓库，请选择一个新目录。")
+            status = self.run_cmd(["git", "status", "--porcelain"], capture=True, cwd=self.repo_path)
+            if not self.dry_run and status.stdout.strip():
+                raise RuntimeError("安装目录有未提交的修改，已停止安装。请先保存修改，或选择一个新目录。")
+            self.run_cmd(["git", "fetch", "--depth", "1", REPOSITORY_URL, revision], cwd=self.repo_path)
+            self.run_cmd(["git", "checkout", "--detach", "FETCH_HEAD"], cwd=self.repo_path)
+        else:
+            if not self.dry_run:
+                self.repo_path.parent.mkdir(parents=True, exist_ok=True)
+            self.run_cmd(["git", "clone", "--branch", revision, "--depth", "1", REPOSITORY_URL, str(self.repo_path)])
+
+    def run_in_environment(self, cmd: list[str], *, capture: bool = False):
+        if self.manager == "conda":
+            cmd = ["conda", "run", "--no-capture-output", "-n", self.env_name, *cmd]
+        return self.run_cmd(cmd, capture=capture, cwd=self.repo_path)
+
+    def create_environment(self):
+        python_version = self.release["python"]
+        if self.manager == "uv" and self.version == "3.0.0":
+            venv = self.repo_path / ".venv"
+            if not venv.exists():
+                return  # uv sync creates a fresh project environment.
+            python = str(venv / "bin" / "python")
+            if not Path(python).exists() and not self.dry_run:
+                raise RuntimeError("已有 .venv 不含可用的 Python，请选择新的安装目录。")
+        elif self.manager == "conda":
+            result = self.run_cmd(["conda", "env", "list", "--json"], capture=True)
+            exists = not self.dry_run and any(Path(p).name == self.env_name for p in json.loads(result.stdout)["envs"])
+            if not exists:
+                self.run_cmd(["conda", "create", "-n", self.env_name, f"python={python_version}", "pip", "-y"])
+            python = "python"
+        else:
+            python = str(self.repo_path / "env_isaaclab" / "bin" / "python")
+            if not Path(python).exists():
+                self.run_cmd(["uv", "venv", "--python", python_version, "--seed", "env_isaaclab"], cwd=self.repo_path)
+        probe = self.run_in_environment(
+            [python, "-c", "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"], capture=True
         )
+        if not self.dry_run and probe.stdout.strip() != python_version:
+            raise RuntimeError(f"已有环境的 Python 版本不是 {python_version}，请使用新环境名或新安装目录。")
 
-        # 获取路径
-        path = inquirer.filepath(
-            message="Enter project directory:",
-            default=str(self.project_path),
-            validate=PathValidator(is_dir=True),
-            # style=self.styles["prompt"],
-        ).execute()
-
-        self.project_path = Path(path)
-        repo_path = self.project_path / "IsaacLab"
-
-        if repo_path.exists():
-            choice = self.prompt_select(
-                "Repository exists:",
-                ["Pull latest", "Use existing", "Reclone"]
-            )
-
-            if choice == "Pull latest":
-                self.run_cmd(f"git -C {repo_path} pull")
-            elif choice == "Reclone":
-                self.run_cmd(f"rm -rf {repo_path}")
-                self.run_cmd(f"git clone https://github.com/isaac-sim/IsaacLab.git {repo_path}")
-        else:
-            self.run_cmd(f"git clone https://github.com/isaac-sim/IsaacLab.git {repo_path}")
-
-        # 切换分支
-        os.chdir(repo_path)
-        if self.isaac_version == "1":
-            self.run_cmd("git checkout v1.4.1")
-        else:
-            self.run_cmd("git checkout main")
+    def install_dependencies(self):
+        if self.version == "3.0.0":
+            if self.manager == "uv":
+                cmd = ["uv", "sync", "--python", "3.12"]
+                if self.backend == "isaacsim":
+                    cmd.extend(["--extra", "isaacsim"])
+                self.run_cmd(cmd, cwd=self.repo_path)
+            else:
+                targets = "newton,rl[rsl-rl],visualizer[newton]"
+                if self.backend == "isaacsim":
+                    targets += ",isaacsim"
+                # The upstream installer reads all version pins from its pyproject.toml.
+                self.run_in_environment(["bash", "./isaaclab.sh", "--install", targets])
+            return
+        python = "python" if self.manager == "conda" else str(self.repo_path / "env_isaaclab/bin/python")
+        pip = (
+            [python, "-m", "pip", "install"]
+            if self.manager == "conda"
+            else ["uv", "pip", "install", "--python", python]
+        )
+        self.run_in_environment(
+            [
+                *pip,
+                f"torch=={self.release['torch']}",
+                f"torchvision=={self.release['torchvision']}",
+                "--index-url",
+                f"https://download.pytorch.org/whl/{self.release['cuda']}",
+            ]
+        )
+        sim_version = self.release["isaacsim"]
+        sim_packages = (
+            [
+                f"{name}=={sim_version}"
+                for name in (
+                    "isaacsim",
+                    "isaacsim-extscache-physics",
+                    "isaacsim-extscache-kit",
+                    "isaacsim-extscache-kit-sdk",
+                )
+            ]
+            if self.version == "1.4.1"
+            else [f"isaacsim[all,extscache]=={sim_version}"]
+        )
+        self.run_in_environment([*pip, *sim_packages, "--extra-index-url", "https://pypi.nvidia.com"])
+        if self.manager == "uv":
+            self.command_env["VIRTUAL_ENV"] = str(self.repo_path / "env_isaaclab")
+        self.run_in_environment(["bash", "./isaaclab.sh", "--install", "rsl_rl"])
 
     def verify_installation(self):
-        """步骤10：验证安装"""
-        self.console.print(
-            f"[bold {Color.CYAN.value}][Step 10] Verifying installation...[/]"
-        )
-
-        if self.prompt_confirm("Run graphical verification?", default=True):
-            test_script = (
-                "scripts/tutorials/00_sim/create_empty.py"
-                if self.isaac_version == "2"
-                else "source/standalone/tutorials/00_sim/create_empty.py"
-            )
-
-            self.console.print(
-                Panel.fit(
-                    "When prompted, type 'Yes' to accept the NVIDIA Omniverse EULA",
-                    title="EULA Notice",
-                    style=Style(color="yellow", bold=True),
-                )
-            )
-
-            self.run_cmd(
-                f"conda run -n {self.conda_env} python {test_script}",
-                "Verification failed"
-            )
-
-    # endregion
+        if self.version == "3.0.0":
+            if self.manager == "uv":
+                cmd = ["uv", "run"]
+                if self.backend == "isaacsim":
+                    cmd.extend(["--extra", "isaacsim"])
+                cmd.extend(["isaaclab", "--help"])
+            else:
+                cmd = ["isaaclab", "--help"]
+        else:
+            script = "scripts/tutorials/00_sim/create_empty.py"
+            if not self.dry_run and not (self.repo_path / script).exists():
+                script = "source/standalone/tutorials/00_sim/create_empty.py"
+            cmd = ["bash", "./isaaclab.sh", "--python", script, "--help"]
+        self.run_in_environment(cmd)
 
     def run_installation(self):
-        """主安装流程"""
-        try:
-            self.print_header()
-
-            # 用户选择版本
-            self.isaac_version = self.prompt_select(
-                "Select IsaacLab version:",
-                [
-                    {"name": "v1.4.1", "value": "1"},
-                    {"name": "Latest v2.x.x", "value": "2"}
-                ]
-            )
-
-            self.check_nvidia()
-            self.check_cuda()
-            self.check_glibc()
-            self.manage_conda_env()
-            self.install_pytorch()
-            self.install_isaacsim()
-            self.clone_isaaclab()
-            self.verify_installation()
-
-            # 最终输出
+        self.select_options()
+        self.check_system()
+        self.clone_isaaclab()
+        self.create_environment()
+        self.install_dependencies()
+        self.verify_installation()
+        self.console.print("安装预览结束，未执行命令。" if self.dry_run else "安装和命令行入口检查完成。")
+        self.console.print(f"项目目录：{self.repo_path}", markup=False)
+        if self.manager == "conda":
+            self.console.print(f"使用环境：conda activate {self.env_name}", markup=False)
+        elif self.version == "3.0.0":
+            extra = " --extra isaacsim" if self.backend == "isaacsim" else ""
+            self.console.print(f"后续在项目目录中使用：uv run{extra} isaaclab ...", markup=False)
+        else:
             self.console.print(
-                Panel.fit(
-                    f"Installation complete!\n"
-                    f"Activate environment: [bold cyan]conda activate {self.conda_env}[/]\n"
-                    f"Project directory: [bold cyan]{self.project_path}/IsaacLab[/]",
-                    title="Success",
-                    style=Style(color="green", bold=True),
-                )
+                f"使用环境：source {shlex.quote(str(self.repo_path / 'env_isaaclab/bin/activate'))}", markup=False
             )
+        self.console.print("首次启动 Isaac Sim 时，请阅读并自行确认 NVIDIA 的许可协议。")
 
-        except Exception as e:
-            self.console.print(
-                Panel.fit(
-                    f"Installation failed: {str(e)}",
-                    title="Error",
-                    style=Style(color="red", bold=True),
-                )
-            )
-            sys.exit(1)
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Isaac Lab 一键安装脚本（Linux，非官方）")
+    parser.add_argument("--version", choices=RELEASES, help="Isaac Lab 版本；3.0.0 使用 release/3.0.0 分支")
+    parser.add_argument("--manager", choices=("uv", "conda"), help="安装环境的包管理器")
+    parser.add_argument("--backend", choices=("isaacsim", "newton"), help="3.0.0 可选完整 Isaac Sim 或 Newton 安装")
+    parser.add_argument("--directory", type=Path, help="Isaac Lab 仓库的安装目录")
+    parser.add_argument("--env-name", default="isaaclab", help="Conda 环境名，默认 isaaclab")
+    parser.add_argument("--dry-run", action="store_true", help="仅显示安装命令，不执行或修改安装目录")
+    args = parser.parse_args()
+    try:
+        IsaacInstaller(args).run_installation()
+    except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as exc:
+        Console().print(f"安装停止：{exc}", style="bold red", markup=False)
+        return 1
+    except (KeyboardInterrupt, EOFError):
+        return 130
+    return 0
 
 
 if __name__ == "__main__":
-    IsaacInstaller().run_installation()
+    sys.exit(main())

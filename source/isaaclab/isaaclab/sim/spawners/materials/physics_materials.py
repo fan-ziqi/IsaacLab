@@ -5,24 +5,208 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import dataclasses
 
-from pxr import PhysxSchema, Usd, UsdPhysics, UsdShade
+from typing_extensions import deprecated
 
-from isaaclab.sim.utils import clone, safe_set_attribute_on_usd_schema
-from isaaclab.sim.utils.stage import get_current_stage
+from pxr import Usd, UsdPhysics, UsdShade
 
-if TYPE_CHECKING:
-    from . import physics_materials_cfg
+from isaaclab.utils import validate
+
+from ...schemas.schemas import apply_namespaced_schemas
+from ...utils import clone
+from ...utils.stage import get_current_stage
+from . import physics_materials_cfg
+
+
+def spawn_physics_material_from_fragments(
+    prim_path: str,
+    fragments: physics_materials_cfg.RigidBodyMaterialFragment
+    | physics_materials_cfg.DeformableMaterialFragment
+    | list[physics_materials_cfg.RigidBodyMaterialFragment | physics_materials_cfg.DeformableMaterialFragment]
+    | tuple[physics_materials_cfg.RigidBodyMaterialFragment | physics_materials_cfg.DeformableMaterialFragment, ...],
+    stage: Usd.Stage | None = None,
+) -> Usd.Prim:
+    """Spawn a physics material from one or more single-namespace fragments.
+
+    Creates (or reuses) the ``UsdShade.Material`` prim at ``prim_path``, applies the standard
+    ``UsdPhysics.MaterialAPI`` anchor when at least one rigid-body fragment is present, then dispatches
+    each fragment via its :attr:`~isaaclab.sim.schemas.SchemaFragment.func` to author its namespace onto
+    the material prim. Rigid-body and deformable fragments may be mixed in a single collection; each
+    fragment authors its own namespace. Backend fragments carry backend-specific namespaces (e.g. PhysX
+    ``physxMaterial:*``) without core importing a backend.
+
+    .. note::
+        Unlike the ``@clone``-decorated :func:`spawn_rigid_body_material`, this writer expects a
+        concrete ``prim_path`` and does not resolve regex prim-path patterns. Physics materials are
+        spawned at a single derived path by :func:`spawn_physics_material` and the spawner internals,
+        so regex resolution does not apply here.
+
+    Args:
+        prim_path: The prim path to spawn the material at.
+        fragments: A single
+            :class:`~isaaclab.sim.spawners.materials.RigidBodyMaterialFragment` or
+            :class:`~isaaclab.sim.spawners.materials.DeformableMaterialFragment`, or a list/tuple of
+            them (rigid and deformable fragments may be mixed).
+        stage: The stage to spawn on. Defaults to None, in which case the current stage is used.
+
+    Returns:
+        The spawned physics material prim.
+
+    Raises:
+        ValueError: When ``fragments`` is empty.
+        ValueError: When a prim already exists at the path and is not a material.
+        TypeError: When an item is not a rigid-body or deformable material fragment.
+    """
+    if not isinstance(fragments, (list, tuple)):
+        fragments = [fragments]
+    else:
+        fragments = list(fragments)
+    if not fragments:
+        raise ValueError(f"Cannot spawn a physics material at '{prim_path}' from an empty fragment collection.")
+    invalid_types = [
+        type(fragment).__name__
+        for fragment in fragments
+        if not isinstance(
+            fragment,
+            (physics_materials_cfg.RigidBodyMaterialFragment, physics_materials_cfg.DeformableMaterialFragment),
+        )
+    ]
+    if invalid_types:
+        raise TypeError(
+            "A physics-material fragment collection must contain only physics-material fragments"
+            f" (rigid or deformable); got {invalid_types}."
+        )
+    if stage is None:
+        stage = get_current_stage()
+
+    # create the material prim if none exists yet
+    if not stage.GetPrimAtPath(prim_path).IsValid():
+        UsdShade.Material.Define(stage, prim_path)
+    prim = stage.GetPrimAtPath(prim_path)
+    if not prim.IsA(UsdShade.Material):
+        raise ValueError(f"A prim already exists at path: '{prim_path}' but is not a material.")
+
+    # the UsdPhysics MaterialAPI anchor defines a rigid-body physics material; deformable
+    # fragments never imply it
+    if any(isinstance(fragment, physics_materials_cfg.RigidBodyMaterialFragment) for fragment in fragments):
+        if not UsdPhysics.MaterialAPI(prim):
+            UsdPhysics.MaterialAPI.Apply(prim)
+
+    # dispatch each fragment's applier (writes its single namespace onto the material prim)
+    for cfg in fragments:
+        cfg.func(cfg, prim_path, stage)
+    return prim
+
+
+@deprecated("Use spawn_physics_material_from_fragments instead; this name will be removed in 3.2.")
+def spawn_rigid_body_material_from_fragments(
+    prim_path: str,
+    fragments: physics_materials_cfg.RigidBodyMaterialFragment
+    | physics_materials_cfg.DeformableMaterialFragment
+    | list[physics_materials_cfg.RigidBodyMaterialFragment | physics_materials_cfg.DeformableMaterialFragment]
+    | tuple[physics_materials_cfg.RigidBodyMaterialFragment | physics_materials_cfg.DeformableMaterialFragment, ...],
+    stage: Usd.Stage | None = None,
+) -> Usd.Prim:
+    """Deprecated: use :func:`spawn_physics_material_from_fragments`.
+
+    .. deprecated:: 3.1
+        ``spawn_rigid_body_material_from_fragments`` was renamed to
+        :func:`spawn_physics_material_from_fragments` now that the writer also accepts deformable
+        material fragments, and is scheduled for removal in 3.2.
+
+    Args:
+        prim_path: The prim path to spawn the material at.
+        fragments: A single physics-material fragment, or a list/tuple of them.
+        stage: The stage to spawn on. Defaults to None, in which case the current stage is used.
+
+    Returns:
+        The spawned physics material prim.
+    """
+    return spawn_physics_material_from_fragments(prim_path, fragments, stage)
+
+
+def spawn_physics_material(
+    prim_path: str,
+    material: physics_materials_cfg.PhysicsMaterialCfg
+    | physics_materials_cfg.RigidBodyMaterialFragment
+    | physics_materials_cfg.DeformableMaterialFragment
+    | list[physics_materials_cfg.RigidBodyMaterialFragment | physics_materials_cfg.DeformableMaterialFragment]
+    | tuple[physics_materials_cfg.RigidBodyMaterialFragment | physics_materials_cfg.DeformableMaterialFragment, ...],
+    stage: Usd.Stage | None = None,
+) -> Usd.Prim:
+    """Spawn a physics material from a spawner ``physics_material`` slot value.
+
+    Dispatches the two accepted slot forms: a single rigid-body or deformable material fragment (or a
+    list/tuple of them) is spawned via :func:`spawn_physics_material_from_fragments`; otherwise the
+    value is a legacy material cfg and is spawned via its own :attr:`func`. A mixed list is legal --
+    each fragment authors its own namespace. Lets spawners accept both the fragment and the legacy
+    interface from one call site.
+
+    Args:
+        prim_path: The prim path to spawn the material at.
+        material: A :class:`~isaaclab.sim.spawners.materials.RigidBodyMaterialFragment` or
+            :class:`~isaaclab.sim.spawners.materials.DeformableMaterialFragment` (or list/tuple of
+            them, possibly mixed), or a legacy material cfg carrying a :attr:`func`.
+        stage: The stage to spawn on. Defaults to None, in which case the current stage is used. A
+            legacy material cfg only supports the current stage (or None); passing a different
+            stage raises.
+    Returns:
+        The spawned material prim.
+
+    Raises:
+        ValueError: When ``material`` is an empty fragment collection.
+        ValueError: When ``material`` is a legacy material cfg and ``stage`` is neither ``None``
+            nor the current stage.
+        TypeError: When ``material`` is a fragment collection containing anything other than
+            :class:`~isaaclab.sim.spawners.materials.RigidBodyMaterialFragment` or
+            :class:`~isaaclab.sim.spawners.materials.DeformableMaterialFragment` instances.
+        TypeError: When ``material`` is neither a physics-material cfg nor a physics-material fragment.
+    """
+    # The family writer owns fragment validation so direct and dispatched calls have one contract.
+    if isinstance(
+        material,
+        (
+            list,
+            tuple,
+            physics_materials_cfg.RigidBodyMaterialFragment,
+            physics_materials_cfg.DeformableMaterialFragment,
+        ),
+    ):
+        return spawn_physics_material_from_fragments(prim_path, material, stage)
+    if not isinstance(material, physics_materials_cfg.PhysicsMaterialCfg):
+        raise TypeError(
+            "A physics material must be a PhysicsMaterialCfg or a physics-material fragment"
+            f" (rigid or deformable); got '{type(material).__name__}'."
+        )
+    # legacy single-cfg path (rigid or deformable material cfg with its own spawner ``func``).
+    # Legacy material funcs take only ``(prim_path, cfg)`` and resolve the stage internally via
+    # ``get_current_stage()`` (their path matching is also current-stage-bound), so an explicit
+    # different stage cannot be honored on this path -- reject it loudly rather than authoring on
+    # the wrong stage. The fragment path above supports explicit stages.
+    if stage is not None and stage != get_current_stage():
+        raise ValueError(
+            f"Legacy material cfg '{type(material).__name__}' can only be spawned on the current"
+            " stage. Pass the current stage (or None), or use the fragment-based API for"
+            " explicit-stage authoring."
+        )
+    return material.func(prim_path, material)
 
 
 @clone
-def spawn_rigid_body_material(prim_path: str, cfg: physics_materials_cfg.RigidBodyMaterialCfg) -> Usd.Prim:
+def spawn_rigid_body_material(prim_path: str, cfg: physics_materials_cfg.RigidBodyMaterialBaseCfg) -> Usd.Prim:
     """Create material with rigid-body physics properties.
 
     Rigid body materials are used to define the physical properties to meshes of a rigid body. These
-    include the friction, restitution, and their respective combination modes. For more information on
-    rigid body material, please refer to the `documentation on PxMaterial <https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/_api_build/classPxBaseMaterial.html>`_.
+    include the friction, restitution, and (PhysX-only) compliant-contact spring and combine-mode
+    tokens. For more information on rigid body material, please refer to the `documentation on
+    PxMaterial <https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/_api_build/classPxBaseMaterial.html>`_.
+
+    The writer is metadata-driven: it always applies the standard ``UsdPhysics.MaterialAPI`` and
+    writes the friction/restitution/density fields, then reads ``_usd_applied_schema``,
+    ``_usd_namespace``, and ``_usd_attr_name_map`` from the cfg to author solver-specific attributes.
+    The applied schema (e.g. ``PhysxMaterialAPI``) is added only when at least one solver-specific
+    field has a non-``None`` value at the instance level.
 
     .. note::
         This function is decorated with :func:`clone` that resolves prim path into list of paths
@@ -38,7 +222,8 @@ def spawn_rigid_body_material(prim_path: str, cfg: physics_materials_cfg.RigidBo
         The spawned rigid body material prim.
 
     Raises:
-        ValueError:  When a prim already exists at the specified prim path and is not a material.
+        ValueError: When a prim already exists at the specified prim path and is not a material.
+        ValueError: When the cfg defines solver-specific fields but does not define ``_usd_namespace``.
     """
     # get stage handle
     stage = get_current_stage()
@@ -52,36 +237,30 @@ def spawn_rigid_body_material(prim_path: str, cfg: physics_materials_cfg.RigidBo
     # check if prim is a material
     if not prim.IsA(UsdShade.Material):
         raise ValueError(f"A prim already exists at path: '{prim_path}' but is not a material.")
-    # retrieve the USD rigid-body api
-    usd_physics_material_api = UsdPhysics.MaterialAPI(prim)
-    if not usd_physics_material_api:
-        usd_physics_material_api = UsdPhysics.MaterialAPI.Apply(prim)
-    # retrieve the collision api
-    physx_material_api = PhysxSchema.PhysxMaterialAPI(prim)
-    if not physx_material_api:
-        physx_material_api = PhysxSchema.PhysxMaterialAPI.Apply(prim)
 
-    # convert to dict
-    cfg = cfg.to_dict()
-    del cfg["func"]
-    # set into USD API
-    for attr_name in ["static_friction", "dynamic_friction", "restitution"]:
-        value = cfg.pop(attr_name, None)
-        safe_set_attribute_on_usd_schema(usd_physics_material_api, attr_name, value, camel_case=True)
-    # set into PhysX API
-    for attr_name, value in cfg.items():
-        safe_set_attribute_on_usd_schema(physx_material_api, attr_name, value, camel_case=True)
+    # apply the standard UsdPhysics MaterialAPI (always)
+    if not UsdPhysics.MaterialAPI(prim):
+        UsdPhysics.MaterialAPI.Apply(prim)
+
+    # build cfg dict, dropping underscore-prefixed metadata keys and the spawner ``func`` field
+    cfg_dict = {f.name: getattr(cfg, f.name) for f in dataclasses.fields(cfg) if f.name != "func"}
+
+    # All fields routed by the helper: base friction/restitution under ``physics:*``,
+    # PhysX-subclass fields (compliant-contact, combine modes) under ``physxMaterial:*``.
+    apply_namespaced_schemas(prim, cfg, cfg_dict)
+
     # return the prim
     return prim
 
 
 @clone
-def spawn_deformable_body_material(prim_path: str, cfg: physics_materials_cfg.DeformableBodyMaterialCfg) -> Usd.Prim:
-    """Create material with deformable-body physics properties.
+def spawn_deformable_body_material(
+    prim_path: str,
+    cfg: physics_materials_cfg.CableMaterialCfg | physics_materials_cfg.DeformableBodyMaterialBaseCfg,
+) -> Usd.Prim:
+    """Create material with deformable physics properties.
 
-    Deformable body materials are used to define the physical properties to meshes of a deformable body. These
-    include the friction and deformable body properties. For more information on deformable body material,
-    please refer to the documentation on `PxFEMSoftBodyMaterial`_.
+    Deformable materials define the physical properties of curves, surfaces, and volume meshes.
 
     .. note::
         This function is decorated with :func:`clone` that resolves prim path into list of paths
@@ -94,13 +273,15 @@ def spawn_deformable_body_material(prim_path: str, cfg: physics_materials_cfg.De
         cfg: The configuration for the physics material.
 
     Returns:
-        The spawned deformable body material prim.
+        The spawned deformable material prim.
 
     Raises:
-        ValueError:  When a prim already exists at the specified prim path and is not a material.
+        ValueError: When a prim already exists at the specified prim path and is not a material.
 
-    .. _PxFEMSoftBodyMaterial: https://nvidia-omniverse.github.io/PhysX/physx/5.4.1/_api_build/structPxFEMSoftBodyMaterialModel.html
     """
+    if isinstance(cfg, physics_materials_cfg.CableMaterialCfg):
+        validate(cfg)
+
     # get stage handle
     stage = get_current_stage()
 
@@ -113,16 +294,7 @@ def spawn_deformable_body_material(prim_path: str, cfg: physics_materials_cfg.De
     # check if prim is a material
     if not prim.IsA(UsdShade.Material):
         raise ValueError(f"A prim already exists at path: '{prim_path}' but is not a material.")
-    # retrieve the deformable-body api
-    physx_deformable_body_material_api = PhysxSchema.PhysxDeformableBodyMaterialAPI(prim)
-    if not physx_deformable_body_material_api:
-        physx_deformable_body_material_api = PhysxSchema.PhysxDeformableBodyMaterialAPI.Apply(prim)
-
-    # convert to dict
-    cfg = cfg.to_dict()
-    del cfg["func"]
-    # set into PhysX API
-    for attr_name, value in cfg.items():
-        safe_set_attribute_on_usd_schema(physx_deformable_body_material_api, attr_name, value, camel_case=True)
+    cfg_dict = {f.name: getattr(cfg, f.name) for f in dataclasses.fields(cfg) if f.name != "func"}
+    apply_namespaced_schemas(prim, cfg, cfg_dict)
     # return the prim
     return prim

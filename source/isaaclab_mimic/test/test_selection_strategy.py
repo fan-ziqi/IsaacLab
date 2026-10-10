@@ -3,11 +3,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from isaaclab.app import AppLauncher
-
-# launch omniverse app
-simulation_app = AppLauncher(headless=True).app
-
 import numpy as np
 import pytest
 import torch
@@ -24,6 +19,13 @@ from isaaclab_mimic.datagen.selection_strategy import (
 
 # Number of iterations to run the batched tests
 NUM_ITERS = 1000
+
+
+@pytest.fixture(autouse=True)
+def seed_rngs():
+    """Seed the NumPy and torch generators that the poses and the strategies draw from."""
+    np.random.seed(0)
+    torch.manual_seed(0)
 
 
 @pytest.fixture
@@ -54,13 +56,13 @@ def test_select_source_demo_identity_orientations_object_strategy(nearest_neighb
 
     # Generate object poses for cluster 1 with varying translations
     src_object_poses_in_world_cluster_1 = [
-        torch.eye(4) + torch.tensor([[0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, -1.0]])
+        torch.eye(4) + torch.tensor([[0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, -1.0, 0.0]])
         for i in range(cluster_1_range_min, cluster_1_range_max)
     ]
 
     # Generate object poses for cluster 2 similarly
     src_object_poses_in_world_cluster_2 = [
-        torch.eye(4) + torch.tensor([[0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, -1.0]])
+        torch.eye(4) + torch.tensor([[0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, 0.0, i], [0.0, 0.0, -1.0, 0.0]])
         for i in range(cluster_2_range_min, cluster_2_range_max)
     ]
 
@@ -160,13 +162,13 @@ def test_select_source_demo_identity_orientations_robot_distance_strategy(neares
     # Generate random transformed object poses for cluster 1 with varying translations
     # This represents the first object pose for the transformed subtask segment for each source demo
     transformed_eef_pose_cluster_1 = [
-        torch.eye(4) + torch.tensor([[0, 0, 0, i], [0, 0, 0, i], [0, 0, 0, i], [0, 0, 0, -1]])
+        torch.eye(4) + torch.tensor([[0, 0, 0, i], [0, 0, 0, i], [0, 0, 0, i], [0, 0, -1, 0]])
         for i in range(cluster_1_range_min, cluster_1_range_max)
     ]
 
     # Generate object poses for cluster 2 similarly
     transformed_eef_pose_cluster_2 = [
-        torch.eye(4) + torch.tensor([[0, 0, 0, i], [0, 0, 0, i], [0, 0, 0, i], [0, 0, 0, -1]])
+        torch.eye(4) + torch.tensor([[0, 0, 0, i], [0, 0, 0, i], [0, 0, 0, i], [0, 0, -1, 0]])
         for i in range(cluster_2_range_min, cluster_2_range_max)
     ]
 

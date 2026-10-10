@@ -1,0 +1,1274 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:4
+msgid "Examples: Data Generation and Imitation Learning for Humanoids"
+msgstr "示例：人形机器人的数据生成与模仿学习"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:6
+msgid ""
+"This page covers data generation and imitation learning workflows for "
+"humanoid robots (GR-1, G1) with Isaac Lab Mimic:"
+msgstr "本页介绍使用 Isaac Lab Mimic 为人形机器人（GR-1、G1）生成数据并开展模仿学习的工作流："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:8
+msgid ""
+"**Demo 1:** Data generation and policy training for a humanoid robot (GR-1 "
+"pick and place)"
+msgstr "**演示 1：** 人形机器人的数据生成与策略训练（GR-1 抓取放置）"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:9
+msgid "**Demo 2:** Visuomotor policy for a humanoid robot (GR-1 nut pouring)"
+msgstr "**演示 2：** 人形机器人的视觉运动策略（GR-1 倾倒螺母）"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:10
+msgid ""
+"**Demo 3:** Data generation and policy training for humanoid robot "
+"locomanipulation (Unitree G1)"
+msgstr "**演示 3：** 人形机器人移动操作的数据生成与策略训练（Unitree G1）"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:14
+msgid ""
+"The Isaac Lab Mimic workflows and Pink IK tasks on this page are supported "
+"only on Linux. Pink IK and its dependencies are not available on Windows."
+msgstr "本页的 Isaac Lab Mimic 工作流及 Pink IK 任务仅支持 Linux。Pink IK 及其依赖不支持 Windows。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:17
+msgid ""
+"Complete the tutorial in :ref:`Synthetic Data Generation and Imitation "
+"Learning with Isaac Lab Mimic <teleoperation-imitation-learning>` before "
+"proceeding with the following demonstrations to understand the data "
+"collection, annotation, and generation steps of Isaac Lab Mimic."
+msgstr ""
+"继续以下演示之前，请先完成 :ref:`使用 Isaac Lab Mimic 进行合成数据生成与模仿学习 <teleoperation-"
+"imitation-learning>` 教程，了解数据采集、标注及生成步骤。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:23
+msgid "Demo 1: Data Generation and Policy Training for a Humanoid Robot"
+msgstr "演示 1: 人形机器人的数据生成和策略训练"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:25
+#: source/features/imitation-learning/humanoids_imitation.rst:225
+msgid "GR-1 humanoid robot performing a pick and place task"
+msgstr "GR-1 人形机器人执行拾取和放置任务"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:32
+msgid ""
+"Isaac Lab Mimic supports data generation for robots with multiple end "
+"effectors. In the following demonstration, we will show how to generate data"
+" to train a Fourier GR-1 humanoid robot to perform a pick and place task."
+msgstr ""
+"Isaac Lab Mimic 支持对多个末端执行器的机器人生成数据。在以下演示中，我们将展示如何生成数据以训练一个 Fourier GR-1 "
+"人形机器人执行拾取和放置任务。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:36
+msgid "Optional: Collect and annotate demonstrations"
+msgstr "可选: 收集和标注演示"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:39
+msgid "Collect human demonstrations"
+msgstr "收集人类演示"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:42
+msgid ""
+"Data collection for the GR-1 humanoid robot environment requires use of an "
+"Apple Vision Pro headset. If you do not have access to an Apple Vision Pro, "
+"you may skip this step and continue on to the next step: :ref:`Generate the "
+"dataset <generate-the-dataset>`. A pre-recorded annotated dataset is "
+"provided in the next step."
+msgstr ""
+"采集 GR-1 人形机器人环境的数据需要 Apple Vision Pro 头显。如果没有该设备，可以跳过此步骤，直接进入 :ref:`生成数据集 "
+"<generate-the-dataset>` 。下一步提供了预先录制并标注的数据集。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:47
+msgid ""
+"The GR1 scene utilizes the wrist poses from the Apple Vision Pro (AVP) as "
+"setpoints for a differential IK controller (Pink-IK). The differential IK "
+"controller requires the user's wrist pose to be close to the robot's initial"
+" or current pose for optimal performance. Rapid movements of the user's "
+"wrist may cause it to deviate significantly from the goal state, which could"
+" prevent the IK controller from finding the optimal solution. This may "
+"result in a mismatch between the user's wrist and the robot's wrist. You can"
+" increase the gain of all the `Pink-IK controller's FrameTasks "
+"<../../../../source/isaaclab_tasks/isaaclab_tasks/contrib/pick_place/pickplace_gr1t2_env_cfg.py>`__"
+" to track the AVP wrist poses with lower latency. However, this may lead to "
+"more jerky motion. Separately, the finger joints of the robot are retargeted"
+" to the user's finger joints using the `dex-retargeting "
+"<https://github.com/dexsuite/dex-retargeting>`_ library."
+msgstr ""
+"GR1 场景将 Apple Vision Pro（AVP）提供的手腕位姿作为微分 IK 控制器（Pink-"
+"IK）的目标。要获得较好的效果，用户手腕位姿应接近机器人的初始或当前位姿。手腕快速移动可能使当前状态明显偏离目标，导致 IK "
+"控制器无法找到最优解，出现用户手腕与机器人手腕位置不一致。可以提高所有 `Pink-IK 控制器 FrameTask 的增益 "
+"<../../../../source/isaaclab_tasks/isaaclab_tasks/contrib/pick_place/pickplace_gr1t2_env_cfg.py>`__"
+" ，降低跟踪 AVP 手腕位姿的延迟，但这可能使运动更不平滑。机器人的手指关节则通过 `dex-retargeting "
+"<https://github.com/dexsuite/dex-retargeting>`_ 库重定向到用户的手指关节。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:55
+msgid ""
+"Set up the CloudXR Runtime and Apple Vision Pro for teleoperation by "
+"following the steps in :ref:`cloudxr-teleoperation`. CPU simulation is used "
+"in the following steps for better XR performance when running a single "
+"environment."
+msgstr ""
+"按照 :ref:`cloudxr-teleoperation` 中的步骤设置 CloudXR 运行时和 Apple Vision Pro "
+"以进行远程操作。在运行单个环境时，使用 CPU 仿真可获得更好的 XR 性能。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:58
+msgid ""
+"Collect a set of human demonstrations. A success demo requires the object to"
+" be placed in the bin and for the robot's right arm to be retracted to the "
+"starting position."
+msgstr "收集一组人类演示。成功的演示需要将物体放置在箱子中，并使机器人的右臂缩回到起始位置。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:61
+msgid ""
+"The Isaac Lab Mimic Env GR-1 humanoid robot is set up such that the left "
+"hand has a single subtask, while the right hand has two subtasks. The first "
+"subtask involves the right hand remaining idle while the left hand picks up "
+"and moves the object to the position where the right hand will grasp it. "
+"This setup allows Isaac Lab Mimic to interpolate the right hand's trajectory"
+" accurately by using the object's pose, especially when poses are randomized"
+" during data generation. Therefore, avoid moving the right hand while the "
+"left hand picks up the object and brings it to a stable position."
+msgstr ""
+"Isaac Lab Mimic Env GR-1 人形机器人被设置如下: "
+"左手有一个子任务，而右手有两个子任务。第一个子任务是右手保持空闲，左手拾起并移动物体到右手将要抓取的位置。这种设置使得 Isaac Lab Mimic "
+"能够通过使用物体的姿势准确地插值右手的轨迹，尤其是在数据生成过程中姿势被随机化的情况下。因此，在左手拾起物体并将其带到稳定位置时，请避免移动右手。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:75
+msgid "|good_demo| |bad_demo|"
+msgstr "|good_demo| |bad_demo|"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:67
+msgid "GR-1 humanoid robot performing a good pick and place demonstration"
+msgstr "GR-1 人形机器人完成了一个良好的拾取和放置演示"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:71
+msgid "GR-1 humanoid robot performing a bad pick and place demonstration"
+msgstr "GR-1 人形机器人完成了一个糟糕的拾取和放置演示"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:79
+msgid ""
+"Left: A good human demonstration with smooth and steady motion. Right: A bad"
+" demonstration with jerky and exaggerated motion."
+msgstr "左: 一个演示人类动作流畅稳定的好例子。右: 一个动作生硬夸张的糟糕示范。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:80
+msgid "Collect five demonstrations by running the following command:"
+msgstr "通过运行以下命令收集五个演示: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:94
+msgid ""
+"We also provide a GR-1 pick and place task with waist degrees-of-freedom "
+"enabled ``IsaacContrib-PickPlace-GR1T2-WaistEnabled-Abs`` (see "
+":doc:`/source/setup/environments` for details on the available environments,"
+" including the GR1 Waist Enabled variant). The same command above applies "
+"but with the task name changed to ``IsaacContrib-PickPlace-"
+"GR1T2-WaistEnabled-Abs``."
+msgstr ""
+"我们还提供了启用腰部自由度的 GR-1 抓取放置任务 ``IsaacContrib-PickPlace-GR1T2-WaistEnabled-Abs``"
+" （可用环境及 GR1 腰部启用变体的详情，见 :doc:`/source/setup/environments` "
+"）。可使用上述同一命令，只需将任务名改为 ``IsaacContrib-PickPlace-GR1T2-WaistEnabled-Abs`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:97
+msgid ""
+"If a demo fails during data collection, the environment can be reset using "
+"the teleoperation controls panel in the XR teleop client on the Apple Vision"
+" Pro or via voice control by saying \"reset\". See :ref:`teleoperate-apple-"
+"vision-pro` for more details."
+msgstr ""
+"如果在数据收集过程中演示失败，可以使用 Apple Vision Pro 上的 XR 远程操控客户端中的远程操控控制面板或通过说 \"reset\" "
+"来重置环境。查看 :ref:`teleoperate-apple-vision-pro` 以获取更多详细信息。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:100
+msgid ""
+"The robot uses simplified collision meshes for physics calculations that "
+"differ from the detailed visual meshes displayed in the simulation. Due to "
+"this difference, you may occasionally observe visual artifacts where parts "
+"of the robot appear to penetrate other objects or itself, even though proper"
+" collision handling is occurring in the physics simulation."
+msgstr ""
+"机器人使用简化的碰撞网格进行物理计算，该网格与仿真中显示的详细可视网格不同。由于这种差异，您可能偶尔会观察到可视图中机器人的某些部分似乎穿透其他物体或其自身，尽管在物理仿真中正常处理碰撞。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:102
+msgid ""
+"You can replay the collected demonstrations by running the following "
+"command:"
+msgstr "您可以通过运行以下命令重现收集的演示: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:113
+msgid ""
+"Non-determinism may be observed during replay as physics in IsaacLab are not"
+" deterministically reproducible when using ``env.reset``."
+msgstr "回放时可能出现非确定性，因为使用 ``env.reset`` 时，Isaac Lab 的物理仿真并不能保证确定性复现。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:117
+msgid "Annotate the demonstrations"
+msgstr "标注演示"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:119
+msgid ""
+"Unlike the :ref:`Franka stacking task <generate-additional-demonstrations>`,"
+" the GR-1 pick and place task uses manual annotation to define subtasks."
+msgstr ""
+"与 :ref:`Franka 堆叠任务 <generate-additional-demonstrations>` 不同，GR-1 "
+"抓取放置任务通过手动标注定义子任务。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:121
+msgid ""
+"The pick and place task has one subtask for the left arm (pick) and two "
+"subtasks for the right arm (idle, place). Annotations denote the end of a "
+"subtask. For the pick and place task, this means there are no annotations "
+"for the left arm and one annotation for the right arm (the end of the final "
+"subtask is always implicit)."
+msgstr ""
+"拾取和放置任务有一个左臂子任务（pick）和两个右臂子任务（idle、place）。 标注表示子任务的结束。 "
+"对于拾取和放置任务，这意味着左臂子任务没有标注，右臂子任务有一个标注（最后子任务的结束始终是隐式的）。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:124
+msgid ""
+"Each demo requires a single annotation between the first and second subtask "
+"of the right arm. This annotation (\"S\" button press) should be done when "
+"the right robot arm finishes the \"idle\" subtask and begins to move towards"
+" the target object. An example of a correct annotation is shown below:"
+msgstr ""
+"每个演示都需要在右臂的第一个和第二个子任务之间进行一次单独的标注。此标注( \"S\" 按钮按下)应在右侧机器人手臂完成 \"idle\" "
+"子任务并开始朝着目标物体移动时完成。下面显示了一个正确标注的示例: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:131
+msgid "Annotate the demonstrations by running the following command:"
+msgstr "通过运行以下命令标注演示: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:144
+msgid ""
+"The script prints the keyboard commands for manual annotation and the "
+"current subtask being annotated:"
+msgstr "脚本打印用于手动标注的键盘命令以及当前正在标注的子任务: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:160
+msgid ""
+"If the object does not get placed in the bin during annotation, you can "
+"press \"N\" to replay the episode and annotate again. Or you can press \"Q\""
+" to skip the episode and annotate the next one."
+msgstr "如果在标注过程中物体未放入箱子，则可以按 \"N\" 重新播放该事件并重新标注。或者您可以按 \"Q\" 跳过该事件并标注下一个。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:165
+msgid "Generate the dataset"
+msgstr "生成数据集"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:167
+msgid ""
+"If you skipped the prior collection and annotation step, download the pre-"
+"recorded annotated dataset ``dataset_annotated_gr1.hdf5`` from here: "
+"`[Annotated GR1 Dataset] <https://omniverse-content-production.s3-us-"
+"west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/pick_place_datasets/dataset_annotated_gr1.hdf5>`_."
+" Place the file under ``IsaacLab/datasets`` and run the following command to"
+" generate a new dataset with 1000 demonstrations."
+msgstr ""
+"如果跳过了前面的采集与标注步骤，请下载预先录制并标注的 ``dataset_annotated_gr1.hdf5`` ： `[已标注 GR1 数据集] "
+"<https://omniverse-content-production.s3-us-"
+"west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/pick_place_datasets/dataset_annotated_gr1.hdf5>`_"
+" 。将文件放到 ``IsaacLab/datasets`` 下，运行以下命令，生成包含 1000 条示范的新数据集。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:181
+#: source/features/imitation-learning/humanoids_imitation.rst:316
+msgid "Train a policy"
+msgstr "训练一个策略"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:183
+msgid ""
+"Use `Robomimic <https://robomimic.github.io/>`__ to train a policy for the "
+"generated dataset."
+msgstr "使用 `Robomimic <https://robomimic.github.io/>`__ 为生成的数据集训练一个策略。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:193
+#: source/features/imitation-learning/humanoids_imitation.rst:328
+msgid ""
+"The training script will normalize the actions in the dataset to the range "
+"[-1, 1]. The normalization parameters are saved in the model directory under"
+" ``PATH_TO_MODEL_DIRECTORY/logs/normalization_params.txt``. Record the "
+"normalization parameters for later use in the visualization step."
+msgstr ""
+"训练脚本将标准化数据集中的操作到范围[-1, 1]。标准化参数保存在模型目录下的 "
+"``PATH_TO_MODEL_DIRECTORY/logs/normalization_params.txt`` "
+"文件中。记录标准化参数以备后续在可视化步骤中使用。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:198
+#: source/features/imitation-learning/humanoids_imitation.rst:333
+msgid ""
+"By default the trained models and logs will be saved to "
+"``IsaacLab/logs/robomimic``."
+msgstr "默认情况下，训练后的模型和日志保存在 ``IsaacLab/logs/robomimic`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:201
+#: source/features/imitation-learning/humanoids_imitation.rst:342
+#: source/features/imitation-learning/humanoids_imitation.rst:491
+msgid "Visualize the results"
+msgstr "可视化结果"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:203
+#: source/features/imitation-learning/humanoids_imitation.rst:344
+msgid ""
+"Visualize the results of the trained policy by running the following "
+"command, using the normalization parameters recorded in the prior training "
+"step:"
+msgstr "通过运行以下命令，使用之前训练步骤中记录的标准化参数来可视化训练策略的结果: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:218
+#: source/features/imitation-learning/humanoids_imitation.rst:359
+#: source/features/imitation-learning/humanoids_imitation.rst:508
+msgid ""
+"Change the ``NORM_FACTOR`` in the above command with the values generated in"
+" the training step."
+msgstr "将上述命令中的 ``NORM_FACTOR`` 更改为训练步骤中生成的值。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:222
+msgid ""
+"**If you don't see expected performance results:** It is critical to test "
+"policies from various checkpoint epochs. Performance can vary significantly "
+"between epochs, and the best-performing checkpoint is often not the final "
+"one."
+msgstr ""
+"**如果您没有看到预期的性能结果：** 测试来自不同检查点轮次的策略至关重要。不同轮次之间的性能可能存在显著差异，性能最佳的检查点往往不是最后一个。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:231
+#: source/features/imitation-learning/humanoids_imitation.rst:521
+msgid "The trained policy performing the pick and place task in Isaac Lab."
+msgstr "在 Isaac Lab 中执行拾取和放置任务的训练策略。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:235
+msgid "**Expected Success Rates and Timings for Pick and Place GR1T2 Task**"
+msgstr "**GR1T2 拾取和放置任务的预期成功率和时间**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:237
+#: source/features/imitation-learning/humanoids_imitation.rst:378
+#: source/features/imitation-learning/humanoids_imitation.rst:527
+msgid ""
+"Success rate for data generation depends on the quality of human "
+"demonstrations (how well the user performs them) and dataset annotation "
+"quality. Both data generation and downstream policy success are sensitive to"
+" these factors and can show high variance. See :ref:`Common Pitfalls when "
+"Generating Data <common-pitfalls-generating-data>` for tips to improve your "
+"dataset."
+msgstr ""
+"数据生成的成功率取决于人类演示的质量（用户执行的好坏程度）和数据集标注质量。数据生成和下游策略成功对这些因素都很敏感，可能会出现较大差异。请参阅 "
+":ref:`Common Pitfalls when Generating Data <common-pitfalls-generating-"
+"data>` 获取改进数据集的提示。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:238
+msgid ""
+"Data generation success for this task is typically 65-80% over 1000 "
+"demonstrations, taking 18-40 minutes depending on GPU hardware and success "
+"rate (19 minutes on a RTX ADA 6000 @ 80% success rate)."
+msgstr ""
+"此任务的数据生成成功率通常为 65-80%（1000 个演示），需要 18-40 分钟，具体取决于 GPU 硬件和成功率（在 RTX ADA 6000 "
+"上成功率 80% 时为 19 分钟）。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:239
+msgid ""
+"Behavior Cloning (BC) policy success is typically 75-86% (evaluated on 50 "
+"rollouts) when trained on 1000 generated demonstrations for 2000 epochs "
+"(default), depending on demonstration quality. Training takes approximately "
+"29 minutes on a RTX ADA 6000."
+msgstr ""
+"行为克隆（BC）策略成功率通常为 75-86%（在 50 次展示中评估），基于 1000 个生成的演示训练 2000 "
+"个轮次（默认），具体取决于演示质量。在 RTX ADA 6000 上训练大约需要 29 分钟。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:240
+#: source/features/imitation-learning/humanoids_imitation.rst:530
+msgid ""
+"**Recommendation:** Train for 2000 epochs with 1000 generated "
+"demonstrations, and **evaluate multiple checkpoints saved between the 1000th"
+" and 2000th epochs** to select the best-performing policy. Testing various "
+"epochs is essential for finding optimal performance."
+msgstr ""
+"**建议：** 使用 1000 个生成的演示训练 2000 个轮次，并 **评估保存在第 1000 到第 2000 个轮次之间的多个检查点** "
+"，以选择性能最佳的策略。测试不同轮次对于找到最优性能至关重要。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:244
+msgid "Demo 2: Visuomotor Policy for a Humanoid Robot"
+msgstr "演示 2：人形机器人的视觉运动策略"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:246
+#: source/features/imitation-learning/humanoids_imitation.rst:366
+msgid "GR-1 humanoid robot performing a pouring task"
+msgstr "GR-1 人形机器人执行倾倒任务"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:253
+msgid "Download the Dataset"
+msgstr "下载数据集"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:255
+msgid ""
+"Download the pre-generated dataset from `here <https://omniverse-content-"
+"production.s3-us-"
+"west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/pick_place_datasets/generated_dataset_gr1_nut_pouring.hdf5>`__"
+" and place it under "
+"``IsaacLab/datasets/generated_dataset_gr1_nut_pouring.hdf5`` (**Note: The "
+"dataset size is approximately 15GB**). The dataset contains 1000 "
+"demonstrations of a humanoid robot performing a pouring/placing task that "
+"was generated using Isaac Lab Mimic for the ``Isaac-NutPour-GR1T2-Pink-IK-"
+"Abs-Mimic-v0`` task."
+msgstr ""
+"从 `此处 <https://omniverse-content-production.s3-us-"
+"west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/pick_place_datasets/generated_dataset_gr1_nut_pouring.hdf5>`__"
+" 下载预生成数据集，放到 ``IsaacLab/datasets/generated_dataset_gr1_nut_pouring.hdf5`` （ "
+"**注意：数据集约为 15 GB** ）。其中包含人形机器人执行倾倒/放置任务的 1000 条示范，由 Isaac Lab Mimic 为 "
+"``Isaac-NutPour-GR1T2-Pink-IK-Abs-Mimic-v0`` 任务生成。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:261
+msgid ""
+"If desired, data collection, annotation, and generation can be done using "
+"the same commands as the prior examples."
+msgstr "如果需要的话，可以使用与之前示例相同的命令进行数据收集、标注和生成。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:263
+msgid ""
+"The robot first picks up the red beaker and pours the contents into the "
+"yellow bowl. Then, it drops the red beaker into the blue bin. Lastly, it "
+"places the yellow bowl onto the white scale. See the video in the "
+":ref:`visualize-results-demo-2` section below for a visual demonstration of "
+"the task."
+msgstr ""
+"机器人首先拿起红色烧杯，将内容物倒入黄色碗中。然后，它将红色烧杯放入蓝色垃圾箱中。最后，它将黄色碗放在白色天平上。请参见下面 "
+":ref:`visualize-results-demo-2` 部分的视频，以获取任务的视觉演示。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:267
+msgid ""
+"**The success criteria for this task requires the red beaker to be placed in"
+" the blue bin, the green nut to be in the yellow bowl, and the yellow bowl "
+"to be placed on top of the white scale.**"
+msgstr "**此任务的成功标准要求将红色烧杯放置在蓝色垃圾桶中，将绿色螺母放在黄色碗中，并将黄色碗放在白色天平上。**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:271
+msgid ""
+"**The following commands are only for your reference and are not required "
+"for this demo.**"
+msgstr "**注意，以下命令仅供参考，对本演示没有必要。**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:273
+#: source/features/imitation-learning/humanoids_imitation.rst:429
+msgid "To collect demonstrations:"
+msgstr "收集演示: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:285
+#: source/features/imitation-learning/humanoids_imitation.rst:455
+msgid "To annotate the demonstrations:"
+msgstr "标注演示: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:297
+msgid ""
+"There are multiple right eef annotations for this task. Annotations for "
+"subtasks for the same eef cannot have the same action index. Make sure to "
+"annotate the right eef subtasks with different action indices."
+msgstr "有多个正确的该任务的 eef 标注。相同 eef 的子任务标注不能具有相同的动作索引。确保用不同的动作索引标注正确的 eef 子任务。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:301
+msgid "To generate the dataset:"
+msgstr "生成数据集: "
+
+#: source/features/imitation-learning/humanoids_imitation.rst:318
+msgid ""
+"Use `Robomimic <https://robomimic.github.io/>`__ to train a visuomotor BC "
+"agent for the task."
+msgstr "使用 `Robomimic <https://robomimic.github.io/>`__ 来为任务训练视觉动作 BC 智能体。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:335
+msgid ""
+"You can also post-train a `GR00T <https://github.com/NVIDIA/Isaac-GR00T>`__ "
+"foundation model to deploy a Vision-Language-Action policy for the task."
+msgstr ""
+"您还可以后训练一个 `GR00T <https://github.com/NVIDIA/Isaac-GR00T>`__ 基础模型，为任务部署视觉-语言-"
+"动作策略。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:337
+msgid ""
+"Please refer to the `IsaacLabEvalTasks <https://github.com/isaac-"
+"sim/IsaacLabEvalTasks/>`__ repository for more details."
+msgstr ""
+"有关更多详细信息，请参阅 `IsaacLabEvalTasks <https://github.com/isaac-"
+"sim/IsaacLabEvalTasks/>`__ 存储库。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:363
+msgid ""
+"**If you don't see expected performance results:** Test policies from "
+"various checkpoint epochs, not just the final one. Policy performance can "
+"vary substantially across training, and intermediate checkpoints often yield"
+" better results."
+msgstr ""
+"**如果您没有看到预期的性能结果：** "
+"请测试来自不同检查点轮次的策略，而不仅仅是最后一个。策略性能在整个训练过程中可能存在显著差异，中间检查点往往会产生更好的结果。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:372
+msgid ""
+"The trained visuomotor policy performing the pouring task in Isaac Lab."
+msgstr "经过训练的视觉运动策略在 Isaac Lab 中执行倾倒任务"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:376
+msgid ""
+"**Expected Success Rates and Timings for Visuomotor Nut Pour GR1T2 Task**"
+msgstr "**视觉运动螺母倾倒 GR1T2 任务的预期成功率和时间**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:379
+msgid ""
+"Data generation for 1000 demonstrations takes approximately 10 hours on a "
+"RTX ADA 6000."
+msgstr "在 RTX ADA 6000 上生成 1000 个演示大约需要 10 小时。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:380
+msgid ""
+"Behavior Cloning (BC) policy success is typically 50-60% (evaluated on 50 "
+"rollouts) when trained on 1000 generated demonstrations for 600 epochs "
+"(default). Training takes approximately 15 hours on a RTX ADA 6000."
+msgstr ""
+"行为克隆（BC）策略成功率通常为 50-60%（在 50 次展示中评估），基于 1000 个生成的演示训练 600 个轮次（默认）。在 RTX ADA "
+"6000 上训练大约需要 15 小时。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:381
+msgid ""
+"**Recommendation:** Train for 600 epochs with 1000 generated demonstrations,"
+" and **evaluate multiple checkpoints saved between the 300th and 600th "
+"epochs** to select the best-performing policy. Testing various epochs is "
+"critical for achieving optimal performance."
+msgstr ""
+"**建议：** 使用 1000 个生成的演示训练 600 个轮次，并 **评估保存在第 300 到第 600 个轮次之间的多个检查点** "
+"，以选择性能最佳的策略。测试不同轮次对于实现最优性能至关重要。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:385
+msgid ""
+"Demo 3: Data Generation and Policy Training for Humanoid Robot "
+"Locomanipulation with Unitree G1"
+msgstr "演示 3：Unitree G1 人形机器人移动操作的数据生成与策略训练"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:387
+msgid ""
+"In this demo, we showcase the integration of locomotion and manipulation "
+"capabilities within a single humanoid robot system. This locomanipulation "
+"environment enables data collection for complex tasks that combine "
+"navigation and object manipulation. The demonstration follows a multi-step "
+"process: first, it generates pick and place tasks similar to Demo 1, then "
+"introduces a navigation component that uses specialized scripts to generate "
+"scenes where the humanoid robot must move from point A to point B. The robot"
+" picks up an object at the initial location (point A) and places it at the "
+"target destination (point B)."
+msgstr ""
+"在本演示中，我们展示了在单个人形机器人系统中集成运动和操作能力。这个运动操作环境能够为结合导航和物体操作的复杂任务收集数据。演示遵循多步骤过程: "
+"首先生成类似于演示 1 的拾取和放置任务，然后引入导航组件，使用专门的脚本生成场景，其中人形机器人必须从 A 点移动到 B 点。机器人在初始位置（A "
+"点）拾取物体，并将其放置在目标位置（B 点）。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:393
+msgid ""
+"G1 humanoid robot with locomanipulation performing a pick and place task"
+msgstr "具有运动操作能力的 G1 人形机器人执行拾取和放置任务"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:400
+msgid "**Locomotion policy training**"
+msgstr "**运动策略训练**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:402
+msgid ""
+"The locomotion policy used in this integration example was trained using the"
+" `AGILE <https://github.com/nvidia-isaac/WBC-AGILE>`__ framework. AGILE is "
+"an officially supported humanoid control training pipeline that leverages "
+"the manager based environment in Isaac Lab. It will also be seamlessly "
+"integrated with other evaluation and deployment tools across Isaac products."
+" This allows teams to rely on a single, maintained stack covering all "
+"necessary infrastructure and tooling for policy training, with easy export "
+"to real-world deployment. The AGILE repository contains updated pre-trained "
+"policies with separate upper and lower body policies for flexibility. They "
+"have been verified in the real world and can be directly deployed. Users can"
+" also train their own locomotion or whole-body control policies using the "
+"AGILE framework."
+msgstr ""
+"本集成示例使用的运动策略通过 `AGILE <https://github.com/nvidia-isaac/WBC-AGILE>`__ "
+"框架训练。AGILE 是官方支持的人形机器人控制训练流水线，使用 Isaac Lab 基于管理器的环境，也将与 Isaac "
+"产品中的其他评估及部署工具集成。团队可以依靠统一、持续维护的工具体系，获得策略训练所需的基础设施，并方便地导出到实机部署。AGILE "
+"仓库包含更新的预训练策略，上半身和下半身策略分开，便于灵活使用。这些策略已通过实机验证，可直接部署。用户也可以通过 AGILE "
+"训练自己的运动或全身控制策略。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:412
+msgid "Generate the manipulation dataset"
+msgstr "生成操作数据集"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:414
+msgid ""
+"The same data generation and policy training steps from Demo 1 can be "
+"applied to the G1 humanoid robot with locomanipulation capabilities. This "
+"demonstration shows how to train a G1 robot to perform pick and place tasks "
+"with full-body locomotion and manipulation."
+msgstr ""
+"演示 1 的数据生成与策略训练步骤也可用于具备移动操作能力的 G1 人形机器人。本演示介绍如何训练 G1，结合全身移动与操作完成抓取放置任务。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:417
+msgid ""
+"The process follows the same workflow as Demo 1, but uses the "
+"``IsaacContrib-PickPlace-Locomanipulation-G1-Abs`` task environment."
+msgstr ""
+"流程与演示 1 相同，但使用 ``IsaacContrib-PickPlace-Locomanipulation-G1-Abs`` 任务环境。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:419
+msgid ""
+"Follow the same data collection, annotation, and generation process as "
+"demonstrated in Demo 1, but adapted for the G1 locomanipulation task."
+msgstr "沿用演示 1 的数据采集、标注及生成流程，并针对 G1 移动操作任务进行调整。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:423
+msgid ""
+"If desired, data collection and annotation can be done using the same "
+"commands as the prior examples for validation of the dataset."
+msgstr "如果需要，可以使用与之前示例相同的命令进行数据收集和标注以验证数据集。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:425
+msgid ""
+"The G1 robot with locomanipulation capabilities combines full-body "
+"locomotion with manipulation to perform pick and place tasks."
+msgstr "具有运动操作能力的 G1 机器人结合全身运动和操作来执行拾取和放置任务。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:427
+msgid ""
+"**Note that the following commands are only for your reference and dataset "
+"validation purposes - they are not required for this demo.**"
+msgstr "**注意，以下命令仅供参考和数据集验证之用 - 对本演示不是必需的。**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:443
+msgid ""
+"Depending on how the Apple Vision Pro app was initialized, the hands of the "
+"operator might be very far up or far down compared to the hands of the G1 "
+"robot. If this is the case, you can click **Stop XR** in the XR tab in Isaac"
+" Lab, and move the AR Anchor prim. Adjust it down to bring the hands of the "
+"operator lower, and up to bring them higher. Click **Start XR** to resume "
+"teleoperation session. Make sure to match the hands of the robot before "
+"clicking **Play** in the Apple Vision Pro, otherwise there will be an "
+"undesired large force generated initially."
+msgstr ""
+"Apple Vision Pro 应用的初始化方式可能使操作者双手远高于或远低于 G1 的双手。出现这种情况时，可在 Isaac Lab 的 XR "
+"选项卡中点击 **Stop XR** ，移动 AR Anchor prim：向下移动可降低操作者双手，向上移动可抬高。点击 **Start XR** "
+"恢复遥操作。点击 Apple Vision Pro 中的 **Play** 前，务必使双手与机器人双手位置匹配，否则初始时会产生意外的大力。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:445
+msgid "You can replay the collected demonstrations by running:"
+msgstr "您可以通过运行以下命令重现收集的演示:"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:467
+msgid ""
+"If you skipped the prior collection and annotation step, download the pre-"
+"recorded annotated dataset ``dataset_annotated_g1_locomanip.hdf5`` from "
+"here: `[Annotated G1 Dataset] <https://omniverse-content-production.s3-us-"
+"west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/pick_place_datasets/dataset_annotated_g1_locomanip.hdf5>`_."
+" Place the file under ``IsaacLab/datasets`` and run the following command to"
+" generate a new dataset with 1000 demonstrations."
+msgstr ""
+"如果跳过了前面的采集与标注步骤，请下载预先录制并标注的 ``dataset_annotated_g1_locomanip.hdf5`` ： `[已标注 "
+"G1 数据集] <https://omniverse-content-production.s3-us-"
+"west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/IsaacLab/Mimic/pick_place_datasets/dataset_annotated_g1_locomanip.hdf5>`_"
+" 。将文件放到 ``IsaacLab/datasets`` 下，运行以下命令，生成包含 1000 条示范的新数据集。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:479
+msgid "Train a manipulation-only policy"
+msgstr "训练仅操作的策略"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:481
+msgid ""
+"At this point you can train a policy that only performs manipulation tasks "
+"using the generated dataset:"
+msgstr "此时，您可以使用生成的数据集训练一个仅执行操作任务的策略:"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:493
+msgid "Visualize the trained policy performance:"
+msgstr "可视化训练策略的性能:"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:512
+msgid ""
+"**If you don't see expected performance results:** Always test policies from"
+" various checkpoint epochs. Different epochs can produce significantly "
+"different results, so evaluate multiple checkpoints to find the optimal "
+"model."
+msgstr ""
+"**如果您没有看到预期的性能结果：** 请始终测试来自不同检查点轮次的策略。不同轮次可能会产生显著不同的结果，因此请评估多个检查点以找到最优模型。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:515
+msgid "G1 humanoid robot performing a pick and place task"
+msgstr "G1 人形机器人执行拾取和放置任务"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:525
+msgid ""
+"**Expected Success Rates and Timings for Locomanipulation Pick and Place "
+"Task**"
+msgstr "**运动操作拾取和放置任务的预期成功率和时间**"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:528
+msgid ""
+"Data generation success for this task is typically 65-82% over 1000 "
+"demonstrations, taking 18-40 minutes depending on GPU hardware and success "
+"rate (18 minutes on a RTX ADA 6000 @ 82% success rate)."
+msgstr ""
+"此任务的数据生成成功率通常为 65-82%（1000 个演示），需要 18-40 分钟，具体取决于 GPU 硬件和成功率（在 RTX ADA 6000 "
+"上成功率 82% 时为 18 分钟）。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:529
+msgid ""
+"Behavior Cloning (BC) policy success is typically 75-85% (evaluated on 50 "
+"rollouts) when trained on 1000 generated demonstrations for 2000 epochs "
+"(default), depending on demonstration quality. Training takes approximately "
+"40 minutes on a RTX ADA 6000."
+msgstr ""
+"行为克隆（BC）策略成功率通常为 75-85%（在 50 次展示中评估），基于 1000 个生成的演示训练 2000 "
+"个轮次（默认），具体取决于演示质量。在 RTX ADA 6000 上训练大约需要 40 分钟。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:535
+msgid "Generate the dataset with manipulation and point-to-point navigation"
+msgstr "生成包含操作和点对点导航的数据集"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:537
+msgid ""
+"To create a comprehensive locomanipulation dataset that combines both "
+"manipulation and navigation capabilities, you can generate a navigation "
+"dataset using the manipulation dataset from the previous step as input."
+msgstr "要创建结合操作和导航能力的综合运动操作数据集，您可以使用上一步的操作数据集作为输入生成导航数据集。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:541
+msgid ""
+"**Skip data generation:** A pre-made locomanipulation dataset in LeRobot "
+"format is available on Hugging Face at `nvidia/g1_locomanip_dataset "
+"<https://huggingface.co/datasets/nvidia/g1_locomanip_dataset>`__. "
+"Downloading it lets you skip this section and the dataset conversion step, "
+"proceeding directly to **Finetune the policy** below."
+msgstr ""
+"**跳过数据生成：** Hugging Face 上的 `nvidia/g1_locomanip_dataset "
+"<https://huggingface.co/datasets/nvidia/g1_locomanip_dataset>`__ 提供了现成的 "
+"LeRobot 格式移动操作数据集。下载后可跳过本节及数据集转换步骤，直接进入下面的 **微调策略** 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:546
+msgid "Download and unzip the dataset:"
+msgstr "下载并解压数据集："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:553
+msgid ""
+"The archive extracts to ``./datasets/g1_simple_high_var_lerobot/``. Use this"
+" path as the ``--dataset-path`` in the finetuning step. Policies trained on "
+"this dataset require ``--policy_quat_format wxyz`` at rollout time."
+msgstr ""
+"压缩包解压到 ``./datasets/g1_simple_high_var_lerobot/`` 。在微调步骤中，将此路径用作 "
+"``--dataset-path`` 。使用该数据集训练的策略在运行轨迹时需传入 ``--policy_quat_format wxyz`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:561
+msgid "G1 locomanipulation data generation without obstacles"
+msgstr "无障碍物的 G1 移动操作数据生成"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:566
+msgid "Default: no obstacles (open scene)."
+msgstr "默认配置：无障碍物（开放场景）。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:567
+msgid "G1 locomanipulation data generation with forklift obstacles"
+msgstr "包含叉车障碍物的 G1 移动操作数据生成"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:572
+msgid "With 8 forklift obstacles and ``--randomize_placement`` enabled."
+msgstr "包含 8 个叉车障碍物，并启用 ``--randomize_placement`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:574
+msgid ""
+"The locomanipulation dataset generation process takes the previously "
+"generated manipulation dataset and creates scenarios where the robot must "
+"navigate from one location to another while performing manipulation tasks. "
+"This creates a more complex dataset that includes both locomotion and "
+"manipulation behaviors."
+msgstr ""
+"运动操作数据集生成过程采用先前生成的操作数据集，并创建机器人必须在执行操作任务的同时从一个位置导航到另一个位置的场景。这创建了一个更复杂的数据集，包括运动和操作行为。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:576
+msgid "To generate the locomanipulation dataset, use the following command:"
+msgstr "要生成运动操作数据集，请使用以下命令:"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:595
+msgid ""
+"The input dataset (``--dataset``) should be the manipulation dataset "
+"generated in the previous step. You can specify any output filename using "
+"the ``--output_file_name`` parameter."
+msgstr ""
+"输入数据集（ ``--dataset`` ）应该是上一步生成的操作数据集。您可以使用 ``--output_file_name`` "
+"参数指定任何输出文件名。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:597
+msgid "The key parameters for locomanipulation dataset generation are:"
+msgstr "运动操作数据集生成的关键参数是:"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:599
+msgid ""
+"``--lift_step 60``: Number of steps for the lifting phase of the "
+"manipulation task. This should mark the point immediately after the robot "
+"has grasped the object."
+msgstr "``--lift_step 60`` ：操作任务中抬升阶段的步数，应标记机器人刚抓住物体的时刻。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:600
+msgid ""
+"``--navigate_step 130``: Number of steps for the navigation phase between "
+"locations. This should mark the point where the robot has lifted the object "
+"and is ready to walk."
+msgstr "``--navigate_step 130`` ：位置之间导航阶段的步数，应标记机器人已经抬起物体、准备行走的时刻。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:601
+msgid "``--output_file``: Name of the output dataset file"
+msgstr "``--output_file``: 输出数据集文件的名称"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:605
+msgid ""
+"You can change the number of obstacles (forklifts and boxes) in the scene by"
+" editing the locomanipulation SDG environment configuration. In "
+"``source/isaaclab_mimic/isaaclab_mimic/locomanipulation_sdg/envs/g1_locomanipulation_sdg_env.py``,"
+" set the module-level constants ``NUM_FORKLIFTS`` and ``NUM_BOXES`` to the "
+"desired counts. Use ``--randomize_placement`` when running "
+":file:`generate_data.py` to randomize obstacle and fixture positions each "
+"run."
+msgstr ""
+"可通过编辑移动操作 SDG 环境配置改变场景中的障碍物（叉车及箱子）数量。在 "
+"``source/isaaclab_mimic/isaaclab_mimic/locomanipulation_sdg/envs/g1_locomanipulation_sdg_env.py``"
+" 中，将模块级常量 ``NUM_FORKLIFTS`` 和 ``NUM_BOXES`` 设为所需数量。运行 "
+":file:`generate_data.py` 时使用 ``--randomize_placement`` "
+"，可在每次运行时随机化障碍物及固定设施的位置。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:607
+msgid ""
+"This process creates a dataset where the robot performs the manipulation "
+"task at different locations, requiring it to navigate between points while "
+"maintaining the learned manipulation behaviors. The resulting dataset can be"
+" used to train policies that combine both locomotion and manipulation "
+"capabilities."
+msgstr ""
+"此过程创建一个数据集，其中机器人在不同位置执行操作任务，需要在保持已学习的操作行为的同时在点之间导航。生成的数据集可用于训练结合运动和操作能力的策略。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:611
+msgid ""
+"You can visualize the robot trajectory results with the following script "
+"command:"
+msgstr "您可以使用以下脚本命令可视化机器人轨迹结果:"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:617
+msgid ""
+"The data generated from this locomanipulation pipeline can also be used to "
+"finetune an imitation learning policy using GR00T N1.5. The following steps "
+"describe how to install GR00T, convert the dataset to LeRobot format, "
+"finetune the policy, and run rollouts in Isaac Lab."
+msgstr ""
+"此移动操作流水线生成的数据也可用于微调 GR00T N1.5 模仿学习策略。以下步骤介绍如何安装 GR00T、将数据集转换为 LeRobot "
+"格式、微调策略，以及在 Isaac Lab 中运行策略轨迹。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:623
+msgid "Finetune GR00T N1.5 policy for locomanipulation"
+msgstr "微调用于移动操作的 GR00T N1.5 策略"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:625
+msgid ""
+"**Prerequisites:** Generate the locomanipulation dataset using the command "
+"in the previous section (e.g. "
+"``generated_dataset_g1_locomanipulation_sdg.hdf5``). The conversion step "
+"accepts a directory of SDG HDF5 files, so you may group multiple "
+"``generate_data.py`` outputs together — but the directory must contain "
+"**only** SDG outputs, not other HDF5 files from earlier steps (e.g. "
+"``dataset_annotated_g1_locomanip.hdf5`` or "
+"``generated_dataset_g1_locomanip.hdf5``)."
+msgstr ""
+"**前提条件：** 使用上一节命令生成移动操作数据集，如 "
+"``generated_dataset_g1_locomanipulation_sdg.hdf5`` 。转换步骤接受包含 SDG HDF5 "
+"文件的目录，因此可将多个 ``generate_data.py`` 的输出放在一起；但目录中 **只能** 包含 SDG "
+"输出，不能包含前面步骤产生的其他 HDF5 文件，如 ``dataset_annotated_g1_locomanip.hdf5`` 或 "
+"``generated_dataset_g1_locomanip.hdf5`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:629
+msgid "Install GR00T with Isaac Lab (uv)"
+msgstr "在 Isaac Lab 中安装 GR00T（uv）"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:631
+msgid ""
+"Clone the Isaac-GR00T repository and install GR00T N1.5 in the same uv "
+"environment used for Isaac Lab. From a parent directory that contains both "
+"repositories (or adjust paths accordingly), run:"
+msgstr ""
+"克隆 Isaac-GR00T 仓库，并在 Isaac Lab 使用的同一 uv 环境中安装 GR00T "
+"N1.5。在同时包含两个仓库的父目录中运行以下命令（也可按实际布局调整路径）："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:637
+msgid ""
+"Copy the G1 locomanipulation data config from Isaac Lab into the GR00T "
+"experiment data config:"
+msgstr "将 Isaac Lab 中的 G1 移动操作数据配置复制到 GR00T 的实验数据配置中："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:643
+msgid ""
+"Then, from the **Isaac-GR00T** directory, install GR00T N1.5 and its "
+"dependencies:"
+msgstr "然后在 **Isaac-GR00T** 目录中安装 GR00T N1.5 及其依赖："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:656
+msgid ""
+"The ``decord2`` distribution retains the ``decord`` Python import used by "
+"GR00T and provides pre-built wheels for both x86_64 and aarch64 systems, "
+"including DGX Spark."
+msgstr ""
+"``decord2`` 发行包保留了 GR00T 使用的 ``decord`` Python 导入名，并为 x86_64 和 aarch64 系统（包括"
+" DGX Spark）提供预编译 wheel。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:661
+msgid ""
+"GR00T N1.5 requires the NumPy and Pydantic versions installed above. When "
+"running the commands below from the Isaac Lab checkout, use ``uv run --no-"
+"sync`` as shown. A regular ``uv run`` synchronizes the Isaac Lab workspace "
+"and can replace GR00T's versions, causing ``AttributeError: _ARRAY_API not "
+"found`` from PyArrow or ``InvalidSchemaError`` from Numpydantic."
+msgstr ""
+"GR00T N1.5 需要上述命令安装的 NumPy 和 Pydantic 版本。从 Isaac Lab 仓库运行下面的命令时，请按示例使用 ``uv "
+"run --no-sync`` 。普通的 ``uv run`` 会同步 Isaac Lab 工作区，可能替换 GR00T 的依赖版本，导致 "
+"PyArrow 报 ``AttributeError: _ARRAY_API not found`` ，或 Numpydantic 报 "
+"``InvalidSchemaError`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:667
+msgid ""
+"The compiled PyTorch3D extension is intentionally disabled here because "
+"GR00T N1.5 uses only ``pytorch3d.transforms``. This avoids compiling unused "
+"CUDA renderers and supports systems where the extension cannot be linked, "
+"including aarch64 Blackwell systems."
+msgstr ""
+"这里有意禁用了 PyTorch3D 的编译扩展，因为 GR00T N1.5 只使用 ``pytorch3d.transforms`` "
+"。这样可以避免编译未使用的 CUDA 渲染器，也能支持无法链接该扩展的系统，包括 aarch64 Blackwell 系统。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:673
+msgid ""
+"**If you cannot install or use flash-attn**, an optional patch is provided "
+"that switches the bundled Eagle 2.5 VL model to PyTorch SDPA. Use this if "
+"``flash-attn`` fails to build for your environment, or if it installs but "
+"raises a runtime error such as ``RuntimeError: FlashAttention only supports "
+"Ampere GPUs or newer`` (for example on Blackwell GPUs, which ``flash-"
+"attn==2.7.1.post4`` does not have prebuilt kernels for). After the patch, "
+"finetune and rollout run on any CUDA arch supported by your PyTorch build, "
+"at the cost of flash-attn's training speedup. Skip the ``flash-attn`` "
+"install line above, then apply the patch from the **Isaac-GR00T** directory "
+"(the sibling layout above means the IsaacLab checkout is at "
+"``../IsaacLab``):"
+msgstr ""
+"**如果无法安装或使用 flash-attn** ，可选补丁能够将附带的 Eagle 2.5 VL 模型改为使用 PyTorch SDPA。如果 "
+"``flash-attn`` 在当前环境中构建失败，或安装后出现 ``RuntimeError: FlashAttention only "
+"supports Ampere GPUs or newer`` 等运行时错误，可使用此补丁。例如， ``flash-"
+"attn==2.7.1.post4`` 没有提供 Blackwell GPU 的预编译核函数。应用补丁后，微调及策略轨迹运行可在当前 PyTorch "
+"构建支持的任意 CUDA 架构上执行，但无法获得 flash-attn 带来的训练加速。请跳过上述 ``flash-attn`` 安装命令，再从 "
+"**Isaac-GR00T** 目录应用补丁（按上述并列目录布局，IsaacLab 仓库位于 ``../IsaacLab`` ）："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:688
+msgid "Convert dataset to LeRobot format"
+msgstr "将数据集转换为 LeRobot 格式"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:690
+msgid ""
+"GR00T N1.5 expects data in LeRobot format. From the **IsaacLab** repository "
+"root, run the conversion script. ``<input_dir>`` is a directory containing "
+"one or more SDG ``.hdf5`` files produced by ``generate_data.py`` (and **no "
+"other HDF5 files**). ``<output_path>`` is the LeRobot-format output "
+"directory (e.g. ``./datasets/datasets_train_200_lerobot``). Episodes with "
+"very low object displacement are skipped."
+msgstr ""
+"GR00T N1.5 要求 LeRobot 格式的数据。请在 **IsaacLab** 仓库根目录运行转换脚本。 ``<input_dir>`` "
+"是包含一个或多个由 ``generate_data.py`` 生成的 SDG ``.hdf5`` 文件的目录，且 **不能有其他 HDF5 文件** 。"
+" ``<output_path>`` 是 LeRobot 格式的输出目录，如 "
+"``./datasets/datasets_train_200_lerobot`` 。物体位移过小的回合会被跳过。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:696
+msgid ""
+"Example — move the SDG output into its own directory first so the converter "
+"only sees SDG files:"
+msgstr "例如，先将 SDG 输出移到专用目录，确保转换器只读取 SDG 文件："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:705
+msgid "Finetune the policy"
+msgstr "微调策略"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:707
+msgid ""
+"Run finetuning from the **Isaac-GR00T** repository root. Use the LeRobot-"
+"format output path from the previous step as ``--dataset-path`` and choose "
+"an ``--output-dir`` for checkpoints. The ``--data-config "
+"g1_locomanipulation_sdg`` and ``--embodiment-tag new_embodiment`` options "
+"are required for the G1 locomanipulation task."
+msgstr ""
+"在 **Isaac-GR00T** 仓库根目录运行微调。将上一步的 LeRobot 格式输出路径用作 ``--dataset-path`` ，并通过 "
+"``--output-dir`` 指定检查点目录。G1 移动操作任务必须使用 ``--data-config "
+"g1_locomanipulation_sdg`` 和 ``--embodiment-tag new_embodiment`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:723
+msgid ""
+"See the GR00T N1.5 repository documentation for additional training options."
+msgstr "更多训练选项见 GR00T N1.5 仓库文档。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:727
+msgid ""
+"**Skip finetuning:** A pre-trained GR00T N1.5 checkpoint for this task is "
+"available on Hugging Face at `nvidia/g1_locomanip_finetune "
+"<https://huggingface.co/nvidia/g1_locomanip_finetune>`__. Downloading it "
+"lets you skip the finetuning step and proceed directly to rollout."
+msgstr ""
+"**跳过微调：** Hugging Face 上的 `nvidia/g1_locomanip_finetune "
+"<https://huggingface.co/nvidia/g1_locomanip_finetune>`__ 提供了本任务的 GR00T N1.5 "
+"预训练检查点。下载后可跳过微调，直接运行策略轨迹。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:731
+msgid "Download and unzip the checkpoint:"
+msgstr "下载并解压检查点："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:738
+msgid ""
+"The archive extracts to "
+"``./checkpoints/g1_locomanip_finetune_20260129_231610/``. Use "
+"``./checkpoints/g1_locomanip_finetune_20260129_231610/checkpoint-20000`` as "
+"the ``--model_path`` in the rollout command below. This checkpoint requires "
+"``--policy_quat_format wxyz``."
+msgstr ""
+"压缩包解压到 ``./checkpoints/g1_locomanip_finetune_20260129_231610/`` "
+"。在下文的轨迹运行命令中，将 "
+"``./checkpoints/g1_locomanip_finetune_20260129_231610/checkpoint-20000`` 用作 "
+"``--model_path`` 。该检查点需要 ``--policy_quat_format wxyz`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:743
+msgid "Rollout the policy in Isaac Lab"
+msgstr "在 Isaac Lab 中运行策略轨迹"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:745
+msgid ""
+"From the **IsaacLab** repository root, run the rollout script with the path "
+"to your finetuned checkpoint, the static manipulation dataset (used for "
+"scene/demo setup), and the task name:"
+msgstr "从 **IsaacLab** 仓库根目录运行轨迹脚本，指定微调检查点路径、用于场景和示范初始化的静态操作数据集，以及任务名："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:759
+msgid ""
+"Optional arguments include ``--randomize_placement`` and "
+"``--policy_quat_format wxyz`` (use if your checkpoint was trained with wxyz "
+"quaternion format)."
+msgstr ""
+"可选参数包括 ``--randomize_placement`` 和 ``--policy_quat_format wxyz`` （检查点使用 wxyz"
+" 四元数格式训练时需添加）。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:761
+msgid "Simulation rollout of GR00T N1.5 policy finetuned for locomanipulation"
+msgstr "针对运动操作微调的 GR00T N1.5 策略的模拟展示"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:767
+msgid ""
+"Simulation rollout of GR00T N1.5 policy finetuned for locomanipulation."
+msgstr "针对运动操作微调的 GR00T N1.5 策略的模拟展示。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:769
+msgid ""
+"The policy shown above uses the camera image, hand poses, hand joint "
+"positions, object pose, and base goal pose as inputs. The output of the "
+"model is the target base velocity, hand poses, and hand joint positions for "
+"the next several timesteps."
+msgstr ""
+"上面显示的策略使用相机图像、手部姿态、手部关节位置、物体姿态和基础目标姿态作为输入。模型的输出是接下来几个时间步的目标基础速度、手部姿态和手部关节位置。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:773
+msgid "Integrating 3D Gaussian Splatting into SDG"
+msgstr "将 3D 高斯泼溅集成到 SDG"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:775
+msgid ""
+"This section extends :ref:`locomanipulation SDG <generate-the-dataset-with-"
+"manipulation-and-point-to-point-navigation>` by replacing the synthetic "
+"background with a 3D Gaussian Splatting (NuRec) scene. The workflow takes a "
+"manipulation dataset as input and produces a combined navigation and "
+"manipulation dataset as an HDF5 file. The navigation replay happens in a "
+"neurally-reconstructed environment, and an ego-centric camera captures the "
+"result, producing more realistic training data. For more info on NuRec "
+"rendering in Isaac Sim, see `Neural Volume Rendering "
+"<https://docs.isaacsim.omniverse.nvidia.com/latest/assets/usd_assets_nurec.html>`__"
+" for details."
+msgstr ""
+"本节扩展 :ref:`移动操作 SDG <generate-the-dataset-with-manipulation-and-point-to-"
+"point-navigation>` ，用 3D 高斯泼溅（NuRec）场景替换合成背景。工作流以操作数据集为输入，生成包含导航与操作的 HDF5 "
+"数据集。导航在神经重建环境中回放，由第一视角相机采集结果，得到更逼真的训练数据。Isaac Sim 中 NuRec 渲染的更多信息，见 `神经体渲染 "
+"<https://docs.isaacsim.omniverse.nvidia.com/latest/assets/usd_assets_nurec.html>`__"
+" 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:787
+msgid ""
+"This section focuses on data generation with a 3DGS background. To train a "
+"policy on the generated data, see :ref:`Finetune GR00T N1.5 policy for "
+"locomanipulation <finetune-groot-n15-for-locomanipulation>`."
+msgstr ""
+"本节介绍带 3DGS 背景的数据生成。使用生成数据训练策略的方法，见 :ref:`微调用于移动操作的 GR00T N1.5 策略 <finetune-"
+"groot-n15-for-locomanipulation>` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:792
+msgid ""
+"The locomanipulation SDG pipeline currently runs a single environment. "
+"Parallel environment support is not yet available for this workflow."
+msgstr "移动操作 SDG 流水线目前只运行单个环境，尚不支持并行环境。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:796
+msgid "Setup: downloading example assets"
+msgstr "准备：下载示例资产"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:798
+msgid ""
+"We provide a sample asset, ``hand_hold-voyager-babyboom``, on `Hugging Face "
+"<https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-"
+"NuRec/tree/main>`__."
+msgstr ""
+"我们在 `Hugging Face <https://huggingface.co/datasets/nvidia/PhysicalAI-"
+"Robotics-NuRec/tree/main>`__ 提供示例资产 ``hand_hold-voyager-babyboom`` 。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:801
+msgid "Log in to Hugging Face:"
+msgstr "登录 Hugging Face："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:807
+msgid "Download the required USDZ stage file and occupancy maps:"
+msgstr "下载所需的 USDZ 舞台文件及占据地图："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:819
+msgid "Asset requirements"
+msgstr "资产要求"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:821
+msgid ""
+"If you are using custom 3D Gaussian assets, ensure they meet these "
+"specifications to be compatible with the SDG pipeline:"
+msgstr "自定义 3D 高斯资产需满足以下要求，才能兼容 SDG 流水线："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:824
+msgid ""
+"The scene has sufficient free space (e.g. 5m x 5m) for asset placement and "
+"robot navigation."
+msgstr "场景留有足够的自由空间（如 5 m × 5 m），用于放置资产和机器人导航。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:825
+msgid ""
+"The ground surface is aligned with the z=0 plane, as the pipeline assumes "
+"this elevation for object placement."
+msgstr "地面与 z=0 平面对齐，因为流水线按这一高度放置物体。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:827
+msgid "An occupancy map is required for path planning."
+msgstr "提供用于路径规划的占据地图。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:830
+msgid "Generating the dataset"
+msgstr "生成数据集"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:832
+msgid ""
+"Before proceeding, ensure you have generated a manipulation dataset or "
+"downloaded the sample dataset provided in the :ref:`Generate the "
+"manipulation dataset <generate-the-manipulation-dataset>` section."
+msgstr ""
+"继续之前，请确保已生成操作数据集，或下载 :ref:`生成操作数据集 <generate-the-manipulation-dataset>` "
+"一节提供的示例数据集。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:836
+msgid ""
+"At runtime, the script adds a ground plane at ``z=0`` to the scene. It then "
+"proceeds through four stages:"
+msgstr "运行时，脚本会在场景的 ``z=0`` 处添加地面，然后执行四个阶段："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:839
+msgid ""
+"**Pick**: The robot picks up an object at the start location by replaying "
+"the manipulation trajectory. ``--lift_step`` marks the end of this stage "
+"(immediately after grasp)."
+msgstr "**抓取** ：机器人回放操作轨迹，在起始位置抓起物体。 ``--lift_step`` 标记此阶段的结束，即刚完成抓取的时刻。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:841
+msgid ""
+"**Navigate**: The robot travels to the target location using occupancy-map "
+"path planning and its locomotion policy. ``--navigate_step`` marks the end "
+"of this stage (when the robot is in place to release the object)."
+msgstr ""
+"**导航** ：机器人利用占据地图进行路径规划，并通过运动策略前往目标位置。 ``--navigate_step`` "
+"标记此阶段的结束，即机器人已到位、准备放下物体的时刻。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:844
+msgid ""
+"**Place**: The robot places the object at the target location, completing "
+"the trajectory."
+msgstr "**放置** ：机器人在目标位置放下物体，完成轨迹。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:845
+msgid ""
+"**Record**: Joint states, poses, and the ego-centric video are saved to the "
+"HDF5 file specified by ``--output_file``."
+msgstr "**记录** ：将关节状态、位姿及第一视角视频保存到 ``--output_file`` 指定的 HDF5 文件。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:848
+msgid "Run the generation command:"
+msgstr "运行生成命令："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:865
+msgid ""
+"To inspect the run in the GUI, add ``--viz kit``; adjust the perspective "
+"camera, or switch the viewport to the robot camera view for clearer "
+"visualization."
+msgstr "要在图形界面中查看运行情况，添加 ``--viz kit`` ；可调整透视相机，或将视口切换为机器人相机视图，以便更清楚地观察。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:868
+msgid "The key parameters are:"
+msgstr "主要参数如下："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:870
+msgid "``--background_usd_path``: Path to the 3D Gaussian NuRec USD asset."
+msgstr "``--background_usd_path`` ：3D 高斯 NuRec USD 资产的路径。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:871
+msgid ""
+"``--background_occupancy_yaml_file``: Path to the NuRec occupancy map file."
+msgstr "``--background_occupancy_yaml_file`` ：NuRec 占据地图文件的路径。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:872
+msgid ""
+"Placement randomization is enabled automatically when a NuRec scene is used."
+msgstr "使用 NuRec 场景时，会自动启用放置位置随机化。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:873
+msgid ""
+"``--high_res_video``: Capture the ego-centric camera at 512×320 instead of "
+"the default 256×160."
+msgstr "``--high_res_video`` ：以 512×320 分辨率采集第一视角相机画面，替代默认的 256×160。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:876
+msgid ""
+"When the run completes successfully, an HDF5 dataset is generated containing"
+" camera observations. Install FFmpeg-enabled OpenCV, then convert the ego-"
+"centric camera view to MP4:"
+msgstr "运行成功后，会生成包含相机观测的 HDF5 数据集。安装支持 FFmpeg 的 OpenCV，再将第一视角相机画面转换为 MP4："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:890
+msgid ""
+"Set ``--video_width`` and ``--video_height`` to match the resolution "
+"captured during generation: 512×320 with ``--high_res_video``, or 256×160 "
+"without it."
+msgstr ""
+"将 ``--video_width`` 和 ``--video_height`` 设为数据生成时的分辨率：使用 ``--high_res_video``"
+" 时为 512×320，否则为 256×160。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:893
+msgid "locomanipulation SDG with a 3D Gaussian background"
+msgstr "带 3D 高斯背景的移动操作 SDG"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:899
+msgid ""
+"The figure above shows recorded ego-centric camera views in the 3D Gaussian "
+"background when the robot replays the pick and place trajectory and "
+"navigates to the target location."
+msgstr "上图展示了机器人在 3D 高斯背景中回放抓取放置轨迹并导航到目标位置时，录制的第一视角相机画面。"

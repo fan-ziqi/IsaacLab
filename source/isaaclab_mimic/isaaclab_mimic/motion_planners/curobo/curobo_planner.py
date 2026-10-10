@@ -193,7 +193,7 @@ class CuroboPlanner(MotionPlannerBase):
 
             # Use env-local base translation for multi-env rendering consistency
             env_origin = self.env.scene.env_origins[env_id, :3]
-            base_translation = (self.robot.data.root_pos_w[env_id, :3] - env_origin).detach().cpu().numpy()
+            base_translation = (self.robot.data.root_pos_w.torch[env_id, :3] - env_origin).detach().cpu().numpy()
             self.plan_visualizer = PlanVisualizer(
                 robot_name=self.config.robot_name,
                 recording_id=f"curobo_plan_{env_id}",
@@ -358,6 +358,7 @@ class CuroboPlanner(MotionPlannerBase):
 
         self._static_world_config = self.usd_helper.get_obstacles_from_stage(
             only_paths=[env_prim_path],
+            ignore_paths=[robot_prim_path],
             reference_prim_path=robot_prim_path,
             ignore_substring=ignore_list,
         )
@@ -457,10 +458,12 @@ class CuroboPlanner(MotionPlannerBase):
         link_poses = {}
         if link_state.links_position is not None and link_state.links_quaternion is not None:
             for i, link in enumerate(link_state.link_names):
+                # cuRobo kinematics returns quaternions in (w, x, y, z) format
                 link_poses[link] = self._make_pose(
                     position=link_state.links_position[..., i, :],
                     quaternion=link_state.links_quaternion[..., i, :],
                     name=link,
+                    quat_is_xyzw=False,
                 )
 
         # For attached object link, use ee_link from robot config as parent
@@ -605,10 +608,11 @@ class CuroboPlanner(MotionPlannerBase):
         The method updates both the world model and the collision checker to ensure
         consistency across all cuRobo components.
         """
-        # Get cached object mappings and world model
+        # Get cached object mappings
         object_mappings = self._get_object_mappings()
-        world_model = self.motion_gen.world_coll_checker.world_model
         rigid_objects = self.env.scene.rigid_objects
+        robot_base_pos = self.robot.data.root_pos_w.torch[self.env_id]
+        robot_base_quat = self.robot.data.root_quat_w.torch[self.env_id]
 
         updated_count = 0
 
@@ -622,62 +626,21 @@ class CuroboPlanner(MotionPlannerBase):
                 self.logger.debug(f"SYNC: Skipping static object {object_name}")
                 continue
 
-            # Get current pose from Lab (may be on CPU or CUDA depending on --device flag)
+            # Convert the world pose to the frame used by cuRobo's static collision world.
             obj = rigid_objects[object_name]
-            env_origin = self.env.scene.env_origins[self.env_id]
-            current_pos_raw = obj.data.root_pos_w[self.env_id] - env_origin
-            current_quat_raw = obj.data.root_quat_w[self.env_id]  # (w, x, y, z)
+            current_pos, current_quat = PoseUtils.subtract_frame_transforms(
+                robot_base_pos,
+                robot_base_quat,
+                obj.data.root_pos_w.torch[self.env_id],
+                obj.data.root_quat_w.torch[self.env_id],
+            )
+            curobo_pose = self._make_pose(position=current_pos, quaternion=current_quat)
+            self.motion_gen.world_coll_checker.update_obstacle_pose(  # type: ignore
+                object_path, curobo_pose, update_cpu_reference=True
+            )
+            updated_count += 1
 
-            # Convert to cuRobo device and extract float values for pose list
-            current_pos = self._to_curobo_device(current_pos_raw)
-            current_quat = self._to_curobo_device(current_quat_raw)
-
-            # Convert to cuRobo pose format [x, y, z, w, x, y, z]
-            pose_list = [
-                float(current_pos[0].item()),
-                float(current_pos[1].item()),
-                float(current_pos[2].item()),
-                float(current_quat[0].item()),
-                float(current_quat[1].item()),
-                float(current_quat[2].item()),
-                float(current_quat[3].item()),
-            ]
-
-            # Update object pose in cuRobo's world model
-            if self._update_object_in_world_model(world_model, object_name, object_path, pose_list):
-                updated_count += 1
-
-        self.logger.debug(f"SYNC: Updated {updated_count} object poses in cuRobo world model")
-
-        # Sync object poses with collision checker
-        if updated_count > 0:
-            # Update individual obstacle poses in collision checker
-            # This preserves static mesh objects unlike load_collision_model which rebuilds everything
-            for object_name, object_path in object_mappings.items():
-                if object_name not in rigid_objects:
-                    continue
-
-                # Skip static mesh objects - they should not be dynamically updated
-                static_objects = getattr(self.config, "static_objects", [])
-                if any(static_name in object_name.lower() for static_name in static_objects):
-                    continue
-
-                # Get current pose and update in collision checker
-                obj = rigid_objects[object_name]
-                env_origin = self.env.scene.env_origins[self.env_id]
-                current_pos_raw = obj.data.root_pos_w[self.env_id] - env_origin
-                current_quat_raw = obj.data.root_quat_w[self.env_id]
-
-                current_pos = self._to_curobo_device(current_pos_raw)
-                current_quat = self._to_curobo_device(current_quat_raw)
-
-                # Create cuRobo pose and update collision checker directly
-                curobo_pose = self._make_pose(position=current_pos, quaternion=current_quat)
-                self.motion_gen.world_coll_checker.update_obstacle_pose(  # type: ignore
-                    object_path, curobo_pose, update_cpu_reference=True
-                )
-
-            self.logger.debug(f"Updated {updated_count} object poses in collision checker")
+        self.logger.debug(f"Updated {updated_count} object poses in cuRobo collision world")
 
     def _get_object_mappings(self) -> dict[str, str]:
         """Get object mappings with caching for performance optimization.
@@ -734,46 +697,6 @@ class CuroboPlanner(MotionPlannerBase):
                 self.logger.debug(f"WARNING: Could not find world path for {object_name}")
 
         return mappings
-
-    def _update_object_in_world_model(
-        self, world_model, object_name: str, object_path: str, pose_list: list[float]
-    ) -> bool:
-        """Update a single object's pose in cuRobo's collision world model.
-
-        Searches through all primitive types in the world model to find the specified object
-        and updates its pose. Uses flexible matching to handle variations in path naming
-        between Isaac Lab and cuRobo representations.
-
-        Args:
-            world_model: cuRobo's collision world model
-            object_name: Short object name from Isaac Lab (e.g., "cube_1")
-            object_path: Full USD path for the object in cuRobo world
-            pose_list: New pose as [x, y, z, w, x, y, z] list in cuRobo format
-
-        Returns:
-            True if object was found and successfully updated, False otherwise
-        """
-        # Handle case where world_model might be a list
-        if isinstance(world_model, list):
-            if len(world_model) > self.env_id:
-                world_model = world_model[self.env_id]
-            else:
-                return False
-
-        # Update all primitive types
-        for primitive_type in self.primitive_types:
-            primitive_list = getattr(world_model, primitive_type)
-            for primitive in primitive_list:
-                if primitive.name:
-                    primitive_name = str(primitive.name)
-                    # Use bidirectional matching for robust path matching
-                    if object_path == primitive_name or object_path in primitive_name or primitive_name in object_path:
-                        primitive.pose = pose_list
-                        self.logger.debug(f"Updated {primitive_type} {object_name} pose")
-                        return True
-
-        self.logger.debug(f"WARNING: Object {object_name} not found in world model")
-        return False
 
     def _attach_object(self, object_name: str, object_path: str, env_id: int) -> bool:
         """Attach an object to the robot for manipulation planning.
@@ -929,7 +852,7 @@ class CuroboPlanner(MotionPlannerBase):
             and zero velocity/acceleration.
         """
         # Fetch joint position (shape: [1, num_joints])
-        joint_pos_raw: torch.Tensor = self.robot.data.joint_pos[self.env_id, :].unsqueeze(0)
+        joint_pos_raw: torch.Tensor = self.robot.data.joint_pos.torch[self.env_id, :].unsqueeze(0)
         joint_vel_raw: torch.Tensor = torch.zeros_like(joint_pos_raw)
         joint_acc_raw: torch.Tensor = torch.zeros_like(joint_pos_raw)
 
@@ -997,41 +920,48 @@ class CuroboPlanner(MotionPlannerBase):
         *,
         name: str | None = None,
         normalize_rotation: bool = False,
+        quat_is_xyzw: bool = True,
     ) -> Pose:
         """Create a cuRobo Pose with sensible defaults and device/dtype alignment.
 
         Auto-populates missing fields with identity values and ensures tensors are
-        on the cuRobo device with the correct dtype.
+        on the cuRobo device with the correct dtype. Handles quaternion format conversion
+        from Isaac Lab's (x, y, z, w) to cuRobo's (w, x, y, z) format when needed.
 
         Args:
             position: Optional position as Tensor/ndarray/list. Defaults to [0, 0, 0].
-            quaternion: Optional quaternion as Tensor/ndarray/list (w, x, y, z). Defaults to [1, 0, 0, 0].
+            quaternion: Optional quaternion as Tensor/ndarray/list. Defaults to identity quaternion.
             name: Optional name of the link that this pose represents.
             normalize_rotation: Whether to normalize the quaternion inside Pose.
+            quat_is_xyzw: If True, quaternion is in Isaac Lab format (x, y, z, w) and will be
+                converted to cuRobo format. If False, quaternion is already in cuRobo (w, x, y, z) format.
 
         Returns:
             Pose: A cuRobo Pose on the configured cuRobo device and dtype.
         """
-        # Defaults
         if position is None:
             position = torch.tensor([0.0, 0.0, 0.0], dtype=self.tensor_args.dtype, device=self.tensor_args.device)
         if quaternion is None:
-            quaternion = torch.tensor(
+            quaternion_wxyz = torch.tensor(
                 [1.0, 0.0, 0.0, 0.0], dtype=self.tensor_args.dtype, device=self.tensor_args.device
             )
+        else:
+            if not isinstance(quaternion, torch.Tensor):
+                quaternion = torch.tensor(quaternion, dtype=self.tensor_args.dtype, device=self.tensor_args.device)
+            else:
+                quaternion = self._to_curobo_device(quaternion)
 
-        # Convert to tensors if needed
+            if quat_is_xyzw:
+                quaternion_wxyz = torch.roll(quaternion, shifts=1, dims=-1)
+            else:
+                quaternion_wxyz = quaternion
+
         if not isinstance(position, torch.Tensor):
             position = torch.tensor(position, dtype=self.tensor_args.dtype, device=self.tensor_args.device)
         else:
             position = self._to_curobo_device(position)
 
-        if not isinstance(quaternion, torch.Tensor):
-            quaternion = torch.tensor(quaternion, dtype=self.tensor_args.dtype, device=self.tensor_args.device)
-        else:
-            quaternion = self._to_curobo_device(quaternion)
-
-        return Pose(position=position, quaternion=quaternion, name=name, normalize_rotation=normalize_rotation)
+        return Pose(position=position, quaternion=quaternion_wxyz, name=name, normalize_rotation=normalize_rotation)
 
     def _set_active_links(self, links: list[str], active: bool) -> None:
         """Configure collision checking for specific robot links.
@@ -1395,7 +1325,7 @@ class CuroboPlanner(MotionPlannerBase):
             return plan
 
         deltas = path[1:] - path[:-1]
-        distances = torch.norm(deltas, dim=-1)
+        distances = torch.linalg.norm(deltas, dim=-1)
 
         waypoints = [path[0]]
         for distance, waypoint in zip(distances, path[1:]):
@@ -1409,7 +1339,7 @@ class CuroboPlanner(MotionPlannerBase):
 
         if len(waypoints) > 1:
             deltas = waypoints[1:] - waypoints[:-1]
-            distances = torch.norm(deltas, dim=-1)
+            distances = torch.linalg.norm(deltas, dim=-1)
             cum_distances = torch.cat([torch.zeros(1, device=distances.device), torch.cumsum(distances, dim=0)])
 
         if len(waypoints) < 2 or cum_distances[-1] < 1e-6:
@@ -1563,7 +1493,7 @@ class CuroboPlanner(MotionPlannerBase):
         if self.frame_counter % self.sphere_update_freq != 0:
             return
 
-        original_joints: torch.Tensor = self.robot.data.joint_pos[self.env_id].clone()
+        original_joints: torch.Tensor = self.robot.data.joint_pos.torch[self.env_id].clone()
 
         try:
             # Ensure joint positions are on environment device for robot commands
@@ -1690,7 +1620,7 @@ class CuroboPlanner(MotionPlannerBase):
         opacity = 0.9 if is_attached else 0.5
 
         # Calculate position in world frame (do not use env_origin)
-        root_translation = (self.robot.data.root_pos_w[self.env_id, :3]).detach().cpu().numpy()
+        root_translation = self.robot.data.root_pos_w.torch[self.env_id, :3].detach().cpu().numpy()
         position = sphere.position.cpu().numpy() if hasattr(sphere.position, "cpu") else sphere.position
         if not is_attached:
             position = position + root_translation
@@ -1777,7 +1707,7 @@ class CuroboPlanner(MotionPlannerBase):
         gripper_closed = expected_attached_object is not None
         self._set_gripper_state(gripper_closed)
         current_attached = self.get_attached_objects()
-        gripper_pos = self.robot.data.joint_pos[env_id, -2:]
+        gripper_pos = self.robot.data.joint_pos.torch[env_id, -2:]
 
         self.logger.debug(f"Current attached objects: {current_attached}")
 
@@ -1799,13 +1729,13 @@ class CuroboPlanner(MotionPlannerBase):
                 if expected_attached_object in rigid_objects:
                     obj = rigid_objects[expected_attached_object]
                     origin = self.env.scene.env_origins[env_id]
-                    obj_pos = obj.data.root_pos_w[env_id] - origin
+                    obj_pos = obj.data.root_pos_w.torch[env_id] - origin
                     self.logger.debug(f"Isaac Lab object position: {obj_pos}")
 
                     # Debug end-effector position
                     ee_frame_cfg = SceneEntityCfg("ee_frame")
                     ee_frame = self.env.scene[ee_frame_cfg.name]
-                    ee_pos = ee_frame.data.target_pos_w[env_id, 0, :] - origin
+                    ee_pos = ee_frame.data.target_pos_w.torch[env_id, 0, :] - origin
                     self.logger.debug(f"End-effector position: {ee_pos}")
 
                     # Debug distance

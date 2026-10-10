@@ -1,0 +1,148 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/policy_inference_in_usd.rst:7
+msgid "Policy Inference in USD Environment"
+msgstr "USD 环境中的策略推理"
+
+#: source/how-to/policy_inference_in_usd.rst:11
+msgid ""
+"This deployment example runs a trained policy in a prebuilt USD scene using "
+"the training task's observations, actions, and robot configuration."
+msgstr "本部署示例在预先构建的 USD 场景中运行已训练策略，沿用训练任务的观测、动作和机器人配置。"
+
+#: source/how-to/policy_inference_in_usd.rst:14
+msgid ""
+"In this tutorial, we will use the RSL RL library and the trained policy from"
+" the Humanoid Rough Terrain ``Isaac-Velocity-Rough-H1`` task in a simple "
+"warehouse USD."
+msgstr ""
+"本教程使用 RSL RL 库，将人形机器人崎岖地形任务 ``Isaac-Velocity-Rough-H1`` 的已训练策略运行在一个简单的仓库 USD"
+" 场景中。"
+
+#: source/how-to/policy_inference_in_usd.rst:18
+msgid "The Tutorial Code"
+msgstr "教程代码"
+
+#: source/how-to/policy_inference_in_usd.rst:20
+msgid ""
+"For this tutorial, we use the trained policy's checkpoint exported as jit "
+"(which is an offline version of the policy)."
+msgstr "对于本教程，我们使用训练好的策略的检查点，导出为 jit（这是策略的离线版本）。"
+
+#: source/how-to/policy_inference_in_usd.rst:22
+msgid ""
+"The script resolves ``H1RoughEnvCfg`` with ``parse_env_cfg``, including any "
+"physics preset passed on the command line. Calling its ``play_mode`` method "
+"applies the play/inference overrides (such as a reduced number of "
+"environments and disabled observation noise) on top of the training "
+"configuration."
+msgstr ""
+"脚本通过 ``parse_env_cfg`` 解析 ``H1RoughEnvCfg`` ，包括命令行传入的物理预设。调用配置的 "
+"``play_mode`` 方法，会在训练配置之上应用回放和推理覆盖项，例如减少环境数量、禁用观测噪声。"
+
+#: source/how-to/policy_inference_in_usd.rst:26
+msgid ""
+"In order to use a prebuilt USD environment instead of the terrain generator "
+"specified, we make the following changes to the config before passing it to "
+"the ``ManagerBasedRLEnv``."
+msgstr ""
+"为了使用预构建的 USD 环境而不是指定的地形生成器，我们在将其传递给 ``ManagerBasedRLEnv`` 之前对配置进行以下更改。"
+
+#: source/how-to/policy_inference_in_usd.rst:0
+msgid "Code for policy_inference_in_usd.py"
+msgstr "policy_inference_in_usd.py 的代码"
+
+#: source/how-to/policy_inference_in_usd.rst:38
+msgid ""
+"The script uses ``--device`` for both policy loading and simulation. It "
+"disables Fabric only when ``--device cpu`` is explicitly selected. The "
+"height scanner starts below the warehouse roof so its downward rays measure "
+"the floor."
+msgstr ""
+"脚本对策略加载和仿真都使用 ``--device`` 指定的设备。只有显式选择 ``--device cpu`` 时，才禁用 "
+"Fabric。高度扫描器从仓库屋顶下方发射射线，使向下的射线测量地面。"
+
+#: source/how-to/policy_inference_in_usd.rst:42
+msgid ""
+"Keep the same physics preset for training, export, and inference. The "
+"commands below use Newton MJWarp with the ``newton_gl`` visualizer and do "
+"not require Isaac Sim. For a PhysX checkpoint trained with Isaac Sim, use "
+"``physics=isaacsim_physx`` throughout and install Isaac Sim; the Newton GL "
+"viewer can still be used. Cross-backend policy transfer needs additional "
+"validation; see :doc:`transfer_policies_between_physx_and_newton`."
+msgstr ""
+"训练、导出和推理应使用相同的物理预设。以下命令使用 Newton MJWarp 和 ``newton_gl`` 可视化器，无需 Isaac "
+"Sim。对于使用 Isaac Sim 训练的 PhysX 检查点，应在整个流程中使用 ``physics=isaacsim_physx`` 并安装 "
+"Isaac Sim；仍可使用 Newton GL 查看器。跨后端策略迁移需要额外验证，参见 "
+":doc:`transfer_policies_between_physx_and_newton` 。"
+
+#: source/how-to/policy_inference_in_usd.rst:51
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/policy_inference_in_usd.rst:53
+msgid ""
+"First, we need to train the ``Isaac-Velocity-Rough-H1`` task by running the "
+"following:"
+msgstr "首先运行以下命令，训练 ``Isaac-Velocity-Rough-H1`` 任务："
+
+#: source/how-to/policy_inference_in_usd.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/policy_inference_in_usd.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/policy_inference_in_usd.rst:69
+msgid ""
+"When the training is finished, we can visualize the result with the "
+"following command. To stop the simulation, you can either close the window, "
+"or press ``Ctrl+C`` in the terminal where you started the simulation."
+msgstr "当训练完成时，我们可以使用以下命令可视化结果。要停止仿真，您可以关闭窗口，或者在启动仿真的终端中按下 ``Ctrl+C`` 。"
+
+#: source/how-to/policy_inference_in_usd.rst:89
+msgid ""
+"After running the play script, the policy will be exported to jit and onnx "
+"files under the experiment logs directory. Note that not all learning "
+"libraries support exporting the policy to a jit or onnx file. For libraries "
+"that don't currently support this functionality, please refer to the "
+"corresponding ``play.py`` script for the library to learn about how to "
+"initialize the policy."
+msgstr ""
+"运行播放脚本后，策略将被导出为 jit 和 onnx 文件，存储在实验日志目录下。请注意，并非所有学习库都支持将策略导出为 jit 或 onnx "
+"文件。对于当前不支持此功能的库，请参考相应的 ``play.py`` 脚本，以了解如何初始化策略。"
+
+#: source/how-to/policy_inference_in_usd.rst:94
+msgid ""
+"We can then load the warehouse asset and run inference on the H1 robot using"
+" the exported jit policy (``policy.pt`` file in the ``exported/`` "
+"directory)."
+msgstr ""
+"我们可以加载仓库资产，并使用导出的 jit 策略在 H1 机器人上运行推理 (``policy.pt`` 文件在 ``exported/`` 路径下)。"
+
+#: source/how-to/policy_inference_in_usd.rst:113
+msgid "H1 policy running in a warehouse USD scene"
+msgstr "H1 策略在仓库 USD 场景中运行"
+
+#: source/how-to/policy_inference_in_usd.rst:118
+msgid ""
+"In this tutorial, we learnt how to make minor modifications to an existing "
+"environment config to run policy inference in a prebuilt usd environment."
+msgstr "在本教程中，我们学习了如何对现有环境配置进行一些小修改，以在预构建的 usd 环境中运行策略推理。"

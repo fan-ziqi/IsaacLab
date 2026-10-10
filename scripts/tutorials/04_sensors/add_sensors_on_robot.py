@@ -15,27 +15,26 @@ We add the following sensors on the quadruped robot, ANYmal-C (ANYbotics):
 .. code-block:: bash
 
     # Usage
-    ./isaaclab.sh -p scripts/tutorials/04_sensors/add_sensors_on_robot.py --enable_cameras
+    uv run python scripts/tutorials/04_sensors/add_sensors_on_robot.py --viz kit
 
 """
 
-"""Launch Isaac Sim Simulator first."""
+"""Parse the command-line arguments first."""
 
 import argparse
+from typing import TYPE_CHECKING
 
-from isaaclab.app import AppLauncher
+from isaaclab.app import add_launcher_args, launch_simulation
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Tutorial on adding sensors on a robot.")
 parser.add_argument("--num_envs", type=int, default=2, help="Number of environments to spawn.")
-# append AppLauncher cli args
-AppLauncher.add_app_launcher_args(parser)
+# append simulation launcher cli args
+add_launcher_args(parser)
 # parse the arguments
 args_cli = parser.parse_args()
-
-# launch omniverse app
-app_launcher = AppLauncher(args_cli)
-simulation_app = app_launcher.app
+# The scene has a camera sensor, which requires the rendering extensions in headless launches.
+args_cli.enable_cameras = True
 
 """Rest everything follows."""
 
@@ -43,9 +42,12 @@ import torch
 
 import isaaclab.sim as sim_utils
 from isaaclab.assets import ArticulationCfg, AssetBaseCfg
-from isaaclab.scene import InteractiveScene, InteractiveSceneCfg
+from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.sensors import CameraCfg, ContactSensorCfg, RayCasterCfg, patterns
-from isaaclab.utils import configclass
+from isaaclab.utils import configclass, instantiate, replace
+
+if TYPE_CHECKING:
+    from isaaclab.scene import InteractiveScene
 
 ##
 # Pre-defined configs
@@ -66,7 +68,7 @@ class SensorsSceneCfg(InteractiveSceneCfg):
     )
 
     # robot
-    robot: ArticulationCfg = ANYMAL_C_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+    robot: ArticulationCfg = replace(ANYMAL_C_CFG, prim_path="{ENV_REGEX_NS}/Robot")
 
     # sensors
     camera = CameraCfg(
@@ -94,7 +96,7 @@ class SensorsSceneCfg(InteractiveSceneCfg):
     )
 
 
-def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
+def run_simulator(sim: sim_utils.SimulationContext, scene: "InteractiveScene"):
     """Run the simulator."""
     # Define simulation stepping
     sim_dt = sim.get_physics_dt()
@@ -102,7 +104,7 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
     count = 0
 
     # Simulate physics
-    while simulation_app.is_running():
+    while sim.is_running():
         # Reset
         if count % 500 == 0:
             # reset counter
@@ -111,25 +113,27 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
             # root state
             # we offset the root state by the origin since the states are written in simulation world frame
             # if this is not done, then the robots will be spawned at the (0, 0, 0) of the simulation world
-            root_state = scene["robot"].data.default_root_state.clone()
-            root_state[:, :3] += scene.env_origins
-            scene["robot"].write_root_pose_to_sim(root_state[:, :7])
-            scene["robot"].write_root_velocity_to_sim(root_state[:, 7:])
+            root_pose = scene["robot"].data.default_root_pose.torch.clone()
+            root_pose[:, :3] += scene.env_origins
+            scene["robot"].write_root_pose_to_sim_index(root_pose=root_pose)
+            root_vel = scene["robot"].data.default_root_vel.torch.clone()
+            scene["robot"].write_root_velocity_to_sim_index(root_velocity=root_vel)
             # set joint positions with some noise
             joint_pos, joint_vel = (
-                scene["robot"].data.default_joint_pos.clone(),
-                scene["robot"].data.default_joint_vel.clone(),
+                scene["robot"].data.default_joint_pos.torch.clone(),
+                scene["robot"].data.default_joint_vel.torch.clone(),
             )
             joint_pos += torch.rand_like(joint_pos) * 0.1
-            scene["robot"].write_joint_state_to_sim(joint_pos, joint_vel)
+            scene["robot"].write_joint_position_to_sim_index(position=joint_pos)
+            scene["robot"].write_joint_velocity_to_sim_index(velocity=joint_vel)
             # clear internal buffers
             scene.reset()
             print("[INFO]: Resetting robot state...")
         # Apply default actions to the robot
         # -- generate actions/commands
-        targets = scene["robot"].data.default_joint_pos
+        targets = scene["robot"].data.default_joint_pos.torch
         # -- apply action to the robot
-        scene["robot"].set_joint_position_target(targets)
+        scene["robot"].set_joint_position_target_index(target=targets)
         # -- write data to sim
         scene.write_data_to_sim()
         # perform step
@@ -147,33 +151,37 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
         print("Received shape of depth image: ", scene["camera"].data.output["distance_to_image_plane"].shape)
         print("-------------------------------")
         print(scene["height_scanner"])
-        print("Received max height value: ", torch.max(scene["height_scanner"].data.ray_hits_w[..., -1]).item())
+        print(
+            "Received max height value: ",
+            torch.max(scene["height_scanner"].data.ray_hits_w.torch[..., -1]).item(),
+        )
         print("-------------------------------")
         print(scene["contact_forces"])
-        print("Received max contact force of: ", torch.max(scene["contact_forces"].data.net_forces_w).item())
+        print("Received max contact force of: ", torch.max(scene["contact_forces"].data.net_normal_forces_w).item())
 
 
 def main():
     """Main function."""
 
-    # Initialize the simulation context
+    # Configure the simulation
     sim_cfg = sim_utils.SimulationCfg(dt=0.005, device=args_cli.device)
-    sim = sim_utils.SimulationContext(sim_cfg)
-    # Set main camera
-    sim.set_camera_view(eye=[3.5, 3.5, 3.5], target=[0.0, 0.0, 0.0])
-    # Design scene
-    scene_cfg = SensorsSceneCfg(num_envs=args_cli.num_envs, env_spacing=2.0)
-    scene = InteractiveScene(scene_cfg)
-    # Play the simulator
-    sim.reset()
-    # Now we are ready!
-    print("[INFO]: Setup complete...")
-    # Run the simulator
-    run_simulator(sim, scene)
+    # Launch the simulator runtime that the configuration needs
+    with launch_simulation(sim_cfg, args_cli):
+        # Initialize the simulation context
+        sim = sim_utils.SimulationContext(sim_cfg)
+        # Set main camera
+        sim.set_camera_view(eye=[3.5, 3.5, 3.5], target=[0.0, 0.0, 0.0])
+        # Design scene
+        scene_cfg = SensorsSceneCfg(num_envs=args_cli.num_envs, env_spacing=2.0)
+        scene = instantiate(scene_cfg)
+        # Play the simulator
+        sim.reset()
+        # Now we are ready!
+        print("[INFO]: Setup complete...")
+        # Run the simulator
+        run_simulator(sim, scene)
 
 
 if __name__ == "__main__":
     # run the main function
     main()
-    # close sim app
-    simulation_app.close()

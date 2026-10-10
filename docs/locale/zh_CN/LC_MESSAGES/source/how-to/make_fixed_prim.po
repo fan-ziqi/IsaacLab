@@ -1,27 +1,25 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
-# This file is distributed under the same license as the Isaac Lab package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
 msgid ""
 msgstr ""
-"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-05 06:36+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
-"Language-Team: zh_CN <LL@li.org>\n"
+"Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/how-to/make_fixed_prim.rst:2
+#: source/how-to/make_fixed_prim.rst:4
 msgid "Making a physics prim fixed in the simulation"
-msgstr "使仿真中的物理基本体固定"
+msgstr "在仿真中固定物理 prim"
 
-#: ../../source/how-to/make_fixed_prim.rst:6
+#: source/how-to/make_fixed_prim.rst:8
 msgid ""
 "When a USD prim has physics schemas applied on it, it is affected by physics"
 " simulation. This means that the prim can move, rotate, and collide with "
@@ -30,19 +28,30 @@ msgid ""
 "prim should still participate in collisions but its position and orientation"
 " should not change."
 msgstr ""
-"当一个USD基本体应用了物理模式，它会受到物理仿真的影响。这意味着这个基本体可以在仿真世界中移动、旋转和与其他基本体碰撞。然而，有时需要让特定的基本体在仿真世界中保持静态，即这个基本体应该仍然参与碰撞，但其位置和方向不应该改变。"
+"USD prim 应用物理模式后，会受到物理仿真的影响，能够在仿真世界中移动、旋转，并与其他 prim 碰撞。不过，有时需要让某些 prim "
+"保持静止：它们仍参与碰撞，但位置和朝向不变。"
 
-#: ../../source/how-to/make_fixed_prim.rst:11
+#: source/how-to/make_fixed_prim.rst:13
 msgid ""
 "The following sections describe how to spawn a prim with physics schemas and"
 " make it static in the simulation world."
-msgstr "以下几个部分描述了如何在仿真世界中生成一个具有物理模式并使其保持静态的基本体。"
+msgstr "下文介绍如何生成带有物理模式的 prim，并使其在仿真世界中保持静止。"
 
-#: ../../source/how-to/make_fixed_prim.rst:14
+#: source/how-to/make_fixed_prim.rst:15
+msgid ""
+"Static colliders and fixed articulation roots use shared USD topology on "
+"PhysX and Newton. Use the shared configurations below for these operations. "
+"Backend-specific solver settings are covered in :ref:`asset-config-"
+"backends`."
+msgstr ""
+"静态碰撞体和固定的关节体根，在 PhysX 与 Newton 中使用共享的 USD 拓扑。这些操作使用下文的共享配置。后端专用的求解器设置见 "
+":ref:`asset-config-backends` 。"
+
+#: source/how-to/make_fixed_prim.rst:20
 msgid "Static colliders"
-msgstr "静态碰撞器"
+msgstr "静态碰撞体"
 
-#: ../../source/how-to/make_fixed_prim.rst:16
+#: source/how-to/make_fixed_prim.rst:22
 msgid ""
 "Static colliders are prims that are not affected by physics but can collide "
 "with other prims in the simulation world. These don't have any rigid body "
@@ -50,128 +59,146 @@ msgid ""
 "accessed using the physics tensor API (i.e., through the "
 ":class:`assets.RigidObject` class)."
 msgstr ""
-"静态碰撞器是指那些不受物理影响但可以与仿真世界中的其他基本体发生碰撞的基本体。这些基本体没有任何刚体属性。然而，这也意味着它们无法通过物理张量API（即通过"
-" :class:`assets.RigidObject` 类）进行访问。"
+"静态碰撞体不受物理运动影响，但能与仿真世界中的其他 prim 碰撞。它们未应用刚体属性，因此无法通过物理张量 API（即 "
+":class:`assets.RigidObject` 类）访问。"
 
-#: ../../source/how-to/make_fixed_prim.rst:20
+#: source/how-to/make_fixed_prim.rst:26
 msgid ""
-"For instance, to spawn a cone static in the simulation world, the following "
-"code can be used:"
-msgstr "例如，要在仿真世界中生成一个静态圆锥，可以使用以下代码: "
+"For instance, to spawn a sphere static in the simulation world, the "
+"following code can be used:"
+msgstr "例如，要在仿真世界中生成静止的球体，可使用以下代码："
 
-#: ../../source/how-to/make_fixed_prim.rst:38
+#: source/how-to/make_fixed_prim.rst:43
 msgid "Rigid object"
-msgstr "刚性物体"
+msgstr "刚体对象"
 
-#: ../../source/how-to/make_fixed_prim.rst:40
+#: source/how-to/make_fixed_prim.rst:45
 msgid ""
 "Rigid objects (i.e. object only has a single body) can be made static by "
-"setting the parameter "
-":attr:`sim.schemas.RigidBodyPropertiesCfg.kinematic_enabled` as True. This "
-"will make the object kinematic and it will not be affected by physics."
+"setting the parameter :attr:`sim.schemas.RigidBodyBaseCfg.kinematic_enabled`"
+" as True. This will make the object kinematic: its motion is prescribed by "
+"user code rather than integrated from gravity and forces. Without prescribed"
+" motion, it stays fixed. It can still participate in collisions."
 msgstr ""
-"刚性物体（即物体只有一个刚体）可以通过将参数 "
-":attr:`sim.schemas.RigidBodyPropertiesCfg.kinematic_enabled` "
-"设置为True来使其静态。这将使物体成为动力学物体，不受物理影响。"
+"刚性物体（只包含一个刚体的物体）可通过将 :attr:`sim.schemas.RigidBodyBaseCfg.kinematic_enabled` "
+"设为 True 来保持静止。这样会将物体设为运动学物体：其运动由用户代码指定，而不是根据重力和力进行积分。如果未指定运动，它就保持固定，但仍可参与碰撞。"
 
-#: ../../source/how-to/make_fixed_prim.rst:44
+#: source/how-to/make_fixed_prim.rst:50
 msgid ""
-"For instance, to spawn a cone static in the simulation world but with rigid "
-"body schema on it, the following code can be used:"
-msgstr "例如，要在仿真世界中生成一个刚体模式的静态圆锥，可以使用以下代码: "
+"For instance, to spawn a sphere static in the simulation world but with "
+"rigid body schema on it, the following code can be used:"
+msgstr "例如，要在仿真世界中生成具有刚体模式的静止球体，可使用以下代码："
 
-#: ../../source/how-to/make_fixed_prim.rst:65
+#: source/how-to/make_fixed_prim.rst:70
 msgid "Articulation"
-msgstr "关节"
+msgstr "关节体"
 
-#: ../../source/how-to/make_fixed_prim.rst:67
+#: source/how-to/make_fixed_prim.rst:72
 msgid ""
 "Fixing the root of an articulation requires having a fixed joint to the root"
 " rigid body link of the articulation. This can be achieved by setting the "
-"parameter :attr:`sim.schemas.ArticulationRootPropertiesCfg.fix_root_link` as"
-" True. Based on the value of this parameter, the following cases are "
-"possible:"
+"parameter :attr:`sim.schemas.ArticulationRootBaseCfg.fix_root_link` as True."
+" Based on the value of this parameter, the following cases are possible:"
 msgstr ""
-"固定关节需要在关节根刚体连接点上设置一个固定关节，这可以通过将参数 "
-":attr:`sim.schemas.ArticulationRootPropertiesCfg.fix_root_link` "
-"设置为True来实现。根据这个参数的值，可能出现以下几种情况: "
+"固定关节体的根，需要在关节体的根刚体连杆上设置固定关节。可将 "
+":attr:`sim.schemas.ArticulationRootBaseCfg.fix_root_link` 设为 True "
+"来实现。根据此参数的值，可能出现以下情况："
 
-#: ../../source/how-to/make_fixed_prim.rst:71
+#: source/how-to/make_fixed_prim.rst:76
 msgid "If set to :obj:`None`, the root link is not modified."
-msgstr "如果设置为 :obj:`None` ，则不修改根连接点。"
+msgstr "设为 :obj:`None` 时，不修改根连杆。"
 
-#: ../../source/how-to/make_fixed_prim.rst:72
+#: source/how-to/make_fixed_prim.rst:77
 msgid ""
 "If the articulation already has a fixed root link, this flag will enable or "
 "disable the fixed joint."
-msgstr "如果关节已经有一个固定的根连接点，这个标志将启用或禁用固定关节。"
+msgstr "如果关节体已有固定根连杆，此标志会启用或禁用对应的固定关节。"
 
-#: ../../source/how-to/make_fixed_prim.rst:73
+#: source/how-to/make_fixed_prim.rst:78
 msgid ""
 "If the articulation does not have a fixed root link, this flag will create a"
-" fixed joint between the world frame and the root link. The joint is created"
-" with the name \"FixedJoint\" under the root link."
-msgstr ""
-"如果关节没有固定的根连接点，这个标志将创建一个固定关节，它连接世界框架和根连接点。该关节被命名为 \"FixedJoint\" ，位于根连接点下方。"
+" fixed joint between the world frame and the root link, under a writable "
+"prim in the asset hierarchy."
+msgstr "如果关节体没有固定根连杆，此标志会在世界坐标系与根连杆之间创建固定关节，并将其放在资产层级中的可写 prim 下。"
 
-#: ../../source/how-to/make_fixed_prim.rst:76
+#: source/how-to/make_fixed_prim.rst:81
 msgid ""
-"For instance, to spawn an ANYmal robot and make it static in the simulation "
-"world, the following code can be used:"
-msgstr "例如，要在仿真世界中生成一个ANYmal机器人并使其处于静态状态，可以使用以下代码: "
+"For instance, to spawn an ANYmal robot and fix its base while leaving its "
+"joints movable, the following code can be used:"
+msgstr "例如，要生成 ANYmal 机器人并固定其基座，同时保持关节可动，可使用以下代码："
 
-#: ../../source/how-to/make_fixed_prim.rst:107
+#: source/how-to/make_fixed_prim.rst:98
 msgid ""
-"This will create a fixed joint between the world frame and the root link of "
-"the ANYmal robot at the prim path ``\"/World/ANYmal/base/FixedJoint\"`` "
-"since the root link is at the path ``\"/World/ANYmal/base\"``."
+"This creates a fixed joint between the world frame and the root link of the "
+"ANYmal robot. The joint is authored under a writable prim; its exact path "
+"depends on the asset's root and instancing layout."
+msgstr "这会在世界坐标系与 ANYmal 机器人的根连杆之间创建固定关节。该关节写入可写 prim 下，具体路径取决于资产根节点和实例化布局。"
+
+#: source/how-to/make_fixed_prim.rst:102
+msgid ""
+"For a spawn configuration using schema fragments, or no "
+"``articulation_props``, set ``UsdFileCfg(fix_root_link=True, ...)`` instead."
+" When using a legacy properties configuration as above, keep "
+"``fix_root_link`` on that configuration. Both paths author the fixed joint "
+"before the backend imports the articulation."
 msgstr ""
-"这将在基本体路径 ``\"/World/ANYmal/base/FixedJoint\"`` 处在世界框架和ANYmal机器人的根连接点 "
-"``\"/World/ANYmal/base\"`` 之间创建一个固定关节。"
+"如果生成配置使用模式片段，或没有 ``articulation_props`` ，则改为设置 "
+"``UsdFileCfg(fix_root_link=True, ...)`` 。使用上述传统属性配置时，应在该属性配置上保留 "
+"``fix_root_link`` 。两种方式都会在后端导入关节体前写入固定关节。"
 
-#: ../../source/how-to/make_fixed_prim.rst:112
-msgid "Further notes"
-msgstr "更多说明"
+#: source/how-to/make_fixed_prim.rst:0
+msgid "PhysX articulation-root placement details"
+msgstr "PhysX 关节体根的位置细节"
 
-#: ../../source/how-to/make_fixed_prim.rst:114
+#: source/how-to/make_fixed_prim.rst:111
+msgid ""
+"The following parser details explain the PhysX-specific root-placement "
+"adjustment. Newton imports the resulting USD joint topology; do not apply "
+"PhysX parser heuristics as Newton configuration rules."
+msgstr ""
+"以下解析器细节说明了 PhysX 专用的根位置调整。Newton 会导入最终得到的 USD 关节拓扑；不要将 PhysX 解析器的启发式规则当作 "
+"Newton 配置规则。"
+
+#: source/how-to/make_fixed_prim.rst:115
 msgid ""
 "Given the flexibility of USD asset designing the following possible "
 "scenarios are usually encountered:"
-msgstr "鉴于USD资产设计的灵活性，通常会出现以下可能的情况: "
+msgstr "USD 资产的组织方式较为灵活，常见情况如下："
 
-#: ../../source/how-to/make_fixed_prim.rst:116
+#: source/how-to/make_fixed_prim.rst:117
 msgid ""
 "**Articulation root schema on the rigid body prim without a fixed joint**:"
-msgstr "**具有固定关节但没有固定关节的刚体基本体的关节根模式**: "
+msgstr "**关节体根模式应用于刚体 prim，且没有固定关节** ："
 
-#: ../../source/how-to/make_fixed_prim.rst:118
+#: source/how-to/make_fixed_prim.rst:119
 msgid ""
 "This is the most common and recommended scenario for floating-base "
 "articulations. The root prim has both the rigid body and the articulation "
 "root properties. In this case, the articulation root is parsed as a "
 "floating-base with the root prim of the articulation ``Link0Xform``."
 msgstr ""
-"这是悬浮基关节的最常见和推荐的情况。根基本体同时具有刚体和关节根属性。在这种情况下，关节根被解析为具有根基本体 ``Link0Xform`` 的悬浮基。"
+"这是浮动基座关节体最常见、也最推荐的组织方式。根 prim 同时具有刚体属性和关节体根属性，解析得到的关节体为浮动基座系统，其根 prim 是 "
+"``Link0Xform`` 。"
 
-#: ../../source/how-to/make_fixed_prim.rst:127
+#: source/how-to/make_fixed_prim.rst:128
 msgid "**Articulation root schema on the parent prim with a fixed joint**:"
-msgstr "**具有固定关节的父基本体的关节根模式**: "
+msgstr "**关节体根模式应用于父 prim，且存在固定关节** ："
 
-#: ../../source/how-to/make_fixed_prim.rst:129
+#: source/how-to/make_fixed_prim.rst:130
 msgid ""
 "This is the expected arrangement for fixed-base articulations. The root prim"
 " has only the rigid body properties and the articulation root properties are"
 " applied to its parent prim. In this case, the articulation root is parsed "
 "as a fixed-base with the root prim of the articulation ``Link0Xform``."
 msgstr ""
-"这是固定基关节的期望排列方式。根基本体只具有刚体属性，关节根属性应用于其父基本体。在这种情况下，关节根被解析为具有根基本体 ``Link0Xform``"
-" 的固定基。"
+"这是固定基座关节体的预期组织方式。根 prim 仅具有刚体属性，关节体根属性应用于其父 prim。解析得到的关节体为固定基座系统，其根 prim 是 "
+"``Link0Xform`` 。"
 
-#: ../../source/how-to/make_fixed_prim.rst:139
+#: source/how-to/make_fixed_prim.rst:140
 msgid "**Articulation root schema on the parent prim without a fixed joint**:"
-msgstr "**父基本体没有固定关节的关节根模式**: "
+msgstr "**关节体根模式应用于父 prim，且没有固定关节** ："
 
-#: ../../source/how-to/make_fixed_prim.rst:141
+#: source/how-to/make_fixed_prim.rst:142
 msgid ""
 "This is a scenario where the root prim has only the rigid body properties "
 "and the articulation root properties are applied to its parent prim. "
@@ -181,15 +208,16 @@ msgid ""
 "order) to determine the root prim of the articulation. It may select the "
 "root prim at ``Link0Xform`` or choose another prim as the root prim."
 msgstr ""
-"这是一个场景，其中根基本体只具有刚体属性，而关节根属性应用于其父基本体。然而，不会在世界框架和根连接点之间创建固定关节。在这种情况下，关节被解析为一个悬浮基系统。然而，PhysX解析器使用自己的启发法则（例如按字母顺序）来确定关节根的根基本体。它可以选择将根基本体设置为"
-" ``Link0Xform`` ，也可能选择其他基本体作为根基本体。"
+"在这种情况下，根 prim 仅具有刚体属性，关节体根属性应用于其父 "
+"prim，但世界坐标系与根连杆之间没有固定关节。关节体会被解析为浮动基座系统。PhysX 解析器使用自身的启发式规则（如字母顺序）确定关节体的根 "
+"prim，因此可能选中 ``Link0Xform`` ，也可能选中其他 prim。"
 
-#: ../../source/how-to/make_fixed_prim.rst:152
+#: source/how-to/make_fixed_prim.rst:153
 msgid ""
 "**Articulation root schema on the rigid body prim with a fixed joint**:"
-msgstr "**具有固定关节的刚体基本体的关节根模式**: "
+msgstr "**关节体根模式应用于刚体 prim，且存在固定关节** ："
 
-#: ../../source/how-to/make_fixed_prim.rst:154
+#: source/how-to/make_fixed_prim.rst:155
 msgid ""
 "While this is a valid scenario, it is not recommended as it may lead to "
 "unexpected behavior. In this case, the articulation is still parsed as a "
@@ -198,9 +226,10 @@ msgid ""
 "tree. This is different from PhysX considering the articulation as a fixed-"
 "base system. Hence, the simulation may not behave as expected."
 msgstr ""
-"虽然这是一个有效的情况，但不建议这样做，因为它可能导致意外行为。在这种情况下，关节仍被解析为一个悬浮基系统。然而，在世界框架和根连接点之间创建的固定关节被视为最大坐标树的一部分。PhysX将这种情况解析为固定基系统。因此，仿真可能不会按预期行为。"
+"这种组织方式虽有效，但可能产生意外行为，因此不推荐。关节体仍会被解析为浮动基座系统，而世界坐标系与根连杆之间的固定关节被视为最大坐标树的一部分。这与 "
+"PhysX 将整个关节体解析为固定基座系统的方式不同，因此仿真结果可能不符合预期。"
 
-#: ../../source/how-to/make_fixed_prim.rst:165
+#: source/how-to/make_fixed_prim.rst:166
 msgid ""
 "For floating base articulations, the root prim usually has both the rigid "
 "body and the articulation root properties. However, directly connecting this"
@@ -208,24 +237,19 @@ msgid ""
 "joint as a part of the maximal coordinate tree. This is different from PhysX"
 " considering the articulation as a fixed-base system."
 msgstr ""
-"对于悬浮基关节，根基本体通常同时具有刚体和关节根属性。然而，直接连接这个基本体到世界框架会导致仿真认为固定关节是最大坐标树的一部分。这与PhysX认为关节是固定基系统是不同的。"
+"浮动基座关节体的根 prim 通常同时具有刚体属性和关节体根属性。若直接将该 prim "
+"固定到世界坐标系，仿真会把固定关节视为最大坐标树的一部分，而不会让 PhysX 将整个关节体视为固定基座系统。"
 
-#: ../../source/how-to/make_fixed_prim.rst:170
+#: source/how-to/make_fixed_prim.rst:171
 msgid ""
 "Internally, when the parameter "
-":attr:`sim.schemas.ArticulationRootPropertiesCfg.fix_root_link` is set to "
-"True and the articulation is detected as a floating-base system, the fixed "
-"joint is created between the world frame the root rigid body link of the "
+":attr:`sim.schemas.ArticulationRootBaseCfg.fix_root_link` is set to True and"
+" the articulation is detected as a floating-base system, the fixed joint is "
+"created between the world frame the root rigid body link of the "
 "articulation. However, to make the PhysX parser consider the articulation as"
 " a fixed-base system, the articulation root properties are removed from the "
 "root rigid body prim and applied to its parent prim instead."
 msgstr ""
-"内部，当参数 :attr:`sim.schemas.ArticulationRootPropertiesCfg.fix_root_link` "
-"设置为True并且关节被检测为悬浮基系统时，固定关节被创建在关节根刚体连接点和世界框架之间。然而，为了使PhysX解析器认为关节是固定基系统，关节根属性需要从根刚体基本体中移除，并应用到其父基本体上。"
-
-#: ../../source/how-to/make_fixed_prim.rst:178
-msgid ""
-"In future release of Isaac Sim, an explicit flag will be added to the "
-"articulation root schema from PhysX to toggle between fixed-base and "
-"floating-base systems. This will resolve the need of the above workaround."
-msgstr "在未来版本的Isaac Sim中，将为来自PhysX的关节根模式添加一个显式标志，以在固定基和悬浮基系统之间进行切换。这将解决上述的问题。"
+"内部实现中，当 :attr:`sim.schemas.ArticulationRootBaseCfg.fix_root_link` 设为 "
+"True，且关节体被识别为浮动基座系统时，会在世界坐标系与关节体根刚体连杆之间创建固定关节。不过，为使 PhysX "
+"解析器将关节体视为固定基座系统，会从根刚体 prim 移除关节体根属性，并将其应用到父 prim。"

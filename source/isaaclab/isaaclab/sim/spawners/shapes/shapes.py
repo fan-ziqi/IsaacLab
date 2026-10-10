@@ -5,12 +5,19 @@
 
 from __future__ import annotations
 
+import math
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
-from pxr import Usd
+from pxr import Usd, UsdGeom
 
-from isaaclab.sim import schemas
-from isaaclab.sim.utils import bind_physics_material, bind_visual_material, clone, create_prim, get_current_stage
+from isaaclab.utils import validate
+
+from ... import schemas
+from ...utils import bind_physics_material, bind_visual_material, clone, create_prim, get_current_stage
+from ..materials.physics_materials import spawn_physics_material
+from ..spawner_cfg import RigidObjectSpawnerCfg
+from ..utils import apply_schema_props
 
 if TYPE_CHECKING:
     from . import shapes_cfg
@@ -39,7 +46,7 @@ def spawn_sphere(
         cfg: The configuration instance.
         translation: The translation to apply to the prim w.r.t. its parent prim. Defaults to None, in which case
             this is set to the origin.
-        orientation: The orientation in (w, x, y, z) to apply to the prim w.r.t. its parent prim. Defaults to None,
+        orientation: The orientation in (x, y, z, w) to apply to the prim w.r.t. its parent prim. Defaults to None,
             in which case this is set to identity.
         **kwargs: Additional keyword arguments, like ``clone_in_fabric``.
 
@@ -49,13 +56,7 @@ def spawn_sphere(
     Raises:
         ValueError: If a prim already exists at the given path.
     """
-    # obtain stage handle
-    stage = get_current_stage()
-    # spawn sphere if it doesn't exist.
-    attributes = {"radius": cfg.radius}
-    _spawn_geom_from_prim_type(prim_path, cfg, "Sphere", attributes, translation, orientation, stage=stage)
-    # return the prim
-    return stage.GetPrimAtPath(prim_path)
+    return spawn_geom_from_prim_type(prim_path, cfg, "Sphere", {"radius": cfg.radius}, translation, orientation)
 
 
 @clone
@@ -85,7 +86,7 @@ def spawn_cuboid(
         cfg: The configuration instance.
         translation: The translation to apply to the prim w.r.t. its parent prim. Defaults to None, in which case
             this is set to the origin.
-        orientation: The orientation in (w, x, y, z) to apply to the prim w.r.t. its parent prim. Defaults to None,
+        orientation: The orientation in (x, y, z, w) to apply to the prim w.r.t. its parent prim. Defaults to None,
             in which case this is set to identity.
         **kwargs: Additional keyword arguments, like ``clone_in_fabric``.
 
@@ -95,16 +96,9 @@ def spawn_cuboid(
     Raises:
         If a prim already exists at the given path.
     """
-    # obtain stage handle
-    stage = get_current_stage()
-    # resolve the scale
     size = min(cfg.size)
     scale = [dim / size for dim in cfg.size]
-    # spawn cuboid if it doesn't exist.
-    attributes = {"size": size}
-    _spawn_geom_from_prim_type(prim_path, cfg, "Cube", attributes, translation, orientation, scale, stage=stage)
-    # return the prim
-    return stage.GetPrimAtPath(prim_path)
+    return spawn_geom_from_prim_type(prim_path, cfg, "Cube", {"size": size}, translation, orientation, scale)
 
 
 @clone
@@ -130,7 +124,7 @@ def spawn_cylinder(
         cfg: The configuration instance.
         translation: The translation to apply to the prim w.r.t. its parent prim. Defaults to None, in which case
             this is set to the origin.
-        orientation: The orientation in (w, x, y, z) to apply to the prim w.r.t. its parent prim. Defaults to None,
+        orientation: The orientation in (x, y, z, w) to apply to the prim w.r.t. its parent prim. Defaults to None,
             in which case this is set to identity.
         **kwargs: Additional keyword arguments, like ``clone_in_fabric``.
 
@@ -140,13 +134,8 @@ def spawn_cylinder(
     Raises:
         ValueError: If a prim already exists at the given path.
     """
-    # obtain stage handle
-    stage = get_current_stage()
-    # spawn cylinder if it doesn't exist.
     attributes = {"radius": cfg.radius, "height": cfg.height, "axis": cfg.axis.upper()}
-    _spawn_geom_from_prim_type(prim_path, cfg, "Cylinder", attributes, translation, orientation, stage=stage)
-    # return the prim
-    return stage.GetPrimAtPath(prim_path)
+    return spawn_geom_from_prim_type(prim_path, cfg, "Cylinder", attributes, translation, orientation)
 
 
 @clone
@@ -172,7 +161,7 @@ def spawn_capsule(
         cfg: The configuration instance.
         translation: The translation to apply to the prim w.r.t. its parent prim. Defaults to None, in which case
             this is set to the origin.
-        orientation: The orientation in (w, x, y, z) to apply to the prim w.r.t. its parent prim. Defaults to None,
+        orientation: The orientation in (x, y, z, w) to apply to the prim w.r.t. its parent prim. Defaults to None,
             in which case this is set to identity.
         **kwargs: Additional keyword arguments, like ``clone_in_fabric``.
 
@@ -182,13 +171,8 @@ def spawn_capsule(
     Raises:
         ValueError: If a prim already exists at the given path.
     """
-    # obtain stage handle
-    stage = get_current_stage()
-    # spawn capsule if it doesn't exist.
     attributes = {"radius": cfg.radius, "height": cfg.height, "axis": cfg.axis.upper()}
-    _spawn_geom_from_prim_type(prim_path, cfg, "Capsule", attributes, translation, orientation, stage=stage)
-    # return the prim
-    return stage.GetPrimAtPath(prim_path)
+    return spawn_geom_from_prim_type(prim_path, cfg, "Capsule", attributes, translation, orientation)
 
 
 @clone
@@ -214,7 +198,7 @@ def spawn_cone(
         cfg: The configuration instance.
         translation: The translation to apply to the prim w.r.t. its parent prim. Defaults to None, in which case
             this is set to the origin.
-        orientation: The orientation in (w, x, y, z) to apply to the prim w.r.t. its parent prim. Defaults to None,
+        orientation: The orientation in (x, y, z, w) to apply to the prim w.r.t. its parent prim. Defaults to None,
             in which case this is set to identity.
         **kwargs: Additional keyword arguments, like ``clone_in_fabric``.
 
@@ -224,13 +208,61 @@ def spawn_cone(
     Raises:
         ValueError: If a prim already exists at the given path.
     """
-    # obtain stage handle
-    stage = get_current_stage()
-    # spawn cone if it doesn't exist.
     attributes = {"radius": cfg.radius, "height": cfg.height, "axis": cfg.axis.upper()}
-    _spawn_geom_from_prim_type(prim_path, cfg, "Cone", attributes, translation, orientation, stage=stage)
-    # return the prim
-    return stage.GetPrimAtPath(prim_path)
+    return spawn_geom_from_prim_type(prim_path, cfg, "Cone", attributes, translation, orientation)
+
+
+@clone
+def spawn_cable(
+    prim_path: str,
+    cfg: shapes_cfg.CableCfg,
+    translation: tuple[float, float, float] | None = None,
+    orientation: tuple[float, float, float, float] | None = None,
+    **kwargs,
+) -> Usd.Prim:
+    """Create an open linear ``UsdGeom.BasisCurves`` cable.
+
+    Args:
+        prim_path: The prim path or pattern to spawn the cable at.
+        cfg: The cable configuration.
+        translation: Local translation of the cable root [m].
+        orientation: Local orientation in ``(x, y, z, w)`` order.
+        **kwargs: Additional arguments consumed by :func:`clone`.
+
+    Returns:
+        The created cable root prim.
+    """
+    if len(cfg.positions) < 3:
+        raise ValueError(f"CableCfg requires at least three positions, got {len(cfg.positions)}.")
+    if any(len(point) != 3 for point in cfg.positions):
+        raise ValueError("CableCfg positions must contain exactly three coordinates.")
+    if any(not math.isfinite(coordinate) for point in cfg.positions for coordinate in point):
+        raise ValueError("CableCfg positions must contain only finite coordinates.")
+    if any(math.dist(start, end) <= 1.0e-8 for start, end in zip(cfg.positions, cfg.positions[1:])):
+        raise ValueError(
+            "CableCfg consecutive positions must be separated by more than 1e-8 m in the cable-local frame."
+        )
+    validate(cfg.physics_material)
+
+    attributes = {
+        "points": cfg.positions,
+        "curveVertexCounts": [len(cfg.positions)],
+        "type": UsdGeom.Tokens.linear,
+        "wrap": UsdGeom.Tokens.nonperiodic,
+        "widths": [cfg.physics_material.thickness],
+    }
+    prim = spawn_geom_from_prim_type(
+        prim_path,
+        cfg,
+        "BasisCurves",
+        attributes,
+        translation,
+        orientation,
+        geometry_schema_func=schemas.define_deformable_curve_properties,
+    )
+    curve_prim = prim.GetStage().GetPrimAtPath(f"{prim_path}/geometry/mesh")
+    UsdGeom.BasisCurves(curve_prim).SetWidthsInterpolation(UsdGeom.Tokens.constant)
+    return prim
 
 
 """
@@ -238,16 +270,17 @@ Helper functions.
 """
 
 
-def _spawn_geom_from_prim_type(
+def spawn_geom_from_prim_type(
     prim_path: str,
-    cfg: shapes_cfg.ShapeCfg,
+    cfg: shapes_cfg.ShapeCfg | shapes_cfg.CableCfg,
     prim_type: str,
     attributes: dict,
     translation: tuple[float, float, float] | None = None,
     orientation: tuple[float, float, float, float] | None = None,
     scale: tuple[float, float, float] | None = None,
     stage: Usd.Stage | None = None,
-):
+    geometry_schema_func: Callable[[str, Usd.Stage | None], None] | None = None,
+) -> Usd.Prim:
     """Create a USDGeom-based prim with the given attributes.
 
     To make the asset instanceable, we must follow a certain structure dictated by how USD scene-graph
@@ -269,57 +302,66 @@ def _spawn_geom_from_prim_type(
         attributes: The attributes to apply to the prim.
         translation: The translation to apply to the prim w.r.t. its parent prim. Defaults to None, in which case
             this is set to the origin.
-        orientation: The orientation in (w, x, y, z) to apply to the prim w.r.t. its parent prim. Defaults to None,
+        orientation: The orientation in (x, y, z, w) to apply to the prim w.r.t. its parent prim. Defaults to None,
             in which case this is set to identity.
         scale: The scale to apply to the prim. Defaults to None, in which case this is set to identity.
         stage: The stage to spawn the asset at. Defaults to None, in which case the current stage is used.
+        geometry_schema_func: A schema writer called on the geometry prim after creation.
+
+    Returns:
+        The created root prim.
 
     Raises:
         ValueError: If a prim already exists at the given path.
     """
-    # obtain stage handle
     stage = stage if stage is not None else get_current_stage()
 
-    # spawn geometry if it doesn't exist.
-    if not stage.GetPrimAtPath(prim_path).IsValid():
-        create_prim(prim_path, prim_type="Xform", translation=translation, orientation=orientation, stage=stage)
-    else:
-        raise ValueError(f"A prim already exists at path: '{prim_path}'.")
-
-    # create all the paths we need for clarity
+    prim = create_prim(prim_path, prim_type="Xform", translation=translation, orientation=orientation, stage=stage)
     geom_prim_path = prim_path + "/geometry"
     mesh_prim_path = geom_prim_path + "/mesh"
-
-    # create the geometry prim
     create_prim(mesh_prim_path, prim_type, scale=scale, attributes=attributes, stage=stage)
-    # apply collision properties
+    if geometry_schema_func is not None:
+        geometry_schema_func(mesh_prim_path, stage=stage)
+
+    # collision properties anchor at the geometry prim
     if cfg.collision_props is not None:
-        schemas.define_collision_properties(mesh_prim_path, cfg.collision_props, stage=stage)
-    # apply visual material
+        apply_schema_props(
+            cfg.collision_props,
+            mesh_prim_path,
+            schemas.apply_collision_properties,
+            schemas.define_collision_properties,
+            stage,
+        )
     if cfg.visual_material is not None:
-        if not cfg.visual_material_path.startswith("/"):
-            material_path = f"{geom_prim_path}/{cfg.visual_material_path}"
-        else:
-            material_path = cfg.visual_material_path
-        # create material
+        material_path = (
+            cfg.visual_material_path
+            if cfg.visual_material_path.startswith("/")
+            else f"{geom_prim_path}/{cfg.visual_material_path}"
+        )
         cfg.visual_material.func(material_path, cfg.visual_material)
-        # apply material
         bind_visual_material(mesh_prim_path, material_path, stage=stage)
-    # apply physics material
     if cfg.physics_material is not None:
-        if not cfg.physics_material_path.startswith("/"):
-            material_path = f"{geom_prim_path}/{cfg.physics_material_path}"
-        else:
-            material_path = cfg.physics_material_path
-        # create material
-        cfg.physics_material.func(material_path, cfg.physics_material)
-        # apply material
+        material_path = (
+            cfg.physics_material_path
+            if cfg.physics_material_path.startswith("/")
+            else f"{geom_prim_path}/{cfg.physics_material_path}"
+        )
+        spawn_physics_material(material_path, cfg.physics_material, stage=stage)
         bind_physics_material(mesh_prim_path, material_path, stage=stage)
 
-    # note: we apply rigid properties in the end to later make the instanceable prim
-    # apply mass properties
-    if cfg.mass_props is not None:
-        schemas.define_mass_properties(prim_path, cfg.mass_props, stage=stage)
-    # apply rigid body properties
-    if cfg.rigid_props is not None:
-        schemas.define_rigid_body_properties(prim_path, cfg.rigid_props, stage=stage)
+    # mass and rigid body properties anchor at the container prim and are applied last so the
+    # geometry can later be made instanceable; cables carry neither
+    if isinstance(cfg, RigidObjectSpawnerCfg):
+        if cfg.mass_props is not None:
+            apply_schema_props(
+                cfg.mass_props, prim_path, schemas.apply_mass_properties, schemas.define_mass_properties, stage
+            )
+        if cfg.rigid_props is not None:
+            apply_schema_props(
+                cfg.rigid_props,
+                prim_path,
+                schemas.apply_rigid_body_properties,
+                schemas.define_rigid_body_properties,
+                stage,
+            )
+    return prim

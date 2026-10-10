@@ -1,0 +1,369 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/create_direct_rl_env.rst:5
+msgid ""
+"This tutorial is the source of truth for the ``isaaclab-randomizing-with-"
+"events`` agent skill (:isaaclab-source:`skills/user/domain-randomization-"
+"events/ <skills/user/domain-randomization-events/SKILL.md>`). When you "
+"change this page, update the skill so agent guidance stays in sync. See "
+":doc:`/source/developer-tools/agent_skills`."
+msgstr ""
+"本教程是 ``isaaclab-randomizing-with-events`` 智能体技能的权威依据（ :isaaclab-"
+"source:`skills/user/domain-randomization-events/ <skills/user/domain-"
+"randomization-events/SKILL.md>` ）。修改本页时，也应更新该技能，使智能体指导保持同步。参见 "
+":doc:`/source/developer-tools/agent_skills` 。"
+
+#: source/how-to/create_direct_rl_env.rst:13
+msgid "Creating a Direct Workflow RL Environment"
+msgstr "创建直接工作流 RL 环境"
+
+#: source/how-to/create_direct_rl_env.rst:17
+msgid ""
+"In addition to the :class:`envs.ManagerBasedRLEnv` class, which encourages "
+"the use of configuration classes for more modular environments, the "
+":class:`~isaaclab.envs.DirectRLEnv` class allows for more direct control in "
+"the scripting of environment."
+msgstr ""
+"除了 :class:`envs.ManagerBasedRLEnv` 类之外，还可以使用配置类来为更模块化的环境提供支持， "
+":class:`~isaaclab.envs.DirectRLEnv` 类允许在环境脚本化中进行更直接的控制。"
+
+#: source/how-to/create_direct_rl_env.rst:21
+msgid ""
+"Instead of using Manager classes for defining rewards and observations, the "
+"direct workflow tasks implement the full reward and observation functions "
+"directly in the task script. This allows for more control in the "
+"implementation of the methods, such as using pytorch jit features, and "
+"provides a less abstracted framework that makes it easier to find the "
+"various pieces of code."
+msgstr ""
+"直接工作流任务实现完全奖励和观测功能的直接任务脚本。这允许在方法的实现中更多地控制，比如使用 Pytorch jit "
+"功能，并提供一个更少抽象的框架，更容易找到各种代码片段。"
+
+#: source/how-to/create_direct_rl_env.rst:27
+msgid ""
+"In this tutorial, we will configure the cartpole environment using the "
+"direct workflow implementation to create a task for balancing the pole "
+"upright. We will declare its scene and implement actions, resets, rewards, "
+"and observations."
+msgstr "本教程使用直接工作流实现配置倒立摆环境，创建保持摆杆直立的任务。我们将声明场景，并实现动作、重置、奖励和观测。"
+
+#: source/how-to/create_direct_rl_env.rst:32
+msgid "The Code"
+msgstr "代码"
+
+#: source/how-to/create_direct_rl_env.rst:34
+msgid ""
+"For this tutorial, we use the cartpole environment defined in "
+"``isaaclab_tasks.core.cartpole`` module."
+msgstr "本教程使用 ``isaaclab_tasks.core.cartpole`` 模块中定义的倒立摆环境。"
+
+#: source/how-to/create_direct_rl_env.rst:0
+msgid "Code for cartpole_direct_env.py"
+msgstr "cartpole_direct_env.py 代码"
+
+#: source/how-to/create_direct_rl_env.rst:45
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: source/how-to/create_direct_rl_env.rst:47
+msgid ""
+"Similar to the manager-based environments, a configuration class is defined "
+"for the task to hold settings for the simulation parameters, the scene, the "
+"actors, and the task. With the direct workflow implementation, the "
+":class:`envs.DirectRLEnvCfg` class is used as the base class for "
+"configurations. Since the direct workflow implementation does not use Action"
+" and Observation managers, the task config should define the number of "
+"actions and observations for the environment."
+msgstr ""
+"与基于管理器的环境类似，为任务定义一个配置类，以保存仿真参数、场景、actors 和任务的设置。使用直接工作流实现， "
+":class:`envs.DirectRLEnvCfg` 类作为配置的基类使用。由于直接工作流实现不使用 Action 和 Observation "
+"管理器，任务配置应定义环境的动作和观测数。"
+
+#: source/how-to/create_direct_rl_env.rst:62
+msgid ""
+"The config class can also be used to define task-specific attributes, such "
+"as scaling for reward terms and thresholds for reset conditions."
+msgstr "配置类也可以用来定义特定于任务的属性，例如奖励项的缩放和重置条件的阈值。"
+
+#: source/how-to/create_direct_rl_env.rst:81
+msgid ""
+"When creating a new environment, the code should define a new class that "
+"inherits from :class:`~isaaclab.envs.DirectRLEnv`."
+msgstr "在创建新环境时，代码应该定义一个新的类，该类继承自 :class:`~isaaclab.envs.DirectRLEnv` 。"
+
+#: source/how-to/create_direct_rl_env.rst:91
+msgid ""
+"The class can also hold class variables that are accessible by all functions"
+" in the class, including functions for applying actions, computing resets, "
+"rewards, and observations."
+msgstr "该类也可以包含所有类函数都可访问的类变量，包括应用动作、计算重置、奖励和观测的功能。"
+
+#: source/how-to/create_direct_rl_env.rst:95
+msgid "Scene Creation"
+msgstr "场景创建"
+
+#: source/how-to/create_direct_rl_env.rst:97
+msgid ""
+"Direct and manager-based environments use the same declarative scene "
+"lifecycle. Define the assets and sensors on an "
+":class:`~isaaclab.scene.InteractiveSceneCfg` subclass:"
+msgstr ""
+"直接工作流环境与基于管理器的环境使用相同的声明式场景生命周期。在 "
+":class:`~isaaclab.scene.InteractiveSceneCfg` 的子类中定义资产和传感器："
+
+#: source/how-to/create_direct_rl_env.rst:104
+msgid ""
+"Assign that configuration to the task's ``scene`` field. "
+":class:`~isaaclab.envs.DirectRLEnv` constructs the scene and completes its "
+"one clone lifecycle before the task constructor resumes. Task code can then "
+"keep a convenient reference to a declared entity:"
+msgstr ""
+"将该配置赋给任务的 ``scene`` 字段。 :class:`~isaaclab.envs.DirectRLEnv` "
+"会构建场景，并在任务构造函数继续执行前完成一次克隆生命周期。随后，任务代码可以保存已声明实体的引用，方便后续访问："
+
+#: source/how-to/create_direct_rl_env.rst:113
+msgid "Defining Rewards"
+msgstr "定义奖励"
+
+#: source/how-to/create_direct_rl_env.rst:115
+msgid ""
+"Reward function should be defined in the ``_get_rewards(self)`` API, which "
+"returns the reward buffer as a return value. Within this function, the task "
+"is free to implement the logic of the reward function. In this example, we "
+"implement a Pytorch JIT function that computes the various components of the"
+" reward function."
+msgstr ""
+"奖励函数应该在 ``_get_rewards(self)`` API "
+"中定义，它将奖励缓冲区作为返回值返回。在这个函数内部，任务可以自由实现奖励函数的逻辑。在这个示例中，我们实现了一个计算奖励函数各个组成部分的 "
+"Pytorch JIT 函数。"
+
+#: source/how-to/create_direct_rl_env.rst:160
+msgid "Defining Observations"
+msgstr "定义观测"
+
+#: source/how-to/create_direct_rl_env.rst:162
+msgid ""
+"The observation buffer should be computed in the ``_get_observations(self)``"
+" function, which constructs the observation buffer for the environment. At "
+"the end of this API, a dictionary should be returned that contains "
+"``policy`` as the key, and the full observation buffer as the value. For "
+"asymmetric policies, the dictionary should also include the key ``critic`` "
+"and the states buffer as the value."
+msgstr ""
+"观测缓冲区应该在 ``_get_observations(self)`` 函数中计算，它为环境构造了观测缓冲区。在这个 API 的结尾，应该返回一个包含"
+" ``policy`` 为键和完整观测缓冲区为值的字典。对于不对称的策略，字典还应该包括 ``critic`` 键和状态缓冲区作为值。"
+
+#: source/how-to/create_direct_rl_env.rst:173
+msgid "Computing Dones and Performing Resets"
+msgstr "计算终止和执行重置"
+
+#: source/how-to/create_direct_rl_env.rst:175
+msgid ""
+"Populating the ``dones`` buffer should be done in the ``_get_dones(self)`` "
+"method. This method is free to implement logic that computes which "
+"environments would need to be reset and which environments have reached the "
+"episode length limit. Both results should be returned by the "
+"``_get_dones(self)`` function, in the form of a tuple of boolean tensors."
+msgstr ""
+"填充 ``dones`` 缓冲区应该在 ``_get_dones(self)`` "
+"方法中完成。这个方法可以自由实现逻辑，计算哪些环境需要重置，哪些环境已经达到了本集长度限制。这两个结果都应该作为 "
+"``_get_dones(self)`` 函数的返回值，以布尔张量的形式返回。"
+
+#: source/how-to/create_direct_rl_env.rst:184
+msgid ""
+"Once the indices for environments requiring reset have been computed, the "
+"``_reset_idx(self, env_ids)`` function performs the reset operations on "
+"those environments. Within this function, new states for the environments "
+"requiring reset should be set directly into simulation."
+msgstr ""
+"一旦计算出需要重置的环境的索引， ``_reset_idx(self, env_ids)`` "
+"函数将在这些环境上执行重置操作。在这个函数内部，应该直接将需要重置的环境的新状态设置到仿真中。"
+
+#: source/how-to/create_direct_rl_env.rst:193
+msgid "Applying Actions"
+msgstr "应用动作"
+
+#: source/how-to/create_direct_rl_env.rst:195
+msgid ""
+"There are two APIs that are designed for working with actions. The "
+"``_pre_physics_step(self, actions)`` takes in actions from the policy as an "
+"argument and is called once per RL step, prior to taking any physics steps. "
+"This function can be used to process the actions buffer from the policy and "
+"cache the data in a class variable for the environment."
+msgstr ""
+"有两个设计用于处理动作的 API。 ``_pre_physics_step(self, actions)`` 以来于策略的动作作为参数，每个 RL "
+"步骤只调用一次，在采取任何物理步骤之前。这个函数可以用来处理来自策略的动作缓冲区，并将数据缓存到环境的类变量中。"
+
+#: source/how-to/create_direct_rl_env.rst:203
+msgid ""
+"The ``_apply_action(self)`` API is called ``decimation`` number of times for"
+" each RL step, prior to taking each physics step. This provides more "
+"flexibility for environments where actions should be applied for each "
+"physics step."
+msgstr ""
+"``_apply_action(self)`` API 被称为 ``decimation`` 次数，每个 RL "
+"步骤之前调用一次，在采取每个物理步骤之前。这为环境提供了更多的灵活性，可以对需要为每个物理步骤应用动作的环境。"
+
+#: source/how-to/create_direct_rl_env.rst:213
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/create_direct_rl_env.rst:215
+msgid ""
+"To run training for the direct workflow Cartpole environment, we can use the"
+" following command:"
+msgstr "要运行直接工作流 Cartpole 环境的训练，我们可以使用以下命令: "
+
+#: source/how-to/create_direct_rl_env.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/create_direct_rl_env.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/create_direct_rl_env.rst:231
+msgid "result of train.py"
+msgstr "训练.py 的结果"
+
+#: source/how-to/create_direct_rl_env.rst:236
+msgid ""
+"All direct workflow tasks have the suffix ``-Direct`` added to the task name"
+" to differentiate the implementation style."
+msgstr "所有直接工作流任务的名称都添加了后缀 ``-Direct`` 以区分实现风格。"
+
+#: source/how-to/create_direct_rl_env.rst:240
+msgid "Domain Randomization"
+msgstr "域随机化"
+
+#: source/how-to/create_direct_rl_env.rst:242
+msgid ""
+"In the direct workflow, domain randomization configuration uses the "
+":class:`~isaaclab.utils.configclass` module to specify a configuration class"
+" consisting of :class:`~managers.EventTermCfg` variables."
+msgstr ""
+"在直接工作流中，域随机化配置使用 :class:`~isaaclab.utils.configclass` 模块来指定包含 "
+":class:`~managers.EventTermCfg` 变量的配置类。"
+
+#: source/how-to/create_direct_rl_env.rst:245
+msgid "Below is an example of a configuration class for domain randomization:"
+msgstr "以下是一个域随机化的配置类示例: "
+
+#: source/how-to/create_direct_rl_env.rst:285
+msgid ""
+"Each ``EventTerm`` object is of the :class:`~managers.EventTermCfg` class "
+"and takes in a ``func`` parameter for specifying the function to call during"
+" randomization, a ``mode`` parameter, which can be ``startup``, ``reset`` or"
+" ``interval``. The ``params`` dictionary should provide the necessary "
+"arguments to the function that is specified in the ``func`` parameter. "
+"Functions specified as ``func`` for the ``EventTerm`` can be found in the "
+":class:`~envs.mdp.events` module."
+msgstr ""
+"每个 ``EventTerm`` 对象都是 :class:`~managers.EventTermCfg` 的实例。它接受 ``func`` "
+"参数指定随机化时调用的函数，并接受 ``mode`` 参数选择 ``startup`` 、 ``reset`` 或 ``interval`` 模式。 "
+"``params`` 字典应提供 ``func`` 指定函数所需的参数。 ``EventTerm`` 可使用的 ``func`` 函数可在 "
+":class:`~envs.mdp.events` 模块中找到。"
+
+#: source/how-to/create_direct_rl_env.rst:291
+msgid ""
+"Note that as part of the ``\"asset_cfg\": SceneEntityCfg(\"robot\", "
+"body_names=\".*\")`` parameter, the name of the actor ``\"robot\"`` is "
+"provided, along with the body or joint names specified as a regex "
+"expression, which will be the actors and bodies/joints that will have "
+"randomization applied."
+msgstr ""
+"请注意，在 ``\"asset_cfg\": SceneEntityCfg(\"robot\", body_names=\".*\")`` "
+"参数中，提供了 actor ``\"robot\"`` 的名称，以及作为正则表达式表达的主体或关节名称，这些将是将随机化应用于的 actor "
+"和主体/关节。"
+
+#: source/how-to/create_direct_rl_env.rst:295
+msgid ""
+"Once the ``configclass`` for the randomization terms have been set up, the "
+"class must be added to the base config class for the task and be assigned to"
+" the variable ``events``."
+msgstr "一旦设置了随机化术语的 ``configclass`` 类，该类必须添加到任务的基本配置类中，并分配给变量 ``events`` 。"
+
+#: source/how-to/create_direct_rl_env.rst:306
+msgid "Action and Observation Noise"
+msgstr "动作和观测噪声"
+
+#: source/how-to/create_direct_rl_env.rst:308
+msgid ""
+"Actions and observation noise can also be added using the "
+":class:`~utils.configclass` module. Action and observation noise configs "
+"must be added to the main task config using the ``action_noise_model`` and "
+"``observation_noise_model`` variables:"
+msgstr ""
+"使用 :class:`~utils.configclass` 模块也可以添加动作和观测噪声。必须将动作和观测噪声配置添加到主要任务配置中，使用 "
+"``action_noise_model`` 和 ``observation_noise_model`` 变量: "
+
+#: source/how-to/create_direct_rl_env.rst:330
+msgid ""
+":class:`~.utils.noise.NoiseModelWithAdditiveBiasCfg` can be used to sample "
+"both uncorrelated noise per step as well as correlated noise that is re-"
+"sampled at reset time."
+msgstr ""
+":class:`~.utils.noise.NoiseModelWithAdditiveBiasCfg` "
+"可以用来对每个步骤进行无关噪声的采样，以及在重置时重新采样的相关噪声。"
+
+#: source/how-to/create_direct_rl_env.rst:333
+msgid ""
+"The ``noise_cfg`` term specifies the Gaussian distribution that will be "
+"sampled at each step for all environments. This noise will be added to the "
+"corresponding actions and observations buffers at every step."
+msgstr "``noise_cfg`` 术语指定了将在每一步中为所有环境进行采样的高斯分布。这个噪声将被添加到相应的动作和观测缓冲区中的每一步。"
+
+#: source/how-to/create_direct_rl_env.rst:337
+msgid ""
+"The ``bias_noise_cfg`` term specifies the Gaussian distribution for the "
+"correlated noise that will be sampled at reset time for the environments "
+"being reset. The same noise will be applied each step for the remaining of "
+"the episode for the environments and resampled at the next reset."
+msgstr ""
+"``bias_noise_cfg`` "
+"术语指定了在重置时为被重置的环境进行采样的相关噪声的高斯分布。对于剩余的环境，这个相同的噪声将在每一步应用，并在下一次重置时重新采样。"
+
+#: source/how-to/create_direct_rl_env.rst:342
+msgid ""
+"If only per-step noise is desired, :class:`~utils.noise.GaussianNoiseCfg` "
+"can be used to specify an additive Gaussian distribution that adds the "
+"sampled noise to the input buffer."
+msgstr ""
+"如果只希望每步有噪声，可以使用 :class:`~utils.noise.GaussianNoiseCfg` "
+"来指定一个会将采样噪声添加到输入缓冲区中的混合高斯分布。"
+
+#: source/how-to/create_direct_rl_env.rst:354
+msgid ""
+"In this tutorial, we learnt how to create a direct workflow task environment"
+" for reinforcement learning. We declared the scene in configuration and "
+"extended the base environment with actions, dones, reset, reward, and "
+"observation functions."
+msgstr "本教程介绍了如何创建用于强化学习的直接工作流任务环境。我们在配置中声明场景，并通过动作、结束状态、重置、奖励和观测函数扩展基础环境。"
+
+#: source/how-to/create_direct_rl_env.rst:358
+msgid ""
+"While it is possible to manually create an instance of "
+":class:`~isaaclab.envs.DirectRLEnv` class for a desired task, this is not "
+"scalable as it requires specialized scripts for each task. Thus, we exploit "
+"the :meth:`gymnasium.make` function to create the environment with the gym "
+"interface. We will learn how to do this in the next tutorial."
+msgstr ""
+"虽然可以手动创建所需任务的 :class:`~isaaclab.envs.DirectRLEnv` "
+"类的实例，但这种方法不具有可扩展性，因为它需要为每个任务编写专门的脚本。因此，在接下来的教程中，我们将利用 :meth:`gymnasium.make`"
+" 函数来使用 gym 接口创建环境。"

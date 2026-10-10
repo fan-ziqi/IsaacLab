@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import weakref
 from collections.abc import Callable
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import numpy as np
 import torch
@@ -18,7 +18,11 @@ import carb
 import carb.input
 import omni
 
-from ..device_base import DeviceBase, DeviceCfg
+from ...app.settings_manager import get_settings_manager
+from ..device_base import DeviceBase
+
+if TYPE_CHECKING:
+    from .se2_gamepad_cfg import Se2GamepadCfg
 
 
 class Se2Gamepad(DeviceBase):
@@ -45,22 +49,14 @@ class Se2Gamepad(DeviceBase):
 
     """
 
-    def __init__(
-        self,
-        cfg: Se2GamepadCfg,
-    ):
+    def __init__(self, cfg: Se2GamepadCfg):
         """Initialize the gamepad layer.
 
         Args:
-            v_x_sensitivity: Magnitude of linear velocity along x-direction scaling. Defaults to 1.0.
-            v_y_sensitivity: Magnitude of linear velocity along y-direction scaling. Defaults to 1.0.
-            omega_z_sensitivity: Magnitude of angular velocity along z-direction scaling. Defaults to 1.0.
-            dead_zone: Magnitude of dead zone for gamepad. An event value from the gamepad less than
-                this value will be ignored. Defaults to 0.01.
+            cfg: Configuration object for gamepad settings.
         """
         # turn off simulator gamepad control
-        carb_settings_iface = carb.settings.get_settings()
-        carb_settings_iface.set_bool("/persistent/app/omniverse/gamepadCameraControl", False)
+        get_settings_manager().set("/persistent/app/omniverse/gamepadCameraControl", False)
         # store inputs
         self.v_x_sensitivity = cfg.v_x_sensitivity
         self.v_y_sensitivity = cfg.v_y_sensitivity
@@ -87,7 +83,7 @@ class Se2Gamepad(DeviceBase):
         # (positive, negative), (x, y, yaw)
         self._base_command_raw = np.zeros([2, 3])
         # dictionary for additional callbacks
-        self._additional_callbacks = dict()
+        self._additional_callbacks = {}
 
     def __del__(self):
         """Unsubscribe from gamepad events."""
@@ -202,14 +198,3 @@ class Se2Gamepad(DeviceBase):
         command[command_sign] *= -1
 
         return command
-
-
-@dataclass
-class Se2GamepadCfg(DeviceCfg):
-    """Configuration for SE2 gamepad devices."""
-
-    v_x_sensitivity: float = 1.0
-    v_y_sensitivity: float = 1.0
-    omega_z_sensitivity: float = 1.0
-    dead_zone: float = 0.01
-    class_type: type[DeviceBase] = Se2Gamepad

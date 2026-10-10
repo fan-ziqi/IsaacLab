@@ -1,0 +1,438 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/backends_and_presets.rst:9
+msgid "Backends and Presets"
+msgstr "后端与预设"
+
+#: source/concepts/backends_and_presets.rst:13
+msgid ""
+"This page is the source of truth for the ``isaaclab-selecting-backends`` and"
+" ``isaaclab-using-presets`` agent skills (`skills/user/select-backends/ "
+"<../../../skills/user/select-backends/SKILL.md>`__, `skills/user/use-"
+"presets/ <../../../skills/user/use-presets/SKILL.md>`__). When you change "
+"this page, update those skills so agent guidance stays in sync. See "
+":doc:`/source/developer-tools/agent_skills`."
+msgstr ""
+"本页是 ``isaaclab-selecting-backends`` 和 ``isaaclab-using-presets`` 智能体技能的权威依据（"
+" `skills/user/select-backends/ <../../../skills/user/select-"
+"backends/SKILL.md>`__ 、 `skills/user/use-presets/ <../../../skills/user/use-"
+"presets/SKILL.md>`__ ）。修改本页时，请同步更新这些技能，保证智能体指导与文档一致。请参阅 "
+":doc:`/source/developer-tools/agent_skills` 。"
+
+#: source/concepts/backends_and_presets.rst:20
+msgid ""
+"An Isaac Lab environment describes the robot, scene, sensors, and task. A "
+"**backend** supplies the physics or rendering implementation that brings "
+"that description to life. A **preset** is a named, tested configuration "
+"choice that lets you switch implementations or task modes without editing "
+"Python."
+msgstr ""
+"Isaac Lab 环境描述机器人、场景、传感器和任务。 **后端** 提供使这些描述实际运行起来的物理或渲染实现。 **预设** "
+"是具有名称、经过测试的配置选项，可在不修改 Python 代码的情况下切换实现或任务模式。"
+
+#: source/concepts/backends_and_presets.rst:25
+msgid ""
+"In practice, the same environment can run with a different physics engine, "
+"renderer, or observation mode by adding a short selector:"
+msgstr "实际使用时，只需添加一个简短的选择器，就能让同一环境使用不同的物理引擎、渲染器或观测模式："
+
+#: source/concepts/backends_and_presets.rst:33
+msgid ""
+"The task stays ``Isaac-Cartpole-Direct``. The preset changes the "
+"configuration used to launch it."
+msgstr "任务仍是 ``Isaac-Cartpole-Direct`` ，预设改变的是启动任务时使用的配置。"
+
+#: source/concepts/backends_and_presets.rst:38
+msgid "The mental model"
+msgstr "理解环境与预设"
+
+#: source/concepts/backends_and_presets.rst:40
+msgid ""
+"Think of an environment as the experiment and presets as the knobs that "
+"select tested versions of its larger building blocks:"
+msgstr "可以将环境看作实验，将预设看作用于选择其主要组件配置的开关；这些配置均经过测试："
+
+#: source/concepts/backends_and_presets.rst:50
+msgid ""
+"After configuration is resolved, Isaac Lab's common asset, sensor, and scene"
+" APIs dispatch to the selected backend implementation. Environment code can "
+"use the same public API across PhysX, Newton, and OvPhysX instead of "
+"branching on the active engine throughout the task."
+msgstr ""
+"配置解析完成后，Isaac Lab 通用的资源、传感器和场景 API 会调用选定的后端实现。环境代码可以跨 PhysX、Newton 和 OvPhysX"
+" 使用相同的公共 API，无需在任务各处根据当前引擎编写分支。"
+
+#: source/concepts/backends_and_presets.rst:55
+msgid ""
+"Physics, rendering, and visualization are separate choices. For example, a "
+"camera environment can use Newton physics with the Newton Warp renderer, "
+"while the visualizer is selected independently with ``--viz``."
+msgstr ""
+"物理、渲染和可视化可以分别选择。例如，相机环境可以使用 Newton 物理与 Newton Warp 渲染器，再通过 ``--viz`` "
+"独立选择可视化器。"
+
+#: source/concepts/backends_and_presets.rst:61
+msgid "Find what a task supports"
+msgstr "查看任务支持的选项"
+
+#: source/concepts/backends_and_presets.rst:63
+msgid ""
+"Preset support is task-specific. Before choosing a name, ask the task what "
+"it offers:"
+msgstr "不同任务支持的预设有所不同。选择名称之前，先查看任务提供哪些预设："
+
+#: source/concepts/backends_and_presets.rst:71
+msgid ""
+"The help output groups names by ``physics=``, ``renderer=``, and "
+"``presets=``. To browse all registered environments and their presets at "
+"once, run:"
+msgstr ""
+"帮助信息会按 ``physics=`` 、 ``renderer=`` 和 ``presets=`` "
+"分组列出名称。要一次查看所有已注册的环境及其预设，请运行："
+
+#: source/concepts/backends_and_presets.rst:78
+msgid ""
+"An empty preset list is not an error. It means that the environment uses its"
+" registered default configuration and does not expose alternatives. Passing "
+"a name that a task does not list is unsupported and fails during "
+"configuration validation."
+msgstr "预设列表为空并非错误，而是表示环境使用注册时的默认配置，没有提供其他选项。传入任务未列出的名称属于不受支持的配置，会在配置验证时失败。"
+
+#: source/concepts/backends_and_presets.rst:85
+msgid "Choose a selector"
+msgstr "选择选择器"
+
+#: source/concepts/backends_and_presets.rst:91
+msgid "Selector"
+msgstr "选择器"
+
+#: source/concepts/backends_and_presets.rst:92
+msgid "Example"
+msgstr "示例"
+
+#: source/concepts/backends_and_presets.rst:93
+msgid "What it changes"
+msgstr "修改内容"
+
+#: source/concepts/backends_and_presets.rst:94
+msgid "``physics=NAME``"
+msgstr "``physics=NAME``"
+
+#: source/concepts/backends_and_presets.rst:95
+msgid "``physics=newton_mjwarp``"
+msgstr "``physics=newton_mjwarp``"
+
+#: source/concepts/backends_and_presets.rst:96
+msgid "Selects a physics configuration, including its backend and solver."
+msgstr "选择物理配置，包括后端和求解器。"
+
+#: source/concepts/backends_and_presets.rst:97
+msgid "``renderer=NAME``"
+msgstr "``renderer=NAME``"
+
+#: source/concepts/backends_and_presets.rst:98
+msgid "``renderer=newton_renderer``"
+msgstr "``renderer=newton_renderer``"
+
+#: source/concepts/backends_and_presets.rst:99
+msgid "Selects a renderer configuration for tasks that produce camera data."
+msgstr "为产生相机数据的任务选择渲染器配置。"
+
+#: source/concepts/backends_and_presets.rst:100
+msgid "``presets=NAME[,NAME,...]``"
+msgstr "``presets=NAME[,NAME,...]``"
+
+#: source/concepts/backends_and_presets.rst:101
+msgid "``presets=rgb``"
+msgstr "``presets=rgb``"
+
+#: source/concepts/backends_and_presets.rst:102
+msgid ""
+"Applies task-specific choices such as observation modes, camera layouts, or "
+"compatible configuration bundles."
+msgstr "应用任务专用选项，例如观测模式、相机布局或兼容的配置组合。"
+
+#: source/concepts/backends_and_presets.rst:105
+msgid ""
+"These are Hydra tokens, so append them without leading dashes. They work "
+"with training, playback, and environment scripts that use Isaac Lab's task "
+"configuration launcher."
+msgstr ""
+"这些是 Hydra 配置项，直接追加到命令末尾，不要添加前导短横线。使用 Isaac Lab 任务配置启动器的训练、策略运行和环境脚本均支持它们。"
+
+#: source/concepts/backends_and_presets.rst:109
+msgid ""
+"Selectors can be combined. This command chooses Newton with the MuJoCo-Warp "
+"solver, the Newton Warp renderer, and RGB observations:"
+msgstr ""
+"选择器可以组合使用。以下命令选择使用 MuJoCo-Warp 求解器的 Newton 后端、Newton Warp 渲染器，以及 RGB 观测："
+
+#: source/concepts/backends_and_presets.rst:118
+msgid ""
+"Only combine values listed for the task. Some physics, renderer, sensor, and"
+" observation configurations are incompatible, and the task may reject an "
+"invalid combination with a focused error message."
+msgstr "仅组合任务明确列出的选项。部分物理、渲染器、传感器和观测配置彼此不兼容，任务可能拒绝无效组合，并给出具体错误信息。"
+
+#: source/concepts/backends_and_presets.rst:124
+msgid "Common backend choices"
+msgstr "常用后端选项"
+
+#: source/concepts/backends_and_presets.rst:126
+msgid ""
+"The exact list depends on the environment, but these names follow shared "
+"conventions:"
+msgstr "具体列表取决于环境，但这些名称遵循共同约定："
+
+#: source/concepts/backends_and_presets.rst:129
+msgid "Physics presets"
+msgstr "物理预设"
+
+#: source/concepts/backends_and_presets.rst:133
+#: source/concepts/backends_and_presets.rst:154
+msgid "Name"
+msgstr "名称"
+
+#: source/concepts/backends_and_presets.rst:134
+#: source/concepts/backends_and_presets.rst:155
+msgid "Meaning"
+msgstr "含义"
+
+#: source/concepts/backends_and_presets.rst:135
+msgid "``isaacsim_physx``"
+msgstr "``isaacsim_physx``"
+
+#: source/concepts/backends_and_presets.rst:136
+msgid ""
+"Concrete Isaac Sim PhysX configuration. This is the default for tasks whose "
+"established default is Isaac Sim PhysX."
+msgstr "明确指定的 Isaac Sim PhysX 配置，适用于既有默认后端为 Isaac Sim PhysX 的任务。"
+
+#: source/concepts/backends_and_presets.rst:138
+msgid "``physx``"
+msgstr "``physx``"
+
+#: source/concepts/backends_and_presets.rst:139
+msgid ""
+"Automatic PhysX-family selection. Isaac Sim PhysX is used when the runtime "
+"needs Kit; a configured OvPhysX alternative can be used for fully kit-less "
+"runs."
+msgstr ""
+"自动选择 PhysX 系列实现。运行时需要 Kit 时使用 Isaac Sim PhysX；完全不使用 Kit 时，可以选用已配置的 OvPhysX "
+"实现。"
+
+#: source/concepts/backends_and_presets.rst:142
+msgid "``newton_mjwarp``"
+msgstr "``newton_mjwarp``"
+
+#: source/concepts/backends_and_presets.rst:143
+msgid "Newton physics with the MuJoCo-Warp solver."
+msgstr "使用 MuJoCo-Warp 求解器的 Newton 物理后端。"
+
+#: source/concepts/backends_and_presets.rst:144
+msgid "``newton_kamino``"
+msgstr "``newton_kamino``"
+
+#: source/concepts/backends_and_presets.rst:145
+msgid ""
+"Newton physics with the Kamino solver. Support is beta and currently limited"
+" to selected tasks and compatible assets."
+msgstr "使用 Kamino 求解器的 Newton 物理后端。目前处于测试阶段，仅支持部分任务和兼容资源。"
+
+#: source/concepts/backends_and_presets.rst:147
+msgid "``ovphysx``"
+msgstr "``ovphysx``"
+
+#: source/concepts/backends_and_presets.rst:148
+msgid "Concrete OvPhysX configuration for supported kit-less tasks."
+msgstr "明确指定的 OvPhysX 配置，适用于受支持且不依赖 Kit 的任务。"
+
+#: source/concepts/backends_and_presets.rst:150
+msgid "Renderer presets"
+msgstr "渲染器预设"
+
+#: source/concepts/backends_and_presets.rst:156
+msgid "``isaacsim_rtx``"
+msgstr "``isaacsim_rtx``"
+
+#: source/concepts/backends_and_presets.rst:157
+msgid ""
+"Concrete Isaac Sim RTX renderer configuration. This is the default for tasks"
+" that use the multi-backend renderer preset."
+msgstr "明确指定的 Isaac Sim RTX 渲染器配置，是使用多后端渲染器预设的任务的默认配置。"
+
+#: source/concepts/backends_and_presets.rst:159
+msgid "``rtx``"
+msgstr "``rtx``"
+
+#: source/concepts/backends_and_presets.rst:160
+msgid ""
+"Automatic RTX-family selection. Isaac Sim RTX is used when physics, "
+"visualization, livestreaming, or another runtime choice requires Kit; "
+"otherwise OVRTX is used for a fully kit-less run."
+msgstr ""
+"自动选择 RTX 系列实现。物理、可视化、直播流或其他运行时选项需要 Kit 时，使用 Isaac Sim RTX；否则使用 OVRTX，实现完全不依赖"
+" Kit 的运行。"
+
+#: source/concepts/backends_and_presets.rst:163
+msgid "``newton_renderer``"
+msgstr "``newton_renderer``"
+
+#: source/concepts/backends_and_presets.rst:164
+msgid "Newton Warp renderer."
+msgstr "Newton Warp 渲染器。"
+
+#: source/concepts/backends_and_presets.rst:165
+msgid "``ovrtx``"
+msgstr "``ovrtx``"
+
+#: source/concepts/backends_and_presets.rst:166
+msgid ""
+"Concrete OVRTX renderer configuration for supported kit-less workflows."
+msgstr "明确指定的 OVRTX 渲染器配置，适用于受支持且不依赖 Kit 的工作流程。"
+
+#: source/concepts/backends_and_presets.rst:168
+msgid ""
+"Automatic selectors such as ``physics=physx`` and ``renderer=rtx`` are opt-"
+"in. Defaults are concrete so that running a task without selectors is "
+"predictable. A solver is not a separate backend: ``newton_mjwarp`` and "
+"``newton_kamino`` both use Newton but configure different solvers."
+msgstr ""
+"``physics=physx`` 和 ``renderer=rtx`` "
+"等自动选择器需显式启用。默认值均明确指定具体实现，保证不传选择器时的任务行为可预测。求解器不等于独立后端： ``newton_mjwarp`` 和 "
+"``newton_kamino`` 都使用 Newton，只是配置了不同的求解器。"
+
+#: source/concepts/backends_and_presets.rst:175
+msgid "Defaults, presets, and fine-tuning"
+msgstr "默认值、预设与微调"
+
+#: source/concepts/backends_and_presets.rst:177
+msgid ""
+"A preset replaces the complete configuration section at its location; it "
+"does not merge fields from two alternatives. Isaac Lab resolves "
+"configuration in this order:"
+msgstr "预设会替换所在位置的整个配置部分，而不会合并两个备选配置的字段。Isaac Lab 按以下顺序解析配置："
+
+#: source/concepts/backends_and_presets.rst:181
+msgid "Apply each preset config's ``default`` choice."
+msgstr "应用各预设配置中的 ``default`` 选项。"
+
+#: source/concepts/backends_and_presets.rst:182
+msgid "Apply global choices from ``presets=...``."
+msgstr "应用 ``presets=...`` 指定的全局选项。"
+
+#: source/concepts/backends_and_presets.rst:183
+msgid ""
+"Apply a preset targeted at a specific path, such as "
+"``env.sim.physics=newton_mjwarp``."
+msgstr "应用针对特定路径的预设，例如 ``env.sim.physics=newton_mjwarp`` 。"
+
+#: source/concepts/backends_and_presets.rst:185
+msgid "Apply scalar Hydra overrides, such as ``env.sim.dt=0.002``."
+msgstr "应用 Hydra 标量覆盖项，例如 ``env.sim.dt=0.002`` 。"
+
+#: source/concepts/backends_and_presets.rst:187
+msgid ""
+"The last step makes it easy to start from a maintained preset and tune one "
+"value:"
+msgstr "最后一步便于在已有维护的预设基础上调整单个值："
+
+#: source/concepts/backends_and_presets.rst:196
+msgid ""
+"Prefer ``physics=`` and ``renderer=`` for backend choices because they state"
+" intent clearly. Use ``presets=`` for task-specific modes or when one name "
+"must update several matching sections together. Use a path selector only "
+"when you intend to replace one particular section."
+msgstr ""
+"选择后端时，优先使用 ``physics=`` 和 ``renderer=`` "
+"，意图更清晰。任务专用模式，或需要用同一个名称同时更新多个匹配配置部分时，使用 ``presets=`` "
+"。只有想替换某个特定配置部分时，才使用路径选择器。"
+
+#: source/concepts/backends_and_presets.rst:203
+msgid ""
+"Keep behavior-changing presets the same when loading a checkpoint. An "
+"observation preset can change tensor shapes, and a policy trained with one "
+"observation mode may not load with another."
+msgstr "加载检查点时，应保持会影响行为的预设与训练时一致。观测预设可能改变张量形状，使用一种观测模式训练的策略，未必能在另一种模式下加载。"
+
+#: source/concepts/backends_and_presets.rst:209
+msgid "How task authors expose choices"
+msgstr "任务开发者如何提供选项"
+
+#: source/concepts/backends_and_presets.rst:211
+msgid ""
+"Task authors define alternatives with "
+":class:`~isaaclab_tasks.utils.hydra.PresetCfg` and choose one as the "
+"default. For a multi-backend task, the preset wrapper belongs in "
+":class:`~isaaclab.sim.SimulationCfg`:"
+msgstr ""
+"任务开发者通过 :class:`~isaaclab_tasks.utils.hydra.PresetCfg` "
+"定义备选配置，并选定一个默认值。对于多后端任务，预设包装器应放在 :class:`~isaaclab.sim.SimulationCfg` 中："
+
+#: source/concepts/backends_and_presets.rst:243
+msgid ""
+"Keep backend-specific values inside named configurations whenever possible. "
+"This keeps task logic shared and makes every supported choice visible from "
+"the command line."
+msgstr "尽可能将后端专用值放在具名配置中。这样可以共享任务逻辑，并让命令行显示所有受支持的选项。"
+
+#: source/concepts/backends_and_presets.rst:247
+msgid ""
+"When backend selection must also change simulation-wide settings such as the"
+" time step, a physics preset may instead contain complete ``SimulationCfg`` "
+"alternatives. The ``physics=`` selector recognizes these bundles from their "
+"``physics`` field and applies the complete matching simulation "
+"configuration."
+msgstr ""
+"如果后端选择还必须改变时间步长等仿真全局设置，物理预设也可以包含完整的 ``SimulationCfg`` 备选配置。 ``physics=`` "
+"选择器会通过其中的 ``physics`` 字段识别这些组合，并应用完整的匹配仿真配置。"
+
+#: source/concepts/backends_and_presets.rst:254
+msgid "Where to go next"
+msgstr "进一步阅读"
+
+#: source/concepts/backends_and_presets.rst:256
+msgid ""
+":doc:`/source/setup/environments` lists environments and their supported "
+"presets."
+msgstr ":doc:`/source/setup/environments` 列出环境及其支持的预设。"
+
+#: source/concepts/backends_and_presets.rst:258
+msgid ""
+":doc:`/source/features/hydra` covers scalar overrides, preset authoring, "
+"conflict handling, and advanced configuration behavior."
+msgstr ":doc:`/source/features/hydra` 介绍标量覆盖、预设编写、冲突处理和高级配置行为。"
+
+#: source/concepts/backends_and_presets.rst:260
+msgid ""
+":ref:`backend-architecture` explains how factories, the physics manager, "
+"assets, and sensors dispatch across backends."
+msgstr ":ref:`backend-architecture` 解释工厂、物理管理器、资源和传感器如何跨后端分派调用。"
+
+#: source/concepts/backends_and_presets.rst:262
+msgid ""
+":ref:`physics-backends` compares physics backend runtime requirements, "
+"maturity, solver families, and intended uses."
+msgstr ":ref:`physics-backends` 比较各物理后端的运行时要求、成熟度、求解器系列和适用场景。"
+
+#: source/concepts/backends_and_presets.rst:264
+msgid ""
+":doc:`/source/concepts/renderers` explains renderer selection and "
+"implementation details."
+msgstr ":doc:`/source/concepts/renderers` 介绍渲染器的选择与实现细节。"

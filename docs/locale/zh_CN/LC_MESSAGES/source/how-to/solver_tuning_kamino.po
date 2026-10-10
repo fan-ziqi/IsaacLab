@@ -1,0 +1,184 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/solver_tuning_kamino.rst:12
+msgid "Tune Kamino"
+msgstr "Kamino 调优"
+
+#: source/how-to/solver_tuning_kamino.rst:14
+msgid ""
+"Kamino is a beta Newton solver selected through a task-exposed "
+"``newton_kamino`` preset. This guide isolates and measures a reproducible "
+"problem before changing its solver settings. The generated API documentation"
+" for :class:`~isaaclab_newton.physics.KaminoPADMMSolverCfg` and "
+":class:`~isaaclab_newton.physics.KaminoDVISolverCfg` remains authoritative "
+"for current fields and defaults."
+msgstr ""
+"Kamino 是处于测试阶段的 Newton 求解器，通过任务提供的 ``newton_kamino`` "
+"预设启用。本指南先定位并测量可复现的问题，再调整求解器设置。各配置字段及其当前默认值，以 "
+":class:`~isaaclab_newton.physics.KaminoPADMMSolverCfg` 和 "
+":class:`~isaaclab_newton.physics.KaminoDVISolverCfg` 的自动生成 API 文档为准。"
+
+#: source/how-to/solver_tuning_kamino.rst:22
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/how-to/solver_tuning_kamino.rst:24
+msgid ""
+"Read :ref:`backends-and-presets` for preset semantics and :ref:`hydra-"
+"backend-solver-presets` for task integration. Prepare the asset for Newton "
+"with :doc:`/source/how-to/prepare_asset_for_newton`. Confirm that the task "
+"exposes ``newton_kamino`` through its ``--help`` output or the "
+":doc:`environment catalog </source/setup/environments>`; do not infer Kamino"
+" support from another Newton preset."
+msgstr ""
+"预设的含义见 :ref:`backends-and-presets` ，任务中的集成方式见 :ref:`hydra-backend-solver-"
+"presets` 。请按照 :doc:`/source/how-to/prepare_asset_for_newton` 为 Newton "
+"准备资产。通过任务的 ``--help`` 输出或 :doc:`环境目录 </source/setup/environments>` 确认任务是否提供 "
+"``newton_kamino`` ；不能因为任务支持其他 Newton 预设，就推断它也支持 Kamino。"
+
+#: source/how-to/solver_tuning_kamino.rst:32
+msgid "Start from an explicit baseline"
+msgstr "建立明确的基准配置"
+
+#: source/how-to/solver_tuning_kamino.rst:34
+msgid "Run one small visual smoke test before training or benchmarking:"
+msgstr "训练或性能测试前，先运行一个小规模的可视化冒烟测试："
+
+#: source/how-to/solver_tuning_kamino.rst:40
+msgid ""
+"Then fix the initial state, seed, action sequence, and reset distribution. "
+"For that reproduction, record penetration, slip, energy, a task metric, a "
+"convergence diagnostic, and runtime. Change one decision at a time so every "
+"candidate can be compared with the same baseline."
+msgstr ""
+"然后固定初始状态、随机种子、动作序列和重置状态分布。记录这一复现场景中的穿透、滑移、能量、任务指标、收敛诊断结果和运行耗时。每次只调整一项，以便在同一基准下比较所有候选配置。"
+
+#: source/how-to/solver_tuning_kamino.rst:46
+msgid "Choose PADMM or DVI"
+msgstr "选择 PADMM 或 DVI"
+
+#: source/how-to/solver_tuning_kamino.rst:48
+msgid ""
+"Choose PADMM first for contact-heavy tasks. DVI is a candidate for "
+"mechanisms with relatively few active contacts. If a DVI task needs an "
+"explicit :class:`~isaaclab_newton.physics.KaminoDynamicsCfg` override, "
+"disable preconditioning; otherwise leave the dynamics override unset so "
+"Newton selects the compatible defaults."
+msgstr ""
+"接触密集的任务优先选择 PADMM；活动接触较少的机构可以考虑 DVI。如果 DVI 任务需要显式覆盖 "
+":class:`~isaaclab_newton.physics.KaminoDynamicsCfg` "
+"，应禁用预条件处理；否则不要设置动力学覆盖配置，让 Newton 选择兼容的默认值。"
+
+#: source/how-to/solver_tuning_kamino.rst:55
+msgid "Validate reset and state consistency"
+msgstr "验证重置与状态一致性"
+
+#: source/how-to/solver_tuning_kamino.rst:57
+msgid ""
+"Validate root and joint state writes through the Isaac Lab asset APIs before"
+" tuning the solver. Kamino's maximal-coordinate body poses must agree with "
+"the reduced joint state after every reset. Investigate body-pose and joint-"
+"state disagreement, including custom reset code and reset overlaps, before "
+"changing convergence or stabilization settings."
+msgstr ""
+"调优求解器前，先验证通过 Isaac Lab 资产 API 写入的根状态和关节状态。每次重置后，Kamino "
+"的最大坐标刚体位姿都必须与约化关节状态一致。如果刚体位姿与关节状态不一致，应先检查自定义重置代码、重置时的物体重叠等问题，再调整收敛或稳定化设置。"
+
+#: source/how-to/solver_tuning_kamino.rst:64
+msgid "Choose and size collision handling"
+msgstr "选择碰撞处理方式并确定容量"
+
+#: source/how-to/solver_tuning_kamino.rst:66
+msgid ""
+"Compare Kamino's internal detector with Newton's collision pipeline using "
+"the same full reset and contact distribution. ``use_collision_detector`` on "
+"the Kamino solver selects the internal path, which "
+":class:`~isaaclab_newton.physics.KaminoCollisionDetectorCfg` configures; "
+"when it is disabled, "
+":class:`~isaaclab_newton.physics.NewtonCollisionPipelineCfg` configures "
+"Newton's path. Size the active path only from observed capacity failures, "
+"missing contacts, or warnings, and use those generated APIs for the exact "
+"controls. Collision capacity cannot correct invalid geometry or reset "
+"penetration."
+msgstr ""
+"在相同的完整重置分布和接触分布下，比较 Kamino 内置检测器与 Newton 碰撞管线。Kamino 求解器上的 "
+"``use_collision_detector`` 用于选择内置路径，其参数由 "
+":class:`~isaaclab_newton.physics.KaminoCollisionDetectorCfg` 配置；禁用内置路径时，由 "
+":class:`~isaaclab_newton.physics.NewtonCollisionPipelineCfg` 配置 Newton "
+"路径。仅在观察到容量不足、接触丢失或警告时调整当前路径的容量，具体控制项以这些自动生成的 API 文档为准。增加碰撞容量无法修复无效几何或重置时的穿透。"
+
+#: source/how-to/solver_tuning_kamino.rst:77
+msgid "Tune timestep and substeps"
+msgstr "调整时间步长与子步数"
+
+#: source/how-to/solver_tuning_kamino.rst:79
+msgid ""
+"Hold the policy period and fixed reproduction constant. Only after the model"
+" and reset are valid, compare a smaller simulation timestep or more "
+":attr:`~isaaclab_newton.physics.NewtonCfg.num_substeps` for the same policy "
+"period. Recheck the recorded physical, convergence, task, and runtime "
+"metrics; do not change policy timing merely to hide an unstable simulation "
+"step."
+msgstr ""
+"保持策略周期和固定的复现场景不变。只有在模型与重置均已验证后，才比较同一策略周期下更小的仿真时间步长或更多的 "
+":attr:`~isaaclab_newton.physics.NewtonCfg.num_substeps` "
+"。重新检查已记录的物理、收敛、任务和耗时指标；不要仅为掩盖仿真步的不稳定而改变策略时序。"
+
+#: source/how-to/solver_tuning_kamino.rst:86
+msgid "Tune convergence and stabilization"
+msgstr "调整收敛与稳定化参数"
+
+#: source/how-to/solver_tuning_kamino.rst:88
+msgid ""
+"Tune :class:`~isaaclab_newton.physics.KaminoPADMMCfg` iteration and residual"
+" controls only for a reproducible PADMM convergence failure. For DVI, tune "
+":class:`~isaaclab_newton.physics.KaminoDVICfg` alternating iterations and "
+"tolerance only for the same kind of evidence. Change "
+":class:`~isaaclab_newton.physics.KaminoConstraintsCfg` stabilization "
+"controls only after collision and reset validation. More solver work cannot "
+"repair inconsistent state, invalid collision geometry, or reset overlap."
+msgstr ""
+"仅当 PADMM 的收敛失败可复现时，才调整 :class:`~isaaclab_newton.physics.KaminoPADMMCfg` "
+"的迭代与残差控制项。对于 DVI，也应有同类证据后再调整 :class:`~isaaclab_newton.physics.KaminoDVICfg` "
+"的交替迭代次数和容差。只有验证碰撞与重置后，才调整 "
+":class:`~isaaclab_newton.physics.KaminoConstraintsCfg` "
+"的稳定化控制项。增加求解计算量无法修复状态不一致、无效碰撞几何或重置时的重叠。"
+
+#: source/how-to/solver_tuning_kamino.rst:97
+msgid "Optimize only after validation"
+msgstr "验证后再优化性能"
+
+#: source/how-to/solver_tuning_kamino.rst:99
+msgid ""
+"Disable diagnostics before performance measurements. Retain only changes "
+"that improve the recorded metrics, and separately measure sparse Jacobian, "
+"CUDA graph, collision, substep, and iteration costs when each applies to the"
+" selected solver and workload. For the parallel workflow, see "
+":doc:`solver_tuning_mjwarp`; it does not replace Kamino-specific validation "
+"or tuning."
+msgstr ""
+"测量性能前关闭诊断。只保留能改善已记录指标的修改，并根据所选求解器和负载，分别测量稀疏雅可比、CUDA 图、碰撞、子步和迭代的开销。对应的 MJWarp"
+" 流程见 :doc:`solver_tuning_mjwarp` ，但它不能替代 Kamino 自身的验证和调优。"
+
+#: source/how-to/solver_tuning_kamino.rst:105
+msgid ""
+"The diagnose-first order is: validate the baseline, reset state, and "
+"collision path; compare timestep and substeps; investigate convergence and "
+"stabilization; then optimize measured costs."
+msgstr "先诊断、后调优的顺序是：验证基准、重置状态与碰撞路径；比较时间步长和子步数；排查收敛与稳定化问题；最后优化实测开销。"

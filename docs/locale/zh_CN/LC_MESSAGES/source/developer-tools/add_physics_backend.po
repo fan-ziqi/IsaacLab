@@ -1,0 +1,158 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/developer-tools/add_physics_backend.rst:9
+msgid "Add a Physics Backend"
+msgstr "添加物理后端"
+
+#: source/developer-tools/add_physics_backend.rst:11
+msgid ""
+"This guide extends Isaac Lab with a new physics backend. Read :ref:`backend-"
+"architecture` for the factory-dispatch and portable-interface design that "
+"this extension implements."
+msgstr ""
+"本指南介绍如何为 Isaac Lab 扩展新的物理后端。请先阅读 :ref:`backend-architecture` "
+"，了解此扩展所实现的工厂分发和通用接口设计。"
+
+#: source/developer-tools/add_physics_backend.rst:16
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/developer-tools/add_physics_backend.rst:18
+msgid ""
+"Before starting, identify the engine's lifecycle, native data ownership, and"
+" the assets and sensors it can support. The backend must provide a "
+":class:`~isaaclab.physics.PhysicsManager` implementation and follow the "
+"module layout expected by "
+":class:`~isaaclab.utils.backend_utils.FactoryBase`."
+msgstr ""
+"开始前，先明确引擎的生命周期、原生数据归属，以及可支持的资产和传感器。后端必须提供 "
+":class:`~isaaclab.physics.PhysicsManager` 实现，并遵循 "
+":class:`~isaaclab.utils.backend_utils.FactoryBase` 要求的模块布局。"
+
+#: source/developer-tools/add_physics_backend.rst:24
+msgid "Create the backend package"
+msgstr "创建后端包"
+
+#: source/developer-tools/add_physics_backend.rst:26
+msgid ""
+"Create an extension package using the backend name in its package path. For "
+"example, a backend named ``mybackend`` uses this layout:"
+msgstr "创建扩展包，在包路径中使用后端名称。例如，名为 ``mybackend`` 的后端使用以下布局："
+
+#: source/developer-tools/add_physics_backend.rst:60
+msgid "Implement the physics manager"
+msgstr "实现物理管理器"
+
+#: source/developer-tools/add_physics_backend.rst:62
+msgid ""
+"The manager must expose a :class:`~isaaclab.scene_data.SceneDataBackend` so "
+":class:`~isaaclab.scene_data.SceneDataProvider` can read the backend's body "
+"transforms in the Warp-native format consumed by renderers and visualizers."
+msgstr ""
+"管理器必须提供 :class:`~isaaclab.scene_data.SceneDataBackend` ，使 "
+":class:`~isaaclab.scene_data.SceneDataProvider` 能以渲染器和可视化器使用的 Warp "
+"原生格式，读取后端的刚体变换。"
+
+#: source/developer-tools/add_physics_backend.rst:130
+msgid "Define the physics configuration"
+msgstr "定义物理配置"
+
+#: source/developer-tools/add_physics_backend.rst:132
+msgid ""
+"Define a :class:`~isaaclab.physics.PhysicsCfg` subclass that identifies the "
+"manager class and holds backend-specific settings:"
+msgstr "定义 :class:`~isaaclab.physics.PhysicsCfg` 子类，指定管理器类并保存后端特有设置："
+
+#: source/developer-tools/add_physics_backend.rst:148
+msgid "Register the backend key"
+msgstr "注册后端键"
+
+#: source/developer-tools/add_physics_backend.rst:150
+msgid ""
+"``FactoryBase`` does not derive a new backend key from an arbitrary physics "
+"manager class name. Add the manager prefix to the core selector in "
+"``isaaclab.utils.backend_utils`` before factories can resolve assets and "
+"sensors for the backend:"
+msgstr ""
+"``FactoryBase`` 不会根据任意物理管理器类名自动推导新的后端键。在工厂能够解析该后端的资产和传感器前，需将管理器前缀添加到 "
+"``isaaclab.utils.backend_utils`` 中的核心选择器："
+
+#: source/developer-tools/add_physics_backend.rst:167
+msgid ""
+"The existing ``_get_package_name()`` convention maps the ``mybackend`` key "
+"to the ``isaaclab_mybackend`` package used above. If the integration uses "
+"another package name, add an explicit case to ``_get_package_name()`` as "
+"well. ``FactoryBase.register()`` only caches the concrete class after this "
+"key and package mapping has selected and imported the backend module; "
+"calling it alone does not register a new physics-manager prefix."
+msgstr ""
+"现有 ``_get_package_name()`` 约定会将 ``mybackend`` 键映射到上述 ``isaaclab_mybackend`` "
+"包。如果集成使用其他包名，还需在 ``_get_package_name()`` 中添加显式分支。只有键与包映射选定并导入后端模块后， "
+"``FactoryBase.register()`` 才会缓存具体类；单独调用它不会注册新的物理管理器前缀。"
+
+#: source/developer-tools/add_physics_backend.rst:175
+msgid "Implement assets and sensors"
+msgstr "实现资产和传感器"
+
+#: source/developer-tools/add_physics_backend.rst:177
+msgid ""
+"Each supported asset or sensor extends the matching base class in "
+"``isaaclab``. The implementation class name must match the factory's "
+"expected name. Use ``lazy_export()`` in package ``__init__.py`` files. Once "
+"the core backend-key mapping is in place, the factory imports these modules "
+"by package and module-path convention and caches their implementation "
+"classes."
+msgstr ""
+"每个受支持的资产或传感器都继承 ``isaaclab`` 中对应的基类。实现类名必须与工厂期望的名称一致。在包的 ``__init__.py`` 中使用"
+" ``lazy_export()`` 。核心后端键映射配置好后，工厂会按包名和模块路径约定导入模块，并缓存实现类。"
+
+#: source/developer-tools/add_physics_backend.rst:195
+msgid "Validate backend discovery"
+msgstr "验证后端发现机制"
+
+#: source/developer-tools/add_physics_backend.rst:197
+msgid ""
+"``FactoryBase`` maps ``isaaclab.assets.articulation`` to "
+"``isaaclab_mybackend.assets.articulation`` after the registered "
+"``mybackend`` key is selected from the active physics manager. Verify the "
+"configured discovery path with the following checklist:"
+msgstr ""
+"从当前物理管理器选择已注册的 ``mybackend`` 键后， ``FactoryBase`` 会将 "
+"``isaaclab.assets.articulation`` 映射到 "
+"``isaaclab_mybackend.assets.articulation`` 。请按以下步骤验证配置的发现路径："
+
+#: source/developer-tools/add_physics_backend.rst:202
+msgid "Construct the backend configuration."
+msgstr "构造后端配置。"
+
+#: source/developer-tools/add_physics_backend.rst:203
+msgid "Initialize a minimal simulation with that configuration."
+msgstr "使用该配置初始化最小仿真。"
+
+#: source/developer-tools/add_physics_backend.rst:204
+msgid "Instantiate one asset supported by the backend."
+msgstr "实例化一个后端支持的资产。"
+
+#: source/developer-tools/add_physics_backend.rst:205
+msgid "Step the simulation once."
+msgstr "推进一个仿真步。"
+
+#: source/developer-tools/add_physics_backend.rst:206
+msgid "Close the simulation cleanly."
+msgstr "正常关闭仿真。"

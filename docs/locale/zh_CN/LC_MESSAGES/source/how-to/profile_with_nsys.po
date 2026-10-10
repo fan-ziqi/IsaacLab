@@ -1,0 +1,239 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/profile_with_nsys.rst:4
+msgid "Profiling Isaac Lab with Nsight Systems"
+msgstr "使用 Nsight Systems 分析 Isaac Lab 性能"
+
+#: source/how-to/profile_with_nsys.rst:8
+msgid ""
+"Isaac Lab supports CPU and GPU profiling via **NVIDIA Nsight Systems "
+"(nsys)** for runtime performance analysis. This can help identify GPU/CPU "
+"bottlenecks and determine the best configuration for your environments and "
+"tasks. Profiling adds modest runtime overhead and produces large output "
+"files, so it's best suited to targeted investigations rather than long "
+"unattended training runs."
+msgstr ""
+"Isaac Lab 支持通过 **NVIDIA Nsight Systems（nsys）** 分析 CPU 和 GPU "
+"的运行性能，帮助定位瓶颈，并为环境和任务选择合适配置。性能分析会带来一定运行开销，且输出文件较大，因此更适合针对性排查，而非长时间无人值守的训练。"
+
+#: source/how-to/profile_with_nsys.rst:11
+msgid "Common Use Cases"
+msgstr "常见用途"
+
+#: source/how-to/profile_with_nsys.rst:13
+msgid ""
+"**My training iteration is slow** - capture 3-5 iterations to see whether "
+"time is mostly spent on physics, rendering, env reset, observation, etc."
+msgstr "**训练迭代很慢** ：采集 3–5 次迭代，查看时间主要花在物理、渲染、环境重置、观测还是其他环节。"
+
+#: source/how-to/profile_with_nsys.rst:14
+msgid ""
+"**Env init takes 40 seconds** - profile a single launch to see the import "
+"times for each module, kernel compilation, etc."
+msgstr "**环境初始化需要 40 秒** ：分析一次启动，查看各模块导入、核函数编译等耗时。"
+
+#: source/how-to/profile_with_nsys.rst:15
+msgid ""
+"**Which physics/renderer backend should I use?** - profile your task with "
+"different backend combinations to find the best fit."
+msgstr "**如何选择物理和渲染后端？** 使用不同后端组合分析任务，找到合适方案。"
+
+#: source/how-to/profile_with_nsys.rst:16
+msgid ""
+"**Are my GPU kernels efficient?** - dive into the CUDA rows in nsys to "
+"identify when the GPU is idle (optimization opportunity)."
+msgstr "**GPU 核函数是否高效？** 查看 nsys 中的 CUDA 行，定位 GPU 空闲时段，寻找优化机会。"
+
+#: source/how-to/profile_with_nsys.rst:17
+msgid ""
+"**Did my code changes make things slower?** - A/B profile comparison before "
+"and after your change."
+msgstr "**代码修改后是否变慢？** 对修改前后的性能分析结果进行 A/B 比较。"
+
+#: source/how-to/profile_with_nsys.rst:21
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/how-to/profile_with_nsys.rst:23
+msgid ""
+"This section walks you through everything needed to capture your first nsys "
+"profile."
+msgstr "本节介绍首次采集 nsys 性能数据所需的完整步骤。"
+
+#: source/how-to/profile_with_nsys.rst:26
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/how-to/profile_with_nsys.rst:28
+msgid ""
+"`Nsight Systems <https://developer.nvidia.com/nsight-systems>`_ - install "
+"for your platform."
+msgstr ""
+"`Nsight Systems <https://developer.nvidia.com/nsight-systems>`_ "
+"：安装适合当前平台的版本。"
+
+#: source/how-to/profile_with_nsys.rst:29
+msgid ""
+"``nvtx`` Python package for source code instrumentation, installed into your"
+" Isaac Lab environment:"
+msgstr "用于源码插桩的 ``nvtx`` Python 包，安装到 Isaac Lab 环境："
+
+#: source/how-to/profile_with_nsys.rst:37
+msgid "Running a Profile"
+msgstr "采集性能数据"
+
+#: source/how-to/profile_with_nsys.rst:39
+msgid ""
+"The following command shows how to capture a profile for the ``Isaac-"
+"Cartpole`` task via the ``rsl_rl`` training framework with 3 iterations:"
+msgstr "以下命令通过 ``rsl_rl`` 训练框架，对 ``Isaac-Cartpole`` 任务的 3 次迭代采集性能数据："
+
+#: source/how-to/profile_with_nsys.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/how-to/profile_with_nsys.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/how-to/profile_with_nsys.rst:67
+msgid "Flags:"
+msgstr "选项说明："
+
+#: source/how-to/profile_with_nsys.rst:69
+msgid ""
+"``-t nvtx,cuda`` - capture NVTX ranges (CPU swim-lanes) and CUDA activity "
+"(GPU row)."
+msgstr "``-t nvtx,cuda`` ：采集 NVTX 区间（CPU 泳道）和 CUDA 活动（GPU 行）。"
+
+#: source/how-to/profile_with_nsys.rst:70
+msgid ""
+"``--python-functions-trace=...`` - the function annotations file; ships with"
+" Isaac Lab."
+msgstr "``--python-functions-trace=...`` ：函数注解文件，由 Isaac Lab 提供。"
+
+#: source/how-to/profile_with_nsys.rst:71
+msgid "``-o my_profile`` - output path; nsys appends ``.nsys-rep``."
+msgstr "``-o my_profile`` ：输出路径；nsys 会追加 ``.nsys-rep`` 。"
+
+#: source/how-to/profile_with_nsys.rst:74
+msgid "Reading the Resulting Profile"
+msgstr "查看性能分析结果"
+
+#: source/how-to/profile_with_nsys.rst:76
+msgid ""
+"Launch the Nsight Systems UI, go to **File > Open**, and select your "
+"``.nsys-rep`` file that you generated in the previous step. Expand the "
+"**Threads** section and the domain swim-lanes will appear as separate rows. "
+"Clicking on a function will highlight related functions in other lanes. "
+"Expand the **CUDA HW** row to cross-reference with GPU kernels fired during "
+"that CPU range."
+msgstr ""
+"打开 Nsight Systems 界面，选择 **File > Open** ，打开上一步生成的 ``.nsys-rep`` 文件。展开 "
+"**Threads** ，即可看到各个域的泳道，分别显示为独立行。点击函数，会高亮其他泳道中的相关函数。展开 **CUDA HW** 行，可对照查看该 "
+"CPU 区间内启动的 GPU 核函数。"
+
+#: source/how-to/profile_with_nsys.rst:78
+msgid "Domain swim-lanes in nsys-ui"
+msgstr "nsys-ui 中的域泳道"
+
+#: source/how-to/profile_with_nsys.rst:83
+msgid "The Trace JSON"
+msgstr "跟踪定义 JSON"
+
+#: source/how-to/profile_with_nsys.rst:85
+msgid ""
+"The trace definition file lives at ``scripts/benchmarks/nsys_trace.json`` "
+"and defines metadata for the Python functions of interest in Isaac Lab. nsys"
+" monkey-patches these functions to automatically emit NVTX ranges at "
+"runtime."
+msgstr ""
+"跟踪定义文件位于 ``scripts/benchmarks/nsys_trace.json`` ，保存需要关注的 Isaac Lab Python "
+"函数的元数据。nsys 在运行时动态替换这些函数，自动发出 NVTX 区间。"
+
+#: source/how-to/profile_with_nsys.rst:87
+msgid "Schema:"
+msgstr "结构："
+
+#: source/how-to/profile_with_nsys.rst:104
+msgid ""
+"After editing the JSON, run the sync test to confirm every entry resolves:"
+msgstr "编辑 JSON 后，运行同步测试，确认每个条目都能解析："
+
+#: source/how-to/profile_with_nsys.rst:112
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: source/how-to/profile_with_nsys.rst:114
+msgid "**An expected domain doesn't appear in the timeline:**"
+msgstr "**预期的域没有出现在时间轴上：**"
+
+#: source/how-to/profile_with_nsys.rst:116
+msgid ""
+"Confirm ``nvtx`` is installed in your Isaac Lab environment (``python -m pip"
+" show nvtx``)."
+msgstr "确认 Isaac Lab 环境已安装 ``nvtx`` （ ``python -m pip show nvtx`` ）。"
+
+#: source/how-to/profile_with_nsys.rst:117
+msgid "Make sure the function is actually called during the profiled run."
+msgstr "确认被分析的运行过程确实调用了该函数。"
+
+#: source/how-to/profile_with_nsys.rst:118
+msgid "Verify the JSON entry by running the sync test (above)."
+msgstr "运行上面的同步测试，验证 JSON 条目。"
+
+#: source/how-to/profile_with_nsys.rst:120
+msgid ""
+"**Sync test fails with an** ``AttributeError`` - a function listed in the "
+"JSON no longer exists at the given path."
+msgstr "**同步测试出现** ``AttributeError`` ：JSON 中列出的函数已不在指定路径。"
+
+#: source/how-to/profile_with_nsys.rst:122
+msgid "Fix the path to point at the renamed function, or"
+msgstr "将路径改为重命名后的函数路径；或"
+
+#: source/how-to/profile_with_nsys.rst:123
+msgid "Remove the entry if the function was deleted."
+msgstr "如果函数已删除，则移除该条目。"
+
+#: source/how-to/profile_with_nsys.rst:127
+msgid "See Also"
+msgstr "另请参阅"
+
+#: source/how-to/profile_with_nsys.rst:129
+msgid ""
+":ref:`simulation-performance-troubleshooting` - checks for unexpectedly slow"
+" simulation or training."
+msgstr ":ref:`simulation-performance-troubleshooting` ：检查仿真或训练异常缓慢的问题。"
+
+#: source/how-to/profile_with_nsys.rst:130
+msgid ""
+"`Nsight Systems User Guide <https://docs.nvidia.com/nsight-"
+"systems/UserGuide/index.html>`_ - official ``nsys`` documentation."
+msgstr ""
+"`Nsight Systems 用户指南 <https://docs.nvidia.com/nsight-"
+"systems/UserGuide/index.html>`_ ：官方 ``nsys`` 文档。"
+
+#: source/how-to/profile_with_nsys.rst:131
+msgid ""
+"`NVTX Python package <https://nvtx.readthedocs.io/>`_ - the package nsys "
+"uses to emit NVTX ranges from Python."
+msgstr ""
+"`NVTX Python 包 <https://nvtx.readthedocs.io/>`_ ：nsys 用于从 Python 发出 NVTX "
+"区间的包。"

@@ -1,0 +1,830 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:4
+msgid "Training a Reach Policy for Real Robot Deployment"
+msgstr "训练用于实机部署的 Reach 策略"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:6
+msgid ""
+"This tutorial walks you through training an end-effector pose tracking "
+"(reach) reinforcement learning (RL) policy that transfers from simulation to"
+" a real robot. By the end of this guide, you will have a trained policy "
+"capable of controlling a robot arm to reach arbitrary target end-effector "
+"poses within its workspace."
+msgstr ""
+"本教程介绍如何训练末端执行器位姿跟踪（Reach）强化学习（RL）策略，并从仿真迁移到真实机器人。完成后，您将得到一个能够控制机械臂、在工作空间内到达任意目标末端位姿的策略。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:8
+msgid "**Supported Robots:**"
+msgstr "**支持的机器人：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:10
+msgid "**Universal Robots UR10e**: 6-DOF industrial robot arm"
+msgstr "**Universal Robots UR10e** ：6 自由度工业机械臂"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:11
+msgid "**Flexiv Rizon 4s**: 7-DOF collaborative robot arm"
+msgstr "**Flexiv Rizon 4s** ：7 自由度协作机械臂"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:13
+msgid "**Scope of This Tutorial:**"
+msgstr "**本教程的范围：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:15
+msgid ""
+"This tutorial focuses on the **training** portion of the sim-to-real "
+"workflow. For deployment on real hardware, including robot interface setup "
+"and ROS inference node configuration, refer to the `Isaac ROS Documentation "
+"<https://nvidia-isaac-"
+"ros.github.io/v/release-4.6/reference_workflows/isaac_for_manipulation/index.html>`_."
+msgstr ""
+"本教程介绍仿真到现实工作流的 **训练** 部分。实机部署步骤，包括机器人接口设置及 ROS 推理节点配置，见 `Isaac ROS 文档 "
+"<https://nvidia-isaac-"
+"ros.github.io/v/release-4.6/reference_workflows/isaac_for_manipulation/index.html>`_"
+" 。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:17
+msgid "**Prerequisites:**"
+msgstr "**前提条件：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:19
+msgid ""
+"Before starting this tutorial, ensure you have Isaac Lab installed and "
+"configured. Follow the :ref:`installation guide <isaaclab-installation-"
+"root>` if you haven't already set up your environment."
+msgstr ""
+"开始之前，请确保已安装并配置 Isaac Lab。如果尚未配置环境，请按 :ref:`安装指南 <isaaclab-installation-"
+"root>` 操作。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:23
+msgid "Task Overview"
+msgstr "任务概览"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:25
+msgid ""
+"The reach task trains a policy to track randomly sampled end-effector poses "
+"within the robot's workspace."
+msgstr "Reach 任务训练策略跟踪机器人工作空间内随机采样的末端执行器位姿。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:27
+msgid "**How It Works:**"
+msgstr "**工作原理：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:29
+msgid ""
+"A target pose (position and orientation) is randomly sampled within a "
+"defined workspace"
+msgstr "在指定工作空间内随机采样目标位姿（位置和朝向）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:30
+msgid ""
+"The policy receives the current joint states and the target pose as "
+"observations"
+msgstr "策略接收当前关节状态和目标位姿作为观测"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:31
+msgid ""
+"The policy outputs incremental joint position commands to move the end-"
+"effector toward the target"
+msgstr "策略输出增量关节位置指令，使末端执行器朝目标移动"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:32
+msgid ""
+"The target is resampled periodically during training to ensure the policy "
+"generalizes across the workspace"
+msgstr "训练时定期重新采样目标，让策略能泛化到整个工作空间"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:36
+msgid "Key Concepts for Sim-to-Real Transfer"
+msgstr "仿真到现实迁移的关键概念"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:38
+msgid ""
+"Successful sim-to-real transfer requires consistency across three areas:"
+msgstr "成功的仿真到现实迁移需要保证三方面的一致性："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:40
+msgid ""
+"**Input Consistency**: Observations available in simulation must match those"
+" available on the real robot"
+msgstr "**输入一致性** ：仿真中的观测必须与实机可获得的观测一致。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:41
+msgid ""
+"**System Response Consistency**: The simulated robot must respond to actions"
+" similarly to the real robot"
+msgstr "**系统响应一致性** ：仿真机器人对动作的响应应与实机相近。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:42
+msgid ""
+"**Output Consistency**: Any post-processing on policy outputs must be "
+"replicated during deployment"
+msgstr "**输出一致性** ：部署时必须复现对策略输出进行的所有后处理。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:44
+msgid ""
+"When these are properly addressed, policies trained purely in simulation can"
+" transfer to real hardware without any real-world training data."
+msgstr "妥善处理这些问题后，仅在仿真中训练的策略也能迁移到真实硬件，无需任何实机训练数据。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:48
+msgid "Observation Space"
+msgstr "观测空间"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:50
+msgid ""
+"The policy receives only proprioceptive observations, which are reliably "
+"available from the robot controller:"
+msgstr "策略只接收本体感知观测，这些数据可由机器人控制器可靠地提供："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:52
+msgid "Reach Environment Observations"
+msgstr "Reach 环境观测"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:56
+msgid "Observation"
+msgstr "观测"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:57
+msgid "UR10e Dim"
+msgstr "UR10e 维度"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:58
+msgid "Rizon 4s Dim"
+msgstr "Rizon 4s 维度"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:59
+msgid "Source"
+msgstr "来源"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:60
+msgid "``joint_pos``"
+msgstr "``joint_pos``"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:61
+#: source/policy_deployment/04_reach/reach_policy.rst:65
+msgid "6"
+msgstr "6"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:62
+#: source/policy_deployment/04_reach/reach_policy.rst:66
+#: source/policy_deployment/04_reach/reach_policy.rst:69
+#: source/policy_deployment/04_reach/reach_policy.rst:70
+msgid "7"
+msgstr "7"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:63
+#: source/policy_deployment/04_reach/reach_policy.rst:67
+msgid "Robot joint encoders"
+msgstr "机器人关节编码器"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:64
+msgid "``joint_vel``"
+msgstr "``joint_vel``"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:68
+msgid "``pose_command``"
+msgstr "``pose_command``"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:71
+msgid "Target pose (3D position + quaternion)"
+msgstr "目标位姿（三维位置 + 四元数）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:73
+msgid "**Total observation dimension:** 19 (UR10e) or 21 (Rizon 4s)"
+msgstr "**总观测维度：** 19（UR10e）或 21（Rizon 4s）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:75
+msgid "**Implementation:**"
+msgstr "**实现:**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:93
+msgid ""
+"The noise terms are set to zero by default (``Unoise(n_min=-0.0, "
+"n_max=0.0)``), meaning no observation noise is applied. This can be adjusted"
+" if noise modeling is desired for additional robustness. Modern robot "
+"controllers provide sufficiently accurate joint state feedback that adding "
+"noise during training is not required for sim-to-real transfer of this task."
+msgstr ""
+"噪声项默认为零（ ``Unoise(n_min=-0.0, n_max=0.0)`` "
+"），即不添加观测噪声。如果希望通过噪声建模进一步提升鲁棒性，可以调整这些值。现代机器人控制器提供的关节状态反馈已足够准确，因此本任务的仿真到现实迁移不需要在训练时额外加噪声。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:97
+msgid "Action Space"
+msgstr "动作空间"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:99
+msgid ""
+"The policy outputs **incremental joint position commands**. Each action "
+"specifies a delta (change) to apply to the current joint positions:"
+msgstr "策略输出 **增量关节位置指令** 。每个动作指定应叠加到当前关节位置上的增量："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:0
+msgid "UR10e"
+msgstr "UR10e"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:0
+msgid "Flexiv Rizon 4s"
+msgstr "Flexiv Rizon 4s"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:125
+msgid ""
+"The action scale of 0.0625 radians (~3.6 degrees) per step provides a "
+"balance between responsiveness and smooth motion. The UR10e uses "
+"``[\".*\"]`` to match all joints, while the Rizon 4s explicitly specifies "
+"``[\"joint[1-7]\"]`` to match its 7 arm joints."
+msgstr ""
+"每步动作缩放系数为 0.0625 弧度（约 3.6 度），兼顾响应速度和运动平滑性。UR10e 使用 ``[\".*\"]`` 匹配所有关节；Rizon"
+" 4s 则显式指定 ``[\"joint[1-7]\"]`` ，匹配 7 个机械臂关节。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:127
+msgid "**Action dimension:** 6 (UR10e) or 7 (Rizon 4s)"
+msgstr "**动作维度：** 6（UR10e）或 7（Rizon 4s）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:131
+msgid "Robot Configurations"
+msgstr "机器人配置"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:133
+msgid ""
+"Each robot has specific actuator configurations and workspace definitions."
+msgstr "每个机器人都有专用的执行器配置和工作空间定义。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:139
+msgid ""
+"The UR10e is a 6-DOF industrial robot with the following actuator "
+"configuration:"
+msgstr "UR10e 是 6 自由度工业机器人，使用以下执行器配置："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:167
+#: source/policy_deployment/04_reach/reach_policy.rst:223
+msgid "**End-Effector:**"
+msgstr "**末端执行器：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:169
+msgid "Link: ``wrist_3_link``"
+msgstr "连杆： ``wrist_3_link``"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:170
+msgid "Default orientation: End-effector facing down (roll = pi, yaw = -pi/2)"
+msgstr "默认朝向：末端执行器朝下（roll = pi，yaw = -pi/2）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:172
+#: source/policy_deployment/04_reach/reach_policy.rst:228
+msgid "**Target Workspace:**"
+msgstr "**目标工作空间：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:186
+msgid ""
+"The Rizon 4s is a 7-DOF collaborative robot with different torque, speed, "
+"and stiffness characteristics per joint group:"
+msgstr "Rizon 4s 是 7 自由度协作机器人，各关节组的力矩、速度及刚度特性不同："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:225
+msgid "Link: ``flange``"
+msgstr "连杆： ``flange``"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:226
+msgid "Default orientation: End-effector facing down (roll = pi)"
+msgstr "默认朝向：末端执行器朝下（roll = pi）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:242
+msgid "Customizing the Workspace"
+msgstr "自定义工作空间"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:244
+msgid ""
+"You may need to modify the target workspace to match your deployment "
+"scenario. Key parameters you can adjust:"
+msgstr "您可能需要修改目标工作空间，以匹配实际部署场景。可调整的主要参数包括："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:246
+msgid "**Target Position Range**"
+msgstr "**目标位置范围**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:248
+msgid ""
+"Modify ``target_pos_centre`` and ``target_pos_range`` in the robot-specific "
+"config file (e.g., ``joint_pos_env_cfg.py``):"
+msgstr ""
+"修改机器人专用配置文件（如 ``joint_pos_env_cfg.py`` ）中的 ``target_pos_centre`` 和 "
+"``target_pos_range`` ："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:258
+#: source/policy_deployment/04_reach/reach_policy.rst:276
+#: source/policy_deployment/04_reach/reach_policy.rst:294
+#: source/policy_deployment/04_reach/reach_policy.rst:308
+msgid "**Effects:**"
+msgstr "**影响：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:260
+msgid "Larger ranges increase task difficulty but improve generalization"
+msgstr "扩大范围会增加任务难度，但有助于提升泛化能力。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:261
+msgid ""
+"Ensure all target positions are reachable by the robot (within kinematic "
+"limits)"
+msgstr "确保所有目标位置都在机器人可达范围内（满足运动学限制）。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:262
+msgid "Targets outside reachable workspace will cause the policy to fail"
+msgstr "工作空间之外的目标会导致策略失败。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:264
+msgid "**Target Orientation Range**"
+msgstr "**目标朝向范围**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:266
+msgid "Modify ``target_rot_centre`` and ``target_rot_range``:"
+msgstr "修改 ``target_rot_centre`` 和 ``target_rot_range`` ："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:278
+msgid ""
+"Wider orientation ranges train more versatile policies but may slow "
+"convergence"
+msgstr "扩大朝向范围可训练适用范围更广的策略，但可能减慢收敛。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:279
+msgid ""
+"Very wide ranges (e.g., full rotation) significantly increase training "
+"difficulty"
+msgstr "范围过大（如允许任意旋转）会显著增加训练难度。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:281
+msgid "**Action Scale**"
+msgstr "**动作缩放系数**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:283
+msgid "Modify the ``scale`` parameter in the action configuration:"
+msgstr "修改动作配置中的 ``scale`` 参数："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:296
+msgid "Smaller scale: Finer control, smoother motion, but slower reaching"
+msgstr "系数较小：控制更精细、运动更平滑，但到达目标较慢。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:297
+msgid ""
+"Larger scale: Faster motion, but potentially jerky or overshooting targets"
+msgstr "系数较大：运动更快，但可能出现突变或越过目标。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:298
+msgid "The same scale must be used during deployment on the real robot"
+msgstr "部署到实机时必须使用相同的缩放系数。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:300
+msgid "**Target Resampling Interval**"
+msgstr "**目标重采样间隔**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:302
+msgid "Modify ``resampling_time_range`` in the commands configuration:"
+msgstr "修改命令配置中的 ``resampling_time_range`` ："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:310
+msgid ""
+"Shorter intervals: More diverse targets per episode, but less time to "
+"converge to each target"
+msgstr "间隔较短：每回合能接触更多不同目标，但到达每个目标的时间更少。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:311
+msgid ""
+"Longer intervals: More time to refine tracking, but fewer targets seen "
+"during training"
+msgstr "间隔较长：有更多时间精细跟踪，但训练中接触的目标更少。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:315
+msgid "Domain Randomization"
+msgstr "域随机化"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:317
+msgid ""
+"Domain randomization helps the policy generalize across variations in real "
+"robot behavior."
+msgstr "域随机化有助于策略适应真实机器人行为的变化。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:319
+msgid "**Actuator Gain Randomization:**"
+msgstr "**执行器增益随机化：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:336
+msgid ""
+"The ``min_step_count_between_reset=200`` ensures that actuator gains are not"
+" re-randomized too frequently, giving the policy time to adapt to each set "
+"of parameters before they change."
+msgstr ""
+"``min_step_count_between_reset=200`` "
+"可避免执行器增益过于频繁地重新随机化，让策略在参数再次变化前有时间适应当前设置。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:338
+msgid "**Joint Friction Randomization:**"
+msgstr "**关节摩擦随机化：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:354
+msgid "**Initial Joint Position Randomization:**"
+msgstr "**初始关节位置随机化：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:369
+msgid "Reward Structure"
+msgstr "奖励结构"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:371
+msgid ""
+"The policy is trained using a keypoint-based reward that captures both "
+"position and orientation accuracy:"
+msgstr "策略使用基于关键点的奖励进行训练，同时衡量位置和朝向精度："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:407
+msgid ""
+"The keypoint-based reward places virtual markers on the end-effector frame "
+"and measures the distance to corresponding markers on the target frame. This"
+" provides a robust metric that naturally captures both position and "
+"orientation errors."
+msgstr "基于关键点的奖励在末端执行器坐标系上放置虚拟标记，并测量它们与目标坐标系上对应标记之间的距离。该指标能够自然地同时反映位置和朝向误差。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:411
+msgid "Training the Policy"
+msgstr "训练策略"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:414
+msgid "Step 1: Verify the Environment"
+msgstr "步骤 1：验证环境"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:416
+msgid ""
+"Before starting full training, launch a quick visualization run to verify "
+"the environment is set up correctly:"
+msgstr "开始完整训练前，先短暂运行一次可视化，确认环境配置正确："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:0
+msgid "isaaclab.sh / isaaclab.bat"
+msgstr "isaaclab.sh / isaaclab.bat"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:464
+msgid ""
+"This opens the Isaac Sim viewer where you can observe the training in real-"
+"time."
+msgstr "这会打开 Isaac Sim 查看器，让您实时观察训练。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:466
+msgid "Reach policy training visualization in Isaac Lab"
+msgstr "Isaac Lab 中的 Reach 策略训练可视化"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:471
+msgid ""
+"Training visualization showing multiple parallel environments with robots "
+"reaching toward target poses."
+msgstr "训练可视化展示多个并行环境中的机器人向目标位姿移动。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:473
+msgid "**What to look for:**"
+msgstr "**检查要点：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:475
+msgid "The robot should be moving its arm attempting to reach different poses"
+msgstr "机器人应移动机械臂，尝试到达不同位姿。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:476
+msgid ""
+"Early on, motion will be erratic as the policy explores; this is expected"
+msgstr "训练初期策略正在探索，运动不规则是正常现象。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:477
+msgid ""
+"For **Rizon 4s**: Target pose markers appear as coordinate frames in the "
+"scene"
+msgstr "对于 **Rizon 4s** ：目标位姿标记以坐标系形式显示在场景中。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:478
+msgid ""
+"For **UR10e**: Target visualization is disabled (``debug_vis = False``) "
+"because commands are generated in the ``base`` frame, which is 180 degrees "
+"offset from the ``base_link`` frame used for rendering. The robot will still"
+" track targets, but markers won't be visible."
+msgstr ""
+"对于 **UR10e** ：目标可视化已关闭（ ``debug_vis = False`` ），因为命令在 ``base`` "
+"坐标系中生成，而它与渲染使用的 ``base_link`` 坐标系相差 180 度。机器人仍会跟踪目标，但不会显示标记。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:480
+msgid ""
+"Once you confirm the environment looks correct, stop training with "
+"``Ctrl+C`` and proceed to full-scale training."
+msgstr "确认环境显示正确后，按 ``Ctrl+C`` 停止训练，再开始完整规模的训练。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:484
+msgid "Step 2: Full-Scale Training"
+msgstr "步骤 2：完整规模训练"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:486
+msgid "Launch full training with many parallel environments in headless mode:"
+msgstr "在无界面模式下，使用大量并行环境启动完整训练："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:534
+msgid "**Command breakdown:**"
+msgstr "**命令说明：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:536
+msgid ""
+"``--num_envs 4096``: Runs 4096 parallel environments for efficient data "
+"collection"
+msgstr "``--num_envs 4096`` ：运行 4096 个并行环境，高效采集数据。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:537
+msgid "``--video``: Records videos to monitor training progress"
+msgstr "``--video`` ：录制视频，便于观察训练进展。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:538
+msgid ""
+"``--video_length 720``: Each video captures exactly one full episode "
+"(``episode_length_s / (sim.dt * decimation)`` = ``12.0 / (1/120 * 2)`` = 720"
+" steps)"
+msgstr ""
+"``--video_length 720`` ：每段视频恰好覆盖一个完整回合（ ``episode_length_s / (sim.dt * "
+"decimation)`` = ``12.0 / (1/120 * 2)`` = 720 步）。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:539
+msgid ""
+"``--video_interval 72000``: Records a video every 72000 environment steps "
+"(~every 100 training iterations)."
+msgstr "``--video_interval 72000`` ：每 72000 个环境步（约每 100 次训练迭代）录制一段视频。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:541
+msgid "**Training Configuration:**"
+msgstr "**训练配置：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:543
+msgid "The training hyperparameters are the same for both robots:"
+msgstr "两个机器人使用相同的训练超参数："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:579
+msgid ""
+"The ``experiment_name`` is ``\"reach_ur10e\"`` for UR10e and "
+"``\"reach_rizon4s\"`` for Rizon 4s. Training typically takes 1-3 hours "
+"depending on your GPU."
+msgstr ""
+"UR10e 的 ``experiment_name`` 为 ``\"reach_ur10e\"`` ，Rizon 4s 的为 "
+"``\"reach_rizon4s\"`` 。训练通常需要 1–3 小时，具体取决于 GPU。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:583
+msgid "Step 3: Monitor Training Progress"
+msgstr "步骤 3：监控训练进展"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:585
+msgid "Use TensorBoard to monitor training metrics:"
+msgstr "使用 TensorBoard 监控训练指标："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:621
+msgid ""
+"Replace the log directory path with your actual training log location if "
+"different."
+msgstr "如果训练日志位置不同，请将日志目录路径改为实际位置。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:623
+msgid "**Key metrics to watch:**"
+msgstr "**主要观察指标：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:625
+msgid ""
+"**Mean reward**: Should increase steadily and plateau once the policy "
+"converges"
+msgstr "**平均奖励** ：应持续增长，并在策略收敛后趋于平稳。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:626
+msgid ""
+"**Reward terms**: Monitor individual reward components to understand policy "
+"behavior:"
+msgstr "**奖励项** ：观察各个奖励分量，以了解策略行为："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:628
+msgid ""
+"``end_effector_keypoint_tracking``: Linear keypoint tracking penalty -- "
+"should become less negative as the policy improves"
+msgstr ""
+"``end_effector_keypoint_tracking`` ：线性关键点跟踪惩罚，随着策略改善，应逐渐接近零（负值的绝对值减小）。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:629
+msgid ""
+"``end_effector_keypoint_tracking_exp``: Exponential precision reward -- "
+"should increase as the policy achieves finer tracking"
+msgstr "``end_effector_keypoint_tracking_exp`` ：指数精度奖励，随着跟踪精度提高，应逐渐增大。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:630
+msgid ""
+"``action_rate`` and ``action``: Motion smoothness penalties -- these are "
+"small in magnitude but should increase (become less negative) over training,"
+" indicating the policy is converging toward smoother motion"
+msgstr ""
+"``action_rate`` 和 ``action`` ：运动平滑性惩罚，数值较小，但训练中应逐渐增大（负值接近零），表明策略正收敛到更平滑的运动。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:632
+msgid ""
+"**Position error**: Tracks the Euclidean distance (in meters) between the "
+"end-effector and target position -- should decrease over training"
+msgstr "**位置误差** ：末端执行器与目标位置之间的欧氏距离，单位为米，应随训练减小。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:633
+msgid ""
+"**Orientation error**: Tracks the angular difference between the end-"
+"effector and target orientation -- should decrease over training"
+msgstr "**朝向误差** ：末端执行器与目标朝向之间的角度差，应随训练减小。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:637
+msgid "Step 4: Evaluate the Trained Policy"
+msgstr "步骤 4：评估已训练策略"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:639
+msgid ""
+"Once training completes, evaluate the policy with the play command. The play"
+" command automatically applies the task's play-mode overrides "
+"(``play_mode``), which disable observation corruption for cleaner evaluation"
+" and cap the number of environments for better visualization:"
+msgstr ""
+"训练完成后，用回放命令评估策略。回放命令会自动应用任务的回放模式覆盖设置（ ``play_mode`` "
+"），关闭观测扰动以便更清楚地评估，并限制环境数量以改善可视化："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:690
+msgid "**Checkpoint Loading:**"
+msgstr "**加载检查点：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:692
+msgid ""
+"By default, the play command automatically loads the most recent checkpoint "
+"from the most recent training run. It searches in "
+"``logs/rsl_rl/<experiment_name>/`` and selects the latest run folder and "
+"checkpoint file (sorted alphabetically)."
+msgstr ""
+"默认情况下，回放命令会自动加载最新训练运行中的最新检查点。它在 ``logs/rsl_rl/<experiment_name>/`` "
+"中搜索，按字母顺序排序后选择最后一个运行文件夹和检查点文件。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:696
+msgid "To load a specific checkpoint, use these arguments:"
+msgstr "要加载指定检查点，使用以下参数："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:721
+msgid "Step 5: Deploy on Real Robot"
+msgstr "步骤 5：部署到真实机器人"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:723
+msgid ""
+"Once satisfied with the trained policy, deploy it on real hardware using the"
+" Isaac ROS deployment pipeline. The pipeline uses:"
+msgstr "确认训练效果符合预期后，通过 Isaac ROS 部署流水线部署到真实硬件。该流水线使用："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:725
+msgid "The trained model checkpoint (``.pt`` file)"
+msgstr "训练得到的模型检查点（ ``.pt`` 文件）"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:726
+msgid ""
+"The ``agent.yaml`` and ``env.yaml`` configuration files generated during "
+"training"
+msgstr "训练时生成的 ``agent.yaml`` 和 ``env.yaml`` 配置文件"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:728
+msgid "No additional export step is required."
+msgstr "无需额外的导出步骤。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:730
+msgid ""
+"For detailed deployment instructions, see the `Isaac ROS Documentation "
+"<https://nvidia-isaac-"
+"ros.github.io/v/release-4.6/reference_workflows/isaac_for_manipulation/index.html>`_."
+msgstr ""
+"详细部署步骤见 `Isaac ROS 文档 <https://nvidia-isaac-"
+"ros.github.io/v/release-4.6/reference_workflows/isaac_for_manipulation/index.html>`_"
+" 。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:734
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:737
+msgid "CUDA Out of Memory"
+msgstr "CUDA 内存不足"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:739
+msgid "**Error:**"
+msgstr "**错误：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:745
+msgid "**Solutions:**"
+msgstr "**解决办法：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:747
+msgid "**Reduce parallel environments:**"
+msgstr "**减少并行环境数量：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:753
+msgid "**Disable video recording:**"
+msgstr "**关闭视频录制：**"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:755
+msgid "Remove the ``--video`` flags to free GPU memory."
+msgstr "移除 ``--video`` 参数，以释放 GPU 显存。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:758
+msgid "Policy Does Not Converge"
+msgstr "策略不收敛"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:760
+msgid "If rewards do not improve after many iterations:"
+msgstr "如果经过多次迭代奖励仍没有改善："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:762
+msgid ""
+"**Check target workspace ranges**: Ensure all target poses are reachable by "
+"the robot"
+msgstr "**检查目标工作空间范围** ：确保所有目标位姿都能被机器人到达。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:763
+msgid ""
+"**Verify joint names**: Confirm joint ordering matches between simulation "
+"and configuration"
+msgstr "**核对关节名称** ：确认仿真与配置中的关节顺序一致。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:764
+msgid ""
+"**Reduce domain randomization**: Temporarily disable randomization to verify"
+" the base task works"
+msgstr "**减小域随机化** ：暂时关闭随机化，确认基础任务能正常运行。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:767
+msgid "Jerky Motion on Real Robot"
+msgstr "实机运动不平滑"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:769
+msgid "If the deployed policy produces jerky or unstable motion:"
+msgstr "如果部署后的策略产生突变或不稳定运动："
+
+#: source/policy_deployment/04_reach/reach_policy.rst:771
+msgid ""
+"**Reduce action scale**: Lower the ``scale`` parameter in "
+"``RelativeJointPositionActionCfg``"
+msgstr "**减小动作缩放系数** ：降低 ``RelativeJointPositionActionCfg`` 中的 ``scale`` 参数。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:772
+msgid ""
+"**Verify control frequency**: Ensure the real robot runs at the same "
+"frequency as simulation (60 Hz by default)"
+msgstr "**核对控制频率** ：确保实机与仿真的运行频率相同（默认为 60 Hz）。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:773
+msgid ""
+"**Check joint ordering**: Verify joint names and ordering match between "
+"simulation and real robot"
+msgstr "**核对关节顺序** ：确认仿真与实机的关节名称和顺序一致。"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:777
+msgid "Further Resources"
+msgstr "更多资源"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:779
+msgid ""
+"`IndustReal: Transferring Contact-Rich Assembly Tasks from Simulation to "
+"Reality <https://arxiv.org/abs/2305.17110>`_"
+msgstr ""
+"`IndustReal: Transferring Contact-Rich Assembly Tasks from Simulation to "
+"Reality <https://arxiv.org/abs/2305.17110>`_"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:780
+msgid ""
+"`FORGE: Force-Guided Exploration for Robust Contact-Rich Manipulation under "
+"Uncertainty <https://arxiv.org/abs/2408.04587>`_"
+msgstr ""
+"`FORGE: Force-Guided Exploration for Robust Contact-Rich Manipulation under "
+"Uncertainty <https://arxiv.org/abs/2408.04587>`_"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:781
+msgid ""
+"`Isaac ROS Manipulation Documentation <https://nvidia-isaac-"
+"ros.github.io/v/release-4.6/reference_workflows/isaac_for_manipulation/index.html>`_"
+msgstr ""
+"`Isaac ROS 操作文档 <https://nvidia-isaac-"
+"ros.github.io/v/release-4.6/reference_workflows/isaac_for_manipulation/index.html>`_"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:782
+msgid "Gear Assembly Sim-to-Real Tutorial: :ref:`walkthrough_sim_to_real`"
+msgstr "齿轮装配仿真到现实教程： :ref:`walkthrough_sim_to_real`"
+
+#: source/policy_deployment/04_reach/reach_policy.rst:783
+msgid "RL Training Tutorial: :ref:`tutorial-run-rl-training`"
+msgstr "RL 训练教程: :ref:`tutorial-run-rl-training`"

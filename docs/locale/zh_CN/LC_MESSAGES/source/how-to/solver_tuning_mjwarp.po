@@ -1,0 +1,265 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/solver_tuning_mjwarp.rst:11
+msgid "Tune MJWarp"
+msgstr "MJWarp 调优"
+
+#: source/how-to/solver_tuning_mjwarp.rst:13
+msgid ""
+"This guide tunes the MuJoCo-Warp (MJWarp) solver after an asset and task can"
+" be constructed by the Newton backend. The generated API documentation for "
+":class:`~isaaclab_newton.physics.NewtonCfg` and "
+":class:`~isaaclab_newton.physics.MJWarpSolverCfg` is authoritative for every"
+" configuration field and its current default."
+msgstr ""
+"本指南适用于 Newton 后端已能构建资产和任务之后的 MuJoCo-Warp（MJWarp）求解器调优。所有配置字段及其当前默认值，以 "
+":class:`~isaaclab_newton.physics.NewtonCfg` 和 "
+":class:`~isaaclab_newton.physics.MJWarpSolverCfg` 的自动生成 API 文档为准。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:20
+msgid "Prerequisites"
+msgstr "先决条件"
+
+#: source/how-to/solver_tuning_mjwarp.rst:22
+msgid ""
+"First follow :doc:`/source/how-to/prepare_asset_for_newton` and reproduce "
+"one failure with a fixed initial state, seed, and action sequence. Before "
+"changing solver settings, check the mechanical model, collision geometry, "
+"reset overlap, actuator limits, and unsupported features. A solver setting "
+"cannot correct an invalid asset or controller."
+msgstr ""
+"先按照 :doc:`/source/how-to/prepare_asset_for_newton` "
+"准备资产，再用固定的初始状态、随机种子和动作序列复现一个故障。修改求解器设置前，检查机械模型、碰撞几何、重置时的重叠、执行器限制及不受支持的功能。求解器设置无法修复无效资产或控制器。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:28
+msgid ""
+"Use maintained task configurations as evidence for a similar workload, not "
+"as defaults to copy. For example, compare the small `Cartpole configuration "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/develop/source/isaaclab_tasks/isaaclab_tasks/core/cartpole/cartpole_direct_env_cfg.py>`__"
+" with the contact-rich `Allegro Hand configuration "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/develop/source/isaaclab_tasks/isaaclab_tasks/core/reorient/config/allegro_hand/allegro_hand_common.py>`__."
+" Their values only apply after validating the new task's reset and contact "
+"distribution."
+msgstr ""
+"参考持续维护的任务配置来了解相似负载，不要直接照搬其中的默认值。例如，可以比较规模较小的 `Cartpole 配置 "
+"<https://github.com/isaac-"
+"sim/IsaacLab/blob/develop/source/isaaclab_tasks/isaaclab_tasks/core/cartpole/cartpole_direct_env_cfg.py>`__"
+" 与接触密集的 `Allegro Hand 配置 <https://github.com/isaac-"
+"sim/IsaacLab/blob/develop/source/isaaclab_tasks/isaaclab_tasks/core/reorient/config/allegro_hand/allegro_hand_common.py>`__"
+" 。只有验证新任务的重置分布和接触分布后，才能判断这些参数值是否适用。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:37
+msgid "Start from an explicit baseline"
+msgstr "建立明确的基准配置"
+
+#: source/how-to/solver_tuning_mjwarp.rst:39
+msgid ""
+"Make the selected solver, integration method, timestep, substeps, and "
+"diagnostics visible in the task configuration. This is an illustrative "
+"baseline; measure and set contact capacity for the task rather than treating"
+" omitted or checked-in values as universal."
+msgstr ""
+"在任务配置中明确写出所选求解器、积分方法、时间步长、子步数和诊断设置。下面只是一个基准配置示例；应根据任务测量并设置接触容量，不要把省略的值或仓库中的配置值当作通用值。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:57
+msgid ""
+"Record the fixed-state behavior, warnings, contact count, penetration, slip,"
+" task metric, and runtime before changing one variable at a time. Turn off "
+"``debug_mode`` only after the solver budget has been validated for the full "
+"reset, command, and randomization distribution."
+msgstr ""
+"每次只改变一个变量；改变前记录固定状态下的行为、警告、接触数、穿透、滑移、任务指标和运行耗时。只有确认求解器容量覆盖完整的重置、指令和随机化分布后，才关闭"
+" ``debug_mode`` 。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:63
+msgid "Size contact and constraint capacity"
+msgstr "确定接触与约束容量"
+
+#: source/how-to/solver_tuning_mjwarp.rst:65
+msgid ""
+"``nconmax`` bounds contact points per environment. ``njmax`` bounds "
+"constraint rows per environment; contacts can consume multiple rows, and "
+"joint limits, drives, equality constraints, and mimic constraints also "
+"consume rows. Do not derive ``njmax`` directly from ``nconmax``."
+msgstr ""
+"``nconmax`` 限制每个环境的接触点数量； ``njmax`` 限制每个环境的约束行数。一个接触可能占用多行，关节限位、驱动、等式约束和 "
+"mimic 约束也会占用约束行。因此，不能直接从 ``nconmax`` 推导 ``njmax`` 。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:70
+msgid ""
+"Increase the relevant capacity when diagnostics show an overflow, contacts "
+"disappear in dense states, or behavior changes with object count. Measure "
+"the worst case across resets and randomized scenes, add task-specific "
+"headroom, and then verify that the same fixed-state result remains stable. "
+"Capacity cannot fix incorrect collision geometry, contact material, or "
+"convergence."
+msgstr ""
+"当诊断显示溢出、密集状态下接触消失，或行为随物体数量改变时，增加对应容量。测量各种重置和随机化场景的最坏情况，为任务预留余量，再验证相同的固定状态结果仍然稳定。增加容量无法修复错误的碰撞几何、接触材料或收敛问题。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:77
+msgid "Choose timestep and substeps"
+msgstr "选择时间步长与子步数"
+
+#: source/how-to/solver_tuning_mjwarp.rst:79
+msgid ""
+"Each solver substep uses ``SimulationCfg.dt / NewtonCfg.num_substeps``. "
+"Start with a policy period that the controller can support, then compare a "
+"smaller ``dt`` or more substeps when high drive stiffness, light objects, "
+"impacts, or dense contact cause instability. Substeps do not change the "
+"policy period ``SimulationCfg.dt * env.decimation``."
+msgstr ""
+"每个求解器子步的时长为 ``SimulationCfg.dt / NewtonCfg.num_substeps`` "
+"。先选择控制器能适应的策略周期；当驱动刚度高、物体轻、存在冲击或接触密集而导致不稳定时，再比较更小的 ``dt`` 或更多子步。子步数不会改变策略周期 "
+"``SimulationCfg.dt * env.decimation`` 。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:85
+msgid ""
+"Use the same physical metrics and fixed-state reproduction for every "
+"candidate. Do not change policy decimation merely to conceal an unstable "
+"physics step."
+msgstr "使用相同的物理指标和固定状态复现场景比较每种候选配置。不要仅为掩盖不稳定的物理步而改变策略的控制降采样倍数。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:89
+msgid "Validate convergence"
+msgstr "验证收敛"
+
+#: source/how-to/solver_tuning_mjwarp.rst:91
+msgid ""
+"Keep ``NewtonCfg.debug_mode`` enabled while diagnosing. It reports per-"
+"environment solver iteration statistics and warns when an environment "
+"reaches the ``iterations`` cap. Only after the model, reset, contact path, "
+"and capacities are valid should a cap hit or a reproducible metric justify "
+"sweeping ``iterations``, ``ls_iterations``, or ``tolerance``."
+msgstr ""
+"诊断期间保持 ``NewtonCfg.debug_mode`` 开启。它会报告每个环境的求解迭代统计，并在环境达到 ``iterations`` "
+"上限时发出警告。只有模型、重置、接触路径和容量均已验证后，才根据达到上限的情况或可复现的指标，扫描 ``iterations`` 、 "
+"``ls_iterations`` 或 ``tolerance`` 。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:97
+msgid ""
+"Sweep one convergence limit at a time and stop when the physical and task "
+"metrics plateau. More iterations cannot compensate for bad inertia, "
+"penetration at reset, missing collision geometry, unsupported constraints, "
+"or excessive drive stiffness."
+msgstr ""
+"每次扫描一项收敛限制，在物理和任务指标不再改善时停止。更多迭代无法弥补错误惯量、重置时的穿透、缺失的碰撞几何、不受支持的约束或过高的驱动刚度。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:103
+msgid "Tune friction and contact behavior"
+msgstr "调整摩擦与接触行为"
+
+#: source/how-to/solver_tuning_mjwarp.rst:105
+msgid ""
+"Validate colliders, contact locations, normal force, material friction, and "
+"``condim`` before changing global friction settings. ``cone`` selects the "
+"MuJoCo friction-cone representation; test an elliptic cone when a physically"
+" valid contact model still slips and the additional cost is warranted. "
+"``impratio`` changes frictional impedance relative to normal impedance. "
+"Treat both settings as a contact-formulation change, and recheck "
+"penetration, slip, energy, convergence, task success, and runtime after each"
+" change."
+msgstr ""
+"修改全局摩擦设置前，验证碰撞体、接触位置、法向力、材料摩擦和 ``condim`` 。 ``cone`` 选择 MuJoCo "
+"的摩擦锥表示；如果接触模型在物理上合理却仍有滑移，而且增加的开销可以接受，可测试椭圆摩擦锥。 ``impratio`` "
+"调整摩擦阻抗相对于法向阻抗的比例。两者都会改变接触模型；每次修改后都应重新检查穿透、滑移、能量、收敛、任务成功率和运行耗时。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:113
+msgid ""
+"Do not use ``impratio`` to mask missing contacts, incorrect material "
+"friction, insufficient gripper effort, or a controller that opens the grasp."
+" For the underlying contact formulation, see the `MuJoCo contact "
+"documentation "
+"<https://mujoco.readthedocs.io/en/stable/computation/index.html#contact>`__ "
+"and `option reference "
+"<https://mujoco.readthedocs.io/en/stable/XMLreference.html#option-"
+"impratio>`__."
+msgstr ""
+"不要用 ``impratio`` 掩盖接触缺失、材料摩擦错误、夹爪驱动力不足或控制器松开抓取等问题。底层接触模型见 `MuJoCo 接触文档 "
+"<https://mujoco.readthedocs.io/en/stable/computation/index.html#contact>`__ "
+"和 `选项参考 <https://mujoco.readthedocs.io/en/stable/XMLreference.html#option-"
+"impratio>`__ 。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:120
+msgid "Choose the contact pipeline"
+msgstr "选择接触管线"
+
+#: source/how-to/solver_tuning_mjwarp.rst:122
+msgid ""
+"Use ``use_mujoco_contacts=True`` for the simplest baseline. It selects "
+"MuJoCo's internal collision detection and cannot be combined with "
+":attr:`~isaaclab_newton.physics.NewtonCfg.collision_cfg`."
+msgstr ""
+"最简单的基准配置采用 ``use_mujoco_contacts=True`` 。它选择 MuJoCo 的内置碰撞检测，不能与 "
+":attr:`~isaaclab_newton.physics.NewtonCfg.collision_cfg` 同时使用。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:126
+msgid ""
+"Set ``use_mujoco_contacts=False`` only when the task needs Newton's "
+"collision pipeline, such as for non-convex meshes, SDF or hydroelastic "
+"contacts. Configure "
+":class:`~isaaclab_newton.physics.NewtonCollisionPipelineCfg` on "
+":class:`~isaaclab_newton.physics.NewtonCfg`, then size its collision buffers"
+" from observed overflow or missing-contact evidence. "
+"``collision_decimation`` matters only for this pipeline and when more than "
+"one solver substep is used; refresh contacts more often for fast-changing "
+"contacts before reducing work for performance."
+msgstr ""
+"仅在任务需要 Newton 碰撞管线时，才设置 ``use_mujoco_contacts=False`` ，例如使用非凸网格、SDF 或水弹性接触。为"
+" :class:`~isaaclab_newton.physics.NewtonCfg` 配置 "
+":class:`~isaaclab_newton.physics.NewtonCollisionPipelineCfg` "
+"，再根据实测溢出或接触缺失调整碰撞缓冲区容量。 ``collision_decimation`` "
+"仅在使用此管线且求解器子步数大于一时有作用。对于变化快的接触，先提高接触刷新频率，再考虑减少计算量以改善性能。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:136
+msgid "Optimize only after validation"
+msgstr "验证后再优化性能"
+
+#: source/how-to/solver_tuning_mjwarp.rst:138
+msgid ""
+"After the task is stable over its full distribution, measure the cost of "
+"each change and retain only work that improves the recorded outcome. Reduce "
+"excess capacity, line-search work, collision refresh, substeps, and state "
+"synchronization frequency one at a time."
+msgstr ""
+"任务在完整分布下稳定运行后，测量每项修改的开销，只保留能改善已记录结果的修改。逐项减少多余的容量、线搜索计算、碰撞刷新、子步和状态同步频率。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:143
+msgid ""
+"``ccd_iterations`` is a GJK/EPA collision-convergence cap, not a PhysX-style"
+" continuous-collision-detection switch. Increase it only for a warning or a "
+"reproducible complex-geometry collision failure. Keep "
+"``update_data_interval=1`` until resets, Newton-side state writes, contact "
+"reporting, and sensors are verified; a larger interval reduces "
+"synchronization work but can expose stale data. ``save_to_mjcf``, "
+"``use_mujoco_cpu``, and ``disable_contacts`` are diagnostic tools, not "
+"production tuning targets."
+msgstr ""
+"``ccd_iterations`` 是 GJK/EPA 碰撞算法的收敛迭代上限，并非 PhysX "
+"式连续碰撞检测的开关。仅在出现警告或可复现的复杂几何碰撞故障时增加它。在验证重置、Newton 侧状态写入、接触报告和传感器之前，保持 "
+"``update_data_interval=1`` ；更大的间隔能减少同步计算，但可能让数据过时。 ``save_to_mjcf`` 、 "
+"``use_mujoco_cpu`` 和 ``disable_contacts`` 是诊断工具，不是生产环境的调优目标。"
+
+#: source/how-to/solver_tuning_mjwarp.rst:151
+msgid ""
+"The diagnose-first order is: validate the model and fixed reproduction; "
+"choose timestep and substeps; size capacities; validate convergence; tune "
+"contact behavior and the contact pipeline; then optimize measured costs."
+msgstr "先诊断、后调优的顺序是：验证模型和固定的复现场景；选择时间步长和子步数；确定容量；验证收敛；调整接触行为和接触管线；最后优化实测开销。"

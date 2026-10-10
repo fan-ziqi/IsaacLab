@@ -1,0 +1,932 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:4
+msgid "Run benchmarks"
+msgstr "运行性能测试"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:6
+msgid ""
+"This guide covers the ``runtime``, ``play``, ``training``, and ``startup`` "
+"benchmark workflows. For isolated operations, see "
+":ref:`developer_tools_benchmarking_micro`. For Python use and framework "
+"extensions, see :ref:`developer_tools_benchmarking_api`. See "
+":ref:`developer_tools_benchmarking_multigpu` for workflows that use several "
+"GPUs."
+msgstr ""
+"本指南介绍 ``runtime`` 、 ``play`` 、 ``training`` 和 ``startup`` 性能测试工作流。单项操作见 "
+":ref:`developer_tools_benchmarking_micro` ；Python 用法与框架扩展见 "
+":ref:`developer_tools_benchmarking_api` ；使用多个 GPU 的工作流见 "
+":ref:`developer_tools_benchmarking_multigpu` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:14
+msgid "Choose a workflow"
+msgstr "选择工作流"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:20
+msgid "Question"
+msgstr "要回答的问题"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:21
+msgid "Workflow"
+msgstr "工作流程"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:22
+msgid "Large environment-step capacity change"
+msgstr "环境步进能力的大幅变化"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:23
+msgid "``runtime``"
+msgstr "``runtime``"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:24
+msgid "Trained-policy behavior or deployment throughput"
+msgstr "已训练策略的行为或部署吞吐量"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:25
+msgid "``play``"
+msgstr "``play``"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:26
+msgid "End-to-end learning throughput or learning behavior"
+msgstr "端到端学习吞吐量或学习行为"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:27
+msgid "``training``"
+msgstr "``training``"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:28
+msgid "Launch, import, configuration, scene creation, or first-step latency"
+msgstr "启动、导入、配置、场景创建或首步延迟"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:29
+msgid "``startup``"
+msgstr "``startup``"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:30
+msgid "Any of the above across several GPUs"
+msgstr "在多个 GPU 上测量上述任意内容"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:31
+msgid "``<workflow>_multigpu``"
+msgstr "``<workflow>_multigpu``"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:32
+msgid "One asset or sensor operation"
+msgstr "单个资产或传感器操作"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:33
+msgid ":ref:`developer_tools_benchmarking_micro`"
+msgstr ":ref:`developer_tools_benchmarking_micro`"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:35
+msgid "For every comparison:"
+msgstr "每次比较都应："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:37
+msgid "Keep the workload and provenance fixed."
+msgstr "保持负载及来源条件不变。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:38
+msgid "Compare identical schema fields and measurement modes."
+msgstr "比较相同的数据结构字段和测量模式。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:39
+msgid "Separate cold startup from steady state."
+msgstr "将冷启动与稳态运行分开。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:42
+msgid "Runtime"
+msgstr "运行时"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:45
+#: source/developer-tools/benchmarking/run_benchmarks.rst:234
+#: source/developer-tools/benchmarking/run_benchmarks.rst:294
+#: source/developer-tools/benchmarking/run_benchmarks.rst:368
+msgid "When to use it"
+msgstr "适用情况"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:47
+msgid ""
+"Use ``runtime`` to measure a task's environment-step capacity without policy"
+" inference or learning. Use it to screen changes in simulation or task "
+"throughput."
+msgstr "使用 ``runtime`` 测量任务的环境步进能力，不包含策略推理或学习，适合初步检查仿真或任务吞吐量的变化。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:52
+#: source/developer-tools/benchmarking/run_benchmarks.rst:241
+#: source/developer-tools/benchmarking/run_benchmarks.rst:301
+#: source/developer-tools/benchmarking/run_benchmarks.rst:380
+msgid "Run it"
+msgstr "运行命令"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:54
+msgid "From a source installation, run:"
+msgstr "源码安装使用："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:69
+msgid ""
+"OVRTX camera tasks can compare synchronous against asynchronous (pipelined) "
+"rendering through a Hydra override on the camera's renderer configuration:"
+msgstr "OVRTX 相机任务可通过 Hydra 覆盖相机渲染器配置，比较同步与异步（流水线）渲染："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:84
+msgid ""
+"Only the OVRTX renderer implements asynchronous rendering. See "
+":ref:`renderers-async-data-flow` for how states, observations, and frames "
+"line up in each mode."
+msgstr ""
+"只有 OVRTX 渲染器实现了异步渲染。各模式下状态、观测和帧的对应关系见 :ref:`renderers-async-data-flow` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:88
+#: source/developer-tools/benchmarking/run_benchmarks.rst:259
+#: source/developer-tools/benchmarking/run_benchmarks.rst:318
+#: source/developer-tools/benchmarking/run_benchmarks.rst:395
+msgid "Read the result"
+msgstr "读取结果"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:90
+msgid ""
+"The command prints a throughput and resource summary when the run finishes. "
+"The JSON output contains the full result."
+msgstr "运行结束后，命令打印吞吐量与资源摘要，完整结果保存在 JSON 输出中。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:93
+msgid ""
+"Read ``runtime.environment_step_timing.environment_step_fps`` for the "
+"aggregate environment-step rate. Runtime samples random actions before "
+"starting the ``env.step()`` timer, so random-action generation is outside "
+"this timing. For a runtime run, ``runtime.collection_fps`` and "
+"``runtime.total_fps`` describe the same random-action stepping workload."
+msgstr ""
+"读取 ``runtime.environment_step_timing.environment_step_fps`` "
+"，获取所有环境合计的步进速率。Runtime 在启动 ``env.step()`` 计时器前采样随机动作，因此动作生成不计入该时间。对于 runtime"
+" 运行， ``runtime.collection_fps`` 和 ``runtime.total_fps`` 描述同一个随机动作步进负载。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:99
+msgid ""
+"Render and physics scope profiling requires a non-``None`` "
+"``benchmark_mode`` in the task configuration. If the field is absent or "
+"``None``, both scopes remain disabled even when their profiling flags are "
+"set; standard runtime reports are still produced."
+msgstr ""
+"渲染与物理范围的性能分析，要求任务配置中的 ``benchmark_mode`` 不为 ``None`` 。如果该字段不存在或为 ``None`` "
+"，即使设置对应分析标志，两种范围仍不会启用；标准运行时报告仍会生成。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:103
+msgid ""
+"For ``Isaac-RenderBenchmark-Franka-Cabinet``, an unset ``BENCHMARK_MODE`` "
+"defaults to ``None``: physics and camera rendering still run, without "
+"benchmark animation or scope profiling. Set ``BENCHMARK_MODE=render`` to "
+"write analytic joint poses after physics, while "
+"``BENCHMARK_MODE=physics_render`` sets actuator targets before physics. Both"
+" modes still step physics. Direct posing requires "
+"``scene.lazy_sensor_update=True``. With Isaac RTX, use ``--visualizer none``"
+" in this mode: a Kit visualizer would render before the pose write."
+msgstr ""
+"对于 ``Isaac-RenderBenchmark-Franka-Cabinet`` ，未设置 ``BENCHMARK_MODE`` 时默认为 "
+"``None`` ：物理与相机渲染仍运行，但没有基准动画或范围性能分析。设置 ``BENCHMARK_MODE=render`` "
+"，可在物理步之后写入解析计算的关节位姿； ``BENCHMARK_MODE=physics_render`` "
+"则在物理步之前设置执行器目标。两种模式仍会推进物理。直接设置位姿要求 ``scene.lazy_sensor_update=True`` 。使用 "
+"Isaac RTX 时，此模式应指定 ``--visualizer none`` ，因为 Kit 可视化器会在写入位姿前渲染。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:111
+msgid ""
+"Set ``ISAACLAB_PHYSICS_PROFILE=1`` to collect synchronized physics-step "
+"timings during the runtime measurement loop. The benchmark wraps the "
+"selected physics manager's ``step`` through "
+":func:`~isaaclab.benchmark.stepping.profile_physics_steps` during the "
+"measurement loop. Similarly, ``ISAACLAB_RENDER_PROFILE=1`` wraps registered "
+"renderers through :func:`~isaaclab.benchmark.stepping.profile_renderers`, "
+"timing only ``render()`` and excluding scene updates and output readback. "
+"Both context managers install wrappers after warmup and restore the original"
+" methods when measurement ends, including on failure, so subsequent "
+"benchmark runs are unaffected. The render sweep enables both flags but "
+"requires an explicit ``BENCHMARK_MODE=render`` or "
+"``BENCHMARK_MODE=physics_render`` to collect timings. Ordered ``[scope, "
+"elapsed_ms]`` samples are written under ``timings_ms`` in the local "
+"``<output_path>/profile_timings.json`` file. The benchmark bundle's "
+"``extra`` dictionary holds scalar ``physics_mean_ms``, ``physics_std_ms``, "
+"``physics_max_ms``, ``physics_calls``, and corresponding ``render_*`` "
+"summaries. Disabled scopes contribute no keys. Schema version 1.4 remains "
+"unchanged, and OmniPerf output includes the same summaries. These statistics"
+" describe individual calls after warmup; the render sweep instead groups "
+"physics calls by rendered frame and discards its padding frames. The sweep "
+"reads the local profiling file from a separate directory for each profile. "
+"Device synchronization changes execution overlap, so these profiled runs are"
+" diagnostics rather than throughput measurements."
+msgstr ""
+"设置 ``ISAACLAB_PHYSICS_PROFILE=1`` ，可在运行时测量循环中采集同步的物理步耗时。测试通过 "
+":func:`~isaaclab.benchmark.stepping.profile_physics_steps` ，在测量期间封装所选物理管理器的 "
+"``step`` 。类似地， ``ISAACLAB_RENDER_PROFILE=1`` 通过 "
+":func:`~isaaclab.benchmark.stepping.profile_renderers` 封装已注册的渲染器，只测量 "
+"``render()`` "
+"，排除场景更新与输出读回。两个上下文管理器均在预热后安装封装，并在测量结束时恢复原方法，包括发生错误时，因此不会影响后续测试。渲染参数扫描启用两个标志，但必须显式设置"
+" ``BENCHMARK_MODE=render`` 或 ``BENCHMARK_MODE=physics_render`` 才会采集耗时。按顺序记录的"
+" ``[scope, elapsed_ms]`` 样本写入本地 ``<output_path>/profile_timings.json`` 的 "
+"``timings_ms`` 。结果包的 ``extra`` 字典保存标量摘要 ``physics_mean_ms`` 、 "
+"``physics_std_ms`` 、 ``physics_max_ms`` 、 ``physics_calls`` 和对应的 "
+"``render_*`` 摘要；禁用范围不生成键。数据结构版本仍为 1.4，OmniPerf "
+"输出包含相同摘要。这些统计描述预热后的单次调用；渲染扫描则按渲染帧汇总物理调用，并丢弃填充帧。扫描从每个配置各自的目录读取本地性能分析文件。设备同步会改变执行重叠，因此这些分析运行属于诊断，而非吞吐量测量。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:0
+msgid "Canonical workstation output and provenance"
+msgstr "标准工作站输出与来源条件"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:133
+msgid "Headless runtime summary (output abbreviated):"
+msgstr "无界面运行时摘要（输出已省略部分内容）："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:147
+msgid "Headless typed-schema excerpt:"
+msgstr "无界面运行的带类型数据结构节选："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:168
+msgid "Rendered runtime summary (output abbreviated):"
+msgstr "带渲染的运行时摘要（输出已省略部分内容）："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:182
+msgid "Rendered typed-schema excerpt:"
+msgstr "带渲染运行的带类型数据结构节选："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:207
+msgid ""
+"Capture provenance: Intel(R) Core(TM) i9-14900K CPU, NVIDIA GeForce RTX 5090"
+" GPU, Ubuntu 24.04.3, revision f02ca894a91f9db3a9ab0d42fcf23a5bc5eae22d. "
+"Both runs used PhysX, seed 42, 50 warm-up steps, and a 1000-step measured "
+"window. The headless run used Isaac-Cartpole-Direct with 4096 environments. "
+"The rendered run used Isaac-Cartpole-Camera-Direct with 1024 environments, "
+"RTX rendering, and the RGB preset. The approved balanced power profile used "
+"intel_pstate with powersave governors and balance_performance energy "
+"preferences."
+msgstr ""
+"采集条件：Intel(R) Core(TM) i9-14900K CPU、NVIDIA GeForce RTX 5090 GPU、Ubuntu "
+"24.04.3，代码版本 f02ca894a91f9db3a9ab0d42fcf23a5bc5eae22d。两次运行均使用 PhysX、随机种子 "
+"42、50 个预热步，以及 1000 步测量窗口。无界面运行使用 Isaac-Cartpole-Direct 和 4096 个环境；带渲染运行使用 "
+"Isaac-Cartpole-Camera-Direct 和 1024 个环境，采用 RTX 渲染及 RGB 预设。认可的平衡电源配置使用 "
+"intel_pstate、powersave 调节策略和 balance_performance 能耗偏好。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:216
+msgid ""
+"``--warmup_steps`` runs the exact number of excluded environment steps "
+"before the measured window. Runtime executes ``warmup_steps + num_steps`` "
+"total ``env.step()`` calls, while the throughput window always contains "
+"exactly ``num_steps`` calls. With nonzero warm-up, the first warm-up step "
+"supplies the separate ``first_step`` startup diagnostic. With zero warm-up, "
+"the first measured step supplies that diagnostic without being removed from "
+"the measured window."
+msgstr ""
+"``--warmup_steps`` 在测量窗口前执行指定数量的环境步，这些步不计入测量。Runtime 总计执行 ``warmup_steps + "
+"num_steps`` 次 ``env.step()`` ，而吞吐量窗口始终恰好包含 ``num_steps`` "
+"次调用。预热步数非零时，首次预热步提供单独的 ``first_step`` 启动诊断；预热为零时，首次测量步提供该诊断，但不会从测量窗口移除。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:224
+#: source/developer-tools/benchmarking/run_benchmarks.rst:284
+#: source/developer-tools/benchmarking/run_benchmarks.rst:348
+#: source/developer-tools/benchmarking/run_benchmarks.rst:428
+msgid "What not to infer"
+msgstr "不能据此推断的内容"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:226
+msgid ""
+"Do not infer policy-serving or training performance from a runtime result. "
+"It contains neither policy inference nor a policy update. Do not compare its"
+" FPS against a rendered, differently sized, or differently instrumented "
+"workload."
+msgstr ""
+"不要从 runtime 结果推断策略服务或训练性能，因为它既不包含策略推理，也不包含策略更新。不要将其 FPS "
+"与包含渲染、规模不同或插桩方式不同的负载比较。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:231
+msgid "Play"
+msgstr "回放"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:236
+msgid ""
+"Use ``play`` to measure a trained policy's rollout throughput or evaluate "
+"its behavior. First run ``training`` to produce a checkpoint for the same RL"
+" library and task, or supply another compatible checkpoint."
+msgstr ""
+"使用 ``play`` 测量已训练策略的轨迹采集吞吐量或评估行为。先运行 ``training`` "
+"，为同一强化学习库和任务生成检查点，或提供其他兼容检查点。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:261
+msgid ""
+"Use ``runtime.collection_fps`` or ``runtime.total_fps`` for policy inference"
+" plus rollout. Both fields describe the same scope in play. Use "
+"``runtime.environment_step_timing.environment_step_fps`` to isolate the "
+"``env.step()`` boundary. ``reward``, ``ep_length``, and ``success_rate`` are"
+" computed only from completed episodes and can be ``null`` when the measured"
+" window completes no episodes or the task reports no success value."
+msgstr ""
+"``runtime.collection_fps`` 或 ``runtime.total_fps`` 用于策略推理加轨迹采集；在 play "
+"中，二者描述同一范围。 ``runtime.environment_step_timing.environment_step_fps`` 单独测量 "
+"``env.step()`` 边界。 ``reward`` 、 ``ep_length`` 和 ``success_rate`` "
+"只根据已完成回合计算；测量窗口中没有完成回合，或任务未报告成功值时，它们可能为 ``null`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:274
+msgid ""
+"``--warmup_steps`` excludes only the first N ``env.step()`` calls from "
+"``runtime.environment_step_timing``. It does not exclude those steps from "
+"collection FPS, total FPS, policy evaluation, episode statistics, or wall "
+"time."
+msgstr ""
+"``--warmup_steps`` 只将前 N 次 ``env.step()`` 调用排除在 "
+"``runtime.environment_step_timing`` 之外，不会将这些步排除在采集 FPS、总 "
+"FPS、策略评估、回合统计或实际耗时之外。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:278
+msgid ""
+"The typed result adds play-specific ``reward``, ``ep_length``, "
+"``success_rate``, and ``checkpoint_path`` fields to the canonical runtime "
+"envelope shown above. Capture the same hardware, software revision, "
+"workload, seed, warm-up, rendering, and power-profile provenance for "
+"comparisons."
+msgstr ""
+"带类型结果在上述标准运行时结果结构上，添加回放专用的 ``reward`` 、 ``ep_length`` 、 ``success_rate`` 和 "
+"``checkpoint_path`` 字段。比较时记录相同的硬件、软件版本、负载、随机种子、预热、渲染及电源配置条件。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:286
+msgid ""
+"Do not interpret play collection FPS as environment-only performance. Absent"
+" episode metrics do not mean zero reward or zero success. A play run does "
+"not measure learning or policy-update throughput."
+msgstr "不要将回放采集 FPS 解释为仅环境的性能。缺少回合指标不表示奖励或成功率为零。回放运行不测量学习或策略更新吞吐量。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:291
+msgid "Training"
+msgstr "训练"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:296
+msgid ""
+"Use ``training`` to measure end-to-end learning throughput and learning "
+"behavior. The run writes the RL library's normal logs and checkpoints. Pass "
+"a compatible saved checkpoint to ``play``."
+msgstr ""
+"使用 ``training`` 测量端到端学习吞吐量和学习行为。运行会写入强化学习库的常规日志与检查点；可将兼容的已保存检查点传给 ``play`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:320
+msgid ""
+"The command prints a throughput, resource, and learning summary when the run"
+" finishes. The JSON output contains the full result."
+msgstr "运行结束后，命令打印吞吐量、资源与学习摘要，完整结果保存在 JSON 输出中。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:323
+msgid ""
+"Use ``runtime.collection_fps`` for rollout collection without policy update,"
+" ``runtime.total_fps`` for collection plus update, and "
+"``runtime.environment_step_timing.environment_step_fps`` for environment-"
+"only stepping. Inspect ``learning.reward`` and ``learning.ep_length`` for "
+"learning behavior instead of reducing training to one throughput value."
+msgstr ""
+"``runtime.collection_fps`` 测量不含策略更新的轨迹采集， ``runtime.total_fps`` 测量采集加更新， "
+"``runtime.environment_step_timing.environment_step_fps`` 测量仅环境的步进。通过 "
+"``learning.reward`` 和 ``learning.ep_length`` 检查学习行为，不要用单一吞吐量值概括训练。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:337
+msgid ""
+"``--warmup_steps`` excludes only the first N ``env.step()`` calls from "
+"``runtime.environment_step_timing``. It does not exclude work from "
+"collection FPS, total FPS, learning curves, policy evaluation, episode "
+"statistics, or wall time."
+msgstr ""
+"``--warmup_steps`` 只将前 N 次 ``env.step()`` 调用排除在 "
+"``runtime.environment_step_timing`` 之外，不会将工作排除在采集 FPS、总 "
+"FPS、学习曲线、策略评估、回合统计或实际耗时之外。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:342
+msgid ""
+"The typed result adds training-specific ``run.framework``, "
+"``run.max_iterations``, ``learning``, ``success_rate``, and "
+"``checkpoint_path`` fields to the canonical runtime envelope shown above. "
+"Capture the same provenance plus the RL library and training-iteration "
+"count."
+msgstr ""
+"带类型结果在上述标准运行时结果结构上，添加训练专用的 ``run.framework`` 、 ``run.max_iterations`` 、 "
+"``learning`` 、 ``success_rate`` 和 ``checkpoint_path`` "
+"字段。除相同来源条件外，还需记录强化学习库和训练迭代次数。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:350
+msgid ""
+"Do not treat a faster environment-step rate as proof of faster end-to-end "
+"training or equivalent learning. Do not compare short training curves as if "
+"they established final policy quality."
+msgstr "更快的环境步进速率，不能证明端到端训练更快或学习效果等价。短期训练曲线也不能证明最终策略质量。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:357
+msgid "Multi-GPU"
+msgstr "多 GPU"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:359
+msgid ""
+"Append ``_multigpu`` to ``startup``, ``runtime``, or ``training`` to run one"
+" benchmark rank per GPU. The :ref:`train_multigpu-command` guide is the "
+"canonical reference for the three workflows, launcher options, multi-node "
+"setup, supported RL libraries, and result interpretation."
+msgstr ""
+"在 ``startup`` 、 ``runtime`` 或 ``training`` 后添加 ``_multigpu`` ，可为每个 GPU "
+"运行一个测试 rank。三种工作流、启动器选项、多节点配置、受支持强化学习库和结果解读，以 :ref:`train_multigpu-command` "
+"指南为准。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:365
+msgid "Startup"
+msgstr "启动"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:370
+msgid ""
+"Use ``startup`` to investigate launch or cold initialization. Faster startup"
+" shortens the edit-run-debug cycle. The workflow separates five cold phases:"
+msgstr "使用 ``startup`` 排查启动或冷初始化。更快的启动可缩短编辑、运行、调试周期。该工作流区分五个冷启动阶段："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:373
+msgid ""
+"``app_launch`` enters the simulation launcher and initializes its runtime."
+msgstr "``app_launch`` 进入仿真启动器并初始化运行时。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:374
+msgid ""
+"``python_imports`` imports launcher, task-registration, and runtime "
+"libraries."
+msgstr "``python_imports`` 导入启动器、任务注册和运行时库。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:375
+msgid "``task_config`` resolves the requested task configuration."
+msgstr "``task_config`` 解析请求的任务配置。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:376
+msgid "``env_creation`` runs ``gym.make()`` and the initial ``env.reset()``."
+msgstr "``env_creation`` 运行 ``gym.make()`` 和初始 ``env.reset()`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:377
+msgid ""
+"``first_step`` runs the first ``env.step()`` and waits for device "
+"completion."
+msgstr "``first_step`` 运行首次 ``env.step()`` 并等待设备完成。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:397
+msgid ""
+"A per-phase wall-time summary is printed to the console when the run "
+"finishes, including the timers that ran during ``env_creation``. The JSON "
+"output holds the full profile."
+msgstr ""
+"运行结束后，控制台打印各阶段的实际耗时摘要，包括 ``env_creation`` 期间运行的计时器。完整分析结果保存在 JSON 输出中。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:401
+msgid ""
+"Read the wall time and attributed functions under each entry in ``phases``."
+msgstr "读取 ``phases`` 各条目下的实际耗时和耗时归属函数。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:408
+msgid ""
+"Pass ``--whitelist_config scripts/benchmarks/startup_whitelist.yaml`` to "
+"select stable ``fnmatch`` patterns for specific phases. Whitelist mode "
+"ignores ``--top_n`` for listed phases. The output still includes unmatched "
+"patterns. Their own time, cumulative time, and call count are zero. This "
+"keeps dashboard keys stable. The command also logs a warning that names each"
+" unmatched pattern."
+msgstr ""
+"传入 ``--whitelist_config scripts/benchmarks/startup_whitelist.yaml`` "
+"，可为特定阶段选择稳定的 ``fnmatch`` 模式。白名单模式对已列出的阶段忽略 ``--top_n`` "
+"。输出仍包含未匹配模式，其自身耗时、累计耗时和调用次数均为零，以保持仪表板键稳定。命令还会记录警告，指出每个未匹配模式。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:414
+msgid ""
+"Patterns match profile labels built relative to each installed package root."
+" In-repo functions have no package prefix "
+"(``utils.assets:_find_asset_dependencies``). External packages keep their "
+"full dotted path (``warp._src.context:launch``)."
+msgstr ""
+"模式匹配的是相对于各已安装包根目录构建的分析标签。仓库内函数没有包前缀，如 "
+"``utils.assets:_find_asset_dependencies`` ；外部包保留完整点分路径，如 "
+"``warp._src.context:launch`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:419
+msgid ""
+"The typed result replaces runtime throughput fields with startup-specific "
+"``config`` and ``phases`` mappings. Each phase reports wall time and "
+"selected profile entries. Capture the same provenance plus cache state, "
+"process order, ``top_n``, and whitelist configuration."
+msgstr ""
+"带类型结果用启动专用的 ``config`` 和 ``phases`` "
+"映射取代运行时吞吐量字段。各阶段报告实际耗时与选定分析条目。除相同来源条件外，还需记录缓存状态、进程顺序、 ``top_n`` 和白名单配置。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:424
+msgid ""
+"Startup deliberately has no warm-up: cold work is the measurement. Run it in"
+" a fresh process and control cache state and execution order when comparing "
+"runs."
+msgstr "启动测量有意不预热，因为冷启动工作本身就是被测对象。使用新进程运行，比较时控制缓存状态和执行顺序。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:430
+msgid ""
+"``cProfile`` is an attribution tool with observer cost. Treat phase wall "
+"times and function attribution as cold-start diagnostics, not as steady-"
+"state throughput or an unperturbed timing trace."
+msgstr ""
+"``cProfile`` 是带有测量开销的耗时归属分析工具。阶段实际耗时和函数归属应视为冷启动诊断，不能视为稳态吞吐量或未受干扰的计时跟踪。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:435
+msgid "Measurement boundaries"
+msgstr "测量边界"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:437
+msgid "The primary rates have these boundaries:"
+msgstr "主要速率指标采用以下边界："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:443
+msgid "Field and workflow"
+msgstr "字段与工作流"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:444
+msgid "Measured scope"
+msgstr "测量范围"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:445
+msgid "``runtime.environment_step_timing.environment_step_fps`` (runtime)"
+msgstr "``runtime.environment_step_timing.environment_step_fps`` （runtime）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:446
+msgid ""
+"``env.step()`` under random actions. Random-action generation is excluded."
+msgstr "随机动作下的 ``env.step()`` ，排除随机动作生成。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:447
+msgid "``runtime.collection_fps`` (play)"
+msgstr "``runtime.collection_fps`` （play）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:448
+msgid "Policy inference and rollout, including ``env.step()``."
+msgstr "策略推理与轨迹采集，包含 ``env.step()`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:449
+msgid "``runtime.environment_step_timing.environment_step_fps`` (play)"
+msgstr "``runtime.environment_step_timing.environment_step_fps`` （play）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:450
+msgid "``env.step()`` only. Policy inference is excluded."
+msgstr "仅 ``env.step()`` ，排除策略推理。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:451
+msgid "``runtime.collection_fps`` (training)"
+msgstr "``runtime.collection_fps`` （training）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:452
+msgid "Rollout collection. Policy update is excluded."
+msgstr "轨迹采集，排除策略更新。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:453
+msgid "``runtime.total_fps`` (training)"
+msgstr "``runtime.total_fps`` （training）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:454
+msgid "Collection and policy update together."
+msgstr "采集与策略更新合计。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:455
+msgid "``runtime.environment_step_timing.environment_step_fps`` (training)"
+msgstr "``runtime.environment_step_timing.environment_step_fps`` （training）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:456
+msgid "``env.step()`` only. Inference and learning are excluded."
+msgstr "仅 ``env.step()`` ，排除推理与学习。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:457
+msgid "``phases.<phase>.total_time_s`` (startup)"
+msgstr "``phases.<phase>.total_time_s`` （startup）"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:458
+msgid "Cold startup work. This is not steady-state throughput."
+msgstr "冷启动工作，不是稳态吞吐量。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:460
+msgid ""
+"Compare runs only when the schema field name and "
+"``runtime.environment_step_timing.measurement_mode`` match. Matching FPS "
+"units alone is not enough."
+msgstr ""
+"只有数据结构字段名和 ``runtime.environment_step_timing.measurement_mode`` 相同，才比较运行结果。仅"
+" FPS 单位相同还不够。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:465
+msgid "Rendered workloads"
+msgstr "带渲染的负载"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:467
+msgid ""
+"Rendering changes the workload. Use a camera task, camera enablement, "
+"renderer, and sensor preset explicitly:"
+msgstr "渲染会改变负载。应显式选择相机任务、启用相机，并指定渲染器和传感器预设："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:484
+msgid ""
+"Selecting ``summary`` enables the available Kit physics, rendering, "
+"application, and GPU frame-time recorders. Some recorders may be unavailable"
+" in a particular installation or backend combination. The camera task, 1024 "
+"environments, RTX renderer, and RGB preset make this a different workload "
+"from the headless ``Isaac-Cartpole-Direct`` walkthrough. Do not compare "
+"their FPS as a backend-only delta."
+msgstr ""
+"选择 ``summary`` 会启用可用的 Kit 物理、渲染、应用和 GPU "
+"帧耗时记录器。特定安装或后端组合中，某些记录器可能不可用。相机任务、1024 个环境、RTX 渲染器与 RGB 预设，使本负载不同于前文无界面的 "
+"``Isaac-Cartpole-Direct`` 。不要将二者 FPS 差异解释为仅由后端产生。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:492
+msgid "Physics backends"
+msgstr "物理后端"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:494
+msgid "Keep the command fixed and substitute one physics selector:"
+msgstr "保持命令不变，只替换物理选择项："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:502
+msgid ""
+"For a backend comparison, keep the task, environment count, seed, presets, "
+"renderer, warm-up, measured window, and measurement mode identical. A "
+"renderer or task that is valid for one backend may be incompatible with "
+"another. Choose a common supported workload before collecting the "
+"comparison."
+msgstr ""
+"比较后端时，保持任务、环境数、随机种子、预设、渲染器、预热、测量窗口和测量模式相同。一个后端可用的渲染器或任务，可能与另一个不兼容。采集比较数据前，先选择共同支持的负载。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:508
+msgid "Read the output"
+msgstr "读取输出"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:510
+msgid ""
+"``--benchmark_formatter`` accepts a comma-separated list. The formatters "
+"serve different consumers:"
+msgstr "``--benchmark_formatter`` 接受逗号分隔的列表，各格式化器面向不同使用方："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:513
+msgid ""
+"``schema`` writes the stable typed bundle. Use it for analysis, comparison, "
+"and archival evidence."
+msgstr "``schema`` 写入稳定的带类型结果包，用于分析、比较和归档依据。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:515
+msgid ""
+"``summary`` prints a terminal report and also writes flat metrics JSON. It "
+"enables available Kit frame-time recorders for runtime, play, and training."
+msgstr ""
+"``summary`` 打印终端报告，并写入扁平指标 JSON；在 runtime、play 和 training 中启用可用的 Kit 帧耗时记录器。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:517
+msgid "``json`` writes all legacy flat phases, measurements, and metadata."
+msgstr "``json`` 写入全部传统扁平阶段、测量和元数据。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:518
+msgid ""
+"``osmo`` writes per-phase, single-value KPI documents for Osmo ingestion."
+msgstr "``osmo`` 写入各阶段的单值 KPI 文档，供 Osmo 接收。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:519
+msgid ""
+"``omniperf`` writes phase-grouped KPI JSON for performance tracking and "
+"database upload."
+msgstr "``omniperf`` 写入按阶段分组的 KPI JSON，用于性能跟踪和数据库上传。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:522
+msgid ""
+"Use ``schema,summary`` for interactive runs. These ``jq`` queries address "
+"the typed schema paths:"
+msgstr "交互运行使用 ``schema,summary`` 。以下 ``jq`` 查询对应带类型数据结构的路径："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:531
+msgid ""
+"With multiple formatters, filenames include ``_summary`` and ``_schema`` for"
+" the summary and typed bundle respectively."
+msgstr "使用多个格式化器时，摘要文件名包含 ``_summary`` ，带类型结果包文件名包含 ``_schema`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:535
+msgid "Evidence levels"
+msgstr "证据级别"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:537
+msgid "Choose the evidence level before collecting data:"
+msgstr "采集数据前，先确定所需证据级别："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:539
+msgid ""
+"**One-run exploration:** use one controlled run to check direction, find a "
+"bottleneck, or validate the benchmark setup. Do not publish a performance "
+"claim from it."
+msgstr "**单次探索：** 通过一次受控运行判断方向、定位瓶颈或验证测试配置，不能据此公开作出性能结论。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:542
+msgid ""
+"**Gross regression screening:** use at least three paired independent "
+"processes with rotated seeds and execution order. Pair baseline and "
+"candidate runs collected under the same conditions."
+msgstr "**明显性能退化的初筛：** 至少使用三组成对的独立进程，轮换随机种子和执行顺序。在相同条件下采集并配对基准与候选运行。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:545
+msgid ""
+"**Performance claims:** use at least three independent processes and longer,"
+" repeated training runs. The runs must cover the behavior being claimed. A "
+"short throughput probe is not enough."
+msgstr "**性能结论：** 至少使用三个独立进程，并进行更长、重复的训练运行。运行必须覆盖结论所描述的行为，短时吞吐量探测并不足够。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:550
+msgid "Compare runs"
+msgstr "比较运行结果"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:552
+msgid ""
+"Report individual run values, paired deltas, and dispersion or confidence "
+"intervals. Label a result inconclusive when the interval for the delta "
+"crosses zero. Avoid reporting only the best run or only an aggregate."
+msgstr "报告各次运行值、成对差值及离散程度或置信区间。差值区间跨过零时，应注明结果无法确定。避免只报告最好的一次，或只报告汇总值。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:556
+msgid "Control background activity. Record any changes alongside each run."
+msgstr "控制后台活动，并记录每次运行时的变化。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:558
+msgid "Every advertised result must include this provenance:"
+msgstr "所有对外公布的结果都必须包含以下来源条件："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:560
+msgid "Required provenance"
+msgstr "必需的来源条件"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:564
+msgid "Group"
+msgstr "类别"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:565
+msgid "Required fields"
+msgstr "必需字段"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:566
+msgid "Hardware"
+msgstr "硬件"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:567
+msgid "CPU model, physical core count, RAM, and GPU."
+msgstr "CPU 型号、物理核心数、RAM 和 GPU。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:568
+msgid "Software"
+msgstr "软件"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:569
+msgid "OS, physics backend, software versions, and revision."
+msgstr "操作系统、物理后端、软件版本和代码版本。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:570
+msgid "Workload"
+msgstr "负载"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:571
+msgid ""
+"Task, environment count, seed, warm-up, measured window, and rendering "
+"configuration."
+msgstr "任务、环境数量、随机种子、预热、测量窗口和渲染配置。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:573
+msgid "Run conditions"
+msgstr "运行条件"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:574
+msgid "Power profile and execution order."
+msgstr "电源配置与执行顺序。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:576
+msgid ""
+"Performance depends on the full CPU, GPU, software, and workload "
+"configuration. It is not a property of the GPU alone. Process CPU "
+"utilization is summed across cores, so it can exceed 100%."
+msgstr "性能取决于完整的 CPU、GPU、软件与负载配置，不是 GPU 单独的属性。进程 CPU 利用率按核心求和，因此可超过 100%。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:581
+msgid "Synchronized-step diagnostics"
+msgstr "同步步进诊断"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:583
+msgid "Runtime, play, and training accept this optional diagnostic flag:"
+msgstr "Runtime、play 和 training 接受以下可选诊断标志："
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:589
+msgid ""
+"It changes ``measurement_mode`` from ``host_return`` to "
+"``serialized_synchronized``. The diagnostic synchronizes before environment "
+"and simulation boundaries. It also serializes work that normally runs "
+"asynchronously and can greatly slow Newton. Every timing and rate in the "
+"instrumented workflow uses this changed schedule. Do not report these "
+"results as throughput."
+msgstr ""
+"它将 ``measurement_mode`` 从 ``host_return`` 改为 ``serialized_synchronized`` "
+"。诊断在环境与仿真边界前执行同步，也会将通常异步运行的工作串行化，可能大幅降低 Newton "
+"速度。带插桩工作流中的所有耗时和速率，都使用改变后的调度方式，不应作为吞吐量报告。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:596
+msgid ""
+"The diagnostic partitions synchronized environment-step time into simulation"
+" time and an **outside-simulation remainder**. That remainder contains "
+"required action, actuator, state, manager, reset, wrapper, and "
+"synchronization work. It is an arithmetic remainder for the instrumented "
+"schedule, not removable framework overhead. Never subtract it to predict "
+"attainable throughput."
+msgstr ""
+"诊断将同步的环境步时间分为仿真时间和 **仿真之外的剩余时间** "
+"。后者包含必要的动作、执行器、状态、管理器、重置、包装器和同步工作。它只是插桩调度下通过减法得到的剩余量，不是可移除的框架开销。绝不能减去它来预测可达到的吞吐量。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:603
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:605
+msgid "Missing checkpoint"
+msgstr "缺少检查点"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:606
+msgid ""
+"Run training first, or pass a checkpoint created by the selected RL library "
+"for the same task and compatible agent configuration. Check the path and the"
+" ``--rl_library`` selection."
+msgstr "先运行训练，或传入由所选强化学习库为同一任务及兼容智能体配置生成的检查点。检查路径和 ``--rl_library`` 选择。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:610
+msgid "Incomplete play episodes"
+msgstr "回放回合未完成"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:611
+msgid ""
+"Increase ``--num_steps``. Reward, episode length, and success aggregates "
+"require completed episodes and may otherwise be ``null``."
+msgstr "增加 ``--num_steps`` 。奖励、回合长度和成功率汇总需要已完成回合，否则可能为 ``null`` 。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:614
+msgid "Invalid counts"
+msgstr "无效计数"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:615
+msgid ""
+"``--num_steps`` and an explicitly supplied ``--max_iterations`` must be "
+"greater than zero. ``--warmup_steps`` must be non-negative."
+msgstr ""
+"``--num_steps`` 和显式提供的 ``--max_iterations`` 必须大于零； ``--warmup_steps`` 必须非负。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:618
+msgid "Missing resource or frame-time metrics"
+msgstr "缺少资源或帧耗时指标"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:619
+msgid ""
+"Very short runs may finish before the periodic resource monitor samples "
+"enough data. Frame-time metrics require the corresponding Kit recorder to be"
+" available and are enabled by ``summary`` or ``omniperf``."
+msgstr ""
+"非常短的运行可能在周期性资源监视器采集足够样本前结束。帧耗时指标需要对应 Kit 记录器可用，并由 ``summary`` 或 ``omniperf``"
+" 启用。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:623
+msgid "Incompatible renderer"
+msgstr "渲染器不兼容"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:624
+msgid ""
+"Check that the physics backend, renderer, camera task, sensor preset, and "
+"visualizer combination is supported. Use an identical common configuration "
+"for comparisons."
+msgstr "检查物理后端、渲染器、相机任务、传感器预设和可视化器组合是否受支持。比较时使用相同的共同配置。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:628
+msgid "Mismatched measurement modes"
+msgstr "测量模式不一致"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:629
+msgid ""
+"Compare ``host_return`` only with ``host_return`` and "
+"``serialized_synchronized`` only with the same diagnostic mode. Also verify "
+"that the schema field names match."
+msgstr ""
+"``host_return`` 只能与 ``host_return`` 比较， ``serialized_synchronized`` "
+"只能与相同诊断模式比较，还需确认数据结构字段名相同。"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:633
+msgid "Foreign GPU workloads"
+msgstr "其他 GPU 负载干扰"
+
+#: source/developer-tools/benchmarking/run_benchmarks.rst:634
+msgid ""
+"Stop unrelated GPU jobs and background activity, then repeat the paired "
+"runs. Record execution order, power mode, and background-activity changes so"
+" thermal or contention effects are visible."
+msgstr "停止无关 GPU 作业与后台活动，再重复成对运行。记录执行顺序、电源模式和后台活动变化，以便发现温度或资源争用影响。"

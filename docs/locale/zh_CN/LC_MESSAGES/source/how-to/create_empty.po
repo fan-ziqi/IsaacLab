@@ -1,0 +1,280 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/create_empty.rst:4
+msgid "Creating an empty scene"
+msgstr "创建一个空场景"
+
+#: source/how-to/create_empty.rst:8
+msgid ""
+"This tutorial shows how to launch and control Isaac Sim simulator from a "
+"standalone Python script. It sets up an empty scene in Isaac Lab and "
+"introduces the two main entry points used in the framework, the "
+":func:`app.launch_simulation` context manager and the "
+":class:`sim.SimulationContext` class."
+msgstr ""
+"本教程介绍如何通过独立 Python 脚本启动和控制 Isaac Sim 仿真器。我们将在 Isaac Lab 中搭建空场景，并介绍框架的两个主要入口："
+" :func:`app.launch_simulation` 上下文管理器和 :class:`sim.SimulationContext` 类。"
+
+#: source/how-to/create_empty.rst:12
+msgid ""
+"Please review `Isaac Sim Workflows`_ prior to beginning this tutorial to get"
+" an initial understanding of working with the simulator."
+msgstr "请在开始本教程之前查看 `Isaac Sim 工作流`_ ，以获得对与仿真器一起工作的初步了解。"
+
+#: source/how-to/create_empty.rst:17
+msgid "The Code"
+msgstr "代码"
+
+#: source/how-to/create_empty.rst:19
+msgid ""
+"The tutorial corresponds to the ``create_empty.py`` script in the "
+"``scripts/tutorials/00_sim`` directory."
+msgstr "本教程对应于 ``scripts/tutorials/00_sim`` 目录中的 ``create_empty.py`` 脚本。"
+
+#: source/how-to/create_empty.rst:0
+msgid "Code for create_empty.py"
+msgstr "create_empty.py 的代码"
+
+#: source/how-to/create_empty.rst:31
+msgid "The Code Explained"
+msgstr "代码解释"
+
+#: source/how-to/create_empty.rst:34
+msgid "Parsing the command-line arguments"
+msgstr "解析命令行参数"
+
+#: source/how-to/create_empty.rst:36
+msgid ""
+"A standalone script starts by parsing its command-line arguments. The "
+"simulator itself is not started yet: it is launched later, once we know "
+"which runtime the simulation configuration needs."
+msgstr "独立脚本首先解析命令行参数。此时尚未启动仿真器；确定仿真配置需要哪种运行时后，再启动它。"
+
+#: source/how-to/create_empty.rst:39
+msgid ""
+"The launch-related command-line options are added to a user-defined "
+":class:`argparse.ArgumentParser` by passing the parser instance to the "
+":func:`app.add_launcher_args` function. It appends options such as "
+"``--device`` to choose the simulation device, ``--visualizer`` (or "
+"``--viz``) to open a visualizer window, and ``--livestream`` to stream the "
+"simulator. These options are later handed to :func:`app.launch_simulation`."
+msgstr ""
+"将用户定义的 :class:`argparse.ArgumentParser` 实例传给 :func:`app.add_launcher_args` "
+"，即可添加启动相关的命令行选项，包括选择仿真设备的 ``--device`` 、打开可视化窗口的 ``--visualizer`` （或 "
+"``--viz`` ），以及启用仿真器串流的 ``--livestream`` 。这些选项随后传给 "
+":func:`app.launch_simulation` 。"
+
+#: source/how-to/create_empty.rst:51
+msgid "Importing python modules"
+msgstr "导入 python 模块"
+
+#: source/how-to/create_empty.rst:53
+msgid ""
+"Isaac Lab configuration classes and utilities can be imported before the "
+"simulator is launched. Modules that need the running simulator, such as "
+"Isaac Sim's ``omni.*`` and ``isaacsim.*`` modules or Isaac Lab classes that "
+"work on the USD stage, are imported later, after the simulator has been "
+"launched, as shown in the following tutorials. Here we import the following "
+"module:"
+msgstr ""
+"Isaac Lab 配置类和工具可在仿真器启动前导入。需要仿真器运行的模块，例如 Isaac Sim 的 ``omni.*`` 、 "
+"``isaacsim.*`` 模块，以及操作 USD 舞台的 Isaac Lab 类，则要在启动后导入，后续教程会展示这种用法。这里导入以下模块："
+
+#: source/how-to/create_empty.rst:58
+msgid ""
+":mod:`isaaclab.sim`: A sub-package in Isaac Lab for all the core simulator-"
+"related operations."
+msgstr ":mod:`isaaclab.sim`:Isaac Lab 中用于所有核心仿真器相关操作的子包。"
+
+#: source/how-to/create_empty.rst:67
+msgid "Configuring the simulation context"
+msgstr "配置仿真上下文"
+
+#: source/how-to/create_empty.rst:69
+msgid ""
+"When launching the simulator from a standalone script, the user has complete"
+" control over playing, pausing and stepping the simulator. All these "
+"operations are handled through the **simulation context**. It takes care of "
+"various timeline events and also configures the physics scene for "
+"simulation."
+msgstr ""
+"当从独立脚本启动仿真器时，用户可以完全控制仿真器的播放、暂停和步进。所有这些操作都通过 **仿真上下文** "
+"处理。它负责各种时间轴事件，并为仿真配置物理场景。"
+
+#: source/how-to/create_empty.rst:74
+msgid ""
+"In Isaac Lab, the :class:`sim.SimulationContext` class wraps Isaac Sim's "
+"simulation stack to allow configuring the simulation through Python's "
+"``dataclass`` object and handle certain intricacies of the simulation "
+"stepping."
+msgstr ""
+"Isaac Lab 的 :class:`sim.SimulationContext` 封装了 Isaac Sim 的仿真栈，可以通过 Python "
+"``dataclass`` 对象配置仿真，并处理仿真步进中的一些细节。"
+
+#: source/how-to/create_empty.rst:78
+msgid ""
+"For this tutorial, we set the physics and rendering time step to 0.01 "
+"seconds. This is done by passing these quantities to the "
+":class:`sim.SimulationCfg`, which is then used to create an instance of the "
+"simulation context."
+msgstr ""
+"对于本教程，我们将将物理和渲染时间步长设置为 0.01 秒。通过将这些数量传递给 :class:`sim.SimulationCfg` "
+"，然后用它创建仿真上下文的实例。"
+
+#: source/how-to/create_empty.rst:82
+msgid ""
+"Before the simulation context can be created, the simulator runtime must be "
+"launched. This is done with the :func:`app.launch_simulation` context "
+"manager. It inspects the given configuration together with the parsed "
+"command-line arguments and starts only the runtime that they need: the "
+"default PhysX physics backend runs inside Isaac Sim (Kit), so Isaac Sim is "
+"started here, while a kitless backend such as Newton needs no Isaac Sim at "
+"all. The simulation runs headless unless a visualizer is requested, for "
+"example with ``--viz kit``. Everything that uses the simulator runs inside "
+"the ``with`` block, and the runtime is closed automatically when the block "
+"exits."
+msgstr ""
+"创建仿真上下文前，必须先启动仿真器运行时。 :func:`app.launch_simulation` "
+"上下文管理器会结合给定配置和已解析的命令行参数，只启动实际需要的运行时。默认 PhysX 物理后端运行在 Isaac Sim（Kit）内，因此这里会启动"
+" Isaac Sim；Newton 等不依赖 Kit 的后端则完全不需要 Isaac Sim。除非请求可视化器，例如指定 ``--viz kit`` "
+"，否则仿真以无界面模式运行。所有使用仿真器的代码均放在 ``with`` 块内，离开该代码块时会自动关闭运行时。"
+
+#: source/how-to/create_empty.rst:96
+msgid ""
+"Following the creation of the simulation context, we have only configured "
+"the physics acting on the simulated scene. This includes the device to use "
+"for simulation, the gravity vector, and other advanced solver parameters. "
+"There are now two main steps remaining to run the simulation:"
+msgstr ""
+"创建仿真上下文后，我们只配置了作用于仿真场景的物理。这包括用于仿真的设备、重力矢量和其他高级求解器参数。现在还有两个主要步骤剩下来运行仿真: "
+
+#: source/how-to/create_empty.rst:100
+msgid ""
+"Designing the simulation scene: Adding sensors, robots and other simulated "
+"objects"
+msgstr "设计仿真场景: 添加传感器、机器人和其他仿真对象"
+
+#: source/how-to/create_empty.rst:101
+msgid ""
+"Running the simulation loop: Stepping the simulator, and setting and getting"
+" data from the simulator"
+msgstr "运行仿真循环: 使仿真器进行步进，并从仿真器中设置和获取数据"
+
+#: source/how-to/create_empty.rst:103
+msgid ""
+"In this tutorial, we look at Step 2 first for an empty scene to focus on the"
+" simulation control first. In the following tutorials, we will look into "
+"Step 1 and working with simulation handles for interacting with the "
+"simulator."
+msgstr ""
+"在本教程中，我们首先看 Step 2 的空场景，以便首先关注仿真控制。在以下教程中，我们将深入研究 Step 1 和使用仿真处理程序与仿真器进行交互。"
+
+#: source/how-to/create_empty.rst:108
+msgid "Running the simulation"
+msgstr "运行仿真"
+
+#: source/how-to/create_empty.rst:110
+msgid ""
+"The first thing, after setting up the simulation scene, is to call the "
+":meth:`sim.SimulationContext.reset` method. This method plays the timeline "
+"and initializes the physics handles in the simulator. It must always be "
+"called the first time before stepping the simulator. Otherwise, the "
+"simulation handles are not initialized properly."
+msgstr ""
+"在设置仿真场景之后，第一件事是调用 :meth:`sim.SimulationContext.reset` "
+"方法。此方法播放时间轴并初始化仿真器中的物理处理。在第一次步进仿真器之前必须始终调用此方法，否则仿真处理不会正确初始化。"
+
+#: source/how-to/create_empty.rst:117
+msgid ""
+":meth:`sim.SimulationContext.reset` is different from "
+":meth:`sim.SimulationContext.play` method as the latter only plays the "
+"timeline and does not initializes the physics handles."
+msgstr ""
+":meth:`sim.SimulationContext.reset` 不同于 :meth:`sim.SimulationContext.play` "
+"方法，因为后者只播放时间轴而不初始化物理处理。"
+
+#: source/how-to/create_empty.rst:120
+msgid ""
+"After playing the simulation timeline, we set up a simple simulation loop "
+"where the simulator is stepped repeatedly. The loop condition "
+":meth:`sim.SimulationContext.is_running` keeps it running forever when no "
+"visualizer is open, and until the last visualizer window is closed "
+"otherwise. The method :meth:`sim.SimulationContext.step` takes in as "
+"argument :attr:`render`, which dictates whether the step includes updating "
+"the rendering-related events or not. By default, this flag is set to True."
+msgstr ""
+"启动仿真时间轴后，我们建立一个简单的仿真循环，反复推进仿真器。没有打开可视化器时，循环条件 "
+":meth:`sim.SimulationContext.is_running` 会让循环持续运行；否则循环在最后一个可视化窗口关闭时结束。 "
+":meth:`sim.SimulationContext.step` 接受 :attr:`render` "
+"参数，决定这一步是否包含渲染相关事件的更新。默认值为 True。"
+
+#: source/how-to/create_empty.rst:132
+msgid "Exiting the simulation"
+msgstr "退出仿真"
+
+#: source/how-to/create_empty.rst:134
+msgid ""
+"There is no explicit shutdown call. When the simulation loop ends and the "
+"``with launch_simulation(...)`` block exits, the simulator runtime is "
+"stopped and its window is closed."
+msgstr ""
+"无需显式调用关闭函数。仿真循环结束、离开 ``with launch_simulation(...)`` 块时，仿真器运行时会停止，窗口也会关闭。"
+
+#: source/how-to/create_empty.rst:139
+msgid "The Code Execution"
+msgstr "代码执行"
+
+#: source/how-to/create_empty.rst:141
+msgid ""
+"Now that we have gone through the code, let's run the script and see the "
+"result:"
+msgstr "现在我们已经浏览了代码，让我们运行脚本并查看结果: "
+
+#: source/how-to/create_empty.rst:148
+msgid ""
+"The simulation should be playing, and the stage should be rendering. To stop"
+" the simulation, you can either close the window, or press ``Ctrl+C`` in the"
+" terminal."
+msgstr "仿真应该正在进行，并且场景应该正在渲染。要停止仿真，可以关闭窗口或在终端中按下 ``Ctrl+C`` 。"
+
+#: source/how-to/create_empty.rst:151
+msgid "result of create_empty.py"
+msgstr "create_empty.py 的结果"
+
+#: source/how-to/create_empty.rst:156
+msgid ""
+"Passing ``--help`` to the above script will show the different command-line "
+"arguments added earlier by the :func:`app.add_launcher_args` function. To "
+"run the script headless, omit the visualizer selection:"
+msgstr ""
+"向上述脚本传入 ``--help`` ，可查看之前由 :func:`app.add_launcher_args` "
+"添加的各种命令行参数。以无界面模式运行时，省略可视化器选项："
+
+#: source/how-to/create_empty.rst:164
+msgid ""
+"If a config or command selects a visualizer, force-disable all visualizers "
+"with ``--visualizer none`` or ``--viz none``."
+msgstr "如果配置或命令已选择可视化器，可用 ``--visualizer none`` 或 ``--viz none`` 强制禁用所有可视化器。"
+
+#: source/how-to/create_empty.rst:167
+msgid ""
+"Now that we have a basic understanding of how to run a simulation, let's "
+"move on to the following tutorial where we will learn how to add assets to "
+"the stage."
+msgstr "现在我们对如何运行仿真有了基本的了解，让我们转到下一个教程，在那里我们将学习如何将资产添加到场景。"

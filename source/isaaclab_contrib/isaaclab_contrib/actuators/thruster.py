@@ -157,10 +157,7 @@ class Thruster:
         if env_ids is None:
             env_ids = slice(None)
 
-        if isinstance(env_ids, slice):
-            num_resets = self._num_envs
-        else:
-            num_resets = len(env_ids)
+        num_resets = len(range(self._num_envs)[env_ids]) if isinstance(env_ids, slice) else len(env_ids)
 
         self.tau_inc_s[env_ids] = math_utils.sample_uniform(
             *self.tau_inc_r,
@@ -188,9 +185,9 @@ class Thruster:
 
     def rk4_integration(self, error: torch.Tensor, mixing_factor: torch.Tensor):
         k1 = self.motor_model_rate(error, mixing_factor)
-        k2 = self.motor_model_rate(error + 0.5 * self.cfg.dt * k1, mixing_factor)
-        k3 = self.motor_model_rate(error + 0.5 * self.cfg.dt * k2, mixing_factor)
-        k4 = self.motor_model_rate(error + self.cfg.dt * k3, mixing_factor)
+        k2 = self.motor_model_rate(error - 0.5 * self.cfg.dt * k1, mixing_factor)
+        k3 = self.motor_model_rate(error - 0.5 * self.cfg.dt * k2, mixing_factor)
+        k4 = self.motor_model_rate(error - self.cfg.dt * k3, mixing_factor)
         return (self.cfg.dt / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     def discrete_mixing_factor(self, time_constant: torch.Tensor):

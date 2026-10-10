@@ -7,13 +7,21 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
+DOCS_DEFAULT_REF ?= v3.0.0-EA
 
 .PHONY: multi-docs
 multi-docs:
-	@sphinx-multiversion "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
-	@cp _redirect/index.html $(BUILDDIR)/index.html
+	@sphinx-multiversion "$(SOURCEDIR)" "$(BUILDDIR)" --jobs=auto $(SPHINXOPTS)
+	@test -f "$(BUILDDIR)/$(DOCS_DEFAULT_REF)/index.html" || \
+		(echo "Default docs ref '$(DOCS_DEFAULT_REF)' was not built" && exit 1)
+	@sed 's|url=\./[^"]*/index.html|url=./$(DOCS_DEFAULT_REF)/index.html|' _redirect/index.html > $(BUILDDIR)/index.html
 
 .PHONY: current-docs
 current-docs:
 	@rm -rf "$(BUILDDIR)/current"
-	@$(SPHINXBUILD) -W --keep-going "$(SOURCEDIR)" "$(BUILDDIR)/current" $(SPHINXOPTS)
+	@$(SPHINXBUILD) -W --keep-going -j auto "$(SOURCEDIR)" "$(BUILDDIR)/current" $(SPHINXOPTS)
+
+# Keep the preview cache separate from the clean PR/CI build.
+.PHONY: incremental-docs
+incremental-docs:
+	@$(SPHINXBUILD) -W --keep-going -j auto "$(SOURCEDIR)" "$(BUILDDIR)/incremental" $(SPHINXOPTS)

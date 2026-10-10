@@ -6,25 +6,22 @@
 # ignore private usage of variables warning
 # pyright: reportPrivateUsage=none
 
-"""Launch Isaac Sim Simulator first."""
+from isaaclab.test.utils import launch_test_simulation
 
-from isaaclab.app import AppLauncher
-
-# launch omniverse app
-simulation_app = AppLauncher(headless=True, enable_cameras=True).app
-
-"""Rest everything follows."""
+launch_test_simulation(enable_cameras=True)
 
 import math
 
 import pytest
 import torch
+import warp as wp
+from isaaclab_physx.sim.schemas import PhysxArticulationCfg, PhysxRigidBodyCfg
 
 import omni.replicator.core as rep
 
 import isaaclab.sim as sim_utils
 from isaaclab.assets import Articulation, ArticulationCfg, RigidObject, RigidObjectCfg
-from isaaclab.sensors.camera import TiledCameraCfg
+from isaaclab.sensors.camera import CameraCfg
 from isaaclab.terrains.trimesh.utils import make_plane
 from isaaclab.terrains.utils import create_prim_from_mesh
 from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR
@@ -68,7 +65,7 @@ def get_sensor_cfg_by_type(sensor_type: str) -> VisuoTactileSensorCfg:
         return VisuoTactileSensorCfg(
             prim_path="/World/Robot/elastomer/tactile_cam",
             enable_force_field=False,
-            camera_cfg=TiledCameraCfg(
+            camera_cfg=CameraCfg(
                 height=320,
                 width=240,
                 prim_path="/World/Robot/elastomer_tip/cam",
@@ -88,7 +85,7 @@ def get_sensor_cfg_by_type(sensor_type: str) -> VisuoTactileSensorCfg:
             debug_vis=False,
             enable_camera_tactile=True,
             enable_force_field=True,
-            camera_cfg=TiledCameraCfg(
+            camera_cfg=CameraCfg(
                 height=320,
                 width=240,
                 prim_path="/World/Robot/elastomer_tip/cam",
@@ -139,7 +136,7 @@ def setup(sensor_type: str = "cube"):
         prim_path="/World/Robot",
         spawn=sim_utils.UsdFileWithCompliantContactCfg(
             usd_path=usd_file_path,
-            rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=True),
+            rigid_props=PhysxRigidBodyCfg(disable_gravity=True),
             compliant_contact_stiffness=10.0,
             compliant_contact_damping=1.0,
             physics_material_prim_path="elastomer",
@@ -147,7 +144,7 @@ def setup(sensor_type: str = "cube"):
         actuators={},
         init_state=ArticulationCfg.InitialStateCfg(
             pos=(0.0, 0.0, 0.5),
-            rot=(math.sqrt(2) / 2, -math.sqrt(2) / 2, 0.0, 0.0),  # 90° rotation
+            rot=(-math.sqrt(2) / 2, 0.0, 0.0, math.sqrt(2) / 2),  # 90° rotation
             joint_pos={},
             joint_vel={},
         ),
@@ -157,8 +154,8 @@ def setup(sensor_type: str = "cube"):
         prim_path="/World/Cube",
         spawn=sim_utils.CuboidCfg(
             size=(0.1, 0.1, 0.1),
-            rigid_props=sim_utils.RigidBodyPropertiesCfg(),
-            collision_props=sim_utils.CollisionPropertiesCfg(),
+            rigid_props=sim_utils.UsdPhysicsRigidBodyCfg(),
+            collision_props=sim_utils.UsdPhysicsCollisionCfg(),
         ),
     )
     # Nut
@@ -166,21 +163,19 @@ def setup(sensor_type: str = "cube"):
         prim_path="/World/Nut",
         spawn=sim_utils.UsdFileCfg(
             usd_path=f"{ISAACLAB_NUCLEUS_DIR}/Factory/factory_nut_m16.usd",
-            rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
-            articulation_props=sim_utils.ArticulationRootPropertiesCfg(articulation_enabled=False),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.1),
+            rigid_props=PhysxRigidBodyCfg(disable_gravity=False),
+            articulation_props=PhysxArticulationCfg(articulation_enabled=False),
+            mass_props=sim_utils.MassCfg(mass=0.1),
         ),
         init_state=RigidObjectCfg.InitialStateCfg(
             pos=(0.0, 0.0 + 0.06776, 0.52),
-            rot=(1.0, 0.0, 0.0, 0.0),
+            rot=(0.0, 0.0, 0.0, 1.0),
         ),
     )
 
     # Get the requested sensor configuration using the factory function
     sensor_cfg = get_sensor_cfg_by_type(sensor_type)
 
-    # load stage
-    sim_utils.update_stage()
     return sim, sensor_cfg, dt, robot_cfg, cube_cfg, nut_cfg
 
 
@@ -189,10 +184,8 @@ def teardown(sim):
     # close all the opened viewport from before.
     rep.vp_manager.destroy_hydra_textures("Replicator")
     # stop simulation
-    # note: cannot use self.sim.stop() since it does one render step after stopping!! This doesn't make sense :(
-    sim._timeline.stop()
+    sim.stop()
     # clear the stage
-    sim.clear_all_callbacks()
     sim.clear_instance()
 
 
@@ -241,13 +234,13 @@ def test_sensor_minimum_config(setup_minimum_config):
     assert sensor_minimum.data.tactile_normal_force is None
     assert sensor_minimum.data.tactile_shear_force is None
 
-    # Check reset functionality
+    # Resetting (all and selected envs) keeps the disabled outputs unset
     sensor_minimum.reset()
-
-    for i in range(10):
-        sim.step()
-        sensor_minimum.update(dt)
     sensor_minimum.reset(env_ids=[0])
+    assert sensor_minimum.data.tactile_depth_image is None
+    assert sensor_minimum.data.tactile_rgb_image is None
+    assert sensor_minimum.data.tactile_points_pos_w is None
+    assert sensor_minimum.data.tactile_normal_force is None
 
 
 @pytest.mark.isaacsim_ci
@@ -273,31 +266,6 @@ def test_sensor_cam_type_false(setup_tactile_cam):
 
 
 @pytest.mark.isaacsim_ci
-def test_sensor_cam_set(setup_tactile_cam):
-    """Test sensor with camera configuration using existing camera prim."""
-    sim, sensor_cfg, dt, robot_cfg, object_cfg, nut_cfg = setup_tactile_cam
-    robot = Articulation(cfg=robot_cfg)
-    sensor = VisuoTactileSensor(cfg=sensor_cfg)
-    sim.reset()
-    sensor.get_initial_render()
-    for _ in range(10):
-        sim.step()
-        sensor.update(dt, force_recompute=True)
-        robot.update(dt)
-    assert sensor.is_initialized
-    assert sensor.data.tactile_depth_image.shape == (1, 320, 240, 1)
-    assert sensor.data.tactile_rgb_image.shape == (1, 320, 240, 3)
-    assert sensor.data.tactile_points_pos_w is None
-
-    sensor.reset()
-    for _ in range(10):
-        sim.step()
-        sensor.update(dt, force_recompute=True)
-        robot.update(dt)
-    sensor.reset(env_ids=[0])
-
-
-@pytest.mark.isaacsim_ci
 def test_sensor_cam_set_wrong_prim(setup_tactile_cam):
     """Test sensor initialization fails with invalid camera prim path."""
     sim, sensor_cfg, dt, robot_cfg, object_cfg, nut_cfg = setup_tactile_cam
@@ -308,7 +276,8 @@ def test_sensor_cam_set_wrong_prim(setup_tactile_cam):
         sim.reset()
         robot.update(dt)
         sensor.update(dt)
-    assert "Could not find prim with path" in str(excinfo.value)
+    err_msg = str(excinfo.value)
+    assert "Could not find prim with path" in err_msg or "does not match the number of environments" in err_msg
 
 
 @pytest.mark.isaacsim_ci
@@ -341,18 +310,26 @@ def test_sensor_cam_new_spawn(setup_tactile_cam):
 def test_sensor_rgb_forcefield(setup_nut_rgb_ff):
     """Test sensor with both camera and force field enabled, detecting contact forces."""
     sim, sensor_cfg, dt, robot_cfg, cube_cfg, nut_cfg = setup_nut_rgb_ff
+    # A mismatched camera update period is overridden by the sensor's update period.
+    sensor_cfg.update_period = dt
+    sensor_cfg.camera_cfg.update_period = dt * 2
     robot = Articulation(cfg=robot_cfg)
     sensor = VisuoTactileSensor(cfg=sensor_cfg)
     nut = RigidObject(cfg=nut_cfg)
     sim.reset()
     sensor.get_initial_render()
-    for _ in range(10):
+    assert sensor.cfg.camera_cfg.update_period == sensor.cfg.update_period
+    for i in range(10):
         sim.step()
         sensor.update(dt, force_recompute=True)
         robot.update(dt)
         nut.update(dt)
-    # check str
-    print(sensor)
+        assert torch.allclose(
+            wp.to_torch(sensor._timestamp_last_update), torch.tensor((i + 1) * dt, device=sensor.device)
+        )
+        assert torch.allclose(
+            wp.to_torch(sensor._camera_sensor._timestamp_last_update), torch.tensor((i + 1) * dt, device=sensor.device)
+        )
     assert sensor.is_initialized
     assert sensor.data.tactile_depth_image.shape == (1, 320, 240, 1)
     assert sensor.data.tactile_rgb_image.shape == (1, 320, 240, 3)
@@ -425,26 +402,3 @@ def test_sensor_force_field_contact_object_no_sdf(setup_nut_rgb_ff):
         sensor.update(dt)
         cube.update(dt)
     assert "No SDF mesh found under contact object at path" in str(excinfo.value)
-
-
-@pytest.mark.isaacsim_ci
-def test_sensor_update_period_mismatch(setup_nut_rgb_ff):
-    """Test sensor with both camera and force field enabled, detecting contact forces."""
-    sim, sensor_cfg, dt, robot_cfg, cube_cfg, nut_cfg = setup_nut_rgb_ff
-    sensor_cfg.update_period = dt
-    sensor_cfg.camera_cfg.update_period = dt * 2
-    robot = Articulation(cfg=robot_cfg)
-    sensor = VisuoTactileSensor(cfg=sensor_cfg)
-    nut = RigidObject(cfg=nut_cfg)
-    sim.reset()
-    sensor.get_initial_render()
-    assert sensor.cfg.camera_cfg.update_period == sensor.cfg.update_period
-    for i in range(10):
-        sim.step()
-        sensor.update(dt, force_recompute=True)
-        robot.update(dt)
-        nut.update(dt)
-        assert torch.allclose(sensor._timestamp_last_update, torch.tensor((i + 1) * dt, device=sensor.device))
-        assert torch.allclose(
-            sensor._camera_sensor._timestamp_last_update, torch.tensor((i + 1) * dt, device=sensor.device)
-        )

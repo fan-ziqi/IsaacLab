@@ -14,8 +14,8 @@ import numpy as np
 import torch
 import warp as wp
 
-import isaaclab.utils.math as math_utils
-from isaaclab.utils.array import TensorData, convert_to_torch
+from ...utils import math as math_utils
+from ...utils.array import TensorData, convert_to_torch
 
 """
 Depth <-> Pointcloud conversions.
@@ -41,7 +41,7 @@ def transform_points(
     Args:
         points: a tensor of shape (p, 3) or (n, p, 3) comprising of 3d points in source frame.
         position: The position of source frame in target frame. Defaults to None.
-        orientation: The orientation (w, x, y, z) of source frame in target frame.
+        orientation: The orientation (x, y, z, w) of source frame in target frame.
             Defaults to None.
         device: The device for torch where the computation
             should be executed. Defaults to None, i.e. takes the device that matches the depth image.
@@ -107,7 +107,7 @@ def create_pointcloud_from_depth(
         keep_invalid: Whether to keep invalid points in the cloud or not. Invalid points
             correspond to pixels with depth values 0.0 or NaN. Defaults to False.
         position: The position of the camera in a target frame. Defaults to None.
-        orientation: The orientation (w, x, y, z) of the camera in a target frame. Defaults to None.
+        orientation: The orientation (x, y, z, w) of the camera in a target frame. Defaults to None.
         device: The device for torch where the computation should be executed.
             Defaults to None, i.e. takes the device that matches the depth image.
 
@@ -156,7 +156,7 @@ def create_pointcloud_from_depth(
 def create_pointcloud_from_rgbd(
     intrinsic_matrix: torch.Tensor | np.ndarray | wp.array,
     depth: torch.Tensor | np.ndarray | wp.array,
-    rgb: torch.Tensor | wp.array | np.ndarray | tuple[float, float, float] = None,
+    rgb: torch.Tensor | wp.array | np.ndarray | tuple[float, float, float] | list[float] | None = None,
     normalize_rgb: bool = False,
     position: Sequence[float] | None = None,
     orientation: Sequence[float] | None = None,
@@ -172,8 +172,8 @@ def create_pointcloud_from_rgbd(
 
     - If a ``np.array``/``wp.array``/``torch.tensor`` of shape (H, W, 3), then the corresponding channels
       encode the RGB values.
-    - If a tuple, then the point cloud has a single color specified by the values (r, g, b).
-    - If None, then default color is white, i.e. (0, 0, 0).
+    - If a tuple or list, then the point cloud has a single color specified by the values (r, g, b).
+    - If None, then default color is black, i.e. (0, 0, 0).
 
     If the input ``normalize_rgb`` is set to :obj:`True`, then the RGB values are normalized to be in the range [0, 1].
 
@@ -183,7 +183,7 @@ def create_pointcloud_from_rgbd(
         rgb: Color for generated point cloud. Defaults to None.
         normalize_rgb: Whether to normalize input rgb. Defaults to False.
         position: The position of the camera in a target frame. Defaults to None.
-        orientation: The orientation `(w, x, y, z)` of the camera in a target frame. Defaults to None.
+        orientation: The orientation `(x, y, z, w)` of the camera in a target frame. Defaults to None.
         device: The device for torch where the computation should be executed. Defaults to None, in which case
             it takes the device that matches the depth image.
         num_channels: Number of channels in RGB pointcloud. Defaults to 3.
@@ -194,10 +194,14 @@ def create_pointcloud_from_rgbd(
         is returned.
 
     Raises:
-        ValueError:  When rgb image is a numpy array but not of shape (H, W, 3) or (H, W, 4).
+        ValueError: When a constant RGB color does not contain exactly three components, or an RGB image is not
+            of shape (H, W, 3) or (H, W, 4).
     """
     # check valid inputs
-    if rgb is not None and not isinstance(rgb, tuple):
+    if isinstance(rgb, (tuple, list)):
+        if len(rgb) != 3:
+            raise ValueError(f"Input rgb color must contain exactly three components. Received {len(rgb)}.")
+    elif rgb is not None:
         if len(rgb.shape) == 3:
             if rgb.shape[2] not in [3, 4]:
                 raise ValueError(f"Input rgb image of invalid shape: {rgb.shape} != (H, W, 3) or (H, W, 4).")
@@ -216,6 +220,7 @@ def create_pointcloud_from_rgbd(
         depth = torch.from_numpy(depth).to(device=device)
     # retrieve XYZ pointcloud
     points_xyz = create_pointcloud_from_depth(intrinsic_matrix, depth, True, position, orientation, device=device)
+    device = points_xyz.device
 
     # get image height and width
     im_height, im_width = depth.shape[:2]
@@ -231,13 +236,13 @@ def create_pointcloud_from_rgbd(
             # is done in the order (u, v) where u: (0, W-1) and v: (0 - H-1)
             points_rgb = rgb.permute(1, 0, 2).reshape(-1, 3)
         elif isinstance(rgb, (tuple, list)):
-            # same color for all points
-            points_rgb = torch.Tensor((rgb,) * num_points, device=device, dtype=torch.uint8)
+            # same color for all points without materializing one Python tuple per point
+            points_rgb = torch.tensor(rgb, device=device, dtype=torch.uint8).expand(num_points, -1)
         else:
-            # default color is white
-            points_rgb = torch.Tensor(((0, 0, 0),) * num_points, device=device, dtype=torch.uint8)
+            # default color is black
+            points_rgb = torch.zeros((num_points, 3), device=device, dtype=torch.uint8)
     else:
-        points_rgb = torch.Tensor(((0, 0, 0),) * num_points, device=device, dtype=torch.uint8)
+        points_rgb = torch.zeros((num_points, 3), device=device, dtype=torch.uint8)
     # normalize color values
     if normalize_rgb:
         points_rgb = points_rgb.float() / 255

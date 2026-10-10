@@ -1,324 +1,643 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2022-2024, The Isaac Lab Project Developers.
-# This file is distributed under the same license as the Isaac Lab package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
 msgid ""
 msgstr ""
-"Project-Id-Version: Isaac Lab 1.0.0\n"
+"Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-30 12:02+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2026-10-09 16:43+0000\n"
+"PO-Revision-Date: 2026-10-09 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
-"Language-Team: zh_CN <LL@li.org>\n"
+"Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/features/multi_gpu.rst:2
+#: source/features/multi_gpu.rst:4
 msgid "Multi-GPU and Multi-Node Training"
-msgstr "多GPU和多节点训练"
+msgstr "多 GPU 和多节点训练"
 
-#: ../../source/features/multi_gpu.rst:6
+#: source/features/multi_gpu.rst:6
 msgid ""
-"Isaac Lab supports multi-GPU and multi-node reinforcement learning. "
-"Currently, this feature is only available for RL-Games, RSL-RL and skrl "
-"libraries workflows. We are working on extending this feature to other "
-"workflows."
+"Scale one reinforcement learning job across the GPUs in a workstation or "
+"across several nodes with ``train_multigpu``. Isaac Lab starts one training "
+"process per GPU, gives each process its own simulation environments, and "
+"synchronizes policy updates across the processes."
 msgstr ""
-"Isaac Lab支持多GPU和多节点的强化学习。目前，此功能仅适用于RL-Games, RSL-"
-"RL和skrl库工作流程。我们正在努力将此功能扩展到其他工作流程中。"
+"通过 ``train_multigpu`` ，可将一个强化学习作业扩展到工作站的多个 GPU 或多个节点。Isaac Lab 为每个 GPU "
+"启动一个训练进程，各进程拥有自己的仿真环境，并在进程间同步策略更新。"
 
-#: ../../source/features/multi_gpu.rst:12
+#: source/features/multi_gpu.rst:11
 msgid ""
-"Multi-GPU and multi-node training is only supported on Linux. Windows "
-"support is not available at this time. This is due to limitations of the "
-"NCCL library on Windows."
-msgstr "多GPU和多节点训练仅在Linux上受支持。目前不支持Windows。这是由于Windows上NCCL库的限制。"
+"The same launcher model is used in three multi-GPU benchmarks for measuring "
+"startup, simulation, and end-to-end training performance."
+msgstr "同一种启动方式也用于三种多 GPU 基准测试，分别测量启动、仿真和端到端训练性能。"
 
-#: ../../source/features/multi_gpu.rst:17
-msgid "Multi-GPU Training"
-msgstr "多GPU训练"
-
-#: ../../source/features/multi_gpu.rst:19
-msgid "Isaac Lab supports the following multi-GPU training frameworks:"
-msgstr "Isaac Lab 支持以下多GPU训练框架: "
-
-#: ../../source/features/multi_gpu.rst:21
+#: source/features/multi_gpu.rst:16
 msgid ""
-"`Torchrun <https://docs.pytorch.org/docs/stable/elastic/run.html>`_ through "
-"`PyTorch distributed <https://pytorch.org/docs/stable/distributed.html>`_"
+"Multi-GPU and multi-node training requires Linux and NVIDIA NCCL. Windows is"
+" not supported."
+msgstr "多 GPU 和多节点训练需要 Linux 及 NVIDIA NCCL，不支持 Windows。"
+
+#: source/features/multi_gpu.rst:21
+msgid "``train_multigpu`` is experimental and may change in a future release."
+msgstr "``train_multigpu`` 属于实验性功能，后续版本可能变化。"
+
+#: source/features/multi_gpu.rst:24
+msgid "Start a multi-GPU training run"
+msgstr "启动多 GPU 训练"
+
+#: source/features/multi_gpu.rst:26
+msgid ""
+"First, verify that the task trains on one GPU. This separates task or "
+"configuration problems from distributed-launch problems:"
+msgstr "先验证任务能否在单个 GPU 上训练，以区分任务/配置问题与分布式启动问题："
+
+#: source/features/multi_gpu.rst:33
+msgid "Then run the same task on every visible GPU:"
+msgstr "然后在所有可见 GPU 上运行同一任务："
+
+#: source/features/multi_gpu.rst:39
+msgid ""
+"That is the complete transition from a single-GPU run. ``train_multigpu`` "
+"adds ``--distributed`` and selects the distributed launcher automatically. "
+"All other arguments are the same arguments accepted by ``train``:"
 msgstr ""
-"`Torchrun <https://docs.pytorch.org/docs/stable/elastic/run.html>`_ 通过 "
-"`PyTorch distributed <https://pytorch.org/docs/stable/distributed.html>`_"
+"这就完成了从单 GPU 运行的切换。 ``train_multigpu`` 自动添加 ``--distributed`` "
+"，并选择分布式启动器。其他参数与 ``train`` 接受的参数相同："
 
-#: ../../source/features/multi_gpu.rst:22
+#: source/features/multi_gpu.rst:50
 msgid ""
-"`JAX distributed "
-"<https://jax.readthedocs.io/en/latest/jax.distributed.html>`_"
+"``--num_envs`` is the number of environments **on each GPU**. With four GPUs"
+" and ``--num_envs 4096``, the job collects experience from 16,384 "
+"environments in total."
 msgstr ""
-"`JAX distributed "
-"<https://jax.readthedocs.io/en/latest/jax.distributed.html>`_"
+"``--num_envs`` 是 **每个 GPU 上的** 环境数量。使用四个 GPU 和 ``--num_envs 4096`` 时，作业总共从 "
+"16,384 个环境采集经验。"
 
-#: ../../source/features/multi_gpu.rst:25
-msgid "Pytorch Torchrun Implementation"
-msgstr "Pytorch Torchrun 实现"
-
-#: ../../source/features/multi_gpu.rst:27
+#: source/features/multi_gpu.rst:54
 msgid ""
-"We are using `Pytorch Torchrun "
-"<https://docs.pytorch.org/docs/stable/elastic/run.html>`_ to manage multi-"
-"GPU training. Torchrun manages the distributed training by:"
+"All ranks write into one run folder. Each rank trains with the launch seed "
+"plus its rank on its own GPU. Rank 0 writes its settings "
+"(``params/env.yaml`` and ``params/agent.yaml``) and videos where a single-"
+"GPU run does; every other rank writes its own ``params/`` and videos to "
+"``rank_<rank>/``."
 msgstr ""
-"我们正在使用 `PyTorch Torchrun "
-"<https://docs.pytorch.org/docs/stable/elastic/run.html>`_ 来管理多GPU训练。Torchrun"
-" 通过以下方式管理分布式训练: "
+"所有 rank 写入同一个运行目录。各 rank 在自己的 GPU 上训练，种子为启动种子加自身 rank。rank 0 将设置（ "
+"``params/env.yaml`` 和 ``params/agent.yaml`` ）及视频写入与单 GPU 运行相同的位置；其余 rank "
+"将自己的 ``params/`` 和视频写入 ``rank_<rank>/`` 。"
 
-#: ../../source/features/multi_gpu.rst:30
+#: source/features/multi_gpu.rst:61
 msgid ""
-"**Process Management**: Launching one process per GPU, where each process is"
-" assigned to a specific GPU."
-msgstr "**进程管理**: 为每个GPU启动一个进程，其中每个进程分配给特定的GPU。"
+"Add ``--dry_run`` to print the resolved launcher command without starting "
+"training. This is useful when checking GPU counts, rendezvous options, or "
+"forwarded training arguments."
+msgstr "加入 ``--dry_run`` 可打印解析后的启动命令，而不开始训练，适合检查 GPU 数量、会合选项和转发的训练参数。"
 
-#: ../../source/features/multi_gpu.rst:31
+#: source/features/multi_gpu.rst:66
+msgid "Choose the GPUs"
+msgstr "选择 GPU"
+
+#: source/features/multi_gpu.rst:68
 msgid ""
-"**Script Execution**: Running the same training script (e.g., RL Games "
-"trainer) on each process."
-msgstr "**脚本执行**: 在每个进程上运行相同的训练脚本（例如，RL Games 训练器）。"
+"By default, the launcher uses every visible GPU. Set ``--num_gpus`` when you"
+" want a specific worker count:"
+msgstr "启动器默认使用所有可见 GPU。需要指定工作进程数量时，设置 ``--num_gpus`` ："
 
-#: ../../source/features/multi_gpu.rst:32
+#: source/features/multi_gpu.rst:75
 msgid ""
-"**Environment Instances**: Each process creates its own instance of the "
-"Isaac Lab environment."
-msgstr "**环境实例**: 每个进程都会创建自己的 Isaac Lab 环境实例。"
+"Use ``CUDA_VISIBLE_DEVICES`` to choose the physical devices. The launcher "
+"sees only the devices in that list:"
+msgstr "使用 ``CUDA_VISIBLE_DEVICES`` 选择物理设备，启动器只能看到列表中的设备："
 
-#: ../../source/features/multi_gpu.rst:33
+#: source/features/multi_gpu.rst:83
 msgid ""
-"**Gradient Synchronization**: Aggregating gradients across all processes and"
-" broadcasting the synchronized gradients back to each process after each "
-"training step."
-msgstr "**梯度同步**: 在每个训练步骤后聚合所有进程的梯度，并将同步的梯度广播回每个进程。"
+"Run ``nvidia-smi`` before launching to confirm that the expected devices are"
+" available and have enough free memory."
+msgstr "启动前运行 ``nvidia-smi`` ，确认预期设备可用且有足够空闲显存。"
 
-#: ../../source/features/multi_gpu.rst:37
+#: source/features/multi_gpu.rst:87
+msgid "Choose an RL library"
+msgstr "选择强化学习库"
+
+#: source/features/multi_gpu.rst:89
 msgid ""
-"Check out this `3 minute youtube video from PyTorch "
-"<https://www.youtube.com/watch?v=Cvdhwx-"
-"OBBo&list=PL_lsbAsL_o2CSuhUhJIiW0IkdT5C2wGWj&index=2>`_ to understand how "
-"Torchrun works."
-msgstr ""
-"请查看这个 `PyTorch 的 3 分钟 YouTube 视频 <https://www.youtube.com/watch?v=Cvdhwx-"
-"OBBo&list=PL_lsbAsL_o2CSuhUhJIiW0IkdT5C2wGWj&index=2>`_ ，了解 Torchrun 的工作原理。"
+"Multi-GPU training supports RSL-RL, RL-Games, and skrl. RSL-RL is the "
+"default for most core tasks."
+msgstr "多 GPU 训练支持 RSL-RL、RL-Games 和 skrl。大多数核心任务默认使用 RSL-RL。"
 
-#: ../../source/features/multi_gpu.rst:40
-msgid "The key components in this setup are:"
-msgstr "这个设置中的关键组件是: "
+#: source/features/multi_gpu.rst:96
+msgid "Library"
+msgstr "库"
 
-#: ../../source/features/multi_gpu.rst:42
-msgid ""
-"**Torchrun**: Handles process spawning, communication, and gradient "
-"synchronization."
-msgstr "**Torchrun**: 处理进程生成、通信和梯度同步。"
+#: source/features/multi_gpu.rst:97
+msgid "Distributed backend"
+msgstr "分布式后端"
 
-#: ../../source/features/multi_gpu.rst:43
-msgid ""
-"**RL Library**: The reinforcement learning library that runs the actual "
-"training algorithm."
-msgstr "**RL 库**: 运行实际训练算法的强化学习库。"
+#: source/features/multi_gpu.rst:98
+msgid "Command"
+msgstr "命令"
 
-#: ../../source/features/multi_gpu.rst:44
-msgid ""
-"**Isaac Lab**: Provides the simulation environment that each process "
-"instantiates independently."
-msgstr "**Isaac Lab**: 提供每个过程独立实例化的仿真环境。"
+#: source/features/multi_gpu.rst:99
+msgid "RSL-RL"
+msgstr "RSL-RL"
 
-#: ../../source/features/multi_gpu.rst:46
-msgid ""
-"Under the hood, Torchrun uses the `DistributedDataParallel "
-"<https://docs.pytorch.org/docs/2.7/notes/ddp.html#internal-design>`_ module "
-"to manage the distributed training. When training with multiple GPUs using "
-"Torchrun, the following happens:"
-msgstr ""
-"在幕后，Torchrun 使用 `DistributedDataParallel "
-"<https://docs.pytorch.org/docs/2.7/notes/ddp.html#internal-design>`_ "
-"模块来管理分布式训练。使用 Torchrun 在多个 GPU 上训练时，会出现以下情况: "
-
-#: ../../source/features/multi_gpu.rst:49
-msgid "Each GPU runs an independent process"
-msgstr "每个 GPU 运行独立的进程。"
-
-#: ../../source/features/multi_gpu.rst:50
-msgid "Each process executes the full training script"
-msgstr "每个进程执行完整训练脚本"
-
-#: ../../source/features/multi_gpu.rst:51
-msgid "Each process maintains its own:"
-msgstr "每个进程都保持自己的: "
-
-#: ../../source/features/multi_gpu.rst:53
-msgid "Isaac Lab environment instance (with *n* parallel environments)"
-msgstr "Isaac Lab 环境实例（具有 *n* 个并行环境）"
-
-#: ../../source/features/multi_gpu.rst:54
-msgid "Policy network copy"
-msgstr "策略网络复制"
-
-#: ../../source/features/multi_gpu.rst:55
-msgid "Experience buffer for rollout collection"
-msgstr "用于rollout收集的经验缓冲区"
-
-#: ../../source/features/multi_gpu.rst:57
-msgid "All processes synchronize only for gradient updates"
-msgstr "所有进程仅在梯度更新时进行同步"
-
-#: ../../source/features/multi_gpu.rst:59
-msgid ""
-"For a deeper dive into how Torchrun works, checkout `PyTorch Docs: "
-"DistributedDataParallel - Internal Design "
-"<https://pytorch.org/docs/stable/notes/ddp.html#internal-design>`_."
-msgstr ""
-"要深入了解 Torchrun 的工作原理，请查看 `PyTorch Docs: DistributedDataParallel - Internal "
-"Design <https://pytorch.org/docs/stable/notes/ddp.html#internal-design>`_ 。"
-
-#: ../../source/features/multi_gpu.rst:63
-msgid "Jax Implementation"
-msgstr "Jax 实现"
-
-#: ../../source/features/multi_gpu.rst:66
-msgid "JAX is only supported with the skrl library."
-msgstr "JAX 仅支持 skrl 库。"
-
-#: ../../source/features/multi_gpu.rst:68
-msgid ""
-"With JAX, we are using `skrl.utils.distributed.jax "
-"<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ Since "
-"the ML framework doesn't automatically start multiple processes from a "
-"single program invocation, the skrl library provides a module to start them."
-msgstr ""
-"使用 JAX，我们正在使用 `skrl.utils.distributed.jax "
-"<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ "
-"。由于机器学习框架不会自动从单个程序调用启动多个进程，所以 skrl 库提供了一个模块来启动它们。"
-
-#: ../../source/features/multi_gpu.rst:-1
-msgid "Multi-GPU training paradigm"
-msgstr "多GPU训练范式"
-
-#: ../../source/features/multi_gpu.rst:87
-msgid "Running Multi-GPU Training"
-msgstr "运行多GPU训练"
-
-#: ../../source/features/multi_gpu.rst:89
-msgid ""
-"To train with multiple GPUs, use the following command, where "
-"``--nproc_per_node`` represents the number of available GPUs:"
-msgstr "要使用多个GPU进行训练，请使用以下命令，其中 ``--nproc_per_node`` 表示可用的GPU数量: "
-
-#: ../../source/features/multi_gpu.rst
-msgid "rl_games"
-msgstr "rl_games"
-
-#: ../../source/features/multi_gpu.rst
-msgid "rsl_rl"
-msgstr "rsl_rl"
-
-#: ../../source/features/multi_gpu.rst
-msgid "skrl"
-msgstr "skrl"
-
-#: ../../source/features/multi_gpu.rst
+#: source/features/multi_gpu.rst:100 source/features/multi_gpu.rst:103
+#: source/features/multi_gpu.rst:106
 msgid "PyTorch"
 msgstr "PyTorch"
 
-#: ../../source/features/multi_gpu.rst
+#: source/features/multi_gpu.rst:101
+msgid "``uv run isaaclab train_multigpu --rl_library rsl_rl ...``"
+msgstr "``uv run isaaclab train_multigpu --rl_library rsl_rl ...``"
+
+#: source/features/multi_gpu.rst:102
+msgid "RL-Games"
+msgstr "RL-Games"
+
+#: source/features/multi_gpu.rst:104
+msgid ""
+"``uv run --extra rl-games isaaclab train_multigpu --rl_library rl_games "
+"...``"
+msgstr ""
+"``uv run --extra rl-games isaaclab train_multigpu --rl_library rl_games "
+"...``"
+
+#: source/features/multi_gpu.rst:105 source/features/multi_gpu.rst:108
+msgid "skrl"
+msgstr "skrl"
+
+#: source/features/multi_gpu.rst:107
+msgid "``uv run --extra skrl isaaclab train_multigpu --rl_library skrl ...``"
+msgstr "``uv run --extra skrl isaaclab train_multigpu --rl_library skrl ...``"
+
+#: source/features/multi_gpu.rst:109
 msgid "JAX"
 msgstr "JAX"
 
-#: ../../source/features/multi_gpu.rst:130
-msgid "Troubleshooting NCCL Errors"
-msgstr "NCCL 错误排查"
-
-#: ../../source/features/multi_gpu.rst:132
+#: source/features/multi_gpu.rst:110
 msgid ""
-"On some Linux multi-GPU systems, distributed training may fail with ``CUDA "
-"error: an illegal memory access was encountered`` reported by "
-"``ProcessGroupNCCL`` during or shortly after communicator initialization."
+"``uv run --extra skrl isaaclab train_multigpu --rl_library skrl "
+"--ml_framework jax ...``"
 msgstr ""
-"在某些 Linux 多 GPU 系统上，分布式训练可能会失败，并在通信器初始化期间或之后不久由 ``ProcessGroupNCCL`` 报出 "
-"``CUDA error: an illegal memory access was encountered`` 。"
+"``uv run --extra skrl isaaclab train_multigpu --rl_library skrl "
+"--ml_framework jax ...``"
 
-#: ../../source/features/multi_gpu.rst:136
+#: source/features/multi_gpu.rst:112
 msgid ""
-"If this occurs, try disabling the NCCL shared-memory transport before "
-"launching training:"
-msgstr "如果出现该问题，请在启动训练前尝试禁用 NCCL 共享内存传输: "
-
-#: ../../source/features/multi_gpu.rst:142
-msgid "If the issue persists, additional NCCL fallbacks that may help are:"
-msgstr "如果问题仍然存在，以下额外的 NCCL 回退选项可能会有所帮助: "
-
-#: ../../source/features/multi_gpu.rst:149
-msgid "Then relaunch the distributed training command as usual."
-msgstr "然后照常重新启动分布式训练命令。"
-
-#: ../../source/features/multi_gpu.rst:153
-msgid ""
-"These variables are NCCL-level workarounds intended for affected systems. "
-"They are not required on all machines, and may change communication behavior"
-" or performance depending on the hardware topology."
-msgstr "这些变量是 NCCL 层级的变通方法，仅针对受影响的系统。并非所有机器都需要这些设置，并且根据硬件拓扑结构，它们可能会改变通信行为或性能。"
-
-#: ../../source/features/multi_gpu.rst:158
-msgid "Multi-Node Training"
-msgstr "多节点训练"
-
-#: ../../source/features/multi_gpu.rst:160
-msgid ""
-"To scale up training beyond multiple GPUs on a single machine, it is also "
-"possible to train across multiple nodes. To train across multiple "
-"nodes/machines, it is required to launch an individual process on each node."
-msgstr "要在单台计算机上跨多个GPU扩展训练，还可以在多个节点上训练。要在多个节点/机器上训练，需要在每个节点上启动一个单独的进程。"
-
-#: ../../source/features/multi_gpu.rst:163
-msgid ""
-"For the master node, use the following command, where ``--nproc_per_node`` "
-"represents the number of available GPUs, and ``--nnodes`` represents the "
-"number of nodes:"
+"skrl with JAX uses skrl's distributed launcher instead of ``torchrun``. Pass"
+" an integer ``--num_gpus`` and use ``--coordinator_address`` to configure "
+"its coordinator:"
 msgstr ""
-"对于主节点，请使用以下命令，其中 ``--nproc_per_node`` 表示可用的GPU数量， ``--nnodes`` 表示节点的数量: "
+"skrl 使用 JAX 时采用 skrl 的分布式启动器，而非 ``torchrun`` 。请为 ``--num_gpus`` 传入整数，并通过 "
+"``--coordinator_address`` 配置协调器："
 
-#: ../../source/features/multi_gpu.rst:202
-msgid ""
-"Note that the port (``5555``) can be replaced with any other available port."
-msgstr "注意，端口（ ``5555`` ）可以更换为任何其他可用端口。"
+#: source/features/multi_gpu.rst:124
+msgid "Measure scaling with the three multi-GPU benchmarks"
+msgstr "通过三种多 GPU 基准测试测量扩展性"
 
-#: ../../source/features/multi_gpu.rst:204
+#: source/features/multi_gpu.rst:126
 msgid ""
-"For non-master nodes, use the following command, replacing ``--node_rank`` "
-"with the index of each machine:"
-msgstr "对于非主节点，请使用以下命令，将 ``--node_rank`` 替换为每台机器的索引: "
+"Use the benchmark commands when the goal is to measure performance rather "
+"than train a policy for later use. Isaac Lab provides three multi-GPU "
+"workflows:"
+msgstr "如果目标是测量性能，而非训练供后续使用的策略，请使用基准测试命令。Isaac Lab 提供三种多 GPU 工作流程："
 
-#: ../../source/features/multi_gpu.rst:242
+#: source/features/multi_gpu.rst:133
+msgid "Benchmark"
+msgstr "基准测试"
+
+#: source/features/multi_gpu.rst:134
+msgid "What it measures"
+msgstr "测量内容"
+
+#: source/features/multi_gpu.rst:135
+msgid "Use it to answer"
+msgstr "可回答的问题"
+
+#: source/features/multi_gpu.rst:136
+msgid "``startup_multigpu``"
+msgstr "``startup_multigpu``"
+
+#: source/features/multi_gpu.rst:137
+msgid "Startup time for rank 0 while every GPU starts the same workload."
+msgstr "所有 GPU 同时启动相同负载时，rank 0 的启动时间。"
+
+#: source/features/multi_gpu.rst:138
+msgid "How does a fully occupied node affect startup?"
+msgstr "满负载节点如何影响启动？"
+
+#: source/features/multi_gpu.rst:139
+msgid "``runtime_multigpu``"
+msgstr "``runtime_multigpu``"
+
+#: source/features/multi_gpu.rst:140
+msgid "Simulation throughput for rank 0 while every GPU runs independently."
+msgstr "各 GPU 独立运行时，rank 0 的仿真吞吐量。"
+
+#: source/features/multi_gpu.rst:141
+msgid "How does host contention affect environment stepping?"
+msgstr "主机资源竞争如何影响环境步进？"
+
+#: source/features/multi_gpu.rst:142
+msgid "``training_multigpu``"
+msgstr "``training_multigpu``"
+
+#: source/features/multi_gpu.rst:143
+msgid "Global, synchronized training throughput across every rank."
+msgstr "所有 rank 全局同步的训练吞吐量。"
+
+#: source/features/multi_gpu.rst:144
+msgid "How well does end-to-end learning scale across GPUs?"
+msgstr "端到端学习在多 GPU 上的扩展效果如何？"
+
+#: source/features/multi_gpu.rst:146
 msgid ""
-"For more details on multi-node training with PyTorch, please visit the "
-"`PyTorch documentation "
-"<https://pytorch.org/tutorials/intermediate/ddp_series_multinode.html>`_. "
-"For more details on multi-node training with JAX, please visit the `skrl "
-"documentation "
-"<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ and the"
-" `JAX documentation "
-"<https://jax.readthedocs.io/en/latest/multi_process.html>`_."
+"Run each benchmark with the same launcher options used by "
+"``train_multigpu``:"
+msgstr "运行各基准测试时，使用与 ``train_multigpu`` 相同的启动选项："
+
+#: source/features/multi_gpu.rst:160
+msgid ""
+"``training_multigpu`` supports RSL-RL, RL-Games, and skrl with PyTorch. It "
+"does not support skrl with JAX or SB3. It also rejects ``--video`` and "
+"``--capture_env_sensors``, which do not produce a meaningful aggregate "
+"result across ranks. ``--check_success`` is supported with RSL-RL and RL-"
+"Games: the success metric is averaged over the environments of all ranks, so"
+" every rank stops at the same iteration."
 msgstr ""
-"有关使用PyTorch进行多节点训练的更多详细信息，请访问 `PyTorch 文档 "
-"<https://pytorch.org/tutorials/intermediate/ddp_series_multinode.html>`_ "
-"。有关使用JAX进行多节点训练的更多详细信息，请访问 `skrl 文档 "
-"<https://skrl.readthedocs.io/en/latest/api/utils/distributed.html>`_ 和 `JAX "
-"文档 <https://jax.readthedocs.io/en/latest/multi_process.html>`_ 。"
+"``training_multigpu`` 支持基于 PyTorch 的 RSL-RL、RL-Games 和 skrl，不支持基于 JAX 的 skrl"
+" 或 SB3。它也不接受 ``--video`` 和 ``--capture_env_sensors`` ，因为这些选项不能产生有意义的跨 rank "
+"汇总结果。RSL-RL 和 RL-Games 支持 ``--check_success`` ：成功指标在全部 rank 的环境中取平均，使所有 rank"
+" 在同一迭代停止。"
 
-#: ../../source/features/multi_gpu.rst:250
+#: source/features/multi_gpu.rst:167
 msgid ""
-"As mentioned in the PyTorch documentation, \"multi-node training is "
-"bottlenecked by inter-node communication latencies\". When this latency is "
-"high, it is possible multi-node training will perform worse than running on "
-"a single node instance."
-msgstr "如 PyTorch 文档所述，“多节点训练受限于节点间通信延迟” 。当延迟较高时，多节点训练可能表现不如在单节点实例上运行。"
+"For multi-node benchmarks, pass the same ``--nnodes``, ``--node_rank``, and "
+"rendezvous options described in :ref:`multi-node-training` on every node."
+msgstr ""
+"多节点基准测试中，在每个节点传入 :ref:`multi-node-training` 所述的 ``--nnodes`` 、 "
+"``--node_rank`` 和会合选项。"
+
+#: source/features/multi_gpu.rst:171
+msgid "Read multi-GPU benchmark results"
+msgstr "读取多 GPU 基准测试结果"
+
+#: source/features/multi_gpu.rst:173
+msgid ""
+"Only global rank 0 writes a result bundle. The ``extra`` fields record the "
+"rank layout and clarify which measurements the bundle covers:"
+msgstr "只有全局 rank 0 写出结果包。 ``extra`` 字段记录 rank 布局，并说明结果包覆盖的测量范围："
+
+#: source/features/multi_gpu.rst:180
+msgid "``extra`` field"
+msgstr "``extra`` 字段"
+
+#: source/features/multi_gpu.rst:181
+msgid "Meaning"
+msgstr "含义"
+
+#: source/features/multi_gpu.rst:182
+msgid "``world_size``, ``local_world_size``, ``num_nodes``"
+msgstr "``world_size``, ``local_world_size``, ``num_nodes``"
+
+#: source/features/multi_gpu.rst:183
+msgid "Rank layout of the job."
+msgstr "作业的 rank 布局。"
+
+#: source/features/multi_gpu.rst:184
+msgid "``num_envs_per_rank``"
+msgstr "``num_envs_per_rank``"
+
+#: source/features/multi_gpu.rst:185
+msgid "Environments hosted by each rank."
+msgstr "每个 rank 承载的环境数量。"
+
+#: source/features/multi_gpu.rst:186
+msgid "``workload_scope``"
+msgstr "``workload_scope``"
+
+#: source/features/multi_gpu.rst:187
+msgid ""
+"``global`` for ``training_multigpu`` because ranks train in lockstep. "
+"``rank0`` for ``startup_multigpu`` and ``runtime_multigpu`` because each "
+"rank runs independently and only rank 0 is measured."
+msgstr ""
+"``training_multigpu`` 为 ``global`` ，因为各 rank 同步训练。 ``startup_multigpu`` 和 "
+"``runtime_multigpu`` 为 ``rank0`` ，因为各 rank 独立运行，且只测量 rank 0。"
+
+#: source/features/multi_gpu.rst:190
+msgid "``measurement_scope``"
+msgstr "``measurement_scope``"
+
+#: source/features/multi_gpu.rst:191
+msgid ""
+"``rank0_process``: timings, learning curves, CPU, and RAM come from rank 0 "
+"alone."
+msgstr "``rank0_process`` ：时间、学习曲线、CPU 和 RAM 数据仅来自 rank 0。"
+
+#: source/features/multi_gpu.rst:193
+msgid "``gpu_measurement_scope``"
+msgstr "``gpu_measurement_scope``"
+
+#: source/features/multi_gpu.rst:194
+msgid ""
+"``rank0_node``: ``resources.devices`` reports every GPU visible to rank 0. "
+"GPU utilization and memory values remain scoped to rank 0's device."
+msgstr ""
+"``rank0_node`` ： ``resources.devices`` 报告 rank 0 可见的全部 GPU。GPU 利用率和显存值仍仅对应 "
+"rank 0 的设备。"
+
+#: source/features/multi_gpu.rst:197
+msgid ""
+"When comparing one GPU with multiple GPUs, keep ``--num_envs`` constant "
+"**per rank**. An N-GPU job processes N times as many environments as the "
+"one-GPU job at the same per-rank setting. Compare the global throughput of "
+"``training_multigpu`` against N times the single-GPU throughput. Do not "
+"treat ``startup_multigpu`` or ``runtime_multigpu`` as aggregate rates; they "
+"measure rank 0 while the other ranks create host contention."
+msgstr ""
+"比较单 GPU 和多 GPU 时，保持 **每个 rank 的** ``--num_envs`` 不变。在相同逐 rank 设置下，N 个 GPU "
+"的作业处理的环境数为单 GPU 作业的 N 倍。应将 ``training_multigpu`` 的全局吞吐量与单 GPU 吞吐量的 N 倍比较。不要将"
+" ``startup_multigpu`` 或 ``runtime_multigpu`` 当作汇总速率；它们测量的是其他 rank 造成主机资源竞争时的"
+" rank 0。"
+
+#: source/features/multi_gpu.rst:205
+msgid "How multi-GPU training works"
+msgstr "多 GPU 训练的工作原理"
+
+#: source/features/multi_gpu.rst:207
+msgid ""
+"For PyTorch workflows, ``train_multigpu`` wraps `torchrun "
+"<https://docs.pytorch.org/docs/stable/elastic/run.html>`_. It launches one "
+"process per GPU. Each process owns:"
+msgstr ""
+"在 PyTorch 工作流程中， ``train_multigpu`` 包装 `torchrun "
+"<https://docs.pytorch.org/docs/stable/elastic/run.html>`_ ，为每个 GPU "
+"启动一个进程。各进程拥有："
+
+#: source/features/multi_gpu.rst:211
+msgid "one Isaac Lab application and its vectorized environments,"
+msgstr "一个 Isaac Lab 应用及其向量化环境；"
+
+#: source/features/multi_gpu.rst:212
+msgid "one copy of the policy,"
+msgstr "一份策略副本；"
+
+#: source/features/multi_gpu.rst:213
+msgid "one rollout buffer, and"
+msgstr "一个轨迹采样缓冲区；以及"
+
+#: source/features/multi_gpu.rst:214
+msgid "one GPU selected by its local rank."
+msgstr "由本地 rank 选择的一个 GPU。"
+
+#: source/features/multi_gpu.rst:216
+msgid ""
+"The processes collect experience independently and synchronize gradients "
+"during policy updates with `DistributedDataParallel "
+"<https://docs.pytorch.org/docs/stable/notes/ddp.html>`_. Simulation does not"
+" move between GPUs, so available host CPU, RAM, and I/O can become limiting "
+"factors as the GPU count grows."
+msgstr ""
+"各进程独立采集经验，在策略更新期间通过 `DistributedDataParallel "
+"<https://docs.pytorch.org/docs/stable/notes/ddp.html>`_ 同步梯度。仿真不会在 GPU "
+"之间迁移，因此 GPU 数量增加时，主机 CPU、RAM 和 I/O 可能成为限制因素。"
+
+#: source/features/multi_gpu.rst:222 source/features/multi_gpu.rst:228
+msgid "One training process and simulation workload per GPU"
+msgstr "每个 GPU 对应一个训练进程和仿真负载"
+
+#: source/features/multi_gpu.rst:235
+msgid "Read logs from distributed runs"
+msgstr "读取分布式运行日志"
+
+#: source/features/multi_gpu.rst:237
+msgid ""
+"Every rank produces similar startup messages, warnings, and model summaries."
+" The launcher shows local rank 0 by default so the console remains readable."
+" Training metrics already come from global rank 0, and a crash on any hidden"
+" rank still reports the failing rank and its traceback."
+msgstr ""
+"各 rank 产生类似的启动消息、警告和模型摘要。启动器默认显示本地 rank 0，使控制台易于阅读。训练指标本就来自全局 rank 0；即使隐藏的 "
+"rank 崩溃，仍会报告出错 rank 及其异常堆栈。"
+
+#: source/features/multi_gpu.rst:242
+msgid "Show output from every rank when processes appear to disagree:"
+msgstr "进程表现似乎不一致时，显示所有 rank 的输出："
+
+#: source/features/multi_gpu.rst:249
+msgid ""
+"For a clean console and complete per-rank logs on disk, use ``torchrun`` log"
+" redirection:"
+msgstr "要保持控制台简洁，并在磁盘上保存完整的逐 rank 日志，使用 ``torchrun`` 日志重定向："
+
+#: source/features/multi_gpu.rst:257
+msgid ""
+"The log filtering options apply to PyTorch workflows. skrl with JAX writes "
+"every rank to the console."
+msgstr "日志过滤选项适用于 PyTorch 工作流程。使用 JAX 的 skrl 会将所有 rank 输出到控制台。"
+
+#: source/features/multi_gpu.rst:263
+msgid "Train across multiple nodes"
+msgstr "跨节点训练"
+
+#: source/features/multi_gpu.rst:265
+msgid ""
+"Every node must have the same Isaac Lab checkout, dependencies, task "
+"configuration, and access to training assets. The nodes must also be able to"
+" reach one another on the rendezvous port."
+msgstr "各节点必须使用相同的 Isaac Lab 代码、依赖和任务配置，并能访问训练资产。节点间还必须能够通过会合端口通信。"
+
+#: source/features/multi_gpu.rst:269
+msgid ""
+"Choose one node as the rendezvous host. For a two-node PyTorch job with four"
+" GPUs per node, run the following on the first node:"
+msgstr "选择一个节点作为会合主机。对于每节点四个 GPU 的双节点 PyTorch 作业，在第一个节点运行："
+
+#: source/features/multi_gpu.rst:279
+msgid "Run the same command on the second node with its own rank:"
+msgstr "在第二个节点使用其自身 rank 运行相同命令："
+
+#: source/features/multi_gpu.rst:288
+msgid ""
+"The total world size is ``nnodes * num_gpus``: eight ranks in this example. "
+"You can also use ``--rdzv_backend``, ``--rdzv_endpoint``, and ``--rdzv_id`` "
+"for an elastic ``torchrun`` rendezvous. Add ``--dry_run`` first to verify "
+"the command on each node."
+msgstr ""
+"总进程数（world size）为 ``nnodes * num_gpus`` ，此例为八个 rank。也可以通过 ``--rdzv_backend``"
+" 、 ``--rdzv_endpoint`` 和 ``--rdzv_id`` 配置弹性 ``torchrun`` 会合。先加入 "
+"``--dry_run`` ，验证各节点命令。"
+
+#: source/features/multi_gpu.rst:293
+msgid ""
+"Each node names the run folder from its own launch time. When the nodes "
+"share storage, pass the same ``--run_timestamp`` value (format ``YYYY-MM-"
+"DD_HH-MM-SS``) to ``train_multigpu`` on every node so that all ranks write "
+"into one run folder."
+msgstr ""
+"各节点按自身启动时间命名运行目录。节点共享存储时，应在每个节点的 ``train_multigpu`` 命令中传入相同的 "
+"``--run_timestamp`` （格式为 ``YYYY-MM-DD_HH-MM-SS`` ），使所有 rank 写入同一个目录。"
+
+#: source/features/multi_gpu.rst:297
+msgid ""
+"For skrl with JAX, pass ``--nnodes``, ``--node_rank``, an integer "
+"``--num_gpus``, and the same ``--coordinator_address`` on every node. Do not"
+" pass the PyTorch rendezvous options to a JAX launch."
+msgstr ""
+"使用 JAX 的 skrl 时，在各节点传入 ``--nnodes`` 、 ``--node_rank`` 、整数 ``--num_gpus`` "
+"及相同的 ``--coordinator_address`` 。不要向 JAX 启动命令传入 PyTorch 会合选项。"
+
+#: source/features/multi_gpu.rst:301
+msgid ""
+"Multi-node scaling depends heavily on the network between nodes. A multi-"
+"node job can be slower than a single-node job when gradient synchronization "
+"dominates the training iteration."
+msgstr "多节点扩展性很大程度上取决于节点间网络。如果梯度同步主导训练迭代，多节点作业可能比单节点更慢。"
+
+#: source/features/multi_gpu.rst:306
+msgid "Troubleshoot distributed training"
+msgstr "排查分布式训练问题"
+
+#: source/features/multi_gpu.rst:308
+msgid "Start with the smallest useful diagnosis:"
+msgstr "从最小而有效的诊断开始："
+
+#: source/features/multi_gpu.rst:310
+msgid ""
+"Confirm that the same task, backend, and training arguments work with "
+"``isaaclab train`` on one GPU."
+msgstr "确认相同任务、后端和训练参数能够通过 ``isaaclab train`` 在单 GPU 上运行。"
+
+#: source/features/multi_gpu.rst:312
+msgid "Add ``--dry_run`` and check the selected GPU and node counts."
+msgstr "加入 ``--dry_run`` ，检查所选 GPU 和节点数量。"
+
+#: source/features/multi_gpu.rst:313
+msgid ""
+"Retry at world sizes 2, 3, and 4. A failure at only one world size often "
+"points to the communication transport rather than the task."
+msgstr "分别以总进程数 2、3、4 重试。只有某个进程数失败时，通常应检查通信传输层，而非任务。"
+
+#: source/features/multi_gpu.rst:315
+msgid "Check GPU placement and interconnects with ``nvidia-smi topo -m``."
+msgstr "通过 ``nvidia-smi topo -m`` 检查 GPU 布局和互连。"
+
+#: source/features/multi_gpu.rst:316
+msgid "Set ``NCCL_DEBUG=INFO`` to see which NCCL transport was selected."
+msgstr "设置 ``NCCL_DEBUG=INFO`` ，查看选用的 NCCL 传输方式。"
+
+#: source/features/multi_gpu.rst:317
+msgid ""
+"Apply one workaround at a time and verify that the failure returns when the "
+"workaround is removed."
+msgstr "每次只应用一种解决办法，并验证移除后故障是否再次出现。"
+
+#: source/features/multi_gpu.rst:323
+msgid "NCCL hangs and errors"
+msgstr "NCCL 挂起和错误"
+
+#: source/features/multi_gpu.rst:325
+msgid ""
+"A run that stops without a traceback while every participating GPU remains "
+"at 100% utilization is usually stalled in an NCCL collective. The following "
+"workarounds address known system-specific transport problems:"
+msgstr ""
+"运行停止、没有异常堆栈，而所有参与的 GPU 利用率仍为 100% 时，通常是卡在 NCCL 集合通信中。以下办法针对已知的特定系统传输问题："
+
+#: source/features/multi_gpu.rst:333
+msgid "Symptom"
+msgstr "现象"
+
+#: source/features/multi_gpu.rst:334
+msgid "Try"
+msgstr "可尝试的方法"
+
+#: source/features/multi_gpu.rst:335
+msgid "World size 2 hangs on a PCIe system without NVLink."
+msgstr "没有 NVLink 的 PCIe 系统在总进程数为 2 时挂起。"
+
+#: source/features/multi_gpu.rst:336
+msgid "``NCCL_P2P_DISABLE=1`` or ``NCCL_P2P_LEVEL=LOC``"
+msgstr "``NCCL_P2P_DISABLE=1`` 或 ``NCCL_P2P_LEVEL=LOC``"
+
+#: source/features/multi_gpu.rst:337
+msgid "``illegal memory access`` appears in ``ProcessGroupNCCL``."
+msgstr "``ProcessGroupNCCL`` 中出现 ``illegal memory access`` 。"
+
+#: source/features/multi_gpu.rst:338
+msgid "``NCCL_SHM_DISABLE=1``"
+msgstr "``NCCL_SHM_DISABLE=1``"
+
+#: source/features/multi_gpu.rst:339
+msgid ""
+"A rendered job fails because CUDA and the renderer enumerate GPUs in "
+"different orders."
+msgstr "CUDA 与渲染器枚举 GPU 的顺序不同，导致启用渲染的作业失败。"
+
+#: source/features/multi_gpu.rst:341
+msgid "``CUDA_DEVICE_ORDER=PCI_BUS_ID``"
+msgstr "``CUDA_DEVICE_ORDER=PCI_BUS_ID``"
+
+#: source/features/multi_gpu.rst:342
+msgid ""
+"A rendered job times out across NUMA nodes during ``BROADCAST`` or "
+"``ALLREDUCE``."
+msgstr "启用渲染的作业跨 NUMA 节点执行 ``BROADCAST`` 或 ``ALLREDUCE`` 时超时。"
+
+#: source/features/multi_gpu.rst:344
+msgid "``NCCL_CUMEM_HOST_ENABLE=0``; if needed, try ``NCCL_CUMEM_ENABLE=0``."
+msgstr "``NCCL_CUMEM_HOST_ENABLE=0`` ；必要时尝试 ``NCCL_CUMEM_ENABLE=0`` 。"
+
+#: source/features/multi_gpu.rst:345
+msgid "Communicator initialization or transport failures persist."
+msgstr "通信器初始化或传输故障持续存在。"
+
+#: source/features/multi_gpu.rst:346
+msgid "``NCCL_IB_DISABLE=1`` or ``NCCL_ALGO=Ring``."
+msgstr "``NCCL_IB_DISABLE=1`` 或 ``NCCL_ALGO=Ring`` 。"
+
+#: source/features/multi_gpu.rst:348
+msgid ""
+"For example, test the first workaround without changing a shared "
+"configuration:"
+msgstr "例如，不修改共享配置，仅测试第一种办法："
+
+#: source/features/multi_gpu.rst:355
+msgid ""
+"These variables can reduce communication performance and should be scoped to"
+" the affected machine. Set either ``NCCL_P2P_DISABLE=1`` or "
+"``NCCL_P2P_LEVEL=LOC``, not both. Each prevents direct P2P communication and"
+" can reduce bandwidth by forcing NCCL to select another transport. Do not "
+"commit a workaround into a task or launcher unless it is required by every "
+"supported system. Use ``nvidia-smi --query-gpu=name,pci.bus_id`` to inspect "
+"GPU bus IDs before setting ``CUDA_DEVICE_ORDER=PCI_BUS_ID``."
+msgstr ""
+"这些变量可能降低通信性能，应仅在受影响机器上设置。 ``NCCL_P2P_DISABLE=1`` 与 ``NCCL_P2P_LEVEL=LOC`` "
+"二选一，不要同时设置。两者都会阻止直接 P2P 通信，可能迫使 NCCL "
+"选择其他传输方式而降低带宽。除非所有受支持系统都需要某项设置，否则不要将它提交到任务或启动器中。设置 "
+"``CUDA_DEVICE_ORDER=PCI_BUS_ID`` 前，通过 ``nvidia-smi --query-"
+"gpu=name,pci.bus_id`` 查看 GPU 总线 ID。"
+
+#: source/features/multi_gpu.rst:0
+msgid "Isolate a hang from Isaac Lab"
+msgstr "脱离 Isaac Lab 定位挂起问题"
+
+#: source/features/multi_gpu.rst:365
+msgid ""
+"Run a minimal NCCL collective at the world size that hangs. Save this as "
+"``nccl_probe.py``:"
+msgstr "以发生挂起的总进程数运行最小 NCCL 集合通信测试，保存为 ``nccl_probe.py`` ："
+
+#: source/features/multi_gpu.rst:384
+msgid "Launch the probe with the same rank count:"
+msgstr "使用相同 rank 数启动测试："
+
+#: source/features/multi_gpu.rst:390
+msgid ""
+"If this probe also hangs, the problem is in NCCL or the system topology, not"
+" in Isaac Lab, the task, or the RL library."
+msgstr "如果此测试也挂起，问题位于 NCCL 或系统拓扑，而非 Isaac Lab、任务或强化学习库。"

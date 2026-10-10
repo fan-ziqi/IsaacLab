@@ -3,26 +3,38 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Launch Isaac Sim Simulator first."""
+from isaaclab.test.utils import launch_test_simulation
 
-from isaaclab.app import AppLauncher
+launch_test_simulation()
 
-# launch omniverse app
-simulation_app = AppLauncher(headless=True).app
-
-"""Rest everything follows."""
-
+import inspect
 import math
+import warnings
 
 import pytest
+from isaaclab_physx.sim.schemas import (
+    PhysxArticulationRootPropertiesCfg,
+    PhysxCollisionCfg,
+    PhysxCollisionPropertiesCfg,
+    PhysxDeformableBodyPropertiesCfg,
+    PhysxJointDrivePropertiesCfg,
+    PhysxRigidBodyPropertiesCfg,
+)
+from isaaclab_physx.sim.spawners.materials import (
+    PhysxRigidBodyMaterialCfg,
+    PhysxSurfaceDeformableBodyMaterialCfg,
+)
 
-from pxr import UsdPhysics
+from pxr import Usd, UsdGeom, UsdPhysics
 
 import isaaclab.sim as sim_utils
 import isaaclab.sim.schemas as schemas
 from isaaclab.sim import SimulationCfg, SimulationContext
+from isaaclab.sim.spawners.materials import RigidBodyMaterialBaseCfg, spawn_rigid_body_material
 from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 from isaaclab.utils.string import to_camel_case
+
+pytestmark = pytest.mark.integration
 
 
 @pytest.fixture
@@ -44,7 +56,7 @@ def setup_simulation():
         stabilization_threshold=5.0,
         fix_root_link=False,
     )
-    rigid_cfg = schemas.RigidBodyPropertiesCfg(
+    rigid_cfg = PhysxRigidBodyPropertiesCfg(
         rigid_body_enabled=True,
         kinematic_enabled=False,
         disable_gravity=False,
@@ -69,29 +81,477 @@ def setup_simulation():
         torsional_patch_radius=1.0,
     )
     mass_cfg = schemas.MassPropertiesCfg(mass=1.0, density=100.0)
-    joint_cfg = schemas.JointDrivePropertiesCfg(
-        drive_type="acceleration", max_effort=80.0, max_velocity=10.0, stiffness=10.0, damping=0.1
+    joint_cfg = PhysxJointDrivePropertiesCfg(
+        drive_type="acceleration", max_force=80.0, max_joint_velocity=10.0, stiffness=10.0, damping=0.1
     )
     yield sim, arti_cfg, rigid_cfg, collision_cfg, mass_cfg, joint_cfg
     # Teardown
     sim._disable_app_control_on_stop_handle = True  # prevent timeout
     sim.stop()
-    sim.clear()
-    sim.clear_all_callbacks()
     sim.clear_instance()
 
 
 @pytest.mark.isaacsim_ci
-def test_valid_properties_cfg(setup_simulation):
-    """Test that all the config instances have non-None values.
+def test_max_joint_velocity_on_base_cfg(setup_simulation):
+    """Setting ``max_joint_velocity`` on the base ``JointDriveBaseCfg`` must author
+    ``physxJoint:maxJointVelocity`` on the prim, identical to setting it on
+    the deprecated PhysX subclass.
 
-    This is to ensure that we check that all the properties of the schema are set.
+    Regression test for the Path 2 placement rule: ``max_joint_velocity`` is the
+    only USD path to ``Model.joint_velocity_limit`` and lives on the base.
     """
-    sim, arti_cfg, rigid_cfg, collision_cfg, mass_cfg, joint_cfg = setup_simulation
-    for cfg in [arti_cfg, rigid_cfg, collision_cfg, mass_cfg, joint_cfg]:
-        # check nothing is none
-        for k, v in cfg.__dict__.items():
-            assert v is not None, f"{cfg.__class__.__name__}:{k} is None. Please make sure schemas are valid."
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.JointDriveBaseCfg(
+        drive_type="acceleration",
+        max_force=80.0,
+        max_joint_velocity=10.0,
+        stiffness=10.0,
+        damping=0.1,
+    )
+
+    # spawn a minimal articulation with a revolute joint, then write properties.
+    sim_utils.create_prim("/World/Articulation", prim_type="Xform")
+    sim_utils.create_prim("/World/Articulation/body0", prim_type="Cube")
+    sim_utils.create_prim("/World/Articulation/body1", prim_type="Cube")
+    UsdPhysics.RevoluteJoint.Define(stage, "/World/Articulation/joint_0")
+
+    prim_path = "/World/Articulation/joint_0"
+    # use unwrapped function (no parent traversal) so this returns the inner bool
+    inspect.unwrap(schemas.modify_joint_drive_properties)(prim_path, base_cfg)
+
+    # Revolute drives convert rad/s -> deg/s; check the authored value.
+    attr = stage.GetPrimAtPath(prim_path).GetAttribute("physxJoint:maxJointVelocity")
+    assert attr.IsValid(), "physxJoint:maxJointVelocity was not authored on the prim"
+    expected_deg_per_sec = 10.0 * 180.0 / math.pi
+    assert attr.Get() == pytest.approx(expected_deg_per_sec, rel=1e-6)
+
+
+@pytest.mark.isaacsim_ci
+def test_joint_drive_base_no_physx_schema_when_max_joint_velocity_unset(setup_simulation):
+    """Regression: setting only UsdPhysics drive fields on JointDriveBaseCfg
+    must NOT cause PhysxJointAPI to be applied to the prim. Without this,
+    Newton-targeted users get PhysX schemas stamped on every joint."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.JointDriveBaseCfg(
+        drive_type="acceleration",
+        max_force=80.0,
+        stiffness=10.0,
+        damping=0.1,
+        # max_joint_velocity intentionally left None
+    )
+    sim_utils.create_prim("/World/Articulation", prim_type="Xform")
+    sim_utils.create_prim("/World/Articulation/body0", prim_type="Cube")
+    sim_utils.create_prim("/World/Articulation/body1", prim_type="Cube")
+    UsdPhysics.RevoluteJoint.Define(stage, "/World/Articulation/joint_0")
+
+    prim_path = "/World/Articulation/joint_0"
+    inspect.unwrap(schemas.modify_joint_drive_properties)(prim_path, base_cfg)
+
+    applied = stage.GetPrimAtPath(prim_path).GetAppliedSchemas()
+    assert "PhysxJointAPI" not in applied, (
+        f"PhysxJointAPI should not be applied when max_velocity is None; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_disable_gravity_on_base_cfg(setup_simulation):
+    """Setting disable_gravity on the base RigidBodyBaseCfg must author
+    physxRigidBody:disableGravity on the prim. PhysX honors per-body;
+    Newton currently honors at scene level (partial), documented in field
+    docstring. Regression test for the consumption-gated placement rule."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.RigidBodyBaseCfg(
+        rigid_body_enabled=True,
+        kinematic_enabled=False,
+        disable_gravity=True,
+    )
+    sim_utils.create_prim("/World/cube_dg", prim_type="Cube", translation=(0.0, 0.0, 0.62))
+    schemas.define_rigid_body_properties("/World/cube_dg", base_cfg)
+
+    prim_path = "/World/cube_dg"
+    attr = stage.GetPrimAtPath(prim_path).GetAttribute("physxRigidBody:disableGravity")
+    assert attr.IsValid(), "physxRigidBody:disableGravity was not authored on the prim"
+    assert attr.Get() is True
+    applied = stage.GetPrimAtPath(prim_path).GetAppliedSchemas()
+    assert "PhysxRigidBodyAPI" in applied, (
+        f"PhysxRigidBodyAPI must be applied when disable_gravity is set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_rigid_body_no_physx_schema_when_all_physx_fields_none(setup_simulation):
+    """Regression: PhysxRigidBodyPropertiesCfg with all PhysX-specific fields
+    left as None must NOT cause PhysxRigidBodyAPI to be applied to the prim.
+    The user only authored UsdPhysics-standard fields; the PhysX schema
+    should not be stamped onto a Newton-targeted asset."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    cfg = PhysxRigidBodyPropertiesCfg(
+        rigid_body_enabled=True,
+        kinematic_enabled=False,
+        # every PhysX field intentionally left None
+    )
+    sim_utils.create_prim("/World/cube_no_physx", prim_type="Cube", translation=(0.0, 0.0, 0.62))
+    schemas.define_rigid_body_properties("/World/cube_no_physx", cfg)
+
+    prim_path = "/World/cube_no_physx"
+    applied = stage.GetPrimAtPath(prim_path).GetAppliedSchemas()
+    assert "PhysxRigidBodyAPI" not in applied, (
+        f"PhysxRigidBodyAPI should not be applied when no PhysX fields are set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_rigid_body_material_base_cfg(setup_simulation):
+    """Setting only UsdPhysics fields on RigidBodyMaterialBaseCfg must author the
+    three friction/restitution attrs and must NOT apply PhysxMaterialAPI."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    cfg = RigidBodyMaterialBaseCfg(static_friction=0.7, dynamic_friction=0.6, restitution=0.1)
+    prim_path = "/World/Looks/BaseMaterial"
+    spawn_rigid_body_material.__wrapped__(prim_path, cfg)
+
+    prim = stage.GetPrimAtPath(prim_path)
+    assert prim.GetAttribute("physics:staticFriction").Get() == pytest.approx(0.7)
+    assert prim.GetAttribute("physics:dynamicFriction").Get() == pytest.approx(0.6)
+    assert prim.GetAttribute("physics:restitution").Get() == pytest.approx(0.1)
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxMaterialAPI" not in applied, (
+        f"PhysxMaterialAPI must not be applied for the base cfg; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_rigid_body_material_cfg(setup_simulation):
+    """Setting a PhysX-namespaced field on PhysxRigidBodyMaterialCfg must author the
+    namespaced attribute AND apply PhysxMaterialAPI."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    cfg = PhysxRigidBodyMaterialCfg(static_friction=0.7, compliant_contact_stiffness=100.0)
+    prim_path = "/World/Looks/PhysxMaterial"
+    spawn_rigid_body_material.__wrapped__(prim_path, cfg)
+
+    prim = stage.GetPrimAtPath(prim_path)
+    assert prim.GetAttribute("physics:staticFriction").Get() == pytest.approx(0.7)
+    assert prim.GetAttribute("physxMaterial:compliantContactStiffness").Get() == pytest.approx(100.0)
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxMaterialAPI" in applied, (
+        f"PhysxMaterialAPI must be applied when a PhysX field is set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_collision_base_cfg_writes_physx_namespaced_attrs(setup_simulation):
+    """Setting ``contact_offset`` / ``rest_offset`` on the base ``CollisionBaseCfg`` must
+    author the ``physxCollision:*`` attributes AND apply ``PhysxCollisionAPI``. Newton's
+    importer consumes them via the PhysX bridge resolver."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.CollisionBaseCfg(collision_enabled=True, contact_offset=0.05, rest_offset=0.001)
+    sim_utils.create_prim("/World/cube_co", prim_type="Cube", translation=(0.0, 0.0, 0.62))
+    schemas.define_collision_properties("/World/cube_co", base_cfg)
+
+    prim = stage.GetPrimAtPath("/World/cube_co")
+    assert prim.GetAttribute("physxCollision:contactOffset").Get() == pytest.approx(0.05)
+    assert prim.GetAttribute("physxCollision:restOffset").Get() == pytest.approx(0.001)
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxCollisionAPI" in applied, (
+        f"PhysxCollisionAPI must be applied when contact_offset/rest_offset are set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_collision_base_cfg_no_physx_schema_when_only_usd_field_set(setup_simulation):
+    """Regression: setting only ``collision_enabled`` on ``CollisionBaseCfg`` must NOT
+    cause ``PhysxCollisionAPI`` to be applied. The user only authored a UsdPhysics-standard
+    field; the PhysX schema should not be stamped onto a Newton-targeted prim."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.CollisionBaseCfg(collision_enabled=True)
+    sim_utils.create_prim("/World/cube_co_only", prim_type="Cube", translation=(0.0, 0.0, 0.62))
+    schemas.define_collision_properties("/World/cube_co_only", base_cfg)
+
+    prim = stage.GetPrimAtPath("/World/cube_co_only")
+    assert prim.GetAttribute("physics:collisionEnabled").Get() is True
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxCollisionAPI" not in applied, (
+        f"PhysxCollisionAPI should not be applied when only collision_enabled is set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_deformable_collision_props_land_on_simulation_mesh(setup_simulation):
+    """Regression: ``collision_props`` on a deformable spawner must author ``physxCollision:*``
+    on the simulation mesh, which is the prim carrying ``UsdPhysics.CollisionAPI``. Authoring
+    them on the deformable body prim leaves them inert."""
+    stage = sim_utils.get_current_stage()
+
+    cfg = sim_utils.MeshCuboidCfg(
+        size=(0.3, 0.04, 0.04),
+        deformable_props=PhysxDeformableBodyPropertiesCfg(),
+        collision_props=[PhysxCollisionCfg(contact_offset=0.005, rest_offset=0.0005)],
+        # selects the surface branch, which needs no tetrahedralization dependency
+        physics_material=PhysxSurfaceDeformableBodyMaterialCfg(),
+    )
+    cfg.func("/World/beam_dc", cfg)
+
+    sim_mesh_prim = stage.GetPrimAtPath("/World/beam_dc/sim_mesh")
+    assert "PhysxCollisionAPI" in sim_mesh_prim.GetAppliedSchemas()
+    assert sim_mesh_prim.GetAttribute("physxCollision:contactOffset").Get() == pytest.approx(0.005)
+    assert sim_mesh_prim.GetAttribute("physxCollision:restOffset").Get() == pytest.approx(0.0005)
+    body_prim = stage.GetPrimAtPath("/World/beam_dc")
+    assert not body_prim.GetAttribute("physxCollision:restOffset").HasAuthoredValue()
+
+
+@pytest.mark.isaacsim_ci
+def test_deformable_collision_props_reject_legacy_cfg(setup_simulation):
+    """Legacy collision cfgs cannot resolve onto the simulation mesh, so they must be rejected."""
+    cfg = sim_utils.MeshCuboidCfg(
+        size=(0.1, 0.1, 0.1),
+        deformable_props=PhysxDeformableBodyPropertiesCfg(),
+        collision_props=PhysxCollisionPropertiesCfg(rest_offset=0.0005),
+    )
+    with pytest.raises(ValueError, match="collision fragments"):
+        cfg.func("/World/beam_legacy", cfg)
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_collision_cfg_writes_torsional_patch(setup_simulation):
+    """Setting ``torsional_patch_radius`` on ``PhysxCollisionPropertiesCfg`` must author
+    the ``physxCollision:torsionalPatchRadius`` attribute AND apply ``PhysxCollisionAPI``."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    cfg = PhysxCollisionPropertiesCfg(torsional_patch_radius=1.0)
+    sim_utils.create_prim("/World/cube_tpr", prim_type="Cube", translation=(0.0, 0.0, 0.62))
+    schemas.define_collision_properties("/World/cube_tpr", cfg)
+
+    prim = stage.GetPrimAtPath("/World/cube_tpr")
+    assert prim.GetAttribute("physxCollision:torsionalPatchRadius").Get() == pytest.approx(1.0)
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxCollisionAPI" in applied
+
+
+@pytest.mark.isaacsim_ci
+def test_articulation_root_base_cfg_writes_articulation_enabled(setup_simulation):
+    """Setting ``articulation_enabled`` on the base ``ArticulationRootBaseCfg`` must author
+    ``physxArticulation:articulationEnabled`` AND apply ``PhysxArticulationAPI``. The
+    PhysX namespace is honored at sim time by PhysX and as a spawn-time guard by the IL
+    Newton wrapper."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.ArticulationRootBaseCfg(articulation_enabled=False)
+    sim_utils.create_prim("/World/arti_ae", prim_type="Xform")
+    schemas.define_articulation_root_properties("/World/arti_ae", base_cfg)
+
+    prim = stage.GetPrimAtPath("/World/arti_ae")
+    assert prim.GetAttribute("physxArticulation:articulationEnabled").Get() is False
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxArticulationAPI" in applied, (
+        f"PhysxArticulationAPI must be applied when articulation_enabled is set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_articulation_root_base_no_physx_schema_when_only_fix_root_link_set(setup_simulation):
+    """Regression: setting only ``fix_root_link`` on ``ArticulationRootBaseCfg`` must NOT
+    cause ``PhysxArticulationAPI`` to be applied. ``fix_root_link`` is a writer-side flag
+    materializing ``UsdPhysics.FixedJoint``; it does not author any PhysX-namespaced
+    attribute. Newton-targeted prims that only set ``fix_root_link`` should not receive
+    ``PhysxArticulationAPI`` stamping."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    base_cfg = schemas.ArticulationRootBaseCfg(fix_root_link=False)
+    sim_utils.create_prim("/World/arti_frl", prim_type="Xform")
+    schemas.define_articulation_root_properties("/World/arti_frl", base_cfg)
+
+    prim = stage.GetPrimAtPath("/World/arti_frl")
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxArticulationAPI" not in applied, (
+        f"PhysxArticulationAPI should not be applied when only fix_root_link is set; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_modify_articulation_root_fix_root_link_uses_given_stage(setup_simulation):
+    """``fix_root_link`` looks up the existing fixed joint on the stage that is passed in, not the current stage."""
+    stage = Usd.Stage.CreateInMemory()
+    UsdGeom.Xform.Define(stage, "/World")
+    root = UsdGeom.Xform.Define(stage, "/World/Robot").GetPrim()
+    UsdPhysics.RigidBodyAPI.Apply(root)
+    UsdPhysics.ArticulationRootAPI.Apply(root)
+    joint = UsdPhysics.FixedJoint.Define(stage, "/World/Robot/FixedJoint")
+    joint.CreateBody1Rel().SetTargets(["/World/Robot"])
+    joint.CreateJointEnabledAttr(True)
+    assert not sim_utils.get_current_stage().GetPrimAtPath("/World/Robot").IsValid()
+
+    with pytest.warns(DeprecationWarning, match="modify_articulation_root_properties"):
+        schemas.modify_articulation_root_properties(
+            "/World/Robot", schemas.ArticulationRootBaseCfg(fix_root_link=False), stage=stage
+        )
+
+    assert joint.GetJointEnabledAttr().Get() is False
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_articulation_root_writes_self_collisions(setup_simulation):
+    """Setting ``enabled_self_collisions`` on ``PhysxArticulationRootPropertiesCfg`` must author
+    ``physxArticulation:enabledSelfCollisions`` and mirror onto ``newton:selfCollisionEnabled``."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    cfg = PhysxArticulationRootPropertiesCfg(enabled_self_collisions=True)
+    sim_utils.create_prim("/World/arti_sc", prim_type="Xform")
+    schemas.define_articulation_root_properties("/World/arti_sc", cfg)
+
+    prim = stage.GetPrimAtPath("/World/arti_sc")
+    assert prim.GetAttribute("physxArticulation:enabledSelfCollisions").Get() is True
+    assert prim.GetAttribute("newton:selfCollisionEnabled").Get() is True
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxArticulationAPI" in applied
+    assert "NewtonArticulationRootAPI" in applied
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_articulation_root_self_collisions_follow_fixed_root(setup_simulation):
+    """Mirrored Newton self-collision properties must follow a relocated articulation root."""
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    parent = sim_utils.create_prim("/World/arti_fixed", prim_type="Xform")
+    child = sim_utils.create_prim("/World/arti_fixed/base", prim_type="Cube")
+    UsdPhysics.RigidBodyAPI.Apply(child)
+    UsdPhysics.ArticulationRootAPI.Apply(child)
+    child.AddAppliedSchema("NewtonArticulationRootAPI")
+    child.GetAttribute("newton:selfCollisionEnabled").Set(False)
+
+    cfg = PhysxArticulationRootPropertiesCfg(enabled_self_collisions=True, fix_root_link=True)
+    schemas.modify_articulation_root_properties(child.GetPath(), cfg)
+
+    roots = [prim for prim in stage.Traverse() if prim.HasAPI(UsdPhysics.ArticulationRootAPI)]
+    assert roots == [parent]
+    assert parent.GetAttribute("physxArticulation:enabledSelfCollisions").Get() is True
+    assert parent.GetAttribute("newton:selfCollisionEnabled").Get() is True
+    assert "NewtonArticulationRootAPI" in parent.GetAppliedSchemas()
+    assert "NewtonArticulationRootAPI" not in child.GetAppliedSchemas()
+    assert not child.GetAttribute("newton:selfCollisionEnabled").HasAuthoredValue()
+
+
+@pytest.mark.isaacsim_ci
+def test_mesh_collision_base_cfg_writes_approximation_token(setup_simulation):
+    """``MeshCollisionBaseCfg(mesh_approximation_name="boundingCube")`` authors
+    ``physics:approximation`` via ``UsdPhysics.MeshCollisionAPI``. No PhysX cooking schema is
+    applied because the base class declares no PhysX namespace."""
+    from pxr import UsdGeom
+
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    UsdGeom.Mesh.Define(stage, "/World/mesh_base")
+    cfg = schemas.MeshCollisionBaseCfg(mesh_approximation_name="boundingCube")
+    schemas.define_mesh_collision_properties("/World/mesh_base", cfg)
+
+    prim = stage.GetPrimAtPath("/World/mesh_base")
+    assert prim.GetAttribute("physics:approximation").Get() == "boundingCube"
+    applied = prim.GetAppliedSchemas()
+    # The standard UsdPhysics.MeshCollisionAPI is registered under
+    # ``PhysicsMeshCollisionAPI`` in the prim's applied-schema list.
+    assert any("MeshCollisionAPI" in s for s in applied), (
+        f"a MeshCollisionAPI schema must be applied; got {list(applied)}"
+    )
+    # no PhysX cooking schema applied for the base class
+    assert not any(s.startswith("Physx") and "Mesh" in s for s in applied), (
+        f"no PhysX mesh schema should be applied for the base class; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_convex_hull_writes_tuning_attrs(setup_simulation):
+    """Setting tuning fields on ``PhysxConvexHullPropertiesCfg`` authors the
+    ``physxConvexHullCollision:*`` namespaced attributes AND applies
+    ``PhysxConvexHullCollisionAPI``."""
+    from isaaclab_physx.sim.schemas import PhysxConvexHullPropertiesCfg
+
+    from pxr import UsdGeom
+
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    UsdGeom.Mesh.Define(stage, "/World/mesh_ch")
+    cfg = PhysxConvexHullPropertiesCfg(hull_vertex_limit=64, min_thickness=0.001)
+    schemas.define_mesh_collision_properties("/World/mesh_ch", cfg)
+
+    prim = stage.GetPrimAtPath("/World/mesh_ch")
+    assert prim.GetAttribute("physics:approximation").Get() == "convexHull"
+    assert prim.GetAttribute("physxConvexHullCollision:hullVertexLimit").Get() == 64
+    assert prim.GetAttribute("physxConvexHullCollision:minThickness").Get() == pytest.approx(0.001)
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxConvexHullCollisionAPI" in applied
+
+
+@pytest.mark.isaacsim_ci
+def test_physx_convex_hull_no_physx_schema_when_no_tuning_fields_set(setup_simulation):
+    """Regression: ``PhysxConvexHullPropertiesCfg()`` with all tuning fields None must NOT
+    apply ``PhysxConvexHullCollisionAPI``. The approximation token is still authored on the
+    standard ``UsdPhysics.MeshCollisionAPI``."""
+    from isaaclab_physx.sim.schemas import PhysxConvexHullPropertiesCfg
+
+    from pxr import UsdGeom
+
+    sim, _, _, _, _, _ = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    UsdGeom.Mesh.Define(stage, "/World/mesh_ch_default")
+    cfg = PhysxConvexHullPropertiesCfg()
+    schemas.define_mesh_collision_properties("/World/mesh_ch_default", cfg)
+
+    prim = stage.GetPrimAtPath("/World/mesh_ch_default")
+    assert prim.GetAttribute("physics:approximation").Get() == "convexHull"
+    applied = prim.GetAppliedSchemas()
+    assert "PhysxConvexHullCollisionAPI" not in applied, (
+        f"PhysxConvexHullCollisionAPI should not be applied without tuning fields; got {list(applied)}"
+    )
+
+
+@pytest.mark.isaacsim_ci
+def test_bounding_cube_default_token(setup_simulation):
+    """``BoundingCubePropertiesCfg()`` defaults to the ``boundingCube`` token."""
+    cfg = schemas.BoundingCubePropertiesCfg()
+    assert cfg.mesh_approximation_name == "boundingCube"
+
+
+@pytest.mark.isaacsim_ci
+def test_usd_api_physx_api_attrs_deprecated(setup_simulation):
+    """Reading ``cfg.usd_api`` and ``cfg.physx_api`` on the new mesh cfgs emits a
+    DeprecationWarning and returns the legacy-mapped string value."""
+    from isaaclab_physx.sim.schemas import PhysxConvexHullPropertiesCfg
+
+    cfg = PhysxConvexHullPropertiesCfg()
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        usd_api_value = cfg.usd_api
+    assert any(issubclass(w.category, DeprecationWarning) for w in caught)
+    assert usd_api_value == "MeshCollisionAPI"
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        physx_api_value = cfg.physx_api
+    assert any(issubclass(w.category, DeprecationWarning) for w in caught)
+    assert physx_api_value == "PhysxConvexHullCollisionAPI"
 
 
 @pytest.mark.isaacsim_ci
@@ -128,8 +588,10 @@ def test_modify_properties_on_articulation_instanced_usd(setup_simulation):
     _validate_joint_drive_properties_on_prim("/World/asset_instanced", joint_cfg)
 
     # make a fixed joint
+    assert sim_utils.find_global_fixed_joint_prim("/World/asset_instanced") is None
     arti_cfg.fix_root_link = True
     schemas.modify_articulation_root_properties("/World/asset_instanced", arti_cfg)
+    assert sim_utils.find_global_fixed_joint_prim("/World/asset_instanced", check_enabled_only=True) is not None
 
 
 @pytest.mark.isaacsim_ci
@@ -163,6 +625,59 @@ def test_modify_properties_on_articulation_usd(setup_simulation):
 
 
 @pytest.mark.isaacsim_ci
+def test_activate_contact_sensors_nested_rigid_bodies(setup_simulation):
+    """Test contact-report schemas are applied to nested rigid-body trees."""
+    stage = sim_utils.get_current_stage()
+
+    rigid_body_paths = [
+        "/World/Robot/Geometry/pelvis",
+        "/World/Robot/Geometry/pelvis/left_hip",
+        "/World/Robot/Geometry/pelvis/left_hip/left_knee",
+    ]
+    sim_utils.create_prim("/World/Robot", prim_type="Xform")
+    sim_utils.create_prim("/World/Robot/Geometry", prim_type="Xform")
+    for prim_path in rigid_body_paths:
+        sim_utils.create_prim(prim_path, prim_type="Xform")
+        UsdPhysics.RigidBodyAPI.Apply(stage.GetPrimAtPath(prim_path))
+
+    schemas.activate_contact_sensors("/World/Robot", threshold=2.5)
+
+    for prim_path in rigid_body_paths:
+        prim = stage.GetPrimAtPath(prim_path)
+        applied_schemas = prim.GetAppliedSchemas()
+        assert "PhysxRigidBodyAPI" in applied_schemas
+        assert "PhysxContactReportAPI" in applied_schemas
+        assert prim.GetAttribute("physxRigidBody:sleepThreshold").Get() == pytest.approx(0.0)
+        assert prim.GetAttribute("physxContactReport:threshold").Get() == pytest.approx(2.5)
+
+
+@pytest.mark.isaacsim_ci
+def test_modify_rigid_body_and_mass_properties_nested_rigid_bodies(setup_simulation):
+    """Test rigid-body and mass properties are applied to nested rigid-body trees."""
+    stage = sim_utils.get_current_stage()
+
+    rigid_body_paths = [
+        "/World/Robot/Geometry/pelvis",
+        "/World/Robot/Geometry/pelvis/left_hip",
+        "/World/Robot/Geometry/pelvis/left_hip/left_knee",
+    ]
+    sim_utils.create_prim("/World/Robot", prim_type="Xform")
+    sim_utils.create_prim("/World/Robot/Geometry", prim_type="Xform")
+    for prim_path in rigid_body_paths:
+        sim_utils.create_prim(prim_path, prim_type="Xform")
+        UsdPhysics.RigidBodyAPI.Apply(stage.GetPrimAtPath(prim_path))
+        UsdPhysics.MassAPI.Apply(stage.GetPrimAtPath(prim_path))
+
+    schemas.modify_rigid_body_properties("/World/Robot", schemas.RigidBodyPropertiesCfg(disable_gravity=True))
+    schemas.modify_mass_properties("/World/Robot", schemas.MassPropertiesCfg(mass=2.5))
+
+    for prim_path in rigid_body_paths:
+        prim = stage.GetPrimAtPath(prim_path)
+        assert prim.GetAttribute("physxRigidBody:disableGravity").Get() is True, f"Failed for {prim_path}"
+        assert prim.GetAttribute("physics:mass").Get() == pytest.approx(2.5), f"Failed for {prim_path}"
+
+
+@pytest.mark.isaacsim_ci
 def test_defining_rigid_body_properties_on_prim(setup_simulation):
     """Test defining rigid body properties on a prim."""
     sim, _, rigid_cfg, collision_cfg, mass_cfg, _ = setup_simulation
@@ -174,24 +689,25 @@ def test_defining_rigid_body_properties_on_prim(setup_simulation):
     schemas.define_rigid_body_properties("/World/cube1", rigid_cfg)
     schemas.define_collision_properties("/World/cube1", collision_cfg)
     schemas.define_mass_properties("/World/cube1", mass_cfg)
-    # validate the properties
-    _validate_rigid_body_properties_on_prim("/World/cube1", rigid_cfg)
-    _validate_collision_properties_on_prim("/World/cube1", collision_cfg)
-    _validate_mass_properties_on_prim("/World/cube1", mass_cfg)
 
     # spawn another prim
     sim_utils.create_prim("/World/cube2", prim_type="Cube", translation=(1.0, 1.0, 0.62))
     # set properties on the asset and check all properties are set
     schemas.define_rigid_body_properties("/World/cube2", rigid_cfg)
     schemas.define_collision_properties("/World/cube2", collision_cfg)
-    # validate the properties
-    _validate_rigid_body_properties_on_prim("/World/cube2", rigid_cfg)
-    _validate_collision_properties_on_prim("/World/cube2", collision_cfg)
 
-    # check if we can play
-    sim.reset()
-    for _ in range(100):
-        sim.step()
+    # the define_* functions apply the schemas they author
+    for prim_path, apis in (
+        ("/World/cube1", (UsdPhysics.RigidBodyAPI, UsdPhysics.CollisionAPI, UsdPhysics.MassAPI)),
+        ("/World/cube2", (UsdPhysics.RigidBodyAPI, UsdPhysics.CollisionAPI)),
+    ):
+        prim = sim.stage.GetPrimAtPath(prim_path)
+        for api in apis:
+            assert prim.HasAPI(api), f"{prim_path} is missing {api.__name__}"
+    # validate the properties; the validators inspect the children (collision: grandchildren) of the given prim
+    _validate_rigid_body_properties_on_prim("/World", rigid_cfg)
+    _validate_collision_properties_on_prim("/", collision_cfg)
+    _validate_mass_properties_on_prim("/World", mass_cfg)
 
 
 @pytest.mark.isaacsim_ci
@@ -208,11 +724,70 @@ def test_defining_articulation_properties_on_prim(setup_simulation):
     sim_utils.create_prim("/World/parent/child", prim_type="Cube", translation=(0.0, 0.0, 0.62))
     schemas.define_rigid_body_properties("/World/parent/child", rigid_cfg)
     schemas.define_mass_properties("/World/parent/child", mass_cfg)
+    child_prim = sim.stage.GetPrimAtPath("/World/parent/child")
+    assert child_prim.HasAPI(UsdPhysics.RigidBodyAPI)
+    assert child_prim.HasAPI(UsdPhysics.MassAPI)
+    # validate the properties; the validators inspect the children of the given prim
+    _validate_rigid_body_properties_on_prim("/World/parent", rigid_cfg)
+    _validate_mass_properties_on_prim("/World/parent", mass_cfg)
 
-    # check if we can play
-    sim.reset()
-    for _ in range(100):
-        sim.step()
+
+@pytest.mark.isaacsim_ci
+def test_multi_instance_schema_detection_on_tendon_joints(setup_simulation):
+    """Test that multi-instance PhysX tendon schema tokens are recognized with their instance suffixes.
+
+    Multi-instance schemas (e.g. PhysxTendonAxisAPI, PhysxTendonAxisRootAPI) appear in
+    GetAppliedSchemas() as 'SchemaName:instanceName' (e.g. 'PhysxTendonAxisAPI:inst0').
+    An exact ``in list`` check fails because 'PhysxTendonAxisAPI' != 'PhysxTendonAxisAPI:inst0'.
+    This test ensures both the joint-drive skip predicate and the fixed-tendon writer handle
+    multiple-apply schema tokens correctly.
+
+    We call the unwrapped functions directly (via ``inspect.unwrap``) to bypass the
+    ``@apply_nested`` decorator, which traverses children and does not return the
+    inner function's bool result.
+    """
+    sim, _, _, _, _, joint_cfg = setup_simulation
+    stage = sim_utils.get_current_stage()
+
+    # unwrap to get the raw functions that return bool
+    _modify_joint_drive = inspect.unwrap(schemas.modify_joint_drive_properties)
+    _modify_fixed_tendon = inspect.unwrap(schemas.modify_fixed_tendon_properties)
+
+    # -- set up two body prims connected by a revolute joint
+    sim_utils.create_prim("/World/tendon_test", prim_type="Xform")
+    sim_utils.create_prim("/World/tendon_test/body0", prim_type="Cube")
+    sim_utils.create_prim("/World/tendon_test/body1", prim_type="Cube")
+    joint = UsdPhysics.RevoluteJoint.Define(stage, "/World/tendon_test/body1/joint0")
+    joint_prim = joint.GetPrim()
+
+    # -- 1) Joint with only tendon child schema (no root) -> drive should be SKIPPED
+    joint_prim.AddAppliedSchema("PhysxTendonAxisAPI:inst0")
+    applied = joint_prim.GetAppliedSchemas()
+    assert any("PhysxTendonAxisAPI" in s for s in applied), "Multi-instance schema not found via substring"
+    assert "PhysxTendonAxisAPI" not in applied, "Exact match should NOT find multi-instance schema"
+
+    result = _modify_joint_drive(joint_prim.GetPrimPath().pathString, joint_cfg)
+    assert result is False, "Tendon child joint should be skipped (return False)"
+
+    # -- 2) Joint with both child AND root tendon schema -> drive should NOT be skipped
+    joint_prim.AddAppliedSchema("PhysxTendonAxisRootAPI:inst0")
+    applied = joint_prim.GetAppliedSchemas()
+    assert any("PhysxTendonAxisRootAPI" in s for s in applied)
+    assert "PhysxTendonAxisRootAPI" not in applied, "Exact match should NOT find multi-instance schema"
+
+    result = _modify_joint_drive(joint_prim.GetPrimPath().pathString, joint_cfg)
+    assert result is True, "Tendon root joint should NOT be skipped"
+
+    # -- 3) modify_fixed_tendon_properties should detect multi-instance root schema
+    tendon_cfg = schemas.FixedTendonPropertiesCfg(stiffness=10.0, damping=0.1)
+    result = _modify_fixed_tendon(joint_prim.GetPrimPath().pathString, tendon_cfg)
+    assert result is True, "Prim with PhysxTendonAxisRootAPI:inst0 should be detected"
+
+    # -- 4) Prim WITHOUT any tendon root schema -> modify_fixed_tendon should return False
+    sim_utils.create_prim("/World/tendon_test/body2", prim_type="Cube")
+    no_tendon_joint = UsdPhysics.RevoluteJoint.Define(stage, "/World/tendon_test/body2/joint1")
+    result = _modify_fixed_tendon(no_tendon_joint.GetPrim().GetPrimPath().pathString, tendon_cfg)
+    assert result is False, "Prim without tendon root schema should return False"
 
 
 """
@@ -234,8 +809,8 @@ def _validate_articulation_properties_on_prim(
     root_prim = stage.GetPrimAtPath(prim_path)
     # check articulation properties are set correctly
     for attr_name, attr_value in arti_cfg.__dict__.items():
-        # skip names we know are not present
-        if attr_name == "func":
+        # skip class metadata and names we know are not present
+        if attr_name.startswith("_") or attr_name == "func":
             continue
         # handle fixed root link
         if attr_name == "fix_root_link" and attr_value is not None:
@@ -278,8 +853,12 @@ def _validate_rigid_body_properties_on_prim(prim_path: str, rigid_cfg, verbose: 
     for link_prim in root_prim.GetChildren():
         if UsdPhysics.RigidBodyAPI(link_prim):
             for attr_name, attr_value in rigid_cfg.__dict__.items():
-                # skip names we know are not present
-                if attr_name in ["func", "rigid_body_enabled", "kinematic_enabled"]:
+                # skip class metadata and names we know are not present
+                if attr_name.startswith("_") or attr_name in [
+                    "func",
+                    "rigid_body_enabled",
+                    "kinematic_enabled",
+                ]:
                     continue
                 # convert attribute name in prim to cfg name
                 prim_prop_name = f"physxRigidBody:{to_camel_case(attr_name, to='cC')}"
@@ -307,8 +886,12 @@ def _validate_collision_properties_on_prim(prim_path: str, collision_cfg, verbos
         for mesh_prim in link_prim.GetChildren():
             if UsdPhysics.CollisionAPI(mesh_prim):
                 for attr_name, attr_value in collision_cfg.__dict__.items():
-                    # skip names we know are not present
-                    if attr_name in ["func", "collision_enabled"]:
+                    # skip names we know are not present and class-metadata keys
+                    if attr_name.startswith("_") or attr_name in [
+                        "func",
+                        "collision_enabled",
+                        "mesh_collision_property",
+                    ]:
                         continue
                     # convert attribute name in prim to cfg name
                     prim_prop_name = f"physxCollision:{to_camel_case(attr_name, to='cC')}"
@@ -335,8 +918,8 @@ def _validate_mass_properties_on_prim(prim_path: str, mass_cfg, verbose: bool = 
     for link_prim in root_prim.GetChildren():
         if UsdPhysics.MassAPI(link_prim):
             for attr_name, attr_value in mass_cfg.__dict__.items():
-                # skip names we know are not present
-                if attr_name in ["func"]:
+                # skip names we know are not present and class-metadata keys
+                if attr_name in ["func"] or attr_name.startswith("_"):
                     continue
                 # print(link_prim.GetProperties())
                 prim_prop_name = f"physics:{to_camel_case(attr_name, to='cC')}"
@@ -367,8 +950,8 @@ def _validate_joint_drive_properties_on_prim(prim_path: str, joint_cfg, verbose:
                 assert joint_prim.HasAPI(UsdPhysics.DriveAPI)
                 # iterate over the joint properties
                 for attr_name, attr_value in joint_cfg.__dict__.items():
-                    # skip names we know are not present
-                    if attr_name == "func":
+                    # skip class metadata and names we know are not present on the USD prim
+                    if attr_name.startswith("_") or attr_name in ["func", "ensure_drives_exist"]:
                         continue
                     # resolve the drive (linear or angular)
                     drive_model = "linear" if joint_prim.IsA(UsdPhysics.PrismaticJoint) else "angular"
@@ -381,10 +964,8 @@ def _validate_joint_drive_properties_on_prim(prim_path: str, joint_cfg, verbose:
                         continue
 
                     # non-string attributes
-                    if attr_name == "max_velocity":
+                    if attr_name == "max_joint_velocity":
                         prim_attr_name = "physxJoint:maxJointVelocity"
-                    elif attr_name == "max_effort":
-                        prim_attr_name = f"drive:{drive_model}:physics:maxForce"
                     else:
                         prim_attr_name = f"drive:{drive_model}:physics:{to_camel_case(attr_name, to='cC')}"
 
@@ -394,7 +975,7 @@ def _validate_joint_drive_properties_on_prim(prim_path: str, joint_cfg, verbose:
                     # for angular drives, we expect user to set in radians
                     # the values reported by USD are in degrees
                     if drive_model == "angular":
-                        if attr_name == "max_velocity":
+                        if attr_name == "max_joint_velocity":
                             # deg / s --> rad / s
                             prim_attr_value = prim_attr_value * math.pi / 180.0
                         elif attr_name in ["stiffness", "damping"]:
@@ -407,3 +988,51 @@ def _validate_joint_drive_properties_on_prim(prim_path: str, joint_cfg, verbose:
                     )
             elif verbose:
                 print(f"Skipping prim {joint_prim.GetPrimPath()} as it is not a joint drive api.")
+
+
+@pytest.mark.isaacsim_ci
+@pytest.mark.parametrize("kind", ["volume", "surface"])
+def test_physx_deformable_fragments(setup_simulation, kind):
+    """Create OmniPhysics rest/bind poses and compose PhysX body and material fragments."""
+    from isaaclab_physx.physics import PhysxManager
+    from isaaclab_physx.sim.schemas import PhysxDeformableBodyCfg, PhysxSurfaceDeformableBodyCfg
+    from isaaclab_physx.sim.spawners.materials import PhysxDeformableMaterialCfg, PhysxSurfaceDeformableMaterialCfg
+
+    from pxr import Usd, UsdGeom
+
+    from isaaclab.sim.spawners.materials import spawn_physics_material_from_fragments
+
+    stage = Usd.Stage.CreateInMemory()
+    body = UsdGeom.Xform.Define(stage, "/Body").GetPrim()
+    visual = UsdGeom.Mesh.Define(stage, "/Body/visual")
+    visual.CreatePointsAttr([(0, 0, 0), (1, 0, 0), (0, 1, 0)])
+    mesh = UsdGeom.TetMesh.Define(stage, "/Body/sim") if kind == "volume" else UsdGeom.Mesh.Define(stage, "/Body/sim")
+    mesh.CreatePointsAttr([(0, 0, 0), (1, 0, 0), (0, 1, 0), (0, 0, 1)])
+    if kind == "volume":
+        mesh.CreateTetVertexIndicesAttr([(0, 1, 2, 3)])
+    else:
+        mesh.CreateFaceVertexIndicesAttr([0, 1, 2])
+        mesh.CreateFaceVertexCountsAttr([3])
+    PhysxManager.setup_deformable_body(body, kind, mesh.GetPrim(), visual.GetPrim())
+    assert body.HasAPI("OmniPhysicsDeformableBodyAPI")
+    assert mesh.GetPrim().HasAPI(f"OmniPhysics{kind.title()}DeformableSimAPI")
+    assert mesh.GetPrim().GetAttribute("omniphysics:restShapePoints").Get() == mesh.GetPointsAttr().Get()
+    rest_indices = "restTetVtxIndices" if kind == "volume" else "restTriVtxIndices"
+    assert len(mesh.GetPrim().GetAttribute("omniphysics:" + rest_indices).Get()) == 1
+    assert (
+        visual.GetPrim().GetAttribute("deformablePose:default:omniphysics:points").Get() == visual.GetPointsAttr().Get()
+    )
+    body_cfg = PhysxDeformableBodyCfg(solver_position_iteration_count=32, linear_damping=0.1)
+    assert body_cfg.func(body_cfg, "/Body", stage)
+    assert body.GetAttribute("physxDeformableBody:solverPositionIterationCount").Get() == 32
+    assert body.GetAttribute("physxDeformableBody:linearDamping").Get() == pytest.approx(0.1)
+    materials = [PhysxDeformableMaterialCfg(elasticity_damping=0.005)]
+    if kind == "surface":
+        surface_cfg = PhysxSurfaceDeformableBodyCfg(collision_pair_update_frequency=2)
+        assert surface_cfg.func(surface_cfg, "/Body", stage)
+        assert body.GetAttribute("physxDeformableBody:collisionPairUpdateFrequency").Get() == 2
+        materials.append(PhysxSurfaceDeformableMaterialCfg(bend_damping=0.1))
+    material = spawn_physics_material_from_fragments("/Material", materials, stage)
+    assert material.GetAttribute("physxDeformableMaterial:elasticityDamping").Get() == pytest.approx(0.005)
+    if kind == "surface":
+        assert material.GetAttribute("physxDeformableMaterial:bendDamping").Get() == pytest.approx(0.1)
