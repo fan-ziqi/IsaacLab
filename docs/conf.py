@@ -349,6 +349,10 @@ html_js_files = [
     "css/environment-browser.js",
     "css/demo-browser.js",
     "css/guide-browser.js",
+    (
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5227330870116342",
+        {"async": "async", "crossorigin": "anonymous"},
+    ),
 ]
 
 html_theme_options = {
