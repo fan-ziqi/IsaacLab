@@ -1,0 +1,33 @@
+{#
+Copyright (c) 2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+#}
+<script>
+  (() => {
+    const ad = document.currentScript.previousElementSibling;
+    const loader = document.querySelector("script[src*='/pagead/js/adsbygoogle.js']");
+    const mediaQuery = window.matchMedia("(min-width: {{ adsense_min_width|default(0) }}px)");
+    let initialized = false;
+
+    const initialize = () => {
+      if (
+        initialized || loader?.dataset.loaded !== "true" || !mediaQuery.matches ||
+        window.self !== window.top || !ad.getBoundingClientRect().width
+      ) {
+        return;
+      }
+      initialized = true;
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initialize, {once: true});
+    } else {
+      initialize();
+    }
+    loader?.addEventListener("load", initialize, {once: true});
+    mediaQuery.addEventListener("change", initialize);
+  })();
+</script>

@@ -352,7 +352,7 @@ html_js_files = [
     "css/guide-browser.js",
     (
         "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5227330870116342",
-        {"async": "async", "crossorigin": "anonymous"},
+        {"async": "async", "crossorigin": "anonymous", "onload": "this.dataset.loaded = 'true'"},
     ),
 ]
 
@@ -367,6 +367,9 @@ html_theme_options = {
     "use_edit_page_button": True,
     "show_toc_level": 1,
     "use_sidenotes": True,
+    "primary_sidebar_end": [],
+    "secondary_sidebar_items": ["page-toc.html", "adsense-sidebar.html"],
+    "article_footer_items": ["adsense-article.html"],
     "logo": {
         "text": "Isaac Lab 文档",
         "image_light": "source/_static/NVIDIA-logo-white.png",
