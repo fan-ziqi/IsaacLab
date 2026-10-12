@@ -5,7 +5,7 @@ Welcome to Isaac Lab!
    :width: 100%
    :alt: H1 Humanoid example using Isaac Lab
 
-.. include:: _includes/translation_notice.txt
+.. include:: _includes/translation_notice.rst
 
 
 **Isaac Lab** is a unified and modular framework for robot learning that aims to simplify common workflows

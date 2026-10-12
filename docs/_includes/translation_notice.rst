@@ -4,6 +4,8 @@
 
    官方文档提供多个版本。本站由本项目的 ``main`` 分支发布，当前译文以官方 ``release/3.0.0`` 分支为基准。除下述旧版存档外，不提供完整的历史版本翻译。
 
+   旧版 2.x 中文文档已迁至 `https://docs.robotsfan.com/isaaclab_v2/ <https://docs.robotsfan.com/isaaclab_v2/>`__。使用 Isaac Lab 2.x 时，请查阅该存档。
+
    由于 1.x 与后续版本的 API 差异较大，本站保留了一份 1.x 文档存档（并非严格对应最终的 1.4.1 版本），可通过 `https://docs.robotsfan.com/isaaclab_v1 <https://docs.robotsfan.com/isaaclab_v1>`__ 访问。
 
    如果您需要基于 Isaac Lab 开发独立扩展项目，请参考 `robot_lab <https://github.com/fan-ziqi/robot_lab>`__ 项目。
