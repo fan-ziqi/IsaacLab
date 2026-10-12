@@ -1,15 +1,9 @@
 【非官方】关于翻译
 ===============================
 
-.. include:: ../../_includes/translation_notice.txt
+.. include:: ../../_includes/translation_notice.rst
 
-当前译文基于官方 ``release/3.0.0`` 分支，翻译项目仍在 ``main`` 分支维护。指南、教程和版本说明提供中文译文，``API`` 与 ``CHANGELOG`` 保留英文。
-
-文档版本：
-
-* `3.0 中文文档 <https://docs.robotsfan.com/isaaclab/>`__ ：本站当前版本。
-* `2.x 中文文档存档 <https://docs.robotsfan.com/isaaclab_v2/>`__ ：旧版 v2 文档已迁至此处，使用 2.x 时请查阅该存档。
-* `1.x 中文文档存档 <https://docs.robotsfan.com/isaaclab_v1/>`__ ：保留的旧版文档，并非严格对应最终的 1.4.1 版本。
+指南、教程和发行说明提供中文译文，``API`` 与 ``CHANGELOG`` 保留英文。
 
 其他文档： `Isaac Lab 官方英文文档 <https://isaac-sim.github.io/IsaacLab/>`__ · `Isaac Sim 中文文档（API 自动翻译） <https://docs.robotsfan.com/isaacsim/>`__ 。
 
