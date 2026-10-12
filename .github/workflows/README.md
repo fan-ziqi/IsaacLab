@@ -1,7 +1,5 @@
-# CI Workflows
+# Chinese Documentation Workflow
 
-`schedule:` triggers run only from the repository's current default branch.
-A scheduled workflow YAML must live on that branch for its cron to register.
-A `workflow_dispatch:` workflow must also exist on the default branch,
-although manual dispatch can select another branch or tag. `pull_request:`
-and `push:` triggers use the event branch normally.
+`gh-pages-zhcn.yml` builds the Chinese documentation on pushes to `main` and supports manual dispatch.
+
+The workflow uploads the generated HTML as an artifact and publishes it to the `gh-pages-zhcn` branch.
