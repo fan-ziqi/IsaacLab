@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -642,39 +642,56 @@ msgstr "在共享分派边界选择后端。使用既有类型、配置和能力
 #: source/refs/contributing.rst:271
 msgid ""
 "Keep physics and rendering responsibilities separate and resolve "
-"construction requirements before finalization. See :doc:`/source/developer-"
-"tools/scene_data_providers` for geometry ownership and "
-":doc:`/source/developer-tools/add_physics_backend` for backend integration."
+"construction requirements before finalization. See "
+":doc:`/source/concepts/native-physics-api/scene_data_providers` for geometry"
+" ownership and :doc:`/source/developer-tools/add_physics_backend` for "
+"backend integration."
 msgstr ""
-"分开物理与渲染职责，并在最终构建完成前解决构建要求。几何归属见 :doc:`/source/developer-"
-"tools/scene_data_providers` ，后端集成见 :doc:`/source/developer-"
+"物理与渲染应各自负责独立的功能，并在构建完成前解决相关要求。几何体的管理归属见 :doc:`/source/concepts/native-"
+"physics-api/scene_data_providers` ，后端集成见 :doc:`/source/developer-"
 "tools/add_physics_backend` 。"
 
 #: source/refs/contributing.rst:274
+msgid ""
+"Treat non-spawning sensor paths as references to existing scene prims, not "
+"as independently owned clone sources. Import the owning asset and resolve "
+"sensor tracking from its replicated prims."
+msgstr ""
+"不生成 prim 的传感器路径应视为对已有场景 prim 的引用，而不是独立管理的克隆源。先导入所属资产，再从其复制出的 prim "
+"中解析传感器跟踪对象。"
+
+#: source/refs/contributing.rst:276
+msgid ""
+"Keep nested physics bodies in their owning source import. A second "
+"declaration only requires a separate native copy when its source-to-"
+"destination mapping is not already covered by the parent."
+msgstr "嵌套物理刚体应随其所属源对象一起导入。仅当父对象的源到目标映射尚未覆盖第二次声明时，该声明才需要单独的原生副本。"
+
+#: source/refs/contributing.rst:278
 msgid ""
 "Prefer existing project dependencies and the standard library. Do not add "
 "dependencies or compatibility layers for hypothetical future uses."
 msgstr "优先使用项目已有依赖和标准库。不要为假设中的未来用途添加依赖或兼容层。"
 
-#: source/refs/contributing.rst:278
+#: source/refs/contributing.rst:282
 msgid "Array Operations and Runtime Cost"
 msgstr "数组操作与运行开销"
 
-#: source/refs/contributing.rst:280
+#: source/refs/contributing.rst:284
 msgid ""
 "Review allocations, copies, synchronization, and recomputation in code that "
 "runs per step, reset, or environment. Costs that are small for one "
 "environment can dominate a large batch."
 msgstr "检查每步、每次重置或每个环境执行的代码中的分配、复制、同步和重复计算。单个环境中很小的开销，在大批次中可能占主要部分。"
 
-#: source/refs/contributing.rst:283
+#: source/refs/contributing.rst:287
 msgid ""
 "Preserve slices through APIs that support them. Materialize indices only at "
 "a consumer that requires them, reusing cached device indices when available."
 " Preserve the selector's ordering and device contract."
 msgstr "支持切片的 API 应保留切片，只有使用方要求具体索引时才生成索引数组，并尽量复用缓存的设备索引。保留选择器的顺序和设备约定。"
 
-#: source/refs/contributing.rst:285
+#: source/refs/contributing.rst:289
 msgid ""
 "Allocate arrays directly with the required value, dtype, and device. Prefer "
 "``torch.full`` or ``wp.full`` over filling through Python lists, arithmetic "
@@ -683,7 +700,7 @@ msgstr ""
 "直接按所需值、dtype 和设备分配数组。优先使用 ``torch.full`` 、 ``wp.full`` ，而不是通过 Python "
 "列表填充、对临时数组做算术，或经由另一库来回转换。"
 
-#: source/refs/contributing.rst:287
+#: source/refs/contributing.rst:291
 msgid ""
 "Remove redundant copies and ``contiguous()`` calls only after checking "
 "layout and ownership requirements. Do not mutate caller-owned inputs unless "
@@ -691,32 +708,32 @@ msgid ""
 msgstr ""
 "只有检查布局与归属要求后，才移除多余复制和 ``contiguous()`` 调用。除非 API 明确承诺原地操作，否则不要修改调用方所有的输入。"
 
-#: source/refs/contributing.rst:289
+#: source/refs/contributing.rst:293
 msgid ""
 "Batch operations when supported. Avoid Python loops over environments and "
 "unnecessary host/device transfers or scalar reads that synchronize the "
 "device in hot paths."
 msgstr "支持时使用批量操作。在热点路径中，避免通过 Python 循环遍历环境，以及不必要的主机与设备传输，或会同步设备的标量读取。"
 
-#: source/refs/contributing.rst:291
+#: source/refs/contributing.rst:295
 msgid ""
 "Allocate expensive optional buffers on first use when their lifecycle "
 "permits it. Account for graph capture: any required allocation must happen "
 "before capture when the allocator requires it."
 msgstr "生命周期允许时，开销较大的可选缓冲区可在首次使用时分配。还要考虑计算图捕获：如果分配器有此要求，必需分配必须在捕获前完成。"
 
-#: source/refs/contributing.rst:295
+#: source/refs/contributing.rst:299
 msgid "Naming and Documentation"
 msgstr "命名与文档"
 
-#: source/refs/contributing.rst:297
+#: source/refs/contributing.rst:301
 msgid ""
 "Use ``snake_case`` for functions, methods, and CLI arguments. Keep related "
 "public symbols discoverable through consistent prefixes and use existing API"
 " vocabulary."
 msgstr "函数、方法和命令行参数使用 ``snake_case`` 。通过一致的前缀使相关公共符号易于发现，并沿用已有 API 词汇。"
 
-#: source/refs/contributing.rst:299
+#: source/refs/contributing.rst:303
 msgid ""
 "Use concrete types where practical, built-in collection annotations such as "
 "``list[str]``, and ``X | None`` for optional values. Keep argument and "
@@ -725,7 +742,7 @@ msgstr ""
 "可行时使用具体类型、 ``list[str]`` 等内置集合注解，以及表示可选值的 ``X | None`` "
 "。参数和返回类型放在签名中，不在文档字符串重复。"
 
-#: source/refs/contributing.rst:302
+#: source/refs/contributing.rst:306
 msgid ""
 "Document public APIs with Google-style docstrings. State physical units "
 "inline, for example ``Particle positions [m], shape [N, 3]``. Use ``[m or "
@@ -737,7 +754,7 @@ msgstr ""
 "3]`` 。混合关节量使用 ``[m or rad, depending on joint type]`` "
 "。适用时说明坐标系和数组形状；索引、计数和标志不需要物理单位。"
 
-#: source/refs/contributing.rst:306
+#: source/refs/contributing.rst:310
 msgid ""
 "Keep comments brief and selective. Explain intent, non-obvious constraints, "
 "or edge cases that the code alone cannot make clear. Avoid narrating "
@@ -747,7 +764,7 @@ msgid ""
 msgstr ""
 "注释保持简短、有选择性。解释代码本身无法说明的意图、不明显约束或边界情况，不要逐步叙述实现，也不要重复表达式作用。欢迎有助于组织文件的可读性注释、章节标记和标题。"
 
-#: source/refs/contributing.rst:309
+#: source/refs/contributing.rst:313
 msgid ""
 "Describe the current contract in code comments. Put migration instructions "
 "and descriptions of old behavior in public migration documentation or "
@@ -757,23 +774,23 @@ msgid ""
 msgstr ""
 "代码注释描述当前约定。迁移说明和旧行为描述应放在公共迁移文档或变更日志中，不要在实现内留下重构历史。只有历史背景能解释仍影响正确性的约束时，才保留它。"
 
-#: source/refs/contributing.rst:313
+#: source/refs/contributing.rst:317
 msgid ""
 "Update public documentation with API changes and verify technical claims "
 "against the implementation."
 msgstr "API 改变时同步更新公共文档，并根据实现核实技术说明。"
 
-#: source/refs/contributing.rst:316
+#: source/refs/contributing.rst:320
 msgid "Code Structure"
 msgstr "代码结构"
 
-#: source/refs/contributing.rst:318
+#: source/refs/contributing.rst:322
 msgid ""
 "We follow a specific structure for the codebase. This helps in maintaining "
 "the codebase and makes it easier to understand."
 msgstr "我们遵循特定的代码库结构。这有助于维护代码库并使其更易于理解。"
 
-#: source/refs/contributing.rst:321
+#: source/refs/contributing.rst:325
 msgid ""
 "Keep short expressions on one line within the configured limit and break "
 "longer expressions at meaningful boundaries. Keep loop headers focused on "
@@ -785,11 +802,11 @@ msgstr ""
 "在配置的长度限制内，短表达式写在一行；长表达式在有意义的边界换行。循环头只关注迭代，复杂嵌套记录在循环体内解包。优先使用描述性名称，避免新缩写。通过 "
 "``*`` / ``**`` 复用匹配的序列或映射，不要解包后重建；也不要仅为缩短代码而引入打包容器或反射赋值。"
 
-#: source/refs/contributing.rst:327
+#: source/refs/contributing.rst:331
 msgid "In a Python file, we follow the following structure:"
 msgstr "在一个 Python 文件中，我们遵循以下结构："
 
-#: source/refs/contributing.rst:338
+#: source/refs/contributing.rst:342
 msgid ""
 "Imports are sorted by Ruff through ``uv run isaaclab -f``. The groups are "
 "``__future__``, standard library, third-party packages, Omniverse runtime "
@@ -806,7 +823,7 @@ msgstr ""
 "math_utils`` 。更深目标、其他包，以及包含 ``if __name__ == \"__main__\":`` "
 "并作为脚本运行的模块，使用绝对导入。"
 
-#: source/refs/contributing.rst:345
+#: source/refs/contributing.rst:349
 msgid ""
 "Prefer module-level imports. A local import is appropriate when it defers an"
 " optional backend or simulator dependency until the selected runtime path "
@@ -818,7 +835,7 @@ msgstr ""
 "优先在模块层导入。局部导入适用于将可选后端或仿真器依赖推迟到所选运行路径确实需要时。配置导入应能在仿真器启动前使用，不要重复包已负责的运行时初始化。循环导入可使用"
 " :obj:`typing.TYPE_CHECKING` 处理，详情见 `循环导入 <Circular Imports_>`_ 。"
 
-#: source/refs/contributing.rst:350
+#: source/refs/contributing.rst:354
 msgid ""
 "Public export modules in ``__init__.py`` are an exception to the above: they"
 " use :func:`~isaaclab.utils.module.lazy_export` instead of traditional "
@@ -827,7 +844,7 @@ msgstr ""
 "``__init__.py`` 中的公共导出模块是例外：使用 :func:`~isaaclab.utils.module.lazy_export` "
 "，而非传统导入。详情见 `延迟加载与模块导出 <Lazy Loading & Module Exports_>`_ 。"
 
-#: source/refs/contributing.rst:354
+#: source/refs/contributing.rst:358
 msgid ""
 "Pass ``ProxyArray`` objects directly to Warp kernels. Keep one proxy per "
 "owned array, without parallel ``_ta``, ``_warp``, or ``_torch`` attributes; "
@@ -837,7 +854,7 @@ msgstr ""
 "直接向 Warp 核函数传入 ``ProxyArray`` 对象。每个自有数组只保留一个代理，不要并行保存 ``_ta`` 、 ``_warp`` 或 "
 "``_torch`` 属性；带时间戳的数组缓存可在 ``data`` 中持有代理。只有接收 API 要求时，才显式访问原生数组。"
 
-#: source/refs/contributing.rst:358
+#: source/refs/contributing.rst:362
 msgid ""
 "Python does not have a concept of private and public classes and functions. "
 "However, we follow the convention of prefixing the private functions and "
@@ -851,11 +868,11 @@ msgstr ""
 "Python "
 "没有私有和公共类和函数的概念。然而，我们遵循用下划线作为私有函数和类前缀的约定。公共函数和类是供用户使用的函数和类。私有函数和类是旨在在该文件内部使用的函数和类。无论函数和类是公共还是私有的，我们都遵循代码的风格指南，并确保代码和文档一致。"
 
-#: source/refs/contributing.rst:365
+#: source/refs/contributing.rst:369
 msgid "When a class is warranted, order its members as follows:"
 msgstr "确实需要类时，按以下顺序组织成员："
 
-#: source/refs/contributing.rst:381
+#: source/refs/contributing.rst:385
 msgid ""
 "The rule of thumb is that the functions within the classes are ordered in "
 "the way a user would expect to use them. For instance, if the class contains"
@@ -868,7 +885,7 @@ msgstr ""
 ":meth:`update`, 和 :meth:`close`, "
 "然后它们应该按照使用顺序列出。私有函数在类中也适用相同的规则。他们的顺序基于在类内部调用的顺序。"
 
-#: source/refs/contributing.rst:387
+#: source/refs/contributing.rst:391
 msgid ""
 "Include only the members a class needs; this ordering is not a checklist of "
 "methods to implement. For classes that own resources, expose explicit "
@@ -879,11 +896,11 @@ msgstr "只包含类所需的成员；这一顺序不是要求实现所有方法
 msgid "Minimal function example"
 msgstr "最小函数示例"
 
-#: source/refs/contributing.rst:397
+#: source/refs/contributing.rst:401
 msgid "Circular Imports"
 msgstr "循环导入"
 
-#: source/refs/contributing.rst:399
+#: source/refs/contributing.rst:403
 msgid ""
 "Circular imports happen when two modules import each other, which is a "
 "common issue in Python. You can prevent circular imports by adhering to the "
@@ -895,13 +912,13 @@ msgstr ""
 "<https://stackoverflow.com/questions/744373/circular-or-cyclic-imports-in-"
 "python>`__ 中概述的最佳实践来防止循环导入。"
 
-#: source/refs/contributing.rst:403
+#: source/refs/contributing.rst:407
 msgid ""
 "In general, it is essential to avoid circular imports as they can lead to "
 "unpredictable behavior."
 msgstr "一般来说，避免循环导入是至关重要的，因为它们可能导致不可预测的行为。"
 
-#: source/refs/contributing.rst:405
+#: source/refs/contributing.rst:409
 msgid ""
 "However, in our codebase, we encounter circular imports at a sub-package "
 "level. This situation arises due to our specific code structure. We organize"
@@ -914,11 +931,11 @@ msgstr ""
 "然而，在我们的代码库中，我们在子包级别遇到了循环导入。这种情况是由于我们特定的代码结构所导致的。我们将类或函数及其相应的配置对象组织到不同的文件中。这种分离增强了代码的可读性和可维护性。然而，它可能导致循环导入，因为在许多配置对象中，我们使用属性"
 " ``class_type`` 和 ``func`` 分别指定类或函数作为默认值。"
 
-#: source/refs/contributing.rst:411
+#: source/refs/contributing.rst:415
 msgid "To address this, we use two complementary techniques:"
 msgstr "为解决这一问题，采用两种互补方式："
 
-#: source/refs/contributing.rst:413
+#: source/refs/contributing.rst:417
 msgid ""
 "**Resolvable strings** — Store ``class_type`` and ``func`` as "
 "``{DIR}``-based strings (e.g. ``\"{DIR}.sensor:Sensor\"``) so the "
@@ -932,7 +949,7 @@ msgstr ""
 "``\"{DIR}.sensor:Sensor\"`` ，避免构建配置时导入实现模块。调用或访问需要实现的属性时，通过 "
 ":class:`~isaaclab.utils.string.ResolvableString` 将字符串解析为实际类。触发解析前，先初始化所需运行时。"
 
-#: source/refs/contributing.rst:418
+#: source/refs/contributing.rst:422
 msgid ""
 "**TYPE_CHECKING guards** — Import the implementation class under "
 "`typing.TYPE_CHECKING "
@@ -944,7 +961,7 @@ msgstr ""
 "<https://docs.python.org/3/library/typing.html#typing.TYPE_CHECKING>`_ "
 "条件下导入实现类，使 IDE 和类型检查器可根据类型注解补全，而不触发运行时导入。"
 
-#: source/refs/contributing.rst:422
+#: source/refs/contributing.rst:426
 msgid ""
 "See the `Resolvable Strings`_ and `Lazy Loading & Module Exports`_ sections "
 "for full examples of both patterns."
@@ -952,17 +969,17 @@ msgstr ""
 "两种方式的完整示例见 `可解析字符串 <Resolvable Strings_>`_ 和 `延迟加载与模块导出 <Lazy Loading & "
 "Module Exports_>`_ 。"
 
-#: source/refs/contributing.rst:426
+#: source/refs/contributing.rst:430
 msgid "Configuration Operations"
 msgstr "配置操作"
 
-#: source/refs/contributing.rst:428
+#: source/refs/contributing.rst:432
 msgid ""
 "Use :func:`~isaaclab.utils.instantiate` to construct the implementation "
 "selected by a config:"
 msgstr "使用 :func:`~isaaclab.utils.instantiate` 构建配置所选择的实现："
 
-#: source/refs/contributing.rst:442
+#: source/refs/contributing.rst:446
 msgid ""
 "``instantiate`` passes the config as the first constructor argument, "
 "followed by any additional arguments. It does not copy configs, construct "
@@ -972,7 +989,7 @@ msgstr ""
 "``instantiate`` 将配置作为构造函数第一个参数，后接额外参数。它不复制配置、不构建嵌套配置，也不缓存实例。资源共享仍由 "
 "``SimulationContext.get_or_create_backend`` 负责。"
 
-#: source/refs/contributing.rst:446
+#: source/refs/contributing.rst:450
 msgid ""
 "``clone`` and ``replace`` return new configurations, preserving fields "
 "explicitly marked as borrowed. ``update_from_dict`` updates an existing "
@@ -989,11 +1006,11 @@ msgstr ""
 "``cfg.to_dict()`` 、 ``cfg.from_dict(...)`` 和 ``cfg.class_type(cfg, ...)`` "
 "调用仍受支持，未弃用。较长名称 ``class_to_dict`` 和 ``update_class_from_dict`` 也仍受支持。"
 
-#: source/refs/contributing.rst:454
+#: source/refs/contributing.rst:458
 msgid "Lazy Loading & Module Exports"
 msgstr "延迟加载与模块导出"
 
-#: source/refs/contributing.rst:456
+#: source/refs/contributing.rst:460
 msgid ""
 "Use **lazy loading** for public package exports so that importing a top-"
 "level package (e.g. ``import isaaclab.sensors``) does not eagerly pull in "
@@ -1004,7 +1021,7 @@ msgstr ""
 "公共包导出使用 **延迟加载** ，使导入顶层包（例如 ``import isaaclab.sensors`` ）不会立即引入 ``pxr`` 、 "
 "``omni`` 或 ``scipy`` 等大型依赖。这很关键，因为配置类必须能在 ``SimulationApp`` 启动 *之前* 构建。"
 
-#: source/refs/contributing.rst:461
+#: source/refs/contributing.rst:465
 msgid ""
 "We follow `SPEC 1 — Lazy Loading of Submodules and Functions "
 "<https://scientific-python.org/specs/spec-0001/>`__ and use the `lazy_loader"
@@ -1018,19 +1035,19 @@ msgstr ""
 " 库（获 NumPy、SciPy、scikit-image、scikit-learn、NetworkX 推荐）。存根是 IDE "
 "自动补全和运行时延迟加载的 **唯一权威定义** 。"
 
-#: source/refs/contributing.rst:467
+#: source/refs/contributing.rst:471
 msgid "**Standard pattern for public export modules:**"
 msgstr "**公共导出模块的标准模式：**"
 
-#: source/refs/contributing.rst:476
+#: source/refs/contributing.rst:480
 msgid "With a corresponding type stub adjacent to it:"
 msgstr "旁边放置对应的类型存根："
 
-#: source/refs/contributing.rst:486
+#: source/refs/contributing.rst:490
 msgid "Key rules for ``.pyi`` stubs:"
 msgstr "``.pyi`` 存根的主要规则："
 
-#: source/refs/contributing.rst:488
+#: source/refs/contributing.rst:492
 msgid ""
 "The ``__all__`` list at the top marks names as public re-exports (per `PEP "
 "484 <https://peps.python.org/pep-0484/#stub-files>`__)."
@@ -1038,13 +1055,13 @@ msgstr ""
 "顶部 ``__all__`` 列表将名称标为公共重新导出项，符合 `PEP 484 "
 "<https://peps.python.org/pep-0484/#stub-files>`__ 。"
 
-#: source/refs/contributing.rst:490
+#: source/refs/contributing.rst:494
 msgid ""
 "Group imports from the same submodule on one line. Use parenthesized multi-"
 "line imports if the line exceeds 100 characters."
 msgstr "来自同一子模块的导入放在一行；超过 100 字符时，用括号进行多行导入。"
 
-#: source/refs/contributing.rst:492
+#: source/refs/contributing.rst:496
 msgid ""
 "Use **relative imports** (``from .something import ...``) for local "
 "submodule symbols. Absolute wildcard imports (``from pkg import *``) are "
@@ -1053,11 +1070,11 @@ msgstr ""
 "本地子模块符号使用 **相对导入** （ ``from .something import ...`` ）。绝对通配导入（ ``from pkg "
 "import *`` ）只用于跨包回退，见下文。"
 
-#: source/refs/contributing.rst:495
+#: source/refs/contributing.rst:499
 msgid "Include the standard Isaac Lab license header."
 msgstr "包含标准 Isaac Lab 许可文件头。"
 
-#: source/refs/contributing.rst:497
+#: source/refs/contributing.rst:501
 msgid ""
 "**Cross-package fallback** — for modules that re-export names from another "
 "package (e.g. task MDP modules that delegate to ``isaaclab.envs.mdp``), add "
@@ -1066,13 +1083,13 @@ msgstr ""
 "**跨包回退** ：对于重新导出其他包名称的模块，例如委托到 ``isaaclab.envs.mdp`` 的任务 MDP 模块，在 ``.pyi`` "
 "存根中添加外部包的通配导入："
 
-#: source/refs/contributing.rst:511
+#: source/refs/contributing.rst:515
 msgid ""
 "The ``__init__.py`` stays the same as the standard pattern — just "
 "``lazy_export()`` with no arguments:"
 msgstr "``__init__.py`` 与标准模式相同，只调用无参数的 ``lazy_export()`` ："
 
-#: source/refs/contributing.rst:521
+#: source/refs/contributing.rst:525
 msgid ""
 "At runtime, ``lazy_export`` parses the ``.pyi`` stub and uses the absolute "
 "wildcard import (``from isaaclab.envs.mdp import *``) as a fallback: any "
@@ -1083,7 +1100,7 @@ msgstr ""
 "运行时， ``lazy_export`` 解析 ``.pyi`` 存根，并将绝对通配导入 ``from isaaclab.envs.mdp import"
 " *`` 作为回退：本地子模块中找不到的名称，会到指定包中查找。这也使类型检查器和 IDE 能完整识别重新导出的符号。"
 
-#: source/refs/contributing.rst:526
+#: source/refs/contributing.rst:530
 msgid ""
 "**Relative wildcard re-exports** — the stub can also use ``from .submodule "
 "import *`` to eagerly export all public names from a local submodule. This "
@@ -1093,7 +1110,7 @@ msgstr ""
 "**相对通配重新导出** ：存根还可使用 ``from .submodule import *`` "
 "，立即导出本地子模块的全部公共名称。这在导入时解析，并非延迟加载。仅 API 规模较大或频繁变化，并不足以成为立即导入的理由。"
 
-#: source/refs/contributing.rst:532
+#: source/refs/contributing.rst:536
 msgid ""
 "Relative wildcard re-exports bypass lazy loading and eagerly import every "
 "public name from the submodule at package init time. In general, we advise "
@@ -1104,17 +1121,17 @@ msgstr ""
 "相对通配重新导出绕过延迟加载，在包初始化时立即导入子模块的全部公共名称。一般不建议使用，除非确有必要。优先在存根中列出明确的具名导入，使公共 API "
 "清晰、便于审阅，并保持延迟加载。"
 
-#: source/refs/contributing.rst:545
+#: source/refs/contributing.rst:549
 msgid "**Ensuring .pyi stubs are distributed**"
 msgstr "**确保分发 .pyi 存根**"
 
-#: source/refs/contributing.rst:547
+#: source/refs/contributing.rst:551
 msgid ""
 "Declare stub files in the package's ``pyproject.toml`` so they are included "
 "in distributions:"
 msgstr "在包的 ``pyproject.toml`` 中声明存根文件，将它们包含在分发包中："
 
-#: source/refs/contributing.rst:554
+#: source/refs/contributing.rst:558
 msgid ""
 "Keep this configuration in packages that provide lazy export stubs. The pre-"
 "commit ``insert-license`` hook is configured to add license headers to "
@@ -1123,11 +1140,11 @@ msgstr ""
 "提供延迟导出存根的包应保留此配置。pre-commit 的 ``insert-license`` 钩子已配置为自动给 ``.pyi`` 文件添加许可头（"
 " ``\\.(pyi?|ya?ml)$`` ）。"
 
-#: source/refs/contributing.rst:558
+#: source/refs/contributing.rst:562
 msgid "Resolvable Strings"
 msgstr "可解析字符串"
 
-#: source/refs/contributing.rst:560
+#: source/refs/contributing.rst:564
 msgid ""
 "When a config field needs to reference a class or callable that depends on "
 "the simulator runtime, store it as a "
@@ -1143,12 +1160,12 @@ msgstr ""
 "``omni`` 、 ``pxr`` 等大型模块。调用或访问需要实现的属性时会触发解析，调用方必须先初始化所需运行时。解析本身不会等待 "
 "``SimulationApp`` ，不依赖 Kit 的工作流也无需启动它。"
 
-#: source/refs/contributing.rst:567
+#: source/refs/contributing.rst:571
 msgid ""
 "You can use either the ``{DIR}`` shorthand or a fully-qualified module path:"
 msgstr "可使用 ``{DIR}`` 简写或完整限定模块路径："
 
-#: source/refs/contributing.rst:581
+#: source/refs/contributing.rst:585
 msgid ""
 "The config machinery expands ``{DIR}`` to the package of the field's "
 "defining class (e.g. ``isaaclab.sensors.my_sensor``), without importing the "
@@ -1158,7 +1175,7 @@ msgstr ""
 "配置机制将 ``{DIR}`` 展开为定义该字段的类所在的包，例如 ``isaaclab.sensors.my_sensor`` "
 "，而不导入被引用实现。同一包内的引用优先使用 ``{DIR}`` ，因为重命名和移动后仍能保持正确。"
 
-#: source/refs/contributing.rst:585
+#: source/refs/contributing.rst:589
 msgid ""
 "For the type annotation (``type[Sensor]``), import the class under a "
 "``TYPE_CHECKING`` guard so that the IDE can still provide autocomplete "
@@ -1166,11 +1183,11 @@ msgid ""
 msgstr ""
 "类型注解 ``type[Sensor]`` 所需类，应在 ``TYPE_CHECKING`` 条件下导入，使 IDE 仍能补全，而不触发运行时导入："
 
-#: source/refs/contributing.rst:597
+#: source/refs/contributing.rst:601
 msgid "Config + Implementation File Split"
 msgstr "分开配置与实现文件"
 
-#: source/refs/contributing.rst:599
+#: source/refs/contributing.rst:603
 msgid ""
 "For components with configuration classes, keep the configuration and "
 "runtime implementation in separate files so importing configuration does not"
@@ -1178,112 +1195,112 @@ msgid ""
 "a class or configuration object for a stateless function:"
 msgstr "具有配置类的组件，应将配置与运行时实现放在不同文件，使导入配置不会加载大型运行时依赖。这一模式并不要求为无状态函数引入类或配置对象："
 
-#: source/refs/contributing.rst:611
+#: source/refs/contributing.rst:615
 msgid ""
 "``__init__.py`` — uses ``lazy_export()`` to lazily load names from the stub:"
 msgstr "``__init__.py`` ：通过 ``lazy_export()`` 延迟加载存根中的名称："
 
-#: source/refs/contributing.rst:620
+#: source/refs/contributing.rst:624
 msgid ""
 "``__init__.pyi`` — declares the public API for both IDE autocomplete and "
 "lazy loading:"
 msgstr "``__init__.pyi`` ：声明供 IDE 补全和延迟加载使用的公共 API："
 
-#: source/refs/contributing.rst:630
+#: source/refs/contributing.rst:634
 msgid ""
 "``sensor_cfg.py`` — pure data; references the implementation class by "
 "resolvable string to avoid importing it:"
 msgstr "``sensor_cfg.py`` ：纯数据，通过可解析字符串引用实现类，避免导入："
 
-#: source/refs/contributing.rst:648
+#: source/refs/contributing.rst:652
 msgid ""
 "``sensor.py`` — the implementation; imports runtime dependencies only when "
 "needed:"
 msgstr "``sensor.py`` ：实现部分，只在需要时导入运行时依赖："
 
-#: source/refs/contributing.rst:663
+#: source/refs/contributing.rst:667
 msgid "Type-hinting"
 msgstr "类型提示"
 
-#: source/refs/contributing.rst:665
+#: source/refs/contributing.rst:669
 msgid ""
 "Use specific type hints in function signatures and class attributes. "
 "Describe meaning, units, shapes, and constraints in docstrings without "
 "repeating the annotated types:"
 msgstr "函数签名和类属性使用具体类型提示。文档字符串描述含义、单位、形状和约束，不重复已注解类型："
 
-#: source/refs/contributing.rst:682
+#: source/refs/contributing.rst:686
 msgid ""
 "Prefer built-in collection types such as ``list[str]`` and ``dict[str, "
 "int]``."
 msgstr "优先使用 ``list[str]`` 、 ``dict[str, int]`` 等内置集合类型。"
 
-#: source/refs/contributing.rst:683
+#: source/refs/contributing.rst:687
 msgid "Use ``X | None`` for optional values."
 msgstr "可选值使用 ``X | None`` 。"
 
-#: source/refs/contributing.rst:684
+#: source/refs/contributing.rst:688
 msgid ""
 "Use ``TYPE_CHECKING`` and deferred annotations when types require runtime-"
 "only imports."
 msgstr "类型需要仅运行时可用的导入时，使用 ``TYPE_CHECKING`` 和延迟注解。"
 
-#: source/refs/contributing.rst:686
+#: source/refs/contributing.rst:690
 msgid ""
 "Annotate functions that return no value with ``-> None``. Omit an "
 "unnecessary ``Returns:`` section from their docstrings."
 msgstr "无返回值函数标注 ``-> None`` ，文档字符串省略不必要的 ``Returns:`` 章节。"
 
-#: source/refs/contributing.rst:690
+#: source/refs/contributing.rst:694
 msgid "Documenting the code"
 msgstr "编写代码文档"
 
-#: source/refs/contributing.rst:692
+#: source/refs/contributing.rst:696
 msgid ""
 "Write documentation that lets a caller use the API without reading its "
 "implementation."
 msgstr "文档应使调用方无需阅读实现，即可使用 API。"
 
-#: source/refs/contributing.rst:694
+#: source/refs/contributing.rst:698
 msgid ""
 "State the behavior first, then explain constraints, defaults, and relevant "
 "failure modes."
 msgstr "先说明行为，再解释约束、默认值和相关失败情况。"
 
-#: source/refs/contributing.rst:695
+#: source/refs/contributing.rst:699
 msgid ""
 "Document units, coordinate frames, shapes, and ownership or mutation of "
 "inputs and returned data."
 msgstr "说明单位、坐标系、形状，以及输入和返回数据的归属或修改行为。"
 
-#: source/refs/contributing.rst:696
+#: source/refs/contributing.rst:700
 msgid ""
 "Explain non-obvious design constraints in brief comments near the relevant "
 "code."
 msgstr "在相关代码附近，用简短注释解释不明显的设计约束。"
 
-#: source/refs/contributing.rst:697
+#: source/refs/contributing.rst:701
 msgid ""
 "Use a small example when it clarifies usage. Avoid repeating the signature "
 "or narrating each operation."
 msgstr "小示例有助于说明用法时，可提供示例。避免重复签名或逐项叙述操作。"
 
-#: source/refs/contributing.rst:698
+#: source/refs/contributing.rst:702
 msgid ""
 "Use plain language and active voice; remove repetition and vague qualifiers."
 msgstr "使用平实语言和主动表达，删除重复及含糊限定词。"
 
-#: source/refs/contributing.rst:699
+#: source/refs/contributing.rst:703
 msgid ""
 "Update documentation when behavior changes and check examples against the "
 "current implementation."
 msgstr "行为变化时更新文档，并根据当前实现检查示例。"
 
-#: source/refs/contributing.rst:703
+#: source/refs/contributing.rst:707
 msgid "Unit Testing"
 msgstr "单元测试"
 
-#: source/refs/contributing.rst:705
+#: source/refs/contributing.rst:709
 msgid ""
 "We use `pytest <https://docs.pytest.org>`__ for unit testing. Keep coverage "
 "lean and fast by giving each contract one primary test owner at the "
@@ -1293,7 +1310,7 @@ msgstr ""
 "我们使用 `pytest <https://docs.pytest.org>`__ "
 "进行单元测试。在最能体现行为的边界，为每个约定指定一个主要测试负责方，保持覆盖精简、快速。先查看该边界现有覆盖；如果能明确覆盖修改后的行为，优先扩展现有测试。"
 
-#: source/refs/contributing.rst:709
+#: source/refs/contributing.rst:713
 msgid ""
 "Apply the authoring gate and retention criteria in the `test-audit skill "
 "<../../../skills/developer/test-audit/SKILL.md>`__ when adding, changing, "
@@ -1303,7 +1320,7 @@ msgstr ""
 "新增、修改、审阅或精简测试时，采用 `test-audit 技能 <../../../skills/developer/test-"
 "audit/SKILL.md>`__ 中的编写门槛和保留标准。它维护判断测试收益是否值得其成本的详细条件。"
 
-#: source/refs/contributing.rst:713
+#: source/refs/contributing.rst:717
 msgid ""
 "Add a test only for a distinct behavior, regression, boundary, or failure "
 "mode that existing coverage does not already exercise. Formatting and "
@@ -1315,7 +1332,7 @@ msgid ""
 msgstr ""
 "只有现有覆盖未检验的独立行为、回归、边界或失败情况，才添加测试。格式调整和机械性整理不会自动要求新测试。添加前，明确保护的约定、可能发生的回归，以及现有覆盖为何发现不了。不要只为支持测试而添加生产导出、标志、包装器或注入钩子，应检验实际边界。"
 
-#: source/refs/contributing.rst:718
+#: source/refs/contributing.rst:722
 msgid ""
 "Test observable behavior and public contracts. Avoid assertions tied to "
 "private implementation details or expected values computed by repeating the "
@@ -1325,14 +1342,14 @@ msgid ""
 msgstr ""
 "测试可观察行为和公共约定。避免依赖私有实现细节的断言，或通过重复生产算法计算期望值。避免无断言的冒烟测试、自我比较，以及由模拟对象或测试夹具直接提供测试声称要验证的行为。"
 
-#: source/refs/contributing.rst:721
+#: source/refs/contributing.rst:725
 msgid ""
 "Verify that regression tests fail without the fix for the intended reason "
 "and pass with it. Cover the bug at its owning boundary; another layer or "
 "backend needs a distinct risk to justify replaying it."
 msgstr "确认回归测试在没有修复时因预期原因失败，修复后通过。在错误所属边界覆盖它；在其他层或后端重复测试，需要有独立风险作为理由。"
 
-#: source/refs/contributing.rst:723
+#: source/refs/contributing.rst:727
 msgid ""
 "Keep parameter matrices and simulation fixtures focused on distinct "
 "execution paths. Consolidate redundant coverage instead of adding "
@@ -1343,7 +1360,7 @@ msgid ""
 msgstr ""
 "参数矩阵和仿真夹具应聚焦不同执行路径。整合多余覆盖，不要添加重叠用例或无必要地重建同一场景。如果设备、形状和环境数等维度没有检验不同路径，避免构造它们的笛卡尔积。复用已验证该约定的夹具。"
 
-#: source/refs/contributing.rst:727
+#: source/refs/contributing.rst:731
 msgid ""
 "Before removing or merging coverage, identify the proof that remains and "
 "demonstrate that it fails when the contract is broken, using a focused "
@@ -1355,7 +1372,7 @@ msgstr ""
 "移除或合并覆盖前，明确剩余的验证依据，并证明约定被破坏时它会失败；适用时，对负责该行为的生产实现进行针对性变异。保留独立边界情况，以及独立的 "
 "API、物理、后端一致性和打包约定。测试慢或断言看起来相似，本身不能证明重复。"
 
-#: source/refs/contributing.rst:731
+#: source/refs/contributing.rst:735
 msgid ""
 "Run the narrowest relevant test first. If an optional dependency is missing,"
 " identify its project extra and retry with ``uv run --extra <extra> python "
@@ -1366,38 +1383,38 @@ msgstr ""
 "先运行范围最小的相关测试。如果缺少可选依赖，找到对应项目依赖组，用 ``uv run --extra <extra> python -m pytest "
 "...`` 重试。以缩短测试时间为目标的修改，应在同一机器测量前后耗时，并将核函数编译与执行时间分开。"
 
-#: source/refs/contributing.rst:736
+#: source/refs/contributing.rst:740
 msgid "Use the same commands on Linux and Windows:"
 msgstr "Linux 和 Windows 使用同样命令："
 
-#: source/refs/contributing.rst:752
+#: source/refs/contributing.rst:756
 msgid ""
 "All of these commands exit with a nonzero code when tests fail, so a test "
 "failure fails the invoking shell or CI step as well."
 msgstr "这些命令在测试失败时均以非零状态退出，因此调用它们的 shell 或 CI 步骤也会失败。"
 
-#: source/refs/contributing.rst:756
+#: source/refs/contributing.rst:760
 msgid "Tools"
 msgstr "工具"
 
-#: source/refs/contributing.rst:758
+#: source/refs/contributing.rst:762
 msgid "We use the following tools for maintaining code quality:"
 msgstr "我们使用以下工具来维护代码质量: "
 
-#: source/refs/contributing.rst:760
+#: source/refs/contributing.rst:764
 msgid ""
 "`pre-commit <https://pre-commit.com/>`__: Runs a list of formatters and "
 "linters over the codebase."
 msgstr "`pre-commit <https://pre-commit.com/>`__: 在代码库上运行格式化工具和代码检查工具的列表。"
 
-#: source/refs/contributing.rst:761
+#: source/refs/contributing.rst:765
 msgid ""
 "`ruff <https://github.com/astral-sh/ruff/>`__: An extremely fast Python "
 "linter and formatter."
 msgstr ""
 "`ruff <https://github.com/astral-sh/ruff/>`__ ：一个极其快速的 Python 代码检查和格式化工具。"
 
-#: source/refs/contributing.rst:763
+#: source/refs/contributing.rst:767
 msgid ""
 "Run the repository formatting and lint checks from the uv-managed "
 "environment on Linux or Windows:"

@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -211,15 +210,18 @@ msgid ""
 "live scene BVH and ignores the mesh list. By default, "
 ":attr:`~sensors.RayCasterCfg.spawn` creates a plain USD Xform at "
 ":attr:`~sensors.RayCasterCfg.prim_path` to serve as the sensor's attachment "
-"frame, similar to how :class:`sensors.CameraCfg` spawns a Camera prim."
+"frame. This compatibility behavior is deprecated; new configurations should "
+"set :attr:`~sensors.RayCasterCfg.spawn` to ``None`` and track an existing "
+"frame."
 msgstr ""
-"高度扫描器由虚拟射线投射传感器实现。我们通过 :class:`sensors.RayCasterCfg` 指定射线模式。基于 PhysX "
-"的后端向配置的网格投射射线；Newton 则向实时场景 BVH 投射，忽略网格列表。默认情况下， "
-":attr:`~sensors.RayCasterCfg.spawn` 会在 "
-":attr:`~sensors.RayCasterCfg.prim_path` 处创建一个普通 USD Xform，作为传感器的附着坐标系，类似于 "
-":class:`sensors.CameraCfg` 生成 Camera prim。"
+"高度扫描器使用虚拟射线投射传感器实现，通过 :class:`sensors.RayCasterCfg` 指定射线分布。基于 PhysX "
+"的后端对配置的网格进行射线检测，而 Newton 对其当前场景的 BVH "
+"进行检测，并忽略网格列表。默认情况下，:attr:`~sensors.RayCasterCfg.spawn` 会在 "
+":attr:`~sensors.RayCasterCfg.prim_path` 创建一个普通 USD "
+"Xform，作为传感器的挂载坐标系。这一兼容行为已弃用；新配置应将 :attr:`~sensors.RayCasterCfg.spawn` 设为 "
+"``None``，并跟踪已有坐标系。"
 
-#: source/how-to/add_sensors_on_robot.rst:113
+#: source/how-to/add_sensors_on_robot.rst:114
 msgid ""
 "For this tutorial, the ray-cast based height scanner is attached under the "
 "base frame of the robot. The pattern of rays is specified using the "
@@ -234,7 +236,7 @@ msgstr ""
 "。由于我们只关心高度信息，无需考虑机器人的滚转和俯仰，因此将 :attr:`~sensors.RayCasterCfg.ray_alignment` "
 "设为 \"yaw\"。"
 
-#: source/how-to/add_sensors_on_robot.rst:119
+#: source/how-to/add_sensors_on_robot.rst:120
 msgid ""
 "For the height-scanner, you can visualize the points where the rays hit the "
 "mesh. This is done by setting the :attr:`~sensors.SensorBaseCfg.debug_vis` "
@@ -243,15 +245,15 @@ msgstr ""
 "对于高度扫描器，可以将光线击中网格的点可视化。通过设置 :attr:`~sensors.SensorBaseCfg.debug_vis` 属性为 "
 "true 实现此功能。"
 
-#: source/how-to/add_sensors_on_robot.rst:122
+#: source/how-to/add_sensors_on_robot.rst:123
 msgid "The entire configuration of the height-scanner is as follows:"
 msgstr "高度扫描器的整体配置如下: "
 
-#: source/how-to/add_sensors_on_robot.rst:130
+#: source/how-to/add_sensors_on_robot.rst:131
 msgid "Contact sensor"
 msgstr "接触传感器"
 
-#: source/how-to/add_sensors_on_robot.rst:132
+#: source/how-to/add_sensors_on_robot.rst:133
 msgid ""
 "Contact sensors wrap around the PhysX contact reporting API to obtain the "
 "contact information of the robot with the environment. Since it relies of "
@@ -265,7 +267,7 @@ msgstr ""
 ":attr:`~sim.spawners.RigidObjectSpawnerCfg.activate_contact_sensors` 设置为 "
 "true 来完成此操作。"
 
-#: source/how-to/add_sensors_on_robot.rst:137
+#: source/how-to/add_sensors_on_robot.rst:138
 msgid ""
 "Through the :class:`sensors.ContactSensorCfg`, it is possible to specify the"
 " prims for which we want to obtain the contact information. Additional flags"
@@ -275,7 +277,7 @@ msgstr ""
 "通过 :class:`sensors.ContactSensorCfg` ，可以指定要获取其接触信息的 "
 "prims。可以设置附加标志以获取有关接触的更多信息，例如过滤 prims 之间的接触空气时间、接触力等。"
 
-#: source/how-to/add_sensors_on_robot.rst:141
+#: source/how-to/add_sensors_on_robot.rst:142
 msgid ""
 "In this tutorial, we attach the contact sensor to the feet of the robot. The"
 " feet of the robot are named ``\"LF_FOOT\"``, ``\"RF_FOOT\"``, "
@@ -287,7 +289,7 @@ msgstr ""
 "``\"LH_FOOT\"`` 和 ``\"RH_FOOT\"`` 。为简化 prim 路径设置，我们使用正则表达式 ``\".*_FOOT\"`` "
 "，匹配所有名称以 ``\"_FOOT\"`` 结尾的 prim。"
 
-#: source/how-to/add_sensors_on_robot.rst:146
+#: source/how-to/add_sensors_on_robot.rst:147
 msgid ""
 "We set the update period to 0 to update the sensor at the same frequency as "
 "the simulation. Additionally, for contact sensors, we can specify the "
@@ -298,40 +300,40 @@ msgstr ""
 "将更新周期设置为 0 以使传感器以仿真相同的频率更新。此外，对于接触传感器，可以指定要存储的接触信息的历史长度。对于本教程，我们将历史长度设置为 "
 "6，这意味着存储最后 6 个仿真步骤的接触信息。"
 
-#: source/how-to/add_sensors_on_robot.rst:151
+#: source/how-to/add_sensors_on_robot.rst:152
 msgid "The entire configuration of the contact sensor is as follows:"
 msgstr "接触传感器的整体配置如下: "
 
-#: source/how-to/add_sensors_on_robot.rst:159
+#: source/how-to/add_sensors_on_robot.rst:160
 msgid "Running the simulation loop"
 msgstr "运行仿真循环"
 
-#: source/how-to/add_sensors_on_robot.rst:161
+#: source/how-to/add_sensors_on_robot.rst:162
 msgid ""
 "Similar to when using assets, the buffers and physics handles for the "
 "sensors are initialized only when the simulation is played, i.e., it is "
 "important to call ``sim.reset()`` after creating the scene."
 msgstr "与使用资产时类似，仅当播放仿真时才会初始化传感器的缓冲区和物理句柄，即在创建场景后调用 ``sim.reset()`` 是重要的。"
 
-#: source/how-to/add_sensors_on_robot.rst:169
+#: source/how-to/add_sensors_on_robot.rst:170
 msgid ""
 "Besides that, the simulation loop is similar to the previous tutorials. The "
 "sensors are updated as part of the scene update and they internally handle "
 "the updating of their buffers based on their update periods."
 msgstr "此外，仿真循环类似于以前的教程。传感器作为场景更新的一部分进行更新，并且它们内部处理基于其更新周期的缓冲区的更新。"
 
-#: source/how-to/add_sensors_on_robot.rst:173
+#: source/how-to/add_sensors_on_robot.rst:174
 msgid ""
 "The data from the sensors can be accessed through their ``data`` attribute. "
 "As an example, we show how to access the data for the different sensors "
 "created in this tutorial:"
 msgstr "可以通过它们的 ``data`` 属性访问传感器的数据。作为示例，我们展示了如何访问本教程中创建的不同传感器的数据: "
 
-#: source/how-to/add_sensors_on_robot.rst:183
+#: source/how-to/add_sensors_on_robot.rst:184
 msgid "The Code Execution"
 msgstr "代码执行"
 
-#: source/how-to/add_sensors_on_robot.rst:186
+#: source/how-to/add_sensors_on_robot.rst:187
 msgid ""
 "Now that we have gone through the code, let's run the script and see the "
 "result:"
@@ -345,7 +347,7 @@ msgstr "uv（推荐）"
 msgid "isaaclab.sh / isaaclab.bat"
 msgstr "isaaclab.sh / isaaclab.bat"
 
-#: source/how-to/add_sensors_on_robot.rst:204
+#: source/how-to/add_sensors_on_robot.rst:205
 msgid ""
 "This command should open a stage with a ground plane, lights, and two "
 "quadrupedal robots. Around the robots, you should see red spheres that "
@@ -359,17 +361,17 @@ msgstr ""
 " RGB 图像。请查看 `这里 <https://youtu.be/htPbcKkNMPs?feature=shared>`_ "
 "获取有关如何将视口切换到相机视图的更多信息。"
 
-#: source/how-to/add_sensors_on_robot.rst:210
+#: source/how-to/add_sensors_on_robot.rst:211
 msgid "result of add_sensors_on_robot.py"
 msgstr "add_sensors_on_robot.py 的结果"
 
-#: source/how-to/add_sensors_on_robot.rst:215
+#: source/how-to/add_sensors_on_robot.rst:216
 msgid ""
 "To stop the simulation, you can either close the window, or press ``Ctrl+C``"
 " in the terminal."
 msgstr "要停止仿真，您可以关闭窗口，或在终端中按 ``Ctrl+C`` 。"
 
-#: source/how-to/add_sensors_on_robot.rst:217
+#: source/how-to/add_sensors_on_robot.rst:218
 msgid ""
 "While in this tutorial, we went over creating and using different sensors, "
 "there are many more sensors available in the :mod:`sensors` module. We "

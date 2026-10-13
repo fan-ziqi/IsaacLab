@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -42,14 +41,18 @@ msgstr ""
 
 #: source/how-to/run_diff_ik.rst:17
 msgid ""
-"This tutorial uses Isaac Sim PhysX and requires an Isaac Sim installation."
-msgstr "本教程使用 Isaac Sim PhysX，需要安装 Isaac Sim。"
+"This tutorial uses Isaac Sim PhysX and requires an Isaac Sim installation. "
+"For controller selection and the control-loop walkthrough, see "
+":doc:`../concepts/motion_generators`."
+msgstr ""
+"本教程使用 Isaac Sim PhysX，需要安装 Isaac Sim。控制器选择和控制循环的说明见 "
+":doc:`../concepts/motion_generators` 。"
 
-#: source/how-to/run_diff_ik.rst:21
+#: source/how-to/run_diff_ik.rst:23
 msgid "The Code"
 msgstr "代码"
 
-#: source/how-to/run_diff_ik.rst:23
+#: source/how-to/run_diff_ik.rst:25
 msgid ""
 "The tutorial corresponds to the ``run_diff_ik.py`` script in the "
 "``scripts/tutorials/05_controllers`` directory."
@@ -60,11 +63,11 @@ msgstr ""
 msgid "Code for run_diff_ik.py"
 msgstr "run_diff_ik.py 的代码"
 
-#: source/how-to/run_diff_ik.rst:37
+#: source/how-to/run_diff_ik.rst:39
 msgid "The Code Explained"
 msgstr "代码解释"
 
-#: source/how-to/run_diff_ik.rst:39
+#: source/how-to/run_diff_ik.rst:41
 msgid ""
 "While using any task-space controller, it is important to ensure that the "
 "provided quantities are in the correct frames. When parallelizing "
@@ -76,29 +79,29 @@ msgstr ""
 "使用任务空间控制器时，必须确保输入量采用正确的坐标系。多个并行环境实例位于同一个仿真世界坐标系中，但通常希望各环境有自己的局部坐标系。可通过 "
 ":attr:`scene.InteractiveScene.env_origins` 获取各环境的原点。"
 
-#: source/how-to/run_diff_ik.rst:45
+#: source/how-to/run_diff_ik.rst:47
 msgid "In our APIs, we use the following notation for frames:"
 msgstr "API 使用以下符号表示坐标系："
 
-#: source/how-to/run_diff_ik.rst:47
+#: source/how-to/run_diff_ik.rst:49
 msgid ""
 "The simulation world frame (denoted as ``w``), which is the frame of the "
 "entire simulation."
 msgstr "仿真世界坐标系（记为 ``w`` ）：整个仿真的坐标系。"
 
-#: source/how-to/run_diff_ik.rst:48
+#: source/how-to/run_diff_ik.rst:50
 msgid ""
 "The local environment frame (denoted as ``e``), which is the frame of the "
 "local environment."
 msgstr "环境局部坐标系（记为 ``e`` ）：各环境自身的坐标系。"
 
-#: source/how-to/run_diff_ik.rst:49
+#: source/how-to/run_diff_ik.rst:51
 msgid ""
 "The robot's base frame (denoted as ``b``), which is the frame of the robot's"
 " base link."
 msgstr "机器人基座坐标系（记为 ``b`` ）：机器人基座连杆的坐标系。"
 
-#: source/how-to/run_diff_ik.rst:51
+#: source/how-to/run_diff_ik.rst:53
 msgid ""
 "Since the asset instances are not \"aware\" of the local environment frame, "
 "they return their states in the simulation world frame. Thus, we need to "
@@ -106,11 +109,11 @@ msgid ""
 " by subtracting the local environment origin from the obtained quantities."
 msgstr "资产实例不感知环境的局部坐标系，返回的状态采用仿真世界坐标系。因此，需要将这些量转换到环境局部坐标系；对于这里的位置量，减去环境原点即可。"
 
-#: source/how-to/run_diff_ik.rst:58
+#: source/how-to/run_diff_ik.rst:60
 msgid "Creating an IK controller"
 msgstr "创建一个 IK 控制器"
 
-#: source/how-to/run_diff_ik.rst:60
+#: source/how-to/run_diff_ik.rst:62
 msgid ""
 "The :class:`~controllers.DifferentialIKController` class computes the "
 "desired joint positions for a robot to reach a desired end-effector pose. "
@@ -127,18 +130,18 @@ msgstr ""
 ":attr:`~controllers.DifferentialIKControllerCfg.ik_method` "
 "选择。控制器既支持相对位姿指令，也支持绝对位姿指令。"
 
-#: source/how-to/run_diff_ik.rst:68
+#: source/how-to/run_diff_ik.rst:70
 msgid ""
 "In this tutorial, we will use the damped least-squares method to compute the"
 " desired joint positions. Additionally, since we want to track desired end-"
 "effector poses, we will use the absolute pose command mode."
 msgstr "本教程使用阻尼最小二乘法计算期望关节位置，并采用绝对位姿指令模式跟踪末端执行器的目标位姿。"
 
-#: source/how-to/run_diff_ik.rst:78
+#: source/how-to/run_diff_ik.rst:80
 msgid "Obtaining the robot's joint and body indices"
 msgstr "获取机器人的关节和刚体索引"
 
-#: source/how-to/run_diff_ik.rst:80
+#: source/how-to/run_diff_ik.rst:82
 msgid ""
 "The IK controller implementation is a computation-only class. Thus, it "
 "expects the user to provide the necessary information about the robot. This "
@@ -146,7 +149,7 @@ msgid ""
 "Jacobian matrix."
 msgstr "IK 控制器只负责计算，需要用户提供机器人的关节位置、当前末端执行器位姿和雅可比矩阵。"
 
-#: source/how-to/run_diff_ik.rst:84
+#: source/how-to/run_diff_ik.rst:86
 msgid ""
 "While the attribute :attr:`assets.ArticulationData.joint_pos` provides the "
 "joint positions, we only want the joint positions of the robot's arm, and "
@@ -160,7 +163,7 @@ msgstr ""
 ":attr:`assets.ArticulationData.body_state_w` "
 "提供所有刚体的状态，而这里只需末端执行器的状态。因此，需要通过索引从数组中取出所需数据。"
 
-#: source/how-to/run_diff_ik.rst:90
+#: source/how-to/run_diff_ik.rst:92
 msgid ""
 "For this, the articulation class provides the methods "
 ":meth:`~assets.Articulation.find_joints` and "
@@ -170,24 +173,24 @@ msgstr ""
 "关节体类提供 :meth:`~assets.Articulation.find_joints` 和 "
 ":meth:`~assets.Articulation.find_bodies` 方法，根据关节和刚体名称返回对应索引。"
 
-#: source/how-to/run_diff_ik.rst:94
+#: source/how-to/run_diff_ik.rst:96
 msgid ""
 "While you may directly use these methods to obtain the indices, we recommend"
-" using the :attr:`~managers.SceneEntityCfg` class to resolve the indices. "
+" using the :class:`~managers.SceneEntityCfg` class to resolve the indices. "
 "This class is used in various places in the APIs to extract certain "
 "information from a scene entity. Internally, it calls the above methods to "
 "obtain the indices. However, it also performs some additional checks to "
 "ensure that the provided names are valid. Thus, it is a safer option to use "
 "this class."
 msgstr ""
-"可以直接调用上述方法获取索引，但更推荐使用 :attr:`~managers.SceneEntityCfg` 解析索引。该类在 API "
-"多处用于提取场景实体的信息：内部调用上述方法，并额外检查名称是否合法，因此使用起来更稳妥。"
+"虽然可以直接调用这些方法获取索引，但推荐使用 :class:`~managers.SceneEntityCfg` 解析索引。API "
+"的多个部分都使用该类从场景实体中提取信息。它内部会调用上述方法获取索引，并额外检查所提供名称是否有效，因此更加稳妥。"
 
-#: source/how-to/run_diff_ik.rst:108
+#: source/how-to/run_diff_ik.rst:110
 msgid "Computing robot command"
 msgstr "计算机器人命令"
 
-#: source/how-to/run_diff_ik.rst:110
+#: source/how-to/run_diff_ik.rst:112
 msgid ""
 "The IK controller separates the operation of setting the desired command and"
 " computing the desired joint positions. This is done to allow for the user "
@@ -195,7 +198,7 @@ msgid ""
 "frequency."
 msgstr "IK 控制器将设置目标指令与计算目标关节位置分为两个操作，以便用户以不同于机器人控制频率的频率运行 IK 计算。"
 
-#: source/how-to/run_diff_ik.rst:114
+#: source/how-to/run_diff_ik.rst:116
 msgid ""
 "The :meth:`~controllers.DifferentialIKController.set_command` method takes "
 "in the desired end-effector pose as a single batched array. The pose is "
@@ -204,7 +207,7 @@ msgstr ""
 ":meth:`~controllers.DifferentialIKController.set_command` "
 "接收批量数组形式的期望末端执行器位姿，位姿采用机器人基座坐标系。"
 
-#: source/how-to/run_diff_ik.rst:123
+#: source/how-to/run_diff_ik.rst:125
 msgid ""
 "We can then compute the desired joint positions using the "
 ":meth:`~controllers.DifferentialIKController.compute` method. The method "
@@ -215,17 +218,17 @@ msgstr ""
 "随后，通过 :meth:`~controllers.DifferentialIKController.compute` "
 "计算期望关节位置。输入包括基座坐标系下的当前末端执行器位姿、雅可比矩阵和当前关节位置。雅可比矩阵从机器人数据中读取，其数值由物理引擎计算。"
 
-#: source/how-to/run_diff_ik.rst:135
+#: source/how-to/run_diff_ik.rst:137
 msgid ""
 "The computed joint position targets can then be applied on the robot, as "
 "done in the previous tutorials."
 msgstr "与此前教程一样，将计算得到的关节位置目标应用到机器人即可。"
 
-#: source/how-to/run_diff_ik.rst:145
+#: source/how-to/run_diff_ik.rst:147
 msgid "The Code Execution"
 msgstr "代码执行"
 
-#: source/how-to/run_diff_ik.rst:148
+#: source/how-to/run_diff_ik.rst:150
 msgid ""
 "Now that we have gone through the code, let's run the script and see the "
 "result:"
@@ -239,21 +242,21 @@ msgstr "Isaac Sim PhysX（uv）"
 msgid "isaaclab.sh / isaaclab.bat"
 msgstr "isaaclab.sh / isaaclab.bat"
 
-#: source/how-to/run_diff_ik.rst:164
+#: source/how-to/run_diff_ik.rst:166
 msgid ""
 "The script will start a simulation with 128 robots. The robots will be "
 "controlled using the IK controller. The current and desired end-effector "
-"poses should be displayed using frame markers. When the robot reaches the "
-"desired pose, the command should cycle through to the next pose specified in"
-" the script."
+"poses should be displayed using frame markers. The script resets and changes"
+" goals every 150 simulation steps, cycling through the poses specified in "
+"the script."
 msgstr ""
-"脚本会启动包含 128 个机器人的仿真，并使用 IK "
-"控制器控制它们。坐标系标记显示当前和期望的末端执行器位姿。当机器人到达目标位姿时，指令会切换到脚本指定的下一个位姿。"
+"脚本会启动包含 128 个机器人的仿真，由 IK 控制器控制机器人。坐标系标记会显示当前和目标末端执行器位姿。脚本每隔 150 "
+"个仿真步重置机器人并更换目标，循环使用脚本中指定的位姿。"
 
-#: source/how-to/run_diff_ik.rst:168
+#: source/how-to/run_diff_ik.rst:171
 msgid "result of run_diff_ik.py"
 msgstr "run_diff_ik.py 的结果"
 
-#: source/how-to/run_diff_ik.rst:173
+#: source/how-to/run_diff_ik.rst:176
 msgid "Press ``Ctrl+C`` in the terminal to stop the simulation."
 msgstr "在终端按 ``Ctrl+C`` 可停止仿真。"

@@ -1,0 +1,628 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/record_video.rst:6
+msgid "Recording video"
+msgstr "录制视频"
+
+#: source/how-to/record_video.rst:10
+msgid ""
+"This guide shows how to record ``mp4`` clips from a visualizer or a scene "
+"sensor during a run."
+msgstr "本指南介绍如何在运行过程中，从可视化器或场景传感器录制 ``mp4`` 视频片段。"
+
+#: source/how-to/record_video.rst:21
+msgid ""
+"Each ``VideoRecorderCfg`` entry is independent: different sources write "
+"different files at their own cadence, with no limit on simultaneous "
+"recorders."
+msgstr "每个 ``VideoRecorderCfg`` 条目独立运行：不同数据源按照各自的录制周期写入不同文件，同时运行的录制器数量没有限制。"
+
+#: source/how-to/record_video.rst:26
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/how-to/record_video.rst:28
+msgid "Add a ``VideoRecorderCfg`` to ``env_cfg.video_recorders``:"
+msgstr "在 ``env_cfg.video_recorders`` 中添加 ``VideoRecorderCfg`` ："
+
+#: source/how-to/record_video.rst:38
+msgid ""
+"Or pass ``--video`` on the command line to record without editing the "
+"environment config. It records the first capture-capable visualizer selected"
+" by ``--viz``. Without ``--viz``, it uses the first configured visualizer "
+"(preferring one that supports capture), or creates a headless Kit visualizer"
+" when none is configured. To record several sources at once, list one "
+"``VideoRecorderCfg`` per source in ``env_cfg.video_recorders``; "
+"``--video_length`` and ``--video_interval`` apply to every recorder:"
+msgstr ""
+"也可以在命令行传入 ``--video``，无需修改环境配置即可录制。它会录制 ``--viz`` 选中的第一个支持帧捕获的可视化器。未传入 "
+"``--viz`` 时，使用已配置的第一个可视化器，并优先选择支持捕获的可视化器；未配置任何可视化器时，会创建无界面 Kit "
+"可视化器。要同时录制多个数据源，应在 ``env_cfg.video_recorders`` 中为每个数据源配置一个 "
+"``VideoRecorderCfg``。``--video_length`` 和 ``--video_interval`` 对所有录制器生效："
+
+#: source/how-to/record_video.rst:49
+msgid ""
+"See :ref:`the --video sources <record_video_cli>` for the command-line "
+"selection rules, and `Sources`_ and `Clip control`_ below for the "
+"``VideoRecorderCfg`` options. To record from a different camera angle than "
+"the interactive view, see `Recording from an independent camera angle`_."
+msgstr ""
+"命令行的数据源选择规则见 :ref:`--video 数据源 <record_video_cli>`；``VideoRecorderCfg`` "
+"选项见下文的 `数据源 <Sources_>`_ 和 `片段控制 <Clip control_>`_。需要使用不同于交互视图的相机角度时，见 "
+"`从独立相机视角录制 <Recording from an independent camera angle_>`_。"
+
+#: source/how-to/record_video.rst:74
+msgid "Examples"
+msgstr "示例"
+
+#: source/how-to/record_video.rst:76
+msgid ""
+"All three examples use the Shadow Hand cube-reorientation task, ``Isaac-"
+"Reorient-Cube-Shadow-Camera-Direct``, which ships with a built-in tiled "
+"camera sensor. Examples 1 and 2 each demonstrate one recording source; "
+"Example 3 combines all four."
+msgstr ""
+"这三个示例均使用 Shadow Hand 立方体重定向任务 ``Isaac-Reorient-Cube-Shadow-Camera-Direct`` "
+"，该任务内置平铺相机传感器。示例 1 和 2 分别演示一种录制来源，示例 3 则组合全部四种来源。"
+
+#: source/how-to/record_video.rst:0
+msgid "Code for run_video_recording.py"
+msgstr "run_video_recording.py 的代码"
+
+#: source/how-to/record_video.rst:89
+msgid "Example 1: Kit viewport"
+msgstr "示例 1：Kit 视口"
+
+#: source/how-to/record_video.rst:96
+msgid "Records the Kit interactive viewport (RTX renderer)"
+msgstr "录制 Kit 交互视口（RTX 渲染器）"
+
+#: source/how-to/record_video.rst:97
+msgid "Shows 4 parallel environments"
+msgstr "显示 4 个并行环境"
+
+#: source/how-to/record_video.rst:98
+msgid ""
+"One clip is written to "
+"``videos/recording_tutorial/example_1/kit_viewport_0000.mp4``"
+msgstr ""
+"将一个视频片段写入 ``videos/recording_tutorial/example_1/kit_viewport_0000.mp4``"
+
+#: source/how-to/record_video.rst:111
+msgid "Example 2: Scene sensor, headless"
+msgstr "示例 2：场景传感器，无界面运行"
+
+#: source/how-to/record_video.rst:131
+msgid ""
+"No visualizer window opens; frames are read directly from the "
+"``tiled_camera`` sensor"
+msgstr "不打开可视化器窗口；直接从 ``tiled_camera`` 传感器读取帧"
+
+#: source/how-to/record_video.rst:132
+msgid ""
+"One clip is written to "
+"``videos/recording_tutorial/example_2/sensor_0000.mp4``"
+msgstr "将一个视频片段写入 ``videos/recording_tutorial/example_2/sensor_0000.mp4``"
+
+#: source/how-to/record_video.rst:133
+msgid ""
+"``source=\"sensor:tiled_camera\"`` is the key under which the camera is "
+"registered in ``env.scene.sensors``"
+msgstr ""
+"``source=\"sensor:tiled_camera\"`` 中的 ``tiled_camera`` 是该相机在 "
+"``env.scene.sensors`` 中注册时使用的键"
+
+#: source/how-to/record_video.rst:135
+msgid ""
+"The sensor must have the recorded channel in its ``data_types``; ``rgb`` is "
+"the default, and ``depth``, ``segmentation``, and ``normals`` are also "
+"available (see `Sources`_)"
+msgstr ""
+"传感器的 ``data_types`` 必须包含待录制通道；默认通道为 ``rgb``，也支持 ``depth``、``segmentation`` 和"
+" ``normals``，见 `数据源 <Sources_>`_"
+
+#: source/how-to/record_video.rst:145
+msgid "Example 3: All sources simultaneously"
+msgstr "示例 3：同时录制所有来源"
+
+#: source/how-to/record_video.rst:152
+msgid ""
+"Four independent clips are written to "
+"``videos/recording_tutorial/example_3/``:"
+msgstr "将四个独立的视频片段写入 ``videos/recording_tutorial/example_3/`` ："
+
+#: source/how-to/record_video.rst:154
+msgid "``kit_viewport_0000.mp4``: Kit interactive viewport (RTX renderer)"
+msgstr "``kit_viewport_0000.mp4`` ：Kit 交互视口（RTX 渲染器）"
+
+#: source/how-to/record_video.rst:155
+msgid ""
+"``tiled_kit_viewport_0000.mp4``: Kit tiled-camera grid (per-environment "
+"views)"
+msgstr "``tiled_kit_viewport_0000.mp4`` ：Kit 平铺相机网格（各环境的视图）"
+
+#: source/how-to/record_video.rst:156
+msgid "``newton_viewport_0000.mp4``: Newton GL viewer framebuffer"
+msgstr "``newton_viewport_0000.mp4`` ：Newton GL 查看器帧缓冲"
+
+#: source/how-to/record_video.rst:157
+msgid "``sensor_0000.mp4``: scene tiled-camera sensor (offline render)"
+msgstr "``sensor_0000.mp4`` ：场景平铺相机传感器（离线渲染）"
+
+#: source/how-to/record_video.rst:182
+msgid "Recipes"
+msgstr "常用配置"
+
+#: source/how-to/record_video.rst:184
+msgid ""
+"The recipes below are command-line and configuration snippets that are not "
+"part of the tutorial script."
+msgstr "以下命令行和配置示例不属于教程脚本，可按实际需要使用。"
+
+#: source/how-to/record_video.rst:188
+msgid "Recording during RL training"
+msgstr "在强化学习训练中录制"
+
+#: source/how-to/record_video.rst:190
+msgid ""
+"Record a short clip at regular intervals while training, without opening a "
+"window:"
+msgstr "训练时不打开窗口，按固定间隔录制短片段："
+
+#: source/how-to/record_video.rst:198
+msgid ""
+"With no ``--viz`` or configured visualizer, ``--video`` records from a "
+"headless Kit visualizer. This writes a 200-step clip every 2,000 steps. The "
+"``train`` and ``play`` entrypoints put clips in ``videos/`` under the run's "
+"log directory unless a recorder sets ``output_dir``; a script that builds "
+"its own recorders writes to ``output_dir`` (default ``videos``). Add ``--viz"
+" kit`` to watch the run in a window while recording the same view."
+msgstr ""
+"未传入 ``--viz`` 且未配置可视化器时，``--video`` 使用无界面 Kit 可视化器录制。此例每隔 2,000 步录制一个 200 "
+"步的视频片段。``train`` 和 ``play`` 入口默认将片段保存到本次运行日志目录下的 ``videos/``；录制器设置 "
+"``output_dir`` 时使用该目录。自行创建录制器的脚本写入 ``output_dir``，其默认值为 ``videos``。添加 "
+"``--viz kit`` 可以在窗口中查看运行过程，同时录制相同视角。"
+
+#: source/how-to/record_video.rst:205
+msgid "Recording depth or segmentation from a scene sensor"
+msgstr "从场景传感器录制深度或分割结果"
+
+#: source/how-to/record_video.rst:207
+msgid ""
+"Append a channel to the sensor source to record something other than RGB. "
+"Each recorder writes its own file, so several channels of one camera can be "
+"recorded in the same run:"
+msgstr "在传感器数据源后追加通道名称，即可录制 RGB 以外的数据。每个录制器写入独立文件，因此一次运行可以同时录制同一相机的多个通道："
+
+#: source/how-to/record_video.rst:217
+msgid ""
+"Depth uses the turbo colormap over ``depth_colormap_min`` to "
+"``depth_colormap_max``. Use the same prefix-per-recorder pattern for "
+"``segmentation`` and ``normals``."
+msgstr ""
+"深度使用 turbo 色图，映射范围为 ``depth_colormap_min`` 到 "
+"``depth_colormap_max``。``segmentation`` 和 ``normals`` 同样可以为每个录制器设置独立文件名前缀。"
+
+#: source/how-to/record_video.rst:221
+msgid "Recording while streaming with Viser or Rerun"
+msgstr "使用 Viser 或 Rerun 查看视频流时录制"
+
+#: source/how-to/record_video.rst:223
+msgid ""
+"Viser and Rerun stream to a browser or viewer and have no frame capture, so "
+"they cannot be recorded. Pair them with a capture-capable visualizer that "
+"runs headless next to them:"
+msgstr "Viser 和 Rerun 向浏览器或查看器发送视频流，但不提供帧捕获，无法直接录制。可以同时运行一个支持帧捕获的无界面可视化器："
+
+#: source/how-to/record_video.rst:238
+msgid ""
+"Alternatively, record directly from a scene camera with "
+"``source=\"sensor:<name>\"``, which needs no visualizer."
+msgstr "也可以设置 ``source=\"sensor:<name>\"``，直接从场景相机录制，无需可视化器。"
+
+#: source/how-to/record_video.rst:244
+msgid "Recording from an independent camera angle"
+msgstr "从独立相机视角录制"
+
+#: source/how-to/record_video.rst:246
+msgid ""
+"Configure the recording angle on the visualizer, not the recorder. To record"
+" from a headless Newton visualizer at a different angle alongside an "
+"interactive Kit viewer, configure both and omit ``--viz`` so the "
+"configuration selects them:"
+msgstr ""
+"录制视角应在可视化器配置中设置，而不是在录制器中设置。要一边使用交互式 Kit 查看器，一边从不同视角的无界面 Newton "
+"可视化器录制，应配置两个可视化器，并省略 ``--viz``，由配置决定启动哪些可视化器："
+
+#: source/how-to/record_video.rst:263
+msgid ""
+"Alternatively, use a :class:`~isaaclab.sensors.CameraCfg` sensor in the "
+"scene and record with ``source=\"sensor:<name>\"``, which gives full control"
+" over the recording viewpoint without requiring a second interactive "
+"visualizer."
+msgstr ""
+"也可以在场景中使用 :class:`~isaaclab.sensors.CameraCfg` 传感器，并通过 "
+"``source=\"sensor:<name>\"`` 录制。这样可以完全控制录制视角，无需第二个交互式可视化器。"
+
+#: source/how-to/record_video.rst:269
+msgid "Sources"
+msgstr "数据源"
+
+#: source/how-to/record_video.rst:271
+msgid "The ``source`` string selects what to capture:"
+msgstr "``source`` 字符串用于选择采集对象："
+
+#: source/how-to/record_video.rst:277
+msgid "Source string"
+msgstr "来源字符串"
+
+#: source/how-to/record_video.rst:278
+msgid "Captures from"
+msgstr "采集对象"
+
+#: source/how-to/record_video.rst:279
+msgid "``\"visualizer\"`` (default)"
+msgstr "``\"visualizer\"`` （默认值）"
+
+#: source/how-to/record_video.rst:280
+msgid "First active recording-capable visualizer"
+msgstr "第一个已启用且支持录制的可视化器"
+
+#: source/how-to/record_video.rst:281
+msgid "``\"visualizer:kit\"``"
+msgstr "``\"visualizer:kit\"``"
+
+#: source/how-to/record_video.rst:282
+msgid "Kit visualizer viewport"
+msgstr "Kit 可视化器视口"
+
+#: source/how-to/record_video.rst:283
+msgid "``\"visualizer:kit:streaming_view\"``"
+msgstr "``\"visualizer:kit:streaming_view\"``"
+
+#: source/how-to/record_video.rst:284
+msgid "Kit streaming camera panel, requires ``streaming_view=True``"
+msgstr "Kit 相机流面板，需要设置 ``streaming_view=True``"
+
+#: source/how-to/record_video.rst:285
+msgid "``\"visualizer:newton_gl\"``"
+msgstr "``\"visualizer:newton_gl\"``"
+
+#: source/how-to/record_video.rst:286
+msgid "Newton GL visualizer viewport"
+msgstr "Newton GL 可视化器视口"
+
+#: source/how-to/record_video.rst:287
+msgid "``\"visualizer:newton_rtx\"``"
+msgstr "``\"visualizer:newton_rtx\"``"
+
+#: source/how-to/record_video.rst:288
+msgid "Newton OVRTX path-traced viewport"
+msgstr "Newton OVRTX 路径追踪视口"
+
+#: source/how-to/record_video.rst:289
+msgid "``\"visualizer:newton_gl:streaming_view\"``"
+msgstr "``\"visualizer:newton_gl:streaming_view\"``"
+
+#: source/how-to/record_video.rst:290
+msgid "Newton GL streaming camera panel, requires ``streaming_view=True``"
+msgstr "Newton GL 相机流面板，需要设置 ``streaming_view=True``"
+
+#: source/how-to/record_video.rst:291
+msgid "``\"sensor:<name>\"``"
+msgstr "``\"sensor:<name>\"``"
+
+#: source/how-to/record_video.rst:292
+msgid "``env.scene.sensors[name]``, RGB (default)"
+msgstr "``env.scene.sensors[name]`` 的 RGB 数据（默认）"
+
+#: source/how-to/record_video.rst:293
+msgid "``\"sensor:<name>:rgb\"``"
+msgstr "``\"sensor:<name>:rgb\"``"
+
+#: source/how-to/record_video.rst:294
+msgid "RGB channel"
+msgstr "RGB 通道"
+
+#: source/how-to/record_video.rst:295
+msgid "``\"sensor:<name>:depth\"``"
+msgstr "``\"sensor:<name>:depth\"``"
+
+#: source/how-to/record_video.rst:296
+msgid ""
+"Depth, turbo colormap, range ``depth_colormap_min`` … ``depth_colormap_max``"
+msgstr "深度，采用 turbo 色图，范围为 ``depth_colormap_min`` … ``depth_colormap_max``"
+
+#: source/how-to/record_video.rst:297
+msgid "``\"sensor:<name>:segmentation\"``"
+msgstr "``\"sensor:<name>:segmentation\"``"
+
+#: source/how-to/record_video.rst:298
+msgid "Segmentation, colorized"
+msgstr "分割，使用颜色区分"
+
+#: source/how-to/record_video.rst:299
+msgid "``\"sensor:<name>:normals\"``"
+msgstr "``\"sensor:<name>:normals\"``"
+
+#: source/how-to/record_video.rst:300
+msgid "Surface normals, colorized"
+msgstr "表面法线，使用颜色表示"
+
+#: source/how-to/record_video.rst:302
+msgid ""
+"The camera angle, resolution, and other visualizer settings are configured "
+"on the corresponding visualizer config, not on the recorder. A named "
+"visualizer source must also have a matching active visualizer in "
+"``sim.visualizer_cfgs``. Set its ``headless=True`` when it should capture "
+"without a window. The deprecated ``visualizer:newton`` source still selects "
+"Newton GL; use ``visualizer:newton_gl``."
+msgstr ""
+"相机视角、分辨率和其他可视化设置在相应的可视化器配置中设置，而不是在录制器中设置。指定名称的可视化器数据源，必须在 "
+"``sim.visualizer_cfgs`` 中有对应的已启用可视化器。需要无窗口捕获时，设置 ``headless=True``。已弃用的 "
+"``visualizer:newton`` 仍会选择 Newton GL，新配置应使用 ``visualizer:newton_gl``。"
+
+#: source/how-to/record_video.rst:309
+msgid ""
+"The Newton RTX viewer framebuffer can be recorded with "
+"``\"visualizer:newton_rtx\"``, but recording its streaming view is not "
+"supported."
+msgstr "可以通过 ``\"visualizer:newton_rtx\"`` 录制 Newton RTX 查看器的帧缓冲，但不支持录制其相机流视图。"
+
+#: source/how-to/record_video.rst:314
+msgid "Clip control"
+msgstr "片段控制"
+
+#: source/how-to/record_video.rst:320
+msgid "Field"
+msgstr "字段"
+
+#: source/how-to/record_video.rst:321
+msgid "Default"
+msgstr "默认值"
+
+#: source/how-to/record_video.rst:322
+msgid "Meaning"
+msgstr "含义"
+
+#: source/how-to/record_video.rst:323
+msgid "``video_length``"
+msgstr "``video_length``"
+
+#: source/how-to/record_video.rst:324
+msgid "``200``"
+msgstr "``200``"
+
+#: source/how-to/record_video.rst:325
+msgid "Env steps per clip"
+msgstr "每个片段的环境步数"
+
+#: source/how-to/record_video.rst:326
+msgid "``video_interval``"
+msgstr "``video_interval``"
+
+#: source/how-to/record_video.rst:327
+msgid "``0``"
+msgstr "``0``"
+
+#: source/how-to/record_video.rst:328
+msgid ""
+"``0`` = one clip starting at step 1; ``N > 0`` = new clip every N steps"
+msgstr "``0`` = 从第 1 步开始录制一个片段； ``N > 0`` = 每 N 步开始录制一个新片段"
+
+#: source/how-to/record_video.rst:329
+msgid "``fps``"
+msgstr "``fps``"
+
+#: source/how-to/record_video.rst:330 source/how-to/record_video.rst:339
+msgid "``None``"
+msgstr "``None``"
+
+#: source/how-to/record_video.rst:331
+msgid ""
+"Output frame rate; ``None`` resolves from ``env.metadata[\"render_fps\"]`` "
+"or ``1 / step_dt``"
+msgstr ""
+"输出帧率；设为 ``None`` 时，从 ``env.metadata[\"render_fps\"]`` 或 ``1 / step_dt`` 确定"
+
+#: source/how-to/record_video.rst:332
+msgid "``output_dir``"
+msgstr "``output_dir``"
+
+#: source/how-to/record_video.rst:333
+msgid "``\"videos\"``"
+msgstr "``\"videos\"``"
+
+#: source/how-to/record_video.rst:334
+msgid "Directory for output files (created on demand)"
+msgstr "输出文件目录（按需创建）"
+
+#: source/how-to/record_video.rst:335
+msgid "``output_filename_prefix``"
+msgstr "``output_filename_prefix``"
+
+#: source/how-to/record_video.rst:336
+msgid "``\"clip\"``"
+msgstr "``\"clip\"``"
+
+#: source/how-to/record_video.rst:337
+msgid "File stem; output is ``<prefix>_NNNN.mp4``"
+msgstr "文件名前缀；输出文件名为 ``<prefix>_NNNN.mp4``"
+
+#: source/how-to/record_video.rst:338
+msgid "``keep_last_n_clips``"
+msgstr "``keep_last_n_clips``"
+
+#: source/how-to/record_video.rst:340
+msgid "Delete older clips; ``None`` keeps all"
+msgstr "删除较早的片段；设为 ``None`` 时保留全部片段"
+
+#: source/how-to/record_video.rst:342
+msgid "**One clip at the start of a run:**"
+msgstr "**运行开始时录制一个片段：**"
+
+#: source/how-to/record_video.rst:348
+msgid "**Recurring clips every 1,000 env steps:**"
+msgstr "**每隔 1,000 个环境步录制一个片段：**"
+
+#: source/how-to/record_video.rst:354
+msgid "**Keep only the most recent clip on disk:**"
+msgstr "**磁盘上仅保留最新片段：**"
+
+#: source/how-to/record_video.rst:363
+msgid "Limitations"
+msgstr "限制"
+
+#: source/how-to/record_video.rst:365
+msgid ""
+"``source=\"visualizer:kit\"`` and "
+"``source=\"visualizer:kit:streaming_view\"`` require cubric to propagate "
+"Newton Fabric scene transforms to the RTX renderer.  Without cubric, a "
+"warning is logged and a black-frame warning is emitted at clip write time.  "
+"Use ``source=\"visualizer:newton_gl\"`` for guaranteed capture with Newton "
+"physics."
+msgstr ""
+"``source=\"visualizer:kit\"`` 和 ``source=\"visualizer:kit:streaming_view\"``"
+" 需要 cubric 将 Newton Fabric 场景变换传递给 RTX 渲染器。缺少 cubric "
+"时会记录警告，并在写出视频片段时给出黑帧警告。使用 Newton 物理后端时，可选择 "
+"``source=\"visualizer:newton_gl\"``，确保能够捕获画面。"
+
+#: source/how-to/record_video.rst:370
+msgid ""
+"``source=\"visualizer:newton_gl:streaming_view\"`` and "
+"``source=\"visualizer:kit:streaming_view\"`` require ``streaming_view=True``"
+" on the corresponding visualizer cfg.  A :class:`~RuntimeError` is raised at"
+" the first capture attempt if it is not set."
+msgstr ""
+"``source=\"visualizer:newton_gl:streaming_view\"`` 和 "
+"``source=\"visualizer:kit:streaming_view\"`` 要求相应可视化器配置设置 "
+"``streaming_view=True``；否则，首次尝试捕获帧时会抛出 :class:`~RuntimeError` 。"
+
+#: source/how-to/record_video.rst:374
+msgid ""
+"For ``source=\"sensor:<name>\"``, the named sensor must exist on the scene "
+"config with the recorded channel (``\"rgb\"`` by default) in its "
+"``data_types``."
+msgstr ""
+"使用 ``source=\"sensor:<name>\"`` 时，场景配置中必须存在该名称的传感器，其 ``data_types`` "
+"必须包含待录制通道，默认通道为 ``\"rgb\"``。"
+
+#: source/how-to/record_video.rst:381
+msgid "Visualizer"
+msgstr "可视化器"
+
+#: source/how-to/record_video.rst:382
+msgid "``--video``"
+msgstr "``--video``"
+
+#: source/how-to/record_video.rst:383
+msgid "Notes"
+msgstr "说明"
+
+#: source/how-to/record_video.rst:384
+msgid "``kit``"
+msgstr "``kit``"
+
+#: source/how-to/record_video.rst:385 source/how-to/record_video.rst:388
+#: source/how-to/record_video.rst:392
+msgid "✓"
+msgstr "✓"
+
+#: source/how-to/record_video.rst:386
+msgid ""
+"Launches Isaac Sim; the launch enables camera rendering for the recording."
+msgstr "启动 Isaac Sim，并在启动时为录制启用相机渲染。"
+
+#: source/how-to/record_video.rst:387
+msgid "``newton_gl``"
+msgstr "``newton_gl``"
+
+#: source/how-to/record_video.rst:389
+msgid ""
+"Uses pyglet's EGL backend when headless; select it with ``--viz newton_gl`` "
+"or configure a ``NewtonGLVisualizerCfg``."
+msgstr ""
+"无界面模式下使用 pyglet 的 EGL 后端；通过 ``--viz newton_gl`` 选择，或配置 "
+"``NewtonGLVisualizerCfg``。"
+
+#: source/how-to/record_video.rst:391
+msgid "``newton_rtx``"
+msgstr "``newton_rtx``"
+
+#: source/how-to/record_video.rst:393
+msgid ""
+"Starts the OVRTX runtime; capture performs a GPU-to-CPU readback of the "
+"path-traced framebuffer."
+msgstr "启动 OVRTX 运行时；捕获帧时，将路径追踪帧缓冲区从 GPU 回读到 CPU。"
+
+#: source/how-to/record_video.rst:395
+msgid "``rerun``"
+msgstr "``rerun``"
+
+#: source/how-to/record_video.rst:396 source/how-to/record_video.rst:400
+msgid "✗"
+msgstr "✗"
+
+#: source/how-to/record_video.rst:397
+msgid ""
+"Remote streaming tool; no local frame-capture API. ``--video --viz rerun`` "
+"raises an error; select it together with a capture-capable visualizer to "
+"record."
+msgstr "远程视频流工具，没有本地帧捕获 API。``--video --viz rerun`` 会报错；录制时需同时选择一个支持帧捕获的可视化器。"
+
+#: source/how-to/record_video.rst:399
+msgid "``viser``"
+msgstr "``viser``"
+
+#: source/how-to/record_video.rst:401
+msgid ""
+"Browser streaming tool; no local frame-capture API. ``--video --viz viser`` "
+"raises an error; select it together with a capture-capable visualizer to "
+"record."
+msgstr ""
+"浏览器视频流工具，没有本地帧捕获 API。``--video --viz viser`` 会报错；录制时需同时选择一个支持帧捕获的可视化器。"
+
+#: source/how-to/record_video.rst:404
+msgid ""
+"To record video while streaming with Rerun or Viser, see `Recording while "
+"streaming with Viser or Rerun`_."
+msgstr ""
+"使用 Rerun 或 Viser 查看视频流时的录制方法，见 `使用 Viser 或 Rerun 查看视频流时录制 <Recording while "
+"streaming with Viser or Rerun_>`_。"
+
+#: source/how-to/record_video.rst:409
+msgid "See also"
+msgstr "另请参阅"
+
+#: source/how-to/record_video.rst:411
+msgid ""
+":doc:`/source/concepts/visualization`: configuring interactive visualizers "
+"and recording from them"
+msgstr ":doc:`/source/concepts/visualization`：配置交互式可视化器并录制其画面"
+
+#: source/how-to/record_video.rst:412
+msgid ""
+":doc:`/source/how-to/visualizer_streaming_camera_view`: tiled camera panel "
+"setup"
+msgstr ":doc:`/source/how-to/visualizer_streaming_camera_view`：配置平铺相机面板"
+
+#: source/how-to/record_video.rst:413
+msgid ""
+":doc:`/source/how-to/capture_sensor_frames`: saving per-frame sensor outputs"
+" as images"
+msgstr ":doc:`/source/how-to/capture_sensor_frames` ：将逐帧传感器输出保存为图像"

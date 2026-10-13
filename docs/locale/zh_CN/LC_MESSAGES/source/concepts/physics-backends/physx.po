@@ -1,0 +1,735 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/concepts/physics-backends/physx.rst:9
+msgid "PhysX Backend (Isaac Sim)"
+msgstr "PhysX 后端（Isaac Sim）"
+
+#: source/concepts/physics-backends/physx.rst:11
+msgid ""
+"The PhysX backend runs NVIDIA PhysX inside Isaac Sim, on the Omniverse Kit "
+"runtime. Its integration lives in the ``isaaclab_physx`` package. This page "
+"explains how that package starts Kit, owns the simulation lifecycle, "
+"configures the PhysX scene, and exposes native PhysX data to Isaac Lab "
+"assets and sensors. For solver selection and tuning, see :ref:`physics-"
+"backends-physx` and :ref:`physx-solver-tuning`. For the kit-less PhysX path,"
+" see :ref:`ovphysx-backend`."
+msgstr ""
+"PhysX 后端在基于 Omniverse Kit 运行时的 Isaac Sim 内运行 NVIDIA PhysX，其集成代码位于 "
+"``isaaclab_physx`` 软件包。本页介绍该软件包如何启动 Kit、管理仿真生命周期、配置 PhysX 场景，以及向 Isaac Lab "
+"资产和传感器提供原生 PhysX 数据。求解器选择与调优见 :ref:`physics-backends-physx` 和 :ref:`physx-"
+"solver-tuning` 。不依赖 Kit 的 PhysX 路径见 :ref:`ovphysx-backend` 。"
+
+#: source/concepts/physics-backends/physx.rst:21
+msgid "Selecting the backend"
+msgstr "选择后端"
+
+#: source/concepts/physics-backends/physx.rst:23
+msgid ""
+"Configure the backend with :class:`~isaaclab_physx.physics.PhysxCfg` on "
+":attr:`isaaclab.sim.SimulationCfg.physics`, or select it from the command "
+"line with ``physics=isaacsim_physx`` when the task exposes that preset:"
+msgstr ""
+"在 :attr:`isaaclab.sim.SimulationCfg.physics` 中设置 "
+":class:`~isaaclab_physx.physics.PhysxCfg` ，即可配置该后端。如果任务提供相应预设，也可以通过命令行参数 "
+"``physics=isaacsim_physx`` 选择它："
+
+#: source/concepts/physics-backends/physx.rst:34
+msgid ""
+"The ``physx`` selector is automatic. It selects a "
+":class:`~isaaclab.physics.PhysxAutoCfg` that holds a ``PhysxCfg`` and, when "
+"the task supports it, an :class:`~isaaclab_ov.physics.OvPhysxCfg`. When the "
+"simulation is launched, the auto configuration resolves to Isaac Sim PhysX "
+"if the run needs Kit, and otherwise to OvPhysX when one is configured. Use "
+"``isaacsim_physx`` to require the Isaac Sim path."
+msgstr ""
+"``physx`` 选择器会自动选择后端。它选用的 :class:`~isaaclab.physics.PhysxAutoCfg` 包含一个 "
+"``PhysxCfg``；任务支持时，还会包含 :class:`~isaaclab_ov.physics.OvPhysxCfg` "
+"。启动仿真时，如果运行需要 Kit，自动配置会解析为 Isaac Sim PhysX；否则，在配置了 OvPhysX 的情况下会解析为 "
+"OvPhysX。使用 ``isaacsim_physx`` 可明确指定 Isaac Sim 路径。"
+
+#: source/concepts/physics-backends/physx.rst:43
+msgid "Runtime: Isaac Sim and Kit"
+msgstr "运行时：Isaac Sim 与 Kit"
+
+#: source/concepts/physics-backends/physx.rst:46
+msgid "Launch"
+msgstr "启动"
+
+#: source/concepts/physics-backends/physx.rst:48
+msgid ""
+"``PhysxCfg`` names its launcher through the ``launcher_type`` class "
+"attribute, which is ``isaaclab_physx.app:KitLauncher``. "
+":func:`~isaaclab.app.launch_simulation` scans the resolved configuration, "
+"collects the launchers that the physics and renderer configurations name, "
+"and starts them. Kit starts first. Scripts do not construct the launcher "
+"themselves."
+msgstr ""
+"``PhysxCfg`` 通过类属性 ``launcher_type`` 指定启动器，其值为 "
+"``isaaclab_physx.app:KitLauncher``。:func:`~isaaclab.app.launch_simulation` "
+"遍历解析后的配置，收集物理和渲染器配置指定的启动器，然后依次启动，Kit 最先启动。脚本无需自行创建启动器。"
+
+#: source/concepts/physics-backends/physx.rst:55
+msgid ""
+":class:`~isaaclab_physx.app.KitLauncher` creates the Isaac Sim "
+"``SimulationApp``. Unless ``--experience`` is passed, it selects an Isaac "
+"Lab experience file from the repository ``apps/`` directory based on the "
+"headless, camera-rendering, livestream, and XR settings, for example "
+"``isaaclab.python.headless.kit`` or ``isaaclab.python.rendering.kit``. After"
+" startup it publishes Isaac Lab settings such as ``/isaaclab/has_gui`` that "
+"the simulation context and renderers read. The launcher's environment "
+"variables and arguments are documented in :mod:`isaaclab_physx.app`."
+msgstr ""
+":class:`~isaaclab_physx.app.KitLauncher` 创建 Isaac Sim 的 "
+"``SimulationApp``。未传入 ``--experience`` 时，它会根据无界面运行、相机渲染、视频流和 XR 设置，从仓库的 "
+"``apps/`` 目录中选择 Isaac Lab experience 文件，例如 ``isaaclab.python.headless.kit`` "
+"或 ``isaaclab.python.rendering.kit``。启动后，它会发布 ``/isaaclab/has_gui`` 等 Isaac "
+"Lab 设置，供仿真上下文和渲染器读取。启动器的环境变量和参数见 :mod:`isaaclab_physx.app` 。"
+
+#: source/concepts/physics-backends/physx.rst:65
+msgid "Stage"
+msgstr "USD 场景"
+
+#: source/concepts/physics-backends/physx.rst:67
+msgid ""
+"Isaac Lab owns the USD stage. Kit extensions, including PhysX, its tensor "
+"views, and the viewport, read the stage from Kit's USD context instead. When"
+" Kit is running, :class:`~isaaclab.sim.SimulationContext` registers a "
+":class:`~isaaclab_physx.app.KitStageBackendCfg`, and "
+":class:`~isaaclab_physx.app.KitStageBackend` attaches the simulation stage "
+"to ``omni.usd``'s context. Closing that backend closes the Kit stage before "
+"the simulation clears its stage cache."
+msgstr ""
+"USD 场景由 Isaac Lab 管理。PhysX、其张量视图和视口等 Kit 扩展则从 Kit 的 USD 上下文中读取场景。Kit "
+"运行时，:class:`~isaaclab.sim.SimulationContext` 注册 "
+":class:`~isaaclab_physx.app.KitStageBackendCfg` ，由 "
+":class:`~isaaclab_physx.app.KitStageBackend` 将仿真场景接入 ``omni.usd`` "
+"上下文。关闭该后端时，会先关闭 Kit 场景，再由仿真清理场景缓存。"
+
+#: source/concepts/physics-backends/physx.rst:76
+msgid "Interaction with Isaac Sim's simulation manager"
+msgstr "与 Isaac Sim 仿真管理器的交互"
+
+#: source/concepts/physics-backends/physx.rst:78
+msgid ""
+":class:`~isaaclab_physx.physics.PhysxManager` is the single owner of the "
+"simulation lifecycle. Isaac Sim's own "
+"``isaacsim.core.simulation_manager.SimulationManager`` registers default "
+"timeline and stage callbacks. Its stop callback invalidates the shared "
+"``omni.physics.tensors`` simulation view, which would also invalidate the "
+"views that Isaac Lab assets hold. ``KitLauncher`` asks Isaac Sim to skip "
+"these callbacks at startup through the "
+"``/exts/isaacsim.core.simulation_manager/enable_default_callbacks`` setting."
+" Newer Isaac Sim versions honor it, and Isaac Lab then leaves the manager "
+"untouched. On older versions, ``PhysxManager.initialize()`` disables those "
+"callbacks and redirects the module's ``SimulationManager`` to "
+"``PhysxManager``. ``PhysxManager`` re-applies this patch if the Isaac Sim "
+"extension is enabled later."
+msgstr ""
+"仿真生命周期统一由 :class:`~isaaclab_physx.physics.PhysxManager` 管理。Isaac Sim 自带的 "
+"``isaacsim.core.simulation_manager.SimulationManager`` "
+"会注册默认的时间线和场景回调。其中，停止回调会使共享的 ``omni.physics.tensors`` 仿真视图失效，连带使 Isaac Lab "
+"资产持有的视图失效。``KitLauncher`` 在启动时通过 "
+"``/exts/isaacsim.core.simulation_manager/enable_default_callbacks`` 设置，要求 "
+"Isaac Sim 跳过这些回调。较新的 Isaac Sim 版本会遵循该设置，Isaac Lab "
+"因而无需修改其管理器。对于较旧的版本，``PhysxManager.initialize()`` 会禁用这些回调，并将模块中的 "
+"``SimulationManager`` 重定向到 ``PhysxManager``。如果之后才启用 Isaac Sim "
+"扩展，``PhysxManager`` 会重新应用这一补丁。"
+
+#: source/concepts/physics-backends/physx.rst:94
+msgid "Simulation lifecycle"
+msgstr "仿真生命周期"
+
+#: source/concepts/physics-backends/physx.rst:96
+msgid ""
+"``PhysxManager`` implements the shared "
+":class:`~isaaclab.physics.PhysicsManager` contract on top of the "
+"``omni.physx``, ``omni.physics.tensors``, and ``omni.timeline`` interfaces:"
+msgstr ""
+"``PhysxManager`` 基于 ``omni.physx``、``omni.physics.tensors`` 和 "
+"``omni.timeline`` 接口，实现公共的 :class:`~isaaclab.physics.PhysicsManager` 接口约定："
+
+#: source/concepts/physics-backends/physx.rst:111
+msgid "Initialization"
+msgstr "初始化"
+
+#: source/concepts/physics-backends/physx.rst:112
+msgid ""
+"Applies Kit physics settings such as the CUDA device and GPU readback "
+"suppression, authors the PhysX scene attributes described in `Scene "
+"configuration`_, binds a default physics material, and loads or unloads the "
+"PhysX Fabric extension."
+msgstr ""
+"设置 CUDA 设备、是否禁止 GPU 数据回读等 Kit 物理选项，写入 `场景配置 <Scene configuration_>`_ 中介绍的 "
+"PhysX 场景属性，绑定默认物理材质，并加载或卸载 PhysX Fabric 扩展。"
+
+#: source/concepts/physics-backends/physx.rst:117
+msgid "First reset"
+msgstr "首次重置"
+
+#: source/concepts/physics-backends/physx.rst:118
+msgid ""
+"Attaches the stage to PhysX (on CPU, PhysX instead loads the scene directly "
+"from USD), runs one warm-start update, and dispatches the warm-up event. It "
+"then registers a :class:`~isaaclab_physx.physics.PhysxBackendCfg` with the "
+"simulation context. The resulting ``PhysxBackend`` owns the "
+"``omni.physics.tensors`` simulation view, created with the Warp frontend for"
+" the current stage. Finally, the manager dispatches ``PHYSICS_READY``, and "
+"assets and sensors create their typed views from the simulation view."
+msgstr ""
+"将场景接入 PhysX；在 CPU 模式下，PhysX 会直接从 USD 加载场景。随后执行一次热启动更新并触发预热事件，再向仿真上下文注册 "
+":class:`~isaaclab_physx.physics.PhysxBackendCfg` 。由此创建的 ``PhysxBackend`` 管理 "
+"``omni.physics.tensors`` 仿真视图，该视图针对当前场景创建，使用 Warp 前端。最后，管理器触发 "
+"``PHYSICS_READY``，资产和传感器据此从仿真视图创建各自类型的视图。"
+
+#: source/concepts/physics-backends/physx.rst:128
+msgid "Step"
+msgstr "仿真步进"
+
+#: source/concepts/physics-backends/physx.rst:129
+msgid ""
+"Advances PhysX through the ``omni.physx`` simulation interface with "
+"``simulate(dt)`` followed by ``fetch_results()``. Physics stepping does not "
+"pump the Kit application. Rendering is driven separately by the simulation "
+"context. ``forward()`` refreshes articulation kinematics through the tensor "
+"view only when pose writes have marked them dirty."
+msgstr ""
+"通过 ``omni.physx`` 仿真接口推进 PhysX：先调用 ``simulate(dt)``，再调用 "
+"``fetch_results()``。物理步进不会驱动 Kit "
+"应用更新，渲染由仿真上下文单独驱动。仅当写入位姿使关节系统的运动学状态被标记为需要更新时，``forward()`` 才会通过张量视图刷新这些状态。"
+
+#: source/concepts/physics-backends/physx.rst:135
+msgid "Timeline and teardown"
+msgstr "时间线与资源释放"
+
+#: source/concepts/physics-backends/physx.rst:136
+msgid ""
+"``play()``, ``pause()``, and ``stop()`` drive ``omni.timeline`` and pump one"
+" Kit update so timeline callbacks run synchronously. Stopping the timeline "
+"invalidates every tensor view. The next play or reset warms up PhysX and "
+"creates the views again. ``close()`` detaches PhysX from the stage before "
+"views are invalidated and prims are deleted."
+msgstr ""
+"``play()``、``pause()`` 和 ``stop()`` 驱动 ``omni.timeline``，并执行一次 Kit "
+"更新，使时间线回调同步运行。停止时间线会使所有张量视图失效。下一次播放或重置会重新预热 PhysX 并创建视图。``close()`` 会先将 "
+"PhysX 从场景中分离，再使视图失效并删除 prim。"
+
+#: source/concepts/physics-backends/physx.rst:143
+msgid "Lifecycle events"
+msgstr "生命周期事件"
+
+#: source/concepts/physics-backends/physx.rst:145
+msgid ""
+"Backend-agnostic code registers callbacks with "
+":class:`~isaaclab.physics.PhysicsEvent`. ``PhysxManager`` maps those events "
+"to its PhysX-specific :class:`~isaaclab_physx.physics.IsaacEvents`, which "
+"remain available for backward compatibility:"
+msgstr ""
+"与后端无关的代码通过 :class:`~isaaclab.physics.PhysicsEvent` 注册回调。``PhysxManager`` "
+"将这些事件映射到 PhysX 专用的 :class:`~isaaclab_physx.physics.IsaacEvents` "
+"；后者仍保留，以兼容旧版代码："
+
+#: source/concepts/physics-backends/physx.rst:154
+msgid "``PhysicsEvent``"
+msgstr "``PhysicsEvent``"
+
+#: source/concepts/physics-backends/physx.rst:155
+msgid "``IsaacEvents``"
+msgstr "``IsaacEvents``"
+
+#: source/concepts/physics-backends/physx.rst:156
+msgid "Dispatched"
+msgstr "触发时机"
+
+#: source/concepts/physics-backends/physx.rst:157
+msgid "``MODEL_INIT``"
+msgstr "``MODEL_INIT``"
+
+#: source/concepts/physics-backends/physx.rst:158
+msgid "``PHYSICS_WARMUP``"
+msgstr "``PHYSICS_WARMUP``"
+
+#: source/concepts/physics-backends/physx.rst:159
+msgid "After the warm-start update"
+msgstr "热启动更新完成后"
+
+#: source/concepts/physics-backends/physx.rst:160
+#: source/concepts/physics-backends/physx.rst:161
+msgid "``PHYSICS_READY``"
+msgstr "``PHYSICS_READY``"
+
+#: source/concepts/physics-backends/physx.rst:162
+msgid "After the tensor view exists"
+msgstr "张量视图创建完成后"
+
+#: source/concepts/physics-backends/physx.rst:163
+msgid "``STOP``"
+msgstr "``STOP``"
+
+#: source/concepts/physics-backends/physx.rst:164
+msgid "``TIMELINE_STOP``"
+msgstr "``TIMELINE_STOP``"
+
+#: source/concepts/physics-backends/physx.rst:165
+msgid "When the timeline stops"
+msgstr "时间线停止时"
+
+#: source/concepts/physics-backends/physx.rst:167
+msgid ""
+"``IsaacEvents`` also exposes ``PRE_PHYSICS_STEP`` and ``POST_PHYSICS_STEP`` "
+"through the ``omni.physx`` step subscription, and ``PRIM_DELETION`` during "
+"teardown. New code should prefer ``PhysicsEvent``."
+msgstr ""
+"``IsaacEvents`` 还通过 ``omni.physx`` 的步进订阅提供 ``PRE_PHYSICS_STEP`` 和 "
+"``POST_PHYSICS_STEP``，并在释放资源时触发 ``PRIM_DELETION``。新代码应优先使用 ``PhysicsEvent``。"
+
+#: source/concepts/physics-backends/physx.rst:173
+msgid "Scene configuration"
+msgstr "场景配置"
+
+#: source/concepts/physics-backends/physx.rst:175
+msgid ""
+"``PhysxCfg`` fields are written to the physics scene prim at "
+":attr:`~isaaclab.sim.SimulationCfg.physics_prim_path`. The manager applies "
+"``PhysxSceneAPI`` and sets each remaining field as a ``physxScene:`` "
+"attribute in camel case, for example ``gpu_max_rigid_contact_count`` becomes"
+" ``physxScene:gpuMaxRigidContactCount``. Some fields are translated instead "
+"of copied:"
+msgstr ""
+"``PhysxCfg`` 字段会写入 :attr:`~isaaclab.sim.SimulationCfg.physics_prim_path` "
+"指定的物理场景 prim。管理器应用 ``PhysxSceneAPI``，将其余字段转换为驼峰命名的 ``physxScene:`` 属性，例如将 "
+"``gpu_max_rigid_contact_count`` 写为 "
+"``physxScene:gpuMaxRigidContactCount``。部分字段会进行转换，而非直接复制："
+
+#: source/concepts/physics-backends/physx.rst:182
+msgid ""
+"``solver_type`` becomes ``physxScene:solverType`` (``\"TGS\"`` or "
+"``\"PGS\"``)."
+msgstr "``solver_type`` 转换为 ``physxScene:solverType``（``\"TGS\"`` 或 ``\"PGS\"``）。"
+
+#: source/concepts/physics-backends/physx.rst:183
+msgid "``bounce_threshold_velocity`` becomes ``physxScene:bounceThreshold``."
+msgstr "``bounce_threshold_velocity`` 转换为 ``physxScene:bounceThreshold``。"
+
+#: source/concepts/physics-backends/physx.rst:184
+msgid "The timestep becomes ``physxScene:timeStepsPerSecond``."
+msgstr "时间步长转换为 ``physxScene:timeStepsPerSecond``。"
+
+#: source/concepts/physics-backends/physx.rst:185
+msgid ""
+"GPU simulation enables GPU dynamics and the GPU broadphase. CPU simulation "
+"uses the MBP broadphase."
+msgstr "GPU 仿真启用 GPU 动力学和 GPU 粗略碰撞检测；CPU 仿真使用 MBP 粗略碰撞检测。"
+
+#: source/concepts/physics-backends/physx.rst:187
+msgid ""
+"``enable_ccd`` takes effect only on CPU. CCD is disabled with a warning when"
+" GPU dynamics is enabled."
+msgstr "``enable_ccd`` 仅在 CPU 模式下生效。启用 GPU 动力学时，CCD 会被禁用，并给出警告。"
+
+#: source/concepts/physics-backends/physx.rst:189
+msgid ""
+"The backend-agnostic ``deterministic`` request enables "
+"``enable_enhanced_determinism``."
+msgstr "与后端无关的 ``deterministic`` 选项会启用 ``enable_enhanced_determinism``。"
+
+#: source/concepts/physics-backends/physx.rst:191
+msgid ""
+"Scene query support follows ``SimulationCfg.enable_scene_query_support`` and"
+" is forced on when Kit runs with a GUI."
+msgstr ""
+"场景查询遵循 ``SimulationCfg.enable_scene_query_support`` 设置；Kit "
+"以图形界面模式运行时，会强制开启场景查询。"
+
+#: source/concepts/physics-backends/physx.rst:194
+msgid ""
+"Per-prim physics properties are not part of ``PhysxCfg``. They are authored "
+"through the USD schema configurations described in "
+":doc:`/source/concepts/schema_cfgs`. PhysX-only schema configurations, such "
+"as :class:`~isaaclab_physx.sim.schemas.PhysxRigidBodyPropertiesCfg`, live in"
+" :mod:`isaaclab_physx.sim.schemas`."
+msgstr ""
+"各 prim 的物理属性不属于 ``PhysxCfg``，而是通过 :doc:`/source/concepts/schema_cfgs` 中介绍的 "
+"USD schema "
+"配置写入。:class:`~isaaclab_physx.sim.schemas.PhysxRigidBodyPropertiesCfg` 等 "
+"PhysX 专用 schema 配置位于 :mod:`isaaclab_physx.sim.schemas` 。"
+
+#: source/concepts/physics-backends/physx.rst:201
+msgid "Fabric"
+msgstr "Fabric"
+
+#: source/concepts/physics-backends/physx.rst:203
+msgid ""
+"When :attr:`~isaaclab.sim.SimulationCfg.use_fabric` is ``True``, the "
+"default, the manager enables the ``omni.physx.fabric`` extension. It also "
+"turns off PhysX write-back to USD (``/physics/updateToUsd`` and related "
+"settings), so simulated transforms reach the renderer through Fabric instead"
+" of USD. With ``use_fabric=False``, PhysX writes simulation results back to "
+"USD, which is slower for large scenes."
+msgstr ""
+":attr:`~isaaclab.sim.SimulationCfg.use_fabric` 为 ``True`` 时（默认值），管理器启用 "
+"``omni.physx.fabric`` 扩展，并关闭 PhysX 向 USD 回写数据的设置（``/physics/updateToUsd`` "
+"及相关选项）。因此，仿真变换通过 Fabric 而非 USD 传递给渲染器。设置 ``use_fabric=False`` 时，PhysX "
+"会将仿真结果回写到 USD，在大型场景中会更慢。"
+
+#: source/concepts/physics-backends/physx.rst:214
+msgid "Tensor views and native access"
+msgstr "张量视图与原生接口访问"
+
+#: source/concepts/physics-backends/physx.rst:216
+msgid ""
+"The PhysX Tensor API provides typed views for data paths and capabilities "
+"that require engine-native access."
+msgstr "PhysX 张量 API 为需要引擎原生访问的数据路径和功能提供类型化视图。"
+
+#: source/concepts/physics-backends/physx.rst:219
+msgid ""
+"Every PhysX asset and sensor in ``isaaclab_physx``, except "
+"``SurfaceGripper``, is built on typed views created from the shared "
+"``omni.physics.tensors`` simulation view:"
+msgstr ""
+"除 ``SurfaceGripper`` 外，``isaaclab_physx`` 中的所有 PhysX "
+"资产和传感器都基于相应类型的视图实现，这些视图从共享的 ``omni.physics.tensors`` 仿真视图创建："
+
+#: source/concepts/physics-backends/physx.rst:227
+msgid "Isaac Lab class"
+msgstr "Isaac Lab 类"
+
+#: source/concepts/physics-backends/physx.rst:228
+msgid "Native view"
+msgstr "原生视图"
+
+#: source/concepts/physics-backends/physx.rst:229
+msgid "Articulation, joint wrench sensor"
+msgstr "关节系统、关节力旋量传感器"
+
+#: source/concepts/physics-backends/physx.rst:230
+msgid "Articulation view"
+msgstr "关节系统视图"
+
+#: source/concepts/physics-backends/physx.rst:231
+msgid "Rigid object, rigid object collection"
+msgstr "刚体对象、刚体对象集合"
+
+#: source/concepts/physics-backends/physx.rst:232
+msgid "Rigid-body view"
+msgstr "刚体视图"
+
+#: source/concepts/physics-backends/physx.rst:233
+msgid "Deformable object"
+msgstr "可变形对象"
+
+#: source/concepts/physics-backends/physx.rst:234
+msgid "Surface or volume deformable-body view and deformable-material view"
+msgstr "表面或体积可变形体视图，以及可变形材质视图"
+
+#: source/concepts/physics-backends/physx.rst:235
+msgid "Contact sensor"
+msgstr "接触传感器"
+
+#: source/concepts/physics-backends/physx.rst:236
+msgid "Rigid-body view and rigid-contact view"
+msgstr "刚体视图和刚体接触视图"
+
+#: source/concepts/physics-backends/physx.rst:237
+msgid "IMU, frame transformer, ray caster, and similar sensors"
+msgstr "IMU、坐标系变换器、射线投射器等传感器"
+
+#: source/concepts/physics-backends/physx.rst:238
+msgid "Rigid-body view of the tracked bodies"
+msgstr "所跟踪刚体的刚体视图"
+
+#: source/concepts/physics-backends/physx.rst:240
+msgid ""
+"Assets expose their view through ``root_view``. The contact sensor exposes "
+"its rigid-contact view through ``contact_view``. Use "
+":meth:`~isaaclab_physx.physics.PhysxManager.get_physics_sim_view` to reach "
+"the simulation view itself after the first reset."
+msgstr ""
+"资产通过 ``root_view`` 提供自身的视图，接触传感器通过 ``contact_view`` 提供刚体接触视图。首次重置后，可以用 "
+":meth:`~isaaclab_physx.physics.PhysxManager.get_physics_sim_view` 获取仿真视图本身。"
+
+#: source/concepts/physics-backends/physx.rst:245
+msgid ""
+"Environment cloning uses "
+":class:`~isaaclab_physx.cloner.PhysxReplicateContext`, which applies the "
+"clone plan through the ``omni.physx`` replicator interface."
+msgstr ""
+"环境克隆使用 :class:`~isaaclab_physx.cloner.PhysxReplicateContext` ，通过 "
+"``omni.physx`` 的复制器接口执行克隆计划。"
+
+#: source/concepts/physics-backends/physx.rst:250
+msgid "Mental model"
+msgstr "基本概念"
+
+#: source/concepts/physics-backends/physx.rst:252
+msgid ""
+"The API starts from a ``SimulationView`` and creates typed views over "
+"selected physics objects. Access is entirely method-based: a getter pulls "
+"data from the view, and an independent setter publishes data back. Returned "
+"buffers are not live pointers, so editing a getter result does not update "
+"the simulation. Raw views select objects with PhysX Tensor API wildcard "
+"patterns."
+msgstr ""
+"API 从 ``SimulationView`` 开始，为选定物理对象创建类型化视图。访问完全通过方法进行：getter 从视图读取数据，独立的 "
+"setter 将数据写回。返回的缓冲区不是实时指针，因此修改 getter 的返回值不会更新仿真。原始视图通过 PhysX 张量 API "
+"通配模式选择对象。"
+
+#: source/concepts/physics-backends/physx.rst:259
+msgid "Lifecycle prerequisite"
+msgstr "生命周期前提"
+
+#: source/concepts/physics-backends/physx.rst:261
+msgid ""
+":class:`~isaaclab_physx.physics.PhysxManager` creates its ``SimulationView``"
+" with the Warp frontend. Low-level code must run only after physics "
+"initialization and simulation reset, when the PhysX Tensor API view has been"
+" created:"
+msgstr ""
+":class:`~isaaclab_physx.physics.PhysxManager` 使用 Warp 前端创建 "
+"``SimulationView`` 。底层代码只能在物理初始化和仿真重置之后运行，此时 PhysX 张量 API 视图已经创建："
+
+#: source/concepts/physics-backends/physx.rst:275
+msgid "Reuse Isaac Lab-owned access"
+msgstr "复用 Isaac Lab 持有的访问对象"
+
+#: source/concepts/physics-backends/physx.rst:277
+msgid ""
+"When an Isaac Lab asset already has the desired selection, reuse its "
+":attr:`~isaaclab_physx.assets.Articulation.root_view` rather than creating a"
+" second view:"
+msgstr ""
+"如果 Isaac Lab 资源已经包含所需选择，复用它的 "
+":attr:`~isaaclab_physx.assets.Articulation.root_view` ，不要再创建第二个视图："
+
+#: source/concepts/physics-backends/physx.rst:287
+msgid ""
+":attr:`~isaaclab_physx.assets.Articulation.root_view` is backend-specific "
+"and typed. An articulation, rigid object, rigid-object collection, or "
+"deformable can expose a different native PhysX view type, so choose methods "
+"that match the returned view rather than assuming one common interface."
+msgstr ""
+":attr:`~isaaclab_physx.assets.Articulation.root_view` "
+"是后端专用的类型化视图。关节体、刚体对象、刚体对象集合或可变形体可能暴露不同的原生 PhysX "
+"视图类型，应使用与返回视图匹配的方法，不要假定它们具有同一种接口。"
+
+#: source/concepts/physics-backends/physx.rst:293
+msgid "Create raw access"
+msgstr "创建底层访问"
+
+#: source/concepts/physics-backends/physx.rst:295
+msgid ""
+"Create a view directly only when no Isaac Lab-owned selection matches the "
+"needed objects or capability. In this Tensor API pattern, ``*`` selects the "
+"matching object below every cloned environment:"
+msgstr ""
+"只有现有 Isaac Lab 选择无法匹配所需对象或功能时，才直接创建视图。在以下 Tensor API 模式中， ``*`` "
+"选择每个克隆环境下的匹配对象："
+
+#: source/concepts/physics-backends/physx.rst:306
+msgid "Read/write semantics"
+msgstr "读写语义"
+
+#: source/concepts/physics-backends/physx.rst:308
+msgid ""
+"Each getter and setter is a separate operation. Clone a returned Warp buffer"
+" before editing it locally, then call the matching setter to publish the "
+"result:"
+msgstr "每个 getter 和 setter 都是独立操作。本地修改前，先克隆返回的 Warp 缓冲区，再调用对应 setter 写回结果："
+
+#: source/concepts/physics-backends/physx.rst:323
+msgid ""
+"Cloning makes ownership explicit. Callers can modify the clone with Warp "
+"before the setter, but edits to a local buffer do not publish themselves. "
+"The ``indices`` array selects the complete view and matches the setter's "
+"required ``int32`` dtype and device; the setter performs the write. For "
+"active Tensor API contracts that require link transforms to be refreshed "
+"after joint-state writes, call ``update_articulations_kinematic()``. Not "
+"every setter requires that refresh; follow the method-level behavior in the "
+"upstream reference."
+msgstr ""
+"克隆使所有权明确。调用方可在 setter 之前通过 Warp 修改克隆副本，但本地缓冲区的修改不会自动写回。 ``indices`` "
+"数组选择完整视图，且符合 setter 要求的 ``int32`` 数据类型和设备；实际写入由 setter 完成。如果当前 Tensor API "
+"约定要求关节状态写入后刷新连杆变换，请调用 ``update_articulations_kinematic()`` 。并非每个 setter "
+"都需要刷新，应遵循上游参考文档中各方法的行为。"
+
+#: source/concepts/physics-backends/physx.rst:333
+msgid "Access the contact view"
+msgstr "访问接触视图"
+
+#: source/concepts/physics-backends/physx.rst:335
+msgid ""
+"The PhysX contact sensor exposes its native ``RigidContactView`` through "
+":attr:`~isaaclab_physx.sensors.ContactSensor.contact_view`. Use it when the "
+"public sensor data does not expose the required contact details:"
+msgstr ""
+"PhysX 接触传感器通过 :attr:`~isaaclab_physx.sensors.ContactSensor.contact_view` "
+"暴露原生 ``RigidContactView`` 。公共传感器数据无法提供所需接触细节时，可以使用此视图："
+
+#: source/concepts/physics-backends/physx.rst:346
+msgid ""
+"Other Isaac Lab sensors may use ordinary rigid-body or articulation views "
+"internally, but those views are not sensor-specific low-level interfaces."
+msgstr "其他 Isaac Lab 传感器内部可能使用普通刚体或关节体视图，但这些视图不是传感器专用的底层接口。"
+
+#: source/concepts/physics-backends/physx.rst:350
+msgid "Ownership, synchronization, and invalidation"
+msgstr "所有权、同步与失效"
+
+#: source/concepts/physics-backends/physx.rst:352
+msgid ""
+"Preserve a view's expected selection ordering, device, dtype, and tensor "
+"shape when supplying values to a setter. Check and reacquire views after a "
+"hard reset, object removal, stage reload, or manager teardown. Prefer public"
+" Isaac Lab sensor data when direct native contact or motion data is not "
+"required."
+msgstr ""
+"为 setter "
+"提供值时，保持视图要求的选择顺序、设备、数据类型和张量形状。硬重置、对象移除、舞台重新加载或管理器清理后，应检查并重新获取视图。如果不需要直接访问原生接触或运动数据，应优先使用"
+" Isaac Lab 公共传感器数据。"
+
+#: source/concepts/physics-backends/physx.rst:358
+msgid "Authoritative references"
+msgstr "权威参考"
+
+#: source/concepts/physics-backends/physx.rst:360
+msgid ""
+"`Omni Physics Python API reference "
+"<https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/dev_guide/pythonapi.html>`_"
+msgstr ""
+"`Omni Physics Python API 参考文档 "
+"<https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/dev_guide/pythonapi.html>`_"
+
+#: source/concepts/physics-backends/physx.rst:364
+msgid "PhysX-specific and shared components"
+msgstr "PhysX 专用组件与公共组件"
+
+#: source/concepts/physics-backends/physx.rst:370
+msgid "Area"
+msgstr "功能领域"
+
+#: source/concepts/physics-backends/physx.rst:371
+msgid "Shared (``isaaclab``)"
+msgstr "公共组件（``isaaclab``）"
+
+#: source/concepts/physics-backends/physx.rst:372
+msgid "PhysX-specific (``isaaclab_physx``)"
+msgstr "PhysX 专用组件（``isaaclab_physx``）"
+
+#: source/concepts/physics-backends/physx.rst:373
+msgid "Configuration"
+msgstr "配置"
+
+#: source/concepts/physics-backends/physx.rst:374
+msgid ""
+":class:`~isaaclab.sim.SimulationCfg`, ``PhysicsCfg``, and "
+":class:`~isaaclab.physics.PhysxAutoCfg`"
+msgstr ""
+":class:`~isaaclab.sim.SimulationCfg`、``PhysicsCfg`` 和 "
+":class:`~isaaclab.physics.PhysxAutoCfg`"
+
+#: source/concepts/physics-backends/physx.rst:376
+msgid "``PhysxCfg`` and ``PhysxBackendCfg``"
+msgstr "``PhysxCfg`` 和 ``PhysxBackendCfg``"
+
+#: source/concepts/physics-backends/physx.rst:377
+msgid "Runtime"
+msgstr "运行时"
+
+#: source/concepts/physics-backends/physx.rst:378
+msgid ":func:`~isaaclab.app.launch_simulation` and ``SimulationLauncher``"
+msgstr ":func:`~isaaclab.app.launch_simulation` 和 ``SimulationLauncher``"
+
+#: source/concepts/physics-backends/physx.rst:379
+msgid "``KitLauncher`` and ``KitStageBackend``"
+msgstr "``KitLauncher`` 和 ``KitStageBackend``"
+
+#: source/concepts/physics-backends/physx.rst:380
+msgid "Lifecycle"
+msgstr "生命周期"
+
+#: source/concepts/physics-backends/physx.rst:381
+msgid "``PhysicsManager`` and ``PhysicsEvent``"
+msgstr "``PhysicsManager`` 和 ``PhysicsEvent``"
+
+#: source/concepts/physics-backends/physx.rst:382
+msgid "``PhysxManager`` and ``IsaacEvents``"
+msgstr "``PhysxManager`` 和 ``IsaacEvents``"
+
+#: source/concepts/physics-backends/physx.rst:383
+msgid "Assets and sensors"
+msgstr "资产和传感器"
+
+#: source/concepts/physics-backends/physx.rst:384
+msgid "Base classes, factories, and public data contracts"
+msgstr "基类、工厂函数和公共数据接口约定"
+
+#: source/concepts/physics-backends/physx.rst:385
+msgid ""
+"Implementations built on ``omni.physics.tensors`` views, plus "
+"``SurfaceGripper``, which uses Isaac Sim's surface-gripper extension"
+msgstr ""
+"基于 ``omni.physics.tensors`` 视图的实现，以及使用 Isaac Sim 表面夹持器扩展的 ``SurfaceGripper``"
+
+#: source/concepts/physics-backends/physx.rst:387
+msgid "Cloning"
+msgstr "克隆"
+
+#: source/concepts/physics-backends/physx.rst:388
+msgid "Clone plan"
+msgstr "克隆计划"
+
+#: source/concepts/physics-backends/physx.rst:389
+msgid "``PhysxReplicateContext``"
+msgstr "``PhysxReplicateContext``"
+
+#: source/concepts/physics-backends/physx.rst:390
+msgid "USD schemas"
+msgstr "USD 模式"
+
+#: source/concepts/physics-backends/physx.rst:391
+msgid "Shared schema configurations"
+msgstr "公共 schema 配置"
+
+#: source/concepts/physics-backends/physx.rst:392
+msgid "``Physx*`` schema configurations in :mod:`isaaclab_physx.sim.schemas`"
+msgstr ":mod:`isaaclab_physx.sim.schemas` 中的 ``Physx*`` schema 配置"
+
+#: source/concepts/physics-backends/physx.rst:393
+msgid "Scene data"
+msgstr "场景数据"
+
+#: source/concepts/physics-backends/physx.rst:394
+msgid ":class:`~isaaclab.scene_data.SceneDataProvider`"
+msgstr ":class:`~isaaclab.scene_data.SceneDataProvider`"
+
+#: source/concepts/physics-backends/physx.rst:395
+msgid "A scene-data backend that reads poses from the tensor view or Fabric"
+msgstr "从张量视图或 Fabric 读取位姿的场景数据后端"
+
+#: source/concepts/physics-backends/physx.rst:397
+msgid ""
+"Kit-hosted rendering, such as the "
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererCfg` renderer, also ships "
+"in ``isaaclab_physx`` because it requires Kit. Renderer selection is "
+"configured separately from the physics backend, but the kit-less OVRTX "
+"renderer cannot share a process with Isaac Sim PhysX. See :ref:`backend-"
+"architecture` for the factory and registry design that all backends share."
+msgstr ""
+":class:`~isaaclab_physx.renderers.IsaacRtxRendererCfg` 等在 Kit 内运行的渲染器也位于 "
+"``isaaclab_physx`` 中，因为它们依赖 Kit。渲染器与物理后端分别配置，但不依赖 Kit 的 OVRTX 渲染器无法与 Isaac "
+"Sim PhysX 在同一进程中运行。各后端共用的工厂和注册表设计见 :ref:`backend-architecture` 。"

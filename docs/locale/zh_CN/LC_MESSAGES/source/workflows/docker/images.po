@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -197,38 +196,43 @@ msgid ""
 "Running it directly, outside the Compose workflow, is a convenient way to "
 "verify the image and your NVIDIA Container Toolkit setup. ``--interactive`` "
 "and ``--tty`` keep the container's shell alive so that several commands can "
-"share it:"
+"share it. The ``isaac-lab-kitless-logs`` named volume keeps checkpoints "
+"after the container is removed:"
 msgstr ""
-"在 Compose 工作流之外直接运行，便于验证镜像和 NVIDIA Container Toolkit 配置。 ``--interactive`` 和"
-" ``--tty`` 保持容器 shell 运行，使多个命令可以共用它："
+"脱离 Compose 工作流程直接运行镜像，便于验证镜像和 NVIDIA Container Toolkit 配置。``--interactive`` "
+"和 ``--tty`` 会保持容器 shell 运行，以便多条命令共用同一个容器。``isaac-lab-kitless-logs`` "
+"命名卷可在容器删除后保留检查点："
 
-#: source/workflows/docker/images.rst:100
+#: source/workflows/docker/images.rst:102
 msgid "Replay in a browser with:"
 msgstr "通过以下命令在浏览器中回放："
 
-#: source/workflows/docker/images.rst:108
+#: source/workflows/docker/images.rst:110
 msgid ""
 "Viser is reachable through the host network without forwarding a desktop "
-"display. Stop playback with ``Ctrl+C`` without stopping the container. To "
-"build the image from the checkout instead of pulling it, run ``docker build "
-"--file docker/Dockerfile.kitless --tag isaac-lab-kitless .``."
+"display. Stop playback with ``Ctrl+C`` without stopping the container. Copy "
+"the logs to the host with ``docker cp isaac-lab-"
+"kitless:/workspace/isaaclab/logs ./logs``. To build the image from the "
+"checkout instead of pulling it, run ``docker build --file "
+"docker/Dockerfile.kitless --tag isaac-lab-kitless .``."
 msgstr ""
-"Viser 可通过宿主机网络访问，无需转发桌面显示。按 ``Ctrl+C`` 停止回放，不会停止容器。要从检出目录构建镜像而非拉取，运行 "
-"``docker build --file docker/Dockerfile.kitless --tag isaac-lab-kitless .`` "
-"。"
+"Viser 可通过宿主机网络访问，无需转发桌面显示。用 ``Ctrl+C`` 停止回放不会停止容器。可用 ``docker cp isaac-lab-"
+"kitless:/workspace/isaaclab/logs ./logs`` 将日志复制到宿主机。需要从当前工作副本构建镜像而不是拉取镜像时，运行"
+" ``docker build --file docker/Dockerfile.kitless --tag isaac-lab-kitless "
+".``。"
 
-#: source/workflows/docker/images.rst:113
+#: source/workflows/docker/images.rst:116
 msgid ""
-"Only ``linux/amd64`` images are published. The Dockerfile itself is "
-"architecture-agnostic, but the published manifest is limited to the "
-"architecture that is validated in CI."
-msgstr "只发布 ``linux/amd64`` 镜像。Dockerfile 本身不限定架构，但发布清单只包含 CI 已验证的架构。"
+"Check which architectures a tag publishes with ``docker buildx imagetools "
+"inspect <image:tag>`` before choosing a host."
+msgstr ""
+"选择宿主机前，使用 ``docker buildx imagetools inspect <image:tag>`` 检查该标签发布了哪些架构的镜像。"
 
-#: source/workflows/docker/images.rst:117
+#: source/workflows/docker/images.rst:120
 msgid "Pre-built image from NGC"
 msgstr "NGC 预构建镜像"
 
-#: source/workflows/docker/images.rst:119
+#: source/workflows/docker/images.rst:122
 msgid ""
 "A minimal pre-built container carries a small set of Isaac Sim and Omniverse"
 " dependencies with Isaac Lab already built in, under "
@@ -239,7 +243,7 @@ msgstr ""
 "精简的预构建容器包含少量 Isaac Sim 和 Omniverse 依赖，并已在 ``/workspace/isaaclab`` 中内置 Isaac "
 "Lab。以下示例无需转发桌面显示。根据所需物理与渲染栈选择镜像配置，渲染时另行配置图形访问。"
 
-#: source/workflows/docker/images.rst:126
+#: source/workflows/docker/images.rst:129
 msgid ""
 "Use an explicit published version tag for reproducible runs. The examples "
 "below use ``3.0.0-rc1``; the corresponding kit-less image uses "
@@ -248,7 +252,7 @@ msgstr ""
 "使用明确的已发布版本标签，以便复现运行。下例使用 ``3.0.0-rc1`` ，对应的不依赖 Kit 的镜像标签为 "
 "``3.0.0-rc1-kitless`` 。"
 
-#: source/workflows/docker/images.rst:131
+#: source/workflows/docker/images.rst:134
 msgid ""
 "Images from 3.0.0-beta2 onward run as a **non-root** user, so those bind-"
 "mount directories must be writable by uid/gid 1000. Docker creates any "
@@ -260,13 +264,13 @@ msgstr ""
 "``root`` 创建不存在的目录，运行时用户无法写入，可能出现 ``PermissionError: [Errno 13] Permission "
 "denied: '/root/.local/share/ov/data/exts'`` 等错误。应先创建目录："
 
-#: source/workflows/docker/images.rst:142
+#: source/workflows/docker/images.rst:145
 msgid ""
 "Because it is run outside Compose, the Isaac Sim cache directories have to "
 "be mounted by hand, otherwise every start recompiles shaders:"
 msgstr "由于在 Compose 之外运行，需手动挂载 Isaac Sim 缓存目录，否则每次启动都重新编译着色器："
 
-#: source/workflows/docker/images.rst:159
+#: source/workflows/docker/images.rst:162
 msgid ""
 "For windowed use, follow the X11 setup in :ref:`deployment-docker`; the "
 "container needs access to the host display and matching authorization. For "
@@ -284,28 +288,29 @@ msgstr ""
 "\"${XAUTHORITY:-$HOME/.Xauthority}\":/tmp/isaaclab.xauth:ro`` "
 "。宿主机授权文件必须存在，且容器用户可读取。Newton 离屏渲染无需 X11。GL 或 RTX 应遵循上述图形驱动要求。"
 
-#: source/workflows/docker/images.rst:168
+#: source/workflows/docker/images.rst:171
 msgid "Runtime user"
 msgstr "运行时用户"
 
-#: source/workflows/docker/images.rst:170
+#: source/workflows/docker/images.rst:173
 msgid ""
 "The base, ROS 2, cuRobo, and kit-less images all run as a non-root user with"
-" uid/gid 1000, which keeps bind-mounted workspaces writable on GitHub "
-"runners. When running one of these images directly with ``docker run`` from "
-"a host account whose uid differs, pass ``--user \"$(id -u):1000\"`` so that "
-"new files on bind mounts belong to your host user while the runtime home "
-"stays accessible."
+" uid/gid 1000. When running one of these images directly with ``docker "
+"run``, keep that default user instead of passing ``--user``, so that the "
+"runtime home and cache directories stay writable. Named volumes inherit the "
+"image's ownership; make host bind mounts writable with ``sudo chown -R "
+"1000:1000 <directory>``."
 msgstr ""
-"基础、ROS 2、cuRobo 和不依赖 Kit 的镜像，均以 uid/gid 1000 的非 root 用户运行，使 GitHub runner "
-"上绑定挂载的工作区可写。如果宿主机账号 uid 不同，直接通过 ``docker run`` 运行时，传入 ``--user \"$(id "
-"-u):1000\"`` ，使绑定挂载中新建文件归宿主机用户所有，同时保持运行时主目录可访问。"
+"基础、ROS 2、cuRobo 和不依赖 Kit 的镜像都以 uid/gid 为 1000 的非 root 用户运行。通过 ``docker run``"
+" 直接运行这些镜像时，应保留默认用户，不传入 "
+"``--user``，以保证运行时主目录和缓存目录可写。命名卷继承镜像中的属主设置；宿主机绑定挂载的目录可通过 ``sudo chown -R "
+"1000:1000 <directory>`` 设置为该用户可写。"
 
-#: source/workflows/docker/images.rst:176
+#: source/workflows/docker/images.rst:179
 msgid "Python interpreter"
 msgstr "Python 解释器"
 
-#: source/workflows/docker/images.rst:178
+#: source/workflows/docker/images.rst:181
 msgid ""
 "Every image installs from ``uv.lock`` into a Python 3.12 virtual environment"
 " at ``/opt/isaaclab-venv``. On the Isaac Sim-based images the environment is"

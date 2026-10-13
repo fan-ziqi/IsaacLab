@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -18,7 +17,7 @@ msgstr ""
 
 #: source/how-to/run_osc.rst:4
 msgid "Using an operational space controller"
-msgstr "使用运动空间控制器"
+msgstr "使用操作空间控制器"
 
 #: source/how-to/run_osc.rst:8
 msgid ""
@@ -74,16 +73,17 @@ msgstr ""
 msgid ""
 "This tutorial uses Isaac Sim PhysX and requires an Isaac Sim installation. "
 "The target quaternions use ``(x, y, z, w)`` order and orient the end-"
-"effector toward the tilted wall."
+"effector toward the tilted wall. For controller selection and the control-"
+"loop walkthrough, see :doc:`../concepts/motion_generators`."
 msgstr ""
-"本教程使用 Isaac Sim PhysX，需要安装 Isaac Sim。目标四元数按 ``(x, y, z, w)`` "
-"排列，使末端执行器朝向倾斜墙面。"
+"本教程使用 Isaac Sim PhysX，需要安装 Isaac Sim。目标四元数采用 ``(x, y, z, w)`` "
+"顺序，使末端执行器朝向倾斜墙面。控制器选择和控制循环的说明见 :doc:`../concepts/motion_generators` 。"
 
-#: source/how-to/run_osc.rst:29
+#: source/how-to/run_osc.rst:31
 msgid "The Code"
 msgstr "代码"
 
-#: source/how-to/run_osc.rst:31
+#: source/how-to/run_osc.rst:33
 msgid ""
 "The tutorial corresponds to the ``run_osc.py`` script in the "
 "``scripts/tutorials/05_controllers`` directory."
@@ -93,11 +93,11 @@ msgstr "教程对应于 ``scripts/tutorials/05_controllers`` 目录中的 ``run_
 msgid "Code for run_osc.py"
 msgstr "run_osc.py 的代码"
 
-#: source/how-to/run_osc.rst:44
+#: source/how-to/run_osc.rst:46
 msgid "Creating an Operational Space Controller"
 msgstr "创建一个操作空间控制器"
 
-#: source/how-to/run_osc.rst:46
+#: source/how-to/run_osc.rst:48
 msgid ""
 "The :class:`~controllers.OperationalSpaceController` class computes the "
 "joint efforts/torques for a robot to do simultaneous motion and force "
@@ -106,7 +106,7 @@ msgstr ""
 ":class:`~controllers.OperationalSpaceController` "
 "类计算机器人在任务空间中同时进行运动和力控制时的关节力/扭矩。"
 
-#: source/how-to/run_osc.rst:49
+#: source/how-to/run_osc.rst:51
 msgid ""
 "The reference frame of this task space could be an arbitrary coordinate "
 "frame in Euclidean space. By default, it is the robot's base frame. However,"
@@ -128,7 +128,7 @@ msgstr ""
 " z 轴上非零。设置为具有与墙面相同方向的目标姿态就是这样一个候选项，并在本教程中作为任务坐标系使用。因此，应该以这个任务参考坐标系为考虑来设置所有到 "
 ":class:`~controllers.OperationalSpaceControllerCfg` 的参数。"
 
-#: source/how-to/run_osc.rst:59
+#: source/how-to/run_osc.rst:61
 msgid ""
 "For the motion control, the task space targets could be given as absolute "
 "(i.e., defined w.r.t. the robot base, ``target_types: \"pose_abs\"``) or "
@@ -145,7 +145,7 @@ msgstr ""
 "）。如果希望同时施加位姿与力控制， ``target_types`` 应为 ``[\"pose_abs\", \"wrench_abs\"]`` 或 "
 "``[\"pose_rel\", \"wrench_abs\"]`` 等列表。"
 
-#: source/how-to/run_osc.rst:65
+#: source/how-to/run_osc.rst:67
 msgid ""
 "The axes that the motion and force control will be applied can be specified "
 "using the ``motion_control_axes_task`` and "
@@ -160,7 +160,7 @@ msgstr ""
 "1，且彼此互补。例如，x 轴的 ``motion_control_axes_task`` 为 ``0`` 时， "
 "``contact_wrench_control_axes_task`` 应为 ``1`` 。"
 
-#: source/how-to/run_osc.rst:70
+#: source/how-to/run_osc.rst:72
 msgid ""
 "For the motion control axes, desired stiffness, and damping ratio values can"
 " be specified using the ``motion_stiffness_task`` and "
@@ -171,16 +171,17 @@ msgid ""
 " this, ``impedance_mode`` should be either ``\"variable_kp\"`` to include "
 "the stiffness values within the command or ``\"variable\"`` to include both "
 "the stiffness and damping ratio values. In these cases, "
-"``motion_stiffness_limits_task`` and ``motion_damping_limits_task`` should "
-"be set as well, which puts bounds on the stiffness and damping ratio values."
+"``motion_stiffness_limits_task`` and ``motion_damping_ratio_limits_task`` "
+"should be set as well, which puts bounds on the stiffness and damping ratio "
+"values."
 msgstr ""
-"对于运动控制轴，可通过 ``motion_stiffness_task`` 和 ``motion_damping_ratio_task`` "
-"指定期望刚度与阻尼比。它们可以是标量（所有轴使用同一值），也可以是包含六个标量的列表，每项对应一个轴。刚度和阻尼比也可作为命令参数，例如通过强化学习学习其值，或在运行中改变。此时，将"
-" ``impedance_mode`` 设为 ``\"variable_kp\"`` ，可将刚度加入命令；设为 ``\"variable\"`` "
-"，则同时加入刚度与阻尼比。还需设置 ``motion_stiffness_limits_task`` 和 "
-"``motion_damping_limits_task`` ，限制刚度与阻尼比的范围。"
+"运动控制轴的目标刚度和阻尼比通过 ``motion_stiffness_task`` 和 ``motion_damping_ratio_task`` "
+"设置。它们可以是标量，表示所有轴使用相同值；也可以是包含六个标量的列表，分别对应各轴。刚度和阻尼比也可以作为指令的一部分，例如让强化学习算法学习这些值，或在运行中调整。此时，将"
+" ``impedance_mode`` 设为 ``\"variable_kp\"`` 可在指令中加入刚度，设为 ``\"variable\"`` "
+"则同时加入刚度和阻尼比。还应设置 ``motion_stiffness_limits_task`` 和 "
+"``motion_damping_ratio_limits_task``，限制刚度和阻尼比的取值范围。"
 
-#: source/how-to/run_osc.rst:78
+#: source/how-to/run_osc.rst:80
 msgid ""
 "For contact force control, it is possible to apply an open-loop force "
 "control by not setting the ``contact_wrench_stiffness_task``, or apply a "
@@ -197,7 +198,7 @@ msgstr ""
 "参数，该参数可以是一个标量或六个标量的列表。请注意，目前只有接触力矩的线性部分（因此是 "
 "``contact_wrench_stiffness_task`` 的前三个元素）在闭环控制中被考虑，因为接触传感器无法测量旋转部分。"
 
-#: source/how-to/run_osc.rst:85
+#: source/how-to/run_osc.rst:87
 msgid ""
 "For the motion control, ``inertial_dynamics_decoupling`` should be set to "
 "``True`` to use the robot's inertia matrix to decouple the desired "
@@ -211,13 +212,13 @@ msgstr ""
 "，以使用机器人的惯性矩阵来解耦任务空间中的期望加速度。这对于运动控制的精确性非常重要，特别是对于快速运动。这种惯性解耦考虑了所有六个运动轴之间的耦合。如果需要，可以通过将"
 " ``partial_inertial_dynamics_decoupling`` 设置为 ``True`` 来忽略平移和旋转轴之间的惯性耦合。"
 
-#: source/how-to/run_osc.rst:91
+#: source/how-to/run_osc.rst:93
 msgid ""
 "If it is desired to include the gravity compensation in the operational "
 "space command, the ``gravity_compensation`` should be set to ``True``."
 msgstr "如果希望在操作空间指令中包含重力补偿，则应将 ``gravity_compensation`` 设置为 ``True`` 。"
 
-#: source/how-to/run_osc.rst:94
+#: source/how-to/run_osc.rst:96
 msgid ""
 "A final consideration regarding the operational space control is what to do "
 "with the null-space of redundant robots. The null-space is the subspace of "
@@ -242,13 +243,13 @@ msgstr ""
 "``inertial_dynamics_decoupling`` 设置为 ``True`` 且 "
 "``partial_inertial_dynamics_decoupling`` 设置为 ``False`` 时才可能。"
 
-#: source/how-to/run_osc.rst:105
+#: source/how-to/run_osc.rst:107
 msgid ""
 "The included OSC implementation performs the computation in a batched format"
 " and uses PyTorch operations."
 msgstr "包含的 OSC 实现以批处理格式进行计算，并使用 PyTorch 操作。"
 
-#: source/how-to/run_osc.rst:107
+#: source/how-to/run_osc.rst:109
 msgid ""
 "In this tutorial, we will use ``\"pose_abs\"`` for controlling the motion in"
 " all axes except the z-axis and ``\"wrench_abs\"`` for controlling the force"
@@ -267,11 +268,11 @@ msgstr ""
 "值会根据 kp 值自适应以保持过阻尼响应）。最后，将 ``nullspace_control`` 设置为使用 ``\"position\"`` "
 "，其中关节设定点被设置为关节位置限制的中心。"
 
-#: source/how-to/run_osc.rst:121
+#: source/how-to/run_osc.rst:123
 msgid "Updating the states of the robot"
 msgstr "更新机器人的状态"
 
-#: source/how-to/run_osc.rst:123
+#: source/how-to/run_osc.rst:125
 msgid ""
 "The OSC implementation is a computation-only class. Thus, it expects the "
 "user to provide the necessary information about the robot. This includes the"
@@ -283,33 +284,33 @@ msgstr ""
 "OSC "
 "实现是一个纯计算类。因此，它期望用户提供有关机器人的必要信息。这包括机器人的雅可比矩阵、质量/惯性矩阵、末端执行器姿态、速度和接触力，均在根坐标系中，最后是关节位置和速度。此外，如果需要，用户应提供重力补偿矢量和零空间关节位置目标。"
 
-#: source/how-to/run_osc.rst:135
+#: source/how-to/run_osc.rst:137
 msgid "Computing robot command"
 msgstr "计算机器人命令"
 
-#: source/how-to/run_osc.rst:137
+#: source/how-to/run_osc.rst:139
 msgid ""
 "The OSC separates the operation of setting the desired command and computing"
-" the desired joint positions. To set the desired command, the user should "
+" the desired joint efforts. To set the desired command, the user should "
 "provide command vector, which  includes the target commands (i.e., in the "
 "order they appear in the ``target_types`` argument of the OSC "
 "configuration), and the desired stiffness and damping ratio values if the "
 "impedance_mode is set to ``\"variable_kp\"`` or ``\"variable\"``. They "
 "should be all in the same coordinate frame as the task frame (e.g., "
-"indicated with ``_task`` subscript) and concatanated together."
+"indicated with ``_task`` subscript) and concatenated together."
 msgstr ""
-"OSC 分离了设定期望命令和计算期望关节位置的操作。要设定期望命令，用户应提供命令向量，其中包括目标命令（即在 OSC 配置的 "
-"``target_types`` 参数中出现的顺序）以及如果 impedance_mode 设置为 ``\"variable_kp\"`` 或 "
-"``\"variable\"`` 时的期望刚度和阻尼比值。它们应该都在与任务框架相同的坐标系中（例如，用 ``_task`` 下标表示）并连接在一起。"
+"OSC 将设置目标指令和计算目标关节力/力矩分为两个操作。设置指令时，需要提供指令向量，按 OSC 配置中 ``target_types`` "
+"的顺序拼接目标指令；``impedance_mode`` 为 ``\"variable_kp\"`` 或 ``\"variable\"`` "
+"时，还需加入目标刚度和相应的阻尼比。这些指令都应在任务坐标系中表示，例如使用下标 ``_task`` 标示，然后拼接到一起。"
 
-#: source/how-to/run_osc.rst:144
+#: source/how-to/run_osc.rst:146
 msgid ""
 "In this tutorial, the desired wrench is already defined w.r.t. the task "
 "frame, and the desired pose is transformed to the task frame as the "
 "following:"
 msgstr "在本教程中，期望的力矩已经相对于任务框架进行了定义，并且期望的姿势被转换到任务框架中，如下所示:"
 
-#: source/how-to/run_osc.rst:152
+#: source/how-to/run_osc.rst:154
 msgid ""
 "The OSC command is set with the command vector in the task frame, the end-"
 "effector pose in the base frame, and the task (reference) frame pose in the "
@@ -319,22 +320,22 @@ msgstr ""
 "OSC "
 "命令是使用任务坐标系中的命令向量设置的，基坐标系中的末端执行器姿势和基坐标系中的任务（参考）坐标系姿势如下。这些信息是必要的，因为内部计算是在基坐标系中完成的。"
 
-#: source/how-to/run_osc.rst:161
+#: source/how-to/run_osc.rst:163
 msgid ""
 "The joint effort/torque values are computed using the provided robot states "
 "and the desired command as the following:"
 msgstr "使用提供的机器人状态和所需命令计算关节力/扭矩值，如下所示:"
 
-#: source/how-to/run_osc.rst:169
+#: source/how-to/run_osc.rst:171
 msgid ""
 "The computed joint effort/torque targets can then be applied on the robot."
 msgstr "计算得出的关节努力/力矩目标随后可以应用于机器人中。"
 
-#: source/how-to/run_osc.rst:178
+#: source/how-to/run_osc.rst:180
 msgid "The Code Execution"
 msgstr "代码执行"
 
-#: source/how-to/run_osc.rst:180
+#: source/how-to/run_osc.rst:182
 msgid "You can now run the script and see the result:"
 msgstr "你现在可以运行脚本并查看结果:"
 
@@ -346,7 +347,7 @@ msgstr "Isaac Sim PhysX（uv）"
 msgid "isaaclab.sh / isaaclab.bat"
 msgstr "isaaclab.sh / isaaclab.bat"
 
-#: source/how-to/run_osc.rst:196
+#: source/how-to/run_osc.rst:198
 msgid ""
 "The script will start a simulation with 128 robots. The robots will be "
 "controlled using the OSC. The current and desired end-effector poses should "
@@ -357,10 +358,10 @@ msgstr ""
 "该脚本将启动一个包含 128 个机器人的仿真。将使用 OSC "
 "进行机器人的控制。当前和期望的末端执行器姿势应该使用框架标记显示，除了红色倾斜墙之外。您应该看到机器人在施加垂直于墙面的恒定力的同时到达期望姿势。"
 
-#: source/how-to/run_osc.rst:201
+#: source/how-to/run_osc.rst:203
 msgid "result of run_osc.py"
 msgstr "run_osc.py 的结果"
 
-#: source/how-to/run_osc.rst:206
+#: source/how-to/run_osc.rst:208
 msgid "Press ``Ctrl+C`` in the terminal to stop the simulation."
 msgstr "在终端按 ``Ctrl+C`` 可停止仿真。"

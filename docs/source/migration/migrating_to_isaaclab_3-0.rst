@@ -1050,7 +1050,7 @@ removed in a future release.
 
 Actuator configurations now use joint-qualified names for solver limits. Update active
 configurations to the canonical fields below. The former names remain accepted with a
-``DeprecationWarning`` in the 3.0 release line and will be removed in 3.1.
+``DeprecationWarning`` and will be removed in 3.1.
 
 .. list-table:: Actuator limit migration
    :header-rows: 1
@@ -1072,7 +1072,7 @@ configurations to the canonical fields below. The former names remain accepted w
 ``actuator_effort_limit`` clips explicit actuator-model output. ``joint_effort_limit`` and
 ``joint_velocity_limit`` are construction-time joint-property overrides selected by an actuator
 group's joint expression. The deprecated aliases ``effort_limit``, ``velocity_limit``,
-``effort_limit_sim``, and ``velocity_limit_sim`` remain accepted in 3.0. ``effort_limit``
+``effort_limit_sim``, and ``velocity_limit_sim`` remain accepted until 3.1. ``effort_limit``
 resolves to the rated ``actuator_effort_limit`` for every actuator type. For an implicit group
 without a separately configured solver clamp, the rated value also populates
 ``joint_effort_limit`` for backward compatibility; configure both fields to author distinct
@@ -1547,22 +1547,23 @@ If you need to track sensor poses in world frame, please use a dedicated sensor 
 .. rubric:: Contact force property names
 
 Contact sensor force properties now state whether they contain aggregate or filtered normal and
-friction forces. ``net_forces_w`` is the total contact force (normal + friction). Newton reports
-this quantity directly. PhysX and OVPhysX cannot compute a total force, so they return the
-corresponding normal-force quantity and warn. ``friction_forces_w`` is the aggregate friction
-force. Newton reports it as ``net_friction_forces_w``; PhysX and OVPhysX only provide filtered
-friction, so they return ``friction_force_matrix_w`` and warn.
+friction forces. ``net_forces_w`` is the total contact force (normal + friction). Newton, OVPhysX,
+and Isaac Sim PhysX 6.2 or later report this quantity even when ``track_friction_forces=False``.
+Isaac Sim PhysX 6.1 returns the corresponding normal-force quantity and warns.
+``friction_forces_w`` is the aggregate friction force. Newton, OVPhysX, and Isaac Sim PhysX 6.2 or
+later report it as ``net_friction_forces_w``; Isaac Sim PhysX 6.1 only provides filtered friction,
+so it returns ``friction_force_matrix_w`` and warns.
 
 .. list-table::
    :header-rows: 1
 
    * - Property
      - Meaning
-     - PhysX / OVPhysX
-     - Newton
+     - Isaac Sim PhysX 6.1
+     - Newton / OVPhysX / Isaac Sim PhysX 6.2+
    * - ``net_forces_w``
      - Total contact force
-     - Returns ``net_normal_forces_w`` (cannot compute total force)
+     - Returns ``net_normal_forces_w`` with a warning
      - Total force (``normal + friction``)
    * - ``net_forces_w_history``
      - Total contact-force history
@@ -1583,10 +1584,17 @@ friction, so they return ``friction_force_matrix_w`` and warn.
 
 Prefer the explicit names ``net_normal_forces_w``, ``net_friction_forces_w``,
 ``normal_force_matrix_w``, and ``friction_force_matrix_w`` (and their ``*_history`` variants)
-when the normal / friction split matters. Newton also exposes ``net_friction_forces_w_history``
-and ``friction_force_matrix_w_history``. PhysX cannot report an unfiltered aggregate friction
-force and raises ``NotImplementedError`` when ``net_friction_forces_w`` or
-``net_friction_forces_w_history`` is accessed; use the filtered friction matrix instead.
+when the normal / friction split matters. Newton, OVPhysX, and Isaac Sim PhysX 6.2 or later also
+expose ``net_friction_forces_w_history`` and ``friction_force_matrix_w_history``. Isaac Sim PhysX 6.1
+does not expose aggregate friction and raises ``NotImplementedError`` when
+``net_friction_forces_w`` or ``net_friction_forces_w_history`` is accessed; use the filtered
+friction matrix instead.
+
+On OVPhysX and Isaac Sim PhysX 6.2 or later, ``track_friction_forces=True`` enables separate
+friction buffers and histories without requiring contact filters. Force matrices still require
+filters. Aggregate and filtered forces do not depend on ``max_contact_data_count_per_prim``; a
+positive capacity is required only when ``track_contact_points=True``. Total-force buffers always
+include friction, whether or not its separate buffers are enabled.
 
 
 .. rubric:: Articulation Joint Wrench Data Moved to ``JointWrenchSensor``
@@ -1697,7 +1705,7 @@ pattern as the general ProxyArray backend migration described above.
 **Ray Alignment Configuration**
 
 The ``attach_yaw_only`` boolean parameter on :class:`~isaaclab.sensors.RayCasterCfg` has been
-deprecated in favor of the new ``ray_alignment`` parameter, which accepts one of three string
+removed in favor of the new ``ray_alignment`` parameter, which accepts one of three string
 values:
 
 .. list-table::
@@ -1805,7 +1813,7 @@ Migrate tensor access, indexed writes, buffers, and quaternion conventions befor
 
          identity = (0.0, 0.0, 0.0, 1.0)
          root_pos = robot.data.root_pos_w.torch
-         robot.write_root_pose_to_sim_index(pose, env_ids)
+         robot.write_root_pose_to_sim_index(root_pose=pose, env_ids=env_ids)
 
 
 .. rubric:: Quaternion Format
@@ -2075,9 +2083,9 @@ by the convention change.
 
 .. rubric:: Quaternion Utility API Changes
 
-**The ``convert_quat`` function has been removed**
+**The convert_quat function is no longer needed**
 
-Previously, IsaacLab had a utility function to convert between quaternion formats:
+IsaacLab provides a utility function to convert between quaternion formats:
 
 .. code-block:: python
 
@@ -2085,8 +2093,9 @@ Previously, IsaacLab had a utility function to convert between quaternion format
    from isaaclab.utils.math import convert_quat
    quat_xyzw = convert_quat(quat_wxyz, "xyzw")
 
-Since everything now uses XYZW natively, this function is no longer needed.
-If you were using it, simply remove the conversion calls.
+Since everything now uses XYZW natively, this function is no longer needed for Isaac Lab data.
+If you were using it, simply remove the conversion calls. Keep it only to convert external
+data that still uses WXYZ order.
 
 
 **Math utility functions now expect XYZW**
@@ -2277,7 +2286,8 @@ All asset write methods have been split into two explicit variants:
   boolean mask selecting which environments to update. The ``data`` tensor has shape
   ``(num_envs, ...)``.
 
-The previous ``write_*_to_sim(data, env_ids)`` methods have been removed.
+The previous ``write_*_to_sim(data, env_ids)`` methods are deprecated and forward to the
+``_index`` variants.
 
 .. code-block:: python
 
@@ -2541,17 +2551,17 @@ The details below describe how CLI visualizer arguments resolve together with
 For the full behavior of visualizer resolution with the visualizer CLI argument and visualizer configs,
 see :ref:`visualization-common-modes`.
 
-**Breaking change — the ``--headless`` CLI flag has been removed.**
+**Breaking change — ``--headless`` no longer suppresses visualizers.**
 
 In Isaac Lab 2.x, passing ``--headless`` disabled all visualizers regardless of ``--viz``.
-In Isaac Lab 3.0, headless execution and ``--viz`` selection are independent:
+In Isaac Lab 3.0, ``--headless`` and ``--viz`` are independent:
 
-- The ``HEADLESS=1`` environment variable requests headless rendering (Kit app mode, GPU context).
+- ``--headless`` controls the simulation rendering pipeline (Kit app mode, GPU context).
 - ``--viz <type>`` controls which visualizer backends to launch.
 
-Setting ``HEADLESS=1`` and passing ``--viz kit`` launches a Kit visualizer in headless mode using the
-Replicator offscreen renderer (no display window required). Newton GL supports headless execution
-through pyglet's EGL backend. To disable all visualizers
+Passing ``--viz kit --headless`` now launches a Kit visualizer in headless mode using the
+Replicator offscreen renderer (no display window required).  Passing ``--viz newton_gl --headless``
+launches a Newton GL visualizer using pyglet's EGL headless backend.  To disable all visualizers
 explicitly, use ``--viz none``.
 
 .. list-table:: Headless visualizer requirements
@@ -2580,8 +2590,8 @@ In Isaac Lab 3.0, the equivalent is:
 .. code-block:: bash
 
    # Record from Kit viewport headlessly (equivalent to 2.x --video behaviour)
-   HEADLESS=1 uv run isaaclab train --rl_library rsl_rl --task Isaac-Cartpole-Direct \
-       --viz kit --enable_cameras --video
+   uv run isaaclab train --rl_library rsl_rl --task Isaac-Cartpole-Direct \
+       --viz kit --enable_cameras --headless --video
 
 As a convenience, passing ``--video`` without ``--viz`` still works: Isaac Lab
 auto-creates a headless Kit visualizer (falling back to Newton GL if Kit is unavailable)
@@ -2992,8 +3002,6 @@ and ``MJCFImporterConfig`` dataclass.
 The following :class:`~sim.converters.MjcfConverterCfg` settings have been **removed** because
 the new converter handles them automatically based on the MJCF file content:
 
-- ``fix_base`` — base fixedness is now inferred from the MJCF ``<freejoint>`` tag.
-- ``link_density`` — density is now read directly from the MJCF model.
 - ``import_inertia_tensor`` — inertia tensors are always imported.
 - ``import_sites`` — sites are always imported.
 
@@ -3012,8 +3020,8 @@ The following new settings were added to :class:`~sim.converters.MjcfConverterCf
 +-----------------------------------------------------------------+------------------------------------------------------+
 | :attr:`~sim.converters.MjcfConverterCfg.collision_from_visuals` | Generate collision geometry from visuals.            |
 +-----------------------------------------------------------------+------------------------------------------------------+
-| :attr:`~sim.converters.MjcfConverterCfg.collision_type`         | Type of collision geometry (e.g. ``"default"``,      |
-|                                                                 | ``"Convex Hull"``, ``"Convex Decomposition"``).      |
+| :attr:`~sim.converters.MjcfConverterCfg.collision_type`         | Type of collision geometry (e.g. ``"Convex Hull"``,  |
+|                                                                 | ``"Convex Decomposition"``, ``"Bounding Cube"``).    |
 +-----------------------------------------------------------------+------------------------------------------------------+
 
 
@@ -3314,11 +3322,12 @@ For full documentation on the new stack, see :ref:`isaac-teleop-feature`.
 
 **Installation Requirement**
 
-Isaac Capture must now be installed in your Isaac Lab environment:
+Isaac Capture must now be installed in your Isaac Lab environment. It ships with the ``teleop``
+extra:
 
 .. code-block:: bash
 
-   pip install isaacteleop~=1.0 --extra-index-url https://pypi.nvidia.com
+   uv sync --extra teleop --extra isaacsim
 
 See :ref:`install-isaac-teleop` for complete installation instructions.
 

@@ -1,0 +1,201 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:4
+msgid "SO-101 Keyboard Typing with Isaac Lab"
+msgstr "使用 Isaac Lab 实现 SO-101 键盘打字"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:6
+msgid ""
+"The `SO-101 typing project <https://github.com/NVIDIA/so101-typing-task>`_ "
+"trains an SO-101 follower to press letters on a fixed Logitech MX Keys "
+"keyboard with its typing jaw, then runs the learned policy on hardware "
+"through LeRobot. Use it to explore sim-to-real typing, play a released "
+"policy in simulation, or calibrate and train a policy for your own robot and"
+" keyboard setup."
+msgstr ""
+"`SO-101 打字项目 <https://github.com/NVIDIA/so101-typing-task>`_ 训练 SO-101 "
+"从臂使用打字夹爪，按下固定位置的 Logitech MX Keys 键盘上的字母键，再通过 LeRobot "
+"将学到的策略部署到硬件。可以用它研究打字任务的仿真到现实迁移，在仿真中运行已发布策略，或为自己的机器人和键盘配置进行标定及策略训练。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:14
+msgid ""
+"**Isaac Lab version.** This project uses a pinned, patched Isaac Lab "
+"3.0.0-based runtime built from source revision `6f991d4becf7 "
+"<https://github.com/isaac-"
+"sim/IsaacLab/commit/6f991d4becf764b151e0a1c775561ddd9c406f72>`_. Use the "
+"project's Docker image rather than an existing Isaac Lab installation. "
+"Compatibility with unmodified 3.0 GA or later versions has not been "
+"validated. See the `runtime provenance "
+"<https://github.com/NVIDIA/so101-typing-task/blob/main/runtime/README.md>`_ "
+"for the source patch and dependency pins."
+msgstr ""
+"**Isaac Lab 版本。** 本项目使用固定版本、应用过补丁的 Isaac Lab 3.0.0 运行时，基于源码提交 `6f991d4becf7 "
+"<https://github.com/isaac-"
+"sim/IsaacLab/commit/6f991d4becf764b151e0a1c775561ddd9c406f72>`_ 构建。请使用项目提供的 "
+"Docker 镜像，而不是已有的 Isaac Lab 安装。未经修改的 3.0 正式版及后续版本尚未经过兼容性验证。源码补丁和固定的依赖版本见 "
+"`运行时来源说明 <https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/runtime/README.md>`_。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:23
+msgid "What the project includes"
+msgstr "项目内容"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:25
+msgid ""
+"An Isaac Lab typing environment using Newton's MJWarp solver and "
+"configurable actuator models, with PPO training and evaluation through RSL-"
+"RL."
+msgstr ""
+"基于 Newton MJWarp 求解器的 Isaac Lab 打字环境，支持配置执行器模型，并通过 RSL-RL 进行 PPO 训练和评估。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:27
+msgid ""
+"Tools to measure the fixture and fit the simulated keyboard pose and joint-"
+"angle calibration from recorded real key presses."
+msgstr "测量夹具的工具，以及根据记录的真实按键数据拟合仿真键盘位姿和标定关节角的工具。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:29
+msgid ""
+"Released checkpoints, simulation playback, and a separate CPU deployment "
+"runner using LeRobot for motor control and Linux keyboard events for "
+"press/release feedback."
+msgstr ""
+"已发布的检查点、仿真回放，以及独立的 CPU 部署程序。部署程序通过 LeRobot 控制电机，并用 Linux 键盘事件获取按下和释放反馈。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:32
+msgid ""
+"The policy uses a fixed A-Z key-position map without camera input; it cannot"
+" adjust to a moved keyboard. Physical deployment requires calibration and "
+"checks that the real robot reaches and releases the intended keys in the "
+"trained scene."
+msgstr ""
+"策略使用固定的 A–Z "
+"按键位置映射，不输入相机图像，因此无法适应键盘位置变化。部署到真实硬件前，需要完成标定，并检查真实机器人在训练对应场景中能否正确到达和释放目标按键。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:37
+msgid "Supported platform and requirements"
+msgstr "支持的平台与要求"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:39
+msgid ""
+"The documented workflow supports **Linux x86-64 only**. Windows and ARM have"
+" not been validated for this project."
+msgstr "本指南中的工作流程 **仅支持 Linux x86-64**。本项目尚未验证 Windows 和 ARM 平台。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:42
+msgid ""
+"Simulation and training require an NVIDIA GPU, Docker with NVIDIA Container "
+"Toolkit, host Python 3.10 or later, and ``curl`` or ``wget``. Build the "
+"project's Docker image with ``./so101 build`` before running simulation "
+"commands. Allow **at least 70 GB of available disk space** for Docker "
+"layers, caches and runs; the built image is approximately 32.6 GB. Adjust "
+"parallel environments to fit your GPU's memory; this also changes the number"
+" of samples per training update."
+msgstr ""
+"仿真和训练需要 NVIDIA GPU、配置了 NVIDIA Container Toolkit 的 Docker、主机上的 Python 3.10 "
+"或更新版本，以及 ``curl`` 或 ``wget``。运行仿真命令前，先用 ``./so101 build`` 构建项目的 Docker 镜像。请为"
+" Docker 镜像层、缓存和运行数据预留 **至少 70 GB 可用磁盘空间**；构建后的镜像约为 32.6 GB。应根据 GPU "
+"显存调整并行环境数量，这也会改变每次训练更新的样本量。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:49
+msgid ""
+"Hardware deployment additionally requires an SO-101 follower with the "
+"supported typing jaw, a Logitech MX Keys keyboard, and ``uv`` for the "
+"separate LeRobot environment. Hardware inference does not require Isaac Sim "
+"or a GPU. See the `hardware preparation guide "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/HARDWARE_PREPARATION.md>`_ for calibration, "
+"device access and operator procedures."
+msgstr ""
+"硬件部署还需要配备受支持打字夹爪的 SO-101 从臂、Logitech MX Keys 键盘，以及用于独立 LeRobot 环境的 "
+"``uv``。硬件推理不需要 Isaac Sim 或 GPU。标定、设备访问和操作流程见 `硬件准备指南 "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/HARDWARE_PREPARATION.md>`_。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:56
+msgid "Get started in simulation"
+msgstr "开始仿真"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:58
+msgid "Clone the public repository and build its pinned runtime:"
+msgstr "克隆公开仓库并构建其固定版本运行时："
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:66
+msgid ""
+"Download the released September checkpoint and generate a typing rollout; no"
+" physical robot is needed:"
+msgstr "下载 9 月发布的检查点并生成一次打字策略执行结果，无需真实机器人："
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:77
+msgid ""
+"Keep the checkpoint's complete ``params/`` directory for playback, "
+"evaluation and deployment. The first simulation launch compiles Warp "
+"kernels."
+msgstr "回放、评估和部署时，保留检查点完整的 ``params/`` 目录。首次启动仿真会编译 Warp 内核。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:81
+msgid "Training and physical deployment"
+msgstr "训练与真实硬件部署"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:83
+msgid ""
+"Follow the repository's `training guide "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/TRAINING.md>`_ for the two-letter P1A and six-"
+"letter Transit15 stages. Its demonstrated starting budget is 500 P1A plus "
+"2,000 Transit15 updates with 4,096 environments. Evaluate between stages and"
+" increase the budget if needed; this is not a guaranteed minimum. The "
+"example seeds make experiments reproducible and are not required values for "
+"success."
+msgstr ""
+"双字母 P1A 阶段和六字母 Transit15 阶段的训练方法见仓库的 `训练指南 "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/TRAINING.md>`_。示例的起始训练量为 P1A 更新 500 次、Transit15 "
+"更新 2,000 次，使用 4,096 "
+"个并行环境。应在阶段之间进行评估，并按需增加训练量；这并不是保证成功的最低训练量。示例中的随机种子用于复现实验，不是成功所必需的取值。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:89
+msgid ""
+"Before hardware execution, follow the `scene calibration "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/REAL2SIM.md>`_ and `alignment checks "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/ALIGNMENT.md>`_ for your robot. The released "
+"joint-angle offsets map encoder readings to model coordinates for the "
+"original setup; they do not calibrate another robot."
+msgstr ""
+"在真实硬件上执行前，请为自己的机器人完成 `场景标定 <https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/REAL2SIM.md>`_ 和 `对齐检查 "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/ALIGNMENT.md>`_。已发布的关节角偏移量只用于将原始设备的编码器读数映射到模型坐标，不能替代另一台机器人的标定。"
+
+#: source/policy_deployment/06_so101_typing/so101_typing_policy.rst:95
+msgid ""
+"The repository maintains the detailed `simulation quickstart "
+"<https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/QUICKSTART.md>`_, `fixture setup "
+"<https://github.com/NVIDIA/so101-typing-task/blob/main/FIXTURE_SETUP.md>`_, "
+"and `configuration guide <https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/TASK_CONFIGURATION.md>`_. Use those guides for "
+"training, debugging, evaluation and deployment instructions."
+msgstr ""
+"仓库维护了详细的 `仿真快速入门 <https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/QUICKSTART.md>`_、`夹具设置 "
+"<https://github.com/NVIDIA/so101-typing-task/blob/main/FIXTURE_SETUP.md>`_ 和"
+" `配置指南 <https://github.com/NVIDIA/so101-typing-"
+"task/blob/main/docs/release/TASK_CONFIGURATION.md>`_。训练、调试、评估和部署的操作请以这些指南为准。"

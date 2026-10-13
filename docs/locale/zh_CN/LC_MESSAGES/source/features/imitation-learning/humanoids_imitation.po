@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-13 06:34+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -891,31 +890,46 @@ msgstr ""
 "``generated_dataset_g1_locomanip.hdf5`` 。"
 
 #: source/features/imitation-learning/humanoids_imitation.rst:629
-msgid "Install GR00T with Isaac Lab (uv)"
-msgstr "在 Isaac Lab 中安装 GR00T（uv）"
+msgid "Install GR00T in a separate environment (uv)"
+msgstr "在独立环境中安装 GR00T（uv）"
 
 #: source/features/imitation-learning/humanoids_imitation.rst:631
 msgid ""
-"Clone the Isaac-GR00T repository and install GR00T N1.5 in the same uv "
-"environment used for Isaac Lab. From a parent directory that contains both "
-"repositories (or adjust paths accordingly), run:"
+"GR00T N1.5 and Isaac Lab require incompatible NumPy and Transformers "
+"versions. Keep the simulator in the Isaac Lab environment and run "
+"conversion, training, and policy serving in a separate GR00T environment. "
+"Rollout communicates with the policy server over localhost."
 msgstr ""
-"克隆 Isaac-GR00T 仓库，并在 Isaac Lab 使用的同一 uv 环境中安装 GR00T "
-"N1.5。在同时包含两个仓库的父目录中运行以下命令（也可按实际布局调整路径）："
+"GR00T N1.5 与 Isaac Lab 要求的 NumPy 和 Transformers 版本不兼容。仿真器应留在 Isaac Lab "
+"环境中，数据转换、训练和策略服务则在独立的 GR00T 环境中运行。策略执行过程通过 localhost 与策略服务器通信。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:637
+#: source/features/imitation-learning/humanoids_imitation.rst:635
 msgid ""
-"Copy the G1 locomanipulation data config from Isaac Lab into the GR00T "
-"experiment data config:"
-msgstr "将 Isaac Lab 中的 G1 移动操作数据配置复制到 GR00T 的实验数据配置中："
+"Start from the **IsaacLab repository root**. The following commands create a"
+" sibling GR00T checkout and save absolute paths for the later steps. Keep "
+"these variables in the shell, or set them again when opening a new terminal:"
+msgstr ""
+"从 **IsaacLab 仓库根目录** 开始。以下命令在相邻目录中克隆 GR00T，并保存后续步骤需要的绝对路径。请在当前 shell "
+"中保留这些变量；打开新终端时，需要重新设置："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:643
+#: source/features/imitation-learning/humanoids_imitation.rst:648
 msgid ""
-"Then, from the **Isaac-GR00T** directory, install GR00T N1.5 and its "
-"dependencies:"
-msgstr "然后在 **Isaac-GR00T** 目录中安装 GR00T N1.5 及其依赖："
+"This revision is the N1.5 version used by this workflow. Copy the G1 "
+"configuration and apply the supplied PyTorch SDPA patch once to this fresh "
+"checkout:"
+msgstr "该提交是本工作流程使用的 N1.5 版本。向这个新克隆的仓库复制 G1 配置，并应用一次随附的 PyTorch SDPA 补丁："
 
 #: source/features/imitation-learning/humanoids_imitation.rst:656
+msgid ""
+"Create the separate Python 3.12 environment. The commands below use the CUDA"
+" 12.8 PyTorch wheels on Linux x86_64. Other platforms require matching "
+"PyTorch and Torchvision builds for their hardware. The SDPA patch avoids a "
+"separate flash-attn build."
+msgstr ""
+"创建独立的 Python 3.12 环境。下面的命令适用于 Linux x86_64，使用 CUDA 12.8 的 PyTorch "
+"wheel。其他平台需要选择与硬件匹配的 PyTorch 和 Torchvision 构建。SDPA 补丁可以避免单独编译 flash-attn。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:672
 msgid ""
 "The ``decord2`` distribution retains the ``decord`` Python import used by "
 "GR00T and provides pre-built wheels for both x86_64 and aarch64 systems, "
@@ -924,20 +938,32 @@ msgstr ""
 "``decord2`` 发行包保留了 GR00T 使用的 ``decord`` Python 导入名，并为 x86_64 和 aarch64 系统（包括"
 " DGX Spark）提供预编译 wheel。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:661
+#: source/features/imitation-learning/humanoids_imitation.rst:677
 msgid ""
-"GR00T N1.5 requires the NumPy and Pydantic versions installed above. When "
-"running the commands below from the Isaac Lab checkout, use ``uv run --no-"
-"sync`` as shown. A regular ``uv run`` synchronizes the Isaac Lab workspace "
-"and can replace GR00T's versions, causing ``AttributeError: _ARRAY_API not "
-"found`` from PyArrow or ``InvalidSchemaError`` from Numpydantic."
+"Every GR00T install command specifies both ``--no-config`` and ``--python``."
+" This prevents Isaac Lab's NumPy override from replacing GR00T's pin even "
+"when installing from the Isaac Lab checkout, and avoids modifying the "
+"simulator environment. The requirements also pin Diffusers and Hugging Face "
+"Hub together to preserve Transformers compatibility. Use the same "
+"requirements as constraints when adding packages to this environment."
 msgstr ""
-"GR00T N1.5 需要上述命令安装的 NumPy 和 Pydantic 版本。从 Isaac Lab 仓库运行下面的命令时，请按示例使用 ``uv "
-"run --no-sync`` 。普通的 ``uv run`` 会同步 Isaac Lab 工作区，可能替换 GR00T 的依赖版本，导致 "
-"PyArrow 报 ``AttributeError: _ARRAY_API not found`` ，或 Numpydantic 报 "
-"``InvalidSchemaError`` 。"
+"每条 GR00T 安装命令均明确指定 ``--no-config`` 和 ``--python``。即使在 Isaac Lab 工作副本中安装，也能防止"
+" Isaac Lab 的 NumPy 覆盖配置替换 GR00T 固定的版本，同时避免修改仿真器环境。依赖文件还配套固定了 Diffusers 和 "
+"Hugging Face Hub 的版本，以保持与 Transformers 兼容。向此环境添加软件包时，应继续使用同一份依赖文件作为版本约束。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:667
+#: source/features/imitation-learning/humanoids_imitation.rst:683
+msgid ""
+"Run GR00T commands with ``uv run --no-project --python \"$GR00T_PYTHON\"`` "
+"as shown below. ``--no-sync`` alone does not select the GR00T interpreter or"
+" bypass install-time overrides. If an earlier shared installation changed "
+"Isaac Lab's dependencies, restore that environment with ``uv sync --extra "
+"isaacsim --extra mimic`` before rollout."
+msgstr ""
+"按下文示例使用 ``uv run --no-project --python \"$GR00T_PYTHON\"`` 运行 GR00T 命令。仅使用 "
+"``--no-sync`` 不会选择 GR00T 解释器，也不会绕过安装时的覆盖配置。如果此前共用环境的安装方式修改了 Isaac Lab "
+"的依赖，应先用 ``uv sync --extra isaacsim --extra mimic`` 恢复环境，再执行策略。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:688
 msgid ""
 "The compiled PyTorch3D extension is intentionally disabled here because "
 "GR00T N1.5 uses only ``pytorch3d.transforms``. This avoids compiling unused "
@@ -947,32 +973,11 @@ msgstr ""
 "这里有意禁用了 PyTorch3D 的编译扩展，因为 GR00T N1.5 只使用 ``pytorch3d.transforms`` "
 "。这样可以避免编译未使用的 CUDA 渲染器，也能支持无法链接该扩展的系统，包括 aarch64 Blackwell 系统。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:673
-msgid ""
-"**If you cannot install or use flash-attn**, an optional patch is provided "
-"that switches the bundled Eagle 2.5 VL model to PyTorch SDPA. Use this if "
-"``flash-attn`` fails to build for your environment, or if it installs but "
-"raises a runtime error such as ``RuntimeError: FlashAttention only supports "
-"Ampere GPUs or newer`` (for example on Blackwell GPUs, which ``flash-"
-"attn==2.7.1.post4`` does not have prebuilt kernels for). After the patch, "
-"finetune and rollout run on any CUDA arch supported by your PyTorch build, "
-"at the cost of flash-attn's training speedup. Skip the ``flash-attn`` "
-"install line above, then apply the patch from the **Isaac-GR00T** directory "
-"(the sibling layout above means the IsaacLab checkout is at "
-"``../IsaacLab``):"
-msgstr ""
-"**如果无法安装或使用 flash-attn** ，可选补丁能够将附带的 Eagle 2.5 VL 模型改为使用 PyTorch SDPA。如果 "
-"``flash-attn`` 在当前环境中构建失败，或安装后出现 ``RuntimeError: FlashAttention only "
-"supports Ampere GPUs or newer`` 等运行时错误，可使用此补丁。例如， ``flash-"
-"attn==2.7.1.post4`` 没有提供 Blackwell GPU 的预编译核函数。应用补丁后，微调及策略轨迹运行可在当前 PyTorch "
-"构建支持的任意 CUDA 架构上执行，但无法获得 flash-attn 带来的训练加速。请跳过上述 ``flash-attn`` 安装命令，再从 "
-"**Isaac-GR00T** 目录应用补丁（按上述并列目录布局，IsaacLab 仓库位于 ``../IsaacLab`` ）："
-
-#: source/features/imitation-learning/humanoids_imitation.rst:688
+#: source/features/imitation-learning/humanoids_imitation.rst:693
 msgid "Convert dataset to LeRobot format"
 msgstr "将数据集转换为 LeRobot 格式"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:690
+#: source/features/imitation-learning/humanoids_imitation.rst:695
 msgid ""
 "GR00T N1.5 expects data in LeRobot format. From the **IsaacLab** repository "
 "root, run the conversion script. ``<input_dir>`` is a directory containing "
@@ -986,17 +991,17 @@ msgstr ""
 " ``<output_path>`` 是 LeRobot 格式的输出目录，如 "
 "``./datasets/datasets_train_200_lerobot`` 。物体位移过小的回合会被跳过。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:696
+#: source/features/imitation-learning/humanoids_imitation.rst:702
 msgid ""
 "Example — move the SDG output into its own directory first so the converter "
 "only sees SDG files:"
 msgstr "例如，先将 SDG 输出移到专用目录，确保转换器只读取 SDG 文件："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:705
+#: source/features/imitation-learning/humanoids_imitation.rst:712
 msgid "Finetune the policy"
 msgstr "微调策略"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:707
+#: source/features/imitation-learning/humanoids_imitation.rst:714
 msgid ""
 "Run finetuning from the **Isaac-GR00T** repository root. Use the LeRobot-"
 "format output path from the previous step as ``--dataset-path`` and choose "
@@ -1008,12 +1013,12 @@ msgstr ""
 "``--output-dir`` 指定检查点目录。G1 移动操作任务必须使用 ``--data-config "
 "g1_locomanipulation_sdg`` 和 ``--embodiment-tag new_embodiment`` 。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:723
+#: source/features/imitation-learning/humanoids_imitation.rst:730
 msgid ""
 "See the GR00T N1.5 repository documentation for additional training options."
 msgstr "更多训练选项见 GR00T N1.5 仓库文档。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:727
+#: source/features/imitation-learning/humanoids_imitation.rst:734
 msgid ""
 "**Skip finetuning:** A pre-trained GR00T N1.5 checkpoint for this task is "
 "available on Hugging Face at `nvidia/g1_locomanip_finetune "
@@ -1024,53 +1029,81 @@ msgstr ""
 "<https://huggingface.co/nvidia/g1_locomanip_finetune>`__ 提供了本任务的 GR00T N1.5 "
 "预训练检查点。下载后可跳过微调，直接运行策略轨迹。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:731
+#: source/features/imitation-learning/humanoids_imitation.rst:738
 msgid "Download and unzip the checkpoint:"
 msgstr "下载并解压检查点："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:738
+#: source/features/imitation-learning/humanoids_imitation.rst:745
 msgid ""
 "The archive extracts to "
 "``./checkpoints/g1_locomanip_finetune_20260129_231610/``. Use "
 "``./checkpoints/g1_locomanip_finetune_20260129_231610/checkpoint-20000`` as "
-"the ``--model_path`` in the rollout command below. This checkpoint requires "
-"``--policy_quat_format wxyz``."
+"the ``--model_path`` in the server command below. This checkpoint requires "
+"``--policy_quat_format wxyz`` on the rollout client."
 msgstr ""
-"压缩包解压到 ``./checkpoints/g1_locomanip_finetune_20260129_231610/`` "
-"。在下文的轨迹运行命令中，将 "
-"``./checkpoints/g1_locomanip_finetune_20260129_231610/checkpoint-20000`` 用作 "
-"``--model_path`` 。该检查点需要 ``--policy_quat_format wxyz`` 。"
+"压缩包解压到 ``./checkpoints/g1_locomanip_finetune_20260129_231610/``。在下方服务器命令中，将 "
+"``--model_path`` 设为 "
+"``./checkpoints/g1_locomanip_finetune_20260129_231610/checkpoint-20000``。此检查点要求策略执行客户端设置"
+" ``--policy_quat_format wxyz``。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:743
+#: source/features/imitation-learning/humanoids_imitation.rst:750
 msgid "Rollout the policy in Isaac Lab"
 msgstr "在 Isaac Lab 中运行策略轨迹"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:745
+#: source/features/imitation-learning/humanoids_imitation.rst:752
 msgid ""
-"From the **IsaacLab** repository root, run the rollout script with the path "
-"to your finetuned checkpoint, the static manipulation dataset (used for "
-"scene/demo setup), and the task name:"
-msgstr "从 **IsaacLab** 仓库根目录运行轨迹脚本，指定微调检查点路径、用于场景和示范初始化的静态操作数据集，以及任务名："
+"Start the policy server in the **GR00T environment**, supplying an absolute "
+"path to your finetuned checkpoint. Wait for ``Server is ready and "
+"listening`` before starting rollout:"
+msgstr ""
+"在 **GR00T 环境** 中启动策略服务器，并提供微调后检查点的绝对路径。等待出现 ``Server is ready and "
+"listening`` 后，再开始执行策略："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:759
+#: source/features/imitation-learning/humanoids_imitation.rst:761
+msgid ""
+"In a **second terminal**, from the **IsaacLab repository root**, run the "
+"simulator with the static manipulation dataset (used for scene/demo setup) "
+"and the task name. The two ``--with`` options supply only the lightweight "
+"messaging dependencies; the simulator does not import GR00T, Transformers, "
+"or GR00T's dataset schema through the policy client:"
+msgstr ""
+"在 **第二个终端** 中，从 **IsaacLab 仓库根目录** 运行仿真器，指定用于场景和演示初始化的静态操作数据集及任务名称。两个 "
+"``--with`` 选项仅提供轻量级通信依赖；仿真器不会通过策略客户端导入 GR00T、Transformers 或 GR00T 的数据集 "
+"schema："
+
+#: source/features/imitation-learning/humanoids_imitation.rst:778
 msgid ""
 "Optional arguments include ``--randomize_placement`` and "
 "``--policy_quat_format wxyz`` (use if your checkpoint was trained with wxyz "
-"quaternion format)."
+"quaternion format). Use ``--max_steps 32`` for a bounded smoke run. "
+"``--policy_port`` defaults to 5555 and ``--policy_timeout_ms`` defaults to "
+"15000. A timeout raises an error instead of hanging the simulator. Stop the "
+"server with Ctrl-C when finished. It binds to localhost by default; its "
+"protocol is intended for a trusted local connection."
 msgstr ""
-"可选参数包括 ``--randomize_placement`` 和 ``--policy_quat_format wxyz`` （检查点使用 wxyz"
-" 四元数格式训练时需添加）。"
+"可选参数包括 ``--randomize_placement`` 和 ``--policy_quat_format wxyz``；检查点以 wxyz "
+"四元数格式训练时，应使用后者。可用 ``--max_steps 32`` 进行有限步数的试运行。``--policy_port`` 默认为 "
+"5555，``--policy_timeout_ms`` 默认为 15000。超时会抛出错误，避免仿真器一直等待。完成后用 Ctrl-C "
+"停止服务器。服务器默认绑定 localhost，其协议用于可信的本地连接。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:761
+#: source/features/imitation-learning/humanoids_imitation.rst:784
+msgid ""
+"The legacy ``--model_path`` rollout option remains available for custom "
+"compatible environments, but the standard Isaac Lab environment requires the"
+" server/client workflow."
+msgstr ""
+"旧版策略执行选项 ``--model_path`` 仍可用于自定义的兼容环境，但标准 Isaac Lab 环境需要采用服务器/客户端工作流程。"
+
+#: source/features/imitation-learning/humanoids_imitation.rst:787
 msgid "Simulation rollout of GR00T N1.5 policy finetuned for locomanipulation"
 msgstr "针对运动操作微调的 GR00T N1.5 策略的模拟展示"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:767
+#: source/features/imitation-learning/humanoids_imitation.rst:793
 msgid ""
 "Simulation rollout of GR00T N1.5 policy finetuned for locomanipulation."
 msgstr "针对运动操作微调的 GR00T N1.5 策略的模拟展示。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:769
+#: source/features/imitation-learning/humanoids_imitation.rst:795
 msgid ""
 "The policy shown above uses the camera image, hand poses, hand joint "
 "positions, object pose, and base goal pose as inputs. The output of the "
@@ -1079,11 +1112,11 @@ msgid ""
 msgstr ""
 "上面显示的策略使用相机图像、手部姿态、手部关节位置、物体姿态和基础目标姿态作为输入。模型的输出是接下来几个时间步的目标基础速度、手部姿态和手部关节位置。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:773
+#: source/features/imitation-learning/humanoids_imitation.rst:799
 msgid "Integrating 3D Gaussian Splatting into SDG"
 msgstr "将 3D 高斯泼溅集成到 SDG"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:775
+#: source/features/imitation-learning/humanoids_imitation.rst:801
 msgid ""
 "This section extends :ref:`locomanipulation SDG <generate-the-dataset-with-"
 "manipulation-and-point-to-point-navigation>` by replacing the synthetic "
@@ -1102,7 +1135,7 @@ msgstr ""
 "<https://docs.isaacsim.omniverse.nvidia.com/latest/assets/usd_assets_nurec.html>`__"
 " 。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:787
+#: source/features/imitation-learning/humanoids_imitation.rst:813
 msgid ""
 "This section focuses on data generation with a 3DGS background. To train a "
 "policy on the generated data, see :ref:`Finetune GR00T N1.5 policy for "
@@ -1111,17 +1144,17 @@ msgstr ""
 "本节介绍带 3DGS 背景的数据生成。使用生成数据训练策略的方法，见 :ref:`微调用于移动操作的 GR00T N1.5 策略 <finetune-"
 "groot-n15-for-locomanipulation>` 。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:792
+#: source/features/imitation-learning/humanoids_imitation.rst:818
 msgid ""
 "The locomanipulation SDG pipeline currently runs a single environment. "
 "Parallel environment support is not yet available for this workflow."
 msgstr "移动操作 SDG 流水线目前只运行单个环境，尚不支持并行环境。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:796
+#: source/features/imitation-learning/humanoids_imitation.rst:822
 msgid "Setup: downloading example assets"
 msgstr "准备：下载示例资产"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:798
+#: source/features/imitation-learning/humanoids_imitation.rst:824
 msgid ""
 "We provide a sample asset, ``hand_hold-voyager-babyboom``, on `Hugging Face "
 "<https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-"
@@ -1130,45 +1163,45 @@ msgstr ""
 "我们在 `Hugging Face <https://huggingface.co/datasets/nvidia/PhysicalAI-"
 "Robotics-NuRec/tree/main>`__ 提供示例资产 ``hand_hold-voyager-babyboom`` 。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:801
+#: source/features/imitation-learning/humanoids_imitation.rst:827
 msgid "Log in to Hugging Face:"
 msgstr "登录 Hugging Face："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:807
+#: source/features/imitation-learning/humanoids_imitation.rst:833
 msgid "Download the required USDZ stage file and occupancy maps:"
 msgstr "下载所需的 USDZ 舞台文件及占据地图："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:819
+#: source/features/imitation-learning/humanoids_imitation.rst:845
 msgid "Asset requirements"
 msgstr "资产要求"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:821
+#: source/features/imitation-learning/humanoids_imitation.rst:847
 msgid ""
 "If you are using custom 3D Gaussian assets, ensure they meet these "
 "specifications to be compatible with the SDG pipeline:"
 msgstr "自定义 3D 高斯资产需满足以下要求，才能兼容 SDG 流水线："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:824
+#: source/features/imitation-learning/humanoids_imitation.rst:850
 msgid ""
 "The scene has sufficient free space (e.g. 5m x 5m) for asset placement and "
 "robot navigation."
 msgstr "场景留有足够的自由空间（如 5 m × 5 m），用于放置资产和机器人导航。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:825
+#: source/features/imitation-learning/humanoids_imitation.rst:851
 msgid ""
 "The ground surface is aligned with the z=0 plane, as the pipeline assumes "
 "this elevation for object placement."
 msgstr "地面与 z=0 平面对齐，因为流水线按这一高度放置物体。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:827
+#: source/features/imitation-learning/humanoids_imitation.rst:853
 msgid "An occupancy map is required for path planning."
 msgstr "提供用于路径规划的占据地图。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:830
+#: source/features/imitation-learning/humanoids_imitation.rst:856
 msgid "Generating the dataset"
 msgstr "生成数据集"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:832
+#: source/features/imitation-learning/humanoids_imitation.rst:858
 msgid ""
 "Before proceeding, ensure you have generated a manipulation dataset or "
 "downloaded the sample dataset provided in the :ref:`Generate the "
@@ -1177,20 +1210,20 @@ msgstr ""
 "继续之前，请确保已生成操作数据集，或下载 :ref:`生成操作数据集 <generate-the-manipulation-dataset>` "
 "一节提供的示例数据集。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:836
+#: source/features/imitation-learning/humanoids_imitation.rst:862
 msgid ""
 "At runtime, the script adds a ground plane at ``z=0`` to the scene. It then "
 "proceeds through four stages:"
 msgstr "运行时，脚本会在场景的 ``z=0`` 处添加地面，然后执行四个阶段："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:839
+#: source/features/imitation-learning/humanoids_imitation.rst:865
 msgid ""
 "**Pick**: The robot picks up an object at the start location by replaying "
 "the manipulation trajectory. ``--lift_step`` marks the end of this stage "
 "(immediately after grasp)."
 msgstr "**抓取** ：机器人回放操作轨迹，在起始位置抓起物体。 ``--lift_step`` 标记此阶段的结束，即刚完成抓取的时刻。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:841
+#: source/features/imitation-learning/humanoids_imitation.rst:867
 msgid ""
 "**Navigate**: The robot travels to the target location using occupancy-map "
 "path planning and its locomotion policy. ``--navigate_step`` marks the end "
@@ -1199,61 +1232,61 @@ msgstr ""
 "**导航** ：机器人利用占据地图进行路径规划，并通过运动策略前往目标位置。 ``--navigate_step`` "
 "标记此阶段的结束，即机器人已到位、准备放下物体的时刻。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:844
+#: source/features/imitation-learning/humanoids_imitation.rst:870
 msgid ""
 "**Place**: The robot places the object at the target location, completing "
 "the trajectory."
 msgstr "**放置** ：机器人在目标位置放下物体，完成轨迹。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:845
+#: source/features/imitation-learning/humanoids_imitation.rst:871
 msgid ""
 "**Record**: Joint states, poses, and the ego-centric video are saved to the "
 "HDF5 file specified by ``--output_file``."
 msgstr "**记录** ：将关节状态、位姿及第一视角视频保存到 ``--output_file`` 指定的 HDF5 文件。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:848
+#: source/features/imitation-learning/humanoids_imitation.rst:874
 msgid "Run the generation command:"
 msgstr "运行生成命令："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:865
+#: source/features/imitation-learning/humanoids_imitation.rst:891
 msgid ""
 "To inspect the run in the GUI, add ``--viz kit``; adjust the perspective "
 "camera, or switch the viewport to the robot camera view for clearer "
 "visualization."
 msgstr "要在图形界面中查看运行情况，添加 ``--viz kit`` ；可调整透视相机，或将视口切换为机器人相机视图，以便更清楚地观察。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:868
+#: source/features/imitation-learning/humanoids_imitation.rst:894
 msgid "The key parameters are:"
 msgstr "主要参数如下："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:870
+#: source/features/imitation-learning/humanoids_imitation.rst:896
 msgid "``--background_usd_path``: Path to the 3D Gaussian NuRec USD asset."
 msgstr "``--background_usd_path`` ：3D 高斯 NuRec USD 资产的路径。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:871
+#: source/features/imitation-learning/humanoids_imitation.rst:897
 msgid ""
 "``--background_occupancy_yaml_file``: Path to the NuRec occupancy map file."
 msgstr "``--background_occupancy_yaml_file`` ：NuRec 占据地图文件的路径。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:872
+#: source/features/imitation-learning/humanoids_imitation.rst:898
 msgid ""
 "Placement randomization is enabled automatically when a NuRec scene is used."
 msgstr "使用 NuRec 场景时，会自动启用放置位置随机化。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:873
+#: source/features/imitation-learning/humanoids_imitation.rst:899
 msgid ""
 "``--high_res_video``: Capture the ego-centric camera at 512×320 instead of "
 "the default 256×160."
 msgstr "``--high_res_video`` ：以 512×320 分辨率采集第一视角相机画面，替代默认的 256×160。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:876
+#: source/features/imitation-learning/humanoids_imitation.rst:902
 msgid ""
 "When the run completes successfully, an HDF5 dataset is generated containing"
 " camera observations. Install FFmpeg-enabled OpenCV, then convert the ego-"
 "centric camera view to MP4:"
 msgstr "运行成功后，会生成包含相机观测的 HDF5 数据集。安装支持 FFmpeg 的 OpenCV，再将第一视角相机画面转换为 MP4："
 
-#: source/features/imitation-learning/humanoids_imitation.rst:890
+#: source/features/imitation-learning/humanoids_imitation.rst:916
 msgid ""
 "Set ``--video_width`` and ``--video_height`` to match the resolution "
 "captured during generation: 512×320 with ``--high_res_video``, or 256×160 "
@@ -1262,11 +1295,11 @@ msgstr ""
 "将 ``--video_width`` 和 ``--video_height`` 设为数据生成时的分辨率：使用 ``--high_res_video``"
 " 时为 512×320，否则为 256×160。"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:893
+#: source/features/imitation-learning/humanoids_imitation.rst:919
 msgid "locomanipulation SDG with a 3D Gaussian background"
 msgstr "带 3D 高斯背景的移动操作 SDG"
 
-#: source/features/imitation-learning/humanoids_imitation.rst:899
+#: source/features/imitation-learning/humanoids_imitation.rst:925
 msgid ""
 "The figure above shows recorded ego-centric camera views in the 3D Gaussian "
 "background when the robot replays the pick and place trajectory and "
