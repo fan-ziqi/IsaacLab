@@ -1,0 +1,31 @@
+MicroDuck local USD assets
+
+microduck_walk.usd, microduck_allcollisions.usd, and microduck_rollers.usd
+derive from Pollen Robotics' MicroDuck models:
+https://github.com/pollen-robotics/microduck_rl
+Revision: d424a0c899f6b33cbd3daeb279913134349c0b63
+License: Apache-2.0; see the accompanying LICENSE.
+
+Source MJCFs: src/mjlab_microduck/robot/microduck/robot_walk.xml,
+robot_allcollisions.xml, and robot_allcollisions_rollers.xml, including their
+referenced meshes. The USDs originated in the supplied 2026-09-09 USD export.
+
+The previous export repairs and MjcJointAPI authoring were retained. On
+2026-10-02 these local copies received 14 NewtonBamDriveAPI actuator prims,
+positive Newton joint friction and SI passive damping from the XL330 m6 fit.
+The fit is from Rhoban BAM revision 62bd8ce12154340be97e06f7f41a0ca8f116d967.
+The unused USD position-drive gains were set to zero. Masses, inertias,
+transforms, geometry, collision settings, armatures and joint limits were preserved.
+
+The files remain local and uncommitted pending asset-server publication.
+
+The three *_backlash.usd files add the serial gear-play model from the original
+MicroDuck backlash export: fourteen ±1-degree hinges, 0.01 N.m.s/rad passive
+hinge damping, 0.001 kg.m^2 hinge armature, and lightweight intermediate links.
+Servo position feedback includes the corresponding passive hinge; the BAM
+prim records newton:hasBacklash=1. Original body, mesh, collider, and wheel
+properties were retained. This authoring was applied locally on 2026-10-02.
+The all-collisions backlash USD explicitly filters each lower leg against its
+own sole, preserving the original adjacent-body exclusions after the dummy
+links are inserted. Walking and roller variants have no active collider pairs
+that lose their original adjacency exclusion.

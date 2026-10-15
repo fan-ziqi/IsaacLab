@@ -1,0 +1,84 @@
+<!--
+Copyright (c) 2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive Newton physics and pretrained policy demos for Isaac Lab, running locally in your browser.">
+  <title>Isaac Lab interactive demos</title>
+  <link rel="stylesheet" href="css/browser-demo.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 2rem max(1rem, calc((100vw - 1080px) / 2)); background: #f4f7f8; font: 16px/1.5 system-ui, sans-serif; color: #1a3039; }
+    nav { display: flex; flex-wrap: wrap; gap: .6rem 1.3rem; margin-bottom: 1.4rem; }
+    a { color: #426b00; text-underline-offset: .2em; }
+    h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .6rem; }
+    h2 { font-size: 1.4rem; margin-top: 2rem; }
+    p { color: #536b74; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; }
+    .card { display: block; overflow: hidden; border: 1px solid #d8e1e5; border-radius: 12px; background: white; text-decoration: none; box-shadow: 0 4px 15px #14232b0a; transition: transform .15s ease, box-shadow .15s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px #14232b18; }
+    .card:focus-visible { outline: 3px solid #76b900; outline-offset: 3px; }
+    .card img { display: block; width: 100%; aspect-ratio: 480 / 255; object-fit: cover; }
+    .card strong { display: block; padding: 1rem 1rem 0; color: #1a3039; }
+    .card p { padding: 0 1rem 1rem; margin: .4rem 0 0; font-size: .9rem; }
+    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #d8e1e5; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <nav aria-label="Navigation">
+    <a href="./">All demos</a>
+    <a href="https://isaac-sim.github.io/IsaacLab/">Isaac Lab documentation</a>
+    <a href="https://github.com/isaac-sim/IsaacLab/pull/7974">Source and rebuild instructions</a>
+  </nav>
+  <h1>Isaac Lab interactive demos</h1>
+  <p id="description">Explore Newton physics and pretrained policies. Each demo runs locally on your CPU through WebAssembly.</p>
+  <main id="content"></main>
+  <footer>Version 3 · Compact scenes for interactive exploration. Use native Isaac Lab tasks for training and evaluation.</footer>
+  <script type="module">
+    import { demos } from './demos.js';
+    const content = document.querySelector('#content');
+    const selected = new URLSearchParams(location.search).get('demo');
+    const demo = demos.find((item) => item.id === selected);
+    if (demo) {
+      document.title = `${demo.title} · Isaac Lab`;
+      document.querySelector('h1').textContent = demo.title;
+      document.querySelector('#description').textContent = `${demo.description} Drag to orbit, scroll to zoom, and use the controls to pause or reset.`;
+      await import('./css/browser-demo.js');
+      const widget = document.createElement('isaaclab-browser-demo');
+      widget.setAttribute('src', `${demo.assetRoot || './browser_demos'}/${demo.id}/manifest.json`);
+      content.append(widget);
+    } else {
+      for (const group of new Set(demos.map((item) => item.group))) {
+        const heading = document.createElement('h2');
+        heading.textContent = group;
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+        for (const item of demos.filter((value) => value.group === group)) {
+          const card = document.createElement('a');
+          card.className = 'card';
+          card.href = `?demo=${item.id}`;
+          const image = document.createElement('img');
+          image.src = item.preview || `${item.assetRoot || './browser_demos'}/previews/${item.id}.jpg`;
+          image.alt = '';
+          image.loading = 'lazy';
+          image.width = 480;
+          image.height = 255;
+          const title = document.createElement('strong');
+          title.textContent = item.title;
+          const description = document.createElement('p');
+          description.textContent = item.description;
+          card.append(image, title, description);
+          grid.append(card);
+        }
+        content.append(heading, grid);
+      }
+    }
+  </script>
+</body>
+</html>

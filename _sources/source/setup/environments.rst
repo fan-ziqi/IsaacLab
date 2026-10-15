@@ -13,6 +13,9 @@ Build a command and browse the core and contributed tasks available in Isaac Lab
 Command Builder
 ---------------
 
+The :ref:`interactive demo gallery <interactive-browser-demos>` includes
+pretrained Franka reach, lift, and drawer-opening policies with pause and reset.
+
 .. raw:: html
 
    <div class="environment-browser" data-environment-browser>
@@ -56,7 +59,7 @@ Command Builder
          zero-action agent instead.
        </p>
        <p class="environment-backend-warning" data-backend-warning role="status" hidden>
-         OV and Isaac Sim can't be mixed. Choose matching physics and renderer backends.
+         This combination of physics, renderer, and preset can't launch. Choose a different option.
        </p>
        <div class="environment-command-output">
          <code data-command-output></code>
