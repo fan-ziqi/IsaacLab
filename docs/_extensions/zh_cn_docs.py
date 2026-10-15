@@ -99,6 +99,7 @@ def add_ui_translations(app):
 
 _BADGES = {
     "IsaacSim-6.1.0-silver.svg": "isaacsim-6.1.0.svg",
+    "IsaacSim-6.2.0-silver.svg": "isaacsim-6.2.0.svg",
     "python-3.12-blue.svg": "python-3.12.svg",
     "Ubuntu-24.04-orange.svg": "ubuntu-24.04.svg",
     "Windows-11-blue.svg": "windows-11.svg",

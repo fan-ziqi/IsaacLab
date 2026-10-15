@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-15 05:36+0000\n"
+"PO-Revision-Date: 2026-10-15 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -100,7 +100,7 @@ msgstr "关于组合使用可视化器、无界面运行等常见场景，请参
 msgid "Visualizer Overview"
 msgstr "可视化器概览"
 
-#: source/concepts/visualization.rst:171 source/concepts/visualization.rst:837
+#: source/concepts/visualization.rst:171 source/concepts/visualization.rst:860
 msgid "Visualizer"
 msgstr "可视化器"
 
@@ -149,8 +149,8 @@ msgid ""
 "High-quality RTX rendering, rich Isaac Sim tooling; longer start-up time"
 msgstr "高质量 RTX 渲染，配备丰富的 Isaac Sim 工具；启动时间较长"
 
-#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:839
-#: source/concepts/visualization.rst:863
+#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:862
+#: source/concepts/visualization.rst:886
 msgid "Newton GL"
 msgstr "Newton GL"
 
@@ -206,8 +206,8 @@ msgstr "NewtonVisualizerCfg 源代码（Newton 可视化器共用的基类）"
 msgid "VisualizerCfg source (shared base class)"
 msgstr "VisualizerCfg 源代码（共用基类）"
 
-#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:841
-#: source/concepts/visualization.rst:865
+#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:864
+#: source/concepts/visualization.rst:888
 msgid "Viser"
 msgstr "Viser"
 
@@ -247,8 +247,8 @@ msgstr ""
 msgid "ViserVisualizerCfg source"
 msgstr "ViserVisualizerCfg 源代码"
 
-#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:844
-#: source/concepts/visualization.rst:864
+#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:867
+#: source/concepts/visualization.rst:887
 msgid "Newton RTX"
 msgstr "Newton RTX"
 
@@ -297,8 +297,8 @@ msgstr ""
 "搭配，或者改用 ``--viz newton_gl`` 、 ``--viz viser`` 、 ``--viz rerun`` ；也可以在兼容 Kit "
 "的物理后端下使用 ``--viz kit`` 。"
 
-#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:846
-#: source/concepts/visualization.rst:866
+#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:869
+#: source/concepts/visualization.rst:889
 msgid "Rerun"
 msgstr "Rerun"
 
@@ -344,8 +344,8 @@ msgstr "训练开始前，终端会突出显示访问地址。按住 Ctrl 点击
 msgid "RerunVisualizerCfg source"
 msgstr "RerunVisualizerCfg 源代码"
 
-#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:848
-#: source/concepts/visualization.rst:867
+#: source/concepts/visualization.rst:0 source/concepts/visualization.rst:871
+#: source/concepts/visualization.rst:890
 msgid "Kit"
 msgstr "Kit"
 
@@ -780,11 +780,67 @@ msgid ""
 ":doc:`/source/migration/migrating_to_isaaclab_3-0`."
 msgstr "关于迁移背景，请参阅 :doc:`/source/migration/migrating_to_isaaclab_3-0` 。"
 
-#: source/concepts/visualization.rst:815
+#: source/concepts/visualization.rst:817
+msgid "Partial Visualization"
+msgstr "仅显示部分环境"
+
+#: source/concepts/visualization.rst:819
+msgid ""
+"Visualizers can be configured to visualize just a subset of environments. "
+"This is called partial visualization."
+msgstr "可视化器可以配置为只显示部分环境，而非所有环境，这称为部分环境可视化。"
+
+#: source/concepts/visualization.rst:822
+msgid ""
+"There are 3 fields exposed in the ``VisualizerCfg`` for selecting "
+"environments for partial visualization:"
+msgstr "``VisualizerCfg`` 提供三个字段，用于选择要显示的环境："
+
+#: source/concepts/visualization.rst:824
+msgid "``max_visible_envs`` caps how many envs are shown."
+msgstr "``max_visible_envs`` 限制最多显示多少个环境。"
+
+#: source/concepts/visualization.rst:825
+msgid ""
+"``visible_env_indices`` explicitly selects the envs to visualize, in the "
+"order given. It takes precedence over ``randomly_sample_visible_envs`` and "
+"is also capped by ``max_visible_envs``."
+msgstr ""
+"``visible_env_indices`` 按给定顺序显式指定要显示的环境，优先于 "
+"``randomly_sample_visible_envs``，同时仍受 ``max_visible_envs`` 限制。"
+
+#: source/concepts/visualization.rst:827
+msgid ""
+"``randomly_sample_visible_envs`` (default ``True``): when "
+"``visible_env_indices`` is unset and ``max_visible_envs`` is set, enables "
+"randomly sampling the selected envs. If disabled, the first "
+"``max_visible_envs`` envs are selected."
+msgstr ""
+"``randomly_sample_visible_envs`` 默认为 ``True``。未设置 "
+"``visible_env_indices``、但设置了 ``max_visible_envs`` 时，它决定是否随机抽取环境；关闭后则选择前 "
+"``max_visible_envs`` 个环境。"
+
+#: source/concepts/visualization.rst:830
+msgid ""
+"Also, there is a CLI arg ``--max_visible_envs`` that overrides "
+"``VisualizerCfg.max_visible_envs`` for the run."
+msgstr ""
+"命令行参数 ``--max_visible_envs`` 可在本次运行中覆盖 ``VisualizerCfg.max_visible_envs``。"
+
+#: source/concepts/visualization.rst:834
+msgid ""
+"By default, selected envs keep their simulated positions, so a random sample"
+" or the first envs of a large grid can lie outside the camera view. Choose "
+"indices near the camera target, or move ``eye`` and ``lookat``."
+msgstr ""
+"默认情况下，选中的环境保留其仿真位置。因此，对于较大的环境网格，随机抽取或选择靠前的环境时，它们可能落在相机视野之外。可以选择靠近相机目标的环境索引，或调整"
+" ``eye`` 和 ``lookat``。"
+
+#: source/concepts/visualization.rst:838
 msgid "Scene Background"
 msgstr "场景背景"
 
-#: source/concepts/visualization.rst:817
+#: source/concepts/visualization.rst:840
 msgid ""
 "Kit uses the solid sky-blue background from "
 "``VisualizerCfg.background_color`` by default. The Newton visualizers "
@@ -800,106 +856,109 @@ msgstr ""
 "``background_color`` 设为 ``None`` 会保留后端的原生背景；也可以设置归一化 RGB "
 "颜色，覆盖显示的背景色。场景灯光仍会照亮物体并参与反射："
 
-#: source/concepts/visualization.rst:831
+#: source/concepts/visualization.rst:854
 msgid "Performance"
 msgstr "性能"
 
-#: source/concepts/visualization.rst:838
+#: source/concepts/visualization.rst:861
 msgid "Tips"
 msgstr "提示"
 
-#: source/concepts/visualization.rst:840
+#: source/concepts/visualization.rst:863
 msgid "Lowest overhead; increase ``update_frequency`` to skip render calls."
 msgstr "开销最低；增大 ``update_frequency`` 可跳过部分渲染调用。"
 
-#: source/concepts/visualization.rst:842
+#: source/concepts/visualization.rst:865
 msgid ""
 "Newton Warp renderer; use ``max_visible_envs`` to limit the number of "
-"rendered environments."
-msgstr "使用 Newton Warp 渲染器；可通过 ``max_visible_envs`` 限制渲染的环境数量。"
+"rendered environments (see :ref:`visualization-partial-visualization`)."
+msgstr ""
+"使用 Newton Warp 渲染器；可通过 ``max_visible_envs`` 限制渲染的环境数量，见 :ref:`visualization-"
+"partial-visualization` 。"
 
-#: source/concepts/visualization.rst:845
+#: source/concepts/visualization.rst:868
 msgid ""
 "Path-traced; highest per-frame cost, use ``--max_visible_envs`` to reduce "
 "load."
 msgstr "使用路径追踪，单帧开销最高；可通过 ``--max_visible_envs`` 降低负载。"
 
-#: source/concepts/visualization.rst:847
+#: source/concepts/visualization.rst:870
 msgid ""
 "Web viewer may slow down with many environments; use ``--num_envs`` to "
 "reduce load."
 msgstr "环境较多时，网页查看器可能变慢；可通过 ``--num_envs`` 降低负载。"
 
-#: source/concepts/visualization.rst:849
+#: source/concepts/visualization.rst:872
 msgid ""
 "Highest overhead of the five visualizers; reduce ``window_width`` / "
-"``window_height`` or use ``--max_visible_envs``."
+"``window_height`` or use ``--max_visible_envs`` (see :ref:`visualization-"
+"partial-visualization`)."
 msgstr ""
-"在这 5 种可视化器中开销最大；可减小 ``window_width`` / ``window_height`` ，或使用 "
-"``--max_visible_envs`` 。"
+"五种可视化器中开销最高；可减小 ``window_width`` / ``window_height``，或使用 "
+"``--max_visible_envs``，见 :ref:`visualization-partial-visualization` 。"
 
-#: source/concepts/visualization.rst:854
+#: source/concepts/visualization.rst:877
 msgid "Limitations"
 msgstr "限制"
 
-#: source/concepts/visualization.rst:856
+#: source/concepts/visualization.rst:879
 msgid "**Backend feature support:**"
 msgstr "**后端功能支持：**"
 
-#: source/concepts/visualization.rst:862
+#: source/concepts/visualization.rst:885
 msgid "Feature"
 msgstr "特性"
 
-#: source/concepts/visualization.rst:868
+#: source/concepts/visualization.rst:891
 msgid "Visualization markers"
 msgstr "可视化标记"
 
-#: source/concepts/visualization.rst:869 source/concepts/visualization.rst:871
-#: source/concepts/visualization.rst:872 source/concepts/visualization.rst:873
-#: source/concepts/visualization.rst:875 source/concepts/visualization.rst:877
-#: source/concepts/visualization.rst:878 source/concepts/visualization.rst:879
-#: source/concepts/visualization.rst:881 source/concepts/visualization.rst:883
-#: source/concepts/visualization.rst:884 source/concepts/visualization.rst:885
-#: source/concepts/visualization.rst:887 source/concepts/visualization.rst:888
-#: source/concepts/visualization.rst:891 source/concepts/visualization.rst:893
+#: source/concepts/visualization.rst:892 source/concepts/visualization.rst:894
 #: source/concepts/visualization.rst:895 source/concepts/visualization.rst:896
-#: source/concepts/visualization.rst:897 source/concepts/visualization.rst:899
-#: source/concepts/visualization.rst:900 source/concepts/visualization.rst:901
-#: source/concepts/visualization.rst:902 source/concepts/visualization.rst:903
+#: source/concepts/visualization.rst:898 source/concepts/visualization.rst:900
+#: source/concepts/visualization.rst:901 source/concepts/visualization.rst:902
+#: source/concepts/visualization.rst:904 source/concepts/visualization.rst:906
+#: source/concepts/visualization.rst:907 source/concepts/visualization.rst:908
+#: source/concepts/visualization.rst:910 source/concepts/visualization.rst:911
+#: source/concepts/visualization.rst:914 source/concepts/visualization.rst:916
+#: source/concepts/visualization.rst:918 source/concepts/visualization.rst:919
+#: source/concepts/visualization.rst:920 source/concepts/visualization.rst:922
+#: source/concepts/visualization.rst:923 source/concepts/visualization.rst:924
+#: source/concepts/visualization.rst:925 source/concepts/visualization.rst:926
 msgid "✓"
 msgstr "✓"
 
-#: source/concepts/visualization.rst:870 source/concepts/visualization.rst:876
-#: source/concepts/visualization.rst:882 source/concepts/visualization.rst:889
-#: source/concepts/visualization.rst:890 source/concepts/visualization.rst:894
+#: source/concepts/visualization.rst:893 source/concepts/visualization.rst:899
+#: source/concepts/visualization.rst:905 source/concepts/visualization.rst:912
+#: source/concepts/visualization.rst:913 source/concepts/visualization.rst:917
 msgid "✗"
 msgstr "✗"
 
-#: source/concepts/visualization.rst:874
+#: source/concepts/visualization.rst:897
 msgid "Live plots"
 msgstr "实时曲线"
 
-#: source/concepts/visualization.rst:880
+#: source/concepts/visualization.rst:903
 msgid "Streaming camera panel"
 msgstr "相机流面板"
 
-#: source/concepts/visualization.rst:886
+#: source/concepts/visualization.rst:909
 msgid "Video recording, ``--video``"
 msgstr "视频录制， ``--video``"
 
-#: source/concepts/visualization.rst:892
+#: source/concepts/visualization.rst:915
 msgid "Pause rendering"
 msgstr "暂停渲染"
 
-#: source/concepts/visualization.rst:898
+#: source/concepts/visualization.rst:921
 msgid "Headless mode"
 msgstr "无界面模式"
 
-#: source/concepts/visualization.rst:905
+#: source/concepts/visualization.rst:928
 msgid "**Lighting differences across visualizers**"
 msgstr "**各可视化器的光照差异**"
 
-#: source/concepts/visualization.rst:907
+#: source/concepts/visualization.rst:930
 msgid ""
 "Each backend lights the scene differently, so the same environment can look "
 "noticeably different across visualizers. Kit renders the scene's actual "
@@ -924,11 +983,11 @@ msgstr ""
 "： ``\"default\"`` 、 ``\"studio\"`` 、 ``\"none\"`` ），不使用场景中编写的 USD 灯光。Viser "
 "只使用单个环境光，没有方向主光，因此场景通常比其他后端更暗、更缺乏层次。Rerun 使用查看器内置的固定着色方式，不由场景灯光驱动。"
 
-#: source/concepts/visualization.rst:918
+#: source/concepts/visualization.rst:941
 msgid "**Kit: incompatible with ovphysx / ovrtx presets**"
 msgstr "**Kit：与 ovphysx / ovrtx 预设不兼容**"
 
-#: source/concepts/visualization.rst:920
+#: source/concepts/visualization.rst:943
 msgid ""
 "``--viz kit`` cannot be used with ``presets=ovphysx`` or ``presets=ovrtx`` "
 "in the same process. Use ``--viz newton_gl``, ``--viz rerun``, or ``--viz "
@@ -938,11 +997,11 @@ msgstr ""
 "配合使用。请在这些预设下使用 ``--viz newton_gl`` 、 ``--viz rerun`` 或 ``--viz viser`` "
 "，也可以省略 ``--viz`` 进行无界面运行。"
 
-#: source/concepts/visualization.rst:924
+#: source/concepts/visualization.rst:947
 msgid "**Newton RTX: incompatible with Kit**"
 msgstr "**Newton RTX：与 Kit 不兼容**"
 
-#: source/concepts/visualization.rst:926
+#: source/concepts/visualization.rst:949
 msgid ""
 "``--viz newton_rtx`` raises a ``RuntimeError`` at startup if the active "
 "physics backend is ``isaacsim_physx`` (i.e. ``presets=isaacsim_physx``), "
@@ -959,21 +1018,21 @@ msgstr ""
 "``--viz newton_gl`` 、 ``--viz viser`` 、 ``--viz rerun`` ；也可以在兼容 Kit 的物理后端下使用"
 " ``--viz kit`` 。"
 
-#: source/concepts/visualization.rst:933
+#: source/concepts/visualization.rst:956
 msgid "**Rerun: large environment performance**"
 msgstr "**Rerun：大量环境下的性能**"
 
-#: source/concepts/visualization.rst:935
+#: source/concepts/visualization.rst:958
 msgid ""
 "The Rerun web viewer may slow down or crash with many environments. Reduce "
 "load with ``--num_envs``:"
 msgstr "环境较多时，Rerun 网页查看器可能变慢或崩溃。可通过 ``--num_envs`` 降低负载："
 
-#: source/concepts/visualization.rst:952
+#: source/concepts/visualization.rst:975
 msgid "**Rerun: blank page until the first payload loads**"
 msgstr "**Rerun：首批数据加载前页面为空白**"
 
-#: source/concepts/visualization.rst:954
+#: source/concepts/visualization.rst:977
 msgid ""
 "The Rerun browser tab opens blank and stays that way for several seconds (up"
 " to ~10s, depending on scene size) before the scene and live plots appear. "
@@ -985,27 +1044,27 @@ msgstr ""
 "Rerun 浏览器标签页打开后会先显示空白，几秒后才出现场景和实时曲线（视场景大小而定，最长约 10 秒）。这是正常现象：网页查看器需要连接本地 "
 "Rerun 服务器并接收首批日志数据。但在此期间页面没有加载提示，看起来可能像是卡住了。无需操作，等待第一帧到达即可。"
 
-#: source/concepts/visualization.rst:960
+#: source/concepts/visualization.rst:983
 msgid "**Newton GL: CUDA/OpenGL interoperability warnings**"
 msgstr "**Newton GL：CUDA/OpenGL 互操作警告**"
 
-#: source/concepts/visualization.rst:962
+#: source/concepts/visualization.rst:985
 msgid ""
 "In some configurations, the Newton GL visualizer emits warnings about "
 "CUDA/OpenGL interoperability:"
 msgstr "在某些配置下，Newton GL 可视化器会输出关于 CUDA/OpenGL 互操作的警告："
 
-#: source/concepts/visualization.rst:971
+#: source/concepts/visualization.rst:994
 msgid ""
 "The visualizer still functions correctly but falls back to CPU copy "
 "operations, which reduces performance."
 msgstr "可视化器仍能正常工作，但会回退到 CPU 拷贝操作，性能会有所下降。"
 
-#: source/concepts/visualization.rst:974
+#: source/concepts/visualization.rst:997
 msgid "**Newton GL: OpenGL context failures**"
 msgstr "**Newton GL：OpenGL 上下文创建失败**"
 
-#: source/concepts/visualization.rst:976
+#: source/concepts/visualization.rst:999
 msgid ""
 "If pyglet reports that ``glCreateShader`` is not exported or that OpenGL 2.0"
 " is required, the process is running without a GPU-backed display context "
@@ -1017,55 +1076,55 @@ msgstr ""
 "支持的显示上下文（例如服务会话，或未启用 GPU 加速的远程桌面）。请在具有 GPU 支持的交互式显示会话中运行，也可以省略 ``--viz "
 "newton_gl`` ，改为无界面运行。"
 
-#: source/concepts/visualization.rst:981
+#: source/concepts/visualization.rst:1004
 msgid "**Newton GL: Spark + conda**"
 msgstr "**Newton GL：Spark + conda**"
 
-#: source/concepts/visualization.rst:983
+#: source/concepts/visualization.rst:1006
 msgid ""
 "Conda-installed X11 libraries may conflict with pyglet on Spark, producing:"
 msgstr "通过 conda 安装的 X11 库可能在 Spark 上与 pyglet 冲突，产生如下错误："
 
-#: source/concepts/visualization.rst:989
+#: source/concepts/visualization.rst:1012
 msgid ""
 "Remove the conflicting conda packages to use the system libraries instead:"
 msgstr "移除存在冲突的 conda 包，改用系统库："
 
-#: source/concepts/visualization.rst:997
+#: source/concepts/visualization.rst:1020
 msgid "See Also"
 msgstr "另请参阅"
 
-#: source/concepts/visualization.rst:999
+#: source/concepts/visualization.rst:1022
 msgid ""
 ":doc:`/source/how-to/visualizer_streaming_camera_view`: stream a camera view"
 " step by step"
 msgstr ":doc:`/source/how-to/visualizer_streaming_camera_view`：逐步配置相机流视图"
 
-#: source/concepts/visualization.rst:1000
+#: source/concepts/visualization.rst:1023
 msgid ""
 ":doc:`/source/how-to/record_video`: recording MP4 clips from a visualizer or"
 " sensor"
 msgstr ":doc:`/source/how-to/record_video`：从可视化器或传感器录制 MP4 视频片段"
 
-#: source/concepts/visualization.rst:1001
+#: source/concepts/visualization.rst:1024
 msgid ""
 ":doc:`/source/how-to/create_visualization_markers`: creating and configuring"
 " custom visualization markers"
 msgstr ":doc:`/source/how-to/create_visualization_markers`：创建和配置自定义可视化标记"
 
-#: source/concepts/visualization.rst:1002
+#: source/concepts/visualization.rst:1025
 msgid ""
 ":doc:`/source/how-to/capture_sensor_frames`: saving per-frame sensor outputs"
 " during training"
 msgstr ":doc:`/source/how-to/capture_sensor_frames` ：在训练期间保存逐帧传感器输出"
 
-#: source/concepts/visualization.rst:1003
+#: source/concepts/visualization.rst:1026
 msgid ""
 ":doc:`/source/concepts/renderers`: renderer backends (RTX, Newton Warp, "
 "OVRTX)"
 msgstr ":doc:`/source/concepts/renderers` ：渲染器后端（RTX、Newton Warp、OVRTX）"
 
-#: source/concepts/visualization.rst:1004
+#: source/concepts/visualization.rst:1027
 msgid ""
 ":doc:`/source/concepts/native-physics-api/scene_data_providers`: how scene "
 "data flows to visualizers"
@@ -1073,11 +1132,11 @@ msgstr ""
 ":doc:`/source/concepts/native-physics-"
 "api/scene_data_providers`：场景数据如何传递给可视化器"
 
-#: source/concepts/visualization.rst:1005
+#: source/concepts/visualization.rst:1028
 msgid ":ref:`physics-backends-newton`: Newton backend guide"
 msgstr ":ref:`physics-backends-newton` ：Newton 后端指南"
 
-#: source/concepts/visualization.rst:1006
+#: source/concepts/visualization.rst:1029
 msgid ""
 ":doc:`/source/migration/migrating_to_isaaclab_3-0`: visualizer migration "
 "reference"

@@ -47,6 +47,11 @@ jobs:
       - name: Build translated HTML
         run: sphinx-build -j auto -b html docs "$RUNNER_TEMP/docs-html" -D language=zh_CN
 
+      - name: Stage interactive browser demos
+        env:
+          DOCS_BUILD_DIR: ${{ runner.temp }}/docs-html
+        run: bash .github/actions/_lib/stage-browser-demos.sh
+
       - name: Record the published source revision
         env:
           SOURCE_SHA: ${{ github.sha }}

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-15 05:36+0000\n"
+"PO-Revision-Date: 2026-10-15 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -328,15 +328,68 @@ msgid ""
 " another environment's geometry instead of their own."
 msgstr "超出上限的环境没有独立分区，会与其他环境共用分区，因此其平铺相机视图可能显示其他环境的几何体。"
 
-#: source/refs/issues.rst:197
+#: source/refs/issues.rst:199
+msgid "Large RTX camera workloads can return black or corrupted images"
+msgstr "大规模 RTX 相机负载可能输出黑图或损坏的图像"
+
+#: source/refs/issues.rst:201
+msgid ""
+"**Affects:** RTX-based renderers (``renderer=isaacsim_rtx``, "
+"``renderer=ovrtx``), independent of the physics backend."
+msgstr ""
+"**影响范围：** 基于 RTX 的渲染器（``renderer=isaacsim_rtx``、``renderer=ovrtx``），与物理后端无关。"
+
+#: source/refs/issues.rst:204
+msgid ""
+"Increasing the camera count, resolution, or path-tracing samples per pixel "
+"(SPP) can cause camera views to become black or corrupted without raising an"
+" error. Simulation and training can continue with invalid observations."
+msgstr "增加相机数量、分辨率或路径追踪每像素采样数（SPP），可能使相机图像变黑或损坏，且不抛出错误。仿真和训练可能继续使用这些无效观测。"
+
+#: source/refs/issues.rst:208
+msgid ""
+"Camera views are combined into a tiled image (an atlas). On affected "
+"renderer versions, the rendering workload for a large atlas can exceed the "
+"supported Vulkan shader-access range for a buffer, approximately 4 GiB in "
+"the reported configuration. This can happen even with free GPU memory. The "
+"threshold depends on the padded atlas dimensions and rendering settings, so "
+"there is no universal camera-count limit. See `Isaac Lab issue #8412`_ for "
+"affected configurations, reproduction steps, and fix status."
+msgstr ""
+"多个相机视图会合并为一幅平铺图像，即图集。在受影响的渲染器版本中，大图集的渲染工作负载可能超出 Vulkan "
+"着色器支持的缓冲区访问范围；已报告配置中的范围约为 4 "
+"GiB。即使显存仍有空余，也可能发生这一问题。阈值取决于填充后的图集尺寸和渲染设置，因此没有通用的相机数量上限。受影响的配置、复现步骤和修复状态见 "
+"`Isaac Lab issue #8412`_。"
+
+#: source/refs/issues.rst:215
+msgid ""
+"As a workaround, reduce the camera resolution, camera count, or path-tracing"
+" SPP, and inspect images from all cameras before training. Reducing the "
+"camera count may leave the atlas dimensions unchanged because of tile "
+"padding. Path-tracing SPP is distinct from the direct-lighting "
+"``samples_per_pixel`` setting."
+msgstr ""
+"临时规避方法是降低相机分辨率、相机数量或路径追踪 SPP，并在训练前检查所有相机的图像。受图块填充影响，减少相机数量不一定会改变图集尺寸。路径追踪 "
+"SPP 与直接光照的 ``samples_per_pixel`` 设置不同。"
+
+#: source/refs/issues.rst:220
+msgid ""
+"If RTX image quality is not required, the Newton Warp renderer "
+"(``renderer=newton_renderer``) does not render through Vulkan and is not "
+"subject to this limit."
+msgstr ""
+"如果不需要 RTX 图像质量，可以使用 Newton Warp 渲染器（``renderer=newton_renderer``）。它不通过 "
+"Vulkan 渲染，因此不受这一限制影响。"
+
+#: source/refs/issues.rst:224
 msgid "Using instanceable assets for markers"
 msgstr "使用实例化资产作为标记对象"
 
-#: source/refs/issues.rst:199
+#: source/refs/issues.rst:226
 msgid "**Affects:** all Kit-based renderers."
 msgstr "**受影响范围：** 所有基于 Kit 的渲染器。"
 
-#: source/refs/issues.rst:201
+#: source/refs/issues.rst:228
 msgid ""
 "When using `instanceable assets`_ for markers, the markers do not work "
 "properly, since Omniverse does not support instanceable assets when using "
@@ -346,7 +399,7 @@ msgstr ""
 "使用 `instanceable assets`_ 作为标记对象时，标记对象不起作用，因为 Omniverse 在使用 "
 ":class:`~UsdGeom.PointInstancer` 模式时不支持实例化资产。这是一个已知问题，将在将来的版本中修复。"
 
-#: source/refs/issues.rst:205
+#: source/refs/issues.rst:232
 msgid ""
 "If you use an instanceable assets for markers, the marker class removes all "
 "the physics properties of the asset. This is then replicated across other "
@@ -357,19 +410,19 @@ msgstr ""
 "如果使用实例化资产作为标记对象，则标记对象类会删除资产的所有物理属性。这会在相同资产的其他引用上复制，因为实例化资产的物理属性存储在实例化资产的 USD"
 " 文件中，而不是在其场景引用的 USD 文件中。"
 
-#: source/refs/issues.rst:216
+#: source/refs/issues.rst:244
 msgid "Asset import"
 msgstr "资产导入"
 
-#: source/refs/issues.rst:219
+#: source/refs/issues.rst:247
 msgid "URDF importer: unresolved references for fixed joints"
 msgstr "URDF 导入器：固定关节的引用无法解析"
 
-#: source/refs/issues.rst:221
+#: source/refs/issues.rst:249
 msgid "**Affects:** the URDF importer, independent of the physics backend."
 msgstr "**受影响范围：** URDF 导入器，与物理后端无关。"
 
-#: source/refs/issues.rst:223
+#: source/refs/issues.rst:251
 msgid ""
 "Links connected through ``fixed_joint`` elements are not merged when their "
 "URDF link entries specify mass and inertia, even if ``merge-joint`` is set "
@@ -385,20 +438,20 @@ msgstr ""
 "``ReportError`` "
 "警告，提示相关引用无法解析。这是导入器的已知错误，它创建了指向不存在的可视几何体的引用。在导入器修复之前，可以安全地忽略这些警告。"
 
-#: source/refs/issues.rst:232
+#: source/refs/issues.rst:260
 msgid "Environment and setup"
 msgstr "环境与安装"
 
-#: source/refs/issues.rst:235
+#: source/refs/issues.rst:263
 msgid "GLIBCXX errors in conda environments"
 msgstr "conda 环境中的 GLIBCXX 错误"
 
-#: source/refs/issues.rst:237
+#: source/refs/issues.rst:265
 msgid ""
 "**Affects:** conda-based installations, independent of the physics backend."
 msgstr "**受影响范围：** 基于 conda 的安装，与物理后端无关。"
 
-#: source/refs/issues.rst:239
+#: source/refs/issues.rst:267
 msgid ""
 "Some workflows exit with an ``OSError`` indicating ``version "
 "'GLIBCXX_3.4.30' not found`` when running from a conda environment. The "

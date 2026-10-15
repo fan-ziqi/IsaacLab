@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-15 05:36+0000\n"
+"PO-Revision-Date: 2026-10-15 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -407,11 +407,20 @@ msgstr ""
 ":meth:`~isaaclab_newton.physics.NewtonMPMManager.reset_solver_state` "
 "。在耦合运行中，这也会重置耦合求解器的历史。"
 
-#: source/concepts/using_mpm.rst:216
+#: source/concepts/using_mpm.rst:214
+msgid ""
+"Try the :ref:`interactive MPM demo <interactive-demo-mpm>` to compare "
+"material references and adjust stiffness, cohesion, friction, and hardening "
+"on a repeatable particle drop."
+msgstr ""
+"可以先试试 :ref:`交互式 MPM 演示 <interactive-demo-mpm>` "
+"：反复进行相同的粒子下落实验，对比参考材料，并调整刚度、内聚力、摩擦和硬化参数。"
+
+#: source/concepts/using_mpm.rst:220
 msgid "Rendering a particle surface"
 msgstr "渲染粒子表面"
 
-#: source/concepts/using_mpm.rst:218
+#: source/concepts/using_mpm.rst:222
 msgid ""
 "MPM simulation state remains a set of particles. Surface reconstruction is "
 "an optional visualization pass: it does not change particle motion, "
@@ -419,7 +428,7 @@ msgid ""
 "available modes:"
 msgstr "MPM 仿真状态始终是一组粒子。表面重建是可选的可视化步骤，不会改变粒子运动、碰撞或材质行为。运行茶壶演示可对比可用模式："
 
-#: source/concepts/using_mpm.rst:234
+#: source/concepts/using_mpm.rst:238
 msgid ""
 "The teapot demo defaults to the reconstructed surface. Select ``particles`` "
 "or ``both`` to inspect the source MPM state in Newton GL or Newton RTX."
@@ -427,19 +436,19 @@ msgstr ""
 "茶壶演示默认显示重建表面。选择 ``particles`` 或 ``both`` ，可在 Newton GL 或 Newton RTX 中查看原始 "
 "MPM 状态。"
 
-#: source/concepts/using_mpm.rst:237
+#: source/concepts/using_mpm.rst:241
 msgid ""
 "Surface rendering is available in the Newton GL and Newton RTX visualizers. "
 "The Kit visualizer continues to render the MPM particles directly."
 msgstr "Newton GL 和 Newton RTX 可视化器支持表面渲染，Kit 可视化器仍直接渲染 MPM 粒子。"
 
-#: source/concepts/using_mpm.rst:246
+#: source/concepts/using_mpm.rst:250
 msgid ""
 "This recording demonstrates rendering appearance, not a different "
 "constitutive model."
 msgstr "这段录制展示的是渲染外观，并非另一种本构模型。"
 
-#: source/concepts/using_mpm.rst:249
+#: source/concepts/using_mpm.rst:253
 msgid ""
 "The teapot demo configures ``newton.geometry.ParticleSurface`` after "
 "``sim.reset()`` and updates the mesh before ``sim.render()``. Its renderer "
@@ -449,49 +458,55 @@ msgstr ""
 "茶壶演示在 ``sim.reset()`` 后配置 ``newton.geometry.ParticleSurface`` ，并在 "
 "``sim.render()`` 前更新网格。启用 CUDA 捕获时，其渲染器会捕获表面提取操作，并在查看器的帧生命周期内暂存动态网格。"
 
-#: source/concepts/using_mpm.rst:254
+#: source/concepts/using_mpm.rst:258
 msgid "Tune reconstruction independently from the simulation:"
 msgstr "重建参数应独立于仿真调节："
 
-#: source/concepts/using_mpm.rst:256
+#: source/concepts/using_mpm.rst:260
 msgid ""
 "``voxel_size`` controls surface detail and memory use. It can be smaller "
 "than the MPM solver voxel size."
 msgstr "``voxel_size`` 控制表面细节和内存用量，可以小于 MPM 求解器的体素大小。"
 
-#: source/concepts/using_mpm.rst:258
+#: source/concepts/using_mpm.rst:262
 msgid ""
 "``kernel_radius`` controls how far each particle contributes to the surface."
 " Start near three times the particle spacing."
 msgstr "``kernel_radius`` 控制每个粒子对表面的影响范围。建议从粒子间距的三倍左右开始。"
 
-#: source/concepts/using_mpm.rst:260
+#: source/concepts/using_mpm.rst:264
 msgid ""
 "``max_grid_cells`` provides fixed-capacity storage for CUDA graph capture. "
 "Increase it if the reconstructed domain outgrows the reserved grid."
 msgstr "``max_grid_cells`` 为 CUDA 图捕获提供固定容量的存储。如果重建区域超出预留网格，请增大该值。"
 
-#: source/concepts/using_mpm.rst:262
+#: source/concepts/using_mpm.rst:266
 msgid ""
 "Anisotropic kernels preserve sheets and stretched fluid features better, but"
 " cost more than isotropic kernels."
 msgstr "各向异性核能更好地保留薄片和拉长的流体特征，但开销高于各向同性核。"
 
-#: source/concepts/using_mpm.rst:265
+#: source/concepts/using_mpm.rst:269
 msgid ""
-"The teapot demo handles CUDA graph capture, empty surfaces, inactive "
-"particles, and dynamic topology:"
-msgstr "茶壶演示处理了 CUDA 图捕获、空表面、未激活粒子和动态拓扑："
+"To render a surface in your own scene, pass the configured "
+"``newton.geometry.ParticleSurface`` to ``ParticleSurfaceRenderer`` after "
+"``sim.reset()``. Call ``update()`` before ``sim.render()`` to extract and "
+"stage the current mesh. The renderer handles CUDA graph capture, empty "
+"surfaces, inactive particles, and dynamic topology:"
+msgstr ""
+"要在自己的场景中渲染表面，请在 ``sim.reset()`` 后将配置好的 ``newton.geometry.ParticleSurface`` "
+"传给 ``ParticleSurfaceRenderer``。在 ``sim.render()`` 前调用 "
+"``update()``，提取并准备当前网格。渲染器会处理 CUDA 图捕获、空表面、非活跃粒子和动态拓扑："
 
 #: source/concepts/using_mpm.rst:0
-msgid "Teapot surface renderer implementation"
-msgstr "茶壶表面渲染器的实现"
+msgid "``ParticleSurfaceRenderer`` implementation"
+msgstr "``ParticleSurfaceRenderer`` 的实现"
 
-#: source/concepts/using_mpm.rst:277
+#: source/concepts/using_mpm.rst:284
 msgid "Examples and tasks"
 msgstr "示例与任务"
 
-#: source/concepts/using_mpm.rst:279
+#: source/concepts/using_mpm.rst:286
 msgid ""
 "These examples and demos introduce MPM construction and interaction. They "
 "default to Newton GL for interactive viewing. The launcher uses ``cuda:0`` "
@@ -500,27 +515,27 @@ msgstr ""
 "这些示例和演示介绍 MPM 的构建与交互，默认使用 Newton GL 进行交互式查看。启动器默认使用 ``cuda:0``；可通过 "
 "``--device cuda:N`` 选择其他 GPU。"
 
-#: source/concepts/using_mpm.rst:286
+#: source/concepts/using_mpm.rst:293
 msgid "Granular drop"
 msgstr "颗粒下落"
 
-#: source/concepts/using_mpm.rst:298
+#: source/concepts/using_mpm.rst:305
 msgid "Two-way sphere pit"
 msgstr "双向耦合球坑"
 
-#: source/concepts/using_mpm.rst:310
+#: source/concepts/using_mpm.rst:317
 msgid "Snowball smash"
 msgstr "雪球撞击"
 
-#: source/concepts/using_mpm.rst:322
+#: source/concepts/using_mpm.rst:329
 msgid "Teapot fill"
 msgstr "填充茶壶"
 
-#: source/concepts/using_mpm.rst:337
+#: source/concepts/using_mpm.rst:344
 msgid "Franka Pour"
 msgstr "Franka 倒料任务"
 
-#: source/concepts/using_mpm.rst:339
+#: source/concepts/using_mpm.rst:346
 msgid ""
 "The ``IsaacContrib-Franka-Pour`` task restores episodes from a reset "
 "artifact containing the connected 14-phase reset distribution. The canonical"
@@ -530,14 +545,14 @@ msgstr ""
 "``IsaacContrib-Franka-Pour`` 任务从重置数据文件恢复回合，该文件包含相互衔接的 14 阶段重置分布。首次使用时，会从标准 "
 "Isaac Lab 资产根目录下载含 20,000 行的标准数据文件，因此训练无需另行准备该文件："
 
-#: source/concepts/using_mpm.rst:349
+#: source/concepts/using_mpm.rst:356
 msgid ""
 "The checked-in generator remains the executable reference for reproducing or"
 " customizing the distribution. It takes about two minutes on an L40S-class "
 "GPU and writes a local artifact that can be selected explicitly:"
 msgstr "仓库中的生成器是复现或自定义该分布的可执行参考。在 L40S 级别的 GPU 上约需两分钟，它会写入一个可显式选择的本地数据文件："
 
-#: source/concepts/using_mpm.rst:360
+#: source/concepts/using_mpm.rst:367
 msgid ""
 "The task validates the payload's stored content digest automatically. "
 "Setting ``ISAACSIM_ASSET_ROOT`` redirects the canonical artifact to a "
@@ -547,7 +562,7 @@ msgstr ""
 "任务会自动验证数据中保存的内容摘要。设置 ``ISAACSIM_ASSET_ROOT`` "
 "可将标准数据文件的查找位置改为兼容的本地或自托管资产目录树。自定义的可复现实验仍可固定摘要。"
 
-#: source/concepts/using_mpm.rst:365
+#: source/concepts/using_mpm.rst:372
 msgid ""
 "The source uses a non-colliding analytic fill volume whose height is "
 "controlled by ``env.source_fill_level`` in ``(0, 1]``. The default ``0.70`` "
@@ -560,17 +575,17 @@ msgstr ""
 "``0.70`` 表示填充至约 70% 的杯高；粒子数量随指定填充比例变化，而体素大小和粒子间距保持固定。 "
 "``env.pour_target_frac`` 独立控制当前粒子总量中必须到达接收容器的比例。"
 
-#: source/concepts/using_mpm.rst:372
+#: source/concepts/using_mpm.rst:379
 msgid ""
 "Play a checkpoint in Kit with the canonical task configuration; no external "
 "callback or particle override is required:"
 msgstr "使用标准任务配置，在 Kit 中运行检查点；无需外部回调或粒子覆盖配置："
 
-#: source/concepts/using_mpm.rst:382
+#: source/concepts/using_mpm.rst:389
 msgid "Limitations"
 msgstr "限制"
 
-#: source/concepts/using_mpm.rst:384
+#: source/concepts/using_mpm.rst:391
 msgid ""
 "Coupled MPM entries must step in place and do not support "
 "``project_outside_colliders``."

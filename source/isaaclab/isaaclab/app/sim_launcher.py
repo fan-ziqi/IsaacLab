@@ -349,6 +349,7 @@ def scan(cfg, launcher_args: argparse.Namespace | dict | None = None) -> Scan:
     auto_physx_locations: list[tuple[PhysicsCfg, Any, Any, bool]] = []  # (node, parent, key, is_first_physics)
     launcher_types: list[str] = []
     visualizer_cfgs: list[VisualizerCfg] = []
+    default_visualizer_cfgs: list[VisualizerCfg] = []
     visited: set[int] = set()
 
     def add_launcher_type(node: PhysicsCfg | RendererCfg):
@@ -393,6 +394,11 @@ def scan(cfg, launcher_args: argparse.Namespace | dict | None = None) -> Scan:
         except TypeError:
             return
         for name, child in children.items():
+            # Defaults customize selected visualizers; they do not require a runtime.
+            if name == "default_visualizer_cfg":
+                if isinstance(child, VisualizerCfg):
+                    default_visualizer_cfgs.append(child)
+                continue
             if child is None or isinstance(child, (int, float, str, bool)):
                 continue
             if isinstance(child, (list, tuple)):
@@ -403,12 +409,18 @@ def scan(cfg, launcher_args: argparse.Namespace | dict | None = None) -> Scan:
 
     visit(cfg, None, None)
     has_ovrtx = has_ovrtx or any(visualizer_cfg.visualizer_type == "newton_rtx" for visualizer_cfg in visualizer_cfgs)
+    visualizer_intent = _get_visualizer_intent(visualizer_cfgs, args)
+    if visualizer_intent["has_kit_visualizer"]:
+        visualizer_intent["has_kit_streaming_view"] |= any(
+            default_cfg.visualizer_type == "kit" and default_cfg.streaming_view
+            for default_cfg in default_visualizer_cfgs
+        )
 
     has_physics = bool(physics_cfgs)
     config_scan = Scan(
         resolved_physics_cfg=physics_cfgs[0] if physics_cfgs else None,
         effective_cfg=effective_cfg,
-        visualizer_intent=_get_visualizer_intent(visualizer_cfgs, args),
+        visualizer_intent=visualizer_intent,
         has_ovrtx=has_ovrtx,
         has_kit_camera=has_kit_camera,
         has_kit_physics=False,
@@ -525,6 +537,31 @@ def _validate_runtime(scan: Scan, kit_sources: tuple[str, ...]) -> None:
     )
 
 
+def validate_launch(cfg, launcher_args: argparse.Namespace | dict | None = None) -> tuple[Scan, tuple[str, ...]]:
+    """Walk *cfg* once and raise if its runtime combination cannot launch, without launching it.
+
+    This is the scan and validation :func:`launch_simulation` starts with. Like :func:`scan`, it
+    mutates *cfg* in place: ``--physics`` is applied and automatic placeholders are resolved.
+
+    Args:
+        cfg: Config tree to scan for backend, renderer, and sensor requirements.
+        launcher_args: Parsed launcher arguments, as for :func:`launch_simulation`. The values
+            :func:`scan` resolves are written back to a dict or namespace.
+
+    Returns:
+        The scan, and the components that require Isaac Sim / Kit; empty for a kitless launch.
+
+    Raises:
+        ValueError: If the combination cannot share one process, e.g. OVRTX or OvPhysX with Kit.
+    """
+    args = vars(launcher_args) if isinstance(launcher_args, argparse.Namespace) else launcher_args
+    args = {} if args is None else args
+    config_scan = scan(cfg, args)
+    kit_sources = _get_kit_runtime_sources(config_scan, args)
+    _validate_runtime(config_scan, kit_sources)
+    return config_scan, kit_sources
+
+
 def _resolve_distributed_device(cfg, args: dict) -> None:
     """Set ``cfg.sim.device`` and the launcher ``device`` for distributed training.
 
@@ -594,14 +631,9 @@ def launch_simulation(
     args = vars(launcher_args) if isinstance(launcher_args, argparse.Namespace) else launcher_args
     args = {} if args is None else args
 
-    # The single walk: collect every signal, apply the --physics override, and
-    # resolve the automatic PhysX and RTX placeholders.
-    config_scan = scan(cfg, args)
+    config_scan, kit_sources = validate_launch(cfg, args)
     effective_cfg = config_scan.effective_cfg
     physics_cfg = config_scan.resolved_physics_cfg
-
-    kit_sources = _get_kit_runtime_sources(config_scan, args)
-    _validate_runtime(config_scan, kit_sources)
     needs_kit = bool(kit_sources)
     args["kit_visualizer"] = config_scan.visualizer_intent["has_kit_visualizer"]
 

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-15 05:36+0000\n"
+"PO-Revision-Date: 2026-10-15 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -86,88 +86,436 @@ msgstr ""
 "物理、渲染和可视化可以分别选择。例如，相机环境可以使用 Newton 物理与 Newton Warp 渲染器，再通过 ``--viz`` "
 "独立选择可视化器。"
 
-#: source/concepts/backends_and_presets.rst:61
+#: source/concepts/backends_and_presets.rst:63
+msgid "Backend architecture"
+msgstr "后端架构"
+
+#: source/concepts/backends_and_presets.rst:65
+msgid ""
+"Factories dispatch an object to the active backend implementation at "
+"construction time, so code can use the same public API without importing "
+"backend-specific modules directly."
+msgstr "工厂在对象构造时将其分派给当前后端的具体实现，因此上层代码可以使用统一的公共 API，无需直接导入各后端的专用模块。"
+
+#: source/concepts/backends_and_presets.rst:69
+#: source/concepts/backends_and_presets.rst:75
+msgid ""
+"Isaac Lab backend architecture, from environment code through factories and the physics\n"
+"preset to the PhysX, Newton, and OvPhysX backend packages and their engines"
+msgstr "Isaac Lab 后端架构：环境代码通过工厂和物理预设，连接到 PhysX、Newton、OvPhysX 后端软件包及其底层引擎。"
+
+#: source/concepts/backends_and_presets.rst:82
+msgid "Factory dispatch"
+msgstr "工厂分派"
+
+#: source/concepts/backends_and_presets.rst:84
+msgid ""
+"All factories inherit from "
+":class:`~isaaclab.utils.backend_utils.FactoryBase`. They locate supported "
+"backend implementations through a core backend-key selector followed by "
+"package and module-path conventions:"
+msgstr ""
+"所有工厂均继承 :class:`~isaaclab.utils.backend_utils.FactoryBase` "
+"，先通过核心后端键选择器，再按照软件包和模块路径约定，定位受支持的后端实现："
+
+#: source/concepts/backends_and_presets.rst:88
+msgid ""
+"The name of ``SimulationContext.physics_manager`` is mapped to one of the "
+"backend keys recognized by ``FactoryBase._get_backend()``. Adding another "
+"physics backend requires extending this core selector."
+msgstr ""
+"``SimulationContext.physics_manager`` 的名称会映射到 ``FactoryBase._get_backend()``"
+" 识别的某个后端键。添加新的物理后端时，需要扩展这个核心选择器。"
+
+#: source/concepts/backends_and_presets.rst:91
+msgid ""
+"The factory module path determines the backend module path. For example, "
+"``isaaclab.assets.articulation`` maps to "
+"``isaaclab_physx.assets.articulation``, "
+"``isaaclab_newton.assets.articulation``, or "
+"``isaaclab_ov.assets.articulation``. The OvPhysX backend key uses the shared"
+" ``isaaclab_ov`` integration package."
+msgstr ""
+"工厂模块路径决定后端模块路径。例如， ``isaaclab.assets.articulation`` 映射到 "
+"``isaaclab_physx.assets.articulation`` 、 "
+"``isaaclab_newton.assets.articulation`` 或 "
+"``isaaclab_ov.assets.articulation`` 。OvPhysX 后端键使用共享的 ``isaaclab_ov`` 集成软件包。"
+
+#: source/concepts/backends_and_presets.rst:97
+msgid ""
+"The factory lazily imports the backend module and caches the implementation "
+"class in a registry."
+msgstr "工厂按需导入后端模块，并将实现类缓存到注册表中。"
+
+#: source/concepts/backends_and_presets.rst:118
+msgid ""
+"Renderers and visualizers instead select their implementations through their"
+" configuration's ``class_type``. Their selection is independent of physics; "
+"renderer instances are shared through the simulation registry described "
+"below."
+msgstr "渲染器和可视化器则通过配置中的 ``class_type`` 选择实现。它们的选择独立于物理后端；渲染器实例通过下文介绍的仿真注册表共享。"
+
+#: source/concepts/backends_and_presets.rst:123
+msgid "Physics manager lifecycle"
+msgstr "物理管理器生命周期"
+
+#: source/concepts/backends_and_presets.rst:125
+msgid ""
+"Each backend implements :class:`~isaaclab.physics.PhysicsManager`, the "
+"abstract base class that owns its simulation lifecycle. Implementations "
+"initialize their engine from a :class:`~isaaclab.sim.SimulationContext`, "
+"update kinematics with ``forward()``, advance simulation with ``step()``, "
+"reset state with ``reset()``, and release resources with ``close()``."
+msgstr ""
+"各后端均实现 :class:`~isaaclab.physics.PhysicsManager` 。这一抽象基类负责管理仿真生命周期。具体实现根据 "
+":class:`~isaaclab.sim.SimulationContext` 初始化引擎，通过 ``forward()`` 更新运动学、 "
+"``step()`` 推进仿真、 ``reset()`` 重置状态，并通过 ``close()`` 释放资源。"
+
+#: source/concepts/backends_and_presets.rst:131
+msgid ""
+"The manager exposes :class:`~isaaclab.physics.PhysicsEvent` callbacks for "
+"cross-backend lifecycle work. ``MODEL_INIT`` occurs during scene "
+"construction, ``PHYSICS_READY`` after physics initialization, and ``STOP`` "
+"before native resources are replaced or shut down. The concrete ``close()`` "
+"implementation dispatches the ``STOP`` event."
+msgstr ""
+"管理器通过 :class:`~isaaclab.physics.PhysicsEvent` 回调处理跨后端的生命周期操作。 ``MODEL_INIT``"
+" 在场景构建期间触发， ``PHYSICS_READY`` 在物理初始化完成后触发， ``STOP`` 在原生资源被替换或关闭之前触发。具体的 "
+"``close()`` 实现负责派发 ``STOP`` 事件。"
+
+#: source/concepts/backends_and_presets.rst:137
+msgid ""
+"``SimulationContext`` owns native resources and renderer instances in one "
+"registry. ``get_or_create_backend(backend_cfg)`` reuses one resource for "
+"equal configurations of the same concrete type; a cache miss constructs "
+"``instantiate(backend_cfg)``. :class:`~isaaclab.sim.BackendCfg` describes "
+"resource settings and identity, and :class:`~isaaclab.renderers.RendererCfg`"
+" extends it for renderer instances. ``PhysicsCfg`` selects a physics "
+"manager. Finalize configurations before registration and treat them, "
+"including nested values, as read-only afterward. Use a new configuration for"
+" different settings. ``close_backend(backend)`` closes the exact registered "
+"object after all consumers have released their bindings; it does not compare"
+" or hash configurations. Resources declared through ``BackendCfg`` must "
+"implement ``close()``. Plain construction cfgs share Python-owned data "
+"without a teardown operation; removing the registry entry releases its "
+"reference. A failed close retains the entry for retry. After physics "
+"shutdown invalidates camera render data, simulation teardown closes material"
+" writers, renderer instances, visualizers, and remaining native resources, "
+"in that order, before closing the stage."
+msgstr ""
+"``SimulationContext`` 在同一个注册表中持有原生资源和渲染器实例。对于具体类型相同、配置相等的对象， "
+"``get_or_create_backend(backend_cfg)`` 会复用同一资源；缓存未命中时，通过 "
+"``instantiate(backend_cfg)`` 创建资源。 :class:`~isaaclab.sim.BackendCfg` "
+"描述资源设置和身份， :class:`~isaaclab.renderers.RendererCfg` 在此基础上描述渲染器实例， "
+"``PhysicsCfg`` 则选择物理管理器。注册前应完成配置，注册后将配置及其嵌套值视为只读；需要不同设置时，应创建新配置。所有使用方释放绑定后， "
+"``close_backend(backend)`` 会关闭那个确切的已注册对象，不会比较配置或计算其哈希。通过 ``BackendCfg`` "
+"声明的资源必须实现 ``close()`` 。普通构造配置共享由 Python "
+"管理的数据，没有显式关闭操作；移除注册表条目即可释放其引用。如果关闭失败，条目会保留以便重试。物理关闭使相机渲染数据失效后，仿真清理会依次关闭材质写入器、渲染器实例、可视化器和其余原生资源，最后关闭"
+" USD 舞台。"
+
+#: source/concepts/backends_and_presets.rst:154
+msgid ""
+"Managers and native renderers expose their borrowed resource through "
+"``backend``. For example, ``NewtonManager.backend.model`` accesses the "
+"finalized native model. Closing a renderer releases its bindings, not the "
+"shared native resource. Exposing native handles does not replace SDP "
+"transport."
+msgstr ""
+"管理器和原生渲染器通过 ``backend`` 暴露借用的资源。例如， ``NewtonManager.backend.model`` "
+"可访问最终构建完成的原生模型。关闭渲染器只会释放其绑定，不会关闭共享原生资源。暴露原生句柄并不替代 SDP 数据传输。"
+
+#: source/concepts/backends_and_presets.rst:159
+msgid ""
+"Clone contexts are registered separately as ``sim.clone_contexts[Context] = "
+"Context(...)`` before plan dispatch. They apply the plan but do not own "
+"native runtime resources."
+msgstr ""
+"克隆上下文在执行计划分派前，单独以 ``sim.clone_contexts[Context] = Context(...)`` "
+"注册。它们负责应用计划，不持有原生运行时资源。"
+
+#: source/concepts/backends_and_presets.rst:162
+msgid ""
+"Newton has two resources with different lifetimes, not two interchangeable "
+"backends:"
+msgstr "Newton 有两类生命周期不同的资源，它们并非两个可互换的后端："
+
+#: source/concepts/backends_and_presets.rst:164
+msgid ""
+"``ModelBuilder`` holds mutable construction data. Cloning populates it and "
+"sensors declare requirements before finalization. It remains available for "
+"hard reset. ``NewtonBuilderCfg`` is a plain construction cfg, not a "
+"``BackendCfg``; the builder needs no native ``close()``."
+msgstr ""
+"``ModelBuilder`` 持有可修改的构建数据。克隆时填充这些数据，传感器在模型最终构建完成之前声明需求；之后构建器仍保留，用于硬重置。 "
+"``NewtonBuilderCfg`` 是普通构造配置，而不是 ``BackendCfg`` ，构建器无需原生 ``close()`` 操作。"
+
+#: source/concepts/backends_and_presets.rst:167
+msgid ""
+"``NewtonBackend`` owns the finalized model and native buffers. Physics and "
+"render consumers borrow those handles. Closing it releases runtime "
+"allocations without closing the builder."
+msgstr ""
+"``NewtonBackend`` 持有最终构建完成的模型和原生缓冲区，物理与渲染使用方借用这些句柄。关闭它会释放运行时分配的资源，但不会关闭构建器。"
+
+#: source/concepts/backends_and_presets.rst:170
+msgid "Both resources use the same registry:"
+msgstr "两类资源使用相同的注册表："
+
+#: source/concepts/backends_and_presets.rst:180
+msgid ""
+"Both configurations use the selected physics cfg; non-Newton physics selects"
+" a render-only representation. ``SimulationContext`` has no backend-specific"
+" cfg fields, and consumers do not access clone contexts. Consumers request "
+"body transforms and visual points directly through SDP. Queries share the "
+"native resource's BVHs but keep each consumer's captured work separate."
+msgstr ""
+"两种配置均使用选定的物理配置；物理后端不是 Newton 时，则选用仅用于渲染的表示。 ``SimulationContext`` "
+"没有特定后端专用的配置字段，使用方也不访问克隆上下文，而是直接通过 SDP 请求刚体变换和可视点。查询共享原生资源的 "
+"BVH，但各使用方捕获的计算工作相互独立。"
+
+#: source/concepts/backends_and_presets.rst:186
+msgid "Portable asset and sensor interfaces"
+msgstr "可跨后端使用的资源与传感器接口"
+
+#: source/concepts/backends_and_presets.rst:188
+msgid "Assets and sensors use the same layering as the factories:"
+msgstr "资源和传感器采用与工厂相同的分层方式："
+
+#: source/concepts/backends_and_presets.rst:190
+msgid ""
+"A base class in ``isaaclab`` defines the public contract, such as "
+"``BaseArticulation`` or ``BaseContactSensor``."
+msgstr ""
+"``isaaclab`` 中的基类定义公共接口约定，例如 ``BaseArticulation`` 或 ``BaseContactSensor`` 。"
+
+#: source/concepts/backends_and_presets.rst:192
+msgid ""
+"A factory class inherits from both :class:`FactoryBase "
+"<isaaclab.utils.backend_utils.FactoryBase>` and that base class."
+msgstr ""
+"工厂类同时继承 :class:`FactoryBase <isaaclab.utils.backend_utils.FactoryBase>` "
+"和相应基类。"
+
+#: source/concepts/backends_and_presets.rst:194
+msgid "Backend packages provide the supported implementations."
+msgstr "后端软件包提供受支持的具体实现。"
+
+#: source/concepts/backends_and_presets.rst:196
+msgid ""
+"Sensor data classes use the same pattern, for example "
+"``ContactSensorData(FactoryBase, BaseContactSensorData)``. Implementations "
+"expose :class:`~isaaclab.utils.warp.ProxyArray` values through public asset "
+"and sensor data properties. Each proxy wraps the underlying ``wp.array`` and"
+" provides explicit ``.warp`` access to that array and cached, zero-copy "
+"``.torch`` access to a :class:`torch.Tensor` view. Use those accessors when "
+"an API specifically requires one representation. Passing a ``ProxyArray`` to"
+" ``wp.to_torch()`` is supported only by a deprecated compatibility shim; new"
+" code should use ``proxy_array.torch``. Backend-native and internal storage "
+"may still use raw Warp arrays. See :doc:`/source/how-to/proxy_array` for "
+"usage and buffer lifetime guidance."
+msgstr ""
+"传感器数据类也采用相同模式，例如 ``ContactSensorData(FactoryBase, "
+"BaseContactSensorData)``。各实现通过公共资产和传感器数据属性提供 "
+":class:`~isaaclab.utils.warp.ProxyArray` 值。每个代理封装底层 ``wp.array``，通过 "
+"``.warp`` 显式访问该数组，并通过 ``.torch`` 访问缓存的零拷贝 :class:`torch.Tensor` 视图。API "
+"明确要求某种表示形式时，请使用对应的访问器。将 ``ProxyArray`` 传给 ``wp.to_torch()`` "
+"仅由已弃用的兼容层支持，新代码应使用 ``proxy_array.torch``。后端原生接口和内部存储仍可能使用原始 Warp "
+"数组。用法和缓冲区生命周期见 :doc:`/source/how-to/proxy_array` 。"
+
+#: source/concepts/backends_and_presets.rst:209
+msgid "Portable renderer and scene-data interfaces"
+msgstr "可跨后端使用的渲染器与场景数据接口"
+
+#: source/concepts/backends_and_presets.rst:211
+msgid ""
+"Rendering is selected independently from physics. Acquire implementations of"
+" the :class:`~isaaclab.renderers.BaseRenderer` contract through "
+"``sim.get_or_create_backend(renderer_cfg)``. The "
+":class:`~isaaclab.renderers.RenderContext` coordinates their rendering "
+"lifecycle through a filtered view of that registry, without a separate "
+"renderer cache or renderer ownership. It validates global settings and "
+"registration timing, initializes renderers after physics is ready, and "
+"coordinates stage preparation, scene updates, and material writers. See "
+":ref:`overview_renderers` for renderer choices and usage."
+msgstr ""
+"渲染器的选择独立于物理后端。通过 ``sim.get_or_create_backend(renderer_cfg)`` 获取符合 "
+":class:`~isaaclab.renderers.BaseRenderer` 接口约定的实现。 "
+":class:`~isaaclab.renderers.RenderContext` "
+"通过注册表的过滤视图协调渲染生命周期，不另设渲染器缓存，也不持有渲染器所有权。它验证全局设置和注册时机，在物理就绪后初始化渲染器，并协调 USD "
+"舞台准备、场景更新和材质写入器。渲染器选择与用法见 :ref:`overview_renderers` 。"
+
+#: source/concepts/backends_and_presets.rst:221
+msgid ""
+"Physics managers expose live simulation data through "
+":class:`~isaaclab.scene_data.SceneDataBackend`. The "
+":class:`~isaaclab.scene_data.SceneDataProvider` owned by the simulation "
+"context converts and remaps that data for backend-independent consumers:"
+msgstr ""
+"物理管理器通过 :class:`~isaaclab.scene_data.SceneDataBackend` 暴露实时仿真数据。仿真上下文持有的 "
+":class:`~isaaclab.scene_data.SceneDataProvider` 负责转换和重新映射数据，供不依赖具体后端的使用方消费："
+
+#: source/concepts/backends_and_presets.rst:230
+msgid ""
+"This boundary lets renderers and visualizers consume a common Warp-native "
+"data path without knowing which physics engine owns the state. See "
+":doc:`/source/concepts/native-physics-api/scene_data_providers` for the "
+"complete data-flow model."
+msgstr ""
+"通过这一接口边界，渲染器和可视化器可以共用 Warp 原生数据通路，无需了解状态由哪个物理引擎管理。完整的数据流模型见 "
+":doc:`/source/concepts/native-physics-api/scene_data_providers` 。"
+
+#: source/concepts/backends_and_presets.rst:236
+msgid "Native engine access boundary"
+msgstr "原生引擎访问边界"
+
+#: source/concepts/backends_and_presets.rst:238
+msgid ""
+"The portable interfaces define the stable API boundary. Advanced code can "
+"use each engine's native low-level data API, but those APIs intentionally "
+"keep their own ownership and synchronization semantics. See "
+":doc:`/source/concepts/native-physics-api/index` for PhysX typed views, "
+"Newton live model/state arrays and generic selections, and OvPhysX tensor "
+"bindings."
+msgstr ""
+"可跨后端使用的接口构成稳定的 API 边界。高级代码可以使用各引擎的原生底层数据 API，但这些 API 保留各自的所有权和同步语义。PhysX "
+"类型化视图、Newton 实时模型与状态数组及通用选择，以及 OvPhysX 张量绑定，见 :doc:`/source/concepts/native-"
+"physics-api/index` 。"
+
+#: source/concepts/backends_and_presets.rst:246
+msgid "Design principles"
+msgstr "设计原则"
+
+#: source/concepts/backends_and_presets.rst:248
+msgid ""
+"**Lazy loading:** Backend modules are imported only when first instantiated,"
+" keeping startup fast and avoiding dependencies on unused backends."
+msgstr "**按需加载：** 后端模块仅在首次实例化时导入，既加快启动，也避免依赖未使用的后端。"
+
+#: source/concepts/backends_and_presets.rst:250
+msgid ""
+"**Recognized keys plus convention:** Once the core selector recognizes a "
+"backend key, module paths mirror the ``isaaclab.X.Y`` structure. OvPhysX "
+"maps to ``isaaclab_ov.X.Y``; other recognized backends use "
+"``isaaclab_<backend>.X.Y`` by default."
+msgstr ""
+"**已识别的后端键与路径约定：** 核心选择器识别后端键后，模块路径遵循 ``isaaclab.X.Y`` 的结构。OvPhysX 映射为 "
+"``isaaclab_ov.X.Y`` ；其他已识别后端默认使用 ``isaaclab_<backend>.X.Y`` 。"
+
+#: source/concepts/backends_and_presets.rst:254
+msgid ""
+"**Independent selection:** Physics backend, renderer, and visualizer are "
+"selected independently."
+msgstr "**独立选择：** 物理后端、渲染器和可视化器分别选择。"
+
+#: source/concepts/backends_and_presets.rst:256
+msgid ""
+"**Explicit data interop:** Public asset and sensor data properties return "
+":class:`~isaaclab.utils.warp.ProxyArray`; its ``.warp`` and ``.torch`` "
+"accessors expose the required array representation without copying."
+msgstr ""
+"**显式数据互操作：** 公共资源和传感器数据属性返回 :class:`~isaaclab.utils.warp.ProxyArray` ；通过 "
+"``.warp`` 和 ``.torch`` 访问所需的数组表示，无需复制。"
+
+#: source/concepts/backends_and_presets.rst:259
+msgid ""
+"**Zero runtime overhead:** Selection occurs at instantiation time; it does "
+"not add dispatch logic to the simulation hot path."
+msgstr "**无运行时额外开销：** 实现在实例化时选定，不会在仿真频繁执行的路径中增加分派逻辑。"
+
+#: source/concepts/backends_and_presets.rst:264
 msgid "Find what a task supports"
 msgstr "查看任务支持的选项"
 
-#: source/concepts/backends_and_presets.rst:63
+#: source/concepts/backends_and_presets.rst:266
 msgid ""
 "Preset support is task-specific. Before choosing a name, ask the task what "
 "it offers:"
 msgstr "不同任务支持的预设有所不同。选择名称之前，先查看任务提供哪些预设："
 
-#: source/concepts/backends_and_presets.rst:71
+#: source/concepts/backends_and_presets.rst:274
 msgid ""
 "The help output groups names by ``physics=``, ``renderer=``, and "
-"``presets=``. To browse all registered environments and their presets at "
-"once, run:"
+"``presets=``. To list the combinations each registered environment can "
+"launch, run:"
 msgstr ""
-"帮助信息会按 ``physics=`` 、 ``renderer=`` 和 ``presets=`` "
-"分组列出名称。要一次查看所有已注册的环境及其预设，请运行："
+"帮助输出按 ``physics=``、``renderer=`` 和 ``presets=`` 对名称分组。要列出各个已注册环境能够启动的组合，可运行："
 
-#: source/concepts/backends_and_presets.rst:78
+#: source/concepts/backends_and_presets.rst:281
 msgid ""
-"An empty preset list is not an error. It means that the environment uses its"
-" registered default configuration and does not expose alternatives. Passing "
-"a name that a task does not list is unsupported and fails during "
-"configuration validation."
-msgstr "预设列表为空并非错误，而是表示环境使用注册时的默认配置，没有提供其他选项。传入任务未列出的名称属于不受支持的配置，会在配置验证时失败。"
+"Each line is one combination that resolves, passes the task's own "
+"configuration checks, and can launch headless; ``[default]`` marks the one "
+"the task uses when no names are passed. Not every pairing of declared names "
+"can run together: OvPhysX and OVRTX cannot share a process with Isaac Sim / "
+"Kit, and a task can reject a combination in its own configuration checks. "
+"Checking every combination takes a few seconds per task, so narrow the list "
+"with ``--keyword``."
+msgstr ""
+"每行对应一种可以完成配置解析、通过任务自身的配置检查并以无界面方式启动的组合；``[default]`` "
+"标记未传入名称时任务所用的默认组合。已声明的选项并非可以任意搭配：OvPhysX 和 OVRTX 无法与 Isaac Sim / Kit "
+"共处同一进程，任务也可能在自身的配置检查中拒绝某些组合。检查一个任务的所有组合需要几秒钟，建议用 ``--keyword`` 缩小范围。"
 
-#: source/concepts/backends_and_presets.rst:85
+#: source/concepts/backends_and_presets.rst:289
+msgid ""
+"A task listed only with ``(defaults)`` uses its registered default "
+"configuration and does not expose alternatives. Passing a name that a task "
+"does not list is unsupported and fails during configuration validation."
+msgstr "如果任务只列出 ``(defaults)``，表示它使用已注册的默认配置，没有可选变体。传入任务未列出的名称不受支持，会在配置校验时失败。"
+
+#: source/concepts/backends_and_presets.rst:295
 msgid "Choose a selector"
 msgstr "选用合适的选择器"
 
-#: source/concepts/backends_and_presets.rst:91
+#: source/concepts/backends_and_presets.rst:301
 msgid "Selector"
 msgstr "选择器"
 
-#: source/concepts/backends_and_presets.rst:92
+#: source/concepts/backends_and_presets.rst:302
 msgid "Example"
 msgstr "示例"
 
-#: source/concepts/backends_and_presets.rst:93
+#: source/concepts/backends_and_presets.rst:303
 msgid "What it changes"
 msgstr "修改内容"
 
-#: source/concepts/backends_and_presets.rst:94
+#: source/concepts/backends_and_presets.rst:304
 msgid "``physics=NAME``"
 msgstr "``physics=NAME``"
 
-#: source/concepts/backends_and_presets.rst:95
+#: source/concepts/backends_and_presets.rst:305
 msgid "``physics=newton_mjwarp``"
 msgstr "``physics=newton_mjwarp``"
 
-#: source/concepts/backends_and_presets.rst:96
+#: source/concepts/backends_and_presets.rst:306
 msgid "Selects a physics configuration, including its backend and solver."
 msgstr "选择物理配置，包括后端和求解器。"
 
-#: source/concepts/backends_and_presets.rst:97
+#: source/concepts/backends_and_presets.rst:307
 msgid "``renderer=NAME``"
 msgstr "``renderer=NAME``"
 
-#: source/concepts/backends_and_presets.rst:98
+#: source/concepts/backends_and_presets.rst:308
 msgid "``renderer=newton_renderer``"
 msgstr "``renderer=newton_renderer``"
 
-#: source/concepts/backends_and_presets.rst:99
+#: source/concepts/backends_and_presets.rst:309
 msgid "Selects a renderer configuration for tasks that produce camera data."
 msgstr "为产生相机数据的任务选择渲染器配置。"
 
-#: source/concepts/backends_and_presets.rst:100
+#: source/concepts/backends_and_presets.rst:310
 msgid "``presets=NAME[,NAME,...]``"
 msgstr "``presets=NAME[,NAME,...]``"
 
-#: source/concepts/backends_and_presets.rst:101
+#: source/concepts/backends_and_presets.rst:311
 msgid "``presets=rgb``"
 msgstr "``presets=rgb``"
 
-#: source/concepts/backends_and_presets.rst:102
+#: source/concepts/backends_and_presets.rst:312
 msgid ""
 "Applies task-specific choices such as observation modes, camera layouts, or "
 "compatible configuration bundles."
 msgstr "应用任务专用选项，例如观测模式、相机布局或兼容的配置组合。"
 
-#: source/concepts/backends_and_presets.rst:105
+#: source/concepts/backends_and_presets.rst:315
 msgid ""
 "These are Hydra tokens, so append them without leading dashes. They work "
 "with training, playback, and environment scripts that use Isaac Lab's task "
@@ -175,59 +523,59 @@ msgid ""
 msgstr ""
 "这些是 Hydra 配置项，直接追加到命令末尾，不要添加前导短横线。使用 Isaac Lab 任务配置启动器的训练、策略运行和环境脚本均支持它们。"
 
-#: source/concepts/backends_and_presets.rst:109
+#: source/concepts/backends_and_presets.rst:319
 msgid ""
 "Selectors can be combined. This command chooses Newton with the MuJoCo-Warp "
 "solver, the Newton Warp renderer, and RGB observations:"
 msgstr ""
 "选择器可以组合使用。以下命令选择使用 MuJoCo-Warp 求解器的 Newton 后端、Newton Warp 渲染器，以及 RGB 观测："
 
-#: source/concepts/backends_and_presets.rst:118
+#: source/concepts/backends_and_presets.rst:328
 msgid ""
 "Only combine values listed for the task. Some physics, renderer, sensor, and"
 " observation configurations are incompatible, and the task may reject an "
 "invalid combination with a focused error message."
 msgstr "仅组合任务明确列出的选项。部分物理、渲染器、传感器和观测配置彼此不兼容，任务可能拒绝无效组合，并给出具体错误信息。"
 
-#: source/concepts/backends_and_presets.rst:124
+#: source/concepts/backends_and_presets.rst:334
 msgid "Common backend choices"
 msgstr "常用后端选项"
 
-#: source/concepts/backends_and_presets.rst:126
+#: source/concepts/backends_and_presets.rst:336
 msgid ""
 "The exact list depends on the environment, but these names follow shared "
 "conventions:"
 msgstr "具体列表取决于环境，但这些名称遵循共同约定："
 
-#: source/concepts/backends_and_presets.rst:129
+#: source/concepts/backends_and_presets.rst:339
 msgid "Physics presets"
 msgstr "物理预设"
 
-#: source/concepts/backends_and_presets.rst:133
-#: source/concepts/backends_and_presets.rst:154
+#: source/concepts/backends_and_presets.rst:343
+#: source/concepts/backends_and_presets.rst:364
 msgid "Name"
 msgstr "名称"
 
-#: source/concepts/backends_and_presets.rst:134
-#: source/concepts/backends_and_presets.rst:155
+#: source/concepts/backends_and_presets.rst:344
+#: source/concepts/backends_and_presets.rst:365
 msgid "Meaning"
 msgstr "含义"
 
-#: source/concepts/backends_and_presets.rst:135
+#: source/concepts/backends_and_presets.rst:345
 msgid "``isaacsim_physx``"
 msgstr "``isaacsim_physx``"
 
-#: source/concepts/backends_and_presets.rst:136
+#: source/concepts/backends_and_presets.rst:346
 msgid ""
 "Concrete Isaac Sim PhysX configuration. This is the default for tasks whose "
 "established default is Isaac Sim PhysX."
 msgstr "明确指定的 Isaac Sim PhysX 配置，适用于既有默认后端为 Isaac Sim PhysX 的任务。"
 
-#: source/concepts/backends_and_presets.rst:138
+#: source/concepts/backends_and_presets.rst:348
 msgid "``physx``"
 msgstr "``physx``"
 
-#: source/concepts/backends_and_presets.rst:139
+#: source/concepts/backends_and_presets.rst:349
 msgid ""
 "Automatic PhysX-family selection. Isaac Sim PhysX is used when the runtime "
 "needs Kit; a configured OvPhysX alternative can be used for fully kit-less "
@@ -236,51 +584,49 @@ msgstr ""
 "自动选择 PhysX 系列实现。运行时需要 Kit 时使用 Isaac Sim PhysX；完全不使用 Kit 时，可以选用已配置的 OvPhysX "
 "实现。"
 
-#: source/concepts/backends_and_presets.rst:142
+#: source/concepts/backends_and_presets.rst:352
 msgid "``newton_mjwarp``"
 msgstr "``newton_mjwarp``"
 
-#: source/concepts/backends_and_presets.rst:143
+#: source/concepts/backends_and_presets.rst:353
 msgid "Newton physics with the MuJoCo-Warp solver."
 msgstr "使用 MuJoCo-Warp 求解器的 Newton 物理后端。"
 
-#: source/concepts/backends_and_presets.rst:144
+#: source/concepts/backends_and_presets.rst:354
 msgid "``newton_kamino``"
 msgstr "``newton_kamino``"
 
-#: source/concepts/backends_and_presets.rst:145
+#: source/concepts/backends_and_presets.rst:355
 msgid ""
 "Newton physics with the Kamino solver. Support is beta and currently limited"
 " to selected tasks and compatible assets."
 msgstr "使用 Kamino 求解器的 Newton 物理后端。目前处于测试阶段，仅支持部分任务和兼容资源。"
 
-#: source/concepts/backends_and_presets.rst:147
+#: source/concepts/backends_and_presets.rst:357
 msgid "``ovphysx``"
 msgstr "``ovphysx``"
 
-#: source/concepts/backends_and_presets.rst:148
+#: source/concepts/backends_and_presets.rst:358
 msgid "Concrete OvPhysX configuration for supported kit-less tasks."
 msgstr "明确指定的 OvPhysX 配置，适用于受支持且不依赖 Kit 的任务。"
 
-#: source/concepts/backends_and_presets.rst:150
+#: source/concepts/backends_and_presets.rst:360
 msgid "Renderer presets"
 msgstr "渲染器预设"
 
-#: source/concepts/backends_and_presets.rst:156
+#: source/concepts/backends_and_presets.rst:366
 msgid "``isaacsim_rtx``"
 msgstr "``isaacsim_rtx``"
 
-#: source/concepts/backends_and_presets.rst:157
-msgid ""
-"Concrete Isaac Sim RTX renderer configuration. This is the default for tasks"
-" that use the multi-backend renderer preset."
-msgstr "明确指定的 Isaac Sim RTX 渲染器配置，是使用多后端渲染器预设的任务的默认配置。"
+#: source/concepts/backends_and_presets.rst:367
+msgid "Concrete Isaac Sim RTX renderer configuration."
+msgstr "显式指定 Isaac Sim RTX 渲染器的配置。"
 
-#: source/concepts/backends_and_presets.rst:159
+#: source/concepts/backends_and_presets.rst:368
 msgid "``rtx``"
 msgstr "``rtx``"
 
-#: source/concepts/backends_and_presets.rst:160
+#: source/concepts/backends_and_presets.rst:369
 msgid ""
 "Automatic RTX-family selection. Isaac Sim RTX is used when physics, "
 "visualization, livestreaming, or another runtime choice requires Kit; "
@@ -289,24 +635,26 @@ msgstr ""
 "自动选择 RTX 系列实现。物理、可视化、直播流或其他运行时选项需要 Kit 时，使用 Isaac Sim RTX；否则使用 OVRTX，实现完全不依赖"
 " Kit 的运行。"
 
-#: source/concepts/backends_and_presets.rst:163
+#: source/concepts/backends_and_presets.rst:372
 msgid "``newton_renderer``"
 msgstr "``newton_renderer``"
 
-#: source/concepts/backends_and_presets.rst:164
-msgid "Newton Warp renderer."
-msgstr "Newton Warp 渲染器。"
+#: source/concepts/backends_and_presets.rst:373
+msgid ""
+"Newton Warp renderer. This is the default for tasks that use the multi-"
+"backend renderer preset."
+msgstr "Newton Warp 渲染器。对于采用多后端渲染器预设的任务，它是默认渲染器。"
 
-#: source/concepts/backends_and_presets.rst:165
+#: source/concepts/backends_and_presets.rst:375
 msgid "``ovrtx``"
 msgstr "``ovrtx``"
 
-#: source/concepts/backends_and_presets.rst:166
+#: source/concepts/backends_and_presets.rst:376
 msgid ""
 "Concrete OVRTX renderer configuration for supported kit-less workflows."
 msgstr "明确指定的 OVRTX 渲染器配置，适用于受支持且不依赖 Kit 的工作流程。"
 
-#: source/concepts/backends_and_presets.rst:168
+#: source/concepts/backends_and_presets.rst:378
 msgid ""
 "Automatic selectors such as ``physics=physx`` and ``renderer=rtx`` are opt-"
 "in. Defaults are concrete so that running a task without selectors is "
@@ -317,42 +665,42 @@ msgstr ""
 "等自动选择器需显式启用。默认值均明确指定具体实现，保证不传选择器时的任务行为可预测。求解器不等于独立后端： ``newton_mjwarp`` 和 "
 "``newton_kamino`` 都使用 Newton，只是配置了不同的求解器。"
 
-#: source/concepts/backends_and_presets.rst:175
+#: source/concepts/backends_and_presets.rst:385
 msgid "Defaults, presets, and fine-tuning"
 msgstr "默认值、预设与微调"
 
-#: source/concepts/backends_and_presets.rst:177
+#: source/concepts/backends_and_presets.rst:387
 msgid ""
 "A preset replaces the complete configuration section at its location; it "
 "does not merge fields from two alternatives. Isaac Lab resolves "
 "configuration in this order:"
 msgstr "预设会替换所在位置的整个配置部分，而不会合并两个备选配置的字段。Isaac Lab 按以下顺序解析配置："
 
-#: source/concepts/backends_and_presets.rst:181
+#: source/concepts/backends_and_presets.rst:391
 msgid "Apply each preset config's ``default`` choice."
 msgstr "应用各预设配置中的 ``default`` 选项。"
 
-#: source/concepts/backends_and_presets.rst:182
+#: source/concepts/backends_and_presets.rst:392
 msgid "Apply global choices from ``presets=...``."
 msgstr "应用 ``presets=...`` 指定的全局选项。"
 
-#: source/concepts/backends_and_presets.rst:183
+#: source/concepts/backends_and_presets.rst:393
 msgid ""
 "Apply a preset targeted at a specific path, such as "
 "``env.sim.physics=newton_mjwarp``."
 msgstr "应用针对特定路径的预设，例如 ``env.sim.physics=newton_mjwarp`` 。"
 
-#: source/concepts/backends_and_presets.rst:185
+#: source/concepts/backends_and_presets.rst:395
 msgid "Apply scalar Hydra overrides, such as ``env.sim.dt=0.002``."
 msgstr "应用 Hydra 标量覆盖项，例如 ``env.sim.dt=0.002`` 。"
 
-#: source/concepts/backends_and_presets.rst:187
+#: source/concepts/backends_and_presets.rst:397
 msgid ""
 "The last step makes it easy to start from a maintained preset and tune one "
 "value:"
 msgstr "最后一步便于在已有维护的预设基础上调整单个值："
 
-#: source/concepts/backends_and_presets.rst:196
+#: source/concepts/backends_and_presets.rst:406
 msgid ""
 "Prefer ``physics=`` and ``renderer=`` for backend choices because they state"
 " intent clearly. Use ``presets=`` for task-specific modes or when one name "
@@ -363,18 +711,18 @@ msgstr ""
 "，意图更清晰。任务专用模式，或需要用同一个名称同时更新多个匹配配置部分时，使用 ``presets=`` "
 "。只有想替换某个特定配置部分时，才使用路径选择器。"
 
-#: source/concepts/backends_and_presets.rst:203
+#: source/concepts/backends_and_presets.rst:413
 msgid ""
 "Keep behavior-changing presets the same when loading a checkpoint. An "
 "observation preset can change tensor shapes, and a policy trained with one "
 "observation mode may not load with another."
 msgstr "加载检查点时，应保持会影响行为的预设与训练时一致。观测预设可能改变张量形状，使用一种观测模式训练的策略，未必能在另一种模式下加载。"
 
-#: source/concepts/backends_and_presets.rst:209
+#: source/concepts/backends_and_presets.rst:419
 msgid "How task authors expose choices"
 msgstr "任务开发者如何提供选项"
 
-#: source/concepts/backends_and_presets.rst:211
+#: source/concepts/backends_and_presets.rst:421
 msgid ""
 "Task authors define alternatives with "
 ":class:`~isaaclab_tasks.utils.hydra.PresetCfg` and choose one as the "
@@ -384,14 +732,14 @@ msgstr ""
 "任务开发者通过 :class:`~isaaclab_tasks.utils.hydra.PresetCfg` "
 "定义备选配置，并选定一个默认值。对于多后端任务，预设包装器应放在 :class:`~isaaclab.sim.SimulationCfg` 中："
 
-#: source/concepts/backends_and_presets.rst:243
+#: source/concepts/backends_and_presets.rst:453
 msgid ""
 "Keep backend-specific values inside named configurations whenever possible. "
 "This keeps task logic shared and makes every supported choice visible from "
 "the command line."
 msgstr "尽可能将后端专用值放在具名配置中。这样可以共享任务逻辑，并让命令行显示所有受支持的选项。"
 
-#: source/concepts/backends_and_presets.rst:247
+#: source/concepts/backends_and_presets.rst:457
 msgid ""
 "When backend selection must also change simulation-wide settings such as the"
 " time step, a physics preset may instead contain complete ``SimulationCfg`` "
@@ -402,35 +750,29 @@ msgstr ""
 "如果后端选择还必须改变时间步长等仿真全局设置，物理预设也可以包含完整的 ``SimulationCfg`` 备选配置。 ``physics=`` "
 "选择器会通过其中的 ``physics`` 字段识别这些组合，并应用完整的匹配仿真配置。"
 
-#: source/concepts/backends_and_presets.rst:254
+#: source/concepts/backends_and_presets.rst:464
 msgid "Where to go next"
 msgstr "进一步阅读"
 
-#: source/concepts/backends_and_presets.rst:256
+#: source/concepts/backends_and_presets.rst:466
 msgid ""
 ":doc:`/source/setup/environments` lists environments and their supported "
 "presets."
 msgstr ":doc:`/source/setup/environments` 列出环境及其支持的预设。"
 
-#: source/concepts/backends_and_presets.rst:258
+#: source/concepts/backends_and_presets.rst:468
 msgid ""
 ":doc:`/source/features/hydra` covers scalar overrides, preset authoring, "
 "conflict handling, and advanced configuration behavior."
 msgstr ":doc:`/source/features/hydra` 介绍标量覆盖、预设编写、冲突处理和高级配置行为。"
 
-#: source/concepts/backends_and_presets.rst:260
-msgid ""
-":ref:`backend-architecture` explains how factories, the physics manager, "
-"assets, and sensors dispatch across backends."
-msgstr ":ref:`backend-architecture` 解释工厂、物理管理器、资源和传感器如何跨后端分派调用。"
-
-#: source/concepts/backends_and_presets.rst:262
+#: source/concepts/backends_and_presets.rst:470
 msgid ""
 ":ref:`physics-backends` compares physics backend runtime requirements, "
 "maturity, solver families, and intended uses."
 msgstr ":ref:`physics-backends` 比较各物理后端的运行时要求、成熟度、求解器系列和适用场景。"
 
-#: source/concepts/backends_and_presets.rst:264
+#: source/concepts/backends_and_presets.rst:472
 msgid ""
 ":doc:`/source/concepts/renderers` explains renderer selection and "
 "implementation details."

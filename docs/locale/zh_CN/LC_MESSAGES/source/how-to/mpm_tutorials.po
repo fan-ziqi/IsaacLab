@@ -1,0 +1,421 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-15 05:36+0000\n"
+"PO-Revision-Date: 2026-10-15 00:00+0800\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/how-to/mpm_tutorials.rst:11
+msgid "Exploring MPM materials and coupling"
+msgstr "探索 MPM 材料与耦合"
+
+#: source/how-to/mpm_tutorials.rst:13
+msgid ""
+"The Material Point Method (MPM) represents materials with particles that can"
+" deform, compact, and flow. Stiffness, yielding, friction, and viscosity "
+"determine how these materials respond to forces and collisions."
+msgstr "物质点法（MPM）用粒子表示能够变形、压实和流动的材料。刚度、屈服、摩擦和黏度共同决定材料受力及碰撞时的响应。"
+
+#: source/how-to/mpm_tutorials.rst:17
+msgid ""
+"In this tutorial, we compare material parameters in simple impact scenes, "
+"explore the nearly rigid limit, and reconstruct a fluid surface from "
+"particles. We then use a walking G1 robot to see how particle reaction "
+"forces affect rigid-body motion. Each comparison helps isolate a different "
+"part of the simulation so you can adapt the settings to your own scene."
+msgstr ""
+"本教程先在简单碰撞场景中对比材料参数，探索近似刚体的极限情况，并从粒子重建流体表面；随后让 G1 "
+"机器人行走，观察粒子反作用力对刚体运动的影响。各组对比将仿真的不同因素分开考察，便于将这些设置用于自己的场景。"
+
+#: source/how-to/mpm_tutorials.rst:23
+msgid ""
+"For an introduction to spawning MPM objects and configuring the Newton "
+"solver, see :ref:`newton-using-mpm`. The comparisons below illustrate "
+"qualitative behavior; they are starting points for experiments rather than "
+"calibrated material models."
+msgstr ""
+"生成 MPM 对象和配置 Newton 求解器的入门说明见 :ref:`newton-using-mpm` "
+"。下列对比用于展示定性行为，可作为实验起点，并非经过标定的材料模型。"
+
+#: source/how-to/mpm_tutorials.rst:30
+msgid "Running the tutorials"
+msgstr "运行教程"
+
+#: source/how-to/mpm_tutorials.rst:32
+msgid ""
+"The material and rigid-body tutorials launch Kit by default, requiring the "
+"``isaacsim`` extra. The surface-reconstruction tutorial launches Newton GL "
+"by default. Use ``--viz`` to select another visualizer; Newton RTX also "
+"requires ``uv run --extra ovrtx``."
+msgstr ""
+"材料与刚体教程默认启动 Kit，需要安装 ``isaacsim`` 可选依赖。表面重建教程默认启动 Newton GL。可以用 ``--viz`` "
+"选择其他可视化器；Newton RTX 还需要使用 ``uv run --extra ovrtx``。"
+
+#: source/how-to/mpm_tutorials.rst:39
+msgid "Comparing material parameters"
+msgstr "对比材料参数"
+
+#: source/how-to/mpm_tutorials.rst:41
+msgid ""
+"The ``material_parameters.py`` tutorial shows how one parameter changes a "
+"material's response to impact. The stiffness and compressibility presets "
+"drop spheres onto plates. The other presets drop blocks onto horizontal "
+"cylinders, where you can observe spreading, fragmentation, and the shape "
+"left after impact."
+msgstr ""
+"``material_parameters.py`` "
+"教程展示单个参数如何改变材料的碰撞响应。刚度与可压缩性预设让球体落到平板上；其余预设让方块落到水平圆柱上，便于观察材料铺展、碎裂和碰撞后的形状。"
+
+#: source/how-to/mpm_tutorials.rst:46
+msgid "Elastic stiffness with ``--press_spheres``:"
+msgstr "使用 ``--press_spheres`` 对比受压时的弹性刚度："
+
+#: source/how-to/mpm_tutorials.rst:54
+msgid "Start with the elastic stiffness comparison:"
+msgstr "先从弹性刚度对比开始："
+
+#: source/how-to/mpm_tutorials.rst:61
+msgid ""
+"The three specimens share the same geometry, initial velocities, particle "
+"mass, solver settings, and seeded particle layout. Their Young's moduli are "
+"100 kPa, 300 kPa, and 1 MPa. Compare how much each sphere compresses and how"
+" it recovers after impact. Yielding is disabled in this preset to isolate "
+"the elastic response."
+msgstr ""
+"三个试样采用相同的几何形状、初速度、粒子质量、求解器设置，以及由同一随机种子生成的粒子分布，杨氏模量分别为 100 kPa、300 kPa 和 1 "
+"MPa。观察各球体的压缩程度和碰撞后的恢复过程。该预设关闭屈服，以单独考察弹性响应。"
+
+#: source/how-to/mpm_tutorials.rst:67
+msgid ""
+"Each preset defines the varied field and the values that remain fixed. "
+"``material_values_for_variant()`` combines these with the common material "
+"settings before passing them to ``MPMParticleMaterialCfg``:"
+msgstr ""
+"每种预设都定义了变化的字段和保持不变的值。``material_values_for_variant()`` 将这些值与通用材料设置合并，再传给 "
+"``MPMParticleMaterialCfg``："
+
+#: source/how-to/mpm_tutorials.rst:75
+msgid "Choose a preset according to the behavior you want to explore:"
+msgstr "根据希望考察的行为选择预设："
+
+#: source/how-to/mpm_tutorials.rst:77
+msgid "Material comparisons"
+msgstr "材料对比"
+
+#: source/how-to/mpm_tutorials.rst:81
+msgid "``--preset``"
+msgstr "``--preset``"
+
+#: source/how-to/mpm_tutorials.rst:82
+msgid "Behavior to inspect"
+msgstr "需观察的行为"
+
+#: source/how-to/mpm_tutorials.rst:83
+msgid "``young_modulus``"
+msgstr "``young_modulus``"
+
+#: source/how-to/mpm_tutorials.rst:84
+msgid "Elastic compression and recovery"
+msgstr "弹性压缩与恢复"
+
+#: source/how-to/mpm_tutorials.rst:85
+msgid "``poisson_ratio``"
+msgstr "``poisson_ratio``"
+
+#: source/how-to/mpm_tutorials.rst:86
+msgid "Volume change under compression"
+msgstr "受压时的体积变化"
+
+#: source/how-to/mpm_tutorials.rst:87
+msgid "``friction``"
+msgstr "``friction``"
+
+#: source/how-to/mpm_tutorials.rst:88
+msgid "Granular spreading and the final angle of repose"
+msgstr "粒料铺展与最终休止角"
+
+#: source/how-to/mpm_tutorials.rst:89
+msgid "``tensile_yield_ratio``"
+msgstr "``tensile_yield_ratio``"
+
+#: source/how-to/mpm_tutorials.rst:90
+msgid "Fragmentation and tensile cohesion"
+msgstr "碎裂与抗拉内聚力"
+
+#: source/how-to/mpm_tutorials.rst:91
+msgid "``yield_pressure``"
+msgstr "``yield_pressure``"
+
+#: source/how-to/mpm_tutorials.rst:92
+msgid "Irreversible compression"
+msgstr "不可逆压缩"
+
+#: source/how-to/mpm_tutorials.rst:93
+msgid "``hardening``"
+msgstr "``hardening``"
+
+#: source/how-to/mpm_tutorials.rst:94
+msgid "Strength gained after plastic compaction"
+msgstr "塑性压实后的强度增长"
+
+#: source/how-to/mpm_tutorials.rst:95
+msgid "``dilatancy``"
+msgstr "``dilatancy``"
+
+#: source/how-to/mpm_tutorials.rst:96
+msgid "Volume change under shear"
+msgstr "剪切过程中的体积变化"
+
+#: source/how-to/mpm_tutorials.rst:97
+msgid "``yield_stress``"
+msgstr "``yield_stress``"
+
+#: source/how-to/mpm_tutorials.rst:98
+msgid "Cohesive flow and retained shape"
+msgstr "内聚流动与形状保持"
+
+#: source/how-to/mpm_tutorials.rst:99
+msgid "``viscosity``"
+msgstr "``viscosity``"
+
+#: source/how-to/mpm_tutorials.rst:100
+msgid "Rate-dependent plastic flow"
+msgstr "与变形速率有关的塑性流动"
+
+#: source/how-to/mpm_tutorials.rst:101
+msgid "``particle_jitter``"
+msgstr "``particle_jitter``"
+
+#: source/how-to/mpm_tutorials.rst:102
+msgid "The effect of aligned versus irregular particle packing"
+msgstr "规则排列与不规则堆积的粒子分布对结果的影响"
+
+#: source/how-to/mpm_tutorials.rst:104
+msgid ""
+"The default solver voxel size is 25 mm, with two particles per voxel axis "
+"(eight per interior voxel). Material comparisons reuse the same random "
+"offsets to avoid confusing a change in packing with a change in material "
+"response. Only ``particle_jitter`` compares aligned particles with jittered "
+"particles. Use ``--variant_index 0``, ``1``, or ``2`` to inspect a single "
+"specimen; the jitter preset has two variants."
+msgstr ""
+"求解器默认体素大小为 25 "
+"mm，每个体素的每个轴向布置两个粒子，即内部体素含八个粒子。材料对比复用相同的随机偏移，避免将粒子堆积变化误认为材料响应变化；只有 "
+"``particle_jitter`` 预设对比规则排列和随机扰动后的粒子。用 ``--variant_index 0``、``1`` 或 ``2`` "
+"可以单独查看一个试样；粒子扰动预设只有两个变体。"
+
+#: source/how-to/mpm_tutorials.rst:111
+msgid ""
+"To apply sustained compression, add ``--press_spheres`` to either sphere "
+"preset:"
+msgstr "要施加持续压缩，可为任一球体预设添加 ``--press_spheres``："
+
+#: source/how-to/mpm_tutorials.rst:118
+msgid ""
+"The plates descend after a two-second settling period and hold the spheres "
+"under compression. Compare the lateral expansion and volume response while "
+"keeping Young's modulus fixed. Let the simulation continue after loading so "
+"you can distinguish transient motion from the settled shape."
+msgstr "静置两秒后，平板开始下降，并持续压缩球体。保持杨氏模量不变，比较横向膨胀和体积响应。加载后让仿真继续运行，以区分瞬态运动和最终稳定的形状。"
+
+#: source/how-to/mpm_tutorials.rst:123
+msgid ""
+"See :ref:`newton-tuning-mpm` for the preset values and guidance on checking "
+"resolution, timestep, and convergence before interpreting material behavior."
+msgstr "预设数值及检查分辨率、时间步长、收敛情况的方法见 :ref:`newton-tuning-mpm` 。解释材料行为之前，应先完成这些检查。"
+
+#: source/how-to/mpm_tutorials.rst:128
+msgid "Approaching the rigid-body limit"
+msgstr "接近刚体极限"
+
+#: source/how-to/mpm_tutorials.rst:130
+msgid ""
+"The ``rigid_body_equivalence.py`` tutorial compares spheres, cubes, and "
+"capsules on two identical inclines. MJWarp simulates rigid bodies on the "
+"left; Newton MPM simulates particle versions on the right. Corresponding "
+"objects share their color, initial placement relative to the ramp, outer "
+"dimensions, and total mass."
+msgstr ""
+"``rigid_body_equivalence.py`` 教程在两个相同斜面上对比球体、立方体和胶囊体。左侧由 MJWarp 模拟刚体，右侧由 "
+"Newton MPM 模拟对应的粒子对象。相互对应的对象具有相同的颜色、相对斜面的初始位置、外部尺寸和总质量。"
+
+#: source/how-to/mpm_tutorials.rst:147
+msgid ""
+"The MPM objects use a large finite stiffness and pressure-yield threshold to"
+" approximate a rigid material. Compare their rolling, sliding, and shape "
+"retention with the rigid bodies. MPM remains a discretized continuum, so a "
+"large stiffness does not guarantee exact rigid-body motion: grid resolution,"
+" particle sampling, timestep, and solver convergence still matter."
+msgstr ""
+"MPM 对象采用较大但有限的刚度和压力屈服阈值，近似刚性材料。将它们的滚动、滑动及形状保持情况与刚体进行对比。MPM "
+"本质上仍是离散化的连续介质模型，因此较大刚度并不保证得到完全相同的刚体运动；网格分辨率、粒子采样、时间步长和求解器收敛情况仍会影响结果。"
+
+#: source/how-to/mpm_tutorials.rst:153
+msgid ""
+"Use ``--mpm_young_modulus`` and ``--mpm_yield_pressure`` to explore the "
+"transition to a softer or yielding material. Keep ``--voxel_size``, "
+"``--mpm_substeps``, and ``--solver_iterations`` fixed when comparing "
+"material values, then vary them separately to check the numerical "
+"approximation."
+msgstr ""
+"用 ``--mpm_young_modulus`` 和 ``--mpm_yield_pressure`` "
+"探索材料逐渐变软或发生屈服时的变化。对比材料参数时，保持 ``--voxel_size``、``--mpm_substeps`` 和 "
+"``--solver_iterations`` 不变，再单独调整它们，检查数值近似的影响。"
+
+#: source/how-to/mpm_tutorials.rst:160
+msgid "Reconstructing a fluid surface"
+msgstr "重建流体表面"
+
+#: source/how-to/mpm_tutorials.rst:162
+msgid ""
+"The ``surface_reconstruction.py`` tutorial drops a water blob into a shallow"
+" pool. It shows how to turn the particle positions into a continuous surface"
+" for rendering, while leaving the particle simulation unchanged."
+msgstr ""
+"``surface_reconstruction.py`` "
+"教程将一团水落入浅水池，展示如何在不改变粒子仿真的情况下，将粒子位置重建为用于渲染的连续表面。"
+
+#: source/how-to/mpm_tutorials.rst:177
+msgid "Run the same scene again with another ``--surface_preset``:"
+msgstr "换一个 ``--surface_preset``，再次运行同一场景："
+
+#: source/how-to/mpm_tutorials.rst:179
+msgid "Surface comparisons"
+msgstr "表面对比"
+
+#: source/how-to/mpm_tutorials.rst:183
+msgid "Preset"
+msgstr "预设"
+
+#: source/how-to/mpm_tutorials.rst:184
+msgid "Change relative to ``balanced``"
+msgstr "相对于 ``balanced`` 的变化"
+
+#: source/how-to/mpm_tutorials.rst:185
+msgid "``balanced``"
+msgstr "``balanced``"
+
+#: source/how-to/mpm_tutorials.rst:186
+msgid ""
+"25 mm reconstruction grid, anisotropic kernels, one mesh-smoothing pass"
+msgstr "25 mm 重建网格、各向异性核、一次网格平滑"
+
+#: source/how-to/mpm_tutorials.rst:187
+msgid "``coarse_grid``"
+msgstr "``coarse_grid``"
+
+#: source/how-to/mpm_tutorials.rst:188
+msgid "50 mm reconstruction grid"
+msgstr "50 mm 重建网格"
+
+#: source/how-to/mpm_tutorials.rst:189
+msgid "``isotropic``"
+msgstr "``isotropic``"
+
+#: source/how-to/mpm_tutorials.rst:190
+msgid "Isotropic kernels"
+msgstr "各向同性核"
+
+#: source/how-to/mpm_tutorials.rst:191
+msgid "``heavy_smoothing``"
+msgstr "``heavy_smoothing``"
+
+#: source/how-to/mpm_tutorials.rst:192
+msgid "Six mesh-smoothing passes"
+msgstr "六次网格平滑"
+
+#: source/how-to/mpm_tutorials.rst:194
+msgid ""
+"Look at the splash sheets, small surface features, and the pool as it "
+"settles. Use ``--fluid_render_mode both`` to inspect the mesh alongside the "
+"source particles. The reconstruction grid is separate from the MPM solver "
+"grid; changing it affects surface detail and extraction cost rather than "
+"particle motion. Individual ``--surface_*`` options override the selected "
+"preset."
+msgstr ""
+"观察飞溅形成的薄片、细小的表面特征，以及水池逐渐静止的过程。用 ``--fluid_render_mode both`` "
+"可同时查看网格和原始粒子。重建网格独立于 MPM 求解器网格，改变它会影响表面细节和提取开销，不会改变粒子运动。单独指定 ``--surface_*``"
+" 选项可以覆盖所选预设。"
+
+#: source/how-to/mpm_tutorials.rst:200
+msgid ""
+"The tutorial constructs ``newton.geometry.ParticleSurface`` after "
+"``sim.reset()`` and passes it to ``ParticleSurfaceRenderer``. The simulation"
+" loop calls the renderer's ``update()`` before ``sim.render()`` so the "
+"viewers receive the mesh for the current particle state. See :ref:`newton-"
+"using-mpm` for this integration pattern."
+msgstr ""
+"教程在 ``sim.reset()`` 后创建 ``newton.geometry.ParticleSurface``，再将它传给 "
+"``ParticleSurfaceRenderer``。仿真循环在 ``sim.render()`` 前调用渲染器的 "
+"``update()``，使可视化器收到与当前粒子状态对应的网格。此接入方式见 :ref:`newton-using-mpm` 。"
+
+#: source/how-to/mpm_tutorials.rst:208
+msgid ""
+"Surface reconstruction supports Newton GL and Newton RTX only, not Kit, "
+"Viser, or Rerun. Select ``--fluid_render_mode particles`` to use these "
+"visualizers without surface reconstruction."
+msgstr ""
+"表面重建仅支持 Newton GL 和 Newton RTX，不支持 Kit、Viser 或 Rerun。使用这些可视化器时，可选择 "
+"``--fluid_render_mode particles``，仅显示粒子，不进行表面重建。"
+
+#: source/how-to/mpm_tutorials.rst:214
+msgid "Comparing one-way and two-way coupling"
+msgstr "对比单向与双向耦合"
+
+#: source/how-to/mpm_tutorials.rst:216
+msgid ""
+"The ``mpm-g1-coupling`` example uses a trained G1 walking policy to cross "
+"shallow sand, snow, and clay strips on a rigid runway. The robot starts on "
+"the bare runway before reaching the particles. This comparison shows how "
+"material resistance affects a controller trained for rigid terrain."
+msgstr ""
+"``mpm-g1-coupling`` 示例使用训练好的 G1 "
+"行走策略，穿过刚性跑道上的浅层沙、雪和黏土带。机器人先从没有粒子的跑道上起步，再接触粒子。该对比展示了材料阻力如何影响在刚性地形上训练的控制器。"
+
+#: source/how-to/mpm_tutorials.rst:221
+msgid "Run the two-way comparison from a source checkout:"
+msgstr "从源码检出目录运行双向耦合对比："
+
+#: source/how-to/mpm_tutorials.rst:228
+msgid ""
+"Then repeat it with ``--coupling one_way``. Both modes let the robot "
+"displace particles. Two-way coupling returns particle reaction forces to the"
+" robot; one-way coupling sets proxy feedback relaxation to zero from the "
+"initial state. Compare the robot's progress and balance as well as the "
+"displaced particles. The policy may slow down, become stuck, or fall when it"
+" encounters the material."
+msgstr ""
+"然后改用 ``--coupling one_way`` "
+"再运行一次。两种模式下，机器人都会推动粒子。双向耦合将粒子反作用力传回机器人；单向耦合则从初始状态起，将代理反馈的松弛系数设为零。除了观察粒子位移，还应对比机器人的前进情况和平衡状态。遇到材料时，策略可能使机器人减速、卡住或跌倒。"
+
+#: source/how-to/mpm_tutorials.rst:234
+msgid ""
+"By default, the example exposes the robot's full collision geometry to MPM. "
+"Use ``--proxy_bodies feet`` or ``--proxy_bodies lower_legs`` to explore how "
+"the choice of coupled geometry affects interaction. Both ``--proxy_mode`` "
+"choices, ``lagged`` and ``staggered``, support feedback; the scheduling mode"
+" alone does not select one-way coupling. See :ref:`newton-coupled-solvers` "
+"for the proxy configuration and feedback controls."
+msgstr ""
+"默认情况下，示例让机器人的完整碰撞几何参与 MPM 耦合。可以用 ``--proxy_bodies feet`` 或 ``--proxy_bodies "
+"lower_legs`` 探索耦合几何的选择如何影响交互。``--proxy_mode`` 的 ``lagged`` 和 ``staggered`` "
+"两种调度方式都支持反馈；仅改变调度模式不会将耦合切换为单向。代理配置和反馈控制见 :ref:`newton-coupled-solvers` 。"
+
+#: source/how-to/mpm_tutorials.rst:241
+msgid ""
+"The example requires CUDA and downloads the published ``Isaac-Velocity-"
+"Flat-G1`` policy unless you supply ``--checkpoint``. It is also available in"
+" the installed package:"
+msgstr ""
+"该示例需要 CUDA。除非通过 ``--checkpoint`` 指定检查点，否则会下载已发布的 ``Isaac-Velocity-Flat-G1`` "
+"策略。安装软件包后也可运行："

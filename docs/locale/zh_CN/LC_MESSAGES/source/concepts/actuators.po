@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-15 05:36+0000\n"
+"PO-Revision-Date: 2026-10-15 00:00+0800\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -599,11 +598,21 @@ msgstr "五个从欠阻尼到过阻尼的摆，阶跃到同一目标。"
 msgid "Position step response for a damping sweep."
 msgstr "阻尼参数扫描的位置阶跃响应。"
 
-#: source/concepts/actuators.rst:318
+#: source/concepts/actuators.rst:317
+msgid ""
+"Try the :ref:`interactive PD tuning demo <interactive-demo-joint-pd>` to "
+"adjust stiffness and damping on a suspended arm with step and sine commands."
+" Its live plot compares target and measured angles. Tune a real robot using "
+"its own mass, actuator model, effort limits, and timestep."
+msgstr ""
+"可以先试试 :ref:`交互式 PD 调参演示 <interactive-demo-joint-pd>` "
+"：向悬挂的机械臂输入阶跃或正弦指令，调整刚度和阻尼，并在实时曲线中对比目标角度和实测角度。为真实机器人调参时，应使用它自身的质量、执行器模型、力/力矩限制和时间步长。"
+
+#: source/concepts/actuators.rst:324
 msgid "Armature"
 msgstr "电枢惯量"
 
-#: source/concepts/actuators.rst:320
+#: source/concepts/actuators.rst:326
 msgid ""
 "Armature [kg or kg·m², depending on joint type] represents the reflected "
 "inertia of the motor and gearbox. It is added to the joint-space inertia, so"
@@ -615,7 +624,7 @@ msgstr ""
 "电枢惯量 [kg 或 kg·m²，取决于关节类型] "
 "表示折算到关节侧的电机和齿轮箱惯量。它被加到关节空间惯量上，因此会改变物理模型。在此单关节对比中，增大电枢惯量会减慢响应，并提高所选增益下的稳定裕度。对于低惯量关节，它还可以改善数值条件。"
 
-#: source/concepts/actuators.rst:325
+#: source/concepts/actuators.rst:331
 msgid ""
 "Explicit and implicit actuators may require different stability settings "
 "because explicit models submit effort while implicit models use solver "
@@ -631,20 +640,20 @@ msgstr ""
 "<https://docs.omniverse.nvidia.com/kit/docs/omni_physics/latest/dev_guide/guides/articulation_stability_guide.html>`_"
 " 。"
 
-#: source/concepts/actuators.rst:332
+#: source/concepts/actuators.rst:338
 msgid ""
 "Five pendulums with increasing armature responding to the same command."
 msgstr "五个电枢惯量逐渐增大的摆，对同一指令作出响应。"
 
-#: source/concepts/actuators.rst:337 source/concepts/actuators.rst:343
+#: source/concepts/actuators.rst:343 source/concepts/actuators.rst:349
 msgid "Position step response for an armature sweep."
 msgstr "电枢惯量参数扫描的位置阶跃响应。"
 
-#: source/concepts/actuators.rst:351
+#: source/concepts/actuators.rst:357
 msgid "Friction"
 msgstr "摩擦"
 
-#: source/concepts/actuators.rst:353
+#: source/concepts/actuators.rst:359
 msgid ""
 "Joint friction acts independently of the PD command. On a freely spinning "
 "joint, higher friction removes velocity faster. Isaac Lab supports static "
@@ -659,7 +668,7 @@ msgstr ""
 ":attr:`~isaaclab.actuators.ActuatorBaseCfg.viscous_friction` "
 "）。应使用它来模拟齿轮箱的静摩擦和拖曳阻力，而不是稳定控制器。"
 
-#: source/concepts/actuators.rst:362
+#: source/concepts/actuators.rst:368
 msgid ""
 "Friction conventions depend on the backend. PhysX uses dimensionless static "
 "and dynamic coefficients in Isaac Sim 4.5, and effort values [N or N·m, "
@@ -672,21 +681,21 @@ msgstr ""
 "N·m，取决于关节类型]。OVPhysX 使用无量纲的静摩擦和动摩擦系数。Newton 使用干摩擦驱动力，没有独立的动摩擦值。三者均使用黏性阻尼 "
 "[N·s/m 或 N·m·s/rad，取决于关节类型]。"
 
-#: source/concepts/actuators.rst:368
+#: source/concepts/actuators.rst:374
 msgid ""
 "Five free-spinning pendulums with increasing joint friction decaying at "
 "different rates."
 msgstr "五个关节摩擦逐渐增大的自由旋转摆，以不同速率减速。"
 
-#: source/concepts/actuators.rst:373 source/concepts/actuators.rst:379
+#: source/concepts/actuators.rst:379 source/concepts/actuators.rst:385
 msgid "Joint-velocity decay for a friction sweep."
 msgstr "摩擦参数扫描的关节速度衰减。"
 
-#: source/concepts/actuators.rst:387
+#: source/concepts/actuators.rst:393
 msgid "Effort limit"
 msgstr "驱动力上限"
 
-#: source/concepts/actuators.rst:389
+#: source/concepts/actuators.rst:395
 msgid ""
 "The effort limit is the torque ceiling the motor can produce [N·m or N]. The"
 " clip below drives an :class:`~isaaclab.actuators.IdealPDActuator` swing-up "
@@ -697,7 +706,7 @@ msgstr ""
 ":class:`~isaaclab.actuators.IdealPDActuator` ，将摆从下垂位置摆起到水平位置，克服约 2.94 N·m "
 "的重力保持力矩。模型的 ``actuator_effort_limit`` 依次取 :math:`[1, 2, 3, 4, 6]` N·m。"
 
-#: source/concepts/actuators.rst:394
+#: source/concepts/actuators.rst:400
 msgid ""
 "The limit shapes the transient response, while gravity determines the steady"
 " state. Limits above the approximately 2.94 N·m hold torque reach the "
@@ -712,21 +721,21 @@ msgstr ""
 ":math:`\\approx 2.94 \\sin\\theta` ）与上限平衡。PD "
 "需求超过上限时，施加的力矩和阻尼项都会被限幅，因此关节可能持续振荡，直到需求回到上限内。如果驱动力上限低于负载的静态需求，控制器就无法有效抑制关节振荡。"
 
-#: source/concepts/actuators.rst:401
+#: source/concepts/actuators.rst:407
 msgid ""
 "Five pendulums with increasing effort limit holding or failing against "
 "gravity."
 msgstr "五个驱动力上限逐渐增大的摆，能够或不能抵抗重力保持位置。"
 
-#: source/concepts/actuators.rst:406 source/concepts/actuators.rst:412
+#: source/concepts/actuators.rst:412 source/concepts/actuators.rst:418
 msgid "Applied joint torque for an effort-limit sweep."
 msgstr "驱动力上限参数扫描的实际关节力矩。"
 
-#: source/concepts/actuators.rst:420
+#: source/concepts/actuators.rst:426
 msgid "Velocity limit"
 msgstr "速度上限"
 
-#: source/concepts/actuators.rst:422
+#: source/concepts/actuators.rst:428
 msgid ""
 "For a :class:`~isaaclab.actuators.DCMotor`, ``actuator_velocity_limit`` is "
 "the no-load speed [rad/s or m/s]. Torque decreases as the joint approaches "
@@ -741,15 +750,15 @@ msgstr ""
 "速度包络。较低上限会缩小可用速度范围，使限幅更早发生。对于隐式组，该值通过软速度限制视图提供。 ``joint_velocity_limit`` "
 "则请求求解器约束，其实施方式取决于后端；参见 :ref:`newton-velocity-limits` 。"
 
-#: source/concepts/actuators.rst:429 source/concepts/actuators.rst:435
+#: source/concepts/actuators.rst:435 source/concepts/actuators.rst:441
 msgid "Torque-speed envelope for a velocity-limit sweep."
 msgstr "速度上限参数扫描的力矩-速度包络。"
 
-#: source/concepts/actuators.rst:443
+#: source/concepts/actuators.rst:449
 msgid "Command delay"
 msgstr "指令延迟"
 
-#: source/concepts/actuators.rst:445
+#: source/concepts/actuators.rst:451
 msgid ""
 "A :class:`~isaaclab.actuators.DelayedPDActuator` delays every command by a "
 "fixed number of physics steps sampled from ``[min_delay, max_delay]`` at "
@@ -763,21 +772,21 @@ msgstr ""
 ":math:`dt = 1/360\\text{ s}` 时对应 0–133 "
 "ms）。延迟越长，摆越滞后于参考信号。在两次重置之间随机改变延迟，可以在仿真到现实训练中模拟传输延迟。"
 
-#: source/concepts/actuators.rst:451
+#: source/concepts/actuators.rst:457
 msgid ""
 "Five pendulums with increasing command delay trailing the same square-wave "
 "command."
 msgstr "五个指令延迟逐渐增大的摆，滞后于同一方波指令。"
 
-#: source/concepts/actuators.rst:456 source/concepts/actuators.rst:462
+#: source/concepts/actuators.rst:462 source/concepts/actuators.rst:468
 msgid "Command-versus-response timeline for a delay sweep."
 msgstr "延迟参数扫描的指令与响应时间线。"
 
-#: source/concepts/actuators.rst:470
+#: source/concepts/actuators.rst:476
 msgid "Implicit vs. explicit"
 msgstr "隐式与显式的对比"
 
-#: source/concepts/actuators.rst:472
+#: source/concepts/actuators.rst:478
 msgid ""
 "In this single-joint demo at :math:`dt = 1/360\\text{ s}`, implicit and "
 "ideal-PD explicit actuators with identical gains produce nearly the same "
@@ -793,19 +802,19 @@ msgstr ""
 "PD。因此，使用隐式执行器训练的策略可能需要调整后才能用于显式执行器。对于显式关节， ``data.joint_stiffness`` 和 "
 "``data.joint_damping`` 为零，因为增益属于执行器模型。"
 
-#: source/concepts/actuators.rst:479 source/concepts/actuators.rst:485
+#: source/concepts/actuators.rst:485 source/concepts/actuators.rst:491
 msgid "Overlaid implicit and explicit PD step responses at identical gains."
 msgstr "相同增益下，隐式和显式 PD 阶跃响应的叠加对比。"
 
-#: source/concepts/actuators.rst:495
+#: source/concepts/actuators.rst:501
 msgid "Runtime API: ``articulation.actuators``"
 msgstr "运行时 API： ``articulation.actuators``"
 
-#: source/concepts/actuators.rst:498
+#: source/concepts/actuators.rst:504
 msgid "Group access"
 msgstr "访问执行器组"
 
-#: source/concepts/actuators.rst:500
+#: source/concepts/actuators.rst:506
 msgid ""
 ":attr:`~isaaclab.assets.Articulation.actuators` is an "
 ":class:`~isaaclab.actuators.ActuatorCollection`, a read-only ``Mapping`` "
@@ -824,11 +833,11 @@ msgstr ""
 "模型，因此应在所属对象上读取和修改控制器参数（见 :ref:`actuators-native` "
 "）。组成员在构造后固定，允许查找和遍历，但不能添加、替换或删除："
 
-#: source/concepts/actuators.rst:516
+#: source/concepts/actuators.rst:522
 msgid "Configure topology before creating the articulation:"
 msgstr "创建关节体前配置拓扑："
 
-#: source/concepts/actuators.rst:523
+#: source/concepts/actuators.rst:529
 msgid ""
 "At runtime, both ``robot.actuators[\"gripper\"] = ...`` and ``del "
 "robot.actuators[\"gripper\"]`` raise :class:`TypeError`. Group membership "
@@ -838,11 +847,11 @@ msgstr ""
 "robot.actuators[\"gripper\"]`` 都会抛出 :class:`TypeError` "
 "。组成员和关节覆盖范围在创建关节体时就已固定。"
 
-#: source/concepts/actuators.rst:528
+#: source/concepts/actuators.rst:534
 msgid "Logical groups and execution batches"
 msgstr "逻辑组与执行批次"
 
-#: source/concepts/actuators.rst:530
+#: source/concepts/actuators.rst:536
 msgid ""
 "Named groups such as ``hips`` and ``knees`` remain distinct when you "
 "configure or access them. A single internal executor computes all plain "
@@ -858,11 +867,11 @@ msgstr ""
 ":class:`ValueError` 。在 Isaac Lab 路径上，显式、有状态、神经网络及派生类组逐组执行；Newton "
 "执行的组则在求解器或主机端适配器中运行。融合执行属于内部优化。"
 
-#: source/concepts/actuators.rst:538
+#: source/concepts/actuators.rst:544
 msgid "Commands, telemetry, and lifecycle"
 msgstr "指令、监测数据与生命周期"
 
-#: source/concepts/actuators.rst:540
+#: source/concepts/actuators.rst:546
 msgid ""
 "**Setting actuator commands.** The mutable ``target_command`` view contains "
 "the desired position, velocity, and effort. Use index setters with "
@@ -873,7 +882,7 @@ msgstr ""
 "视图包含期望位置、速度和驱动力。已有环境或关节索引列表及张量时，使用索引设置方法；已有布尔 Warp "
 "掩码时，使用掩码设置方法。所有设置方法只接受关键字参数："
 
-#: source/concepts/actuators.rst:553
+#: source/concepts/actuators.rst:559
 msgid ""
 "``env_ids`` and ``joint_ids`` must not contain duplicates. Duplicate indices"
 " write to the same destination concurrently, so the result is undefined. "
@@ -883,7 +892,7 @@ msgstr ""
 "``env_ids`` 和 ``joint_ids`` "
 "不能包含重复项。重复索引会并发写入同一目标，结果未定义。请去除重复项，或使用布尔掩码，使各目标最多被选中一次。"
 
-#: source/concepts/actuators.rst:557
+#: source/concepts/actuators.rst:563
 msgid ""
 "By default, ``value`` has shape ``(len(env_ids), len(joint_ids))``. Pass "
 "``full_data=True`` when ``value`` already has shape ``(num_instances, "
@@ -894,7 +903,7 @@ msgstr ""
 "``(num_instances, num_joints)`` 形状，请传入 ``full_data=True`` "
 "，设置方法会直接从完整缓冲区读取所选值。"
 
-#: source/concepts/actuators.rst:561
+#: source/concepts/actuators.rst:567
 msgid ""
 "**Reading commands and telemetry.** ``target_command`` contains the desired "
 "values staged for actuator processing. For Isaac Lab-managed models, "
@@ -909,7 +918,7 @@ msgstr ""
 " 和 OVPhysX 则在 ``write_data_to_sim()`` 期间通过共享主机端适配器处理。通过 ``.torch`` 或 "
 "``.warp`` 访问数组："
 
-#: source/concepts/actuators.rst:575
+#: source/concepts/actuators.rst:581
 msgid ""
 ":attr:`~isaaclab.actuators.ActuatorCollection.computed_effort` is the model "
 "output before clipping. "
@@ -921,7 +930,7 @@ msgstr ""
 ":attr:`~isaaclab.actuators.ActuatorCollection.applied_effort` "
 "是限幅后的值。对于隐式执行器，它们是为奖励计算和监测记录的近似驱动力。"
 
-#: source/concepts/actuators.rst:579
+#: source/concepts/actuators.rst:585
 msgid ""
 "**Randomizing gains.** Gain updates depend on the actuator implementation. "
 "Managed environments should use the ``randomize_actuator_gains`` event. It "
@@ -932,7 +941,7 @@ msgstr ""
 "**随机化增益。** 增益更新方式取决于执行器实现。由管理器组织的环境应使用 ``randomize_actuator_gains`` "
 "事件，它会按需更新执行器自身的增益、隐式求解器驱动或原生控制器参数。集合层没有通用的刚度或阻尼写入方法。"
 
-#: source/concepts/actuators.rst:584
+#: source/concepts/actuators.rst:590
 msgid ""
 "**Lifecycle.** Do not call ``compute()`` or ``submit_commands()`` directly. "
 "The articulation resets actuators during environment resets. It runs "
@@ -948,17 +957,17 @@ msgstr ""
 "完成执行器计算、暂存和提交。应在推进仿真前调用该方法，或由场景/环境循环调用。驱动力监测数据反映最近一次调用的结果。Newton "
 "原生处理会在求解器内继续进行；主机端适配器处理则在此调用期间完成。"
 
-#: source/concepts/actuators.rst:594
+#: source/concepts/actuators.rst:600
 msgid "Migrating from the deprecated setters"
 msgstr "从已弃用的设置方法迁移"
 
-#: source/concepts/actuators.rst:595
+#: source/concepts/actuators.rst:601
 msgid ""
 "Joint commands were previously set on the articulation. Those methods now "
 "forward to the collection and emit a :class:`DeprecationWarning`:"
 msgstr "以前在关节体上设置关节指令。这些方法现在将调用转发给集合，并发出 :class:`DeprecationWarning` ："
 
-#: source/concepts/actuators.rst:606
+#: source/concepts/actuators.rst:612
 msgid ""
 "LEAPP-exported action terms must keep using the annotated articulation "
 "``*_index`` or ``*_mask`` setters until the exporter supports collection "
@@ -967,7 +976,7 @@ msgstr ""
 "在导出器支持集合设置方法之前，LEAPP 导出的动作项必须继续使用带注解的关节体 ``*_index`` 或 ``*_mask`` "
 "设置方法。其他运行时代码应迁移到集合 API。"
 
-#: source/concepts/actuators.rst:610
+#: source/concepts/actuators.rst:616
 msgid ""
 "The data accessors also moved: ``articulation.data.joint_pos_target`` "
 "becomes ``robot.actuators.target_command.position``, and "
@@ -982,11 +991,11 @@ msgstr ""
 "``robot.actuators.applied_effort`` 。完整对应表见 :doc:`Isaac Lab 3.0 迁移指南 "
 "<../migration/migrating_to_isaaclab_3-0>` 。"
 
-#: source/concepts/actuators.rst:617
+#: source/concepts/actuators.rst:623
 msgid "Value resolution: USD vs. ActuatorCfg"
 msgstr "数值解析：USD 与 ActuatorCfg"
 
-#: source/concepts/actuators.rst:619
+#: source/concepts/actuators.rst:625
 msgid ""
 "Gains and limits can come from the USD joint-drive prim or the actuator "
 "config. If a config field is ``None``, Isaac Lab uses the USD value. A value"
@@ -996,7 +1005,7 @@ msgstr ""
 "增益和限制可以来自 USD 关节驱动 prim，也可以来自执行器配置。配置字段为 ``None`` 时，Isaac Lab 使用 USD "
 "值；配置中设置了值时，会覆盖 USD 值。机器人模式只提供关节和刚体的排序，不提供执行器参数。"
 
-#: source/concepts/actuators.rst:623
+#: source/concepts/actuators.rst:629
 msgid ""
 "Set "
 ":attr:`~isaaclab.assets.ArticulationCfg.actuator_value_resolution_debug_print`"
@@ -1010,11 +1019,11 @@ msgstr ""
 " 设为 ``True`` ，当来源值不同或配置未指定值时，会记录每个关节的 USD 值、配置值及实际应用值。未指定值显示为 ``Not "
 "Specified`` 。示例和限制表见 :ref:`how-to-write-articulation-config` 。"
 
-#: source/concepts/actuators.rst:632
+#: source/concepts/actuators.rst:638
 msgid "Native actuators"
 msgstr "原生执行器"
 
-#: source/concepts/actuators.rst:634
+#: source/concepts/actuators.rst:640
 msgid ""
 "By default, Isaac Lab uses the native path for supported explicit actuator "
 "models. Each explicit model runs either inside the solver or through a "
@@ -1025,7 +1034,7 @@ msgstr ""
 "执行路径，将 :attr:`~isaaclab.sim.SimulationCfg.use_newton_actuators` 设为 ``False``"
 " ："
 
-#: source/concepts/actuators.rst:644
+#: source/concepts/actuators.rst:650
 msgid ""
 "With the default native path enabled, each supported explicit actuator "
 "config becomes a ``NewtonActuator`` USD prim. Newton executes it in the "
@@ -1036,7 +1045,7 @@ msgstr ""
 "和 OVPhysX 则在 :meth:`~isaaclab.assets.Articulation.write_data_to_sim` "
 "期间通过共享主机端适配器执行同一模型。"
 
-#: source/concepts/actuators.rst:649
+#: source/concepts/actuators.rst:655
 msgid ""
 "On Newton, native actuators run in the CUDA-graph-captured region. Implicit "
 "actuators are unchanged: the solver still applies their PD gains. On CUDA, "
@@ -1049,7 +1058,7 @@ msgstr ""
 "上，主机端适配器会尽可能捕获执行器指令暂存、模型执行和监测数据发布，否则使用即时执行。有状态的原生执行器不能在调用方管理的 CUDA "
 "图中运行，因此由主机端适配器管理。"
 
-#: source/concepts/actuators.rst:654
+#: source/concepts/actuators.rst:660
 msgid ""
 "Newton executes native actuators in its controller, and the collection "
 "exposes that ownership directly: ``robot.actuators[name]`` returns the "
@@ -1068,57 +1077,57 @@ msgstr ""
 ":func:`~isaaclab.actuators.newton.read_group_parameter` 和 "
 ":func:`~isaaclab.actuators.newton.write_group_parameter` ："
 
-#: source/concepts/actuators.rst:675
+#: source/concepts/actuators.rst:681
 msgid ""
 "Isaac Lab retains named groups for configuration, joint bookkeeping, and "
 "command and telemetry staging."
 msgstr "Isaac Lab 保留命名组，用于配置、关节管理，以及指令和监测数据暂存。"
 
-#: source/concepts/actuators.rst:678
+#: source/concepts/actuators.rst:684
 msgid "**Supported models.** Each supported config maps to USD schemas:"
 msgstr "**受支持的模型。** 各受支持配置映射到以下 USD 模式："
 
-#: source/concepts/actuators.rst:684
+#: source/concepts/actuators.rst:690
 msgid "Config"
 msgstr "配置"
 
-#: source/concepts/actuators.rst:685
+#: source/concepts/actuators.rst:691
 msgid "USD schemas"
 msgstr "USD 模式"
 
-#: source/concepts/actuators.rst:686
+#: source/concepts/actuators.rst:692
 msgid ":class:`~isaaclab.actuators.IdealPDActuatorCfg`"
 msgstr ":class:`~isaaclab.actuators.IdealPDActuatorCfg`"
 
-#: source/concepts/actuators.rst:687
+#: source/concepts/actuators.rst:693
 msgid "``NewtonPDControlAPI`` + ``NewtonMaxEffortClampingAPI``"
 msgstr "``NewtonPDControlAPI`` + ``NewtonMaxEffortClampingAPI``"
 
-#: source/concepts/actuators.rst:688
+#: source/concepts/actuators.rst:694
 msgid ":class:`~isaaclab.actuators.DCMotorCfg`"
 msgstr ":class:`~isaaclab.actuators.DCMotorCfg`"
 
-#: source/concepts/actuators.rst:689
+#: source/concepts/actuators.rst:695
 msgid "``NewtonPDControlAPI`` + ``NewtonDCMotorClampingAPI``"
 msgstr "``NewtonPDControlAPI`` + ``NewtonDCMotorClampingAPI``"
 
-#: source/concepts/actuators.rst:690
+#: source/concepts/actuators.rst:696
 msgid ":class:`~isaaclab.actuators.DelayedPDActuatorCfg`"
 msgstr ":class:`~isaaclab.actuators.DelayedPDActuatorCfg`"
 
-#: source/concepts/actuators.rst:691
+#: source/concepts/actuators.rst:697
 msgid "ideal PD + ``NewtonActuatorDelayAPI``"
 msgstr "理想 PD + ``NewtonActuatorDelayAPI``"
 
-#: source/concepts/actuators.rst:692
+#: source/concepts/actuators.rst:698
 msgid ":class:`~isaaclab.actuators.RemotizedPDActuatorCfg`"
 msgstr ":class:`~isaaclab.actuators.RemotizedPDActuatorCfg`"
 
-#: source/concepts/actuators.rst:693
+#: source/concepts/actuators.rst:699
 msgid "delayed PD + ``NewtonPositionBasedClampingAPI``"
 msgstr "延迟 PD + ``NewtonPositionBasedClampingAPI``"
 
-#: source/concepts/actuators.rst:694
+#: source/concepts/actuators.rst:700
 msgid ""
 ":class:`~isaaclab.actuators.ActuatorNetMLPCfg` / "
 ":class:`~isaaclab.actuators.ActuatorNetLSTMCfg`"
@@ -1126,11 +1135,11 @@ msgstr ""
 ":class:`~isaaclab.actuators.ActuatorNetMLPCfg` / "
 ":class:`~isaaclab.actuators.ActuatorNetLSTMCfg`"
 
-#: source/concepts/actuators.rst:696
+#: source/concepts/actuators.rst:702
 msgid "``NewtonNeuralControlAPI`` (+ ``NewtonDCMotorClampingAPI``)"
 msgstr "``NewtonNeuralControlAPI`` （+ ``NewtonDCMotorClampingAPI`` ）"
 
-#: source/concepts/actuators.rst:698
+#: source/concepts/actuators.rst:704
 msgid ""
 "**Existing USD actuators.** For joints covered by an explicit Lab actuator "
 "config, the config replaces any existing ``NewtonActuator`` prim. Joints not"
@@ -1140,7 +1149,7 @@ msgstr ""
 "**已有的 USD 执行器。** 对显式 Lab 执行器配置覆盖的关节，配置会替换已有的 ``NewtonActuator`` prim。未被 Lab "
 "配置覆盖的关节保留其 USD 中编写的执行器。因此，USD 中编写的执行器和 Lab 配置的执行器可以在不同关节上共存。"
 
-#: source/concepts/actuators.rst:705
+#: source/concepts/actuators.rst:711
 msgid ""
 "With the default ``use_newton_actuators=True``, every explicit actuator "
 "config must be supported. An unsupported config raises an error before "
@@ -1151,7 +1160,7 @@ msgstr ""
 "时，所有显式执行器配置都必须受支持。不受支持的配置会在编写原生执行器前报错。可以禁用 ``use_newton_actuators`` 使用 Isaac"
 " Lab 执行路径，或选择受支持的配置。"
 
-#: source/concepts/actuators.rst:711
+#: source/concepts/actuators.rst:717
 msgid ""
 "Under native execution, delay is fixed. The schema stores only "
 "``max_delay``, so ``min_delay`` is ignored. A "
@@ -1162,28 +1171,28 @@ msgstr ""
 ":class:`~isaaclab.actuators.DelayedPDActuator` 不会像在 Isaac Lab "
 "路径中那样，在重置时随机改变延迟。"
 
-#: source/concepts/actuators.rst:717
+#: source/concepts/actuators.rst:723
 msgid "Backend submission"
 msgstr "提交给后端"
 
-#: source/concepts/actuators.rst:719
+#: source/concepts/actuators.rst:725
 msgid ""
 "Submission differs by backend, but the collection interface is the same:"
 msgstr "提交方式因后端而异，但集合接口相同："
 
-#: source/concepts/actuators.rst:725
+#: source/concepts/actuators.rst:731
 msgid "Backend"
 msgstr "后端"
 
-#: source/concepts/actuators.rst:726
+#: source/concepts/actuators.rst:732
 msgid "Submit behavior"
 msgstr "提交行为"
 
-#: source/concepts/actuators.rst:727
+#: source/concepts/actuators.rst:733
 msgid "PhysX"
 msgstr "PhysX"
 
-#: source/concepts/actuators.rst:728
+#: source/concepts/actuators.rst:734
 msgid ""
 "The Isaac Lab-managed path pushes processed position, velocity, and effort "
 "staging buffers through the PhysX Tensor API. The shared host adapter "
@@ -1196,11 +1205,11 @@ msgstr ""
 "``write_data_to_sim()`` 期间处理原生指令，并提交原始位置、速度目标及原始驱动力。 ``applied_effort`` "
 "仍是监测数据。启用非恒等关节排序时，首先执行融合的重排收集操作。"
 
-#: source/concepts/actuators.rst:733
+#: source/concepts/actuators.rst:739
 msgid "OVPhysX"
 msgstr "OVPhysX"
 
-#: source/concepts/actuators.rst:734
+#: source/concepts/actuators.rst:740
 msgid ""
 "The native path uses the shared host adapter during ``write_data_to_sim()``."
 " It writes raw position and velocity targets plus raw effort through "
@@ -1212,11 +1221,11 @@ msgstr ""
 "张量绑定写入原始位置、速度目标和原始驱动力。 ``applied_effort`` "
 "仍是监测数据。原始设置方法的写入会立即同步到绑定中。关节排序不是恒等排列时，首先执行融合的重排收集操作。"
 
-#: source/concepts/actuators.rst:738
+#: source/concepts/actuators.rst:744
 msgid "Newton / MJWarp"
 msgstr "Newton / MJWarp"
 
-#: source/concepts/actuators.rst:739
+#: source/concepts/actuators.rst:745
 msgid ""
 "Newton writes targets to solver-bound control arrays. Effort is feed-"
 "forward, and native actuators also use ``joint_act``. The built-in drive "
@@ -1224,23 +1233,23 @@ msgid ""
 msgstr ""
 "Newton 将目标写入与求解器绑定的控制数组。驱动力为前馈量，原生执行器还会使用 ``joint_act`` 。内置驱动对隐式关节应用 PD。"
 
-#: source/concepts/actuators.rst:742
+#: source/concepts/actuators.rst:748
 msgid ""
 "For explicit actuators, solver stiffness and damping are zero on every "
 "backend because the actuator model owns the gains."
 msgstr "对于显式执行器，所有后端中的求解器刚度和阻尼均为零，因为增益由执行器模型维护。"
 
-#: source/concepts/actuators.rst:745
+#: source/concepts/actuators.rst:751
 msgid "This page does **not** cover:"
 msgstr "本页 **不涉及** 以下内容："
 
-#: source/concepts/actuators.rst:747
+#: source/concepts/actuators.rst:753
 msgid ""
 "Motion generators or low-level control modes -- see "
 ":doc:`/source/concepts/motion_generators`."
 msgstr "运动生成器或底层控制模式 — 参见 :doc:`/source/concepts/motion_generators` 。"
 
-#: source/concepts/actuators.rst:749
+#: source/concepts/actuators.rst:755
 msgid ""
 "Cross-backend policy transfer and solver-dynamics differences -- see "
 ":doc:`/source/how-to/transfer_policies_between_physx_and_newton`."
@@ -1248,19 +1257,19 @@ msgstr ""
 "跨后端策略迁移和求解器动力学差异 — 参见 :doc:`/source/how-"
 "to/transfer_policies_between_physx_and_newton` 。"
 
-#: source/concepts/actuators.rst:754
+#: source/concepts/actuators.rst:760
 msgid ""
 ":ref:`how-to-write-articulation-config` -- authoring configs and the full "
 "gain/limit value resolution walkthrough."
 msgstr ":ref:`how-to-write-articulation-config` — 编写配置，以及增益/限制数值解析的完整说明。"
 
-#: source/concepts/actuators.rst:756
+#: source/concepts/actuators.rst:762
 msgid ""
 ":ref:`import-new-asset-ensure-drives-exist` -- making sure joint drives "
 "exist on an imported asset so actuators can bind."
 msgstr ":ref:`import-new-asset-ensure-drives-exist` — 确保导入资产上存在关节驱动，使执行器能够绑定。"
 
-#: source/concepts/actuators.rst:758
+#: source/concepts/actuators.rst:764
 msgid ""
 "``Joints actuate in PhysX but not in a Newton-based backend`` in "
 ":doc:`../refs/troubleshooting` -- the USD drive / backend actuation pitfall."
@@ -1268,7 +1277,7 @@ msgstr ""
 ":doc:`../refs/troubleshooting` 中的“关节在 PhysX 中能够驱动，但在基于 Newton 的后端中不能驱动” — "
 "USD 驱动与后端执行器的常见问题。"
 
-#: source/concepts/actuators.rst:760
+#: source/concepts/actuators.rst:766
 msgid ""
 ":mod:`isaaclab.actuators` -- the full actuator model and config API "
 "reference."
