@@ -7,19 +7,12 @@ Configuring an RL Agent
 
 .. currentmodule:: isaaclab
 
-In the previous tutorial, we saw how to train an RL agent to solve the cartpole balancing task
-using the `Stable-Baselines3`_ library. In this tutorial, we will see how to configure the
-training process to use different RL libraries and different training algorithms.
+Each task registers an agent configuration for every supported RL library. The
+configuration selects the algorithm, network, and training settings.
 
-In the directory ``scripts/reinforcement_learning``, you will find the scripts for
-different RL libraries. These are organized into subdirectories named after the library name.
-Each subdirectory contains the training and playing scripts for the library.
-
-To configure a learning library with a specific task, you need to create a configuration file
-for the learning agent. This configuration file is used to create an instance of the learning agent
-and is used to configure the training process. Similar to the environment registration shown in
-the :ref:`tutorial-register-rl-env-gym` tutorial, you can register the learning agent with the
-``gymnasium.register`` method.
+This tutorial creates an agent configuration and registers it with the task using
+``gymnasium.register``, building on :ref:`tutorial-register-rl-env-gym`.
+For library choices and training commands, see :ref:`reinforcement-learning`.
 
 The Code
 --------
@@ -122,14 +115,6 @@ we can use the ``--agent`` argument to specify the configuration instance to use
           uv run isaaclab train --rl_library rsl_rl --task Isaac-Cartpole \
             --run_name ppo
 
-     .. tab-item:: isaaclab.sh / isaaclab.bat
-
-        .. code-block:: bash
-
-          # standard PPO training
-          ./isaaclab.sh train --rl_library rsl_rl --task Isaac-Cartpole \
-            --run_name ppo
-
 * Training with the PPO configuration with symmetry augmentation:
 
   .. tab-set::
@@ -145,21 +130,6 @@ we can use the ``--agent`` argument to specify the configuration instance to use
 
           # you can use hydra to disable symmetry augmentation but enable mirror loss computation
           uv run isaaclab train --rl_library rsl_rl --task Isaac-Cartpole \
-            --agent rsl_rl_with_symmetry_cfg_entry_point \
-            --run_name ppo_without_symmetry_data_augmentation \
-            agent.algorithm.symmetry_cfg.use_data_augmentation=false
-
-     .. tab-item:: isaaclab.sh / isaaclab.bat
-
-        .. code-block:: bash
-
-          # PPO training with symmetry augmentation
-          ./isaaclab.sh train --rl_library rsl_rl --task Isaac-Cartpole \
-            --agent rsl_rl_with_symmetry_cfg_entry_point \
-            --run_name ppo_with_symmetry_data_augmentation
-
-          # you can use hydra to disable symmetry augmentation but enable mirror loss computation
-          ./isaaclab.sh train --rl_library rsl_rl --task Isaac-Cartpole \
             --agent rsl_rl_with_symmetry_cfg_entry_point \
             --run_name ppo_without_symmetry_data_augmentation \
             agent.algorithm.symmetry_cfg.use_data_augmentation=false

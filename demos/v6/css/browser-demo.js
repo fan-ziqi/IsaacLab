@@ -1,0 +1,927 @@
+// Copyright (c) 2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+// All rights reserved.
+//
+// SPDX-License-Identifier: BSD-3-Clause
+
+import { demos } from '../demos.js';
+
+const arrayTypes = {
+  float32: [Float32Array, 'HEAPF32'], float64: [Float64Array, 'HEAPF64'],
+  int32: [Int32Array, 'HEAP32'], uint32: [Uint32Array, 'HEAPU32'],
+};
+
+async function loadBinaryFiles(url, files, label) {
+  return Promise.all(files.map(async (file) => {
+    const response = await fetch(new URL(file, url));
+    if (!response.ok) throw new Error(`${label} request failed (${response.status})`);
+    return response.arrayBuffer();
+  }));
+}
+
+class BrowserSimulation {
+  static async load(source, wasmSource) {
+    const url = new URL(source, document.baseURI);
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Manifest request failed (${response.status})`);
+    const manifest = await response.json();
+    if (manifest.bundleVersion !== 1 || manifest.abiVersion !== 1) throw new Error('Unsupported simulation bundle');
+    const factory = (await import(new URL(manifest.module, url).href)).default;
+    const wasmUrl = new URL(wasmSource || manifest.wasm, url);
+    const options = { locateFile: (name) => name.endsWith('.wasm') ? wasmUrl.href : new URL(name, url).href };
+    if (manifest.wasm.endsWith('.gz') || manifest.wasmFiles) {
+      const files = wasmSource ? [wasmSource] : (manifest.wasmFiles || [manifest.wasm]);
+      const chunks = await loadBinaryFiles(url, files, 'WebAssembly');
+      let stream = new Blob(chunks).stream();
+      if (manifest.wasm.endsWith('.gz')) {
+        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the simulation bundle');
+        stream = stream.pipeThrough(new DecompressionStream('gzip'));
+      }
+      options.wasmBinary = new Uint8Array(await new Response(stream).arrayBuffer());
+    }
+    const module = await factory(options);
+    const simulation = new BrowserSimulation(manifest, module);
+    if (!simulation.init()) {
+      simulation.dispose();
+      throw new Error('Could not initialize WebAssembly simulation');
+    }
+    simulation.url = url;
+    return simulation;
+  }
+
+  constructor(manifest, module) {
+    this.manifest = manifest;
+    this.module = module;
+    this.init = module.cwrap('newton_init', 'number', []);
+    this.stepNative = module.cwrap('newton_step', 'number', []);
+    this.resetNative = module.cwrap('newton_reset', 'number', []);
+    this.disposeNative = module.cwrap('newton_dispose', null, []);
+    this.pointer = module.cwrap('newton_get_param_ptr', 'number', ['string']);
+    this.size = module.cwrap('newton_get_param_size', 'number', ['string']);
+  }
+
+  binding(name) {
+    const metadata = this.manifest.bindings[name];
+    if (!metadata) throw new Error(`Missing binding: ${name}`);
+    const entry = arrayTypes[metadata.dtype];
+    if (!entry) throw new Error(`Unsupported binding type: ${metadata.dtype}`);
+    const [ArrayType, heap] = entry;
+    const pointer = Number(this.pointer(name));
+    if (!pointer || Number(this.size(name)) !== metadata.byteLength) throw new Error(`Invalid binding: ${name}`);
+    return new ArrayType(this.module[heap].buffer, pointer, metadata.byteLength / ArrayType.BYTES_PER_ELEMENT);
+  }
+
+  step() {
+    if (!this.stepNative()) throw new Error('Simulation step failed');
+  }
+
+  reset() {
+    if (!this.resetNative()) throw new Error('Simulation reset failed');
+  }
+
+  dispose() {
+    this.disposeNative();
+  }
+}
+
+function rotateInverse(q, v) {
+  const [x, y, z, w] = q;
+  const tx = 2 * (-y * v[2] + z * v[1]);
+  const ty = 2 * (-z * v[0] + x * v[2]);
+  const tz = 2 * (-x * v[1] + y * v[0]);
+  return [v[0] + w * tx - y * tz + z * ty,
+    v[1] + w * ty - z * tx + x * tz,
+    v[2] + w * tz - x * ty + y * tx];
+}
+
+class DensePolicy {
+  static async load(url, description) {
+    const chunks = (await loadBinaryFiles(url, description.files || [description.file], 'Policy'))
+      .map((data) => new Float32Array(data));
+    const weights = new Float32Array(chunks.reduce((sum, chunk) => sum + chunk.length, 0));
+    let cursor = 0;
+    for (const chunk of chunks) { weights.set(chunk, cursor); cursor += chunk.length; }
+    const final = description.layers.at(-1);
+    if (weights.length !== final.offset + final.rows * (final.columns + 1)) {
+      throw new Error('Policy weight size does not match its manifest');
+    }
+    return new DensePolicy(weights, description.layers);
+  }
+
+  constructor(weights, layers) {
+    this.weights = weights;
+    this.layers = layers;
+  }
+
+  run(observation) {
+    let input = observation;
+    for (let index = 0; index < this.layers.length; index += 1) {
+      const { rows, columns, offset } = this.layers[index];
+      if (input.length !== columns) throw new Error('Policy observation shape mismatch');
+      const output = new Float32Array(rows);
+      const biasOffset = offset + rows * columns;
+      for (let row = 0; row < rows; row += 1) {
+        let sum = this.weights[biasOffset + row];
+        for (let column = 0; column < columns; column += 1) {
+          sum += this.weights[offset + row * columns + column] * input[column];
+        }
+        output[row] = index === this.layers.length - 1 ? sum : (sum > 0 ? sum : Math.expm1(sum));
+      }
+      input = output;
+    }
+    return input;
+  }
+}
+
+class IsaacLabBrowserDemo extends HTMLElement {
+  connectedCallback() {
+    if (this.observer) return;
+    this.generation = (this.generation || 0) + 1;
+    const generation = this.generation;
+    this.visible = false;
+    this.observer = new IntersectionObserver(([entry]) => {
+      this.visible = entry.isIntersecting;
+      if (this.visible && !this.loading) this.loading = this.load(generation);
+      else if (this.visible && this.ready && !this.failed && !this.frameId) {
+        this.previousTime = performance.now();
+        this.frameId = requestAnimationFrame((time) => this.frame(time));
+      } else if (!this.visible && this.frameId) {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = 0;
+      }
+    });
+    this.observer.observe(this);
+  }
+
+  disconnectedCallback() {
+    this.generation += 1;
+    this.ready = false;
+    this.observer?.disconnect();
+    this.observer = null;
+    cancelAnimationFrame(this.frameId);
+    this.frameId = 0;
+    this.releaseControls?.();
+    window.removeEventListener('blur', this.releaseControls);
+    this.releaseControls = null;
+    this.plot?.dispose();
+    this.plot = null;
+    this.viewer?.dispose();
+    this.viewer = null;
+    this.simulation?.dispose();
+    this.simulation = null;
+    this.loading = null;
+  }
+
+  async load(generation) {
+    this.releaseControls?.();
+    window.removeEventListener('blur', this.releaseControls);
+    this.releaseControls = null;
+    this.viewport = null;
+    this.ready = false;
+    this.failed = false;
+    this.innerHTML = '<section class="browser-demo"><div class="browser-demo-head"><strong>Newton simulation</strong><span role="status">Loading…</span></div><canvas aria-label="Interactive Isaac Lab simulation"></canvas><div class="browser-demo-controls"></div></section>';
+    this.status = this.querySelector('[role="status"]');
+    this.canvas = this.querySelector('canvas');
+    try {
+      const simulation = await BrowserSimulation.load(this.getAttribute('src'), this.getAttribute('wasm-src'));
+      if (this.generation !== generation) {
+        simulation.dispose();
+        return;
+      }
+      this.simulation = simulation;
+      this.demo = this.simulation.manifest.isaacLabDemo;
+      if (!this.demo || !demos.some((item) => item.id === this.demo.kind)) throw new Error('Unknown Isaac Lab demo');
+      this.isManipulation = this.demo.kind.startsWith('franka_');
+      this.querySelector('.browser-demo').classList.add(`browser-demo-${this.demo.kind}`, `browser-demo-scene-${this.demo.scene || "default"}`);
+      const title = this.getAttribute('demo-title') || this.demo.title;
+      this.querySelector('.browser-demo-head strong').textContent = title;
+      this.canvas.setAttribute('aria-label', `${title} interactive simulation`);
+      if (this.demo.viewer === 'rigid' || this.demo.kind === 'rigid_friction' || this.demo.kind === 'joint_pd') {
+        const { RigidViewer } = await import('./rigid-viewer.js');
+        const viewer = await RigidViewer.load(this.canvas, this.simulation);
+        if (this.generation !== generation) {
+          viewer.dispose();
+          return;
+        }
+        this.viewer = viewer;
+        if (this.demo.kind === 'joint_pd') {
+          const { JointPdPlot } = await import('../../v1/css/joint-pd-plot.js');
+          if (this.generation !== generation) return;
+          this.plot = new JointPdPlot(this.canvas);
+        }
+      } else if (this.demo.kind === 'cartpole') {
+        const [{ CartpoleViewer }, policy] = await Promise.all([
+          import('../../v1/css/cartpole-viewer.js'), DensePolicy.load(this.simulation.url, this.demo.policy),
+        ]);
+        if (this.generation !== generation) return;
+        this.policy = policy;
+        const viewer = await CartpoleViewer.load(this.canvas, this.simulation);
+        if (this.generation !== generation) {
+          viewer.dispose();
+          return;
+        }
+        this.viewer = viewer;
+      } else if (!['stiffness', 'cloth_bending', 'mpm'].includes(this.demo.kind)) {
+        const [{ RobotViewer }, policy] = await Promise.all([
+          import('./robot-viewer.js'), DensePolicy.load(this.simulation.url, this.demo.policy),
+        ]);
+        if (this.generation !== generation) return;
+        this.policy = policy;
+        const viewer = await RobotViewer.load(this.canvas, this.simulation);
+        if (this.generation !== generation) {
+          viewer.dispose();
+          return;
+        }
+        this.viewer = viewer;
+        if (!this.isManipulation) {
+          this.command = this.demo.policyType === 'microduck' ? this.simulation.binding('command') : new Float32Array(3);
+          this.previousAction = new Float32Array(this.demo.actionIndices?.length || this.demo.jointNames.length);
+        }
+      } else {
+        const { StiffnessViewer } = await import('../../v1/css/stiffness-viewer.js');
+        const viewer = await StiffnessViewer.load(this.canvas, this.simulation);
+        if (this.generation !== generation) {
+          viewer.dispose();
+          return;
+        }
+        this.viewer = viewer;
+      }
+      this.tick = 0;
+      this.elapsed = 0;
+      this.setupControls();
+      this.running = true;
+      this.previousTime = performance.now();
+      this.status.textContent = 'Running in your browser';
+      this.render();
+      this.ready = true;
+      if (this.visible) this.frameId = requestAnimationFrame((time) => this.frame(time));
+    } catch (error) {
+      if (this.generation !== generation) return;
+      this.failed = true;
+      this.plot?.dispose();
+      this.plot = null;
+      this.viewer?.dispose();
+      this.viewer = null;
+      this.simulation?.dispose();
+      this.simulation = null;
+      this.status.textContent = `Could not start: ${error.message}`;
+      this.status.classList.add('browser-demo-error');
+      const retry = document.createElement('button');
+      retry.textContent = 'Retry loading';
+      retry.addEventListener('click', () => { this.loading = this.load(this.generation); });
+      this.querySelector('.browser-demo-controls').replaceChildren(retry);
+      console.error(error);
+    }
+  }
+
+  setupControls() {
+    const panel = this.querySelector('.browser-demo-controls');
+    if (this.demo.controls === 'parameters') {
+      for (const parameter of this.simulation.manifest.parameters) {
+        const logarithmic = this.demo.logParameters?.includes(parameter.binding);
+        const physical = (value) => logarithmic ? 10 ** value : value;
+        this.addSlider(panel, parameter.label,
+          logarithmic ? Math.log10(parameter.minimum) : parameter.minimum,
+          logarithmic ? Math.log10(parameter.maximum) : parameter.maximum,
+          logarithmic ? 0.01 : parameter.step,
+          logarithmic ? Math.log10(this.simulation.binding(parameter.binding)[parameter.index]) : this.simulation.binding(parameter.binding)[parameter.index],
+          (value) => { this.simulation.binding(parameter.binding)[parameter.index] = physical(value); },
+          (value) => Number(physical(value)).toPrecision(3));
+      }
+      if (this.demo.action) {
+        const button = document.createElement('button');
+        button.textContent = this.demo.action.label;
+        button.addEventListener('click', () => {
+          this.simulation.binding(this.demo.action.binding)[0] = this.demo.action.value;
+          this.running = true;
+          const pause = this.querySelector('.browser-demo-pause');
+          pause.textContent = 'Pause'; pause.setAttribute('aria-label', 'Pause simulation');
+        });
+        panel.append(button);
+      }
+    } else if (this.demo.controls === 'heading') {
+      this.addVelocityControls();
+    } else if (this.demo.kind === 'stiffness' || this.demo.kind === 'cloth_bending' || this.demo.kind === 'rigid_friction') {
+      const legend = document.createElement('div');
+      legend.className = 'browser-demo-legend';
+      const references = this.demo.kind === 'cloth_bending'
+        ? [['Reference · 0.001 N·m', '#297ad9'], ['Adjustable · 1.00 N·m', '#9154d9'], ['Reference · 10 N·m', '#e37a38']]
+        : this.demo.kind === 'rigid_friction'
+          ? [['Reference · μ 0.05', '#236bdb'], ['Adjustable · μ 0.15', '#8648ce'], ['Reference · μ 0.8', '#e34c31']]
+          : [['Reference · μ = λ = 2 kPa', '#76b900'], ['Adjustable · μ = λ = 20 kPa', '#55880a'], ['Reference · μ = λ = 100 kPa', '#88cc22']];
+      for (const [label, color] of references) {
+        const item = document.createElement('span');
+        const dot = document.createElement('i');
+        dot.style.background = color;
+        const value = document.createElement('span');
+        value.textContent = label;
+        item.append(dot, value);
+        legend.append(item);
+        if (label.startsWith('Adjustable')) this.middleLegend = value;
+      }
+      panel.append(legend);
+      const selected = (this.getAttribute('parameters') || (this.demo.kind === 'stiffness'
+        ? 'shear,volume,damping,gravity' : this.demo.kind === 'cloth_bending' ? 'bending,gravity' : 'middle_friction')).split(',');
+      for (const name of selected) {
+        const parameter = this.simulation.manifest.parameters.find((item) => item.binding === name);
+        if (!parameter) throw new Error(`Unknown simulation parameter: ${name}`);
+        const logarithmic = name === 'bending' && this.demo.bendingScale === 'log10';
+        const physical = (value) => logarithmic ? 10 ** value : value;
+        const format = ['shear', 'volume'].includes(name) ? (value) => `${(value / 1000).toFixed(0)} kPa`
+          : name === 'bending' ? (value) => `${value < 0.01 ? value.toFixed(3) : value.toFixed(2)} N·m`
+            : name === 'middle_friction' ? (value) => `μ ${value.toFixed(2)}`
+          : name === 'gravity' ? (value) => `${value.toFixed(1)} m/s²`
+            : (value) => value.toFixed(1);
+        this.addSlider(panel, parameter.label,
+          logarithmic ? Math.log10(parameter.minimum) : parameter.minimum,
+          logarithmic ? Math.log10(parameter.maximum) : parameter.maximum,
+          logarithmic ? 0.01 : parameter.step,
+          logarithmic ? Math.log10(this.simulation.binding(parameter.binding)[parameter.index])
+            : this.simulation.binding(parameter.binding)[parameter.index], (input) => {
+            const value = physical(input);
+            this.simulation.binding(parameter.binding)[parameter.index] = value;
+            if (['shear', 'volume', 'bending', 'middle_friction'].includes(name)) {
+              this.middleLegend.textContent = this.demo.kind === 'stiffness'
+                ? `Adjustable · μ ${format(this.simulation.binding('shear')[0])} · λ ${format(this.simulation.binding('volume')[0])}`
+                : `Adjustable · ${format(value)}`;
+            }
+          }, (value) => format(physical(value)));
+      }
+    } else if (this.demo.kind === 'mpm') {
+      this.pendingMaterial = Float32Array.from(this.simulation.binding('material'));
+      const hint = document.createElement('small');
+      hint.className = 'browser-demo-material-hint';
+      hint.textContent = `${this.demo.particleCount.toLocaleString()} particles · Qualitative references. Presets reset the drop.`;
+      panel.append(hint);
+      const references = document.createElement('div');
+      references.className = 'browser-demo-material-presets';
+      references.setAttribute('role', 'group');
+      references.setAttribute('aria-label', 'Material references');
+      const presetButtons = [];
+      const sliders = [];
+      for (const [index, preset] of this.demo.materialPresets.entries()) {
+        const button = document.createElement('button');
+        button.textContent = preset.label;
+        button.setAttribute('aria-pressed', String(index === 0));
+        button.style.setProperty('--material-color', preset.color);
+        button.addEventListener('click', () => {
+          this.pendingMaterial.set(preset.values);
+          for (const { parameter, slider, logarithmic, format } of sliders) {
+            const value = preset.values[parameter.index];
+            slider.value = logarithmic ? Math.log10(value) : value;
+            slider.parentElement.querySelector('output').value = format(value);
+          }
+          for (const item of presetButtons) item.setAttribute('aria-pressed', String(item === button));
+          this.viewer.setParticleColor(preset.color);
+          this.resetSimulation();
+          this.running = true;
+          pause.textContent = 'Pause';
+        });
+        presetButtons.push(button);
+        references.append(button);
+      }
+      panel.append(references);
+      for (const parameter of this.simulation.manifest.parameters) {
+        const logarithmic = parameter.index < 2;
+        const physical = (value) => logarithmic ? 10 ** value : value;
+        const format = (value) => parameter.index < 2 || parameter.index === 3
+          ? `${Number((value / 1000).toPrecision(3))} kPa` : value.toFixed(2);
+        const slider = this.addSlider(panel, parameter.label,
+          logarithmic ? Math.log10(parameter.minimum) : parameter.minimum,
+          logarithmic ? Math.log10(parameter.maximum) : parameter.maximum,
+          logarithmic ? 0.01 : parameter.step,
+          logarithmic ? Math.log10(this.pendingMaterial[parameter.index]) : this.pendingMaterial[parameter.index],
+          (value) => {
+            this.pendingMaterial[parameter.index] = physical(value);
+            for (const button of presetButtons) button.setAttribute('aria-pressed', 'false');
+          },
+          (value) => format(physical(value)));
+        sliders.push({ parameter, slider, logarithmic, format });
+      }
+    } else if (this.demo.kind === 'joint_pd') {
+      this.setupJointPdControls(panel);
+    } else if (this.demo.kind === 'cartpole') {
+      this.policyForce = 0;
+      this.perturbation = 0;
+      const forceCard = document.createElement('div');
+      forceCard.className = 'browser-demo-force';
+      const slider = this.addSlider(forceCard, 'Push cart', -this.demo.perturbationLimit,
+        this.demo.perturbationLimit, 5, 0, (value) => {
+          this.perturbation = -value;
+          this.updateCartpoleForce();
+        }, (value) => `${value < 0 ? '+' : value > 0 ? '−' : ''}${Math.abs(value).toFixed(0)} N`);
+      slider.setAttribute('aria-label', 'Cart perturbation force; release to stop pushing');
+      const scale = document.createElement('div');
+      scale.className = 'browser-demo-force-scale';
+      for (const label of [`+${this.demo.perturbationLimit} N`, '0', `−${this.demo.perturbationLimit} N`]) {
+        const mark = document.createElement('span');
+        mark.textContent = label;
+        scale.append(mark);
+      }
+      forceCard.append(scale);
+      const release = () => {
+        slider.value = 0;
+        slider.dispatchEvent(new Event('input'));
+      };
+      for (const name of ['pointerup', 'pointercancel', 'keyup', 'blur']) slider.addEventListener(name, release);
+      this.resetSticks = release;
+      const hint = document.createElement('small');
+      hint.textContent = 'Hold to perturb the cart. Release to see the policy respond.';
+      forceCard.append(hint);
+      panel.append(forceCard);
+    } else if (this.isManipulation) {
+      if (this.demo.commandRange) {
+        const command = this.simulation.binding('command');
+        for (const [axis, label] of ['Target x [m]', 'Target y [m]', 'Target height [m]'].entries()) {
+          const [min, max] = this.demo.commandRange[axis];
+          this.addSlider(panel, label, min, max, 0.01, command[axis],
+            (value) => { this.simulation.binding('command')[axis] = value; this.render(); });
+        }
+      }
+      this.policyReadout = document.createElement('small');
+      this.policyReadout.className = 'browser-demo-material-hint';
+      panel.append(this.policyReadout);
+    } else {
+      this.addVelocityControls();
+    }
+    const buttons = document.createElement('div');
+    buttons.className = 'browser-demo-buttons';
+    const pause = document.createElement('button');
+    pause.className = 'browser-demo-pause';
+    pause.textContent = 'Pause';
+    pause.setAttribute('aria-label', 'Pause simulation');
+    pause.title = 'Pause simulation';
+    pause.addEventListener('click', () => {
+      this.running = !this.running;
+      pause.textContent = this.running ? 'Pause' : 'Play';
+      pause.title = `${pause.textContent} simulation`;
+      pause.setAttribute('aria-label', pause.title);
+      if (!this.failed) this.status.textContent = this.running ? 'Running in your browser' : 'Paused';
+    });
+    const reset = document.createElement('button');
+    reset.className = 'browser-demo-reset';
+    reset.textContent = this.demo.kind === 'mpm' ? 'Reset & drop' : 'Reset';
+    reset.title = 'Reset simulation';
+    reset.setAttribute('aria-label', reset.title);
+    reset.addEventListener('click', () => {
+      this.resetSimulation();
+      if (this.demo.kind === 'mpm') {
+        this.running = true;
+        pause.textContent = 'Pause';
+      }
+    });
+    buttons.append(pause, reset);
+    (this.viewport || panel).append(buttons);
+  }
+
+  setupJointPdControls(panel) {
+    this.selectedJoint = 0;
+    this.driveMode = 'step';
+    this.commandAmplitude = this.simulation.binding('target_q')[0];
+    this.frequency = 0.7;
+    const toolbar = document.createElement('div');
+    toolbar.className = 'browser-demo-pd-toolbar';
+    const addSelect = (label, options, onChange) => {
+      const row = document.createElement('label');
+      const select = document.createElement('select');
+      for (const [value, title] of options) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = title;
+        select.append(option);
+      }
+      select.addEventListener('change', () => onChange(select.value));
+      row.append(label, select);
+      toolbar.append(row);
+    };
+    addSelect('Tune joint', this.demo.jointNames.map((name, index) => [String(index), name]), (value) => {
+      this.selectedJoint = Number(value);
+      for (const name of ['stiffness', 'damping']) {
+        const slider = this.gainSliders[name];
+        const gain = this.simulation.binding(name)[this.selectedJoint];
+        slider.value = gain;
+        slider.parentElement.querySelector('output').value = gain.toFixed(name === 'damping' ? 1 : 0);
+      }
+      this.resetSimulation();
+    });
+    addSelect('Command', [['step', 'Step'], ['sine', 'Sine wave']], (value) => {
+      this.driveMode = value;
+      this.frequencyRow.hidden = value !== 'sine';
+      this.resetSimulation();
+    });
+    panel.append(toolbar);
+    const command = this.simulation.manifest.parameters.find((item) => item.binding === 'target_q');
+    this.addSlider(panel, 'Target / amplitude [rad]', command.minimum, command.maximum, command.step, this.commandAmplitude,
+      (value) => { this.commandAmplitude = value; this.updateJointPdTarget(); },
+      (value) => value.toFixed(2));
+    const frequency = this.addSlider(panel, 'Frequency [Hz]', 0.2, 2.0, 0.1, this.frequency,
+      (value) => { this.frequency = value; }, (value) => value.toFixed(1));
+    this.frequencyRow = frequency.parentElement;
+    this.frequencyRow.hidden = true;
+    this.gainSliders = {};
+    for (const name of ['stiffness', 'damping']) {
+      const parameter = this.simulation.manifest.parameters.find((item) => item.binding === name);
+      this.gainSliders[name] = this.addSlider(panel, parameter.label, parameter.minimum, parameter.maximum,
+        parameter.step, this.simulation.binding(name)[0],
+        (value) => { this.simulation.binding(name)[this.selectedJoint] = value; },
+        (value) => value.toFixed(name === 'damping' ? 1 : 0));
+    }
+    this.updateJointPdTarget();
+  }
+
+  updateJointPdTarget() {
+    const target = this.simulation.binding('target_q');
+    target.fill(0);
+    target[this.selectedJoint] = this.driveMode === 'sine'
+      ? this.commandAmplitude * Math.sin(2 * Math.PI * this.frequency * this.tick * this.simulation.manifest.timestep)
+      : this.commandAmplitude;
+  }
+
+  resetSimulation() {
+    const recovering = this.failed;
+    if (this.pendingMaterial) this.simulation.binding('material').set(this.pendingMaterial);
+    this.simulation.reset();
+    this.viewer.releasePush?.();
+    if (this.demo.policyType === 'microduck') this.command = this.simulation.binding('command');
+    this.previousAction?.fill(0);
+    if (this.demo.kind === 'cartpole') this.policyForce = 0;
+    this.resetSticks?.();
+    this.tick = 0;
+    this.elapsed = 0;
+    if (this.demo.kind === 'joint_pd') {
+      this.plot.reset();
+      this.updateJointPdTarget();
+    }
+    this.render();
+    if (recovering) {
+      this.failed = false;
+      this.status.classList.remove('browser-demo-error');
+      this.status.textContent = this.running ? 'Running in your browser' : 'Paused';
+      if (this.visible && this.ready && !this.frameId) {
+        this.previousTime = performance.now();
+        this.frameId = requestAnimationFrame((time) => this.frame(time));
+      }
+    }
+  }
+
+  addSlider(panel, label, min, max, step, initial, onInput, formatValue = (value) => Number(value).toFixed(step < 1 ? 2 : 0)) {
+    const row = document.createElement('label');
+    row.className = 'browser-demo-slider';
+    const text = document.createElement('span');
+    const value = document.createElement('output');
+    text.textContent = label;
+    value.value = formatValue(initial);
+    const slider = document.createElement('input');
+    slider.type = 'range';
+    Object.assign(slider, { min, max, step, value: initial });
+    slider.addEventListener('input', () => {
+      const number = Number(slider.value);
+      value.value = formatValue(number);
+      onInput(number);
+    });
+    row.append(text, slider, value);
+    panel.append(row);
+    return slider;
+  }
+
+  addVelocityControls() {
+    this.classList.add('locomotion');
+    this.viewport = document.createElement('div');
+    this.viewport.className = 'browser-demo-viewport';
+    this.canvas.before(this.viewport);
+    this.viewport.append(this.canvas);
+    const hint = document.createElement('small');
+    hint.className = 'browser-demo-viewer-hint';
+    hint.textContent = this.demo.pushMaxForce
+      ? 'Drag robot to push · Drag scene to rotate'
+      : 'Drag scene to rotate · Scroll to zoom';
+    this.viewport.append(hint);
+    const controls = document.createElement('div');
+    controls.className = 'browser-demo-joysticks';
+    if (this.demo.controls === 'heading') {
+      controls.classList.add('browser-demo-steering');
+      const stick = this.addStick(controls, 'Steer', 'Left / right · Pause to stop walking', false,
+        (x, _y, readout) => {
+          const angle = -x * Math.PI / 4;
+          this.simulation.binding('heading')[0] = angle;
+          readout.value = x ? `${Math.round(angle * 180 / Math.PI)}°` : 'Straight · Pause to stop';
+        });
+      const pad = controls.querySelector('.browser-demo-stick');
+      pad.title = 'Steer left or right. Drag to the edge to lock; pull back or press Escape to straighten. Pause stops walking.';
+      pad.setAttribute('aria-label', pad.title);
+      this.resetSticks = () => stick.reset();
+    } else {
+      const requested = new Float32Array(3);
+      let linear;
+      let travelReadout;
+      const updateCommand = () => {
+        const assist = this.demo.turnForwardSpeed && requested[2] && !requested[0] && !requested[1]
+          ? this.demo.turnForwardSpeed : 0;
+        this.command[0] = requested[0] || assist;
+        this.command[1] = requested[1];
+        this.command[2] = requested[2];
+        const scale = this.demo.velocityScale || (this.demo.policyType === 'wbc_agile_g1'
+          ? [this.command[0] >= 0 ? 0.8 : 0.6, 0.5, 1] : [1, 1, 1]);
+        linear?.show(-this.command[1] / scale[1], -this.command[0] / scale[0]);
+        if (travelReadout) travelReadout.value = assist ? `${assist.toFixed(2)} m/s · assist`
+          : requested[0] || requested[1] ? `${Math.hypot(requested[0], requested[1]).toFixed(2)} m/s` : 'Edge locks · pull back';
+      };
+      linear = this.addStick(controls, 'Move', 'Forward / back · left / right', true,
+        (x, y, readout) => {
+          const scale = this.demo.velocityScale || (this.demo.policyType === 'wbc_agile_g1' ? [y < 0 ? 0.8 : 0.6, 0.5, 1] : [1, 1, 1]);
+          requested[0] = -y * scale[0];
+          requested[1] = -x * scale[1];
+          travelReadout = readout;
+          updateCommand();
+        });
+      const yaw = this.addStick(controls, 'Turn', 'Yaw left / right', false,
+        (x, _y, readout) => {
+          requested[2] = -x * (this.demo.velocityScale?.[2] || 1);
+          readout.value = x ? `${Math.abs(requested[2]).toFixed(2)} rad/s` : 'Edge locks · pull back';
+          updateCommand();
+        });
+      this.resetSticks = () => { linear.reset(); yaw.reset(); };
+      this.setVelocityCommand = ([x, y, turn]) => {
+        const scale = this.demo.velocityScale || [1, 1, 1];
+        linear.move(-y / scale[1], -x / scale[0]);
+        yaw.move(-turn / scale[2], 0);
+      };
+    }
+    this.viewport.append(controls);
+    this.releaseControls = () => this.resetSticks();
+    this.canvas.tabIndex = 0;
+    this.viewport.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        this.resetSticks();
+        this.viewer.releasePush?.();
+      }
+    });
+    window.addEventListener('blur', this.releaseControls);
+  }
+
+  addStick(panel, label, hint, linear, apply) {
+    const section = document.createElement('section');
+    section.className = 'browser-demo-stick-section';
+    const heading = document.createElement('div');
+    heading.className = 'browser-demo-stick-heading';
+    const readout = document.createElement('output');
+    heading.append(document.createTextNode(label), readout);
+    const pad = document.createElement('div');
+    pad.className = `browser-demo-stick ${linear ? 'browser-demo-stick-linear' : 'browser-demo-stick-yaw'}`;
+    pad.tabIndex = 0;
+    pad.setAttribute('role', 'group');
+    pad.setAttribute('aria-roledescription', 'joystick');
+    pad.title = `${label}: ${hint}. Drag to the edge to lock; pull back or press Escape to stop. Arrow keys are momentary.`;
+    pad.setAttribute('aria-label', `${label}: drag to the edge to lock; pull back or press Escape to stop. Arrow keys are momentary.`);
+    for (const [side, glyph] of linear
+      ? [['top', '↑'], ['right', '→'], ['bottom', '↓'], ['left', '←']]
+      : [['left', '↶'], ['right', '↷']]) {
+      const mark = document.createElement('span');
+      mark.className = `browser-demo-stick-mark browser-demo-stick-mark-${side}`;
+      mark.textContent = glyph;
+      pad.append(mark);
+    }
+    const knob = document.createElement('span');
+    knob.className = 'browser-demo-stick-knob';
+    pad.append(knob);
+    const description = document.createElement('small');
+    description.textContent = hint;
+    section.append(pad, heading, description);
+    panel.append(section);
+    let activePointer = null;
+    let latched = false;
+    let atEdge = false;
+    const keys = new Set();
+    const show = (x, y) => {
+      knob.style.transform = `translate(${x * pad.clientWidth * 0.32}px, ${y * pad.clientWidth * 0.32}px)`;
+    };
+    const move = (x, y) => {
+      if (!linear) y = 0;
+      const radius = Math.max(1, Math.hypot(x, y));
+      x /= radius;
+      y /= radius;
+      show(x, y);
+      apply(x, y, readout);
+    };
+    const reset = () => {
+      const id = activePointer;
+      activePointer = null;
+      if (id !== null && pad.hasPointerCapture(id)) pad.releasePointerCapture(id);
+      latched = atEdge = false;
+      keys.clear();
+      pad.classList.remove('active', 'latched');
+      move(0, 0);
+    };
+    const pointerMove = (event) => {
+      const box = pad.getBoundingClientRect();
+      const travel = box.width * 0.32;
+      const x = (event.clientX - box.left - box.width / 2) / travel;
+      const y = linear ? (event.clientY - box.top - box.height / 2) / travel : 0;
+      const radius = Math.hypot(x, y);
+      if (latched && radius < 0.7) { reset(); return; }
+      atEdge = radius >= 0.98;
+      move(x, y);
+    };
+    pad.addEventListener('pointerdown', (event) => {
+      if (activePointer !== null || event.button !== 0) return;
+      event.preventDefault();
+      activePointer = event.pointerId;
+      pad.setPointerCapture(event.pointerId);
+      if (event.pointerType !== 'touch') pad.focus({ preventScroll: true });
+      pad.classList.add('active');
+      pointerMove(event);
+    });
+    pad.addEventListener('pointermove', (event) => { if (event.pointerId === activePointer) pointerMove(event); });
+    pad.addEventListener('pointerup', (event) => {
+      if (event.pointerId !== activePointer) return;
+      if (atEdge || latched) {
+        activePointer = null;
+        latched = true;
+        pad.classList.remove('active');
+        pad.classList.add('latched');
+      } else reset();
+    });
+    for (const name of ['pointercancel', 'lostpointercapture']) {
+      pad.addEventListener(name, (event) => { if (event.pointerId === activePointer) reset(); });
+    }
+    const applyKeys = () => move(
+      Number(keys.has('ArrowRight')) - Number(keys.has('ArrowLeft')),
+      Number(keys.has('ArrowDown')) - Number(keys.has('ArrowUp')),
+    );
+    pad.addEventListener('keydown', (event) => {
+      if (!event.key.startsWith('Arrow')) return;
+      event.preventDefault();
+      if (latched) reset();
+      keys.add(event.key);
+      pad.classList.add('active');
+      applyKeys();
+    });
+    pad.addEventListener('keyup', (event) => {
+      if (!event.key.startsWith('Arrow')) return;
+      event.preventDefault();
+      keys.delete(event.key);
+      keys.size ? applyKeys() : reset();
+    });
+    pad.addEventListener('blur', () => { if (!latched) reset(); });
+    reset();
+    return { reset, move, show };
+  }
+
+  applyPolicy() {
+    if (this.isManipulation || this.demo.policyType === 'microduck' || this.demo.policyType === 'captured') {
+      const observation = this.simulation.binding('observation');
+      if (this.demo.policyType === 'microduck') observation.set(this.command, 48);
+      const action = this.policy.run(observation);
+      if (!action.every(Number.isFinite)) throw new Error('Policy produced a non-finite action');
+      this.simulation.binding('action').set(action);
+      return;
+    }
+    if (this.demo.policyType === 'wbc_agile_g1') {
+      this.applyAgileG1Policy();
+      return;
+    }
+    const { jointNames, jointDefaults, rootBody, actionScale } = this.demo;
+    const count = jointNames.length;
+    const pose = this.simulation.binding('body_q');
+    const velocity = this.simulation.binding('body_qd');
+    const joints = this.simulation.binding('joint_q');
+    const jointVelocity = this.simulation.binding('joint_qd');
+    const base = rootBody * 7;
+    const speed = rootBody * 6;
+    const quaternion = pose.subarray(base + 3, base + 7);
+    const observation = new Float32Array(12 + 3 * count);
+    observation.set(rotateInverse(quaternion, velocity.subarray(speed, speed + 3)), 0);
+    observation.set(rotateInverse(quaternion, velocity.subarray(speed + 3, speed + 6)), 3);
+    observation.set(rotateInverse(quaternion, [0, 0, -1]), 6);
+    observation.set(this.command, 9);
+    for (let index = 0; index < count; index += 1) {
+      observation[12 + index] = joints[7 + index] - jointDefaults[index];
+      observation[12 + count + index] = jointVelocity[6 + index];
+    }
+    observation.set(this.previousAction, 12 + 2 * count);
+    const action = this.policy.run(observation);
+    const target = this.simulation.binding('target_q');
+    for (let index = 0; index < count; index += 1) {
+      if (!Number.isFinite(action[index])) throw new Error('Policy produced a non-finite action');
+      target[7 + index] = jointDefaults[index] + actionScale * action[index];
+    }
+    this.previousAction.set(action);
+  }
+
+  applyAgileG1Policy() {
+    const { jointDefaults, observationIndices, actionIndices, rootBody, actionScale } = this.demo;
+    const pose = this.simulation.binding('body_q');
+    const velocity = this.simulation.binding('body_qd');
+    const joints = this.simulation.binding('joint_q');
+    const jointVelocity = this.simulation.binding('joint_qd');
+    const quaternion = pose.subarray(rootBody * 7 + 3, rootBody * 7 + 7);
+    const speed = rootBody * 6;
+    const observation = new Float32Array(83);
+    observation.set(this.command, 0);
+    observation.set(rotateInverse(quaternion, velocity.subarray(speed, speed + 3)), 4);
+    observation.set(rotateInverse(quaternion, velocity.subarray(speed + 3, speed + 6)), 7);
+    observation.set(rotateInverse(quaternion, [0, 0, -1]), 10);
+    for (let index = 0; index < observationIndices.length; index += 1) {
+      const joint = observationIndices[index];
+      observation[13 + index] = joints[7 + joint] - jointDefaults[joint];
+      observation[42 + index] = 0.1 * jointVelocity[6 + joint];
+    }
+    for (let index = 0; index < this.previousAction.length; index += 1) {
+      observation[71 + index] = Math.max(-10, Math.min(10, this.previousAction[index]));
+    }
+    const action = this.policy.run(observation);
+    const target = this.simulation.binding('target_q');
+    for (let index = 0; index < actionIndices.length; index += 1) {
+      if (!Number.isFinite(action[index])) throw new Error('Policy produced a non-finite action');
+      const joint = actionIndices[index];
+      target[7 + joint] = Math.max(-4, Math.min(4, jointDefaults[joint] + actionScale * action[index]));
+    }
+    this.previousAction.set(action);
+  }
+
+  applyCartpolePolicy() {
+    const position = this.simulation.binding('joint_q');
+    const velocity = this.simulation.binding('joint_qd');
+    const action = this.policy.run(new Float32Array([position[0], position[1], velocity[0], velocity[1]]))[0];
+    if (!Number.isFinite(action)) throw new Error('Cartpole policy produced a non-finite action');
+    this.policyForce = this.demo.actionScale * action;
+    this.updateCartpoleForce();
+  }
+
+  updateCartpoleForce() {
+    this.simulation.binding('force')[0] = this.policyForce + this.perturbation;
+  }
+
+  frame(time) {
+    if (!this.isConnected || !this.visible) {
+      this.frameId = 0;
+      return;
+    }
+    try {
+      if (this.running && this.visible) {
+        const maxSteps = this.demo.maxStepsPerFrame || 12;
+        const frameTimeLimit = Math.max(0.05, (this.demo.maxStepsPerFrame || 0) * this.simulation.manifest.timestep);
+        this.elapsed = Math.min(this.elapsed + Math.min((time - this.previousTime) / 1000, frameTimeLimit),
+          Math.max(0.06, frameTimeLimit));
+        const steps = Math.min(maxSteps, Math.floor(this.elapsed / this.simulation.manifest.timestep));
+        let resetDuringFrame = false;
+        for (let index = 0; index < steps; index += 1) {
+          if (this.policy && this.tick % this.demo.decimation === 0) {
+            this.demo.kind === 'cartpole' ? this.applyCartpolePolicy() : this.applyPolicy();
+          }
+          if (this.demo.kind === 'joint_pd') this.updateJointPdTarget();
+          this.simulation.step();
+          this.tick += 1;
+          if (this.demo.kind === 'joint_pd') {
+            this.plot.add(this.tick * this.simulation.manifest.timestep,
+              this.simulation.binding('target_q')[this.selectedJoint],
+              this.simulation.binding('joint_q')[this.selectedJoint]);
+          }
+          const fallen = this.demo.terminationHeight !== undefined
+            && !(this.simulation.binding('body_q')[this.demo.rootBody * 7 + 2] >= this.demo.terminationHeight);
+          if ((this.demo.cycleSteps && this.tick >= this.demo.cycleSteps) || fallen) {
+            this.resetSimulation();
+            resetDuringFrame = true;
+            break;
+          }
+          if (this.demo.kind === 'cartpole'
+              && Math.abs(this.simulation.binding('joint_q')[0]) > this.demo.maxCartPosition) {
+            this.resetSimulation();
+            resetDuringFrame = true;
+            break;
+          }
+        }
+        if (!resetDuringFrame) this.elapsed -= steps * this.simulation.manifest.timestep;
+      }
+      this.render();
+      this.previousTime = time;
+      this.frameId = requestAnimationFrame((next) => this.frame(next));
+    } catch (error) {
+      this.failed = true;
+      this.frameId = 0;
+      this.status.textContent = `Simulation stopped: ${error.message}`;
+      this.status.classList.add('browser-demo-error');
+      console.error(error);
+    }
+  }
+
+  render() {
+    this.viewer.render();
+    this.plot?.draw();
+    if (this.policyReadout) {
+      if (this.demo.kind === 'franka_drawer') {
+        const opening = this.simulation.binding('joint_q')[this.demo.drawerCoordinate];
+        this.policyReadout.textContent = `Drawer opening · ${(opening * 100).toFixed(1)} cm`;
+      } else {
+        const body = (this.demo.objectBody ?? this.demo.handBody) * 7;
+        const pose = this.simulation.binding('body_q');
+        const goal = this.viewer.goal.position;
+        const distance = Math.hypot(pose[body] - goal.x, pose[body + 1] - goal.y, pose[body + 2] - goal.z);
+        this.policyReadout.textContent = `${this.demo.kind === 'franka_lift' ? 'Object' : 'Hand'} distance to target · ${(distance * 100).toFixed(1)} cm`;
+      }
+    }
+  }
+
+}
+
+customElements.define('isaaclab-browser-demo', IsaacLabBrowserDemo);

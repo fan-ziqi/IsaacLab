@@ -85,7 +85,7 @@
         };
 
         const setBrowserVisible = (isVisible) => {
-            intro.hidden = !isVisible;
+            intro?.toggleAttribute("hidden", !isVisible);
             browser.hidden = !isVisible;
             guideList.hidden = !isVisible;
             note.hidden = !isVisible;

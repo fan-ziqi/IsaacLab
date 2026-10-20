@@ -32,11 +32,11 @@ Start from a Supported Deformable Task
    The ``Isaac-Lift-Soft-Franka`` task requires automatic tetrahedralization.
    The uv commands below select the ``tetrahedralization`` extra when needed.
 
-   With the legacy installer:
+   To install the optional dependencies explicitly:
 
    .. code-block:: bash
 
-      ./isaaclab.sh -i tetrahedralization
+      uv sync --extra tetrahedralization
 
 Before adding VBD to a new task, first run one of the Franka deformable tasks:
 
@@ -48,12 +48,6 @@ Before adding VBD to a new task, first run one of the Franka deformable tasks:
 
           uv run --extra tetrahedralization python scripts/environments/zero_agent.py --task Isaac-Lift-Soft-Franka --num_envs 1 --visualizer kit
 
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-          ./isaaclab.sh -p scripts/environments/zero_agent.py --task Isaac-Lift-Soft-Franka --num_envs 1 --visualizer kit
-
 For the surface-deformable cloth variant, use:
 
 .. tab-set::
@@ -63,12 +57,6 @@ For the surface-deformable cloth variant, use:
       .. code-block:: bash
 
           uv run python scripts/environments/zero_agent.py --task Isaac-Lift-Cloth-Franka --num_envs 1 --visualizer kit
-
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-          ./isaaclab.sh -p scripts/environments/zero_agent.py --task Isaac-Lift-Cloth-Franka --num_envs 1 --visualizer kit
 
 Both tasks configure MJWarp for the rigid Franka and VBD for the deformable
 object through
@@ -113,12 +101,6 @@ You can select the deformable Newton preset globally:
 
           uv run --extra tetrahedralization isaaclab train --rl_library rsl_rl --task=Isaac-Lift-Soft-Franka physics=newton_mjwarp_vbd_proxy
 
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-          ./isaaclab.sh train --rl_library rsl_rl --task=Isaac-Lift-Soft-Franka physics=newton_mjwarp_vbd_proxy
-
 or select the physics field directly:
 
 .. tab-set::
@@ -128,12 +110,6 @@ or select the physics field directly:
       .. code-block:: bash
 
           uv run --extra tetrahedralization isaaclab train --rl_library rsl_rl --task=Isaac-Lift-Soft-Franka env.sim.physics=newton_mjwarp_vbd_proxy
-
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-          ./isaaclab.sh train --rl_library rsl_rl --task=Isaac-Lift-Soft-Franka env.sim.physics=newton_mjwarp_vbd_proxy
 
 Use the direct path override when only one task field should use the VBD preset.
 Use ``physics=newton_mjwarp_vbd_proxy`` when you want every matching preset
@@ -183,8 +159,16 @@ Core Solve
       - Description
     * - ``iterations``
       - Default: ``10``. Number of VBD iterations per substep. Increasing this value improves deformation and contact convergence, especially for stiff materials or rigid gripper contacts, but increases runtime.
+    * - ``friction_epsilon``
+      - Default: ``1.0e-2`` [m/s]. Relative tangential-speed threshold for smoothing friction near rest. Reducing it retains Coulomb-like friction at lower sliding speeds.
     * - ``rigid_compliant_alm``
       - Default: ``None``. Preserves Newton's rigid solver mode. In Newton 1.6, ``None`` selects deprecated legacy AVBD. Set to ``True`` to use compliant ALM for rigid joints and body-body contacts, or ``False`` to explicitly retain legacy AVBD.
+    * - ``rigid_joint_linear_ke``
+      - Default: ``1.0e5`` [N/m]. Structural linear stiffness for non-rod rigid joints, separate from actuator gains.
+    * - ``rigid_joint_angular_ke``
+      - Default: ``1.0e5`` [N m/rad]. Structural angular stiffness for non-rod rigid joints, separate from actuator gains.
+    * - ``update_joint_state``
+      - Default: ``True``. Derives standalone VBD joint positions and velocities each tick. Disable only for body-state-only consumers. External rigid integration and coupled solvers retain their generalized joint-state ownership and skip this update.
     * - ``rigid_body_contact_buffer_size``
       - Default: ``64``. Per-body capacity for body-body contacts when VBD integrates rigid bodies. Increase it if Newton reports a per-body body-body contact buffer overflow.
     * - ``rigid_body_particle_contact_buffer_size``
@@ -192,6 +176,11 @@ Core Solve
     * - ``integrate_with_external_rigid_solver``
       - Default: ``False``. Set to ``True`` only when a manual manager integrates rigid bodies in the shared model. Proxy-coupled entries use partitioned model views and leave this ``False``.
 
+Structural joint stiffness keeps rigid links attached; actuator stiffness drives
+the allowed joint coordinates toward their targets. Tune these separately under
+the intended contact loads. Higher structural stiffness can require more solver
+iterations for drive and contact convergence. Set it before creating the
+simulation because Newton captures these material values during solver construction.
 
 Rigid Cables
 ^^^^^^^^^^^^
@@ -243,6 +232,19 @@ Self-Contact
       - Default: ``2``. Filters contacts between mesh primitives that are close in topology. Increase this to suppress contact between neighboring elements of the same surface. Values greater than ``3`` can significantly increase compute time.
     * - ``particle_rest_shape_contact_exclusion_radius``
       - Default: ``0.0`` [m]. Filters self-contact candidates whose rest-configuration distance is shorter than this distance. Increase it when rest-neighbor contacts produce unwanted resistance.
+
+
+Contact Scheduling
+------------------
+
+Contact scheduling belongs to :class:`~isaaclab_newton.physics.NewtonCfg`,
+not :class:`~isaaclab_newton.physics.VBDSolverCfg`.
+:attr:`~isaaclab_newton.physics.NewtonCfg.collision_decimation` controls how
+often the collision pipeline refreshes contacts within a physics tick. ``0``
+runs collision once per tick. A positive value ``k`` re-runs it every ``k``
+solver substeps. Use ``1`` for fast or thin rigid-soft interactions that can
+cross the contact band within one substep; increase it only after verifying that
+the cheaper, staler contact set does not cause tunneling or ejection.
 
 
 Custom MJWarp + VBD Parameters
@@ -400,18 +402,7 @@ Try the demo:
           uv run --extra tetrahedralization python scripts/environments/zero_agent.py --task Isaac-Lift-Soft-Franka --num_envs 1 --visualizer kit
 
           # scripted pick-and-lift via state machine
-          uv run --extra tetrahedralization python scripts/environments/state_machine/lift_franka_soft.py --num_envs 1
-
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-          # zero-agent visual smoke test
-          ./isaaclab.sh -p scripts/environments/zero_agent.py --task Isaac-Lift-Soft-Franka --num_envs 1 --visualizer kit
-
-          # scripted pick-and-lift via state machine
-          ./isaaclab.sh -p scripts/environments/state_machine/lift_franka_soft.py --num_envs 1
-
+          uv run --extra tetrahedralization python scripts/environments/state_machine/lift_franka_soft.py --num_envs 1 --visualizer newton_gl
 
 Contact and Material Parameters
 -------------------------------

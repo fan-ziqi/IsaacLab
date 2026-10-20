@@ -1,0 +1,248 @@
+<!--
+Copyright (c) 2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive Newton physics and pretrained policy demos for Isaac Lab, running locally in your browser.">
+  <title>Isaac Lab interactive demos</title>
+  <link rel="stylesheet" href="css/browser-demo.css?rev=d7a784f32b22288a7442dbe11796fe46463cc411">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 2rem max(1rem, calc((100vw - 1120px) / 2)); background: #f4f7f8; font: 16px/1.5 system-ui, sans-serif; color: #1a3039; }
+    [hidden] { display: none !important; }
+    nav { display: flex; flex-wrap: wrap; gap: .6rem 1.3rem; margin-bottom: 2.5rem; font-size: .875rem; }
+    a { color: #426b00; text-underline-offset: .2em; }
+    h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .6rem; }
+    h2 { font-size: 1.3rem; margin: 0; }
+    p { color: #536b74; }
+    #description { max-width: 760px; margin: 0 0 1.75rem; }
+    button { font: inherit; cursor: pointer; }
+    button:disabled { cursor: default; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #76b900; outline-offset: 3px; }
+    .filters { padding: 1rem 1.25rem; border: 1px solid #d8e1e5; border-radius: 14px; background: #fff; }
+    .filter-row { display: flex; align-items: baseline; gap: 1rem; }
+    .filter-row + .filter-row { margin-top: .75rem; padding-top: .75rem; border-top: 1px solid #edf1f3; }
+    .filter-label { flex: 0 0 64px; color: #536b74; font-size: .8rem; font-weight: 600; }
+    .filter-options { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .filter-pill { display: inline-flex; align-items: center; gap: .55rem; min-height: 38px; padding: .35rem .8rem; border: 1px solid transparent; border-radius: 999px; background: #f1f5f6; color: #40565f; font-size: .85rem; }
+    .filter-pill:hover:not(:disabled) { background: #e8f0e1; }
+    .filter-pill[aria-pressed="true"] { border-color: #7cae38; background: #eef6e3; color: #335900; font-weight: 600; }
+    .filter-pill:disabled { opacity: .4; }
+    .filter-count { font-size: .75rem; font-variant-numeric: tabular-nums; opacity: .7; }
+    .results { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 50px; margin-bottom: 1rem; color: #536b74; font-size: .8rem; }
+    .clear-filters { border: 0; padding: .5rem 0 .5rem .5rem; color: #426b00; background: transparent; text-decoration: underline; text-underline-offset: .2em; }
+    .demo-section + .demo-section { margin-top: 2.5rem; }
+    .section-count { margin-left: .5rem; color: #7c8e95; font-size: .9rem; font-weight: 400; }
+    .section-description { margin: .3rem 0 1rem; font-size: .875rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 1rem; }
+    .card { display: block; overflow: hidden; border: 1px solid #d8e1e5; border-radius: 12px; background: white; text-decoration: none; box-shadow: 0 4px 15px #14232b0a; transition: transform .15s ease, box-shadow .15s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px #14232b18; }
+    .card img { display: block; width: 100%; height: auto; aspect-ratio: 480 / 255; object-fit: cover; background: #edf2f4; }
+    .card-body { padding: 1rem; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .65rem; }
+    .badge { padding: .15rem .5rem; border-radius: 5px; background: #eef2f4; color: #526975; font-size: .7rem; }
+    .badge-policy { background: #eef6e3; color: #426b00; }
+    .badge-scripted { background: #fff1da; color: #896323; }
+    .badge-manual { background: #e4f3f8; color: #066f92; }
+    .card-title { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+    .card strong { color: #1a3039; font-size: 1rem; }
+    .card-arrow { color: #668376; }
+    .card p { margin: .5rem 0 0; font-size: .875rem; line-height: 1.6; }
+    .empty { padding: 2rem; border: 1px dashed #bacbd2; border-radius: 12px; text-align: center; }
+    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #d8e1e5; font-size: .85rem; }
+    @media (max-width: 540px) {
+      body { padding-top: 1.25rem; }
+      nav { margin-bottom: 1.5rem; gap: .5rem 1rem; }
+      .filters { padding: 1rem; }
+      .filter-row { flex-direction: column; gap: .5rem; }
+      .filter-label { flex-basis: auto; }
+      .filter-pill { min-height: 44px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .card { transition: none; }
+      .card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav aria-label="Navigation">
+    <a id="gallery-link" href="./?v=d7a784f32b22288a7442dbe11796fe46463cc411">Demo gallery</a>
+    <a href="https://isaac-sim.github.io/IsaacLab/">Isaac Lab documentation</a>
+    <a href="https://github.com/isaac-sim/IsaacLab/releases/tag/interactive-demos">Source and rebuild instructions</a>
+  </nav>
+  <h1>Isaac Lab interactive demos</h1>
+  <p id="description">Tune physics parameters or test a pretrained policy. Pick a demo to explore it live in your browser. No installation needed.</p>
+  <section id="gallery-controls" hidden aria-label="Filter demos">
+    <div class="filters">
+      <div class="filter-row">
+        <span class="filter-label" id="activity-label">Explore</span>
+        <div class="filter-options" id="activity-filters" role="group" aria-labelledby="activity-label"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label" id="physics-label">Physics</span>
+        <div class="filter-options" id="physics-filters" role="group" aria-labelledby="physics-label"></div>
+      </div>
+    </div>
+    <div class="results">
+      <span id="result-count" role="status" aria-live="polite"></span>
+      <button type="button" class="clear-filters" hidden>Clear filters</button>
+    </div>
+  </section>
+  <main id="content"></main>
+  <footer>Newton physics and policy inference run locally on your CPU through WebAssembly.</footer>
+  <template id="demo-card">
+    <a class="card">
+      <img alt="" loading="lazy" width="480" height="255">
+      <div class="card-body">
+        <div class="card-tags"></div>
+        <div class="card-title"><strong></strong><span class="card-arrow" aria-hidden="true">↗</span></div>
+        <p></p>
+      </div>
+    </a>
+  </template>
+  <script type="module">
+    import { demos, activities, physics } from './demos.js?rev=d7a784f32b22288a7442dbe11796fe46463cc411';
+    const revision = 'd7a784f32b22288a7442dbe11796fe46463cc411';
+    const content = document.querySelector('#content');
+    const params = new URLSearchParams(location.search);
+    const galleryParams = new URLSearchParams(params);
+    galleryParams.delete('demo');
+    galleryParams.set('v', revision);
+    document.querySelector('#gallery-link').href = `?${galleryParams}`;
+    const selected = params.get('demo');
+    const demo = demos.find((item) => item.id === selected);
+    if (demo) {
+      document.title = `${demo.title} · Isaac Lab`;
+      document.querySelector('h1').textContent = demo.title;
+      document.querySelector('#description').textContent = `${demo.description} Drag to orbit, scroll to zoom, and use the controls to pause or reset.`;
+      await import('./css/browser-demo.js?rev=d7a784f32b22288a7442dbe11796fe46463cc411');
+      const widget = document.createElement('isaaclab-browser-demo');
+      widget.setAttribute('src', `${demo.assetRoot || './browser_demos'}/${demo.id}/manifest.json?rev=${revision}`);
+      content.append(widget);
+    } else {
+      document.querySelector('#gallery-controls').hidden = false;
+      const choices = { activity: activities, physics };
+      const readFilters = () => {
+        const query = new URLSearchParams(location.search);
+        return Object.fromEntries(Object.entries(choices).map(([key, values]) =>
+          [key, values.some((item) => item.id === query.get(key)) ? query.get(key) : 'all']));
+      };
+      let filters = readFilters();
+      const matches = (item, selection = filters) =>
+        (selection.activity === 'all' || item.activity === selection.activity)
+        && (selection.physics === 'all' || item.physics.includes(selection.physics));
+      const cards = [];
+      const sections = [];
+      const buttons = [];
+      const clear = document.querySelector('.clear-filters');
+      for (const activity of activities) {
+        const section = document.createElement('section');
+        section.className = 'demo-section';
+        const heading = document.createElement('h2');
+        heading.id = `section-${activity.id}`;
+        section.setAttribute('aria-labelledby', heading.id);
+        heading.textContent = activity.label;
+        const count = document.createElement('span');
+        count.className = 'section-count';
+        heading.append(count);
+        const help = document.createElement('p');
+        help.className = 'section-description';
+        help.textContent = activity.description;
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+        for (const item of demos.filter((value) => value.activity === activity.id)) {
+          const card = document.querySelector('#demo-card').content.firstElementChild.cloneNode(true);
+          const image = card.querySelector('img');
+          image.src = item.preview || `${item.assetRoot || './browser_demos'}/previews/${item.id}.jpg`;
+          card.querySelector('strong').textContent = item.title;
+          card.querySelector('p').textContent = item.description;
+          const tags = [
+            { label: activity.label, className: `badge badge-${activity.id}` },
+            ...item.physics.map((id) => ({ label: physics.find((value) => value.id === id).label, className: 'badge' })),
+          ];
+          if (item.manualControl) tags.push({ label: 'Manual control', className: 'badge badge-manual' });
+          for (const tag of tags) {
+            const badge = document.createElement('span');
+            badge.className = tag.className;
+            badge.textContent = tag.label;
+            card.querySelector('.card-tags').append(badge);
+          }
+          grid.append(card);
+          cards.push({ item, card });
+        }
+        section.append(heading, help, grid);
+        content.append(section);
+        sections.push({ activity, section, count });
+      }
+      const empty = document.createElement('p');
+      empty.className = 'empty';
+      empty.textContent = 'No demos match these filters. Clear the filters to explore all demos.';
+      content.append(empty);
+
+      function updateGallery() {
+        const query = new URLSearchParams(location.search);
+        query.delete('demo');
+        query.set('v', revision);
+        for (const key of Object.keys(choices)) {
+          filters[key] === 'all' ? query.delete(key) : query.set(key, filters[key]);
+        }
+        let count = 0;
+        for (const { item, card } of cards) {
+          card.hidden = !matches(item);
+          if (!card.hidden) count += 1;
+          const link = new URLSearchParams(query);
+          link.set('demo', item.id);
+          card.href = `?${link}`;
+        }
+        for (const { activity, section, count: label } of sections) {
+          const visible = demos.filter((item) => item.activity === activity.id && matches(item)).length;
+          section.hidden = visible === 0;
+          label.textContent = visible;
+        }
+        for (const { key, option, button, label } of buttons) {
+          const available = demos.filter((item) => matches(item, { ...filters, [key]: option.id })).length;
+          button.setAttribute('aria-pressed', String(filters[key] === option.id));
+          button.setAttribute('aria-label', `${option.label}: ${available} ${available === 1 ? 'demo' : 'demos'}`);
+          button.disabled = available === 0 && option.id !== 'all' && filters[key] !== option.id;
+          label.textContent = available;
+        }
+        document.querySelector('#result-count').textContent = `${count} of ${demos.length} demos`;
+        clear.hidden = Object.values(filters).every((value) => value === 'all');
+        empty.hidden = count > 0;
+        return query;
+      }
+      for (const [key, values] of Object.entries(choices)) {
+        for (const option of [{ id: 'all', label: 'All' }, ...values]) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'filter-pill';
+          button.textContent = option.label;
+          if (option.description) button.title = option.description;
+          const label = document.createElement('span');
+          label.className = 'filter-count';
+          button.append(label);
+          button.addEventListener('click', () => {
+            if (filters[key] === option.id) return;
+            filters[key] = option.id;
+            history.pushState(null, '', `?${updateGallery()}`);
+          });
+          document.querySelector(`#${key}-filters`).append(button);
+          buttons.push({ key, option, button, label });
+        }
+      }
+      clear.addEventListener('click', () => {
+        filters = { activity: 'all', physics: 'all' };
+        history.pushState(null, '', `?${updateGallery()}`);
+      });
+      window.addEventListener('popstate', () => { filters = readFilters(); updateGallery(); });
+      updateGallery();
+    }
+  </script>
+</body>
+</html>

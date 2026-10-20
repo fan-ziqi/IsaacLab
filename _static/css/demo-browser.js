@@ -86,8 +86,8 @@
 
         const updateVisualizer = () => {
             const preferredVisualizers = fields.physics.value.startsWith("newton")
-                ? ["newton_gl", "kit", "none"]
-                : fields.physics.value === "ovphysx" ? ["none"] : ["kit", "none"];
+                ? ["newton_gl", "kit"]
+                : ["kit"];
             populateSelect(fields.visualizer, compatibleVisualizers(), preferredVisualizers);
             updateCommand();
         };
@@ -99,7 +99,7 @@
                 candidate.classList.toggle("is-selected", isSelected);
                 candidate.setAttribute("aria-pressed", String(isSelected));
             }
-            selectedName.textContent = selectedCard.dataset.demoName;
+            selectedName.textContent = selectedCard.dataset.demoId;
             selectedDescription.textContent = selectedCard.dataset.demoDescription;
             populateSelect(fields.physics, splitValues(selectedCard.dataset.demoPhysics), ["newton_mjwarp", "isaacsim_physx"]);
             updateVisualizer();

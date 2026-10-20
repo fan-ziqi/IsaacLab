@@ -5,9 +5,9 @@ Isaac Capture
 
 .. currentmodule:: isaaclab
 
-`Isaac Capture <https://github.com/NVIDIA/IsaacCapture>`_ is the unified framework for high-fidelity
-egocentric and robot data collection. It provides a standardized device interface, a flexible
-graph-based retargeting pipeline, and works seamlessly across simulated and real-world robots.
+`Isaac Capture <https://github.com/NVIDIA/IsaacCapture>`_ connects input devices to
+robot control and data collection in simulation and on real robots. It provides
+shared device interfaces and configurable retargeting pipelines.
 
 .. note::
 
@@ -22,8 +22,7 @@ Lab. For migration details see :ref:`migrating-to-isaaclab-3-0`.
 
 .. tip::
 
-   **Just want to get running?** Follow the :ref:`cloudxr-teleoperation` how-to guide for
-   installation and first-run steps, then come back here for deeper topics.
+   Start with :ref:`cloudxr-teleoperation` for installation and a first run.
 
 
 .. _isaac-teleop-supported-devices:
@@ -112,40 +111,6 @@ required for high-fidelity dexterous retargeting. This is essential when individ
 matters.
 
 
-.. _isaac-teleop-architecture:
-
-How It Works
-------------
-
-The :class:`~isaaclab_teleop.IsaacTeleopDevice` is the main integration point between Isaac Capture
-and Isaac Lab. It composes three collaborators:
-
-* **XrAnchorManager** -- creates and synchronizes an XR anchor prim in the simulation, and
-  computes the ``world_T_anchor`` transform matrix that maps XR tracking data into the simulation
-  coordinate frame.
-
-* **TeleopSessionLifecycle** -- builds the retargeting pipeline, acquires OpenXR handles from
-  Isaac Sim's XR bridge (or, in standalone mode, creates its own OpenXR session through the
-  CloudXR runtime -- see :ref:`isaac-teleop-standalone`), creates the ``TeleopSession``, and
-  steps it each frame to produce an action tensor.
-
-* **CommandHandler** -- lightweight callback registry for START / STOP / RESET commands.  Scripts
-  can register callbacks via :meth:`~isaaclab_teleop.IsaacTeleopDevice.add_callback`, but the
-  primary control path uses :func:`~isaaclab_teleop.poll_control_events` (see
-  :ref:`isaac-teleop-control-states`).
-
-.. dropdown:: Session lifecycle details
-
-   The session uses **deferred creation**: if the user has not yet clicked "Start XR" in the Isaac
-   Sim UI, the session is not created immediately. Instead, each call to ``advance()`` retries
-   session creation until OpenXR handles become available. Once connected, ``advance()`` returns a
-   flattened action tensor (``torch.Tensor``) on the configured device. It returns ``None`` when
-   the session is not yet ready or has been torn down.
-
-   In standalone mode (:ref:`isaac-teleop-standalone`), creation is **not** gated on Kit XR
-   handles -- the session starts as soon as the CloudXR runtime is available.
-
-
 .. _isaac-teleop-tracking-debug-visualization:
 
 Visualize XR Tracking
@@ -169,16 +134,6 @@ Enable the visualization when launching a teleoperation session:
       .. code-block:: bash
 
          uv run --extra teleop,isaacsim isaaclab teleop run \
-             --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
-             --visualizer kit \
-             --xr \
-             --enable_debug_visualization
-
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
              --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
              --visualizer kit \
              --xr \
@@ -507,16 +462,6 @@ on launch -- no headset connection is needed (see :ref:`isaac-teleop-standalone`
              --visualizer kit \
              physics=isaacsim_physx
 
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
-             --task IsaacContrib-Stack-Cube-SO101-Joint-Teleop-v0 \
-             --num_envs 1 \
-             --visualizer kit \
-             physics=isaacsim_physx
-
 **With a headset (immersive XR view)**
 
 Add ``--xr`` to stream the simulation to a Quest, Pico, or Apple Vision Pro headset while the
@@ -531,16 +476,6 @@ only controls whether the scene is rendered to the headset. Follow the connectio
       .. code-block:: bash
 
          uv run --extra teleop,isaacsim isaaclab teleop run \
-             --task IsaacContrib-Stack-Cube-SO101-Joint-Teleop-v0 \
-             --num_envs 1 \
-             --visualizer kit --xr \
-             physics=isaacsim_physx
-
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
              --task IsaacContrib-Stack-Cube-SO101-Joint-Teleop-v0 \
              --num_envs 1 \
              --visualizer kit --xr \
@@ -623,6 +558,40 @@ full recording workflow and runtime troubleshooting.
    After stacking the cube, open the gripper **all the way** before ending the episode. The task's
    success check requires the gripper to be fully open -- a partially open gripper holding position
    on top of the stack will not register as success, even if the cube is correctly placed.
+
+
+.. _isaac-teleop-architecture:
+
+How It Works
+------------
+
+:class:`~isaaclab_teleop.IsaacTeleopDevice` connects Isaac Capture to Isaac Lab
+through three components:
+
+* **XrAnchorManager** -- creates and synchronizes an XR anchor prim in the simulation, and
+  computes the ``world_T_anchor`` transform matrix that maps XR tracking data into the simulation
+  coordinate frame.
+
+* **TeleopSessionLifecycle** -- builds the retargeting pipeline, acquires OpenXR handles from
+  Isaac Sim's XR bridge (or, in standalone mode, creates its own OpenXR session through the
+  CloudXR runtime -- see :ref:`isaac-teleop-standalone`), creates the ``TeleopSession``, and
+  steps it each frame to produce an action tensor.
+
+* **CommandHandler** -- lightweight callback registry for START / STOP / RESET commands.  Scripts
+  can register callbacks via :meth:`~isaaclab_teleop.IsaacTeleopDevice.add_callback`, but the
+  primary control path uses :func:`~isaaclab_teleop.poll_control_events` (see
+  :ref:`isaac-teleop-control-states`).
+
+.. dropdown:: Session lifecycle details
+
+   The session uses **deferred creation**: if the user has not yet clicked "Start XR" in the Isaac
+   Sim UI, the session is not created immediately. Instead, each call to ``advance()`` retries
+   session creation until OpenXR handles become available. Once connected, ``advance()`` returns a
+   flattened action tensor (``torch.Tensor``) on the configured device. It returns ``None`` when
+   the session is not yet ready or has been torn down.
+
+   In standalone mode (:ref:`isaac-teleop-standalone`), creation is **not** gated on Kit XR
+   handles -- the session starts as soon as the CloudXR runtime is available.
 
 
 .. _isaac-teleop-retargeting:
@@ -1224,16 +1193,6 @@ for the headless profile, or pass a full file path for a custom profile:
              --visualizer kit --xr \
              --cloudxr_env avp
 
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         # Use the AVP profile
-         ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
-             --task IsaacContrib-PickPlace-GR1T2-WaistEnabled-Abs \
-             --visualizer kit --xr \
-             --cloudxr_env avp
-
 Create a custom profile
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1276,22 +1235,6 @@ If you prefer to run the CloudXR runtime manually in a separate terminal
              --visualizer kit --xr
 
 
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         # Disable via CLI flag
-         ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
-             --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
-             --visualizer kit --xr \
-             --no-auto_launch_cloudxr
-
-         # Or disable via environment variable
-         ISAACLAB_CXR_SKIP_AUTOLAUNCH=1 ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
-             --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
-             --visualizer kit --xr
-
-
 Accept the CloudXR license non-interactively
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1311,7 +1254,7 @@ works for the Omniverse license:
 
 .. code-block:: bash
 
-   ISAACLAB_CXR_ACCEPT_EULA=1 ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py \
+   ISAACLAB_CXR_ACCEPT_EULA=1 uv run python scripts/environments/teleoperation/teleop_se3_agent.py \
        --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
        --xr
 
@@ -1586,20 +1529,17 @@ configuration, camera-buffer, and panel-initialization errors still fail during 
 Haptic Feedback
 ---------------
 
-Isaac Capture can render **haptic feedback** on the operator's device from a sim-side signal,
-closing the loop on grasp feel during teleoperation and demonstration recording. Two backends
-ship today:
+Isaac Capture sends **haptic feedback** from simulation signals to the operator's
+device. Two backends are available:
 
 * **Controller vibration** -- a motion controller rumbles in proportion to the total contact
   force on the corresponding robot hand.
 * **Haptic glove** -- each finger of a haptic glove vibrates in proportion to how tightly that
   finger grips the manipulated object.
 
-Feedback is an *output* path that mirrors the input retargeting pipeline in reverse. Each step, a
-:class:`~isaaclab_teleop.HapticFeedbackDriver` reads a per-hand signal vector from the scene and
-pushes it to the :class:`~isaaclab_teleop.IsaacTeleopDevice`, which renders it through an Isaac
-Capture ``HapticSink``. The signal-to-device mapping runs inside the retargeting graph, so no
-device-specific code lives in your environment.
+Each step, :class:`~isaaclab_teleop.HapticFeedbackDriver` reads per-hand signals
+from the scene and sends them to :class:`~isaaclab_teleop.IsaacTeleopDevice`.
+The retargeting graph maps these signals to the device's ``HapticSink``.
 
 The design keeps three concerns pluggable, so the same seam serves both devices:
 
@@ -1718,15 +1658,6 @@ uses ``create_isaac_teleop_device()`` -- no ``--teleop_device`` flag is needed:
              --visualizer kit \
              --xr
 
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         ./isaaclab.sh -p scripts/tools/record_demos.py \
-             --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
-             --visualizer kit \
-             --xr
-
 The ``run``, ``record``, and ``replay`` workflows accept task configuration selectors using
 Hydra-style ``key=value`` syntax (with no leading ``--``). For example, record the Franka reach
 task with the PhysX and differential IK presets as follows:
@@ -1763,15 +1694,6 @@ the input device:
       .. code-block:: bash
 
          uv run --extra teleop,isaacsim isaaclab teleop record \
-             --task IsaacContrib-Stack-Cube-Galbot-Left-Arm-Gripper-RmpFlow \
-             --visualizer kit \
-             --teleop_device keyboard
-
-   .. tab-item:: isaaclab.sh / isaaclab.bat
-
-      .. code-block:: bash
-
-         ./isaaclab.sh -p scripts/tools/record_demos.py \
              --task IsaacContrib-Stack-Cube-Galbot-Left-Arm-Gripper-RmpFlow \
              --visualizer kit \
              --teleop_device keyboard
@@ -2024,7 +1946,7 @@ Optimize XR Performance
 
       uv run --extra teleop,isaacsim isaaclab teleop run \
           --task IsaacContrib-PickPlace-Locomanipulation-G1-Abs \
-          --viz none --xr
+          --xr
 
    In headless XR the OpenXR/AR session **starts automatically** -- there is no local viewport to
    click **Start XR**, so Isaac Lab begins streaming as soon as a CloudXR client connects.
@@ -2032,8 +1954,7 @@ Optimize XR Performance
    .. note::
 
       The ``--headless`` CLI flag was removed in Isaac Lab 3.0. Headless is now the **default**
-      (omit ``--visualizer``); pass ``--visualizer none`` / ``--viz none`` to force it when a
-      config might otherwise enable a visualizer, or set ``HEADLESS=1`` in the environment.
+      (omit ``--visualizer``), or set ``HEADLESS=1`` in the environment.
 
 .. dropdown:: Configure retargeting execution
    :open:

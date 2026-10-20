@@ -7,4 +7,4 @@
 Page Moved
 ==========
 
-This page moved to :ref:`PhysX native access <physx-native-access>`.
+This page moved to :ref:`physx-native-access`.
