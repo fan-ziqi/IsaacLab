@@ -3,13 +3,29 @@ Changelog
 
 .. towncrier release notes start
 
-2.0.1 (2026-10-12)
+2.1.0 (2026-10-17)
 ~~~~~~~~~~~~~~~~~~
 
-Fixed
+Added
 ^^^^^
 
-* Fixed DR Legs and four-bar pole imports to defer Newton USD downloads until the assets spawn.
+* Added MicroDuck backlash configurations for the walking and all-collisions variants, with
+  fourteen passive gearbox-play hinges per robot.
+* Added configurations for the Pollen Robotics MicroDuck walking and all-collisions variants with
+  BAM servos, and :data:`~isaaclab_assets.robots.microduck.MICRODUCK_JOINT_NAMES` with its leg and
+  head subsets in the robot's servo order. The configurations require native Newton actuator
+  execution with the MJWarp solver.
+* Added robot-owned OVPhysX friction migration profiles derived from Allegro, Kuka-Allegro, and Shadow Hand actuator settings.
+
+
+2.0.1 (2026-10-03)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Changed the Disney Research legs and four-bar pole configurations to load their USD over HTTPS when spawned,
+  instead of cloning the Newton asset repository on import.
 
 
 2.0.0 (2026-10-02)
@@ -65,7 +81,7 @@ Changed
   mirrored automatically.
 
 
-0.7.2 (2026-09-18)
+0.8.2 (2026-09-17)
 ~~~~~~~~~~~~~~~~~~
 
 Changed
@@ -74,12 +90,9 @@ Changed
 * Changed :obj:`~isaaclab_assets.robots.agility.DIGIT_V4_CFG` to disable colliders on the
   RealSense camera mount's decoration meshes and to split actuators into a stable-armature and a
   low-armature group, matching what the Digit velocity tasks previously configured per-task.
-* Changed :attr:`SHADOW_HAND_PHYSX_CFG` and :attr:`SHADOW_HAND_NEWTON_CFG` to select the
-  Shadow Hand asset's ``Colliders="simplified"`` variant. Set ``spawn.variants["Colliders"]``
-  to ``"full"`` to use the previous collision model.
 
 
-0.7.1 (2026-09-11)
+0.8.1 (2026-09-11)
 ~~~~~~~~~~~~~~~~~~
 
 Changed
@@ -90,7 +103,7 @@ Changed
   to ``"full"`` to use the previous collision model.
 
 
-0.7.0 (2026-09-10)
+0.8.0 (2026-09-06)
 ~~~~~~~~~~~~~~~~~~
 
 Added
@@ -105,12 +118,6 @@ Added
 Changed
 ^^^^^^^
 
-* **Breaking:** Updated ``SO101_CFG`` to use the SysID-capable asset and resolve actuator gains, friction, armature,
-  and limits from its default Newton MJWarp USD variant. The USD-authored actuator group is now named ``usd``. The
-  config also uses the workshop operational joint pose, inherits root fixation from the USD, disables
-  self-collisions, enables contact sensors, and applies a 0.98 soft joint-limit factor. Tasks that require the
-  previous simulation gains should migrate to ``SO101_HIGH_PD_CFG``, which retains the prior high-PD actuator
-  behavior.
 * Changed the Shadow Hand configurations to spawn one asset and select the physics engine through
   its ``Physics`` USD variant, replacing the two separate PhysX and Newton assets whose joints were
   named differently. Both engines now spawn the hand at the same orientation; the previous assets
@@ -131,24 +138,6 @@ Removed
 Fixed
 ^^^^^
 
-* Fixed self-collisions being uncontrolled under Newton for
-  :data:`~isaaclab_assets.robots.allegro.ALLEGRO_HAND_CFG`,
-  :data:`~isaaclab_assets.robots.shadow_hand.SHADOW_HAND_CFG`,
-  :data:`~isaaclab_assets.robots.shadow_hand.SHADOW_HAND_NEWTON_CFG`, and
-  :data:`~isaaclab_assets.robots.kuka_allegro.KUKA_ALLEGRO_CFG`. Their ``articulation_props`` used
-  the deprecated PhysX-only ``ArticulationRootPropertiesCfg``, which never authored the
-  ``newton:selfCollisionEnabled`` attribute Newton's schema resolver checks. They now pass a
-  ``PhysxArticulationCfg`` + ``NewtonArticulationCfg`` fragment pair so ``enabled_self_collisions``
-  is authored on both backends explicitly.
-* Fixed ``SO101_CFG`` running convex decomposition instead of using the asset's authored convex hulls.
-* Fixed the Unitree Go1 and Go2 leg actuator limits ignoring the knee reduction. Both robots applied
-  the hip and thigh limits to the calf joints, which capped calf torque well below its rated value and
-  let the torque-speed curve keep motoring past its rated speed. The calf joints now use the limits
-  authored in ``go1.usd`` and ``go2.usd`` (Go1: 35.55 N·m, 20.06 rad/s; Go2: 45.43 N·m, 15.70 rad/s),
-  and the hip and thigh limits were aligned with the same assets (23.7 N·m, 30.1 rad/s).
-
-  These robots now produce more calf torque at lower calf speeds, so policies trained on the previous
-  configuration should be retrained rather than reused directly.
 * Fixed the Shadow Hand asset applying an articulation-root schema to two prims, which made any
   consumer that resolves the root by search fail with ``Expected 1 prims ... found 2`` once the
   asset was loaded in Kit. ``JointWrenchSensor`` hit this on every backend, so the manager-based
@@ -160,6 +149,58 @@ Fixed
   asset authors on every joint, and ``soft_joint_pos_limit_factor`` and
   ``activate_contact_sensors``, which repeated their defaults. What remains differs between the two
   variants only in the selected USD variant and the PhysX solver settings, which Newton ignores.
+
+
+0.7.0 (2026-09-05)
+~~~~~~~~~~~~~~~~~~
+
+Fixed
+^^^^^
+
+* Fixed the Unitree Go1 and Go2 leg actuator limits ignoring the knee reduction. Both robots applied
+  the hip and thigh limits to the calf joints, which capped calf torque well below its rated value and
+  let the torque-speed curve keep motoring past its rated speed. The calf joints now use the limits
+  authored in ``go1.usd`` and ``go2.usd`` (Go1: 35.55 N·m, 20.06 rad/s; Go2: 45.43 N·m, 15.70 rad/s),
+  and the hip and thigh limits were aligned with the same assets (23.7 N·m, 30.1 rad/s).
+
+  These robots now produce more calf torque at lower calf speeds, so policies trained on the previous
+  configuration should be retrained rather than reused directly.
+
+
+0.6.6 (2026-09-03)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* **Breaking:** Updated ``SO101_CFG`` to use the SysID-capable asset and resolve actuator gains, friction, armature,
+  and limits from its default Newton MJWarp USD variant. The USD-authored actuator group is now named ``usd``. The
+  config also uses the workshop operational joint pose, inherits root fixation from the USD, disables
+  self-collisions, enables contact sensors, and applies a 0.98 soft joint-limit factor. Tasks that require the
+  previous simulation gains should migrate to ``SO101_HIGH_PD_CFG``, which retains the prior high-PD actuator
+  behavior.
+
+Fixed
+^^^^^
+
+* Fixed ``SO101_CFG`` running convex decomposition instead of using the asset's authored convex hulls.
+
+
+0.6.5 (2026-08-21)
+~~~~~~~~~~~~~~~~~~
+
+Fixed
+^^^^^
+
+* Fixed self-collisions being uncontrolled under Newton for
+  :data:`~isaaclab_assets.robots.allegro.ALLEGRO_HAND_CFG`,
+  :data:`~isaaclab_assets.robots.shadow_hand.SHADOW_HAND_CFG`,
+  :data:`~isaaclab_assets.robots.shadow_hand.SHADOW_HAND_NEWTON_CFG`, and
+  :data:`~isaaclab_assets.robots.kuka_allegro.KUKA_ALLEGRO_CFG`. Their ``articulation_props`` used
+  the deprecated PhysX-only ``ArticulationRootPropertiesCfg``, which never authored the
+  ``newton:selfCollisionEnabled`` attribute Newton's schema resolver checks. They now pass a
+  ``PhysxArticulationCfg`` + ``NewtonArticulationCfg`` fragment pair so ``enabled_self_collisions``
+  is authored on both backends explicitly.
 
 
 0.6.4 (2026-08-14)

@@ -205,9 +205,10 @@ receive the mesh for the current particle state. See
 
 .. note::
 
-   Surface reconstruction supports Newton GL and Newton RTX only, not Kit,
-   Viser, or Rerun. Select ``--fluid_render_mode particles`` to use these
-   visualizers without surface reconstruction.
+   This tutorial selects Newton GL or Newton RTX for surface reconstruction.
+   Select ``--fluid_render_mode particles`` for Kit, Viser, or Rerun.
+   The shared ``ParticleSurfaceRenderer`` also supports Kit; see the teapot
+   example in :ref:`newton-using-mpm`.
 
 
 Comparing one-way and two-way coupling
@@ -244,5 +245,5 @@ available in the installed package:
 
 .. code-block:: bash
 
-   uvx --from 'isaaclab[isaacsim,rsl-rl]' isaaclab example mpm-g1-coupling \
+   uvx --torch-backend cu130 --from 'isaaclab[isaacsim,rsl-rl]' isaaclab example mpm-g1-coupling \
      --coupling two_way --viz kit

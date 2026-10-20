@@ -27,8 +27,6 @@ from isaaclab.sim.views import FrameView  # noqa: E402
 
 OVPHYSX_SIM_CFG = SimulationCfg(physics=OvPhysxCfg())
 
-pytestmark = pytest.mark.device_split
-
 
 def test_view_raises_before_physics_ready():
     """A view constructed before PHYSICS_READY raises a clear error on pose-method calls."""
@@ -117,7 +115,8 @@ def test_reinitialization_closes_previous_root_view(monkeypatch):
 
     frame_view._root_view = PreviousRootView()
     frame_view._pose_binding = object()
-    monkeypatch.setattr(OvPhysxManager, "get_physx_instance", lambda: physx)
+    frame_view._backend_manager = OvPhysxManager()
+    monkeypatch.setattr(frame_view._backend_manager, "get_physx_instance", lambda: physx)
 
     def initialize(value):
         assert frame_view._root_view is None

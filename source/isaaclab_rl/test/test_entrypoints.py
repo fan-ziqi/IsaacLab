@@ -22,11 +22,14 @@ import gymnasium as gym
 import numpy as np
 import pytest
 import torch
+from hydra.core.global_hydra import GlobalHydra
+from omegaconf import OmegaConf
 
 from isaaclab import cli
 from isaaclab.envs import DirectMARLEnvCfg, DirectRLEnvCfg
 
 from isaaclab_rl.entrypoints import PlaybackRequest, SimpleAgentRequest, TrainingRequest, api, dispatch, simple_agents
+from isaaclab_rl.entrypoints.backends import play_rlinf, train_rlinf
 from isaaclab_rl.entrypoints.backends.cli_args_rsl_rl import checkpoint_load_cfg
 from isaaclab_rl.entrypoints.simple_agents import create_random_action_policy, create_zero_action_policy
 
@@ -36,6 +39,7 @@ from isaaclab_rl.entrypoints.simple_agents import create_random_action_policy, c
     [
         ("import isaaclab_rl", ["isaaclab_rl.entrypoints", "torch"]),
         ("import isaaclab_rl.entrypoints.backends", ["torch"]),
+        ("import isaaclab_rl.entrypoints.common", ["isaaclab.envs.direct_marl_env", "moviepy"]),
         # the LEAPP runtime must only load once the simulation has launched
         ("import isaaclab_rl.entrypoints.backends.export_rsl_rl", ["leapp", "isaaclab.utils.leapp"]),
         ("import isaaclab_rl.rl_games", ["isaaclab_rl.rl_games.rl_games", "rl_games", "torch"]),
@@ -253,36 +257,28 @@ def test_simple_agents_support_direct_multi_agent_action_spaces(policy_name: sim
             assert not torch.equal(actions[agent], next_actions[agent])
 
 
-def test_simple_agents_parse_device_and_default_to_newton_visualizer(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Checkpoint-free agents default to Newton visualization and retain an explicit CLI device."""
+def test_simple_agents_parse_device_and_default_to_no_visualizer(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Checkpoint-free agents run without a visualizer by default and retain an explicit CLI device."""
     monkeypatch.setattr(sys, "argv", ["pytest"])
 
     args = simple_agents._parse_args([], "zero")
 
     assert args.device is None
-    assert args.visualizer == ["newton_gl"]
+    assert "visualizer" not in vars(args)
+    assert not any(arg.startswith("visualizer=") for arg in sys.argv)
 
     args = simple_agents._parse_args(["--device", "cuda:1"], "random")
 
     assert args.device == "cuda:1"
 
 
-@pytest.mark.parametrize(
-    ("cli_device", "expected_device", "policy"),
-    [
-        # a task-required device is not replaced with the CLI default
-        (None, "cpu", "zero"),
-        # an explicit CLI device overrides the task default
-        ("cuda:1", "cuda:1", "random"),
-    ],
-)
-def test_simple_agents_resolve_simulation_device(
+@pytest.mark.parametrize(("cli_device", "policy"), [(None, "zero"), ("cuda:1", "random")])
+def test_simple_agents_leave_the_device_to_the_launch(
     cli_device: str | None,
-    expected_device: str,
     policy: simple_agents.PolicyName,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Checkpoint-free agents keep the task device unless the CLI selects one."""
+    """Checkpoint-free agents pass the CLI device, or None to keep the task's, to the launch that resolves it."""
 
     class _ExpectedStop(Exception):
         pass
@@ -302,8 +298,8 @@ def test_simple_agents_resolve_simulation_device(
     )
 
     def launch_simulation(cfg, launcher_args):
-        assert cfg.sim.device == expected_device
-        assert launcher_args.device == expected_device
+        assert cfg.sim.device == "cpu"
+        assert launcher_args.device == cli_device
         raise _ExpectedStop
 
     monkeypatch.setattr(simple_agents, "_parse_args", lambda argv, policy: args)
@@ -363,7 +359,7 @@ def test_random_agent_closes_environment_after_keyboard_interrupt(monkeypatch, i
         close=close,
     )
     getattr(env, interrupted_operation).side_effect = KeyboardInterrupt
-    args = SimpleNamespace(max_steps=None, task="Example", device=None)
+    args = SimpleNamespace(max_steps=None, task="Example", device=None, num_envs=None)
     monkeypatch.setattr(simple_agents, "_parse_args", lambda argv, policy: args)
     monkeypatch.setattr(simple_agents, "resolve_task_config", lambda task, agent: (cfg, None))
     monkeypatch.setattr(simple_agents, "launch_simulation", lambda cfg, launcher_args: contextlib.nullcontext())
@@ -379,18 +375,17 @@ def test_random_agent_closes_environment_after_keyboard_interrupt(monkeypatch, i
 
 @pytest.mark.parametrize(
     ("video_length", "max_steps", "expected_steps"),
-    [(None, None, 55), (None, 40, 40), (0, None, None)],
-    ids=["last_recorder_clip", "max_steps_caps_clip", "invalid_length_fails_before_launch"],
+    [(None, None, 55), (None, 40, 40)],
+    ids=["last_recorder_clip", "max_steps_caps_clip"],
 )
 def test_simple_agent_video_step_budget(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
     video_length: int | None,
     max_steps: int | None,
-    expected_steps: int | None,
+    expected_steps: int,
 ) -> None:
-    """``--video`` steps until the last recorder's first clip ends (25 + 30), capped by ``--max_steps``;
-    an invalid ``--video_length`` fails config validation before the simulation launches."""
+    """``--video`` steps until the last recorder's first clip ends (25 + 30), capped by ``--max_steps``."""
     from isaaclab.envs.utils.video_recorder_cfg import VideoRecorderCfg
 
     recorders = [
@@ -415,7 +410,13 @@ def test_simple_agent_video_step_budget(
         close=mock.Mock(),
     )
     args = SimpleNamespace(
-        max_steps=max_steps, task="Example", device=None, video=True, video_length=video_length, video_interval=None
+        max_steps=max_steps,
+        task="Example",
+        device=None,
+        num_envs=None,
+        video=True,
+        video_length=video_length,
+        video_interval=None,
     )
     launched = mock.Mock(return_value=contextlib.nullcontext())
     monkeypatch.setattr(simple_agents, "_parse_args", lambda argv, policy: args)
@@ -424,13 +425,8 @@ def test_simple_agent_video_step_budget(
     monkeypatch.setattr(simple_agents.gym, "make", lambda task, cfg: env)
     monkeypatch.setattr(simple_agents, "create_random_action_policy", lambda environment: lambda: None)
 
-    if expected_steps is None:
-        with pytest.raises(SystemExit, match=f"video_length={video_length}"):
-            simple_agents.run([], policy="random")
-        launched.assert_not_called()
-    else:
-        simple_agents.run([], policy="random")
-        assert env.step.call_count == expected_steps
+    simple_agents.run([], policy="random")
+    assert env.step.call_count == expected_steps
 
 
 def test_simple_agent_request_forwards_video(monkeypatch) -> None:
@@ -484,8 +480,6 @@ def test_train_request_adapts_typed_parameters_to_cli(monkeypatch) -> None:
 
 def test_rlinf_parser_uses_unified_checkpoint_and_iteration_flags() -> None:
     """RLinf accepts the public checkpoint and iteration option names."""
-    from isaaclab_rl.entrypoints.backends import train_rlinf
-
     args = train_rlinf._parse_args(["--config_name", "ppo", "--checkpoint", "latest", "--max_iterations", "10"])
 
     assert args.checkpoint == "latest"
@@ -510,14 +504,56 @@ def test_rlinf_rejects_pretrained_checkpoint() -> None:
         resolve_rlinf_checkpoint("pretrained", log_root_path="logs/rlinf", task="Isaac-Task", config_name="ppo")
 
 
-def test_rlinf_environment_disables_ray_uv_upload(tmp_path: Path, monkeypatch) -> None:
-    """Shared RLinf setup, used by training and playback, disables Ray's ``uv run`` project upload."""
-    from isaaclab_rl.entrypoints.backends.cli_args_rlinf import configure_rlinf_environment
-
-    monkeypatch.setattr(os, "environ", {})
-    configure_rlinf_environment("ppo", str(tmp_path))
-
+@pytest.mark.parametrize("backend", [train_rlinf, play_rlinf], ids=["train", "play"])
+def test_rlinf_launch_passes_checkpoint_and_model_config_to_workers(tmp_path: Path, monkeypatch, backend) -> None:
+    """Real CLI composition supplies the native RLinf weight/resume hooks before workers start."""
+    validate = mock.Mock(side_effect=RuntimeError("worker boundary"))
+    modules = {
+        "rlinf": {},
+        "rlinf.config": {"validate_cfg": validate},
+        "rlinf.runners.embodied_runner": {"EmbodiedRunner": mock.Mock()},
+        "rlinf.runners.embodied_eval_runner": {"EmbodiedEvalRunner": mock.Mock()},
+        "rlinf.scheduler": {"Cluster": mock.Mock()},
+        "rlinf.utils.placement": {"HybridComponentPlacement": mock.Mock()},
+        "rlinf.workers.env.env_worker": {"EnvWorker": mock.Mock()},
+        "rlinf.workers.rollout.hf.huggingface_worker": {"MultiStepRolloutWorker": mock.Mock()},
+    }
+    for name, attributes in modules.items():
+        module = types.ModuleType(name)
+        vars(module).update(attributes)
+        monkeypatch.setitem(sys.modules, name, module)
+    monkeypatch.setattr(torch.multiprocessing, "set_start_method", lambda *args, **kwargs: None)
+    monkeypatch.chdir(tmp_path)
+    for variable in ("PYTHONPATH", "RLINF_CONFIG_FILE", "RLINF_EXT_MODULE", "RAY_ENABLE_UV_RUN_RUNTIME_ENV"):
+        monkeypatch.delenv(variable, raising=False)
+    step_dir = tmp_path / "checkpoints" / "global_step_400"
+    weights = step_dir / "actor" / "model_state_dict" / "full_weights.pt"
+    weights.parent.mkdir(parents=True)
+    weights.touch()
+    cfg = OmegaConf.create(
+        {
+            "runner": {"logger": {"log_path": "unused"}},
+            "actor": {
+                "model": {"model_path": "./base", "model_type": "gr00t", "rl_head_config": {"add_value_head": True}}
+            },
+            "rollout": {"model": {"model_path": "./rollout", "rl_head_config": {"disable_dropout": True}}},
+            "env": {"train": {"init_params": {"id": "Test"}}, "eval": {"init_params": {"id": "Test"}}},
+        }
+    )
+    OmegaConf.save(cfg, tmp_path / "ppo.yaml")
+    checkpoint = step_dir if backend is train_rlinf else weights
+    args = ["--config_path", str(tmp_path), "--config_name", "ppo"]
+    args += ["--checkpoint", str(checkpoint.relative_to(tmp_path))]
+    with pytest.raises(RuntimeError, match="worker boundary"):
+        backend.run(args)
+    GlobalHydra.instance().clear()
     assert os.environ["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] == "0"
+    resolved = validate.call_args.args[0]
+    assert resolved.runner["resume_dir" if backend is train_rlinf else "ckpt_path"] == str(checkpoint)
+    assert resolved.actor.model.model_path == str(tmp_path / "base")
+    assert resolved.rollout.model.model_path == str(tmp_path / "rollout")
+    assert resolved.rollout.model.model_type == "gr00t"
+    assert dict(resolved.rollout.model.rl_head_config) == {"add_value_head": True, "disable_dropout": True}
 
 
 def test_run_backend_restores_sys_argv_after_training(monkeypatch) -> None:
@@ -716,13 +752,14 @@ def test_failed_rsl_training_restores_torch_backend_state(monkeypatch) -> None:
     assert _torch_backend_state() == caller_state
 
 
-def test_rsl_training_registers_external_task_before_agent_discovery(monkeypatch) -> None:
-    """RSL-RL parses tasks registered by its external callback."""
-    from isaaclab_rl.entrypoints.backends import train_rsl_rl
-
+@pytest.mark.parametrize("mode", ["train", "play"])
+def test_rsl_registers_external_task_before_agent_discovery(monkeypatch, mode) -> None:
+    """External task registration preserves selector aliases through callback filtering."""
+    entrypoint = importlib.import_module(f"isaaclab_rl.entrypoints.backends.{mode}_rsl_rl")
     task_name = "Isaac-ExternalCallbackOrderTest"
     callback_module_name = "_external_callback_order_test"
     callback_module = types.ModuleType(callback_module_name)
+    selections = ["--physics", "newton_mjwarp", "--renderer", "newton_renderer", "--viz", "kit"]
 
     def register_task() -> list[str]:
         gym.register(
@@ -730,31 +767,27 @@ def test_rsl_training_registers_external_task_before_agent_discovery(monkeypatch
             entry_point="dummy:Env",
             kwargs={"rsl_rl_cfg_entry_point": "dummy:AgentCfg"},
         )
-        return []
+        return selections
 
     callback_module.register_task = register_task
     monkeypatch.setitem(sys.modules, callback_module_name, callback_module)
-    monkeypatch.setattr(
-        sys,
-        "argv",
-        [
-            "train.py",
-            "--task",
-            task_name,
-            "--external_callback",
-            f"{callback_module_name}.register_task",
-            "--no-resume_optimizer_state",
-        ],
-    )
+    argv = [f"{mode}.py", "--task", task_name]
+    argv += ["--external_callback", f"{callback_module_name}.register_task", *selections, "--callback_option=42"]
+    if mode == "train":
+        argv.append("--no-resume_optimizer_state")
+    monkeypatch.setattr(sys, "argv", argv)
     gym.registry.pop(task_name, None)
 
     try:
-        args = train_rsl_rl._parse_args(sys.argv[1:])
+        args = entrypoint._parse_args(sys.argv[1:])
     finally:
         gym.registry.pop(task_name, None)
 
     assert args.task == task_name
-    assert not args.resume_optimizer_state
+    if mode == "train":
+        assert not args.resume_optimizer_state
+    assert sys.argv[1:] == ["physics=newton_mjwarp", "renderer=newton_renderer", "visualizer=kit"]
+    assert not {"physics", "renderer", "visualizer"}.intersection(vars(args))
 
 
 def test_skrl_training_restores_jax_backend(monkeypatch) -> None:

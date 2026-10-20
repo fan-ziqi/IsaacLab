@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -20,24 +19,11 @@ msgstr ""
 msgid "Prepare an Asset for Newton with MJWarp"
 msgstr "为 Newton MJWarp 准备资产"
 
-#: source/how-to/prepare_asset_for_newton.rst:15
-msgid ""
-"This page is the source of truth for the ``isaaclab-preparing-assets-for-"
-"newton`` agent skill (`skill source <https://github.com/isaac-"
-"sim/IsaacLab/blob/develop/skills/user/prepare-assets-for-"
-"newton/SKILL.md>`__). When you change this page, update the skill so agent "
-"guidance stays in sync. See :doc:`/source/developer-tools/agent_skills`."
-msgstr ""
-"本页是 ``isaaclab-preparing-assets-for-newton`` 智能体技能的权威参考（ `技能源文件 "
-"<https://github.com/isaac-sim/IsaacLab/blob/develop/skills/user/prepare-"
-"assets-for-newton/SKILL.md>`__ ）。修改本页时，也应更新该技能，使智能体指导保持一致。参见 "
-":doc:`/source/developer-tools/agent_skills` 。"
-
-#: source/how-to/prepare_asset_for_newton.rst:22
+#: source/how-to/prepare_asset_for_newton.rst:21
 msgid "Prerequisites"
 msgstr "先决条件"
 
-#: source/how-to/prepare_asset_for_newton.rst:24
+#: source/how-to/prepare_asset_for_newton.rst:23
 msgid ""
 "Understand how Isaac Lab selects a backend and its task-specific preset "
 "before changing an asset; see :ref:`backends-and-presets`. This guide "
@@ -54,11 +40,11 @@ msgstr ""
 ":ref:`solver-differences` ；专门的 MJWarp 调参流程见 :doc:`/source/how-"
 "to/solver_tuning_mjwarp` 。"
 
-#: source/how-to/prepare_asset_for_newton.rst:33
+#: source/how-to/prepare_asset_for_newton.rst:32
 msgid "Import a multi-physics asset"
 msgstr "导入多物理后端资产"
 
-#: source/how-to/prepare_asset_for_newton.rst:35
+#: source/how-to/prepare_asset_for_newton.rst:34
 msgid ""
 "Isaac Lab assets can work with both ``physics=physx`` and "
 "``physics=newton_mjwarp``. Many assets author USD Physics and PhysX schemas;"
@@ -71,7 +57,7 @@ msgstr ""
 "USD Physics 和 PhysX 模式，Newton 会将受支持的属性解析到自身模型中，因此不需要单独制作 Newton "
 "专用副本。请根据功能和模式文档核对每项属性：资产中存在某个 PhysX 属性，并不代表 MJWarp 在步进时会使用它。"
 
-#: source/how-to/prepare_asset_for_newton.rst:41
+#: source/how-to/prepare_asset_for_newton.rst:40
 msgid ""
 "For a new URDF or MJCF asset, use the Isaac Lab importers to create a multi-"
 "physics asset. Keep ``run_asset_transformer`` and "
@@ -88,54 +74,56 @@ msgstr ""
 "to/import_new_asset` 、 :class:`~isaaclab.sim.converters.UrdfConverterCfg` 和 "
 ":class:`~isaaclab.sim.converters.MjcfConverterCfg` 。"
 
-#: source/how-to/prepare_asset_for_newton.rst:49
+#: source/how-to/prepare_asset_for_newton.rst:48
 msgid "Separate common and solver-specific properties"
 msgstr "区分通用与求解器特有属性"
 
-#: source/how-to/prepare_asset_for_newton.rst:51
+#: source/how-to/prepare_asset_for_newton.rst:50
 msgid ""
-"Put common USD Physics properties in solver-common configuration classes "
-"such as ``RigidBodyBaseCfg`` and ``JointDriveBaseCfg``. Put backend-only "
-"properties in the matching subclasses:"
+"Put common USD Physics properties in solver-common fragments such as "
+":class:`~isaaclab.sim.schemas.UsdPhysicsRigidBodyCfg` and "
+":class:`~isaaclab.sim.schemas.UsdPhysicsDriveCfg`. Put backend-only "
+"properties in the matching backend fragments, passed alongside the common "
+"fragment(s) in the same spawner field:"
 msgstr ""
-"将通用 USD Physics 属性放入 ``RigidBodyBaseCfg`` 、 ``JointDriveBaseCfg`` "
-"等求解器通用配置类，将后端专属属性放入对应子类："
+"将通用 USD Physics 属性放入 :class:`~isaaclab.sim.schemas.UsdPhysicsRigidBodyCfg` 和"
+" :class:`~isaaclab.sim.schemas.UsdPhysicsDriveCfg` "
+"等求解器通用片段。后端专用属性则放入对应后端片段，并在同一生成器字段中与通用片段一起传入："
 
 #: source/how-to/prepare_asset_for_newton.rst:55
 msgid ""
-"Use ``MujocoRigidBodyPropertiesCfg``, ``MujocoJointDrivePropertiesCfg``, and"
-" ``MujocoCollisionCfg`` for MJWarp-specific properties."
+"Use ``MujocoRigidBodyCfg``, ``MujocoJointCfg``, and ``MujocoCollisionCfg`` "
+"for MJWarp-specific properties."
 msgstr ""
-"MJWarp 特有属性使用 ``MujocoRigidBodyPropertiesCfg`` 、 "
-"``MujocoJointDrivePropertiesCfg`` 和 ``MujocoCollisionCfg`` 。"
+"MJWarp 专用属性使用 ``MujocoRigidBodyCfg``、``MujocoJointCfg`` 和 "
+"``MujocoCollisionCfg``。"
 
 #: source/how-to/prepare_asset_for_newton.rst:57
 msgid ""
-"Use the matching ``Newton*PropertiesCfg`` classes for supported Newton-"
-"native collision, material, articulation, and related properties."
-msgstr "受支持的 Newton 原生碰撞、材质、关节体等属性，使用对应的 ``Newton*PropertiesCfg`` 类。"
+"Use the matching ``Newton*Cfg`` fragments for supported Newton-native "
+"collision, material, articulation, and related properties."
+msgstr "受支持的 Newton 原生碰撞、材质、关节系统等属性，使用对应的 ``Newton*Cfg`` 片段。"
 
 #: source/how-to/prepare_asset_for_newton.rst:59
 msgid ""
 "Keep PhysX-only damping, stabilization, solver-iteration, friction-patch, "
-"and compliant-contact properties in the matching ``Physx*PropertiesCfg`` "
-"classes."
-msgstr "PhysX 专属的阻尼、稳定化、求解器迭代、接触面摩擦和柔顺接触属性，保留在对应的 ``Physx*PropertiesCfg`` 类中。"
+"and compliant-contact properties in the matching ``Physx*Cfg`` fragments."
+msgstr "PhysX 专用的阻尼、稳定化、求解器迭代、摩擦斑块及柔顺接触属性，应保留在对应的 ``Physx*Cfg`` 片段中。"
 
 #: source/how-to/prepare_asset_for_newton.rst:62
 msgid ""
-"For configuration hierarchy and parameter-to-USD routing, see "
-":doc:`/source/concepts/schema_cfgs`. Check the :doc:`Newton/MuJoCo schema "
-"API </source/api/lab_newton/isaaclab_newton.sim.schemas>` and :doc:`PhysX "
+"For the fragment model and how multiple fragments combine on one spawner "
+"field, see :ref:`schema-fragments`. Check the :doc:`Newton/MuJoCo schema API"
+" </source/api/lab_newton/isaaclab_newton.sim.schemas>` and :doc:`PhysX "
 "schema API </source/api/lab_physx/isaaclab_physx.sim.schemas>` for supported"
 " fields. A value present in a PhysX asset or imported Newton model is not "
 "proof that MJWarp consumes it."
 msgstr ""
-"配置继承体系和参数到 USD 的对应规则见 :doc:`/source/concepts/schema_cfgs` 。受支持字段请查看 "
-":doc:`Newton/MuJoCo 模式 API "
-"</source/api/lab_newton/isaaclab_newton.sim.schemas>` 和 :doc:`PhysX 模式 API "
-"</source/api/lab_physx/isaaclab_physx.sim.schemas>` 。某个值存在于 PhysX 资产或导入的 "
-"Newton 模型中，并不能证明 MJWarp 会使用它。"
+"片段模型及如何在同一生成器字段中组合多个片段，见 :ref:`schema-fragments`。受支持字段见 :doc:`Newton/MuJoCo "
+"Schema API </source/api/lab_newton/isaaclab_newton.sim.schemas>` 和 "
+":doc:`PhysX Schema API "
+"</source/api/lab_physx/isaaclab_physx.sim.schemas>`。PhysX 资产或导入的 Newton "
+"模型中存在某个值，并不能证明 MJWarp 会读取它。"
 
 #: source/how-to/prepare_asset_for_newton.rst:69
 msgid "Audit the mechanical model"

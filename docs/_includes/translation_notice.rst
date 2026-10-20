@@ -2,7 +2,7 @@
 
    本翻译项目不属于 NVIDIA 或 IsaacLab 官方文档，由 `范子琦 <https://github.com/fan-ziqi>`__ 提供中文翻译，仅供学习交流使用，禁止转载或用于商业用途。详情请查看 :doc:`关于翻译 </source/setup/translation>` 章节。
 
-   官方文档提供多个版本。本站由本项目的 ``main`` 分支发布，当前译文以官方 ``release/3.0.0`` 分支为基准。除下述旧版存档外，不提供完整的历史版本翻译。
+   官方文档提供多个版本。本站由本项目的 ``main`` 分支发布，Isaac Lab 3.0.0 发布后，本站译文改为跟踪官方 ``main`` 分支。除下述旧版存档外，不提供完整的历史版本翻译。
 
    旧版 2.x 中文文档已迁至 `https://docs.robotsfan.com/isaaclab_v2/ <https://docs.robotsfan.com/isaaclab_v2/>`__。使用 Isaac Lab 2.x 时，请查阅该存档。
 

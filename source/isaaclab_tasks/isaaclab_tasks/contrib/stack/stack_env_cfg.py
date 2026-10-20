@@ -30,6 +30,7 @@ from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 
 from isaaclab_tasks.utils import PresetCfg
 
+from .. import ISAACLAB_TELEOP_AVAILABLE
 from . import mdp
 from .mdp import stack_events
 
@@ -51,12 +52,11 @@ _CUBE_PROPERTIES = [
 
 def _make_default_xr_cfg() -> XrCfg | None:
     """Create the default stack XR configuration when Isaac Lab Teleop is installed."""
-    try:
-        from isaaclab_teleop import XrCfg
-    except ModuleNotFoundError as exc:
-        if exc.name != "isaaclab_teleop":
-            raise
+    if not ISAACLAB_TELEOP_AVAILABLE:
         return None
+
+    from isaaclab_teleop import XrCfg
+
     return XrCfg(
         anchor_pos=(-0.1, -0.5, -1.05),
         anchor_rot=(0, 0, -0.5, 0.866),
@@ -382,7 +382,7 @@ class StackEnvCfg(ManagerBasedRLEnvCfg):
     """Configuration for the stacking environment."""
 
     # Scene settings
-    scene: ObjectTableSceneCfg = ObjectTableSceneCfg(num_envs=1, env_spacing=2.5, replicate_physics=False)
+    scene: ObjectTableSceneCfg = ObjectTableSceneCfg(num_envs=1, env_spacing=2.5)
     # Basic settings
     observations: ObservationsCfg = ObservationsCfg()
     actions: ActionsCfg = ActionsCfg()

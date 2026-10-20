@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: source/concepts/warp_environments.rst:4
-msgid "Warp Experimental Environments"
-msgstr "Warp 实验性环境"
+msgid "Warp Environments"
+msgstr "Warp 环境"
 
 #: source/concepts/warp_environments.rst:8
 msgid ""
@@ -29,36 +29,49 @@ msgstr ""
 
 #: source/concepts/warp_environments.rst:11
 msgid ""
-"The experimental extensions introduce **warp-first** environment "
-"infrastructure with CUDA graph capture support. All environment-side "
-"computation (observations, rewards, resets, actions) runs as pure Warp "
-"kernels, eliminating Python overhead and enabling CUDA graph capture for "
-"maximum throughput."
-msgstr ""
-"实验性扩展引入了 **以 Warp 为核心** 、支持 CUDA 图捕获的环境基础设施。环境侧计算（观测、奖励、重置、动作）全部以纯 Warp "
-"内核运行，消除 Python 开销，并通过 CUDA 图捕获获得更高吞吐量。"
+"Experimental Warp environments compute observations, rewards, resets, and "
+"actions in Warp kernels. CUDA graph capture reduces Python overhead during "
+"execution."
+msgstr "实验性的 Warp 环境在 Warp 内核中计算观测、奖励、重置和动作，并通过 CUDA 图捕获减少执行时的 Python 开销。"
 
-#: source/concepts/warp_environments.rst:15
+#: source/concepts/warp_environments.rst:14
 msgid ""
-"Throughout this page, **stable** refers to the standard Torch-based "
-"implementations in the ``isaaclab`` and ``isaaclab_tasks`` packages (the "
-"default runtime, used when ``--frontend warp`` is not passed). Their Warp "
-"counterparts live in the ``isaaclab_experimental`` and "
-"``isaaclab_tasks_experimental`` packages."
+"Here, **stable** means the default Torch environments in ``isaaclab`` and "
+"``isaaclab_tasks``. Pass ``--frontend warp`` to use their experimental Warp "
+"counterparts."
 msgstr ""
-"本页中的 **稳定版** 指 ``isaaclab`` 和 ``isaaclab_tasks`` 包中基于 Torch 的标准实现，即未传入 "
-"``--frontend warp`` 时使用的默认运行时。对应的 Warp 实现位于 ``isaaclab_experimental`` 和 "
-"``isaaclab_tasks_experimental`` 包。"
+"这里的 **稳定版** 指 ``isaaclab`` 和 ``isaaclab_tasks`` 中默认的 Torch 环境。传入 "
+"``--frontend warp`` 可使用对应的实验性 Warp 环境。"
 
-#: source/concepts/warp_environments.rst:22
+#: source/concepts/warp_environments.rst:19
+msgid "Quick Start"
+msgstr "快速开始"
+
+#: source/concepts/warp_environments.rst:37
+msgid ""
+"All RL libraries with warp-compatible wrappers are supported: RSL-RL, RL "
+"Games, SKRL, and Stable-Baselines3."
+msgstr "支持所有具有 Warp 兼容包装器的强化学习库：RSL-RL、RL Games、SKRL 和 Stable-Baselines3。"
+
+#: source/concepts/warp_environments.rst:42
+msgid ""
+"``--video`` is rejected on the warp path, for both ``train`` and ``play``: "
+"video recording requires the standard torch frontend. To record a rollout, "
+"replay the same checkpoint with ``--frontend torch``; see "
+":ref:`how_to_record_video`."
+msgstr ""
+"Warp 路径的 ``train`` 和 ``play`` 均不接受 ``--video`` ，视频录制需要标准 Torch 前端。要录制轨迹，请通过 "
+"``--frontend torch`` 回放同一检查点；见 :ref:`how_to_record_video` 。"
+
+#: source/concepts/warp_environments.rst:48
 msgid "Workflows"
 msgstr "工作流程"
 
-#: source/concepts/warp_environments.rst:24
+#: source/concepts/warp_environments.rst:50
 msgid "Two environment workflows are supported:"
 msgstr "支持两种环境工作流程："
 
-#: source/concepts/warp_environments.rst:26
+#: source/concepts/warp_environments.rst:52
 msgid ""
 "**Direct workflow** — ``DirectRLEnvWarp`` base class. You implement the step"
 " loop, observations, rewards, and resets directly in your env class using "
@@ -66,7 +79,7 @@ msgid ""
 msgstr ""
 "**直接式工作流程** — 使用 ``DirectRLEnvWarp`` 基类，在环境类中通过 Warp 内核直接实现步进循环、观测、奖励和重置。"
 
-#: source/concepts/warp_environments.rst:29
+#: source/concepts/warp_environments.rst:55
 msgid ""
 "**Manager-based workflow** — ``ManagerBasedRLEnvWarp`` base class. You "
 "define MDP terms as standalone Warp-kernel functions and compose them via "
@@ -75,15 +88,15 @@ msgstr ""
 "**基于管理器的工作流程** — 使用 ``ManagerBasedRLEnvWarp`` 基类，将 MDP 项定义为独立的 Warp "
 "内核函数，再通过配置组合。"
 
-#: source/concepts/warp_environments.rst:34
+#: source/concepts/warp_environments.rst:60
 msgid "Available Environments"
 msgstr "可用环境"
 
-#: source/concepts/warp_environments.rst:37
+#: source/concepts/warp_environments.rst:63
 msgid "Direct Warp Environments"
 msgstr "直接式 Warp 环境"
 
-#: source/concepts/warp_environments.rst:39
+#: source/concepts/warp_environments.rst:65
 msgid ""
 "Direct tasks share the stable task configuration. ``--frontend warp`` "
 "resolves the stable ``<task>_direct_env:<Name>Env`` entry point to the "
@@ -96,27 +109,27 @@ msgstr ""
 "入口解析为对应的 ``<task>_warp_env:<Name>WarpEnv`` 实现，只替换环境类。实现无法遵循此约定时，注册可以使用可选的 "
 "``warp_entry_point`` 覆盖。以下稳定版任务具有 Warp 实现："
 
-#: source/concepts/warp_environments.rst:46
+#: source/concepts/warp_environments.rst:72
 msgid "``Isaac-Cartpole-Direct`` — Cartpole balance"
 msgstr "``Isaac-Cartpole-Direct`` — Cartpole 平衡"
 
-#: source/concepts/warp_environments.rst:47
+#: source/concepts/warp_environments.rst:73
 msgid "``Isaac-Ant-Direct`` — Ant locomotion"
 msgstr "``Isaac-Ant-Direct`` — Ant 运动"
 
-#: source/concepts/warp_environments.rst:48
+#: source/concepts/warp_environments.rst:74
 msgid "``Isaac-Humanoid-Direct`` — Humanoid locomotion"
 msgstr "``Isaac-Humanoid-Direct`` — 人形机器人运动"
 
-#: source/concepts/warp_environments.rst:49
+#: source/concepts/warp_environments.rst:75
 msgid "``Isaac-Reorient-Cube-Allegro-Direct`` — Allegro hand cube reorient"
 msgstr "``Isaac-Reorient-Cube-Allegro-Direct`` — Allegro 手立方体重定向"
 
-#: source/concepts/warp_environments.rst:53
+#: source/concepts/warp_environments.rst:79
 msgid "Manager-Based Warp Execution (``--frontend warp``)"
 msgstr "基于管理器的 Warp 执行（ ``--frontend warp`` ）"
 
-#: source/concepts/warp_environments.rst:55
+#: source/concepts/warp_environments.rst:81
 msgid ""
 "Manager-based tasks do not need a parallel warp registration: the shared RL "
 "CLI exposes ``--frontend {torch,warp}``, and ``--frontend warp`` adapts the "
@@ -128,67 +141,67 @@ msgstr ""
 "``--frontend warp`` 在构建时将 *稳定版* 任务配置适配到 Warp 运行时，将各 MDP 项替换为对应的 Warp 实现。请通过 "
 "``presets=newton_mjwarp`` 显式选择 Newton 求解器。以下稳定版任务的全部项都有对应实现："
 
-#: source/concepts/warp_environments.rst:61
+#: source/concepts/warp_environments.rst:87
 msgid "``Isaac-Cartpole``"
 msgstr "``Isaac-Cartpole``"
 
-#: source/concepts/warp_environments.rst:62
+#: source/concepts/warp_environments.rst:88
 msgid "``Isaac-Ant``"
 msgstr "``Isaac-Ant``"
 
-#: source/concepts/warp_environments.rst:63
+#: source/concepts/warp_environments.rst:89
 msgid "``Isaac-Humanoid``"
 msgstr "``Isaac-Humanoid``"
 
-#: source/concepts/warp_environments.rst:64
+#: source/concepts/warp_environments.rst:90
 msgid "``Isaac-Reach-Franka``"
 msgstr "``Isaac-Reach-Franka``"
 
-#: source/concepts/warp_environments.rst:65
+#: source/concepts/warp_environments.rst:91
 msgid "``Isaac-Reach-UR10``"
 msgstr "``Isaac-Reach-UR10``"
 
-#: source/concepts/warp_environments.rst:66
+#: source/concepts/warp_environments.rst:92
 msgid "``Isaac-Velocity-Flat-AnymalD``"
 msgstr "``Isaac-Velocity-Flat-AnymalD``"
 
-#: source/concepts/warp_environments.rst:67
+#: source/concepts/warp_environments.rst:93
 msgid "``Isaac-Velocity-Flat-Cassie``"
 msgstr "``Isaac-Velocity-Flat-Cassie``"
 
-#: source/concepts/warp_environments.rst:68
+#: source/concepts/warp_environments.rst:94
 msgid "``Isaac-Velocity-Flat-G1``"
 msgstr "``Isaac-Velocity-Flat-G1``"
 
-#: source/concepts/warp_environments.rst:69
+#: source/concepts/warp_environments.rst:95
 msgid "``Isaac-Velocity-Flat-H1``"
 msgstr "``Isaac-Velocity-Flat-H1``"
 
-#: source/concepts/warp_environments.rst:70
+#: source/concepts/warp_environments.rst:96
 msgid "``Isaac-Velocity-Flat-UnitreeGo2``"
 msgstr "``Isaac-Velocity-Flat-UnitreeGo2``"
 
-#: source/concepts/warp_environments.rst:72
+#: source/concepts/warp_environments.rst:98
 msgid "The following contributed tasks also have full twin coverage:"
 msgstr "以下贡献任务也已完整覆盖："
 
-#: source/concepts/warp_environments.rst:74
+#: source/concepts/warp_environments.rst:100
 msgid "``IsaacContrib-Velocity-Flat-AnymalB``"
 msgstr "``IsaacContrib-Velocity-Flat-AnymalB``"
 
-#: source/concepts/warp_environments.rst:75
+#: source/concepts/warp_environments.rst:101
 msgid "``IsaacContrib-Velocity-Flat-AnymalC``"
 msgstr "``IsaacContrib-Velocity-Flat-AnymalC``"
 
-#: source/concepts/warp_environments.rst:76
+#: source/concepts/warp_environments.rst:102
 msgid "``IsaacContrib-Velocity-Flat-UnitreeA1``"
 msgstr "``IsaacContrib-Velocity-Flat-UnitreeA1``"
 
-#: source/concepts/warp_environments.rst:77
+#: source/concepts/warp_environments.rst:103
 msgid "``IsaacContrib-Velocity-Flat-UnitreeGo1``"
 msgstr "``IsaacContrib-Velocity-Flat-UnitreeGo1``"
 
-#: source/concepts/warp_environments.rst:79
+#: source/concepts/warp_environments.rst:105
 msgid ""
 "A missing twin is a hard error listing the affected terms, so a partially "
 "covered task fails at build time rather than silently changing behavior. "
@@ -200,48 +213,29 @@ msgstr ""
 "缺少对应项会直接报错，并列出受影响的项，因此仅部分覆盖的任务在构建时就会失败，而不会静默改变行为。目前无法适配使用 ``height_scan`` "
 "的崎岖地形速度配置，因为该观测项没有 Warp 对应实现。应检查任务实际使用的项，不要假定所有地形配置都有同样限制。"
 
-#: source/concepts/warp_environments.rst:87
-msgid "Quick Start"
-msgstr "快速开始"
-
-#: source/concepts/warp_environments.rst:105
-msgid ""
-"All RL libraries with warp-compatible wrappers are supported: RSL-RL, RL "
-"Games, SKRL, and Stable-Baselines3."
-msgstr "支持所有具有 Warp 兼容包装器的强化学习库：RSL-RL、RL Games、SKRL 和 Stable-Baselines3。"
-
-#: source/concepts/warp_environments.rst:110
-msgid ""
-"``--video`` is rejected on the warp path, for both ``train`` and ``play``: "
-"video recording requires the standard torch frontend. To record a rollout, "
-"replay the same checkpoint with ``--frontend torch``; see "
-":ref:`how_to_record_video`."
-msgstr ""
-"Warp 路径的 ``train`` 和 ``play`` 均不接受 ``--video`` ，视频录制需要标准 Torch 前端。要录制轨迹，请通过 "
-"``--frontend torch`` 回放同一检查点；见 :ref:`how_to_record_video` 。"
-
-#: source/concepts/warp_environments.rst:116
+#: source/concepts/warp_environments.rst:113
 msgid "Performance Comparison"
 msgstr "性能对比"
 
-#: source/concepts/warp_environments.rst:118
+#: source/concepts/warp_environments.rst:115
 msgid ""
-"Historical step time comparison between the stable (torch/manager) and warp "
-"(CUDA graph captured) variants, both running on the Newton physics backend. "
-"Measured over 300 iterations with 4096 environments. The table covers the "
-"measured tasks, not every currently supported task. These figures are "
-"retained as the original benchmark record, not a measurement of the latest "
-"``develop`` revision. For updated results, record the hardware and Isaac "
-"Lab, Newton, and Warp revisions, and compare both frontends on those same "
-"revisions. Improvements in shared base libraries can benefit both frontends "
-"and must not be attributed solely to the Warp frontend."
+"These historical measurements compare Torch manager-based and CUDA-graph-"
+"captured Warp environments on Newton, over 300 iterations with 4096 "
+"environments. They do not represent the latest revision or every supported "
+"task."
 msgstr ""
-"下表是稳定版（Torch/管理器）与 Warp（CUDA 图捕获）变体的历史步进时间对比，两者都运行于 Newton 物理后端。测量使用 4096 "
-"个环境、300 次迭代，覆盖所测任务，而非当前所有支持的任务。这些数值作为原始基准记录保留，不代表最新 ``develop`` "
-"版本的测量结果。更新结果时，应记录硬件及 Isaac Lab、Newton、Warp "
-"的版本，并在相同版本上对比两个前端。共享基础库的改进可能同时惠及两者，不能全部归因于 Warp 前端。"
+"以下历史测量比较了 Newton 上基于管理器的 Torch 环境与经过 CUDA 图捕获的 Warp 环境，使用 4096 个环境运行 300 "
+"次迭代。这些结果不代表最新修订版，也不覆盖所有受支持任务。"
 
-#: source/concepts/warp_environments.rst:128
+#: source/concepts/warp_environments.rst:119
+msgid ""
+"For a current comparison, use the same hardware and Isaac Lab, Newton, and "
+"Warp revisions for both frontends. Shared-library improvements can benefit "
+"both."
+msgstr ""
+"比较当前版本时，应让两个前端使用相同硬件，以及相同的 Isaac Lab、Newton 和 Warp 修订版。公共库的改进可能同时惠及两者。"
+
+#: source/concepts/warp_environments.rst:124
 msgid ""
 "The warp migration is an ongoing effort. Several components (e.g. scene "
 "write, actuator models) have not yet been migrated to Warp kernels and still"
@@ -251,258 +245,258 @@ msgstr ""
 "向 Warp 迁移仍在进行中。部分组件（例如场景写入、执行器模型）尚未迁移到 Warp 内核，仍通过 Torch "
 "运行。随着这些组件迁移，预计性能会进一步提高。"
 
-#: source/concepts/warp_environments.rst:136
+#: source/concepts/warp_environments.rst:132
 msgid "Env"
 msgstr "环境"
 
-#: source/concepts/warp_environments.rst:137
+#: source/concepts/warp_environments.rst:133
 msgid "Type"
 msgstr "类型"
 
-#: source/concepts/warp_environments.rst:138
+#: source/concepts/warp_environments.rst:134
 msgid "Stable Step (us)"
 msgstr "稳定版步进时间（μs）"
 
-#: source/concepts/warp_environments.rst:139
+#: source/concepts/warp_environments.rst:135
 msgid "Warp Step (us)"
 msgstr "Warp 步进时间（μs）"
 
-#: source/concepts/warp_environments.rst:140
+#: source/concepts/warp_environments.rst:136
 msgid "Change"
 msgstr "变化"
 
-#: source/concepts/warp_environments.rst:141
+#: source/concepts/warp_environments.rst:137
 msgid "Isaac-Cartpole-Direct"
 msgstr "Isaac-Cartpole-Direct"
 
-#: source/concepts/warp_environments.rst:142
-#: source/concepts/warp_environments.rst:147
-#: source/concepts/warp_environments.rst:152
-#: source/concepts/warp_environments.rst:157
+#: source/concepts/warp_environments.rst:138
+#: source/concepts/warp_environments.rst:143
+#: source/concepts/warp_environments.rst:148
+#: source/concepts/warp_environments.rst:153
 msgid "Direct"
 msgstr "直接"
 
-#: source/concepts/warp_environments.rst:143
+#: source/concepts/warp_environments.rst:139
 msgid "5,274"
 msgstr "5,274"
 
-#: source/concepts/warp_environments.rst:144
+#: source/concepts/warp_environments.rst:140
 msgid "4,331"
 msgstr "4,331"
 
-#: source/concepts/warp_environments.rst:145
+#: source/concepts/warp_environments.rst:141
 msgid "-17.88%"
 msgstr "-17.88%"
 
-#: source/concepts/warp_environments.rst:146
+#: source/concepts/warp_environments.rst:142
 msgid "Isaac-Ant-Direct"
 msgstr "Isaac-Ant-Direct"
 
-#: source/concepts/warp_environments.rst:148
+#: source/concepts/warp_environments.rst:144
 msgid "6,368"
 msgstr "6,368"
 
-#: source/concepts/warp_environments.rst:149
+#: source/concepts/warp_environments.rst:145
 msgid "3,128"
 msgstr "3,128"
 
-#: source/concepts/warp_environments.rst:150
+#: source/concepts/warp_environments.rst:146
 msgid "-50.88%"
 msgstr "-50.88%"
 
-#: source/concepts/warp_environments.rst:151
+#: source/concepts/warp_environments.rst:147
 msgid "Isaac-Humanoid-Direct"
 msgstr "Isaac-Humanoid-Direct"
 
-#: source/concepts/warp_environments.rst:153
+#: source/concepts/warp_environments.rst:149
 msgid "13,937"
 msgstr "13,937"
 
-#: source/concepts/warp_environments.rst:154
+#: source/concepts/warp_environments.rst:150
 msgid "10,783"
 msgstr "10,783"
 
-#: source/concepts/warp_environments.rst:155
+#: source/concepts/warp_environments.rst:151
 msgid "-22.63%"
 msgstr "-22.63%"
 
-#: source/concepts/warp_environments.rst:156
+#: source/concepts/warp_environments.rst:152
 msgid "Isaac-Reorient-Cube-Allegro-Direct"
 msgstr "Isaac-Reorient-Cube-Allegro-Direct"
 
-#: source/concepts/warp_environments.rst:158
+#: source/concepts/warp_environments.rst:154
 msgid "82,950"
 msgstr "82,950"
 
-#: source/concepts/warp_environments.rst:159
+#: source/concepts/warp_environments.rst:155
 msgid "74,570"
 msgstr "74,570"
 
-#: source/concepts/warp_environments.rst:160
+#: source/concepts/warp_environments.rst:156
 msgid "-10.10%"
 msgstr "-10.10%"
 
-#: source/concepts/warp_environments.rst:161
+#: source/concepts/warp_environments.rst:157
 msgid "Isaac-Cartpole"
 msgstr "Isaac-Cartpole"
 
-#: source/concepts/warp_environments.rst:162
-#: source/concepts/warp_environments.rst:167
-#: source/concepts/warp_environments.rst:172
-#: source/concepts/warp_environments.rst:177
-#: source/concepts/warp_environments.rst:182
-#: source/concepts/warp_environments.rst:187
-#: source/concepts/warp_environments.rst:192
-#: source/concepts/warp_environments.rst:197
-#: source/concepts/warp_environments.rst:202
+#: source/concepts/warp_environments.rst:158
+#: source/concepts/warp_environments.rst:163
+#: source/concepts/warp_environments.rst:168
+#: source/concepts/warp_environments.rst:173
+#: source/concepts/warp_environments.rst:178
+#: source/concepts/warp_environments.rst:183
+#: source/concepts/warp_environments.rst:188
+#: source/concepts/warp_environments.rst:193
+#: source/concepts/warp_environments.rst:198
 msgid "Manager"
 msgstr "管理器"
 
-#: source/concepts/warp_environments.rst:163
+#: source/concepts/warp_environments.rst:159
 msgid "7,971"
 msgstr "7,971"
 
-#: source/concepts/warp_environments.rst:164
+#: source/concepts/warp_environments.rst:160
 msgid "3,642"
 msgstr "3,642"
 
-#: source/concepts/warp_environments.rst:165
+#: source/concepts/warp_environments.rst:161
 msgid "-54.31%"
 msgstr "-54.31%"
 
-#: source/concepts/warp_environments.rst:166
+#: source/concepts/warp_environments.rst:162
 msgid "Isaac-Ant"
 msgstr "Isaac-Ant"
 
-#: source/concepts/warp_environments.rst:168
+#: source/concepts/warp_environments.rst:164
 msgid "9,781"
 msgstr "9,781"
 
-#: source/concepts/warp_environments.rst:169
+#: source/concepts/warp_environments.rst:165
 msgid "4,672"
 msgstr "4,672"
 
-#: source/concepts/warp_environments.rst:170
+#: source/concepts/warp_environments.rst:166
 msgid "-52.23%"
 msgstr "-52.23%"
 
-#: source/concepts/warp_environments.rst:171
+#: source/concepts/warp_environments.rst:167
 msgid "Isaac-Humanoid"
 msgstr "Isaac-Humanoid"
 
-#: source/concepts/warp_environments.rst:173
+#: source/concepts/warp_environments.rst:169
 msgid "17,653"
 msgstr "17,653"
 
-#: source/concepts/warp_environments.rst:174
+#: source/concepts/warp_environments.rst:170
 msgid "12,505"
 msgstr "12,505"
 
-#: source/concepts/warp_environments.rst:175
+#: source/concepts/warp_environments.rst:171
 msgid "-29.16%"
 msgstr "-29.16%"
 
-#: source/concepts/warp_environments.rst:176
+#: source/concepts/warp_environments.rst:172
 msgid "Isaac-Reach-Franka"
 msgstr "Isaac-Reach-Franka"
 
-#: source/concepts/warp_environments.rst:178
+#: source/concepts/warp_environments.rst:174
 msgid "11,458"
 msgstr "11,458"
 
-#: source/concepts/warp_environments.rst:179
+#: source/concepts/warp_environments.rst:175
 msgid "7,813"
 msgstr "7,813"
 
-#: source/concepts/warp_environments.rst:180
+#: source/concepts/warp_environments.rst:176
 msgid "-31.83%"
 msgstr "-31.83%"
 
-#: source/concepts/warp_environments.rst:181
+#: source/concepts/warp_environments.rst:177
 msgid "Isaac-Velocity-Flat-AnymalD"
 msgstr "Isaac-Velocity-Flat-AnymalD"
 
-#: source/concepts/warp_environments.rst:183
+#: source/concepts/warp_environments.rst:179
 msgid "32,294"
 msgstr "32,294"
 
-#: source/concepts/warp_environments.rst:184
+#: source/concepts/warp_environments.rst:180
 msgid "23,977"
 msgstr "23,977"
 
-#: source/concepts/warp_environments.rst:185
+#: source/concepts/warp_environments.rst:181
 msgid "-25.75%"
 msgstr "-25.75%"
 
-#: source/concepts/warp_environments.rst:186
+#: source/concepts/warp_environments.rst:182
 msgid "Isaac-Velocity-Flat-Cassie"
 msgstr "Isaac-Velocity-Flat-Cassie"
 
-#: source/concepts/warp_environments.rst:188
+#: source/concepts/warp_environments.rst:184
 msgid "17,320"
 msgstr "17,320"
 
-#: source/concepts/warp_environments.rst:189
+#: source/concepts/warp_environments.rst:185
 msgid "10,706"
 msgstr "10,706"
 
-#: source/concepts/warp_environments.rst:190
+#: source/concepts/warp_environments.rst:186
 msgid "-38.19%"
 msgstr "-38.19%"
 
-#: source/concepts/warp_environments.rst:191
+#: source/concepts/warp_environments.rst:187
 msgid "Isaac-Velocity-Flat-G1"
 msgstr "Isaac-Velocity-Flat-G1"
 
-#: source/concepts/warp_environments.rst:193
+#: source/concepts/warp_environments.rst:189
 msgid "34,487"
 msgstr "34,487"
 
-#: source/concepts/warp_environments.rst:194
+#: source/concepts/warp_environments.rst:190
 msgid "27,300"
 msgstr "27,300"
 
-#: source/concepts/warp_environments.rst:195
+#: source/concepts/warp_environments.rst:191
 msgid "-20.84%"
 msgstr "-20.84%"
 
-#: source/concepts/warp_environments.rst:196
+#: source/concepts/warp_environments.rst:192
 msgid "Isaac-Velocity-Flat-H1"
 msgstr "Isaac-Velocity-Flat-H1"
 
-#: source/concepts/warp_environments.rst:198
+#: source/concepts/warp_environments.rst:194
 msgid "22,202"
 msgstr "22,202"
 
-#: source/concepts/warp_environments.rst:199
+#: source/concepts/warp_environments.rst:195
 msgid "15,864"
 msgstr "15,864"
 
-#: source/concepts/warp_environments.rst:200
+#: source/concepts/warp_environments.rst:196
 msgid "-28.55%"
 msgstr "-28.55%"
 
-#: source/concepts/warp_environments.rst:201
+#: source/concepts/warp_environments.rst:197
 msgid "Isaac-Velocity-Flat-UnitreeGo2"
 msgstr "Isaac-Velocity-Flat-UnitreeGo2"
 
-#: source/concepts/warp_environments.rst:203
+#: source/concepts/warp_environments.rst:199
 msgid "15,221"
 msgstr "15,221"
 
-#: source/concepts/warp_environments.rst:204
+#: source/concepts/warp_environments.rst:200
 msgid "9,966"
 msgstr "9,966"
 
-#: source/concepts/warp_environments.rst:205
+#: source/concepts/warp_environments.rst:201
 msgid "-34.52%"
 msgstr "-34.52%"
 
-#: source/concepts/warp_environments.rst:209
+#: source/concepts/warp_environments.rst:205
 msgid "Which Workflows Benefit Most"
 msgstr "哪些工作流程收益最大"
 
-#: source/concepts/warp_environments.rst:211
+#: source/concepts/warp_environments.rst:207
 msgid ""
 "The savings come from eliminating Python / torch overhead in the env's step "
 "loop, so envs gain in proportion to how much of their step time was "
@@ -510,7 +504,7 @@ msgid ""
 msgstr ""
 "性能收益来自消除环境步进循环中的 Python/Torch 开销，因此原先逐内核 CPU 开销在步进时间中占比越高，环境收益越大。上表可解读为："
 
-#: source/concepts/warp_environments.rst:215
+#: source/concepts/warp_environments.rst:211
 msgid ""
 "**Manager-based classic RL** (Cartpole, Ant) — biggest gains (-52% to -54%)."
 " Many small reward / observation terms with low compute per term, so per-"
@@ -519,7 +513,7 @@ msgstr ""
 "**基于管理器的经典强化学习** （Cartpole、Ant）— 收益最大，步进时间减少 52%–54%。其奖励/观测项多而小，每项计算量低，逐次启动的"
 " CPU 开销主导了稳定版基线。"
 
-#: source/concepts/warp_environments.rst:218
+#: source/concepts/warp_environments.rst:214
 msgid ""
 "**Manager-based locomotion** (AnymalD, G1, H1, Cassie, UnitreeGo2) — "
 "consistent -21% to -38% range. The MDP has more terms but the underlying "
@@ -528,7 +522,7 @@ msgstr ""
 "**基于管理器的运动任务** （AnymalD、G1、H1、Cassie、UnitreeGo2）— 稳定减少 21%–38%。MDP "
 "项更多，但底层物理步也更重，因此节省 Python 开销的相对比例减小。"
 
-#: source/concepts/warp_environments.rst:221
+#: source/concepts/warp_environments.rst:217
 msgid ""
 "**Direct workflow** — gains scale with how much the env's step body was "
 "Python (Ant -51%, Cartpole -18%, Allegro hand -10%). Direct envs that "
@@ -538,7 +532,7 @@ msgstr ""
 "**直接式工作流程** — 收益随环境步进主体中的 Python 占比变化（Ant 减少 51%、Cartpole 减少 18%、Allegro 手减少"
 " 10%）。多数工作已写为 GPU 内核的直接式环境收益较小，包含大量 Python 状态处理的环境收益较大。"
 
-#: source/concepts/warp_environments.rst:224
+#: source/concepts/warp_environments.rst:220
 msgid ""
 "**Compute-heavy / scene-write-heavy envs** (Allegro hand, large humanoids) —"
 " see smaller relative gains because the warp-side savings are amortised over"
@@ -550,7 +544,7 @@ msgstr ""
 "侧节省的时间在较重的步进中占比较低。仍通过 Torch 运行的组件（场景写入、执行器模型）目前限制了最低步进时间；其余组件迁移到 Warp "
 "后预计会改善。"
 
-#: source/concepts/warp_environments.rst:229
+#: source/concepts/warp_environments.rst:225
 msgid ""
 "If your env's step time is dominated by physics or scene I/O, expect modest "
 "gains. If it has many small MDP terms or a lot of Python in the step loop, "
@@ -560,24 +554,24 @@ msgstr ""
 "如果环境步进时间主要消耗在物理或场景 I/O 上，预期收益较小；如果包含大量小型 MDP 项或大量 Python "
 "步进逻辑，预期收益较大。决定迁移前，请使用下述基准测试流程测量自己的任务。"
 
-#: source/concepts/warp_environments.rst:235
+#: source/concepts/warp_environments.rst:231
 msgid "Limitations"
 msgstr "限制"
 
-#: source/concepts/warp_environments.rst:237
+#: source/concepts/warp_environments.rst:233
 msgid ""
 "The warp env path is experimental and has the following known constraints. "
-"These are specific to warp envs; for Newton physics maturity and specialist "
+"These are specific to warp envs; for Newton physics features and related "
 "guides see :ref:`physics-backends-newton`."
 msgstr ""
-"Warp 环境路径处于实验阶段，具有以下已知约束。这些约束仅针对 Warp 环境；Newton 物理的成熟度和专题指南见 :ref:`physics-"
-"backends-newton` 。"
+"Warp 环境仍属实验性功能，存在以下已知限制。这些限制仅针对 Warp 环境；Newton 物理功能及相关指南见 :ref:`physics-"
+"backends-newton`。"
 
-#: source/concepts/warp_environments.rst:241
+#: source/concepts/warp_environments.rst:237
 msgid "**Physics backend**"
 msgstr "**物理后端**"
 
-#: source/concepts/warp_environments.rst:243
+#: source/concepts/warp_environments.rst:239
 msgid ""
 "**Newton only.** PhysX is not supported under the warp env path. Asset and "
 "sensor ``class_type`` fields resolve to ``isaaclab_physx.*`` classes that "
@@ -592,11 +586,11 @@ msgstr ""
 "模块）；多个 Warp API（环境掩码重置、CUDA 图捕获）还要求使用 Newton 关节体。请为配置设置 Newton "
 "物理部分，或使用带类型选择器 ``physics=newton_mjwarp`` ；任务没有 Newton 物理预设时，后者会明确报错。"
 
-#: source/concepts/warp_environments.rst:250
+#: source/concepts/warp_environments.rst:246
 msgid "**MDP coverage**"
 msgstr "**MDP 覆盖范围**"
 
-#: source/concepts/warp_environments.rst:252
+#: source/concepts/warp_environments.rst:248
 msgid ""
 "Only the terms listed under :ref:`Available Warp MDP Terms <warp-env-mdp-"
 "terms>` are implemented. Stable envs that depend on un-migrated terms cannot"
@@ -605,14 +599,14 @@ msgstr ""
 "目前仅实现了 :ref:`可用的 Warp MDP 项 <warp-env-mdp-terms>` "
 "中列出的项。稳定版环境如果依赖尚未迁移的项，需要先移植这些项，才能使用 Warp 路径运行。"
 
-#: source/concepts/warp_environments.rst:255
+#: source/concepts/warp_environments.rst:251
 msgid ""
 "Some scene-side operations (asset write, actuator models, certain sensor "
 "types) still go through torch. They participate in the step but are not yet "
 "captured into the graph; they set the lower bound on observed step time."
 msgstr "部分场景侧操作（资产写入、执行器模型、某些传感器类型）仍通过 Torch 运行。它们参与步进，但尚未捕获进图，限制了观测到的最低步进时间。"
 
-#: source/concepts/warp_environments.rst:258
+#: source/concepts/warp_environments.rst:254
 msgid ""
 "Sensors that depend on the Kit RTX renderer (camera-based observations) "
 "cannot be combined with the warp env path — they need Kit, which the warp "
@@ -620,11 +614,11 @@ msgid ""
 msgstr ""
 "依赖 Kit RTX 渲染器的传感器（基于相机的观测）不能与 Warp 环境路径组合，因为它们需要 Kit，而 Warp 运行时不初始化 Kit。"
 
-#: source/concepts/warp_environments.rst:261
+#: source/concepts/warp_environments.rst:257
 msgid "**API differences vs stable**"
 msgstr "**与稳定版的 API 差异**"
 
-#: source/concepts/warp_environments.rst:263
+#: source/concepts/warp_environments.rst:259
 msgid ""
 "Reset events use a boolean ``env_mask`` (``wp.array(dtype=wp.bool)``) "
 "instead of an ``env_ids`` list. This is required for capture safety: "
@@ -633,7 +627,7 @@ msgstr ""
 "重置事件使用布尔 ``env_mask`` （ ``wp.array(dtype=wp.bool)`` ），而非 ``env_ids`` "
 "列表。这是图捕获安全性的要求：可变长度索引会改变图拓扑并破坏回放。"
 
-#: source/concepts/warp_environments.rst:266
+#: source/concepts/warp_environments.rst:262
 msgid ""
 "All buffers must be pre-allocated in ``__init__``. There is no dynamic "
 "allocation inside the captured step loop, so observation / reward / "
@@ -641,7 +635,7 @@ msgid ""
 msgstr ""
 "所有缓冲区必须在 ``__init__`` 中预分配。捕获的步进循环中不允许动态分配，因此观测、奖励和终止输出的维度必须在环境初始化时确定。"
 
-#: source/concepts/warp_environments.rst:269
+#: source/concepts/warp_environments.rst:265
 msgid ""
 "Term functions write into a pre-allocated ``out`` buffer rather than "
 "returning a tensor. See :ref:`warp-env-migration` for the kernel + launch "
@@ -649,7 +643,7 @@ msgid ""
 msgstr ""
 "项函数将结果写入预分配的 ``out`` 缓冲区，而不是返回张量。内核与启动函数的编写模式见 :ref:`warp-env-migration` 。"
 
-#: source/concepts/warp_environments.rst:271
+#: source/concepts/warp_environments.rst:267
 msgid ""
 "Code inside the captured step loop must follow capture-safety rules (no "
 "``wp.to_torch``, no torch arithmetic, no lazy-evaluated properties, no "
@@ -659,11 +653,11 @@ msgstr ""
 "捕获的步进循环内，代码必须遵循图捕获安全规则：不能使用 ``wp.to_torch``、Torch 运算、惰性求值属性，也不能根据 GPU 数据进行 "
 "Python 分支判断。完整规则见 :ref:`warp-env-capture-safety` 。"
 
-#: source/concepts/warp_environments.rst:278
+#: source/concepts/warp_environments.rst:274
 msgid "Benchmarking Your Environment"
 msgstr "对环境进行基准测试"
 
-#: source/concepts/warp_environments.rst:280
+#: source/concepts/warp_environments.rst:276
 msgid ""
 "The performance table above was produced with ``isaaclab benchmark "
 "training``, which runs a fixed iteration count and reports step-time "
@@ -673,11 +667,11 @@ msgstr ""
 "上方性能表由 ``isaaclab benchmark training`` "
 "生成，它运行固定迭代次数并报告步进时间统计。决定迁移前，可用同一命令估计自己的任务收益。"
 
-#: source/concepts/warp_environments.rst:284
+#: source/concepts/warp_environments.rst:280
 msgid "**Single-task A/B**"
 msgstr "**单任务 A/B 对比**"
 
-#: source/concepts/warp_environments.rst:286
+#: source/concepts/warp_environments.rst:282
 msgid ""
 "Run the same stable task id twice, differing only in ``--frontend``. Pass "
 "``presets=newton_mjwarp`` to *both* runs so the physics backend is identical"
@@ -687,18 +681,18 @@ msgstr ""
 "对同一稳定版任务 ID 运行两次，仅改变 ``--frontend`` 。*两次* 运行都传入 ``presets=newton_mjwarp`` "
 "，确保物理后端一致，使测得的差异只反映前端（管理器流程与 CUDA 图捕获）："
 
-#: source/concepts/warp_environments.rst:313
+#: source/concepts/warp_environments.rst:309
 msgid ""
 "The ``summary`` formatter prints step time (min / mean / max) and total "
 "throughput. Compare \"step time\" between the two runs to estimate the gain "
 "per env step."
 msgstr "``summary`` 格式化器输出步进时间（最小/平均/最大）和总吞吐量。比较两次运行的“step time”，估计每个环境步的收益。"
 
-#: source/concepts/warp_environments.rst:316
+#: source/concepts/warp_environments.rst:312
 msgid "**Sweep across all available tasks**"
 msgstr "**遍历所有可用任务**"
 
-#: source/concepts/warp_environments.rst:318
+#: source/concepts/warp_environments.rst:314
 msgid ""
 "Run ``isaaclab benchmark training`` for each task in the stable set "
 "(cartpole, ant, humanoid, locomotion, manipulation) and again with "
@@ -707,44 +701,44 @@ msgstr ""
 "对稳定版任务集合中的各任务（Cartpole、Ant、人形机器人、运动、操作）运行 ``isaaclab benchmark training`` "
 "，再加入 ``--frontend warp`` 重新运行，然后对比两个输出目录。"
 
-#: source/concepts/warp_environments.rst:322
+#: source/concepts/warp_environments.rst:318
 msgid "**What to look at in the output**"
 msgstr "**输出中应关注的内容**"
 
-#: source/concepts/warp_environments.rst:324
+#: source/concepts/warp_environments.rst:320
 msgid ""
 "*Step time (min / mean / max)*: the headline number — what each env step "
 "costs."
 msgstr "*步进时间（最小/平均/最大）*：主要指标，表示每个环境步的开销。"
 
-#: source/concepts/warp_environments.rst:325
+#: source/concepts/warp_environments.rst:321
 msgid ""
 "*Iteration time*: includes policy update; useful for end-to-end training "
 "throughput."
 msgstr "*迭代时间*：包含策略更新，可用于评估端到端训练吞吐量。"
 
-#: source/concepts/warp_environments.rst:326
+#: source/concepts/warp_environments.rst:322
 msgid ""
 "*Capture overhead*: for warp runs, the first few iterations include CUDA "
 "graph capture cost; exclude those when comparing steady-state numbers."
 msgstr "*捕获开销*：Warp 运行的前几次迭代包含 CUDA 图捕获成本；比较稳态数值时应排除它们。"
 
-#: source/concepts/warp_environments.rst:329
+#: source/concepts/warp_environments.rst:325
 msgid "**Estimating before you migrate**"
 msgstr "**迁移前估计收益**"
 
-#: source/concepts/warp_environments.rst:331
+#: source/concepts/warp_environments.rst:327
 msgid ""
 "If you can't run the warp variant yet (e.g. the task isn't ported), measure "
 "the stable step time and look at where it's spent:"
 msgstr "如果还不能运行 Warp 变体（例如任务尚未移植），可测量稳定版步进时间，并查看时间消耗的位置："
 
-#: source/concepts/warp_environments.rst:334
+#: source/concepts/warp_environments.rst:330
 msgid ""
 "``num_envs * step_time`` dominated by physics → expect modest warp gains."
 msgstr "``num_envs * step_time`` 主要消耗在物理计算上 → Warp 收益预计较小。"
 
-#: source/concepts/warp_environments.rst:335
+#: source/concepts/warp_environments.rst:331
 msgid ""
 "``step_time`` dominated by ``manager.compute_*`` calls → expect large gains,"
 " since those are exactly what the warp managers replace with captured kernel"
@@ -753,33 +747,28 @@ msgstr ""
 "``step_time`` 主要消耗在 ``manager.compute_*`` 调用上 → 收益预计较大，因为 Warp "
 "管理器正是将这些调用替换为捕获的内核启动。"
 
-#: source/concepts/warp_environments.rst:338
+#: source/concepts/warp_environments.rst:334
 msgid ""
 "Use ``--num_steps`` on ``runtime.py`` for a no-policy step-time "
 "microbenchmark when you want to isolate env overhead from policy compute."
 msgstr ""
 "需要区分环境开销与策略计算时，可在 ``runtime.py`` 上使用 ``--num_steps`` ，进行无策略的步进时间微基准测试。"
 
-#: source/concepts/warp_environments.rst:345
+#: source/concepts/warp_environments.rst:341
 msgid "Migrating Existing Environments"
 msgstr "迁移已有环境"
 
-#: source/concepts/warp_environments.rst:347
+#: source/concepts/warp_environments.rst:343
 msgid ""
-"This section covers the key conventions and patterns used by the warp-first "
-"environment infrastructure, useful for migrating existing torch environments"
-" or creating new ones natively: project layout, the kernel + launch pattern "
-"shared by observations / rewards / events / terminations / actions, capture-"
-"safety rules, and parity testing."
-msgstr ""
-"本节介绍 Warp 优先环境基础设施使用的主要约定和编写模式，供迁移已有 Torch 环境或直接创建 Warp "
-"环境时参考，包括项目布局，观测、奖励、事件、终止和动作共用的内核与启动函数模式，以及图捕获安全规则和行为一致性测试。"
+"The following sections cover project layout, Warp kernels, CUDA graph "
+"capture, and parity testing for new or migrated environments."
+msgstr "以下章节介绍新建或迁移环境所需的项目布局、Warp 内核、CUDA 图捕获及一致性测试。"
 
-#: source/concepts/warp_environments.rst:354
+#: source/concepts/warp_environments.rst:348
 msgid "Design Rationale"
 msgstr "设计依据"
 
-#: source/concepts/warp_environments.rst:356
+#: source/concepts/warp_environments.rst:350
 msgid ""
 "The warp environment path is built around `CUDA graph capture "
 "<https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-"
@@ -801,7 +790,7 @@ msgstr ""
 "逻辑、Torch 分发）在回放时都会被跳过。Warp 图捕获 API（ ``wp.ScopedCapture`` ）见 `Warp 并发文档 "
 "<https://nvidia.github.io/warp/stable/deep_dive/concurrency.html>`_ 。"
 
-#: source/concepts/warp_environments.rst:367
+#: source/concepts/warp_environments.rst:361
 msgid ""
 "All design decisions in the warp infrastructure follow from this constraint:"
 " every operation in the step loop must be a GPU kernel launch with stable "
@@ -809,56 +798,56 @@ msgid ""
 "modification."
 msgstr "Warp 基础设施的所有设计都遵循这一约束：步进循环中的每个操作都必须是使用稳定内存指针的 GPU 内核启动，使捕获的图无需修改即可回放。"
 
-#: source/concepts/warp_environments.rst:371
+#: source/concepts/warp_environments.rst:365
 msgid "Key consequences:"
 msgstr "由此带来的主要要求："
 
-#: source/concepts/warp_environments.rst:373
+#: source/concepts/warp_environments.rst:367
 msgid ""
 "All buffers are **pre-allocated** — no dynamic allocation inside the step "
 "loop"
 msgstr "所有缓冲区都 **预先分配** — 步进循环内不动态分配"
 
-#: source/concepts/warp_environments.rst:374
+#: source/concepts/warp_environments.rst:368
 msgid ""
 "Data flows through **persistent ``wp.array`` pointers** — never replaced, "
 "only overwritten"
 msgstr "数据通过 **持久的** ``wp.array`` **指针** 传递 — 只覆盖内容，不替换数组"
 
-#: source/concepts/warp_environments.rst:375
+#: source/concepts/warp_environments.rst:369
 msgid ""
 "MDP terms are **pure ``@wp.kernel`` functions** — no Python branching on GPU"
 " data"
 msgstr "MDP 项是 **纯** ``@wp.kernel`` **函数** — 不在 Python 中根据 GPU 数据分支"
 
-#: source/concepts/warp_environments.rst:376
+#: source/concepts/warp_environments.rst:370
 msgid ""
 "Reset uses **boolean masks** (``env_mask``) instead of index lists "
 "(``env_ids``) to avoid variable-length indexing that changes graph topology"
 msgstr "重置使用 **布尔掩码** （ ``env_mask`` ）代替索引列表（ ``env_ids`` ），避免可变长度索引改变图拓扑"
 
-#: source/concepts/warp_environments.rst:381
+#: source/concepts/warp_environments.rst:375
 msgid "Project Structure"
 msgstr "项目结构"
 
-#: source/concepts/warp_environments.rst:383
+#: source/concepts/warp_environments.rst:377
 msgid ""
 "Warp-specific implementations that diverge from the torch-based managers and"
 " env classes live in the ``_experimental`` packages:"
 msgstr "与基于 Torch 的管理器和环境类不同的 Warp 专属实现，位于 ``_experimental`` 包中："
 
-#: source/concepts/warp_environments.rst:385
+#: source/concepts/warp_environments.rst:379
 msgid ""
 "``isaaclab_experimental`` — warp managers, base env classes, warp MDP terms"
 msgstr "``isaaclab_experimental`` — Warp 管理器、环境基类和 Warp MDP 项"
 
-#: source/concepts/warp_environments.rst:386
+#: source/concepts/warp_environments.rst:380
 msgid ""
 "``isaaclab_tasks_experimental`` — warp task configs and task-specific MDP "
 "terms"
 msgstr "``isaaclab_tasks_experimental`` — Warp 任务配置及任务特有的 MDP 项"
 
-#: source/concepts/warp_environments.rst:388
+#: source/concepts/warp_environments.rst:382
 msgid ""
 "Any new warp implementation that differs from the torch-based managers or "
 "env classes belongs in these packages. Warp task configs reference Newton "
@@ -867,29 +856,29 @@ msgstr ""
 "凡是与基于 Torch 的管理器或环境类不同的新 Warp 实现，都应放入这些包。Warp 路径仅支持 Newton，因此 Warp 任务配置直接引用 "
 "Newton 物理配置，不使用 ``PresetCfg`` 。"
 
-#: source/concepts/warp_environments.rst:394
+#: source/concepts/warp_environments.rst:388
 msgid "Writing Warp MDP Terms"
 msgstr "编写 Warp MDP 项"
 
-#: source/concepts/warp_environments.rst:397
+#: source/concepts/warp_environments.rst:391
 msgid "Imports"
 msgstr "导入"
 
-#: source/concepts/warp_environments.rst:399
+#: source/concepts/warp_environments.rst:393
 msgid "Warp task configs import from the experimental packages:"
 msgstr "Warp 任务配置从实验性包导入："
 
-#: source/concepts/warp_environments.rst:407
+#: source/concepts/warp_environments.rst:401
 msgid ""
 "The term config classes have the same interface — only the import path "
 "changes."
 msgstr "项配置类具有相同接口，只改变导入路径。"
 
-#: source/concepts/warp_environments.rst:411
+#: source/concepts/warp_environments.rst:405
 msgid "Common Pattern"
 msgstr "通用模式"
 
-#: source/concepts/warp_environments.rst:413
+#: source/concepts/warp_environments.rst:407
 msgid ""
 "All warp MDP terms (observations, rewards, terminations, events, actions) "
 "follow the same **kernel + launch** pattern. Torch terms use torch tensors "
@@ -899,34 +888,34 @@ msgstr ""
 "所有 Warp MDP 项（观测、奖励、终止、事件、动作）均遵循 **内核 + 启动** 模式。Torch 项使用 Torch 张量并返回结果；Warp"
 " 项通过 ``@wp.kernel`` 函数写入预分配的 ``wp.array`` 输出缓冲区："
 
-#: source/concepts/warp_environments.rst:432
+#: source/concepts/warp_environments.rst:426
 msgid "The output buffer shapes differ by term type:"
 msgstr "输出缓冲区形状因项类型而异："
 
-#: source/concepts/warp_environments.rst:434
+#: source/concepts/warp_environments.rst:428
 msgid ""
 "**Observations**: ``(num_envs, D)`` where D is the observation dimension"
 msgstr "**观测** ： ``(num_envs, D)`` ，其中 D 为观测维度"
 
-#: source/concepts/warp_environments.rst:435
+#: source/concepts/warp_environments.rst:429
 msgid "**Rewards**: ``(num_envs,)``"
 msgstr "**奖励** ： ``(num_envs,)``"
 
-#: source/concepts/warp_environments.rst:436
+#: source/concepts/warp_environments.rst:430
 msgid "**Terminations**: ``(num_envs,)`` with dtype ``bool``"
 msgstr "**终止** ： ``(num_envs,)`` ，数据类型为 ``bool``"
 
-#: source/concepts/warp_environments.rst:437
+#: source/concepts/warp_environments.rst:431
 msgid ""
 "**Events**: ``(num_envs,)`` mask — events don't produce output, they modify "
 "sim state"
 msgstr "**事件** ： ``(num_envs,)`` 掩码 — 事件不生成输出，而是修改仿真状态"
 
-#: source/concepts/warp_environments.rst:441
+#: source/concepts/warp_environments.rst:435
 msgid "Observation Terms"
 msgstr "观测项"
 
-#: source/concepts/warp_environments.rst:443
+#: source/concepts/warp_environments.rst:437
 msgid ""
 "Since warp terms write into pre-allocated buffers, the observation manager "
 "must know each term's output dimension at initialization to allocate the "
@@ -939,7 +928,7 @@ msgstr ""
 "``isaaclab_experimental/managers/observation_manager.py`` 中的 "
 "``ObservationManager._infer_term_dim_scalar`` ）："
 
-#: source/concepts/warp_environments.rst:451
+#: source/concepts/warp_environments.rst:445
 msgid ""
 "The IO descriptor decorators are deprecated in Isaac Lab 3.0 and will be "
 "removed in Isaac Lab 3.2. Their output-dimension metadata remains available "
@@ -949,36 +938,36 @@ msgstr ""
 "IO 描述符装饰器已在 Isaac Lab 3.0 中弃用，将在 Isaac Lab 3.2 "
 "中移除。在替代的运行时配置开发完成前，其输出维度元数据暂时保留，供以 Warp 为核心的环境使用。"
 
-#: source/concepts/warp_environments.rst:456
+#: source/concepts/warp_environments.rst:450
 msgid "**Explicit ``out_dim`` in decorator** (preferred):"
 msgstr "**装饰器中显式设置** ``out_dim`` （推荐）："
 
-#: source/concepts/warp_environments.rst:463
+#: source/concepts/warp_environments.rst:457
 msgid ""
 "``out_dim`` can be an integer, or a string that resolves at initialization:"
 msgstr "``out_dim`` 可以是整数，也可以是在初始化时解析的字符串："
 
-#: source/concepts/warp_environments.rst:465
+#: source/concepts/warp_environments.rst:459
 msgid "``\"joint\"`` — number of selected joints from ``asset_cfg``"
 msgstr "``\"joint\"`` — ``asset_cfg`` 中所选关节的数量"
 
-#: source/concepts/warp_environments.rst:466
+#: source/concepts/warp_environments.rst:460
 msgid "``\"body:N\"`` — N components per selected body from ``asset_cfg``"
 msgstr "``\"body:N\"`` — ``asset_cfg`` 中每个所选刚体的 N 个分量"
 
-#: source/concepts/warp_environments.rst:467
+#: source/concepts/warp_environments.rst:461
 msgid "``\"command\"`` — dimension from command manager"
 msgstr "``\"command\"`` — 从指令管理器获取维度"
 
-#: source/concepts/warp_environments.rst:468
+#: source/concepts/warp_environments.rst:462
 msgid "``\"action\"`` — dimension from action manager"
 msgstr "``\"action\"`` — 从动作管理器获取维度"
 
-#: source/concepts/warp_environments.rst:470
+#: source/concepts/warp_environments.rst:464
 msgid "**``axes`` metadata**: Dimension equals the number of axes listed:"
 msgstr "``axes`` **元数据** ：维度等于列出的轴数量："
 
-#: source/concepts/warp_environments.rst:478
+#: source/concepts/warp_environments.rst:472
 msgid ""
 "**Legacy params**: ``term_dim``, ``out_dim``, or ``obs_dim`` keys in "
 "``term_cfg.params``."
@@ -986,46 +975,46 @@ msgstr ""
 "**旧式参数** ： ``term_cfg.params`` 中的 ``term_dim`` 、 ``out_dim`` 或 ``obs_dim`` "
 "键。"
 
-#: source/concepts/warp_environments.rst:480
+#: source/concepts/warp_environments.rst:474
 msgid ""
 "**Asset config fallback**: Count of ``asset_cfg.joint_ids`` (or "
 "``joint_ids_wp``) for joint-level terms."
 msgstr ""
 "**资产配置回退** ：对于关节级项，使用 ``asset_cfg.joint_ids`` （或 ``joint_ids_wp`` ）的数量。"
 
-#: source/concepts/warp_environments.rst:485
+#: source/concepts/warp_environments.rst:479
 msgid "Event Terms"
 msgstr "事件项"
 
-#: source/concepts/warp_environments.rst:487
+#: source/concepts/warp_environments.rst:481
 msgid ""
 "Events use ``env_mask`` (boolean ``wp.array``) instead of ``env_ids``, and "
 "each kernel checks the mask to skip non-selected environments:"
 msgstr "事件使用 ``env_mask`` （布尔 ``wp.array`` ）代替 ``env_ids`` ，各内核检查掩码以跳过未选中的环境："
 
-#: source/concepts/warp_environments.rst:502
+#: source/concepts/warp_environments.rst:496
 msgid ""
 "RNG uses per-env ``env.rng_state_wp`` (``wp.uint32``) instead of "
 "``torch.rand``"
 msgstr "随机数生成使用逐环境 ``env.rng_state_wp`` （ ``wp.uint32`` ），而非 ``torch.rand``"
 
-#: source/concepts/warp_environments.rst:503
+#: source/concepts/warp_environments.rst:497
 msgid ""
 "**Startup/prestartup** events use the torch convention ``(env, env_ids, "
 "**params)``"
 msgstr "**启动/预启动** 事件使用 Torch 约定 ``(env, env_ids, **params)``"
 
-#: source/concepts/warp_environments.rst:504
+#: source/concepts/warp_environments.rst:498
 msgid ""
 "**Reset/interval** events use the warp convention ``(env, env_mask, "
 "**params)``"
 msgstr "**重置/间隔** 事件使用 Warp 约定 ``(env, env_mask, **params)``"
 
-#: source/concepts/warp_environments.rst:508
+#: source/concepts/warp_environments.rst:502
 msgid "Action Terms"
 msgstr "动作项"
 
-#: source/concepts/warp_environments.rst:510
+#: source/concepts/warp_environments.rst:504
 msgid ""
 "Actions follow a **two-stage execution**: ``process_actions`` (called once "
 "per env step) scales and clips raw actions, and ``apply_actions`` (called "
@@ -1036,40 +1025,40 @@ msgstr ""
 " 每个仿真步调用一次，将目标写入资产。两个阶段都使用 Warp 内核，以及预分配的 ``_raw_actions`` 和 "
 "``_processed_actions`` 缓冲区。"
 
-#: source/concepts/warp_environments.rst:519
+#: source/concepts/warp_environments.rst:513
 msgid "Capture Safety"
 msgstr "图捕获安全性"
 
-#: source/concepts/warp_environments.rst:521
+#: source/concepts/warp_environments.rst:515
 msgid ""
 "When writing terms that run inside the captured step loop, keep in mind:"
 msgstr "编写在捕获的步进循环内运行的项时，应注意："
 
-#: source/concepts/warp_environments.rst:523
+#: source/concepts/warp_environments.rst:517
 msgid "**No ``wp.to_torch``** or torch arithmetic — stay in warp throughout"
 msgstr "**不使用** ``wp.to_torch`` **或 Torch 运算** — 全程使用 Warp"
 
-#: source/concepts/warp_environments.rst:524
+#: source/concepts/warp_environments.rst:518
 msgid ""
 "**No lazy-evaluated properties** — use sim-bound (Tier 1) data directly; if "
 "a derived quantity is needed, compute it inline in the kernel"
 msgstr "**不访问惰性求值属性** — 直接使用与仿真绑定的第一层（Tier 1）数据；需要派生量时，在内核内计算"
 
-#: source/concepts/warp_environments.rst:526
+#: source/concepts/warp_environments.rst:520
 msgid ""
 "**No dynamic allocation** — all buffers must be pre-allocated in "
 "``__init__``"
 msgstr "**不动态分配** — 所有缓冲区必须在 ``__init__`` 中预分配"
 
-#: source/concepts/warp_environments.rst:530
+#: source/concepts/warp_environments.rst:524
 msgid "Parity Testing"
 msgstr "一致性测试"
 
-#: source/concepts/warp_environments.rst:532
+#: source/concepts/warp_environments.rst:526
 msgid "Two levels of parity testing are used to validate warp terms:"
 msgstr "通过两个层次的一致性测试验证 Warp 项："
 
-#: source/concepts/warp_environments.rst:534
+#: source/concepts/warp_environments.rst:528
 msgid ""
 "**1. Implementation parity (torch vs warp)** — verifies that the warp kernel"
 " produces the same result as the torch implementation. This is optional for "
@@ -1079,7 +1068,7 @@ msgstr ""
 "**1. 实现一致性（Torch 与 Warp）** — 验证 Warp 内核与 Torch 实现产生相同结果。没有 Torch "
 "对应实现的项（例如直接用 Warp 编写的新项）可以不进行此测试。"
 
-#: source/concepts/warp_environments.rst:553
+#: source/concepts/warp_environments.rst:547
 msgid ""
 "**2. Capture parity (warp vs warp-captured)** — verifies that the term "
 "produces identical results when replayed from a CUDA graph vs launched "
@@ -1091,25 +1080,25 @@ msgstr ""
 "图回放和直接启动产生完全相同的结果。不一致说明代码不适合捕获，例如使用了过时指针、动态分配，或回放时不会执行的惰性属性访问。即使没有 Torch "
 "对应实现，也应始终运行此测试。"
 
-#: source/concepts/warp_environments.rst:572
+#: source/concepts/warp_environments.rst:566
 msgid ""
 "See ``source/isaaclab_experimental/test/envs/mdp/`` for complete parity test"
 " examples."
 msgstr "完整的一致性测试示例见 ``source/isaaclab_experimental/test/envs/mdp/`` 。"
 
-#: source/concepts/warp_environments.rst:578
+#: source/concepts/warp_environments.rst:572
 msgid "Available Warp MDP Terms"
 msgstr "可用的 Warp MDP 项"
 
-#: source/concepts/warp_environments.rst:584
+#: source/concepts/warp_environments.rst:578
 msgid "Category"
 msgstr "类别"
 
-#: source/concepts/warp_environments.rst:585
+#: source/concepts/warp_environments.rst:579
 msgid "Available Terms"
 msgstr "可用项"
 
-#: source/concepts/warp_environments.rst:586
+#: source/concepts/warp_environments.rst:580
 msgid "Observations (11)"
 msgstr "观测（11）"
 
@@ -1157,7 +1146,7 @@ msgstr "``last_action``"
 msgid "``generated_commands``"
 msgstr "``generated_commands``"
 
-#: source/concepts/warp_environments.rst:598
+#: source/concepts/warp_environments.rst:592
 msgid "Rewards (16)"
 msgstr "奖励（16）"
 
@@ -1225,7 +1214,7 @@ msgstr "``track_lin_vel_xy_exp``"
 msgid "``track_ang_vel_z_exp``"
 msgstr "``track_ang_vel_z_exp``"
 
-#: source/concepts/warp_environments.rst:615
+#: source/concepts/warp_environments.rst:609
 msgid "Events (6)"
 msgstr "事件（6）"
 
@@ -1253,7 +1242,7 @@ msgstr "``apply_external_force_torque``"
 msgid "``randomize_rigid_body_com``"
 msgstr "``randomize_rigid_body_com``"
 
-#: source/concepts/warp_environments.rst:622
+#: source/concepts/warp_environments.rst:616
 msgid "Terminations (4)"
 msgstr "终止（4）"
 
@@ -1273,7 +1262,7 @@ msgstr "``joint_pos_out_of_manual_limit``"
 msgid "``illegal_contact``"
 msgstr "``illegal_contact``"
 
-#: source/concepts/warp_environments.rst:627
+#: source/concepts/warp_environments.rst:621
 msgid "Actions (2)"
 msgstr "动作（2）"
 
@@ -1285,7 +1274,7 @@ msgstr "``JointPositionAction``"
 msgid "``JointEffortAction``"
 msgstr "``JointEffortAction``"
 
-#: source/concepts/warp_environments.rst:631
+#: source/concepts/warp_environments.rst:625
 msgid ""
 "Terms not listed here remain in torch only. When using an env that requires "
 "unlisted terms, those terms must be implemented in warp first."

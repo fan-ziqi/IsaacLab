@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import logging
 import os
 import time
 from datetime import datetime
@@ -47,11 +48,12 @@ from ..common import (
     set_hydra_args,
     show_run_summary,
     startup_screen,
-    validate_distributed_device,
     wrap_sensor_capture,
     write_run_manifest,
 )
 from . import cli_args_skrl as cli_args
+
+logger = logging.getLogger(__name__)
 
 # PLACEHOLDER: Extension template (do not remove this comment)
 with contextlib.suppress(ImportError):
@@ -93,12 +95,11 @@ def _run(args_cli: argparse.Namespace) -> None:
         env_cfg, agent_cfg = resolve_task_config(args_cli.task, agent_cfg_entry_point)
         algorithm = resolve_skrl_algorithm(agent_cfg, args_cli.algorithm)
         pre_launch_video_config(env_cfg, args_cli)
-        show_run_summary(screen, args_cli, env_cfg, library="skrl", action="train")
         screen.stage("Launching simulation")
         with launch_simulation(env_cfg, args_cli), contextlib.ExitStack() as cleanup:
+            show_run_summary(screen, args_cli, env_cfg, library="skrl", action="train")
             runner_cls = import_skrl_runner(args_cli.ml_framework)
             apply_env_overrides(args_cli, env_cfg)
-            validate_distributed_device(args_cli)
 
             if args_cli.max_iterations:
                 agent_cfg["trainer"]["timesteps"] = args_cli.max_iterations * agent_cfg["agent"]["rollouts"]
@@ -114,11 +115,11 @@ def _run(args_cli: argparse.Namespace) -> None:
 
             experiment_cfg = agent_cfg["agent"]["experiment"]
             log_root_path = os.path.abspath(os.path.join("logs", "skrl", experiment_cfg["directory"]))
-            print(f"[INFO] Logging experiment in directory: {log_root_path}")
+            logger.info(f"Logging experiment in directory: {log_root_path}")
             run_name = (
                 args_cli.run_timestamp or datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             ) + f"_{algorithm}_{args_cli.ml_framework}"
-            print(f"Exact experiment name requested from command line: {run_name}")
+            logger.info(f"Exact experiment name requested from command line: {run_name}")
             if experiment_cfg["experiment_name"]:
                 run_name += f"_{experiment_cfg['experiment_name']}"
             experiment_cfg["directory"] = log_root_path
@@ -175,7 +176,7 @@ def _run(args_cli: argparse.Namespace) -> None:
             if args_cli.deterministic:
                 configure_seed(env_cfg.seed, torch_deterministic=True)
             if resume_path:
-                print(f"[INFO] Loading model checkpoint from: {resume_path}")
+                logger.info(f"Loading model checkpoint from: {resume_path}")
                 runner.agent.load(resume_path)
 
             screen.close()
@@ -186,7 +187,7 @@ def _run(args_cli: argparse.Namespace) -> None:
                     total_timesteps = agent_cfg["trainer"]["timesteps"]
                     os.makedirs(os.path.join(log_dir, "checkpoints"), exist_ok=True)
                     runner.agent.write_checkpoint(timestep=total_timesteps, timesteps=total_timesteps)
-                    print(f"[INFO] Saved final agent checkpoint to: {log_dir}/checkpoints")
+                    logger.info(f"Saved final agent checkpoint to: {log_dir}/checkpoints")
                 # the RL library creates the process group but never destroys it, which torch warns about at exit
                 if dist.is_initialized():
                     dist.destroy_process_group()

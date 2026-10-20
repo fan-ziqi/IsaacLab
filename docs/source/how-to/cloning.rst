@@ -121,10 +121,5 @@ Pass a flat collection of asset and sensor cfgs, including shared assets such as
 ground and lights. Prefer ``InteractiveScene`` for maintained tasks and demos;
 it also handles backend-specific setup such as PhysX collision filtering.
 
-Setting ``replicate_physics=False`` skips the active physics replication context.
-Other declared contexts still run, including USD replication when configured, so
-they can create the per-environment prims without replicating the physics model.
-The physics backend can then parse those prims independently.
-
 See the :doc:`cloner API reference <../api/lab/isaaclab.cloner>` for individual
 functions, topology queries, and path utilities.

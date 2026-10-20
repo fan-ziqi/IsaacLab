@@ -28,9 +28,12 @@ from typing import TYPE_CHECKING
 
 import gymnasium as gym
 
-from isaaclab_tasks.utils.hydra import is_task_run_launchable
-from isaaclab_tasks.utils.preset_cli import enumerate_task_presets
-from isaaclab_tasks.utils.preset_target import PresetTarget
+from isaaclab_tasks.utils.hydra import (
+    _LEGACY_PRESET_ALIASES,
+    PresetTarget,
+    enumerate_task_presets,
+    is_task_run_launchable,
+)
 
 if TYPE_CHECKING:
     from gymnasium.envs.registration import EnvSpec
@@ -49,8 +52,8 @@ _BACKEND_MIRROR_NAMES = frozenset(
         "ovrtx",
         "physx",
         "rtx",
-        *PresetTarget.all_legacy_aliases().keys(),
-        *PresetTarget.all_legacy_aliases().values(),
+        *_LEGACY_PRESET_ALIASES,
+        *_LEGACY_PRESET_ALIASES.values(),
     }
 )
 
@@ -111,7 +114,10 @@ _NEWTON_MJWARP_EXCLUSIONS = frozenset(
         "IsaacContrib-Stack-Cube-Franka",
         "IsaacContrib-Stack-Cube-Franka-IK-Abs",
         "IsaacContrib-Stack-Cube-Franka-IK-Rel",
+        "IsaacContrib-Stack-Cube-Franka-IK-Rel-Blueprint",
         "IsaacContrib-Stack-Cube-Franka-IK-Rel-Skillgen",
+        "IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor",
+        "IsaacContrib-Stack-Cube-Franka-IK-Rel-Visuomotor-Cosmos",
         "IsaacContrib-Stack-Cube-Galbot-Left-Arm-Gripper-RmpFlow",
         "IsaacContrib-Stack-Cube-Galbot-Left-Arm-Gripper-Visuomotor",
         "IsaacContrib-Stack-Cube-Galbot-Left-Arm-Gripper-Visuomotor-Joint-Position",

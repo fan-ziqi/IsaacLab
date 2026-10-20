@@ -21,6 +21,7 @@ from isaaclab.envs import ManagerBasedRLEnv, ManagerBasedRLEnvCfg, VideoRecorder
 from isaaclab.managers import EventTermCfg
 from isaaclab.sim import SimulationCfg
 from isaaclab.utils import configclass
+from isaaclab.visualizers import WindowCfg
 
 import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.core.cabinet.config.franka.joint_pos_env_cfg import FrankaCabinetEnvCfg
@@ -115,7 +116,7 @@ def main():
     _configure_resolved_sim(env_cfg.sim, eye=_FRANKA_EYE, lookat=_FRANKA_LOOKAT, focal_length=24.0)
     env_cfg.video_recorders = [
         VideoRecorderCfg(
-            source="visualizer:newton_rtx",
+            source="viz:newton_rtx",
             output_dir=args.output_dir,
             output_filename_prefix=args.policy,
             video_length=args.video_length,
@@ -155,7 +156,7 @@ def _configure_capture(
     if output_dir:
         env_cfg.video_recorders = [
             VideoRecorderCfg(
-                source="visualizer:newton_rtx",
+                source="viz:newton_rtx",
                 output_dir=output_dir,
                 output_filename_prefix=os.environ.get("QUICKSTART_VIDEO_PREFIX", "clip"),
                 fps=60,
@@ -175,10 +176,8 @@ def _configure_resolved_sim(
             eye=eye,
             lookat=lookat,
             focal_length=focal_length,
-            window_width=1280,
-            window_height=720,
+            window=WindowCfg(size=(1280, 720)),
             headless=True,
-            rtx_environment="default",
             render_settings={"omni:rtx:quality": ("Int", 100)},
         )
     ]

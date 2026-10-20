@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -21,29 +21,21 @@ msgstr "包装环境"
 
 #: source/how-to/wrap_rl_env.rst:11
 msgid ""
-"Environment wrappers are a way to modify the behavior of an environment "
-"without modifying the environment itself. This can be used to apply "
-"functions to modify observations or rewards, record videos, enforce time "
-"limits, etc. A detailed description of the API is available in the "
-":class:`gymnasium.Wrapper` class."
-msgstr ""
-"环境包装器是一种修改环境行为而不修改环境本身的方法。这可以用来应用函数来修改观测或奖励，记录视频，强制时间限制等。API 的详细说明在 "
-":class:`gymnasium.Wrapper` 类中可用。"
+"A :class:`gymnasium.Wrapper` changes an environment's observations, rewards,"
+" or execution without changing the environment implementation. Common uses "
+"include recording videos and enforcing time limits."
+msgstr ":class:`gymnasium.Wrapper` 可在不修改环境实现的情况下改变观测、奖励或执行过程，常用于录制视频和限制时间。"
 
 #: source/how-to/wrap_rl_env.rst:15
 msgid ""
-"At present, all RL environments inheriting from the "
-":class:`~envs.ManagerBasedRLEnv` or :class:`~envs.DirectRLEnv` classes are "
-"compatible with :class:`gymnasium.Wrapper`, since the base class implements "
-"the :class:`gymnasium.Env` interface. In order to wrap an environment, you "
-"need to first initialize the base environment. After that, you can wrap it "
-"with as many wrappers as you want by calling ``env = wrapper(env, *args, "
-"**kwargs)`` repeatedly."
+"Both :class:`~envs.ManagerBasedRLEnv` and :class:`~envs.DirectRLEnv` "
+"implement :class:`gymnasium.Env`. Create the environment first, then apply "
+"each wrapper with ``env = wrapper(env, *args, **kwargs)``. The order "
+"matters: each wrapper receives the output of the one inside it."
 msgstr ""
-"目前，所有继承自 :class:`~envs.ManagerBasedRLEnv` 类或 :class:`~envs.DirectRLEnv` 类的 "
-"RL 环境都与 :class:`gymnasium.Wrapper` 兼容，因为基类实现了 :class:`gymnasium.Env` "
-"接口。要包装一个环境，您需要先初始化基础环境。然后，您可以通过多次调用 ``env = wrapper(env, *args, **kwargs)`` "
-"来包装它，以便包装尽可能多的包装器。"
+":class:`~envs.ManagerBasedRLEnv` 和 :class:`~envs.DirectRLEnv` 都实现 "
+":class:`gymnasium.Env`。先创建环境，再用 ``env = wrapper(env, *args, **kwargs)`` "
+"依次套用包装器。顺序很重要：每个包装器接收其内层的输出。"
 
 #: source/how-to/wrap_rl_env.rst:20
 msgid ""
@@ -133,11 +125,11 @@ msgstr ""
 "例如，以下代码每隔 1500 步，从 Kit 可视化器录制 ``Isaac-Reach-Franka`` 环境的一段 200 步视频，保存到 "
 "``videos/train`` 目录。其他录制源和片段选项见 :ref:`how_to_record_video` 。"
 
-#: source/how-to/wrap_rl_env.rst:107
+#: source/how-to/wrap_rl_env.rst:108
 msgid "Wrapper for learning frameworks"
 msgstr "学习框架的包装器"
 
-#: source/how-to/wrap_rl_env.rst:109
+#: source/how-to/wrap_rl_env.rst:110
 msgid ""
 "Every learning framework has its own API for interacting with environments. "
 "For example, the `Stable-Baselines3`_ library uses the `gym.Env "
@@ -156,12 +148,12 @@ msgstr ""
 ":class:`~envs.ManagerBasedRLEnv` 和 :class:`~envs.DirectRLEnv` "
 "类建立在任何特定学习框架的环境定义基础上。相反，我们实现包装器来使其与学习框架的环境定义兼容。"
 
-#: source/how-to/wrap_rl_env.rst:117
+#: source/how-to/wrap_rl_env.rst:118
 msgid ""
 "As an example of how to use the RL task environment with Stable-Baselines3:"
 msgstr "使用 Stable-Baselines3 与 RL 任务环境的示例 :"
 
-#: source/how-to/wrap_rl_env.rst:128
+#: source/how-to/wrap_rl_env.rst:129
 msgid ""
 "Stable-Baselines3 requires finite continuous action bounds. When the "
 "environment has an unbounded action space, "
@@ -173,7 +165,7 @@ msgstr ""
 ":class:`~isaaclab_rl.sb3.Sb3VecEnvWrapper` 会向 Stable-Baselines3 提供归一化的 "
 "``[-1, 1]`` 边界，同时保持底层环境不变。如果策略使用其他有限动作范围，应设置 ``action_bounds`` 。"
 
-#: source/how-to/wrap_rl_env.rst:135
+#: source/how-to/wrap_rl_env.rst:136
 msgid ""
 "Wrapping the environment with the respective learning framework's wrapper "
 "should happen in the end, i.e. after all other wrappers have been applied. "
@@ -184,11 +176,11 @@ msgstr ""
 "在应用所有其他包装器后，应在最后使用相应学习框架的包装器包装环境。这是因为学习框架的包装器会修改环境 API 的解释，这可能不再与 "
 ":class:`gymnasium.Env` 兼容。"
 
-#: source/how-to/wrap_rl_env.rst:141
+#: source/how-to/wrap_rl_env.rst:142
 msgid "Adding new wrappers"
 msgstr "添加新的包装器"
 
-#: source/how-to/wrap_rl_env.rst:143
+#: source/how-to/wrap_rl_env.rst:144
 msgid ""
 "All new wrappers should be added to the :mod:`isaaclab_rl` module. They "
 "should check that the underlying environment is an instance of "
@@ -200,7 +192,7 @@ msgstr ""
 ":class:`isaaclab.envs.ManagerBasedRLEnv` 或 :class:`~envs.DirectRLEnv` "
 "类的实例，然后再应用该包装器。这可以通过使用 :func:`unwrapped` 属性来完成。"
 
-#: source/how-to/wrap_rl_env.rst:148
+#: source/how-to/wrap_rl_env.rst:149
 msgid ""
 "We include a set of wrappers in this module that can be used as a reference "
 "to implement your own wrappers. If you implement a new wrapper, please "

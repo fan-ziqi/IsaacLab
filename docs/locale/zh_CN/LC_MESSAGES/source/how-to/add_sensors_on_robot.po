@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -21,40 +21,29 @@ msgstr "向机器人添加传感器"
 
 #: source/how-to/add_sensors_on_robot.rst:11
 msgid ""
-"While the asset classes allow us to create and simulate the physical "
-"embodiment of the robot, sensors help in obtaining information about the "
-"environment. They typically update at a lower frequency than the simulation "
-"and are useful for obtaining different proprioceptive and exteroceptive "
-"information. For example, a camera sensor can be used to obtain the visual "
-"information of the environment, and a contact sensor can be used to obtain "
-"the contact information of the robot with the environment."
-msgstr ""
-"尽管资产类别允许我们创建和仿真机器人的实体，但传感器有助于获取有关环境的信息。它们通常以比仿真更新频率更低的频率更新，并且有助于获取不同的本体感知和外部感知信息。例如，相机传感器可以用于获取环境的视觉信息，接触传感器可以用于获取机器人与环境的接触信息。"
+"Sensors measure the robot and its surroundings. This tutorial adds three "
+"types to the ANYmal-C quadruped:"
+msgstr "传感器测量机器人及其周围环境。本教程为 ANYmal-C 四足机器人添加三类传感器："
+
+#: source/how-to/add_sensors_on_robot.rst:14
+msgid "a head-mounted camera for RGB-D images;"
+msgstr "头部相机，提供 RGB-D 图像；"
+
+#: source/how-to/add_sensors_on_robot.rst:15
+msgid "a height scanner for terrain measurements; and"
+msgstr "高度扫描器，测量地形；以及"
+
+#: source/how-to/add_sensors_on_robot.rst:16
+msgid "foot contact sensors for detecting contact with the ground."
+msgstr "足部接触传感器，检测与地面的接触。"
 
 #: source/how-to/add_sensors_on_robot.rst:18
 msgid ""
-"In this tutorial, we will see how to add different sensors to a robot. We "
-"will use the ANYmal-C robot for this tutorial. The ANYmal-C robot is a "
-"quadrupedal robot with 12 degrees of freedom. It has 4 legs, each with 3 "
-"degrees of freedom. The robot has the following sensors:"
-msgstr ""
-"在本教程中，我们将看到如何向机器人添加不同的传感器。我们将在本教程中使用 ANYmal-C 机器人。ANYmal-C 机器人是一个有 12 "
-"个自由度的四足机器人。它有 4 条腿，每个腿有 3 个自由度。机器人具有以下传感器: "
+"See :doc:`/source/concepts/sensors/index` for sensor types and their "
+"configuration."
+msgstr "传感器类型及配置见 :doc:`/source/concepts/sensors/index`。"
 
-#: source/how-to/add_sensors_on_robot.rst:23
-msgid "A camera sensor on the head of the robot which provides RGB-D images"
-msgstr "机器人头部的相机传感器，提供 RGB-D 图像"
-
-#: source/how-to/add_sensors_on_robot.rst:24
-msgid "A height scanner sensor that provides terrain height information"
-msgstr "提供地形高度信息的高度扫描传感器"
-
-#: source/how-to/add_sensors_on_robot.rst:25
-msgid ""
-"Contact sensors on the feet of the robot that provide contact information"
-msgstr "机器人脚部的接触传感器，提供接触信息"
-
-#: source/how-to/add_sensors_on_robot.rst:27
+#: source/how-to/add_sensors_on_robot.rst:20
 msgid ""
 "We continue this tutorial from the previous tutorial on :ref:`tutorial-"
 "interactive-scene`, where we learned about the "
@@ -63,11 +52,11 @@ msgstr ""
 "我们将从之前关于 :ref:`tutorial-interactive-scene` 的教程中继续本教程，在那里我们了解了 "
 ":class:`scene.InteractiveScene` 类。"
 
-#: source/how-to/add_sensors_on_robot.rst:32
+#: source/how-to/add_sensors_on_robot.rst:25
 msgid "The Code"
 msgstr "代码"
 
-#: source/how-to/add_sensors_on_robot.rst:34
+#: source/how-to/add_sensors_on_robot.rst:27
 msgid ""
 "The tutorial corresponds to the ``add_sensors_on_robot.py`` script in the "
 "``scripts/tutorials/04_sensors`` directory."
@@ -78,11 +67,11 @@ msgstr ""
 msgid "Code for add_sensors_on_robot.py"
 msgstr "add_sensors_on_robot.py 的代码"
 
-#: source/how-to/add_sensors_on_robot.rst:47
+#: source/how-to/add_sensors_on_robot.rst:40
 msgid "The Code Explained"
 msgstr "代码解释"
 
-#: source/how-to/add_sensors_on_robot.rst:49
+#: source/how-to/add_sensors_on_robot.rst:42
 msgid ""
 "Similar to the previous tutorials, where we added assets to the scene, the "
 "sensors are also added to the scene using the scene configuration. All "
@@ -97,7 +86,7 @@ msgstr ""
 "类，并通过其各自的配置类进行配置。每个传感器实例可以定义自己的更新周期，即传感器更新的频率。更新周期通过 "
 ":attr:`sensors.SensorBaseCfg.update_period` 属性以秒为单位指定。"
 
-#: source/how-to/add_sensors_on_robot.rst:55
+#: source/how-to/add_sensors_on_robot.rst:48
 msgid ""
 "Depending on the specified path and the sensor type, the sensors are "
 "attached to the prims in the scene. They may have an associated prim that is"
@@ -109,18 +98,18 @@ msgstr ""
 "根据指定的路径和传感器类型，传感器将附加到场景中的 prims 上。它们可能有一个关联的 prim 在场景中创建，或者它们可能附加到现有的 prim "
 "上。例如，相机传感器有一个对应的 prim 在场景中创建，而对于接触传感器，激活接触报告是刚体 prim 上的一个属性。"
 
-#: source/how-to/add_sensors_on_robot.rst:60
+#: source/how-to/add_sensors_on_robot.rst:53
 msgid ""
 "In the following, we introduce the different sensors we use in this tutorial"
 " and how they are configured. For more description about them, please check "
 "the :mod:`sensors` module."
 msgstr "接下来，我们介绍本教程中使用的不同传感器及其配置。有关更多描述，请查看 :mod:`sensors` 模块。"
 
-#: source/how-to/add_sensors_on_robot.rst:64
+#: source/how-to/add_sensors_on_robot.rst:57
 msgid "Camera sensor"
 msgstr "相机传感器"
 
-#: source/how-to/add_sensors_on_robot.rst:66
+#: source/how-to/add_sensors_on_robot.rst:59
 msgid ""
 "A camera is defined using the :class:`sensors.CameraCfg`. It is based on the"
 " USD Camera sensor and the different data types are captured using Omniverse"
@@ -130,12 +119,12 @@ msgstr ""
 "使用 :class:`sensors.CameraCfg` 定义相机。它基于 USD 相机传感器，并使用 Omniverse Replicator "
 "API 捕获不同的数据类型。由于它在场景中有一个对应的 prim，因此 prims 会在指定的 prim 路径上创建在场景中。"
 
-#: source/how-to/add_sensors_on_robot.rst:70
+#: source/how-to/add_sensors_on_robot.rst:63
 msgid ""
 "The configuration of the camera sensor includes the following parameters:"
 msgstr "相机传感器的配置包括以下参数: "
 
-#: source/how-to/add_sensors_on_robot.rst:72
+#: source/how-to/add_sensors_on_robot.rst:65
 msgid ""
 ":attr:`~sensors.CameraCfg.spawn`: The type of USD camera to create. This can"
 " be either :class:`~sim.spawners.sensors.PinholeCameraCfg` or "
@@ -145,13 +134,13 @@ msgstr ""
 ":class:`~sim.spawners.sensors.PinholeCameraCfg` 或 "
 ":class:`~sim.spawners.sensors.FisheyeCameraCfg` 。"
 
-#: source/how-to/add_sensors_on_robot.rst:74
+#: source/how-to/add_sensors_on_robot.rst:67
 msgid ""
 ":attr:`~sensors.CameraCfg.offset`: The offset of the camera sensor from the "
 "parent prim."
 msgstr ":attr:`~sensors.CameraCfg.offset`: 相机传感器相对于父 prim 的偏移量。"
 
-#: source/how-to/add_sensors_on_robot.rst:75
+#: source/how-to/add_sensors_on_robot.rst:68
 msgid ""
 ":attr:`~sensors.CameraCfg.data_types`: The data types to capture. This can "
 "be ``rgb``, ``distance_to_image_plane``, ``normals``, or other types "
@@ -160,7 +149,7 @@ msgstr ""
 ":attr:`~sensors.CameraCfg.data_types`: 要捕获的数据类型。这可以是 ``rgb`` 、 "
 "``distance_to_image_plane`` 、 ``normals`` 等 USD 相机传感器支持的其他类型。"
 
-#: source/how-to/add_sensors_on_robot.rst:78
+#: source/how-to/add_sensors_on_robot.rst:71
 msgid ""
 "To attach an RGB-D camera sensor to the head of the robot, we specify an "
 "offset relative to the base frame of the robot. The offset is specified as a"
@@ -171,7 +160,7 @@ msgstr ""
 "要将 RGB-D 相机传感器安装在机器人头部，需要设置相对于机器人基座坐标系的偏移。该偏移包含相对基座坐标系的平移和旋转，并通过 "
 ":attr:`~sensors.CameraCfg.OffsetCfg.convention` 指定所采用的坐标系约定。"
 
-#: source/how-to/add_sensors_on_robot.rst:82
+#: source/how-to/add_sensors_on_robot.rst:75
 msgid ""
 "In the following, we show the configuration of the camera sensor used in "
 "this tutorial. We set the update period to 0.1s, which means that the camera"
@@ -186,7 +175,7 @@ msgstr ""
 "``\"Robot\"`` 是机器人名称， ``\"base\"`` 是相机附加到的 prim 的名称， ``\"front_cam\"`` "
 "是与相机传感器关联的 prim 的名称。"
 
-#: source/how-to/add_sensors_on_robot.rst:93
+#: source/how-to/add_sensors_on_robot.rst:86
 msgid ""
 "Camera sensors need the simulator's rendering extensions, also when running "
 "without a visualizer. :func:`~app.launch_simulation` enables them "
@@ -198,30 +187,24 @@ msgstr ""
 "即使不使用可视化器，相机传感器也需要仿真器的渲染扩展。当传给 :func:`~app.launch_simulation` "
 "的配置包含相机时，它会自动启用这些扩展。由于本脚本只传入仿真配置，而相机位于场景配置中，因此脚本会在解析参数后显式请求相机渲染："
 
-#: source/how-to/add_sensors_on_robot.rst:104
+#: source/how-to/add_sensors_on_robot.rst:97
 msgid "Height scanner"
 msgstr "高度扫描传感器"
 
-#: source/how-to/add_sensors_on_robot.rst:106
+#: source/how-to/add_sensors_on_robot.rst:99
 msgid ""
 "The height-scanner is implemented as a virtual ray-casting sensor. Through "
 "the :class:`sensors.RayCasterCfg`, we specify the ray pattern. PhysX-based "
 "backends cast against the configured meshes, while Newton casts against its "
-"live scene BVH and ignores the mesh list. By default, "
-":attr:`~sensors.RayCasterCfg.spawn` creates a plain USD Xform at "
-":attr:`~sensors.RayCasterCfg.prim_path` to serve as the sensor's attachment "
-"frame. This compatibility behavior is deprecated; new configurations should "
-"set :attr:`~sensors.RayCasterCfg.spawn` to ``None`` and track an existing "
-"frame."
+"live scene BVH and ignores the mesh list. The ray caster tracks the existing"
+" prim selected by :attr:`~sensors.RayCasterCfg.prim_path`; it does not spawn"
+" a new USD prim."
 msgstr ""
-"高度扫描器使用虚拟射线投射传感器实现，通过 :class:`sensors.RayCasterCfg` 指定射线分布。基于 PhysX "
-"的后端对配置的网格进行射线检测，而 Newton 对其当前场景的 BVH "
-"进行检测，并忽略网格列表。默认情况下，:attr:`~sensors.RayCasterCfg.spawn` 会在 "
-":attr:`~sensors.RayCasterCfg.prim_path` 创建一个普通 USD "
-"Xform，作为传感器的挂载坐标系。这一兼容行为已弃用；新配置应将 :attr:`~sensors.RayCasterCfg.spawn` 设为 "
-"``None``，并跟踪已有坐标系。"
+"高度扫描器是虚拟的射线投射传感器，通过 :class:`sensors.RayCasterCfg` 指定射线模式。基于 PhysX "
+"的后端向配置的网格投射射线，而 Newton 向实时场景 BVH 投射，忽略网格列表。射线投射器跟踪 "
+":attr:`~sensors.RayCasterCfg.prim_path` 选中的已有 prim，不生成新的 USD prim。"
 
-#: source/how-to/add_sensors_on_robot.rst:114
+#: source/how-to/add_sensors_on_robot.rst:105
 msgid ""
 "For this tutorial, the ray-cast based height scanner is attached under the "
 "base frame of the robot. The pattern of rays is specified using the "
@@ -236,7 +219,7 @@ msgstr ""
 "。由于我们只关心高度信息，无需考虑机器人的滚转和俯仰，因此将 :attr:`~sensors.RayCasterCfg.ray_alignment` "
 "设为 \"yaw\"。"
 
-#: source/how-to/add_sensors_on_robot.rst:120
+#: source/how-to/add_sensors_on_robot.rst:111
 msgid ""
 "For the height-scanner, you can visualize the points where the rays hit the "
 "mesh. This is done by setting the :attr:`~sensors.SensorBaseCfg.debug_vis` "
@@ -245,15 +228,15 @@ msgstr ""
 "对于高度扫描器，可以将光线击中网格的点可视化。通过设置 :attr:`~sensors.SensorBaseCfg.debug_vis` 属性为 "
 "true 实现此功能。"
 
-#: source/how-to/add_sensors_on_robot.rst:123
+#: source/how-to/add_sensors_on_robot.rst:114
 msgid "The entire configuration of the height-scanner is as follows:"
 msgstr "高度扫描器的整体配置如下: "
 
-#: source/how-to/add_sensors_on_robot.rst:131
+#: source/how-to/add_sensors_on_robot.rst:122
 msgid "Contact sensor"
 msgstr "接触传感器"
 
-#: source/how-to/add_sensors_on_robot.rst:133
+#: source/how-to/add_sensors_on_robot.rst:124
 msgid ""
 "Contact sensors wrap around the PhysX contact reporting API to obtain the "
 "contact information of the robot with the environment. Since it relies of "
@@ -267,7 +250,7 @@ msgstr ""
 ":attr:`~sim.spawners.RigidObjectSpawnerCfg.activate_contact_sensors` 设置为 "
 "true 来完成此操作。"
 
-#: source/how-to/add_sensors_on_robot.rst:138
+#: source/how-to/add_sensors_on_robot.rst:129
 msgid ""
 "Through the :class:`sensors.ContactSensorCfg`, it is possible to specify the"
 " prims for which we want to obtain the contact information. Additional flags"
@@ -277,7 +260,7 @@ msgstr ""
 "通过 :class:`sensors.ContactSensorCfg` ，可以指定要获取其接触信息的 "
 "prims。可以设置附加标志以获取有关接触的更多信息，例如过滤 prims 之间的接触空气时间、接触力等。"
 
-#: source/how-to/add_sensors_on_robot.rst:142
+#: source/how-to/add_sensors_on_robot.rst:133
 msgid ""
 "In this tutorial, we attach the contact sensor to the feet of the robot. The"
 " feet of the robot are named ``\"LF_FOOT\"``, ``\"RF_FOOT\"``, "
@@ -289,7 +272,7 @@ msgstr ""
 "``\"LH_FOOT\"`` 和 ``\"RH_FOOT\"`` 。为简化 prim 路径设置，我们使用正则表达式 ``\".*_FOOT\"`` "
 "，匹配所有名称以 ``\"_FOOT\"`` 结尾的 prim。"
 
-#: source/how-to/add_sensors_on_robot.rst:147
+#: source/how-to/add_sensors_on_robot.rst:138
 msgid ""
 "We set the update period to 0 to update the sensor at the same frequency as "
 "the simulation. Additionally, for contact sensors, we can specify the "
@@ -300,40 +283,40 @@ msgstr ""
 "将更新周期设置为 0 以使传感器以仿真相同的频率更新。此外，对于接触传感器，可以指定要存储的接触信息的历史长度。对于本教程，我们将历史长度设置为 "
 "6，这意味着存储最后 6 个仿真步骤的接触信息。"
 
-#: source/how-to/add_sensors_on_robot.rst:152
+#: source/how-to/add_sensors_on_robot.rst:143
 msgid "The entire configuration of the contact sensor is as follows:"
 msgstr "接触传感器的整体配置如下: "
 
-#: source/how-to/add_sensors_on_robot.rst:160
+#: source/how-to/add_sensors_on_robot.rst:151
 msgid "Running the simulation loop"
 msgstr "运行仿真循环"
 
-#: source/how-to/add_sensors_on_robot.rst:162
+#: source/how-to/add_sensors_on_robot.rst:153
 msgid ""
 "Similar to when using assets, the buffers and physics handles for the "
 "sensors are initialized only when the simulation is played, i.e., it is "
 "important to call ``sim.reset()`` after creating the scene."
 msgstr "与使用资产时类似，仅当播放仿真时才会初始化传感器的缓冲区和物理句柄，即在创建场景后调用 ``sim.reset()`` 是重要的。"
 
-#: source/how-to/add_sensors_on_robot.rst:170
+#: source/how-to/add_sensors_on_robot.rst:161
 msgid ""
 "Besides that, the simulation loop is similar to the previous tutorials. The "
 "sensors are updated as part of the scene update and they internally handle "
 "the updating of their buffers based on their update periods."
 msgstr "此外，仿真循环类似于以前的教程。传感器作为场景更新的一部分进行更新，并且它们内部处理基于其更新周期的缓冲区的更新。"
 
-#: source/how-to/add_sensors_on_robot.rst:174
+#: source/how-to/add_sensors_on_robot.rst:165
 msgid ""
 "The data from the sensors can be accessed through their ``data`` attribute. "
 "As an example, we show how to access the data for the different sensors "
 "created in this tutorial:"
 msgstr "可以通过它们的 ``data`` 属性访问传感器的数据。作为示例，我们展示了如何访问本教程中创建的不同传感器的数据: "
 
-#: source/how-to/add_sensors_on_robot.rst:184
+#: source/how-to/add_sensors_on_robot.rst:175
 msgid "The Code Execution"
 msgstr "代码执行"
 
-#: source/how-to/add_sensors_on_robot.rst:187
+#: source/how-to/add_sensors_on_robot.rst:178
 msgid ""
 "Now that we have gone through the code, let's run the script and see the "
 "result:"
@@ -343,11 +326,7 @@ msgstr "现在我们已经浏览了代码，让我们运行脚本并查看结果
 msgid "uv (Recommended)"
 msgstr "uv（推荐）"
 
-#: source/how-to/add_sensors_on_robot.rst:0
-msgid "isaaclab.sh / isaaclab.bat"
-msgstr "isaaclab.sh / isaaclab.bat"
-
-#: source/how-to/add_sensors_on_robot.rst:205
+#: source/how-to/add_sensors_on_robot.rst:189
 msgid ""
 "This command should open a stage with a ground plane, lights, and two "
 "quadrupedal robots. Around the robots, you should see red spheres that "
@@ -361,17 +340,17 @@ msgstr ""
 " RGB 图像。请查看 `这里 <https://youtu.be/htPbcKkNMPs?feature=shared>`_ "
 "获取有关如何将视口切换到相机视图的更多信息。"
 
-#: source/how-to/add_sensors_on_robot.rst:211
+#: source/how-to/add_sensors_on_robot.rst:195
 msgid "result of add_sensors_on_robot.py"
 msgstr "add_sensors_on_robot.py 的结果"
 
-#: source/how-to/add_sensors_on_robot.rst:216
+#: source/how-to/add_sensors_on_robot.rst:200
 msgid ""
 "To stop the simulation, you can either close the window, or press ``Ctrl+C``"
 " in the terminal."
 msgstr "要停止仿真，您可以关闭窗口，或在终端中按 ``Ctrl+C`` 。"
 
-#: source/how-to/add_sensors_on_robot.rst:218
+#: source/how-to/add_sensors_on_robot.rst:202
 msgid ""
 "While in this tutorial, we went over creating and using different sensors, "
 "there are many more sensors available in the :mod:`sensors` module. We "

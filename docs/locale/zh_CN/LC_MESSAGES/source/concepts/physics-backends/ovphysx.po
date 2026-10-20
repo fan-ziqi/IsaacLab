@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -16,20 +16,10 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: source/concepts/physics-backends/ovphysx.rst:4
-msgid "OvPhysX Backend"
-msgstr "OvPhysX 后端"
+msgid "OvPhysX"
+msgstr "OvPhysX"
 
 #: source/concepts/physics-backends/ovphysx.rst:8
-msgid ""
-"OvPhysX is **highly experimental** and is not recommended for general use "
-"yet. The public surface is changing rapidly while the backend is under "
-"active development. Expect feature coverage and test commands to change "
-"between Isaac Lab 3.0 beta releases."
-msgstr ""
-"OvPhysX 仍处于 **高度实验性** 阶段，目前不建议普遍使用。后端正在积极开发，公共接口变化较快。在 Isaac Lab 3.0 "
-"各测试版本之间，功能支持和测试命令可能变化。"
-
-#: source/concepts/physics-backends/ovphysx.rst:15
 msgid ""
 "Do not combine OvPhysX with the Kit visualizer. Commands such as "
 "``physics=ovphysx --visualizer kit`` are unsupported because ovphysx loads "
@@ -43,129 +33,348 @@ msgstr ""
 "``--visualizer newton_gl``、``--visualizer rerun`` 或 ``--visualizer "
 "viser``；也可以不传 ``--visualizer``，以无界面方式运行。"
 
-#: source/concepts/physics-backends/ovphysx.rst:22
+#: source/concepts/physics-backends/ovphysx.rst:15
 msgid ""
-"OvPhysX is a kit-less variant of the PhysX backend. It drives PhysX directly"
-" (without the Omniverse Kit runtime) and reads scene-level solver parameters"
-" from the USD ``PhysicsScene`` prim rather than from a Python config. The "
-"Python config :class:`~isaaclab_ov.physics.OvPhysxCfg` only exposes the "
-"handful of GPU buffer sizes that are not represented on the USD schema."
+"OvPhysX runs PhysX without Omniverse Kit. It reads scene-level solver "
+"settings from the USD ``PhysicsScene`` prim. "
+":class:`~isaaclab_ov.physics.OvPhysxCfg` holds GPU buffer settings that USD "
+"does not represent."
 msgstr ""
-"OvPhysX 是不依赖 Kit 的 PhysX 后端变体。它直接驱动 PhysX，无需 Omniverse Kit 运行时，并从 USD 的 "
-"``PhysicsScene`` prim 读取场景级求解器参数，而不是从 Python 配置读取。Python 配置 "
-":class:`~isaaclab_ov.physics.OvPhysxCfg` 只暴露少数 USD 模式中没有对应表示的 GPU 缓冲区大小。"
+"OvPhysX 无需 Omniverse Kit 即可运行 PhysX。它从 USD 的 ``PhysicsScene`` prim "
+"读取场景级求解器设置，USD 无法表示的 GPU 缓冲区设置则由 :class:`~isaaclab_ov.physics.OvPhysxCfg` "
+"保存。"
 
-#: source/concepts/physics-backends/ovphysx.rst:28
+#: source/concepts/physics-backends/ovphysx.rst:19
 msgid "OvPhysX is selected through :class:`~isaaclab_ov.physics.OvPhysxCfg`:"
 msgstr "通过 :class:`~isaaclab_ov.physics.OvPhysxCfg` 选择 OvPhysX："
 
-#: source/concepts/physics-backends/ovphysx.rst:38
+#: source/concepts/physics-backends/ovphysx.rst:29
 msgid "Why use OvPhysX?"
 msgstr "为什么使用 OvPhysX？"
 
-#: source/concepts/physics-backends/ovphysx.rst:40
-msgid ""
-"**Kit-less execution.** OvPhysX avoids Omniverse Kit, which makes it a "
-"useful experimental path for headless deployments and for backends that "
-"don't need the Kit runtime stack."
-msgstr ""
-"**不依赖 Kit 的运行。** OvPhysX 无需 Omniverse Kit，适合探索无界面部署，以及不需要 Kit 运行环境的后端。"
+#: source/concepts/physics-backends/ovphysx.rst:31
+msgid "**No Kit runtime.** Run headless simulations without Isaac Sim."
+msgstr "**无需 Kit 运行时。** 无需 Isaac Sim 即可运行无界面仿真。"
 
-#: source/concepts/physics-backends/ovphysx.rst:43
+#: source/concepts/physics-backends/ovphysx.rst:32
 msgid ""
-"**USD-as-source-of-truth.** Solver parameters are taken from the "
-"``PhysicsScene`` USD prim, so authoring tools that already manage USD scenes"
-" do not need a parallel Python config."
-msgstr ""
-"**以 USD 为权威依据。** 求解器参数来自 ``PhysicsScene`` USD prim，已有 USD 场景管理能力的创作工具无需再维护一份"
-" Python 配置。"
+"**USD configuration.** Scene-authoring tools can set solver parameters "
+"directly on the ``PhysicsScene`` prim."
+msgstr "**USD 配置。** 场景创建工具可直接在 ``PhysicsScene`` prim 上设置求解器参数。"
 
-#: source/concepts/physics-backends/ovphysx.rst:48
+#: source/concepts/physics-backends/ovphysx.rst:36
 msgid "What works today"
 msgstr "当前可用功能"
 
+#: source/concepts/physics-backends/ovphysx.rst:38
+msgid ""
+"OvPhysX supports the following components. The notes describe requirements "
+"and limits to consider when configuring a task."
+msgstr "OvPhysX 支持以下组件。配置任务时，请留意表中的要求和限制。"
+
+#: source/concepts/physics-backends/ovphysx.rst:45
+msgid "Component"
+msgstr "组件"
+
+#: source/concepts/physics-backends/ovphysx.rst:46
+msgid "Coverage and limits"
+msgstr "支持范围与限制"
+
+#: source/concepts/physics-backends/ovphysx.rst:47
+msgid "Rigid objects and articulations"
+msgstr "刚体与关节系统"
+
+#: source/concepts/physics-backends/ovphysx.rst:48
+msgid "Rigid objects, rigid-object collections, and articulations."
+msgstr "刚体、刚体集合和关节系统。"
+
+#: source/concepts/physics-backends/ovphysx.rst:49
+msgid "Contact sensing"
+msgstr "接触感知"
+
 #: source/concepts/physics-backends/ovphysx.rst:50
 msgid ""
-"The asset and sensor surface tracks PhysX, but only a subset is implemented "
-"and validated at the time of writing. The following pieces are available on "
-"``develop``:"
-msgstr "资源与传感器接口沿用 PhysX 的设计，但本文编写时仅实现并验证了其中一部分。以下组件已在 ``develop`` 中可用："
+"Aggregate and filtered forces, contact points, and contact timing. Pose "
+"tracking requires one sensor body per environment."
+msgstr "合力与过滤后的接触力、接触点及接触时序。位姿跟踪要求每个环境仅包含一个传感器刚体。"
 
-#: source/concepts/physics-backends/ovphysx.rst:54
+#: source/concepts/physics-backends/ovphysx.rst:52
+msgid "Motion and frame sensing"
+msgstr "运动与坐标系感知"
+
+#: source/concepts/physics-backends/ovphysx.rst:53
 msgid ""
-"RigidObject — merged via `PR #5426 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5426>`_."
-msgstr ""
-"RigidObject：通过 `PR #5426 <https://github.com/isaac-sim/IsaacLab/pull/5426>`_"
-" 合并。"
+"IMU, PVA, and frame transforms. Joint-wrench readings include the root body "
+"and use the child-side joint frame."
+msgstr "IMU、PVA 和坐标变换。关节力/力矩读数包含根刚体，采用关节子刚体一侧的坐标系。"
+
+#: source/concepts/physics-backends/ovphysx.rst:55
+msgid "Ray casting"
+msgstr "射线投射"
 
 #: source/concepts/physics-backends/ovphysx.rst:56
 msgid ""
-"Articulation — merged via `PR #5459 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5459>`_."
-msgstr ""
-"Articulation：通过 `PR #5459 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5459>`_ 合并。"
+"Ray casters and ray-cast cameras using Warp meshes. The standard ray caster "
+"requires static target meshes."
+msgstr "使用 Warp 网格的射线投射器与射线投射相机。标准射线投射器要求目标网格保持静止。"
 
 #: source/concepts/physics-backends/ovphysx.rst:58
-msgid ""
-"RigidObjectCollection — merged via `PR #5570 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5570>`_."
-msgstr ""
-"RigidObjectCollection：通过 `PR #5570 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5570>`_ 合并。"
+msgid "Rendering and scene data"
+msgstr "渲染与场景数据"
 
-#: source/concepts/physics-backends/ovphysx.rst:60
+#: source/concepts/physics-backends/ovphysx.rst:59
 msgid ""
-"Contact Sensor — merged via `PR #5422 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5422>`_."
-msgstr ""
-"接触传感器：通过 `PR #5422 <https://github.com/isaac-sim/IsaacLab/pull/5422>`_ 合并。"
+"Scene-data and frame-view implementations support kit-less consumers, "
+"including OVRTX. Isaac Sim / Kit cannot share the process."
+msgstr "场景数据和帧视图实现支持 OVRTX 等不依赖 Kit 的使用者，不能与 Isaac Sim / Kit 共用进程。"
+
+#: source/concepts/physics-backends/ovphysx.rst:61
+msgid "Deformables"
+msgstr "可变形物体"
 
 #: source/concepts/physics-backends/ovphysx.rst:62
 msgid ""
-"SceneDataProvider — merged via `PR #5589 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5589>`_."
-msgstr ""
-"SceneDataProvider：通过 `PR #5589 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5589>`_ 合并。"
+"Volume and surface deformables on CUDA. Bodies in one view need matching "
+"node counts; see `Deformable limitations`_."
+msgstr "CUDA 上的体积和表面可变形体。同一视图内的物体必须具有相同的节点数，见 `可变形体限制`_。"
 
 #: source/concepts/physics-backends/ovphysx.rst:64
-msgid ""
-"FrameView — merged via `PR #5678 <https://github.com/isaac-"
-"sim/IsaacLab/pull/5678>`_."
-msgstr ""
-"FrameView：通过 `PR #5678 <https://github.com/isaac-sim/IsaacLab/pull/5678>`_ "
-"合并。"
-
-#: source/concepts/physics-backends/ovphysx.rst:66
-msgid ""
-":class:`~isaaclab.assets.DeformableObject` — experimental volume- and "
-"surface-deformable support on CUDA simulation devices."
-msgstr ""
-":class:`~isaaclab.assets.DeformableObject` ：在 CUDA 仿真设备上实验性支持体积和表面可变形体。"
-
-#: source/concepts/physics-backends/ovphysx.rst:68
-msgid ""
-"Fast-path cloning of heterogeneous rigid-body and articulation geometry "
-"variants with matching native tensor layouts."
-msgstr "对于原生张量布局相同的异构刚体与关节体几何变体，支持快速克隆。"
-
-#: source/concepts/physics-backends/ovphysx.rst:71
-msgid ""
-"Additional OvPhysX work remains in flight. IMU, Frame Transformer, Joint "
-"Wrench, PVA, Ray Caster, and rendering support are not documented as "
-"supported here until their implementations land on ``develop`` and pass the "
-"backend smoke tests."
-msgstr ""
-"其他 OvPhysX 功能仍在开发中。IMU、坐标系变换器、关节力与力矩传感器、PVA、射线投射器和渲染功能，在其实现进入 ``develop`` "
-"并通过后端基本运行测试之前，本页不将其列为受支持功能。"
-
-#: source/concepts/physics-backends/ovphysx.rst:77
+#: source/concepts/physics-backends/ovphysx.rst:211
 msgid "Heterogeneous cloning"
 msgstr "异构克隆"
 
+#: source/concepts/physics-backends/ovphysx.rst:65
+msgid ""
+"Geometry variants with matching body, joint, and tendon layouts; see "
+"`Heterogeneous cloning`_."
+msgstr "支持刚体、关节和肌腱布局相同的几何变体，见 `异构克隆`_。"
+
+#: source/concepts/physics-backends/ovphysx.rst:68
+msgid ""
+"See :doc:`/source/concepts/sensors/index` for sensor configuration and "
+":doc:`/source/concepts/renderers` for renderer choices."
+msgstr ""
+"传感器配置见 :doc:`/source/concepts/sensors/index`，渲染器选择见 "
+":doc:`/source/concepts/renderers`。"
+
 #: source/concepts/physics-backends/ovphysx.rst:79
+msgid "Installation"
+msgstr "安装"
+
+#: source/concepts/physics-backends/ovphysx.rst:81
+msgid ""
+"The ``ovphysx`` extra requires OvPhysX 0.6.4.72118723. Install it from the "
+"repository root with:"
+msgstr "``ovphysx`` 扩展依赖要求 OvPhysX 0.6.4.72118723。在仓库根目录执行以下命令安装："
+
+#: source/concepts/physics-backends/ovphysx.rst:87
+msgid ""
+"The ``--inexact`` flag preserves packages installed through other extras. "
+"Use ``--extra ov`` to install both public OvPhysX and OVRTX runtimes. The "
+"combined extra pairs OVRTX 0.5.1.385782 with OVStage 0.2.1; OVRTX 0.4.1 is "
+"not compatible with this runtime combination."
+msgstr ""
+"``--inexact`` 保留通过其他 extra 安装的包。使用 ``--extra ov`` 可同时安装公开发布的 OvPhysX 和 OVRTX"
+" 运行时。该组合 extra 使用 OVRTX 0.5.1.385782 与 OVStage 0.2.1；OVRTX 0.4.1 与此运行时组合不兼容。"
+
+#: source/concepts/physics-backends/ovphysx.rst:93
+msgid "Opt-in OVPhysX 0.7 support"
+msgstr "可选的 OVPhysX 0.7 支持"
+
+#: source/concepts/physics-backends/ovphysx.rst:95
+msgid ""
+"The default dependency pins remain on OVPhysX 0.6.4. The backend also "
+"accepts OVPhysX 0.7, including development builds. It selects task "
+"completion, stage teardown, scene reads and schema discovery from the "
+"installed runtime version. Tensor and contact bindings remain in use on both"
+" versions."
+msgstr ""
+"默认依赖仍固定为 OVPhysX 0.6.4。后端也接受 OVPhysX "
+"0.7，包括开发版本，并根据已安装的运行时版本选择任务完成、舞台销毁、场景读取和 Schema 查找方式。两个版本均继续使用张量和接触绑定。"
+
+#: source/concepts/physics-backends/ovphysx.rst:100
+msgid ""
+"OVPhysX 0.7 no longer bundles PhysX USD schemas. Install ``physx-usd-"
+"schemas>=25.11.2`` into the simulation environment before startup. Use ``uv "
+"run --no-sync`` with an opt-in environment to avoid restoring the project's "
+"default dependency pins. Isaac Lab locates both PhysX and deformable schema "
+"directories without importing the provider, then registers them before USD "
+"population. The already-installed Newton schemas are also registered. Do not"
+" suppress schema-registration errors: late registration requires a fresh "
+"process and cannot recover settings lost during population."
+msgstr ""
+"OVPhysX 0.7 不再自带 PhysX USD Schema。启动前，请在仿真环境中安装 ``physx-usd-"
+"schemas>=25.11.2``。对这类自行调整依赖的环境，请使用 ``uv run --no-sync``，避免恢复项目默认的依赖版本。Isaac"
+" Lab 会在不导入提供方模块的情况下定位 PhysX 和可变形体 Schema 目录，并在填充 USD 场景前注册；已安装的 Newton "
+"Schema 也会注册。请勿忽略 Schema 注册错误：注册过晚时必须重启进程，而且无法恢复填充场景时丢失的设置。"
+
+#: source/concepts/physics-backends/ovphysx.rst:110
+msgid "Legacy joint USD"
+msgstr "旧版关节 USD"
+
+#: source/concepts/physics-backends/ovphysx.rst:112
+msgid ""
+"OVPhysX 0.7 no longer consumes ``PhysxJointAPI``. In the temporary physics "
+"export, Isaac Lab translates authored ``physxJoint:maxJointVelocity`` and "
+"``physxJoint:armature`` to ``NewtonJointAPI`` values. Angular velocity stays"
+" in USD degrees per second; linear velocity and armature retain their USD "
+"units. Authored modern values take precedence, and existing per-axis PhysX "
+"overrides remain intact. Source assets and the live stage are not edited, so"
+" other physics backends and older OVPhysX runtimes keep their previous "
+"behavior."
+msgstr ""
+"OVPhysX 0.7 不再读取 ``PhysxJointAPI``。在临时物理导出文件中，Isaac Lab 会将已有的 "
+"``physxJoint:maxJointVelocity`` 和 ``physxJoint:armature`` 转换为 "
+"``NewtonJointAPI`` 值。角速度仍使用 USD 的度每秒单位，线速度和转子惯量也保留原有 USD 单位。已写入的新格式值优先，现有的分轴"
+" PhysX 覆盖设置保持不变。源资产和实时舞台不被修改，因此其他物理后端及旧版 OVPhysX 运行时仍保持原先行为。"
+
+#: source/concepts/physics-backends/ovphysx.rst:120
+msgid ""
+"Unmigrated nonzero legacy ``physxJoint:jointFriction`` is rejected with the "
+"joint path. The dimensionless coefficient has no exact conversion to the new"
+" effort-based friction model. Remove it and retune ``newton:friction`` / "
+"``newton:damping`` or ``PhysxJointAxisAPI`` friction efforts explicitly. "
+"Unsupported joint types and time-sampled legacy settings that cannot be "
+"represented also require migration. This compatibility layer does not "
+"promise identical trajectories across PhysX engine versions."
+msgstr ""
+"若仍存在未迁移的非零 "
+"``physxJoint:jointFriction``，后端会拒绝加载并报告关节路径。该无量纲系数无法精确转换为基于力/力矩的新摩擦模型，需要移除它，并显式重新调整"
+" ``newton:friction`` / ``newton:damping`` 或 ``PhysxJointAxisAPI`` "
+"的摩擦力/力矩。不受支持的关节类型，以及无法表示的带时间采样的旧设置，同样需要迁移。此兼容层不保证不同 PhysX 引擎版本生成完全相同的轨迹。"
+
+#: source/concepts/physics-backends/ovphysx.rst:128
+msgid ""
+"For scene-time migration without republishing assets, set "
+"``OvPhysxCfg.legacy_joint_friction_replacements`` to a mapping from joint-"
+"name regular expressions to ``(static effort, dynamic effort, viscous "
+"coefficient)``. The values use SI force/torque and viscous units. Only "
+"matching revolute and prismatic joints with nonzero legacy friction are "
+"migrated in the private 0.7 export: the legacy property is removed and "
+"modern ``PhysxJointAxisAPI`` values are authored. Existing modern friction "
+"opinions take precedence. Other runtimes, source USD files, and the live "
+"stage remain unchanged."
+msgstr ""
+"若希望在加载场景时迁移而无需重新发布资产，可将 ``OvPhysxCfg.legacy_joint_friction_replacements`` "
+"设为从关节名称正则表达式到 ``(static effort, dynamic effort, viscous coefficient)`` "
+"的映射，数值采用 SI 制的力/力矩和黏性系数单位。在内部的 0.7 导出中，仅迁移匹配到且旧摩擦非零的旋转或移动关节：删除旧属性，写入新的 "
+"``PhysxJointAxisAPI`` 值。已有的新格式摩擦设置优先。其他运行时、源 USD 文件和实时舞台均保持不变。"
+
+#: source/concepts/physics-backends/ovphysx.rst:137
+msgid ""
+"The Allegro reorientation, Kuka-Allegro lift/reorientation, Shadow "
+"reorientation, and Shadow handover presets supply replacements for their "
+"affected hand joints. The profile is ``(0.01, 0.0, 0.0)``: 0.01 N*m static "
+"effort, zero dynamic effort, and zero viscous coefficient. These values "
+"match measured OVPhysX 0.6.4 runtime actuator settings, including the Shadow"
+" tendon joints; they are not a numeric conversion of the legacy asset "
+"coefficients. Actuator initialization and runtime friction randomization "
+"continue using effort-valued tensor properties. Merely copying a legacy "
+"coefficient into a modern effort property is not a valid migration."
+msgstr ""
+"Allegro 重定向、Kuka-Allegro 抬升/重定向、Shadow 重定向和 Shadow 双手交接预设，为受影响的手部关节提供了替换值 "
+"``(0.01, 0.0, 0.0)``：静摩擦力矩为 0.01 N*m，动摩擦和黏性系数为零。这些值与测得的 OVPhysX 0.6.4 "
+"运行时执行器设置一致，包括 Shadow "
+"肌腱关节；它们不是将旧资产系数直接做数值转换得到的。执行器初始化和运行时摩擦随机化仍使用以力/力矩计的张量属性。将旧系数直接复制到新属性中，并不是正确的迁移方式。"
+
+#: source/concepts/physics-backends/ovphysx.rst:147
+msgid "Testing the Installation"
+msgstr "测试安装"
+
+#: source/concepts/physics-backends/ovphysx.rst:149
+msgid ""
+"First check that the Python package and runtime wheel import correctly:"
+msgstr "先检查 Python 软件包和运行时 wheel 能否正常导入："
+
+#: source/concepts/physics-backends/ovphysx.rst:0
+msgid "uv (Recommended)"
+msgstr "uv（推荐）"
+
+#: source/concepts/physics-backends/ovphysx.rst:159
+msgid "Then run a small backend smoke test:"
+msgstr "然后运行一个小规模后端基本运行测试："
+
+#: source/concepts/physics-backends/ovphysx.rst:169
+msgid ""
+"To try a task that declares an OvPhysX physics preset, use the same preset "
+"CLI syntax as the other backends:"
+msgstr "要运行声明了 OvPhysX 物理预设的任务，使用与其他后端相同的预设 CLI 语法："
+
+#: source/concepts/physics-backends/ovphysx.rst:181
+msgid ""
+"This command runs a 64-step headless zero-action rollout and then exits."
+msgstr "此命令以无界面方式运行 64 步零动作轨迹，然后退出。"
+
+#: source/concepts/physics-backends/ovphysx.rst:184
+msgid "Supported locomotion environments"
+msgstr "受支持的足式运动环境"
+
+#: source/concepts/physics-backends/ovphysx.rst:186
+msgid ""
+"Use the :doc:`environment browser </source/isaaclab/environments>` or task "
+"help for the available ``physics=`` presets. To list launchable "
+"combinations:"
+msgstr ""
+"使用 :doc:`环境浏览器 </source/isaaclab/environments>` 或任务帮助查看可用的 ``physics=`` "
+"预设。列出可启动的组合："
+
+#: source/concepts/physics-backends/ovphysx.rst:193
+msgid "Playback uses the same ``physics=ovphysx`` selector as training."
+msgstr "策略播放与训练使用相同的 ``physics=ovphysx`` 选择器。"
+
+#: source/concepts/physics-backends/ovphysx.rst:0
+msgid "Locomotion task examples"
+msgstr "运动任务示例"
+
+#: source/concepts/physics-backends/ovphysx.rst:197
+msgid "``Isaac-Ant-Direct``"
+msgstr "``Isaac-Ant-Direct``"
+
+#: source/concepts/physics-backends/ovphysx.rst:198
+msgid "``Isaac-Humanoid-Direct``"
+msgstr "``Isaac-Humanoid-Direct``"
+
+#: source/concepts/physics-backends/ovphysx.rst:199
+msgid "``IsaacContrib-Velocity-Rough-AnymalB``"
+msgstr "``IsaacContrib-Velocity-Rough-AnymalB``"
+
+#: source/concepts/physics-backends/ovphysx.rst:200
+msgid "``IsaacContrib-Velocity-Rough-AnymalC``"
+msgstr "``IsaacContrib-Velocity-Rough-AnymalC``"
+
+#: source/concepts/physics-backends/ovphysx.rst:201
+msgid "``Isaac-Velocity-Flat-AnymalD``"
+msgstr "``Isaac-Velocity-Flat-AnymalD``"
+
+#: source/concepts/physics-backends/ovphysx.rst:202
+msgid "``Isaac-Velocity-Rough-AnymalD``"
+msgstr "``Isaac-Velocity-Rough-AnymalD``"
+
+#: source/concepts/physics-backends/ovphysx.rst:203
+msgid "``IsaacContrib-Velocity-Rough-UnitreeA1``"
+msgstr "``IsaacContrib-Velocity-Rough-UnitreeA1``"
+
+#: source/concepts/physics-backends/ovphysx.rst:204
+msgid "``IsaacContrib-Velocity-Rough-UnitreeGo1``"
+msgstr "``IsaacContrib-Velocity-Rough-UnitreeGo1``"
+
+#: source/concepts/physics-backends/ovphysx.rst:205
+msgid "``Isaac-Velocity-Rough-UnitreeGo2``"
+msgstr "``Isaac-Velocity-Rough-UnitreeGo2``"
+
+#: source/concepts/physics-backends/ovphysx.rst:206
+msgid "``Isaac-Velocity-Rough-Cassie``"
+msgstr "``Isaac-Velocity-Rough-Cassie``"
+
+#: source/concepts/physics-backends/ovphysx.rst:207
+msgid "``Isaac-Velocity-Rough-G1``"
+msgstr "``Isaac-Velocity-Rough-G1``"
+
+#: source/concepts/physics-backends/ovphysx.rst:208
+msgid "``Isaac-Velocity-Rough-H1``"
+msgstr "``Isaac-Velocity-Rough-H1``"
+
+#: source/concepts/physics-backends/ovphysx.rst:213
 msgid ""
 "OvPhysX 0.6.3 is required for heterogeneous runtime cloning. Tensor bindings"
 " use numeric environment order so indexed resets, actions and observations "
@@ -178,7 +387,7 @@ msgstr ""
 "0.6.3。张量绑定按环境的数字顺序排列，保证索引式重置、动作和观测对应正确变体。变体的几何可以不同，但刚体、关节和肌腱布局必须一致。Isaac Lab"
 " 检查原型旋转轴和肌腱布局；OVPhysX 在绑定关节体时检查刚体与关节元数据。"
 
-#: source/concepts/physics-backends/ovphysx.rst:85
+#: source/concepts/physics-backends/ovphysx.rst:219
 msgid ""
 "The clone context compiles the plan's prototypes and world assignments once."
 " The physics manager attaches one exported stage, replays the native copies,"
@@ -190,7 +399,22 @@ msgstr ""
 "克隆上下文只编译一次计划中的原型和仿真世界分配。物理管理器挂接一个导出的 USD "
 "舞台，重放原生副本，并在资源和传感器绑定之前预热运行时。硬重置复用相同声明，不另设一次性消费队列。绑定路径来自计划的世界布局和环境模板，而不是原生克隆顺序。"
 
-#: source/concepts/physics-backends/ovphysx.rst:91
+#: source/concepts/physics-backends/ovphysx.rst:225
+msgid ""
+"Configured scenes author only prototypes before replication. Environment "
+"poses come from the clone plan: USD replication creates frames for Kit, and "
+"OVPhysX places originals in its private import before native cloning. OVRTX "
+"and OVStage populate their required environment frames in private USD "
+"exports, then apply the planned poses. The SDK's CPU hierarchy computation "
+"requires USD-populated frames. Export filtering still excludes unrouted "
+"prototypes and any destinations already materialized by USD replication."
+msgstr ""
+"配置场景时，复制前只创建原型。环境位姿来自克隆计划：USD 复制为 Kit 创建坐标框架，OVPhysX "
+"则在原生克隆前，将原始环境按位姿放入其内部导入场景。OVRTX 和 OVStage 在内部 USD "
+"导出中填充所需的环境坐标框架，再应用计划中的位姿。SDK 的 CPU 层级计算要求这些坐标框架已填充到 USD。导出过滤仍会排除未路由的原型，以及已由 "
+"USD 复制创建的目标。"
+
+#: source/concepts/physics-backends/ovphysx.rst:231
 msgid ""
 "Authored sources all receive native environment ID zero. Every world "
 "containing a source or USD-only physics therefore imports all its declared "
@@ -204,25 +428,30 @@ msgstr ""
 "定义物理的每个仿真世界，都会将其声明的全部资源作为原始对象导入。其他世界从组成相同、完整的原始世界克隆资源，每个目标世界使用一个原生环境 "
 "ID。这样，机器人、桌子和物体可以相互接触，无需目标占位对象。只复制声明的资源子树，其他写入 USD 的资源保持不变。"
 
-#: source/concepts/physics-backends/ovphysx.rst:98
+#: source/concepts/physics-backends/ovphysx.rst:238
 msgid ""
 "Keep :attr:`~isaaclab.scene.InteractiveSceneCfg.filter_collisions` enabled "
-"to isolate original worlds with USD collision groups. GPU copies "
-"additionally use native environment-ID filtering. CPU has no native "
-"environment-ID filtering in OvPhysX 0.6.3, so it imports all declared USD "
-"copies and uses collision groups. Large overlapping original layouts can "
-"still exhaust broadphase pair capacity; use spatially separated "
-"environments."
+"to isolate original worlds with USD collision groups. Native GPU physics "
+"copies additionally use native environment-ID filtering. When :ref:`shared "
+"OVStage cloning <ov-clone-routing>` is enabled, both backends attach to one "
+"OVStage and clone it once; these copies use the authored USD collision "
+"groups. Native physics cloning remains the default while shared-stage cold "
+"binding lookup is slow in OVPhysX 0.6.3. CPU has no native environment-ID "
+"filtering in OvPhysX 0.6.3, so it imports all declared USD copies and uses "
+"collision groups. Large overlapping original layouts can still exhaust "
+"broadphase pair capacity; use spatially separated environments."
 msgstr ""
-"保持 :attr:`~isaaclab.scene.InteractiveSceneCfg.filter_collisions` 启用，以通过 USD "
-"碰撞组隔离原始世界。GPU 副本还使用原生环境 ID 过滤。OvPhysX 0.6.3 的 CPU 模式没有原生环境 ID 过滤，会导入全部声明的 "
-"USD 副本，并使用碰撞组。大量重叠的原始布局仍可能耗尽粗检测碰撞对容量，因此应将环境在空间上分开。"
+"请保持 :attr:`~isaaclab.scene.InteractiveSceneCfg.filter_collisions` 启用，利用 USD "
+"碰撞组隔离原始世界。原生 GPU 物理副本还会使用原生环境 ID 过滤。启用 :ref:`共享 OVStage 克隆 <ov-clone-"
+"routing>` 时，两个后端附加到同一个 OVStage，并且只克隆一次；这些副本使用场景中写入的 USD 碰撞组。由于 OVPhysX 0.6.3"
+" 中共享舞台首次查找绑定较慢，默认仍采用原生物理克隆。OvPhysX 0.6.3 的 CPU 不支持原生环境 ID 过滤，因此会导入所有声明的 USD "
+"副本并使用碰撞组。大量原始环境若彼此重叠，仍可能耗尽碰撞粗检测的配对容量，因此应将环境在空间上分开。"
 
-#: source/concepts/physics-backends/ovphysx.rst:106
+#: source/concepts/physics-backends/ovphysx.rst:249
 msgid "Deformable limitations"
 msgstr "可变形体限制"
 
-#: source/concepts/physics-backends/ovphysx.rst:108
+#: source/concepts/physics-backends/ovphysx.rst:251
 msgid ""
 "OvPhysX deformables currently require every body matched by one "
 ":class:`~isaaclab.assets.DeformableObject` to have the same number of "
@@ -232,7 +461,7 @@ msgstr ""
 "目前 OvPhysX 要求同一个 :class:`~isaaclab.assets.DeformableObject` "
 "匹配到的所有物体具有相同数量的仿真节点。节点数量不同时，初始化会报错，而不会暴露填充后的状态，以免产生错误的归约结果。"
 
-#: source/concepts/physics-backends/ovphysx.rst:113
+#: source/concepts/physics-backends/ovphysx.rst:256
 msgid ""
 "Deformable scenes also require full-stage materialization. Startup cost "
 "therefore grows with the number of authored environments. Use this path for "
@@ -243,148 +472,27 @@ msgstr ""
 "可变形体场景还要求将整个 USD "
 "舞台实例化展开，因此启动开销会随已定义环境数量增加。这条路径适合小规模验证场景，目前不支持数千个环境的训练规模工作负载。异构快速克隆器不支持可变形体。"
 
-#: source/concepts/physics-backends/ovphysx.rst:120
-msgid "Installation"
-msgstr "安装"
-
-#: source/concepts/physics-backends/ovphysx.rst:122
-msgid ""
-"The ``ovphysx`` extra requires OvPhysX 0.6.4.72118723. Install it from the "
-"repository root with:"
-msgstr "``ovphysx`` 扩展依赖要求 OvPhysX 0.6.4.72118723。在仓库根目录执行以下命令安装："
-
-#: source/concepts/physics-backends/ovphysx.rst:128
-msgid ""
-"The ``--inexact`` flag preserves packages installed through other extras. "
-"Use ``--extra ov`` to install both public OvPhysX and OVRTX runtimes. The "
-"combined extra pairs OVRTX 0.5.1.385782 with OVStage 0.2.1; OVRTX 0.4.1 is "
-"not compatible with this runtime combination. The legacy Isaac Lab installer"
-" also supports ``./isaaclab.sh -i 'ov[ovphysx]'`` and ``./isaaclab.sh -i "
-"'ov[all]'``."
-msgstr ""
-"``--inexact`` 会保留通过其他扩展依赖安装的软件包。使用 ``--extra ov`` 可同时安装公开发行的 OvPhysX 和 OVRTX"
-" 运行时。这组扩展依赖将 OVRTX 0.5.1.385782 与 OVStage 0.2.1 配套使用；OVRTX 0.4.1 与该组合不兼容。旧版 "
-"Isaac Lab 安装器也支持 ``./isaaclab.sh -i 'ov[ovphysx]'`` 和 ``./isaaclab.sh -i "
-"'ov[all]'``。"
-
-#: source/concepts/physics-backends/ovphysx.rst:136
-msgid "Testing the Installation"
-msgstr "测试安装"
-
-#: source/concepts/physics-backends/ovphysx.rst:138
-msgid ""
-"First check that the Python package and runtime wheel import correctly:"
-msgstr "先检查 Python 软件包和运行时 wheel 能否正常导入："
-
-#: source/concepts/physics-backends/ovphysx.rst:0
-msgid "uv (Recommended)"
-msgstr "uv（推荐）"
-
-#: source/concepts/physics-backends/ovphysx.rst:0
-msgid "isaaclab.sh / isaaclab.bat"
-msgstr "isaaclab.sh / isaaclab.bat"
-
-#: source/concepts/physics-backends/ovphysx.rst:154
-msgid "Then run a small backend smoke test:"
-msgstr "然后运行一个小规模后端基本运行测试："
-
-#: source/concepts/physics-backends/ovphysx.rst:170
-msgid ""
-"To try a task that declares an OvPhysX physics preset, use the same preset "
-"CLI syntax as the other backends:"
-msgstr "要运行声明了 OvPhysX 物理预设的任务，使用与其他后端相同的预设 CLI 语法："
-
-#: source/concepts/physics-backends/ovphysx.rst:189
-msgid ""
-"This command runs a 64-step headless zero-action rollout and then exits."
-msgstr "此命令以无界面方式运行 64 步零动作轨迹，然后退出。"
-
-#: source/concepts/physics-backends/ovphysx.rst:192
-msgid "Supported locomotion environments"
-msgstr "受支持的足式运动环境"
-
-#: source/concepts/physics-backends/ovphysx.rst:194
-msgid ""
-"The following locomotion training environments declare an ``ovphysx`` "
-"physics preset. Playback through ``uv run isaaclab play`` uses the same "
-"backend where available."
-msgstr ""
-"以下足式运动训练环境声明了 ``ovphysx`` 物理预设。支持时，通过 ``uv run isaaclab play`` 运行策略也使用相同后端。"
-
-#: source/concepts/physics-backends/ovphysx.rst:198
-msgid "``Isaac-Ant-Direct``"
-msgstr "``Isaac-Ant-Direct``"
-
-#: source/concepts/physics-backends/ovphysx.rst:199
-msgid "``Isaac-Humanoid-Direct``"
-msgstr "``Isaac-Humanoid-Direct``"
-
-#: source/concepts/physics-backends/ovphysx.rst:200
-msgid "``IsaacContrib-Velocity-Rough-AnymalB``"
-msgstr "``IsaacContrib-Velocity-Rough-AnymalB``"
-
-#: source/concepts/physics-backends/ovphysx.rst:201
-msgid "``IsaacContrib-Velocity-Rough-AnymalC``"
-msgstr "``IsaacContrib-Velocity-Rough-AnymalC``"
-
-#: source/concepts/physics-backends/ovphysx.rst:202
-msgid "``Isaac-Velocity-Flat-AnymalD``"
-msgstr "``Isaac-Velocity-Flat-AnymalD``"
-
-#: source/concepts/physics-backends/ovphysx.rst:203
-msgid "``Isaac-Velocity-Rough-AnymalD``"
-msgstr "``Isaac-Velocity-Rough-AnymalD``"
-
-#: source/concepts/physics-backends/ovphysx.rst:204
-msgid "``IsaacContrib-Velocity-Rough-UnitreeA1``"
-msgstr "``IsaacContrib-Velocity-Rough-UnitreeA1``"
-
-#: source/concepts/physics-backends/ovphysx.rst:205
-msgid "``IsaacContrib-Velocity-Rough-UnitreeGo1``"
-msgstr "``IsaacContrib-Velocity-Rough-UnitreeGo1``"
-
-#: source/concepts/physics-backends/ovphysx.rst:206
-msgid "``Isaac-Velocity-Rough-UnitreeGo2``"
-msgstr "``Isaac-Velocity-Rough-UnitreeGo2``"
-
-#: source/concepts/physics-backends/ovphysx.rst:207
-msgid "``Isaac-Velocity-Rough-Cassie``"
-msgstr "``Isaac-Velocity-Rough-Cassie``"
-
-#: source/concepts/physics-backends/ovphysx.rst:208
-msgid "``Isaac-Velocity-Rough-G1``"
-msgstr "``Isaac-Velocity-Rough-G1``"
-
-#: source/concepts/physics-backends/ovphysx.rst:209
-msgid "``Isaac-Velocity-Rough-H1``"
-msgstr "``Isaac-Velocity-Rough-H1``"
-
-#: source/concepts/physics-backends/ovphysx.rst:212
-msgid "Status and follow-up"
-msgstr "当前状态与后续工作"
-
-#: source/concepts/physics-backends/ovphysx.rst:214
-msgid ""
-"OvPhysX is still experimental, so the feature list above is intentionally "
-"conservative. Broader feature coverage and documentation parity are tracked "
-"in `issue #5634 <https://github.com/isaac-sim/IsaacLab/issues/5634>`_."
-msgstr ""
-"OvPhysX 仍处于实验阶段，因此上方功能列表有意采用保守表述。更广泛的功能支持和文档完善工作记录在 `issue #5634 "
-"<https://github.com/isaac-sim/IsaacLab/issues/5634>`_ 中。"
-
-#: source/concepts/physics-backends/ovphysx.rst:218
-msgid "For architectural context, see :ref:`backend-architecture`."
-msgstr "架构背景见 :ref:`backend-architecture` 。"
-
-#: source/concepts/physics-backends/ovphysx.rst:224
+#: source/concepts/physics-backends/ovphysx.rst:265
 msgid "Native access"
 msgstr "访问原生接口"
 
-#: source/concepts/physics-backends/ovphysx.rst:227
+#: source/concepts/physics-backends/ovphysx.rst:267
+msgid ""
+"Use native access when the shared asset and sensor APIs do not expose the "
+"data or operation you need. Reuse an Isaac Lab-owned handle when its "
+"selection matches; create raw access only for additional capabilities. "
+"Native writes can bypass Isaac Lab's caches and validation, so follow the "
+"ownership and synchronization rules below."
+msgstr ""
+"当共享的资产和传感器 API 未提供所需数据或操作时，可使用原生访问接口。如果 Isaac Lab "
+"持有的句柄已覆盖所需对象，请直接复用；只有需要额外功能时才创建底层访问对象。原生写入可能绕过 Isaac Lab "
+"的缓存和校验，因此须遵循下述所有权与同步规则。"
+
+#: source/concepts/physics-backends/ovphysx.rst:273
 msgid "Mental model"
 msgstr "基本概念"
 
-#: source/concepts/physics-backends/ovphysx.rst:229
+#: source/concepts/physics-backends/ovphysx.rst:275
 msgid ""
 "OvPhysX exposes generic ``TensorBinding`` objects. A binding combines a prim"
 " selection with one installed ``TensorType``; it is not an asset-specific "
@@ -399,11 +507,11 @@ msgstr ""
 "将缓冲区写回。Isaac Lab 可以选择使用 :class:`~isaaclab_ov.sim.views.OvPhysxView` "
 "包装这些绑定，提供以字符串为键、带检查的便捷接口。"
 
-#: source/concepts/physics-backends/ovphysx.rst:237
+#: source/concepts/physics-backends/ovphysx.rst:283
 msgid "Lifecycle prerequisite"
 msgstr "生命周期前提"
 
-#: source/concepts/physics-backends/ovphysx.rst:239
+#: source/concepts/physics-backends/ovphysx.rst:285
 msgid ""
 "Create bindings only after the OvPhysX simulation has initialized and reset,"
 " when its native runtime is live. A stage reload, a reset path that rebuilds"
@@ -413,13 +521,13 @@ msgstr ""
 "仅在 OvPhysX 仿真完成初始化和重置、原生运行时已就绪后创建绑定。重新加载 USD "
 "舞台、重建舞台或运行时的重置流程，以及管理器清理，都会使所有已有绑定和视图失效，之后需要重新获取。"
 
-#: source/concepts/physics-backends/ovphysx.rst:244
+#: source/concepts/physics-backends/ovphysx.rst:290
 msgid ""
 "Get the active OvPhysX handle from the manager after the lifecycle "
 "prerequisite:"
 msgstr "满足生命周期前提后，从管理器获取当前 OvPhysX 句柄："
 
-#: source/concepts/physics-backends/ovphysx.rst:254
+#: source/concepts/physics-backends/ovphysx.rst:298
 msgid ""
 "A non-``None`` handle proves only that the manager constructed an OvPhysX "
 "instance; it is not a readiness predicate for the current simulation "
@@ -430,21 +538,21 @@ msgstr ""
 "句柄非 ``None`` 只说明管理器已构建 OvPhysX "
 "实例，并不表示当前仿真上下文已经就绪。管理器清理时会释放实例并清空句柄。访问前先初始化并重置当前上下文，创建新绑定或视图前始终重新获取句柄。"
 
-#: source/concepts/physics-backends/ovphysx.rst:260
+#: source/concepts/physics-backends/ovphysx.rst:304
 msgid "Reuse Isaac Lab-owned access"
 msgstr "复用 Isaac Lab 持有的访问对象"
 
-#: source/concepts/physics-backends/ovphysx.rst:262
+#: source/concepts/physics-backends/ovphysx.rst:306
 msgid ""
 "Reuse the convenience view already owned by an Isaac Lab asset when its "
 "selection matches:"
 msgstr "如果选择符合需要，复用 Isaac Lab 资源已经持有的便捷视图："
 
-#: source/concepts/physics-backends/ovphysx.rst:271
+#: source/concepts/physics-backends/ovphysx.rst:315
 msgid "Create raw access"
 msgstr "创建底层访问"
 
-#: source/concepts/physics-backends/ovphysx.rst:273
+#: source/concepts/physics-backends/ovphysx.rst:317
 msgid ""
 "Create a raw binding when the desired selection is not already owned by an "
 "Isaac Lab asset. The following representative pose binding is float32 and "
@@ -453,7 +561,7 @@ msgid ""
 msgstr ""
 "所需选择尚未由 Isaac Lab 资源持有时，创建原始绑定。以下示例位姿绑定使用 float32 和仿真设备，并不是适用于所有张量类型的通用分配器："
 
-#: source/concepts/physics-backends/ovphysx.rst:299
+#: source/concepts/physics-backends/ovphysx.rst:342
 msgid ""
 "Before allocating a buffer, inspect ``binding.shape``, ``binding.dtype``, "
 "the binding's count, and its path metadata. Match the binding shape and "
@@ -466,14 +574,14 @@ msgstr ""
 "DLPack 标量元数据，并遵守原生设备和访问模式要求。 ``RIGID_BODY_POSE`` 使用上方的 float32 "
 "布局，但其他张量类型的数据类型、形状、原生设备或写入权限可能不同。"
 
-#: source/concepts/physics-backends/ovphysx.rst:305
+#: source/concepts/physics-backends/ovphysx.rst:348
 msgid ""
 "For a new selection, construct :class:`~isaaclab_ov.sim.views.OvPhysxView` "
 "with the native runtime and a Tensor API pattern:"
 msgstr ""
 "对于新选择，使用原生运行时和 Tensor API 模式构建 :class:`~isaaclab_ov.sim.views.OvPhysxView` ："
 
-#: source/concepts/physics-backends/ovphysx.rst:326
+#: source/concepts/physics-backends/ovphysx.rst:368
 msgid ""
 "``try_binding_for`` attempts to create a binding for this selection and "
 "returns ``None`` when a valid type is unavailable. ``binding_for`` returns a"
@@ -483,11 +591,11 @@ msgstr ""
 "``try_binding_for`` 尝试为该选择创建绑定，没有有效类型时返回 ``None`` 。 ``binding_for`` "
 "返回原始绑定，会绕过视图的设备、数据类型、形状和只读检查。"
 
-#: source/concepts/physics-backends/ovphysx.rst:331
+#: source/concepts/physics-backends/ovphysx.rst:373
 msgid "Read/write semantics"
 msgstr "读写语义"
 
-#: source/concepts/physics-backends/ovphysx.rst:333
+#: source/concepts/physics-backends/ovphysx.rst:375
 msgid ""
 "Raw ``binding.read(buffer)`` calls pull values into caller-owned buffers, "
 "while ``binding.write(buffer)`` calls push values to the simulation. Editing"
@@ -505,11 +613,11 @@ msgstr ""
 ":meth:`~isaaclab_ov.sim.views.OvPhysxView.set_attribute` "
 "具有相同的读取与写回边界，同时验证绑定形状、标量数据类型、原生设备和写入权限。"
 
-#: source/concepts/physics-backends/ovphysx.rst:343
+#: source/concepts/physics-backends/ovphysx.rst:385
 msgid "Ownership, synchronization, and invalidation"
 msgstr "所有权、同步与失效"
 
-#: source/concepts/physics-backends/ovphysx.rst:345
+#: source/concepts/physics-backends/ovphysx.rst:387
 msgid ""
 "Allocate buffers on the binding's required device and match its shape and "
 "DLPack scalar metadata. State tensors normally use the simulation device, "
@@ -522,7 +630,7 @@ msgstr ""
 ":class:`~isaaclab_ov.sim.views.OvPhysxView` 验证这些要求，并可将受支持的平坦标量布局重新解释为结构化 "
 "Warp 值，但不会在 CPU 与 GPU 之间移动数据。"
 
-#: source/concepts/physics-backends/ovphysx.rst:351
+#: source/concepts/physics-backends/ovphysx.rst:393
 msgid ""
 "Use ``try_binding_for`` when a tensor type might not apply to the selected "
 "prims. Reacquire raw bindings and convenience views after reset paths that "
@@ -536,11 +644,11 @@ msgstr ""
 "。重置流程重建舞台或运行时之后，以及清理之后，应重新获取原始绑定和便捷视图。不再需要时，应销毁原始绑定并关闭自定义视图。管理器清理会先关闭已跟踪的 "
 "``OvPhysxView`` 实例，再释放运行时；显式清理可以避免在长时间运行的仿真中一直保留这些绑定。"
 
-#: source/concepts/physics-backends/ovphysx.rst:359
+#: source/concepts/physics-backends/ovphysx.rst:401
 msgid "Authoritative references"
 msgstr "权威参考"
 
-#: source/concepts/physics-backends/ovphysx.rst:361
+#: source/concepts/physics-backends/ovphysx.rst:403
 msgid ""
 "The generated Isaac Lab reference for "
 ":class:`~isaaclab_ov.sim.views.OvPhysxView` documents the convenience view. "
@@ -551,3 +659,21 @@ msgstr ""
 "生成的 Isaac Lab :class:`~isaaclab_ov.sim.views.OvPhysxView` "
 "参考文档介绍了便捷视图。仓库元数据固定了 OvPhysX 版本，但没有提供带版本的官方 OvPhysX 文档 URL，因此应在运行时检查已安装的 "
 "``TensorType`` 与绑定元数据。"
+
+#: source/concepts/physics-backends/ovphysx.rst:412
+msgid "Where to go next"
+msgstr "进一步阅读"
+
+#: source/concepts/physics-backends/ovphysx.rst:414
+msgid ":doc:`/source/isaaclab/environments` — tasks and backend presets."
+msgstr ":doc:`/source/isaaclab/environments` — 任务与后端预设。"
+
+#: source/concepts/physics-backends/ovphysx.rst:415
+msgid ":ref:`backend-architecture` — shared factories and resource ownership."
+msgstr ":ref:`backend-architecture` — 共享工厂与资源所有权。"
+
+#: source/concepts/physics-backends/ovphysx.rst:416
+msgid ""
+":doc:`/source/concepts/scene_data_providers` — shared scene data for "
+"renderers and visualizers."
+msgstr ":doc:`/source/concepts/scene_data_providers` — 向渲染器和可视化器提供共享场景数据。"

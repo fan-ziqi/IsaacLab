@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -22,13 +21,13 @@ msgstr "关节力旋量传感器"
 
 #: source/concepts/sensors/joint_wrench_sensor.rst:9
 msgid ""
-"A :class:`~sensors.JointWrenchSensor` reports the incoming reaction wrench "
-"at each selected articulation body's parent joint. It exposes force [N] and "
-"torque [N·m] separately, with entries ordered by "
-":attr:`~sensors.JointWrenchSensor.body_names`."
+"A :class:`~sensors.JointWrenchSensor` measures reaction forces and torques "
+"at articulation bodies' parent joints. Forces use newtons and torques use "
+"newton-meters; entries follow :attr:`~sensors.JointWrenchSensor.body_names`."
 msgstr ""
-":class:`~sensors.JointWrenchSensor` 报告每个所选关节体刚体的父关节处传入的反作用力旋量。力 [N] 和力矩 "
-"[N·m] 分别提供，各条目按 :attr:`~sensors.JointWrenchSensor.body_names` 排列。"
+":class:`~sensors.JointWrenchSensor` "
+"测量关节系统各刚体父关节处的反力和反力矩。力的单位为牛顿，力矩为牛顿米，条目顺序与 "
+":attr:`~sensors.JointWrenchSensor.body_names` 一致。"
 
 #: source/concepts/sensors/joint_wrench_sensor.rst:14
 msgid "Wrench convention"
@@ -56,22 +55,68 @@ msgstr ""
 "PhysX 传感器直接提供这些分量。再次应用 USD 的 ``localPos1`` 和 ``localRot1`` 会重复平移和旋转该力旋量。"
 
 #: source/concepts/sensors/joint_wrench_sensor.rst:25
+msgid "Read through articulation data"
+msgstr "通过关节系统数据读取"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:27
+msgid ""
+"For observations that must follow the articulation's ``body_ordering``, use "
+":attr:`~assets.ArticulationData.body_joint_wrench`. The data container "
+"applies the articulation's existing body map, so indices from "
+"``robot.find_bodies()`` select the same bodies in the wrench and other "
+"articulation data. No separate sensor is required."
+msgstr ""
+"若观测需要遵循关节系统的 ``body_ordering``，请使用 "
+":attr:`~assets.ArticulationData.body_joint_wrench`。数据容器会应用关节系统已有的刚体映射，因此 "
+"``robot.find_bodies()`` 返回的索引在力/力矩数据和其他关节系统数据中选中相同的刚体，无需另建传感器。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:32
+msgid ""
+"Set ``robot_cfg.enable_joint_wrench = True`` before constructing the "
+"articulation when using Newton. This requests the extended solver state; it "
+"is opt-in because wrench computation adds solver work and is incompatible "
+"with MJWarp's sensor-disabled deterministic mode. PhysX and OVPhysX provide "
+"the data on demand without this flag."
+msgstr ""
+"使用 Newton 时，请在构造关节系统前设置 ``robot_cfg.enable_joint_wrench = "
+"True``，以请求扩展求解器状态。该功能增加求解器工作量，且与 MJWarp 禁用传感器的确定性模式不兼容，因此默认不启用。PhysX 和 "
+"OVPhysX 无需此标志，可按需提供数据。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:45
+msgid ""
+"The tensor has shape ``(num_envs, num_bodies, 6)`` and uses the same "
+"incoming joint frame convention as the sensor. Newton fills free and world-"
+"fixed root entries with zero and excludes loop-closing constraints; PhysX "
+"and OVPhysX expose their root reactions. Read after a physics step following"
+" a reset or state write, since these are solver results from the last step."
+msgstr ""
+"张量形状为 ``(num_envs, num_bodies, 6)``，采用与传感器相同的连接关节坐标系约定。Newton "
+"将自由根和世界固定根的条目填为零，且不包含闭环约束；PhysX 和 OVPhysX "
+"则暴露根部反力。数据是最近一个物理步的求解结果，因此重置或写入状态后，应至少执行一个物理步再读取。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:50
+msgid ""
+"The standalone sensor API below retains backend-native entry order and its "
+"own update/reset timing."
+msgstr "下述独立传感器 API 保留后端原生条目顺序，并具有独立的更新与重置时序。"
+
+#: source/concepts/sensors/joint_wrench_sensor.rst:53
 msgid "Configure the sensor"
 msgstr "配置传感器"
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:27
+#: source/concepts/sensors/joint_wrench_sensor.rst:55
 msgid ""
 "Set :attr:`~sensors.JointWrenchSensorCfg.prim_path` to the articulation "
 "root. Reported body coverage depends on the physics backend:"
 msgstr ""
 "将 :attr:`~sensors.JointWrenchSensorCfg.prim_path` 设为关节体根节点。报告的刚体范围取决于物理后端："
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:30
+#: source/concepts/sensors/joint_wrench_sensor.rst:58
 msgid ""
 "PhysX and OVPhysX report every articulation link, including the root link."
 msgstr "PhysX 和 OVPhysX 报告所有关节体连杆，包括根连杆。"
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:31
+#: source/concepts/sensors/joint_wrench_sensor.rst:59
 msgid ""
 "Newton reports the child link of each non-free joint in the articulation "
 "tree, including fixed connections between bodies such as a welded wrist "
@@ -83,7 +128,7 @@ msgstr ""
 "Newton "
 "报告关节体树中每个非自由关节的子连杆，包括刚体间的固定连接，例如焊接的腕部传感器或工具法兰。不包括自由关节、与世界相连的固定关节，以及闭环约束。即使焊接关节没有自由度，其报告的力旋量仍包含由子树传递的负载。"
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:36
+#: source/concepts/sensors/joint_wrench_sensor.rst:64
 msgid ""
 "Use :attr:`~sensors.JointWrenchSensor.body_names` or "
 ":meth:`~sensors.JointWrenchSensor.find_bodies` instead of assuming that "
@@ -92,7 +137,7 @@ msgstr ""
 "请使用 :attr:`~sensors.JointWrenchSensor.body_names` 或 "
 ":meth:`~sensors.JointWrenchSensor.find_bodies` ，不要假定不同后端提供相同数量或顺序的条目："
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:45
+#: source/concepts/sensors/joint_wrench_sensor.rst:73
 msgid ""
 "Manager-based environments can select a body subset through "
 ":class:`~isaaclab.managers.SceneEntityCfg` and use "
@@ -101,11 +146,11 @@ msgstr ""
 "基于管理器的环境可以通过 :class:`~isaaclab.managers.SceneEntityCfg` 选择刚体子集，并使用 "
 ":func:`~isaaclab.envs.mdp.body_incoming_wrench` 作为观测项："
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:55
+#: source/concepts/sensors/joint_wrench_sensor.rst:83
 msgid "Read the data"
 msgstr "读取数据"
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:57
+#: source/concepts/sensors/joint_wrench_sensor.rst:85
 msgid ""
 "For ``E`` environments and ``B`` reported bodies, ``force.torch`` and "
 "``torque.torch`` each have shape ``(E, B, 3)``. Both buffers are ``None`` "
@@ -114,7 +159,7 @@ msgstr ""
 "对于 ``E`` 个环境和 ``B`` 个报告的刚体， ``force.torch`` 和 ``torque.torch`` 的形状均为 ``(E, "
 "B, 3)`` 。两个缓冲区在仿真初始化前均为 ``None`` 。"
 
-#: source/concepts/sensors/joint_wrench_sensor.rst:69
+#: source/concepts/sensors/joint_wrench_sensor.rst:97
 msgid ""
 "The composed ``wrench`` has shape ``(E, num_selected_bodies, 6)`` with force"
 " components followed by torque components. ``B`` and the entry ordering can "

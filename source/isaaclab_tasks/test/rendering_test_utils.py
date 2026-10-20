@@ -1127,7 +1127,7 @@ def make_require_ovlibs_install_fixture():
     """Create an autouse fixture that fails fast when OV libraries are required but not installed.
 
     Only parametrized cases with ``renderer == "ovrtx_renderer"`` or ``physics_backend == "ovphysx"`` are checked.
-    Install with ``./isaaclab.sh -i 'ov[all]'`` (or the equivalent in your environment).
+    Install with ``uv sync --extra ov`` (or the equivalent in your environment).
     """
 
     @pytest.fixture(autouse=True)
@@ -1144,7 +1144,7 @@ def make_require_ovlibs_install_fixture():
             except ImportError as exc:
                 pytest.fail(
                     "Kitless OVRTX rendering tests require the optional dependency ov[ovrtx]. "
-                    "Install with: ./isaaclab.sh -i 'ov[ovrtx]'\n"
+                    "Install with: uv sync --extra ovrtx\n"
                     f"ImportError: {exc}"
                 )
 
@@ -1156,7 +1156,7 @@ def make_require_ovlibs_install_fixture():
             except ImportError as exc:
                 pytest.fail(
                     "Kitless OVPhysX rendering tests require the optional dependency ov[ovphysx]. "
-                    "Install with: ./isaaclab.sh -i 'ov[ovphysx]'\n"
+                    "Install with: uv sync --extra ovphysx\n"
                     f"ImportError: {exc}"
                 )
 
@@ -1738,7 +1738,7 @@ def rendering_test_cartpole(
 
     @configclass
     class _BaseCartpoleCameraEnvTestCfg(CartpoleCameraEnvCfg.BaseCartpoleCameraEnvCfg):
-        scene = _CartpoleCameraTestSceneCfg(num_envs=4, env_spacing=20.0, replicate_physics=True)
+        scene = _CartpoleCameraTestSceneCfg(num_envs=4, env_spacing=20.0)
 
     @configclass
     class _CartpoleCameraTestEnvCfg(CartpoleCameraEnvCfg):
@@ -2008,7 +2008,7 @@ def rendering_test_kuka_visual_material_randomization(
         "newton_renderer": NewtonWarpRendererCfg,
         "ovrtx_renderer": OVRTXRendererCfg,
     }[renderer]()
-    scene_cfg = InteractiveSceneCfg(num_envs=4, env_spacing=3.0, replicate_physics=True)
+    scene_cfg = InteractiveSceneCfg(num_envs=4, env_spacing=3.0)
     scene_cfg.sky_light = AssetBaseCfg(
         prim_path="/World/skyLight", spawn=sim_utils.DomeLightCfg(color=(1.0, 1.0, 1.0), intensity=750.0)
     )
@@ -2385,12 +2385,7 @@ def rendering_test_mpm_particles(
         built once per process, so a retry in the same process would draw different entries.
         """
 
-        scene: TestMPMParticleCameraSceneCfg = TestMPMParticleCameraSceneCfg(
-            num_envs=4,
-            env_spacing=3.0,
-            replicate_physics=True,
-            clone_in_fabric=True,
-        )
+        scene: TestMPMParticleCameraSceneCfg = TestMPMParticleCameraSceneCfg(num_envs=4, env_spacing=3.0)
         reset_cycle: bool = True
         reset_particle_max_yaw: float = 0.0
         reset_particle_jitter: float = 0.0

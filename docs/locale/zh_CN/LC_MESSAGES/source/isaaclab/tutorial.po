@@ -1,0 +1,723 @@
+# Chinese translation of the Isaac Lab documentation.
+# Distributed under the same license as the corresponding source documentation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Isaac Lab 3.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
+"Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
+"Language-Team: Chinese translation contributors\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: source/isaaclab/tutorial.rst:4
+msgid "Tutorial"
+msgstr "教程"
+
+#: source/isaaclab/tutorial.rst:6
+msgid "The SO-101 arm picking up a vial and placing it in a rack."
+msgstr "SO-101 机械臂拾取样品瓶并将其放入支架。"
+
+#: source/isaaclab/tutorial.rst:13
+msgid ""
+"This tutorial ties in with the `NVIDIA Sim-to-Real SO-101 learning course "
+"<https://docs.nvidia.com/learning/physical-ai/sim-to-real-"
+"so-101/latest/index.html>`__ and its `workshop repository "
+"<https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop>`__, which present"
+" a broader end-to-end physical AI workflow with the SO-101, Isaac Lab, and "
+"NVIDIA Isaac GR00T."
+msgstr ""
+"本教程与 `NVIDIA Sim-to-Real SO-101 学习课程 "
+"<https://docs.nvidia.com/learning/physical-ai/sim-to-real-"
+"so-101/latest/index.html>`__ 及其 `工作坊仓库 <https://github.com/isaac-sim/Sim-to-"
+"Real-SO-101-Workshop>`__ 相衔接。课程使用 SO-101、Isaac Lab 和 NVIDIA Isaac "
+"GR00T，介绍更完整的端到端物理 AI 工作流程。"
+
+#: source/isaaclab/tutorial.rst:18
+msgid ""
+"Build a vial-placement task for an `SO-101 arm "
+"<https://github.com/TheRobotStudio/SO-ARM100>`__ using the `IsaacLabTutorial"
+" project <https://github.com/isaac-sim/IsaacLabTutorial/tree/main>`__. The "
+"project includes robot assets, a manager-based task, state and wrist-camera "
+"observations, RSL-RL training, policy distillation, tests, and an optional "
+"sim-to-real configuration."
+msgstr ""
+"使用 `IsaacLabTutorial 项目 <https://github.com/isaac-"
+"sim/IsaacLabTutorial/tree/main>`__，为 `SO-101 机械臂 "
+"<https://github.com/TheRobotStudio/SO-ARM100>`__ "
+"构建小瓶放置任务。项目包含机器人资产、管理器式任务、状态与腕部相机观测、RSL-RL 训练、策略蒸馏、测试，以及可选的仿真到实机配置。"
+
+#: source/isaaclab/tutorial.rst:25
+msgid ""
+"By the end, you will know how a downstream Isaac Lab task is packaged, "
+"discovered, validated, trained, and evaluated. You will also know where to "
+"change the robot, scene, MDP, and learning configuration for your own task."
+msgstr ""
+"完成本教程后，你将了解下游 Isaac Lab 任务如何打包、被发现、验证、训练和评估，也会知道如何修改机器人、场景、MDP "
+"和学习配置，以实现自己的任务。"
+
+#: source/isaaclab/tutorial.rst:30
+msgid "Navigate the tutorial"
+msgstr "教程导航"
+
+#: source/isaaclab/tutorial.rst:35
+msgid "1. Set up"
+msgstr "1. 配置环境"
+
+#: source/isaaclab/tutorial.rst:39
+msgid "Install the project and verify task discovery."
+msgstr "安装项目并验证任务发现机制。"
+
+#: source/isaaclab/tutorial.rst:41 source/isaaclab/tutorial.rst:138
+msgid "2. Tour the project"
+msgstr "2. 浏览项目"
+
+#: source/isaaclab/tutorial.rst:45
+msgid "Find the assets, task terms, configurations, and tests."
+msgstr "找到资源、任务项、配置和测试。"
+
+#: source/isaaclab/tutorial.rst:47 source/isaaclab/tutorial.rst:186
+msgid "3. Understand the task"
+msgstr "3. 理解任务"
+
+#: source/isaaclab/tutorial.rst:51
+msgid ""
+"Connect the scene, actions, observations, resets, rewards, and physics."
+msgstr "了解场景、动作、观测、重置、奖励和物理仿真之间的关系。"
+
+#: source/isaaclab/tutorial.rst:53
+msgid "4. Validate"
+msgstr "4. 验证"
+
+#: source/isaaclab/tutorial.rst:57
+msgid "Run tests, a zero-agent smoke test, and a benchmark."
+msgstr "运行测试、零动作智能体检查和性能测试。"
+
+#: source/isaaclab/tutorial.rst:59 source/isaaclab/tutorial.rst:317
+msgid "5. Train and evaluate"
+msgstr "5. 训练与评估"
+
+#: source/isaaclab/tutorial.rst:63
+msgid ""
+"Train a state teacher, distill a wrist-camera policy, and measure success."
+msgstr "训练基于状态的教师策略，蒸馏腕部相机策略，并测量成功率。"
+
+#: source/isaaclab/tutorial.rst:65 source/isaaclab/tutorial.rst:417
+msgid "6. Make it yours"
+msgstr "6. 改造为自己的任务"
+
+#: source/isaaclab/tutorial.rst:69
+msgid "Adapt the task without tangling reusable and robot-specific code."
+msgstr "调整任务，同时保持可复用代码与机器人专用代码的边界。"
+
+#: source/isaaclab/tutorial.rst:74
+msgid "1. Set up the project"
+msgstr "1. 配置项目"
+
+#: source/isaaclab/tutorial.rst:76
+msgid ""
+"You need Python 3.12, `uv <https://docs.astral.sh/uv/>`__, Git with `Git LFS"
+" <https://git-lfs.com/>`__, and an NVIDIA GPU on Linux or Windows. The "
+"tutorial uses Newton with the MJWarp solver, so it does not require the "
+"Isaac Sim application. Review the :ref:`system requirements <installation-"
+"system-requirements>` before starting."
+msgstr ""
+"需要 Python 3.12、`uv <https://docs.astral.sh/uv/>`__、Git 和 `Git LFS "
+"<https://git-lfs.com/>`__，以及运行 Linux 或 Windows 的 NVIDIA GPU 计算机。教程使用 Newton "
+"的 MJWarp 求解器，无需安装 Isaac Sim 应用。开始前请查看 :ref:`系统要求 <installation-system-"
+"requirements>` 。"
+
+#: source/isaaclab/tutorial.rst:80
+msgid ""
+"Every command on this page is a single line, so it runs unchanged in bash, "
+"PowerShell, and Command Prompt."
+msgstr "本页所有命令均为单行命令，可直接在 bash、PowerShell 和命令提示符中运行，无需修改。"
+
+#: source/isaaclab/tutorial.rst:82
+msgid "Clone the tutorial's ``main`` branch and create its environment:"
+msgstr "克隆教程的 ``main`` 分支并创建环境："
+
+#: source/isaaclab/tutorial.rst:90
+msgid ""
+"The project pins Isaac Lab's ``release/3.0.0`` branch through "
+"``pyproject.toml``, so it does not require a sibling Isaac Lab checkout. "
+"``uv sync`` creates the environment and installs the tutorial, Isaac Lab, "
+"and their runtime dependencies."
+msgstr ""
+"项目通过 ``pyproject.toml`` 固定使用 Isaac Lab 的 ``release/3.0.0`` 分支，无需在相邻目录额外检出 "
+"Isaac Lab。``uv sync`` 会创建环境，并安装教程、Isaac Lab 及其运行时依赖。"
+
+#: source/isaaclab/tutorial.rst:94
+msgid ""
+"This repository is also a complete example of the downstream project "
+"produced by the :doc:`Isaac Lab template generator </source/developer-"
+"tools/template_generator>`. Use the generator when starting your own "
+"project, then follow the same package layout and task-discovery pattern "
+"shown here."
+msgstr ""
+"此仓库也是 :doc:`Isaac Lab 模板生成器 </source/developer-tools/template_generator>` "
+"所生成下游项目的完整示例。创建自己的项目时，可使用模板生成器，再沿用此处的包布局和任务发现方式。"
+
+#: source/isaaclab/tutorial.rst:98
+msgid "Confirm that the shared CLI discovers the downstream package:"
+msgstr "确认统一 CLI 能发现下游软件包："
+
+#: source/isaaclab/tutorial.rst:105
+msgid ""
+"The second command should include ``isaaclab_tutorial``. Task discovery "
+"works because the project publishes an ``isaaclab.tasks`` entry point:"
+msgstr ""
+"第二条命令的输出应包含 ``isaaclab_tutorial``。任务之所以能够被发现，是因为项目提供了 ``isaaclab.tasks`` "
+"入口点："
+
+#: source/isaaclab/tutorial.rst:108
+msgid "pyproject.toml"
+msgstr "pyproject.toml"
+
+#: source/isaaclab/tutorial.rst:114
+msgid "Importing that package registers two Gymnasium task IDs:"
+msgstr "导入该软件包会注册两个 Gymnasium 任务 ID："
+
+#: source/isaaclab/tutorial.rst:120
+msgid "Task ID"
+msgstr "任务 ID"
+
+#: source/isaaclab/tutorial.rst:121
+msgid "Policy observations"
+msgstr "策略观测"
+
+#: source/isaaclab/tutorial.rst:122
+msgid "``IsaacTutorial-Place-Vial-SO101``"
+msgstr "``IsaacTutorial-Place-Vial-SO101``"
+
+#: source/isaaclab/tutorial.rst:123
+msgid "Robot, vial, rack, placement, and progress state, trained with PPO"
+msgstr "机器人、小瓶、瓶架、放置情况和进度状态，使用 PPO 训练"
+
+#: source/isaaclab/tutorial.rst:124
+msgid "``IsaacTutorial-Place-Vial-SO101-Camera``"
+msgstr "``IsaacTutorial-Place-Vial-SO101-Camera``"
+
+#: source/isaaclab/tutorial.rst:125
+msgid ""
+"64 by 48 wrist RGB plus proprioception, distilled from a trained state "
+"policy"
+msgstr "64 × 48 腕部 RGB 图像与本体感知信息，由训练好的状态策略蒸馏得到"
+
+#: source/isaaclab/tutorial.rst:127
+msgid ""
+"Adding ``presets=sim2real`` to either task enables the randomization used "
+"for robot transfer (see :ref:`tutorial-so101-sim2real`)."
+msgstr ""
+"为任一任务添加 ``presets=sim2real``，即可启用向真实机器人迁移所用的随机化，见 :ref:`tutorial-"
+"so101-sim2real` 。"
+
+#: source/isaaclab/tutorial.rst:132
+msgid ""
+"Run all remaining commands from the ``IsaacLabTutorial`` directory. Train "
+"the state task first: it is the baseline and supplies the teacher checkpoint"
+" used by the camera task."
+msgstr "后续命令均在 ``IsaacLabTutorial`` 目录中运行。先训练状态任务：它既是基线，也提供相机任务所需的教师检查点。"
+
+#: source/isaaclab/tutorial.rst:140
+msgid ""
+"The project keeps reusable task logic separate from SO-101-specific "
+"configuration:"
+msgstr "项目将可复用的任务逻辑与 SO-101 专用配置分开："
+
+#: source/isaaclab/tutorial.rst:160
+msgid ""
+"To add a robot, create a sibling of ``config/so101`` and reuse the vial-"
+"placement MDP. A different manipulation problem gets a sibling of "
+"``tasks/place_vial`` and owns its task terms."
+msgstr ""
+"添加机器人时，在 ``config/so101`` 旁创建同级目录，并复用小瓶放置 MDP。不同的操作任务则在 ``tasks/place_vial``"
+" 旁创建同级目录，独立定义自己的任务项。"
+
+#: source/isaaclab/tutorial.rst:163
+msgid ""
+"The registration connects a task ID to the generic manager-based "
+"environment, the task configuration, and its default RSL-RL agent:"
+msgstr "注册将任务 ID 与通用的基于管理器环境、任务配置和默认 RSL-RL 智能体连接起来："
+
+#: source/isaaclab/tutorial.rst:166
+msgid "src/isaaclab_tutorial/tasks/place_vial/config/so101/__init__.py"
+msgstr "src/isaaclab_tutorial/tasks/place_vial/config/so101/__init__.py"
+
+#: source/isaaclab/tutorial.rst:180
+msgid ""
+"This is why the normal ``isaaclab train``, ``play``, and ``benchmark`` "
+"commands work without project-local launcher scripts."
+msgstr ""
+"因此，无需项目专用的启动脚本，常规 ``isaaclab train`` 、 ``play`` 和 ``benchmark`` 命令就能运行这些任务。"
+
+#: source/isaaclab/tutorial.rst:188
+msgid ""
+"The environment is assembled declaratively with "
+":class:`~isaaclab.envs.ManagerBasedRLEnvCfg`. The main configuration "
+"connects one scene configuration and one configuration for each MDP manager:"
+msgstr ""
+"环境通过 :class:`~isaaclab.envs.ManagerBasedRLEnvCfg` 以声明式方式组装。主配置关联一个场景配置，以及各个 "
+"MDP 管理器的配置："
+
+#: source/isaaclab/tutorial.rst:191
+msgid "src/isaaclab_tutorial/tasks/place_vial/config/so101/env_cfg.py"
+msgstr "src/isaaclab_tutorial/tasks/place_vial/config/so101/env_cfg.py"
+
+#: source/isaaclab/tutorial.rst:210
+msgid ""
+"The 120 Hz simulation and decimation of four give the policy a 30 Hz control"
+" rate. Physics replication allows the same scene to scale across thousands "
+"of environments. Values wrapped in ``preset(...)`` change only when the "
+"named preset is selected on the command line."
+msgstr ""
+"120 Hz 仿真频率配合为 4 的降频系数，使策略控制频率为 30 Hz。物理复制可将同一场景扩展到数千个环境。由 ``preset(...)`` "
+"包装的值，仅在命令行选择对应预设时才改变。"
+
+#: source/isaaclab/tutorial.rst:215
+msgid "Scene and control"
+msgstr "场景与控制"
+
+#: source/isaaclab/tutorial.rst:217
+msgid ""
+"``SO101SceneCfg`` contains a fixed-base SO-101, a free 20 g vial, the four-"
+"hole rack, the desk, contact sensors on both jaws and the vial, and lights. "
+"The robot configuration, identified actuator dynamics, and limits come from "
+"Isaac Lab's ``SO101_CFG``."
+msgstr ""
+"``SO101SceneCfg`` 包含固定基座的 SO-101、自由运动的 20 g "
+"小瓶、四孔瓶架、桌子、两个夹爪和小瓶上的接触传感器，以及灯光。机器人配置、辨识得到的执行器动力学和限制值均来自 Isaac Lab 的 "
+"``SO101_CFG``。"
+
+#: source/isaaclab/tutorial.rst:221
+msgid ""
+"The six-dimensional policy action uses Isaac Lab's relative joint-position "
+"action: at every physics step, each joint target is the measured joint "
+"position plus the scaled action. The task never attaches the vial to the "
+"gripper and never writes its pose after reset. Grasping, transport, "
+"insertion, and release must therefore succeed through simulated contact."
+msgstr ""
+"六维策略动作使用 Isaac Lab "
+"的相对关节位置动作：每个物理步中，各关节目标等于实测关节位置加上缩放后的动作。任务不会将小瓶固定到夹爪上，重置后也不会直接写入它的位姿。因此，抓取、搬运、插入和松开都必须通过仿真接触完成。"
+
+#: source/isaaclab/tutorial.rst:227
+msgid "MDP at a glance"
+msgstr "MDP 概览"
+
+#: source/isaaclab/tutorial.rst:229
+msgid ""
+"The task reuses Isaac Lab's core MDP terms and terms from the lift task "
+"(``body_state_b``, ``out_of_bound``, ``abnormal_robot_state``), and adds "
+"only the terms specific to vial placement."
+msgstr ""
+"任务复用 Isaac Lab 的核心 MDP "
+"项和抬升任务中的项（``body_state_b``、``out_of_bound``、``abnormal_robot_state``），只新增小瓶放置所特有的项。"
+
+#: source/isaaclab/tutorial.rst:236
+msgid "Component"
+msgstr "组件"
+
+#: source/isaaclab/tutorial.rst:237
+msgid "Contract"
+msgstr "约定"
+
+#: source/isaaclab/tutorial.rst:238
+msgid "Actions"
+msgstr "动作"
+
+#: source/isaaclab/tutorial.rst:239
+msgid ""
+"Five arm-joint offsets of up to 0.033 rad and one jaw offset of up to 0.02 "
+"rad from the measured positions."
+msgstr "相对于实测位置，五个机械臂关节的偏移量各不超过 0.033 rad，夹爪关节的偏移量不超过 0.02 rad。"
+
+#: source/isaaclab/tutorial.rst:240
+msgid "State actor"
+msgstr "基于状态的 Actor"
+
+#: source/isaaclab/tutorial.rst:241
+msgid ""
+"Joint positions, velocities, and targets, previous action, end-effector and "
+"vial state, the vial position in the rack frame, placement features, and "
+"latched progress flags."
+msgstr "关节位置、速度和目标，上一时刻动作，末端执行器与小瓶状态，瓶架坐标系下的小瓶位置，放置特征，以及触发后保持的进度标记。"
+
+#: source/isaaclab/tutorial.rst:243
+msgid "Camera actor"
+msgstr "基于相机的 Actor"
+
+#: source/isaaclab/tutorial.rst:244
+msgid ""
+"No object state: two stacked 64 by 48 wrist RGB frames plus noisy joint "
+"readings, targets, and previous action."
+msgstr "不包含物体状态：由两帧堆叠的 64 × 48 腕部 RGB 图像，以及带噪声的关节读数、关节目标和上一时刻动作组成。"
+
+#: source/isaaclab/tutorial.rst:246
+msgid "Critic"
+msgstr "Critic"
+
+#: source/isaaclab/tutorial.rst:247
+msgid "Privileged state observations plus jaw contact flags."
+msgstr "特权状态观测与夹爪接触标记。"
+
+#: source/isaaclab/tutorial.rst:248
+msgid "Events"
+msgstr "事件"
+
+#: source/isaaclab/tutorial.rst:249
+msgid "Reset-pose sampling and modest vial mass and friction randomization."
+msgstr "采样重置位姿，并对样品瓶质量和摩擦进行小幅随机化。"
+
+#: source/isaaclab/tutorial.rst:250
+msgid "Rewards"
+msgstr "奖励"
+
+#: source/isaaclab/tutorial.rst:251
+msgid ""
+"Approach progress toward the cap, held-vial shaping toward the nearest hole,"
+" one-time grasp, lift, and insertion milestones, a success bonus, a vial-"
+"loss penalty, and small action-rate, joint-velocity, and joint-limit costs."
+msgstr ""
+"向瓶盖靠近的进度奖励、持瓶向最近孔位靠近的塑形奖励，一次性的抓取、抬升和插入里程碑奖励，成功奖励、丢失小瓶惩罚，以及较小的动作变化率、关节速度和关节限位代价。"
+
+#: source/isaaclab/tutorial.rst:254
+msgid "Terminations"
+msgstr "终止条件"
+
+#: source/isaaclab/tutorial.rst:255
+msgid ""
+"Successful placement, a dropped or out-of-bounds vial, unstable robot state,"
+" or the 20 s time limit."
+msgstr "成功放置，小瓶掉落或越界，机器人状态不稳定，或达到 20 s 时间上限。"
+
+#: source/isaaclab/tutorial.rst:258
+msgid "Physical progress and resets"
+msgstr "物理进度与重置"
+
+#: source/isaaclab/tutorial.rst:260
+msgid ""
+"Long-horizon manipulation is difficult to learn from the initial tabletop "
+"pose alone. The project therefore replays physics-validated reset poses "
+"across eight phases:"
+msgstr "仅从桌面初始位姿开始，长时程操作任务很难学会。因此，项目在八个阶段中复用经过物理验证的重置位姿："
+
+#: source/isaaclab/tutorial.rst:267
+msgid ""
+"Training samples these phases as a reset curriculum. Each phase remains part"
+" of the same task: observations, actions, rewards, and termination criteria "
+"do not change. Progress flags advance only when physical evidence is "
+"present, for example bilateral jaw contact while the vial is held off the "
+"desk. Interactive play returns to phase-zero starts so the final policy must"
+" complete the entire task. Read ``mdp/terminations.py`` for the physical "
+"success predicate and ``reset/curriculum.py`` for the reset distribution."
+msgstr ""
+"训练通过重置课程对这些阶段进行采样。各阶段仍属于同一任务，观测、动作、奖励和终止条件均不改变。进度标记只有在出现物理证据后才会推进，例如小瓶离开桌面时两个夹爪均检测到接触。交互回放从第零阶段开始，要求最终策略完成整个任务。物理成功判据见"
+" ``mdp/terminations.py``，重置分布见 ``reset/curriculum.py``。"
+
+#: source/isaaclab/tutorial.rst:274
+msgid "State and camera policies"
+msgstr "状态策略与相机策略"
+
+#: source/isaaclab/tutorial.rst:276
+msgid ""
+"``SO101VialEnvCfg`` is the fully observed baseline. "
+"``SO101VialCameraEnvCfg`` in ``camera_env_cfg.py`` subclasses it, adds the "
+"wrist camera, and replaces the actor observations. It also exposes the state"
+" actor's observations as a ``teacher_state`` group, which the state teacher "
+"reads during distillation; the deployed student consumes only wrist RGB and "
+"proprioception."
+msgstr ""
+"``SO101VialEnvCfg`` 是全状态可观测的基线。``camera_env_cfg.py`` 中的 "
+"``SO101VialCameraEnvCfg`` 继承该配置，添加腕部相机，并替换 actor 的观测。它还通过 ``teacher_state`` "
+"观测组提供状态策略的观测，供状态教师在蒸馏期间读取；部署后的学生策略只使用腕部 RGB 图像和本体感知信息。"
+
+#: source/isaaclab/tutorial.rst:284
+msgid "4. Validate before training"
+msgstr "4. 训练前验证"
+
+#: source/isaaclab/tutorial.rst:286
+msgid ""
+"Start with fast checks. They catch broken assets, registration, geometry, "
+"rewards, reset data, and configuration errors before a long training run:"
+msgstr "先运行快速检查，在长时间训练前发现资产、注册、几何、奖励、重置数据和配置错误："
+
+#: source/isaaclab/tutorial.rst:294
+msgid ""
+"Next, construct and step a small vectorized environment with zero actions:"
+msgstr "接着，构建一个小规模向量化环境，施加零动作并执行步进："
+
+#: source/isaaclab/tutorial.rst:300
+msgid ""
+"If this fails, fix task discovery, asset loading, or simulation stability "
+"before tuning RL. When it passes, measure the environment separately from "
+"the learning algorithm:"
+msgstr "如果检查失败，请先修复任务发现、资源加载或仿真稳定性问题，再调整强化学习。如果检查通过，则独立于学习算法测量环境性能："
+
+#: source/isaaclab/tutorial.rst:307
+msgid ""
+"Reduce ``--num_envs`` if the batch does not fit your GPU. For the camera "
+"task, add the Newton renderer preset and start with a smaller batch:"
+msgstr "如果当前 GPU 无法容纳该批次，请减小 ``--num_envs`` 。对于相机任务，添加 Newton 渲染器预设，并从较小批次开始："
+
+#: source/isaaclab/tutorial.rst:319
+msgid ""
+"Train the state teacher with RSL-RL. The task's default agent configuration "
+"is an 800-iteration run:"
+msgstr "使用 RSL-RL 训练基于状态的教师策略。任务的默认智能体配置运行 800 次迭代："
+
+#: source/isaaclab/tutorial.rst:325
+msgid ""
+"Checkpoints and TensorBoard events are written below "
+"``logs/rsl_rl/so101_vial_state/<run>``; the final checkpoint is "
+"``model_799.pt``. While training runs, inspect the learning curves in "
+"another terminal:"
+msgstr ""
+"检查点和 TensorBoard 事件写入 ``logs/rsl_rl/so101_vial_state/<run>`` 下，最终检查点为 "
+"``model_799.pt`` 。训练期间，可在另一个终端中查看学习曲线："
+
+#: source/isaaclab/tutorial.rst:332
+msgid ""
+"Look for rising ``Metrics/success_rate``, not reward alone. A larger return "
+"can come from shaping without a corresponding increase in successful "
+"placements."
+msgstr "应关注 ``Metrics/success_rate`` 是否上升，而不只看奖励。更高的回报可能来自塑形奖励，并不代表成功放置次数增加。"
+
+#: source/isaaclab/tutorial.rst:336
+msgid "Play the state teacher"
+msgstr "运行状态教师策略"
+
+#: source/isaaclab/tutorial.rst:338
+msgid "Play the trained teacher from the canonical home phase:"
+msgstr "从标准初始阶段运行已训练的教师策略："
+
+#: source/isaaclab/tutorial.rst:344
+msgid ""
+"The rollout should start from the canonical home phase, pick up the "
+"horizontal vial, turn it upright, move it over a hole, insert it, and open "
+"the jaw so gravity seats it in the rack. Playback already uses the policy's "
+"deterministic actions. Do not add ``--deterministic``: it also enables "
+"Warp's deterministic kernel mode, which this scene's collision and solver "
+"kernels exceed."
+msgstr ""
+"回放应从标准初始阶段开始，依次抓起水平放置的小瓶，将其转为直立，移到孔位上方，插入并张开夹爪，让重力使其落稳在瓶架中。回放已经使用策略的确定性动作，无需添加"
+" ``--deterministic``：该参数还会启用 Warp 的确定性内核模式，而本场景的碰撞与求解器内核超出了该模式的限制。"
+
+#: source/isaaclab/tutorial.rst:350
+msgid "Distill the wrist-camera policy"
+msgstr "蒸馏腕部相机策略"
+
+#: source/isaaclab/tutorial.rst:352
+msgid ""
+"Pass the finished teacher to the camera task. Add the renderer preset "
+"because the student observes wrist RGB:"
+msgstr "将训练完成的教师传给相机任务。学生策略使用腕部 RGB 观测，因此需要添加渲染器预设："
+
+#: source/isaaclab/tutorial.rst:358
+msgid ""
+"The camera task's default agent is RSL-RL's DAgger-style distillation "
+"runner: the student acts, the frozen teacher labels every visited state, and"
+" the labels are clipped to the executed ``[-1, 1]`` action range. Outputs "
+"are written below ``logs/rsl_rl/so101_vial_camera_distillation/<run>``."
+msgstr ""
+"相机任务默认使用 RSL-RL 的 DAgger 式蒸馏运行器：学生执行动作，冻结的教师为每个访问到的状态提供标签，并将标签裁剪到实际执行的 "
+"``[-1, 1]`` 动作范围内。输出保存在 ``logs/rsl_rl/so101_vial_camera_distillation/<run>``"
+" 下。"
+
+#: source/isaaclab/tutorial.rst:362
+msgid "Play the distilled student with the same task ID used for training:"
+msgstr "使用与训练时相同的任务 ID 运行蒸馏后的学生策略："
+
+#: source/isaaclab/tutorial.rst:369
+msgid "Measure the policies"
+msgstr "评估策略"
+
+#: source/isaaclab/tutorial.rst:371
+msgid ""
+"Evaluate the policy over the tracked phase-zero starting states using the "
+"project's callback:"
+msgstr "使用项目的回调，在已跟踪的阶段零初始状态上评估策略："
+
+#: source/isaaclab/tutorial.rst:378
+msgid "Evaluate the distilled policy from the same 1,024 starting states:"
+msgstr "从相同的 1,024 个初始状态评估蒸馏后的策略："
+
+#: source/isaaclab/tutorial.rst:384
+msgid ""
+"The callback runs each tracked start once and prints one "
+"``SO101_EVAL_RESULT`` JSON record. Preserve that record, the checkpoint, "
+"seed, task ID, and resolved configuration when comparing experiments."
+msgstr ""
+"回调会将每个跟踪的起始状态运行一次，并打印一条 ``SO101_EVAL_RESULT`` JSON "
+"记录。对比实验时，应保留该记录、检查点、随机种子、任务 ID 和解析后的配置。"
+
+#: source/isaaclab/tutorial.rst:388
+msgid "Maintain the reset dataset"
+msgstr "维护重置数据集"
+
+#: source/isaaclab/tutorial.rst:390
+msgid ""
+"The checked-in reset dataset is ready for training. Generate or inspect a "
+"separate candidate without overwriting it:"
+msgstr "仓库中的重置数据集可直接用于训练。可以另行生成或检查候选数据集，而不覆盖现有数据："
+
+#: source/isaaclab/tutorial.rst:400
+msgid "Train for the real robot"
+msgstr "面向真实机器人的训练"
+
+#: source/isaaclab/tutorial.rst:402
+msgid ""
+"``presets=sim2real`` adds the randomization used for robot transfer: "
+"contact, joint-dynamics, gain, and encoder variation in both tasks, plus "
+"appearance and camera variation in the camera task. Because the physics "
+"randomization is shared, the teacher and student train under the same "
+"physics. Fine-tune the state teacher with the preset, then distill under the"
+" same preset:"
+msgstr ""
+"``presets=sim2real`` "
+"添加向真实机器人迁移所需的随机化：两个任务均包含接触、关节动力学、增益和编码器差异，相机任务还包含外观与相机变化。物理随机化由两个任务共用，因此教师和学生在相同物理条件下训练。先用该预设微调状态教师，再用同一预设进行蒸馏："
+
+#: source/isaaclab/tutorial.rst:412
+msgid ""
+"The repository's ``docs/SIM2REAL.md`` covers the physical setup, robot "
+"calibration, policy export, and deployment."
+msgstr "仓库中的 ``docs/SIM2REAL.md`` 介绍了实物搭建、机器人标定、策略导出和部署。"
+
+#: source/isaaclab/tutorial.rst:419
+msgid ""
+"Change one part of the task at a time and rerun the tests, zero-agent smoke "
+"test, and benchmark before training:"
+msgstr "每次只修改任务的一部分，训练前重新运行测试、零动作智能体冒烟检查和基准测试："
+
+#: source/isaaclab/tutorial.rst:425
+msgid "Goal"
+msgstr "目标"
+
+#: source/isaaclab/tutorial.rst:426
+msgid "Start here"
+msgstr "修改位置"
+
+#: source/isaaclab/tutorial.rst:427
+msgid "Change the scene or SO-101"
+msgstr "修改场景或 SO-101"
+
+#: source/isaaclab/tutorial.rst:428
+msgid "``config/so101/env_cfg.py`` and ``assets/``"
+msgstr "``config/so101/env_cfg.py`` 和 ``assets/``"
+
+#: source/isaaclab/tutorial.rst:429
+msgid "Change actor inputs"
+msgstr "修改 Actor 输入"
+
+#: source/isaaclab/tutorial.rst:430
+msgid "Observation groups in ``env_cfg.py`` or ``camera_env_cfg.py``"
+msgstr "``env_cfg.py`` 或 ``camera_env_cfg.py`` 中的观测组"
+
+#: source/isaaclab/tutorial.rst:431
+msgid "Change task behavior"
+msgstr "修改任务行为"
+
+#: source/isaaclab/tutorial.rst:432
+msgid "Observation, reward, termination, and event terms in ``mdp/``"
+msgstr "``mdp/`` 中的观测、奖励、终止和事件项"
+
+#: source/isaaclab/tutorial.rst:433
+msgid "Change reset coverage"
+msgstr "修改重置覆盖范围"
+
+#: source/isaaclab/tutorial.rst:434
+msgid "``reset/curriculum.py`` and the validated reset dataset"
+msgstr "``reset/curriculum.py`` 和经过验证的重置数据集"
+
+#: source/isaaclab/tutorial.rst:435
+msgid "Change PPO or distillation"
+msgstr "修改 PPO 或蒸馏"
+
+#: source/isaaclab/tutorial.rst:436
+msgid ""
+"``config/so101/agents/rsl_rl_ppo_cfg.py`` and ``rsl_rl_distillation_cfg.py``"
+msgstr ""
+"``config/so101/agents/rsl_rl_ppo_cfg.py`` 和 ``rsl_rl_distillation_cfg.py``"
+
+#: source/isaaclab/tutorial.rst:437
+msgid "Change sim-to-real randomization"
+msgstr "修改仿真到现实随机化"
+
+#: source/isaaclab/tutorial.rst:438
+msgid ""
+"The ``sim2real`` preset values and ``Sim2RealEventsCfg`` in ``env_cfg.py`` "
+"and ``camera_env_cfg.py``"
+msgstr ""
+"``env_cfg.py`` 和 ``camera_env_cfg.py`` 中的 ``sim2real`` 预设值及 "
+"``Sim2RealEventsCfg``"
+
+#: source/isaaclab/tutorial.rst:439
+msgid "Add another robot"
+msgstr "添加其他机器人"
+
+#: source/isaaclab/tutorial.rst:440
+msgid ""
+"Add ``config/<robot_name>/`` and register new task IDs there; keep the "
+"shared MDP robot-agnostic."
+msgstr "添加 ``config/<robot_name>/`` ，在其中注册新的任务 ID；共享的 MDP 应保持与具体机器人无关。"
+
+#: source/isaaclab/tutorial.rst:441
+msgid "Add another manipulation task"
+msgstr "添加其他操作任务"
+
+#: source/isaaclab/tutorial.rst:442
+msgid ""
+"Add a sibling of ``tasks/place_vial`` with its own MDP and robot "
+"configurations."
+msgstr "创建与 ``tasks/place_vial`` 并列的目录，包含新任务自己的 MDP 和机器人配置。"
+
+#: source/isaaclab/tutorial.rst:444
+msgid "Keep these invariants as the task evolves:"
+msgstr "任务演进过程中，应保持以下约定："
+
+#: source/isaaclab/tutorial.rst:446
+msgid ""
+"Task IDs resolve through the package entry point; do not copy Isaac Lab's "
+"launcher scripts."
+msgstr "任务 ID 通过软件包入口点解析，无需复制 Isaac Lab 的启动脚本。"
+
+#: source/isaaclab/tutorial.rst:447
+msgid "Policy actions use the order and scale expected by the robot."
+msgstr "策略动作采用机器人预期的顺序和缩放比例。"
+
+#: source/isaaclab/tutorial.rst:448
+msgid ""
+"Physical quantities and quaternions use Isaac Lab's current conventions; "
+"Isaac Lab 3 uses XYZW quaternion order."
+msgstr "物理量和四元数遵循 Isaac Lab 当前的约定；Isaac Lab 3 使用 XYZW 四元数顺序。"
+
+#: source/isaaclab/tutorial.rst:449
+msgid ""
+"Resets create valid physical states, and post-reset task code does not "
+"teleport the manipulated object."
+msgstr "重置生成有效的物理状态，重置后的任务代码不直接瞬移被操作物体。"
+
+#: source/isaaclab/tutorial.rst:450
+msgid ""
+"Success requires a released, mechanically seated vial rather than proximity "
+"to the rack."
+msgstr "成功条件要求样品瓶已经松开并在支架中正确落座，不能仅以靠近支架作为成功。"
+
+#: source/isaaclab/tutorial.rst:451
+msgid ""
+"Tests check task behavior, and benchmarks check for simulation slowdowns."
+msgstr "测试检查任务行为，基准测试检查仿真是否变慢。"
+
+#: source/isaaclab/tutorial.rst:453
+msgid ""
+"From here, use :ref:`Direct and Manager MDP <feature-workflows>` for the "
+"manager/direct architecture, :ref:`Reinforcement Learning <rl-frameworks>` "
+"for framework details, and :doc:`Hydra Configuration System "
+"</source/features/hydra>` for command-line overrides."
+msgstr ""
+"接下来，:ref:`直接式与管理器式 MDP <feature-workflows>` 介绍两类架构，:ref:`强化学习 <rl-"
+"frameworks>` 介绍框架细节，:doc:`Hydra 配置系统 </source/features/hydra>` 介绍命令行覆盖参数。"

@@ -2,9 +2,9 @@
 # ============================================================================
 # One-click Installation Script for IsaacSim and IsaacLab (pip only)
 # Supports: conda / uv package managers
-# Versions: v3.0.0 (release/3.0.0), v1.4.1, v2.3.2, main, develop (extensible)
+# Versions: v3.0.0, main, v2.3.2, v1.4.1 (extensible)
 # ============================================================================
-# Version: v3.0.4
+# Version: v3.0.5
 # Author: Ziqi Fan
 # Email: fanziqi614@gmail.com
 # GitHub: https://github.com/fan-ziqi
@@ -32,7 +32,7 @@ divider() {
 
 print_author_info() {
     echo -e "${BOLD}One-click Installation Script for IsaacSim and IsaacLab (pip only)${RESET}"
-    echo "Version: v3.0.4"
+    echo "Version: v3.0.5"
     echo "Author: Ziqi Fan"
     echo "Email: fanziqi614@gmail.com"
     echo "GitHub: https://github.com/fan-ziqi"
@@ -115,7 +115,7 @@ VERSION_TORCHVISION[v3.0.0]="torchvision==0.26.0"
 VERSION_ISAACSIM[v3.0.0]="isaacsim[all,extscache]==6.2.0.0"
 VERSION_ISAACSIM_VER[v3.0.0]="6.2.0.0"
 VERSION_ISAACSIM_EXTRA_FLAGS[v3.0.0]=""
-VERSION_GIT_TAG[v3.0.0]="release/3.0.0"
+VERSION_GIT_TAG[v3.0.0]="v3.0.0"
 VERSION_CUDA[v3.0.0]="cu130"
 
 # --- v1.4.1 ---
@@ -139,27 +139,17 @@ VERSION_GIT_TAG[v2.3.2]="v2.3.2"
 VERSION_CUDA[v2.3.2]="cu128"
 
 # --- main ---
-VERSION_PYTHON[main]="3.11"
-VERSION_PYTORCH[main]="2.7.0"
-VERSION_TORCHVISION[main]="torchvision==0.22.0"
-VERSION_ISAACSIM[main]="isaacsim[all,extscache]"
-VERSION_ISAACSIM_VER[main]="5.1.0"
+VERSION_PYTHON[main]="3.12"
+VERSION_PYTORCH[main]="2.11.0"
+VERSION_TORCHVISION[main]="torchvision==0.26.0"
+VERSION_ISAACSIM[main]="isaacsim[all,extscache]==6.2.0.0"
+VERSION_ISAACSIM_VER[main]="6.2.0.0"
 VERSION_ISAACSIM_EXTRA_FLAGS[main]=""
 VERSION_GIT_TAG[main]="main"
-VERSION_CUDA[main]="cu128"
-
-# --- develop ---
-VERSION_PYTHON[develop]="3.12"
-VERSION_PYTORCH[develop]="2.10.0"
-VERSION_TORCHVISION[develop]="torchvision==0.25.0"
-VERSION_ISAACSIM[develop]="isaacsim[all,extscache]==6.0.0"
-VERSION_ISAACSIM_VER[develop]="6.0.0"
-VERSION_ISAACSIM_EXTRA_FLAGS[develop]="--index-strategy unsafe-best-match --prerelease=allow"
-VERSION_GIT_TAG[develop]="develop"
-VERSION_CUDA[develop]="cu128"
+VERSION_CUDA[main]="cu130"
 
 # Map menu index to version key
-VERSION_KEYS=("v3.0.0" "develop" "main" "v2.3.2" "v1.4.1")
+VERSION_KEYS=("v3.0.0" "main" "v2.3.2" "v1.4.1")
 VERSION_LABELS=()
 for key in "${VERSION_KEYS[@]}"; do
     VERSION_LABELS+=("${key} (IsaacSim ${VERSION_ISAACSIM_VER[$key]}, Python ${VERSION_PYTHON[$key]}, PyTorch ${VERSION_PYTORCH[$key]}, ${VERSION_CUDA[$key]})")
@@ -201,14 +191,10 @@ divider
 
 echo -e "${CYAN}[Step 1] Select package manager${RESET}\n"
 
-# IsaacLab 3.0.0, main, and develop support uv.
-if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" || "$SELECTED_VERSION" == "develop" ]]; then
-    echo -e "  ${BOLD}1${RESET}) uv (faster, recommended)"
-    echo -e "  ${BOLD}2${RESET}) conda (Miniconda)"
-    echo ""
-
-    ask_choice "Please select the package manager" "2" "1"
-    PKG_MANAGER="$([ "$SELECTION" == "1" ] && echo "uv" || echo "conda")"
+# IsaacLab 3.x uses uv; legacy releases use conda.
+if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
+    echo -e "${YELLOW}Version '$SELECTED_VERSION' uses uv.${RESET}\n"
+    PKG_MANAGER="uv"
 else
     echo -e "${YELLOW}Version '$SELECTED_VERSION' only supports conda.${RESET}\n"
     PKG_MANAGER="conda"
@@ -217,7 +203,7 @@ fi
 echo -e "\n${GREEN}Selected: ${BOLD}$PKG_MANAGER${RESET}"
 
 INSTALL_BACKEND="isaacsim"
-if [[ "$SELECTED_VERSION" == "v3.0.0" ]]; then
+if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
     echo -e "\n${CYAN}Select installation backend${RESET}\n"
     echo -e "  ${BOLD}1${RESET}) IsaacSim (full workflow)"
     echo -e "  ${BOLD}2${RESET}) Newton (without Isaac Sim)"
@@ -266,7 +252,7 @@ version_ge() {
     printf '%s\n' "$2" "$1" | sort -V | head -n 1 | grep -Fqx "$2"
 }
 
-if [[ "$SELECTED_VERSION" == "v3.0.0" ]]; then
+if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
     driver_versions=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader)
     if [[ -z "$driver_versions" ]]; then
         echo -e "${RED}No NVIDIA GPU detected.${RESET}"
@@ -274,7 +260,7 @@ if [[ "$SELECTED_VERSION" == "v3.0.0" ]]; then
     fi
     while IFS= read -r driver_version; do
         if ! version_ge "$driver_version" "580.65.06"; then
-            echo -e "${RED}IsaacLab 3.0.0 (CUDA 13.0) requires NVIDIA driver >= 580.65.06.${RESET}"
+            echo -e "${RED}IsaacLab $SELECTED_VERSION (CUDA 13.0) requires NVIDIA driver >= 580.65.06.${RESET}"
             exit 1
         fi
     done <<< "$driver_versions"
@@ -286,7 +272,7 @@ divider
 echo -e "${CYAN}[Step 2b] Checking GLIBC version...${RESET}\n"
 
 required_version="2.34"
-if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "v2.3.2" ]]; then
+if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" || "$SELECTED_VERSION" == "v2.3.2" ]]; then
     required_version="2.35"
 fi
 
@@ -458,9 +444,9 @@ divider
 
 echo -e "${CYAN}[Step 4] Installing Isaac Sim and PyTorch...${RESET}\n"
 
-if [[ "$SELECTED_VERSION" == "v3.0.0" ]]; then
-    # The release lockfile resolves Isaac Sim and PyTorch overrides together.
-    echo -e "${CYAN}IsaacLab 3.0.0 dependencies will be installed together in Step 7.${RESET}"
+if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
+    # The repository lockfile resolves Isaac Sim and PyTorch overrides together.
+    echo -e "${CYAN}IsaacLab $SELECTED_VERSION dependencies will be installed together in Step 7.${RESET}"
 else
     # Install IsaacSim first (per official docs order)
     echo -e "${GREEN}Installing IsaacSim for $SELECTED_VERSION...${RESET}"
@@ -505,7 +491,7 @@ else
 
     ask_yn "Do you want to launch Isaac Sim graphical interface for verification?"
     if [[ "$ANSWER" == "y" ]]; then
-        if [[ "$SELECTED_VERSION" == "v3.0.0" ]]; then
+        if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
             VERIFY_ISAACSIM="y"
             echo -e "${YELLOW}Isaac Sim verification will run after Step 7.${RESET}"
         else
@@ -564,7 +550,7 @@ fi
 # An existing checkout must also match the version selected in Step 0.
 echo -e "${GREEN}Checking out $GIT_TAG...${RESET}"
 git checkout "$GIT_TAG"
-if [[ "$PULL_LATEST" == "y" && "$GIT_TAG" != "v1.4.1" && "$GIT_TAG" != "v2.3.2" ]]; then
+if [[ "$PULL_LATEST" == "y" && "$GIT_TAG" == "main" ]]; then
     echo -e "${GREEN}Pulling latest changes on branch $GIT_TAG...${RESET}"
     git pull --ff-only origin "$GIT_TAG"
 fi
@@ -577,20 +563,13 @@ divider
 
 echo -e "${CYAN}[Step 7] Installing Isaac Lab dependencies...${RESET}\n"
 
-if [[ "$SELECTED_VERSION" == "v3.0.0" ]]; then
-    if [[ "$PKG_MANAGER" == "uv" ]]; then
-        if [[ "$INSTALL_BACKEND" == "isaacsim" ]]; then
-            uv sync --active --extra isaacsim
-            uv run --active --extra isaacsim isaaclab --help
-        else
-            uv sync --active
-            uv run --active isaaclab --help
-        fi
+if [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
+    if [[ "$INSTALL_BACKEND" == "isaacsim" ]]; then
+        uv sync --active --extra isaacsim
+        uv run --active --extra isaacsim isaaclab --help
     else
-        INSTALL_TARGETS='newton,rl[rsl-rl],visualizer[newton]'
-        if [[ "$INSTALL_BACKEND" == "isaacsim" ]]; then INSTALL_TARGETS+=',isaacsim'; fi
-        ./isaaclab.sh --install "$INSTALL_TARGETS"
-        ./isaaclab.sh --help
+        uv sync --active
+        uv run --active isaaclab --help
     fi
 else
     ./isaaclab.sh --install
@@ -616,12 +595,12 @@ if [[ "$ANSWER" == "y" ]]; then
     echo -e "${YELLOW}Close the graphical interface to continue...${RESET}"
     if [ "$GIT_TAG" == "v1.4.1" ]; then
         python source/standalone/tutorials/00_sim/create_empty.py
-    elif [[ "$SELECTED_VERSION" == "v3.0.0" && "$INSTALL_BACKEND" == "newton" ]]; then
-        # Use a Newton-only demo that does not download external robot assets.
-        if [[ "$PKG_MANAGER" == "uv" ]]; then
+    elif [[ "$SELECTED_VERSION" == "v3.0.0" || "$SELECTED_VERSION" == "main" ]]; then
+        if [[ "$INSTALL_BACKEND" == "newton" ]]; then
+            # Use a Newton-only demo that does not download external robot assets.
             uv run --active isaaclab demo newton-block-and-tackle --viz newton_gl
         else
-            ./isaaclab.sh -p examples/demos/newton_viewer_block_and_tackle.py --viz newton_gl
+            uv run --active --extra isaacsim isaaclab -p scripts/tutorials/00_sim/create_empty.py --viz kit
         fi
     elif [[ "$GIT_TAG" == "v2.3.2" ]]; then
         ./isaaclab.sh -p scripts/tutorials/00_sim/create_empty.py

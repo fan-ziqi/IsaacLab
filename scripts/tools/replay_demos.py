@@ -14,7 +14,7 @@ import argparse
 import sys
 
 from isaaclab.app import add_launcher_args, launch_simulation
-from isaaclab.utils.string import list_intersection, string_to_callable
+from isaaclab.utils.string import string_to_callable
 
 from isaaclab_tasks.utils import setup_preset_cli
 
@@ -61,16 +61,14 @@ args_cli, hydra_args = setup_preset_cli(parser)
 args_cli.require_kit = True
 
 # Call an external callback if requested.
-remaining_args_env_registration = None
 if args_cli.external_callback:
-    external_callback_function = string_to_callable(args_cli.external_callback, separator=".")
-    remaining_args_env_registration = external_callback_function()
-
-# Hand arguments consumed by neither this parser nor the callback over to Hydra.
-hydra_args = list_intersection(hydra_args, remaining_args_env_registration)
+    remaining = string_to_callable(args_cli.external_callback, separator=".")()
+    if remaining is not None:
+        _, hydra_args = setup_preset_cli(parser, remaining)
 sys.argv = [sys.argv[0]] + hydra_args
 
 import contextlib
+import logging
 import os
 
 import gymnasium as gym
@@ -81,6 +79,8 @@ from isaaclab.utils.datasets import EpisodeData, HDF5DatasetFileHandler
 
 import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.utils import resolve_task_config
+
+logger = logging.getLogger(__name__)
 
 is_paused = False
 
@@ -321,7 +321,7 @@ def replay_dataset(
     if args_cli.validate_states and num_envs == 1:
         state_validation_enabled = True
     elif args_cli.validate_states and num_envs > 1:
-        print("Warning: State validation is only supported with a single environment. Skipping state validation.")
+        logger.warning("State validation is only supported with a single environment. Skipping state validation.")
 
     # Get idle action (idle actions are applied to envs without next action)
     if hasattr(env_cfg, "idle_action"):

@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -22,16 +21,14 @@ msgstr "扩展 Newton 求解器"
 
 #: source/developer-tools/extending_newton_solvers.rst:6
 msgid ""
-"This page is for contributors adding a Newton solver to Isaac Lab or "
-"building a custom coupled solver. It describes the "
-":class:`~isaaclab_newton.physics.NewtonManager` extension contract: what the"
-" manager owns, when its hooks run, and what a subclass must provide."
+"To add a Newton solver or a custom coupled solver, implement a "
+":class:`~isaaclab_newton.physics.NewtonManager` subclass. The sections below"
+" explain its hooks, resource ownership, and extension requirements."
 msgstr ""
-"本页面向为 Isaac Lab 添加 Newton 求解器或构建自定义耦合求解器的贡献者，介绍 "
-":class:`~isaaclab_newton.physics.NewtonManager` "
-"的扩展约定：管理器负责哪些内容、钩子何时运行，以及子类必须提供什么。"
+"要添加 Newton 求解器或自定义耦合求解器，请实现 :class:`~isaaclab_newton.physics.NewtonManager` "
+"子类。以下章节介绍其钩子、资源所有权及扩展要求。"
 
-#: source/developer-tools/extending_newton_solvers.rst:11
+#: source/developer-tools/extending_newton_solvers.rst:10
 msgid ""
 "If you only need to select and configure a shipped solver, use the user-"
 "facing pages instead: :doc:`/source/concepts/backends_and_presets` for "
@@ -43,11 +40,11 @@ msgstr ""
 "介绍后端和预设选择， :ref:`求解器调参指南 <solver-tuning>` 介绍随附求解器， :ref:`newton-coupled-"
 "solvers` 介绍耦合方式的选择。"
 
-#: source/developer-tools/extending_newton_solvers.rst:18
+#: source/developer-tools/extending_newton_solvers.rst:17
 msgid "When a Solver Manager Is Needed"
 msgstr "何时需要求解器管理器"
 
-#: source/developer-tools/extending_newton_solvers.rst:20
+#: source/developer-tools/extending_newton_solvers.rst:19
 msgid ""
 "Each Newton solver is exposed as a "
 ":class:`~isaaclab_newton.physics.NewtonManager` subclass. Write a new one "
@@ -56,23 +53,23 @@ msgstr ""
 "每个 Newton 求解器都通过 :class:`~isaaclab_newton.physics.NewtonManager` "
 "子类提供。以下情况需要编写新管理器："
 
-#: source/developer-tools/extending_newton_solvers.rst:23
+#: source/developer-tools/extending_newton_solvers.rst:22
 msgid "a Newton solver has no Isaac Lab manager yet;"
 msgstr "Newton 求解器尚无 Isaac Lab 管理器；"
 
-#: source/developer-tools/extending_newton_solvers.rst:24
+#: source/developer-tools/extending_newton_solvers.rst:23
 msgid ""
 "the solver needs its own contact allocation, builder attributes, or reset "
 "handling;"
 msgstr "求解器需要自己的接触分配、构建器属性或重置处理；"
 
-#: source/developer-tools/extending_newton_solvers.rst:26
+#: source/developer-tools/extending_newton_solvers.rst:25
 msgid ""
 "several solvers must advance one shared model and the substep order is part "
 "of the algorithm."
 msgstr "多个求解器必须推进同一共享模型，且子步顺序属于算法的一部分。"
 
-#: source/developer-tools/extending_newton_solvers.rst:29
+#: source/developer-tools/extending_newton_solvers.rst:28
 msgid ""
 "Do not write one when an existing solver can advance the whole model, or "
 "when the scene can be partitioned into named solver entries. Partitioning is"
@@ -90,18 +87,20 @@ msgstr ""
 ":class:`~isaaclab_contrib.coupling.NewtonCouplerManager` "
 "将它们解析为共享模型上的条目视图。刚体与可变形物体混合场景应优先使用此路径。只有共享接触检测、但各求解器以不同方式使用接触，或求解器间需要自定义力、冲量或状态传递时，才编写耦合管理器。"
 
-#: source/developer-tools/extending_newton_solvers.rst:41
+#: source/developer-tools/extending_newton_solvers.rst:40
 msgid "Responsibilities and Boundaries"
 msgstr "职责与边界"
 
-#: source/developer-tools/extending_newton_solvers.rst:43
+#: source/developer-tools/extending_newton_solvers.rst:42
 msgid ""
-":class:`~isaaclab_newton.physics.NewtonManager` is a class-level singleton: "
-"all state lives on the base class and there are no instance methods, so "
-"exactly one manager subclass is active per simulation."
+":class:`~isaaclab_newton.physics.NewtonManager` subclasses are instantiated "
+"by the simulation context, which owns exactly one manager instance as "
+":attr:`~isaaclab.sim.SimulationContext.backend_manager`. All runtime state "
+"lives on that instance."
 msgstr ""
-":class:`~isaaclab_newton.physics.NewtonManager` "
-"是类级单例：所有状态保存在基类上，没有实例方法，因此每个仿真中恰好只有一个管理器子类处于启用状态。"
+":class:`~isaaclab_newton.physics.NewtonManager` 子类由仿真上下文实例化。上下文通过 "
+":attr:`~isaaclab.sim.SimulationContext.backend_manager` "
+"持有唯一的管理器实例，所有运行时状态均保存在该实例上。"
 
 #: source/developer-tools/extending_newton_solvers.rst:51
 msgid "Owner"
@@ -318,8 +317,8 @@ msgstr ""
 ":meth:`~isaaclab_newton.physics.NewtonManager.clear`"
 
 #: source/developer-tools/extending_newton_solvers.rst:122
-msgid "Releases the solver, model, and all class-level state."
-msgstr "释放求解器、模型和全部类级状态。"
+msgid "Releases the solver, model, and all manager state."
+msgstr "释放求解器、模型及管理器的所有状态。"
 
 #: source/developer-tools/extending_newton_solvers.rst:123
 msgid "``_solver_specific_clear()``"
@@ -374,14 +373,14 @@ msgstr ""
 #: source/developer-tools/extending_newton_solvers.rst:149
 msgid ""
 "With ``_use_single_state = False`` the base manager ping-pongs "
-"``NewtonManager._state_0`` and ``NewtonManager._state_1`` after each "
-"substep, except on the final substep of an odd count, where it copies "
-"instead. Never cache a ``State`` reference in ``_build_solver()``; read the "
-"current state through the class attribute on each use."
+"``self.backend.state_0`` and ``self.backend.state_1`` after each substep, "
+"except on the final substep of an odd count, where it copies instead. Never "
+"cache a ``State`` reference in ``_build_solver()``; read the current state "
+"through the manager on each use."
 msgstr ""
-"设置 ``_use_single_state = False`` 时，基类管理器在每个子步后交换 ``NewtonManager._state_0`` "
-"和 ``NewtonManager._state_1`` ；子步数为奇数时，最后一个子步改为拷贝。不要在 ``_build_solver()`` 中缓存"
-" ``State`` 引用；每次使用时，通过类属性读取当前状态。"
+"设置 ``_use_single_state = False`` 时，基类管理器会在每个子步后交换 ``self.backend.state_0`` 和"
+" ``self.backend.state_1``；若子步数为奇数，最后一个子步改为复制。不要在 ``_build_solver()`` 中缓存 "
+"``State`` 引用，每次使用时应通过管理器读取当前状态。"
 
 #: source/developer-tools/extending_newton_solvers.rst:157
 msgid "Extension Contract"
@@ -389,18 +388,17 @@ msgstr "扩展约定"
 
 #: source/developer-tools/extending_newton_solvers.rst:159
 msgid ""
-"A subclass must implement ``_build_solver()`` and assign four slots on "
-"``NewtonManager`` itself, not on ``cls``. "
+"A subclass must implement ``_build_solver()`` and assign four slots on the "
+"manager instance (``self``). "
 ":meth:`~isaaclab_newton.physics.NewtonManager.initialize_solver` raises "
 "``RuntimeError`` if ``_solver`` is still unset. The other three are not "
 "validated and keep their defaults, so a subclass that forgets them runs with"
 " double-buffered states, no collision pipeline, and no visualizer force "
 "input."
 msgstr ""
-"子类必须实现 ``_build_solver()`` ，并为 ``NewtonManager`` 本身而非 ``cls`` 上的四个槽位赋值。如果 "
-"``_solver`` 仍未设置， "
-":meth:`~isaaclab_newton.physics.NewtonManager.initialize_solver` 会抛出 "
-"``RuntimeError`` 。其他三个槽位不验证，保留默认值，因此遗漏它们的子类会使用双缓冲状态运行，没有碰撞流程，也不接收可视化器施加的力。"
+"子类必须实现 ``_build_solver()``，并在管理器实例 ``self`` 上赋值四个成员。若 ``_solver`` "
+"仍未设置，:meth:`~isaaclab_newton.physics.NewtonManager.initialize_solver` 会抛出 "
+"``RuntimeError``。其余三个成员不做校验，会保留默认值，因此遗漏赋值时，子类会以双缓冲状态运行，且没有碰撞流水线和可视化器力输入。"
 
 #: source/developer-tools/extending_newton_solvers.rst:170
 msgid "Slot"
@@ -448,21 +446,21 @@ msgid ""
 "``State.body_f``."
 msgstr "求解器使用 ``State.body_f`` 中的外部刚体力时为 ``True`` 。"
 
-#: source/developer-tools/extending_newton_solvers.rst:208
+#: source/developer-tools/extending_newton_solvers.rst:207
 msgid "Override anything else only when the solver needs it:"
 msgstr "其他方法仅在求解器需要时覆盖："
 
-#: source/developer-tools/extending_newton_solvers.rst:210
+#: source/developer-tools/extending_newton_solvers.rst:209
 msgid ""
 "``_create_solver()``: construct a solver without mutating manager state, so "
 "a coupler can nest this solver."
 msgstr "``_create_solver()`` ：构造求解器而不改变管理器状态，使耦合器能够嵌套使用该求解器。"
 
-#: source/developer-tools/extending_newton_solvers.rst:212
+#: source/developer-tools/extending_newton_solvers.rst:211
 msgid "``_initialize_contacts()``: allocate custom contact buffers."
 msgstr "``_initialize_contacts()`` ：分配自定义接触缓冲区。"
 
-#: source/developer-tools/extending_newton_solvers.rst:213
+#: source/developer-tools/extending_newton_solvers.rst:212
 msgid ""
 "``_step_solver(state_0, state_1, control, contacts, substep_dt)``: change "
 "one substep while keeping the base simulation loop."
@@ -470,59 +468,58 @@ msgstr ""
 "``_step_solver(state_0, state_1, control, contacts, substep_dt)`` "
 "：修改单个子步，同时保留基础仿真循环。"
 
-#: source/developer-tools/extending_newton_solvers.rst:215
+#: source/developer-tools/extending_newton_solvers.rst:214
 msgid ""
 "``_simulate_physics_only()``: add per-step work around the substep loop."
 msgstr "``_simulate_physics_only()`` ：在子步循环前后添加逐步工作。"
 
-#: source/developer-tools/extending_newton_solvers.rst:216
+#: source/developer-tools/extending_newton_solvers.rst:215
 msgid ""
 "``_reset_solver_internals()``: clear solver-owned state for reset worlds."
 msgstr "``_reset_solver_internals()`` ：为被重置的世界清除求解器自身状态。"
 
-#: source/developer-tools/extending_newton_solvers.rst:217
+#: source/developer-tools/extending_newton_solvers.rst:216
 msgid ""
 "``_register_builder_attributes()``: register Newton custom particle, shape, "
 "or body attributes on the builder."
 msgstr "``_register_builder_attributes()`` ：在构建器上注册 Newton 自定义粒子、形状或刚体属性。"
 
-#: source/developer-tools/extending_newton_solvers.rst:219
+#: source/developer-tools/extending_newton_solvers.rst:218
 msgid ""
 "``_prepare_builder_for_finalize()``: normalize imported or replicated "
 "builder data immediately before ``finalize()``."
 msgstr ""
 "``_prepare_builder_for_finalize()`` ：在 ``finalize()`` 前规范化导入或复制的构建器数据。"
 
-#: source/developer-tools/extending_newton_solvers.rst:221
+#: source/developer-tools/extending_newton_solvers.rst:220
 msgid ""
 "``_supports_cuda_graph_capture()``: return ``False`` to fall back to eager "
 "execution."
 msgstr "``_supports_cuda_graph_capture()`` ：返回 ``False`` ，回退到即时执行。"
 
-#: source/developer-tools/extending_newton_solvers.rst:223
+#: source/developer-tools/extending_newton_solvers.rst:222
 msgid ""
 "``_requires_initial_reset_before_graph_capture()``: delay headless capture "
 "until the first post-reset step."
 msgstr ""
 "``_requires_initial_reset_before_graph_capture()`` ：将无界面图捕获延迟到重置后的第一步。"
 
-#: source/developer-tools/extending_newton_solvers.rst:225
-msgid ""
-"``_solver_specific_clear()``: release class-level state the subclass owns."
-msgstr "``_solver_specific_clear()`` ：释放子类负责的类级状态。"
+#: source/developer-tools/extending_newton_solvers.rst:224
+msgid "``_solver_specific_clear()``: release manager state the subclass owns."
+msgstr "``_solver_specific_clear()``：释放子类持有的管理器状态。"
 
-#: source/developer-tools/extending_newton_solvers.rst:226
+#: source/developer-tools/extending_newton_solvers.rst:225
 msgid ""
 "``_check_solver_status()`` and ``_log_solver_debug()``: run after stepping."
 msgstr "``_check_solver_status()`` 和 ``_log_solver_debug()`` ：在步进后运行。"
 
-#: source/developer-tools/extending_newton_solvers.rst:228
+#: source/developer-tools/extending_newton_solvers.rst:227
 msgid ""
 ":class:`~isaaclab_newton.physics.NewtonMPMManager` overrides both builder "
 "hooks."
 msgstr ":class:`~isaaclab_newton.physics.NewtonMPMManager` 覆盖了两个构建器钩子。"
 
-#: source/developer-tools/extending_newton_solvers.rst:230
+#: source/developer-tools/extending_newton_solvers.rst:229
 msgid ""
 "Raise from ``_build_solver()`` on an unsupported configuration rather than "
 "silently degrading. Name the manager ``Newton<Solver>Manager``."
@@ -530,37 +527,37 @@ msgstr ""
 "配置不受支持时，应在 ``_build_solver()`` 中抛出异常，而不是静默降级。管理器应命名为 "
 "``Newton<Solver>Manager`` 。"
 
-#: source/developer-tools/extending_newton_solvers.rst:235
+#: source/developer-tools/extending_newton_solvers.rst:234
 msgid "Coupling Paths"
 msgstr "耦合路径"
 
-#: source/developer-tools/extending_newton_solvers.rst:237
+#: source/developer-tools/extending_newton_solvers.rst:236
 msgid "The four architectures differ in what drives the substep loop:"
 msgstr "四种架构的区别在于由谁驱动子步循环："
 
-#: source/developer-tools/extending_newton_solvers.rst:243
+#: source/developer-tools/extending_newton_solvers.rst:242
 msgid "Path"
 msgstr "路径"
 
-#: source/developer-tools/extending_newton_solvers.rst:244
+#: source/developer-tools/extending_newton_solvers.rst:243
 msgid "Structure"
 msgstr "结构"
 
-#: source/developer-tools/extending_newton_solvers.rst:245
+#: source/developer-tools/extending_newton_solvers.rst:244
 msgid "Standalone solver"
 msgstr "独立求解器"
 
-#: source/developer-tools/extending_newton_solvers.rst:246
+#: source/developer-tools/extending_newton_solvers.rst:245
 msgid ""
 "One manager subclass, one solver, one model. The base class owns the substep"
 " loop."
 msgstr "一个管理器子类、一个求解器、一个模型。基类负责子步循环。"
 
-#: source/developer-tools/extending_newton_solvers.rst:248
+#: source/developer-tools/extending_newton_solvers.rst:247
 msgid "Proxy coupling"
 msgstr "代理耦合"
 
-#: source/developer-tools/extending_newton_solvers.rst:249
+#: source/developer-tools/extending_newton_solvers.rst:248
 msgid ""
 ":class:`~isaaclab_contrib.coupling.CouplerProxyCfg` partitions the model "
 "into named entries. :class:`~isaaclab_contrib.coupling.NewtonCouplerManager`"
@@ -572,11 +569,11 @@ msgstr ""
 ":class:`~isaaclab_contrib.coupling.NewtonCouplerManager` 构建 Newton "
 "耦合求解器，将源刚体作为代理提供给目标求解器，并返回滞后反馈。无需新管理器。"
 
-#: source/developer-tools/extending_newton_solvers.rst:254
+#: source/developer-tools/extending_newton_solvers.rst:253
 msgid "ADMM coupling"
 msgstr "ADMM 耦合"
 
-#: source/developer-tools/extending_newton_solvers.rst:255
+#: source/developer-tools/extending_newton_solvers.rst:254
 msgid ""
 ":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` uses the same manager and"
 " entry model, but Newton creates symmetric interface constraints and "
@@ -585,11 +582,11 @@ msgstr ""
 ":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` 使用相同管理器和条目模型，但 Newton "
 "创建对称接口约束，并迭代各子求解器。无需新管理器。"
 
-#: source/developer-tools/extending_newton_solvers.rst:258
+#: source/developer-tools/extending_newton_solvers.rst:257
 msgid "Custom shared-model manager"
 msgstr "自定义共享模型管理器"
 
-#: source/developer-tools/extending_newton_solvers.rst:259
+#: source/developer-tools/extending_newton_solvers.rst:258
 msgid ""
 "A subclass constructs several sub-solvers itself and overrides "
 "``_step_solver()`` to fix the substep order. "
@@ -604,7 +601,7 @@ msgstr ""
 " 。其管理器清除力累加器，只检测一次接触，在 ``coupling_mode=\"two_way\"`` 时将软体对刚体的反作用力注入 "
 "``body_f`` ，随后让 MJWarp 使用自身内部接触、VBD 使用已检测接触分别步进。"
 
-#: source/developer-tools/extending_newton_solvers.rst:267
+#: source/developer-tools/extending_newton_solvers.rst:266
 msgid ""
 "A custom shared-model manager bypasses entry ownership resolution, so it "
 "cannot reuse the coupler's selectors or validation. For the proxy and ADMM "
@@ -613,15 +610,15 @@ msgstr ""
 "自定义共享模型管理器绕过条目归属解析，因此不能复用耦合器的选择器或验证。代理与 ADMM 的取舍见 :ref:`newton-coupled-"
 "solvers` 。"
 
-#: source/developer-tools/extending_newton_solvers.rst:273
-msgid "Related Documentation"
-msgstr "相关文档"
+#: source/developer-tools/extending_newton_solvers.rst:274
+msgid "Where to go next"
+msgstr "进一步阅读"
 
-#: source/developer-tools/extending_newton_solvers.rst:275
+#: source/developer-tools/extending_newton_solvers.rst:276
 msgid ":doc:`add_physics_backend`: adding a whole physics backend."
 msgstr ":doc:`add_physics_backend` ：添加完整物理后端。"
 
-#: source/developer-tools/extending_newton_solvers.rst:276
+#: source/developer-tools/extending_newton_solvers.rst:277
 msgid ""
 ":doc:`/source/api/lab_newton/isaaclab_newton.physics`: manager and solver "
 "configuration API reference."

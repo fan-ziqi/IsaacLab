@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-import os
 import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
@@ -21,13 +20,11 @@ from pxr import UsdPhysics
 import isaaclab.sim as sim_utils
 import isaaclab.utils.string as string_utils
 from isaaclab.assets.rigid_object_collection.base_rigid_object_collection import BaseRigidObjectCollection
-from isaaclab.physics import PhysicsEvent
 from isaaclab.utils import clone, validate
 from isaaclab.utils.warp import ProxyArray
 from isaaclab.utils.wrench_composer import WrenchComposer
 
 from isaaclab_newton.assets import kernels as shared_kernels
-from isaaclab_newton.physics import NewtonManager as SimulationManager
 
 from .rigid_object_collection_data import RigidObjectCollectionData
 
@@ -901,7 +898,7 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         )
         # No copy-back needed — writes go directly to Newton's state via the 2D binding
         # Tell the physics engine that some of the body properties have been updated
-        SimulationManager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
+        self._backend_manager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
 
     def set_masses_mask(
         self,
@@ -951,7 +948,7 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         )
         # No copy-back needed — writes go directly to Newton's state via the 2D binding
         # Tell the physics engine that some of the body properties have been updated
-        SimulationManager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
+        self._backend_manager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
 
     def set_coms_index(
         self,
@@ -1002,7 +999,7 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         )
         self.data._reset_body_com_pose_b_dependents()
         # Tell the physics engine that some of the body properties have been updated
-        SimulationManager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
+        self._backend_manager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
 
     def set_coms_mask(
         self,
@@ -1054,7 +1051,7 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         )
         self.data._reset_body_com_pose_b_dependents()
         # Tell the physics engine that some of the body properties have been updated
-        SimulationManager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
+        self._backend_manager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
 
     def set_inertias_index(
         self,
@@ -1103,7 +1100,7 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         )
         # No copy-back needed — writes go directly to Newton's state via the 2D binding
         # Tell the physics engine that some of the body properties have been updated
-        SimulationManager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
+        self._backend_manager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
 
     def set_inertias_mask(
         self,
@@ -1153,7 +1150,7 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         )
         # No copy-back needed — writes go directly to Newton's state via the 2D binding
         # Tell the physics engine that some of the body properties have been updated
-        SimulationManager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
+        self._backend_manager.add_model_change(ModelFlags.BODY_INERTIAL_PROPERTIES)
 
     """
     Internal helper.
@@ -1207,32 +1204,24 @@ class RigidObjectCollection(BaseRigidObjectCollection):
             root_prim_path_exprs.append(sim_utils.path_expr_to_glob(root_expr))
             self._body_names_list.append(name)
 
-        # Build a single pattern that matches ALL body types by wildcarding the differing path segment.
-        combined_pattern = self._build_combined_pattern(root_prim_path_exprs)
-
-        # Create a single ArticulationView matching all body types.
+        # Create a single ArticulationView matching exactly the configured bodies.
         # The 2nd dimension (matches per world) corresponds to the body types.
         self._root_view = ArticulationView(
-            SimulationManager.get_model(),
-            combined_pattern,
+            self._backend_manager.get_model(),
+            root_prim_path_exprs,
             verbose=False,
         )
+        # Newton matches each body once, so members whose prim paths alias the same prim come up short here.
         if self._root_view.count_per_world != self.num_bodies:
             raise RuntimeError(
-                f"Rigid object collection pattern {combined_pattern!r} matched "
+                f"Rigid object collection patterns {root_prim_path_exprs} matched "
                 f"{self._root_view.count_per_world} objects per world, but the collection config contains "
-                f"{self.num_bodies}. Ensure collection prim paths share a prefix or suffix that distinguishes them "
-                "from other rigid objects."
+                f"{self.num_bodies}."
             )
 
         # container for data access
-        self._data = RigidObjectCollectionData(self._root_view, self.num_bodies, self.device)
-
-        # Register callback to rebind simulation data after a full reset (model/state recreation).
-        self._physics_ready_handle = SimulationManager.register_callback(
-            lambda _: self._data._create_simulation_bindings(),
-            PhysicsEvent.PHYSICS_READY,
-            name=f"rigid_object_collection_rebind_{self.cfg.rigid_objects}",
+        self._data = RigidObjectCollectionData(
+            self._root_view, self.num_bodies, self.device, backend_manager=self._backend_manager
         )
 
         # create buffers
@@ -1344,49 +1333,6 @@ class RigidObjectCollection(BaseRigidObjectCollection):
         else:
             body_ids = self._ALL_BODY_INDICES
         return body_ids
-
-    @staticmethod
-    def _build_combined_pattern(prim_path_exprs: list[str]) -> str:
-        """Build a single fnmatch pattern that matches all body types.
-
-        Compares path segments across all expressions and wildcards only the differing portion of each segment.
-        For example, given::
-
-            ["/World/Env_*/Object_A", "/World/Env_*/Object_B"]
-
-        produces ``"/World/Env_*/Object_*"``. Retaining common prefixes and suffixes avoids selecting
-        unrelated sibling articulations from the same world.
-
-        Args:
-            prim_path_exprs: List of prim path expressions, one per body type.
-
-        Returns:
-            A single fnmatch pattern string.
-
-        Raises:
-            ValueError: If the expressions have different numbers of path segments.
-        """
-        if len(prim_path_exprs) == 1:
-            return prim_path_exprs[0]
-
-        split_paths = [p.split("/") for p in prim_path_exprs]
-        lengths = {len(s) for s in split_paths}
-        if len(lengths) != 1:
-            raise ValueError(
-                f"Cannot build combined pattern: path expressions have different segment counts: {prim_path_exprs}"
-            )
-
-        combined_segments = []
-        for segments in zip(*split_paths):
-            unique = set(segments)
-            if len(unique) == 1:
-                combined_segments.append(segments[0])
-            else:
-                common_prefix = os.path.commonprefix(segments)
-                remaining_segments = [segment[len(common_prefix) :] for segment in segments]
-                common_suffix = os.path.commonprefix([segment[::-1] for segment in remaining_segments])[::-1]
-                combined_segments.append(f"{common_prefix}*{common_suffix}")
-        return "/".join(combined_segments)
 
     """
     Internal simulation callbacks.

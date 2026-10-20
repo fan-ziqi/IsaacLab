@@ -39,7 +39,6 @@ def add_deformable_from_usd(builder: ModelBuilder, stage: Usd.Stage, geometry: D
         Replace this importer with native ``add_usd`` when Isaac Lab's authored schemas and
         Newton material attributes have parity (newton-physics/newton#3036 and #3038).
         The native USD importer landed in #3192; that alone does not establish material parity.
-        Remove private group recording when the pinned Newton includes #3326's native recording.
     """
     prim = stage.GetPrimAtPath(geometry.root_path)
     material = UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial(materialPurpose="physics")[0].GetPrim()
@@ -58,8 +57,6 @@ def add_deformable_from_usd(builder: ModelBuilder, stage: Usd.Stage, geometry: D
         attr = material.GetAttribute(f"newton:{to_camel_case(name, to='cC')}")
         material_kwargs[name] = attr.Get() if attr.IsValid() else getattr(defaults, name)
 
-    particle_start, tri_start = builder.particle_count, len(builder.tri_indices)
-    edge_start, tet_start = len(builder.edge_indices), len(builder.tet_indices)
     add_mesh(
         vertices=geometry.vertices,
         indices=geometry.indices,
@@ -70,27 +67,12 @@ def add_deformable_from_usd(builder: ModelBuilder, stage: Usd.Stage, geometry: D
         label=geometry.root_path,
         **material_kwargs,
     )
-    particle_range = (particle_start, builder.particle_count)
-    if geometry.deformable_type == "volume":
-        builder._record_soft_group(geometry.root_path, particle_range, (tet_start, len(builder.tet_indices)))
-    else:
-        builder._record_cloth_group(
-            geometry.root_path,
-            particle_range,
-            (tri_start, len(builder.tri_indices)),
-            (edge_start, len(builder.edge_indices)),
-        )
 
 
 def add_visual_deformables_to_sources(
     builders: dict[str, ModelBuilder], entries: Sequence[DeformableStageEntry]
 ) -> None:
-    """Add each visual deformable to every imported source containing its USD subtree.
-
-    Args:
-        builders: Imported source builders keyed by their USD source paths.
-        entries: Discovered deformable prototypes to add to owning builders.
-    """
+    """Add each visual deformable to every imported source containing its USD subtree."""
     for entry in entries:
         for path in reversed(Sdf.Path(entry.root_path).GetPrefixes()):
             builder = builders.get(str(path))
@@ -98,8 +80,6 @@ def add_visual_deformables_to_sources(
                 continue
             pose = dict(pos=wp.vec3(*entry.init_pos), rot=wp.quat(*entry.init_rot), scale=1.0, vel=wp.vec3())
             surface = entry.deformable_type == "surface" or entry.vis_mesh_path != entry.sim_mesh_path
-            particle_start, tri_start = builder.particle_count, len(builder.tri_indices)
-            edge_start, tet_start = len(builder.edge_indices), len(builder.tet_indices)
             if surface:
                 add_mesh = builder.add_cloth_mesh
                 mesh = dict(vertices=entry.vis_vertices, indices=entry.vis_indices, density=1.0)
@@ -109,13 +89,6 @@ def add_visual_deformables_to_sources(
                 mesh = dict(vertices=entry.vertices, indices=entry.indices, density=1000.0)
                 mesh.update(k_mu=1e5, k_lambda=1e5, k_damp=0.0)
             add_mesh(label=entry.vis_mesh_path, **mesh, **pose)
-            # Remove private recording when the pinned Newton includes #3326.
-            particle_range = particle_start, builder.particle_count
-            if surface:
-                tri_range, edge_range = (tri_start, len(builder.tri_indices)), (edge_start, len(builder.edge_indices))
-                builder._record_cloth_group(entry.vis_mesh_path, particle_range, tri_range, edge_range)
-            else:
-                builder._record_soft_group(entry.vis_mesh_path, particle_range, (tet_start, len(builder.tet_indices)))
 
 
 def build_source_builders(
@@ -309,13 +282,14 @@ def replicate_builder_mapping(
     quaternions: np.ndarray,
     source_builders: dict[str, ModelBuilder],
     *,
+    source_inverse: dict[str, np.ndarray],
     env_ids: np.ndarray,
     source_site_indices: dict[int, dict[str, list[int]]] | None = None,
     env_root_sites: dict[str, wp.transform] | None = None,
     per_world_builder_hooks: Sequence[Callable[[ModelBuilder, int, np.ndarray, np.ndarray], None]] = (),
     source_builder_added: Callable[[str, str, int, int], None] | None = None,
 ) -> tuple[dict[str, list[list[int]]], list[wp.transform]]:
-    """Compose routed source builders once per world prototype, then batch their selected worlds."""
+    """Compose sources using their authored inverse frames, then place each world from the plan."""
     topology, env_template = plan.topology, plan.env_template
     layout = topology.world_prototype_layout
     source_site_indices = source_site_indices or {}
@@ -323,15 +297,12 @@ def replicate_builder_mapping(
     num_worlds = len(layout)
     xforms_np = np.concatenate((positions, quaternions), axis=1).astype(np.float32, copy=False)
     world_xforms = [wp.transform(*xform) for xform in xforms_np]
-    source_worlds = {str(env_id): world for world, env_id in enumerate(env_ids)}
     initial_sites = source_site_indices.get(id(builder), {})
     local_site_map = {label: [indices.copy() for _ in range(num_worlds)] for label, indices in initial_sites.items()}
-    source_inverse = {}
     sources = clone_path.get_asset_prototype_paths(plan)
     templates, starts = clone_path.get_world_prototype_asset_templates(plan)
     world_builders = {}
-    prototype_ids, first_world_ids = np.unique(layout, return_index=True)
-    for prototype_id, first_world in zip((-1, *prototype_ids), (-1, *first_world_ids), strict=True):
+    for prototype_id in (-1, *np.unique(layout)):
         start, end = starts[prototype_id + 1 : prototype_id + 3]
         reference_paths = [(sources[topology.world_prototypes[index]], templates[index]) for index in range(start, end)]
         available = [(source, template) for source, template in reference_paths if source in source_builders]
@@ -341,22 +312,13 @@ def replicate_builder_mapping(
         prototype = builder if prototype_id == -1 else ModelBuilder(up_axis=builder.up_axis)
         sites, asset_offsets = {}, []
         for source, destination in components:
-            # Remove the source world's placement before composing assets into other world prototypes.
-            if source not in source_inverse:
-                match = clone_path.match(source, env_template)
-                # The first destination also covers plans that remap an authored source ID outside env_ids.
-                source_world = source_worlds.get(match.instance, first_world) if match is not None else None
-                source_inverse[source] = (
-                    np.asarray(wp.transform(), dtype=np.float32)
-                    if prototype_id == -1 or source_world is None
-                    else np.asarray(wp.transform_inverse(world_xforms[source_world]), dtype=np.float32)
-                )
             asset = source_builders[source]
             asset_offsets.append((prototype.shape_count, prototype.particle_count))
             for label, indices in source_site_indices.get(id(asset), {}).items():
                 sites.setdefault(label, []).extend(prototype.shape_count + index for index in indices)
             prefix = "" if prototype_id == -1 else env_template
-            _add_asset_builder(prototype, asset, source, destination, prefix, reference_paths, source_inverse[source])
+            xform = np.asarray(wp.transform(), dtype=np.float32) if prototype_id == -1 else source_inverse[source]
+            _add_asset_builder(prototype, asset, source, destination, prefix, reference_paths, xform)
         if prototype_id == -1:
             for label, indices in sites.items():
                 local_site_map[label] = np.tile(indices, (num_worlds, 1)).tolist()

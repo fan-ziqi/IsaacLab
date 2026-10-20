@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import logging
 import re
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
@@ -25,8 +24,6 @@ from isaaclab.sensors.contact_sensor import BaseContactSensor
 from isaaclab.sensors.contact_sensor.contact_force_marker import ContactForceVisualizer
 from isaaclab.sim.utils.queries import path_expr_to_glob, resolve_matching_prims_from_source, split_path_expr
 from isaaclab.utils.warp import ProxyArray
-
-from isaaclab_physx.physics import PhysxManager as SimulationManager
 
 from .contact_sensor_data import ContactSensorData
 from .kernels import (
@@ -362,7 +359,7 @@ class ContactSensor(BaseContactSensor):
     def _initialize_impl(self):
         super()._initialize_impl()
         # obtain global simulation view
-        self._physics_sim_view = SimulationManager.get_physics_sim_view()
+        self._physics_sim_view = self._backend_manager.get_physics_sim_view()
 
         # Split the configured prim path into a parent expression and a leaf-name regex.
         # split on separators only: a trailing ``[^/]`` class holds a ``/`` that is not one
@@ -632,7 +629,7 @@ class ContactSensor(BaseContactSensor):
                 self._history_length,
                 self.cfg.force_threshold,
                 self._timestamp,
-                self._timestamp_last_update,
+                self._elapsed_since_update,
             ],
             outputs=[
                 self._data._net_normal_forces_w,
@@ -678,6 +675,7 @@ class ContactSensor(BaseContactSensor):
                     self._num_envs,
                     True,
                     float("nan"),
+                    self._timestamp,
                 ],
                 outputs=[self._data._contact_pos_w],
                 device=self.device,
@@ -696,6 +694,7 @@ class ContactSensor(BaseContactSensor):
                     self._num_envs,
                     False,
                     0.0,
+                    self._timestamp,
                 ],
                 outputs=[self._data._friction_force_matrix_w],
                 device=self.device,
@@ -727,17 +726,11 @@ class ContactSensor(BaseContactSensor):
             # set their visibility to true
             self.contact_visualizer.set_visibility(True)
             self.normal_force_visualizer.set_visibility(True)
-            if (
-                self._is_initialized
-                and not self._supports_total_contact_forces
-                and not getattr(self, "_warned_missing_net_friction_vis", False)
-            ):
-                warnings.warn(
+            if self._is_initialized and not self._supports_total_contact_forces:
+                logger.warning(
                     "Isaac Sim PhysX 6.1 contact sensor visualization cannot display net friction forces because"
-                    " the backend only reports friction for configured filter objects.",
-                    stacklevel=2,
+                    " the backend only reports friction for configured filter objects."
                 )
-                self._warned_missing_net_friction_vis = True
         else:
             if hasattr(self, "contact_visualizer"):
                 self.contact_visualizer.set_visibility(False)

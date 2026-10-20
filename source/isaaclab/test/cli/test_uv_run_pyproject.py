@@ -27,7 +27,7 @@ def _root_pyproject(source_checkout_root: Path) -> dict:
 def test_uv_run_extra_names_match_documented_workflow(source_checkout_root: Path):
     """Docs must only reference ``uv run --extra`` names that pyproject defines."""
     repo_root = source_checkout_root
-    docs = (repo_root / "docs/source/setup/installation/index.rst").read_text(encoding="utf-8")
+    docs = (repo_root / "docs/source/isaaclab/installation.rst").read_text(encoding="utf-8")
     documented_extras = set(re.findall(r"--extra\s+([A-Za-z0-9_-]+)", docs))
     optional_dependencies = _root_pyproject(source_checkout_root)["project"]["optional-dependencies"]
 
@@ -37,7 +37,7 @@ def test_uv_run_extra_names_match_documented_workflow(source_checkout_root: Path
 
 def test_published_wheel_docs_cover_one_off_and_managed_uv_workflows(source_checkout_root: Path):
     """Published workflows must cover isolated execution and a persistent uv project."""
-    docs = (source_checkout_root / "docs/source/setup/installation/index.rst").read_text(encoding="utf-8")
+    docs = (source_checkout_root / "docs/source/isaaclab/installation.rst").read_text(encoding="utf-8")
     published_docs = docs.split("Installing the published wheel", maxsplit=1)[1].split("Optional extras", maxsplit=1)[0]
     project_docs = published_docs.split("uv project dependency", maxsplit=1)[1].split(
         "Standalone uv environment", maxsplit=1
@@ -185,8 +185,12 @@ def test_version_single_source_matches_literal_pins(source_checkout_root: Path):
     for package in ("torch", "torchvision"):
         assert f"{package}=={versions[package]}" in dependencies
 
-    # Newton uses the same exact PyPI release for source and wheel installations.
-    newton_spec = f"newton[sim]=={versions['newton']}"
+    # Newton source and wheel installations use the locked commit until its next release.
+    lock = tomllib.loads((source_checkout_root / "uv.lock").read_text(encoding="utf-8"))
+    newton = next(package for package in lock["package"] if package["name"] == "newton")
+    assert newton["version"] == versions["newton"]
+    commit = newton["source"]["git"].rsplit("#", 1)[1]
+    newton_spec = f"newton[sim] @ git+https://github.com/newton-physics/newton.git@{commit}"
     assert newton_spec in dependencies
     assert newton_spec in overrides
 

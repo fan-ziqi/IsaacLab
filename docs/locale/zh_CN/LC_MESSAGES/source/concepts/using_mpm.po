@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 05:36+0000\n"
-"PO-Revision-Date: 2026-10-15 00:00+0800\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -32,66 +32,102 @@ msgstr ""
 
 #: source/concepts/using_mpm.rst:11
 msgid ""
-"This page explains how the integration works. For runnable scenes, see "
-"`Examples and tasks`_. For resolution, convergence, and material studies, "
-"and the nearly rigid MPM limit, see :ref:`newton-tuning-mpm`."
+"Start with `Examples and tasks`_ for runnable scenes. See :ref:`newton-"
+"tuning-mpm` for resolution, convergence, material settings, and the nearly "
+"rigid MPM limit."
+msgstr "先从 `示例与任务`_ 中运行场景。分辨率、收敛、材质设置及 MPM 的近刚性极限见 :ref:`newton-tuning-mpm`。"
+
+#: source/concepts/using_mpm.rst:16
+msgid "Examples and tasks"
+msgstr "示例与任务"
+
+#: source/concepts/using_mpm.rst:18
+msgid ""
+"These examples and demos introduce MPM construction and interaction. They "
+"default to Newton GL for interactive viewing. The launcher uses ``cuda:0`` "
+"by default. Pass ``--device cuda:N`` to select a different GPU."
 msgstr ""
-"本页介绍集成方式。可运行的场景见 `示例与任务 <Examples and tasks_>`_；分辨率、收敛性、材质参数研究及近刚性 MPM 极限见 "
-":ref:`newton-tuning-mpm` 。"
+"这些示例和演示介绍 MPM 的构建与交互，默认使用 Newton GL 进行交互式查看。启动器默认使用 ``cuda:0``；可通过 "
+"``--device cuda:N`` 选择其他 GPU。"
 
-#: source/concepts/using_mpm.rst:17
-msgid "How MPM fits into the Newton backend"
-msgstr "MPM 如何接入 Newton 后端"
+#: source/concepts/using_mpm.rst:25
+msgid "Granular drop"
+msgstr "颗粒下落"
 
-#: source/concepts/using_mpm.rst:19
+#: source/concepts/using_mpm.rst:37
+msgid "Two-way sphere pit"
+msgstr "双向耦合球坑"
+
+#: source/concepts/using_mpm.rst:49
+msgid "Snowball smash"
+msgstr "雪球撞击"
+
+#: source/concepts/using_mpm.rst:61
+msgid "Teapot fill"
+msgstr "填充茶壶"
+
+#: source/concepts/using_mpm.rst:76
+msgid "Franka Pour"
+msgstr "Franka 倒料任务"
+
+#: source/concepts/using_mpm.rst:78
 msgid ""
-"Selecting :class:`~isaaclab_newton.physics.MPMSolverCfg` as the "
-"``solver_cfg`` of :class:`~isaaclab_newton.physics.NewtonCfg` installs "
-":class:`~isaaclab_newton.physics.NewtonMPMManager`, a specialization of the "
-"Newton manager that constructs Newton's ``SolverImplicitMPM``. The solver "
-"represents material as particles and solves its rheology implicitly on a "
-"background voxel grid. The MPM manager configures the Newton manager as "
-"follows:"
+"The ``IsaacContrib-Franka-Pour`` task restores episodes from a reset "
+"artifact containing the connected 14-phase reset distribution. The canonical"
+" 20,000-row artifact downloads from the standard Isaac Lab asset root on "
+"first use, so training needs no artifact setup:"
 msgstr ""
-"将 :class:`~isaaclab_newton.physics.NewtonCfg` 的 ``solver_cfg`` 设为 "
-":class:`~isaaclab_newton.physics.MPMSolverCfg` ，会启用 "
-":class:`~isaaclab_newton.physics.NewtonMPMManager` 。这是 Newton 管理器的专用实现，负责构建 "
-"Newton 的 ``SolverImplicitMPM``。求解器将材料表示为粒子，并在背景体素网格上隐式求解其流变行为。MPM 管理器会对 "
-"Newton 管理器作如下配置："
+"``IsaacContrib-Franka-Pour`` 任务从重置数据文件恢复回合，该文件包含相互衔接的 14 阶段重置分布。首次使用时，会从标准 "
+"Isaac Lab 资产根目录下载含 20,000 行的标准数据文件，因此训练无需另行准备该文件："
 
-#: source/concepts/using_mpm.rst:27
+#: source/concepts/using_mpm.rst:88
 msgid ""
-"It advances particles in place on a single Newton state rather than double "
-"buffering state."
-msgstr "在同一个 Newton 状态对象中原地更新粒子，而不对状态使用双缓冲。"
+"The checked-in generator remains the executable reference for reproducing or"
+" customizing the distribution. It takes about two minutes on an L40S-class "
+"GPU and writes a local artifact that can be selected explicitly:"
+msgstr "仓库中的生成器是复现或自定义该分布的可执行参考。在 L40S 级别的 GPU 上约需两分钟，它会写入一个可显式选择的本地数据文件："
 
-#: source/concepts/using_mpm.rst:29
+#: source/concepts/using_mpm.rst:99
 msgid ""
-"It resolves collider contact inside the implicit solve. It does not use "
-"Newton's collision pipeline."
-msgstr "在隐式求解过程中处理碰撞体接触，不使用 Newton 的碰撞处理管线。"
-
-#: source/concepts/using_mpm.rst:31
-msgid ""
-"It treats rigid geometry as colliders. It is not a rigid-body or "
-"articulation dynamics solver, and it does not accept external rigid-body "
-"forces. Kinematic bodies are given zero mass before the model is finalized, "
-"and convex meshes are passed to the solver as triangle meshes."
+"The task validates the payload's stored content digest automatically. "
+"Setting ``ISAACSIM_ASSET_ROOT`` redirects the canonical artifact to a "
+"compatible local or self-hosted asset tree. Digest pinning remains available"
+" for custom reproducible experiments."
 msgstr ""
-"将刚体几何体视为碰撞体。它不是刚体或关节系统的动力学求解器，也不接受外部刚体力。模型构建完成前，运动学刚体的质量会被设为零，凸网格则以三角网格形式传入求解器。"
+"任务会自动验证数据中保存的内容摘要。设置 ``ISAACSIM_ASSET_ROOT`` "
+"可将标准数据文件的查找位置改为兼容的本地或自托管资产目录树。自定义的可复现实验仍可固定摘要。"
 
-#: source/concepts/using_mpm.rst:38
+#: source/concepts/using_mpm.rst:104
+msgid ""
+"The source uses a non-colliding analytic fill volume whose height is "
+"controlled by ``env.source_fill_level`` in ``(0, 1]``. The default ``0.70`` "
+"fills roughly 70% of the cup height; the particle count follows the "
+"requested fill level while voxel size and particle spacing stay fixed. "
+"``env.pour_target_frac`` independently controls the fraction of that live "
+"payload that must reach the receiver."
+msgstr ""
+"源容器使用不参与碰撞的解析填充体积，其高度由 ``env.source_fill_level`` 控制，取值范围为 ``(0, 1]`` 。默认 "
+"``0.70`` 表示填充至约 70% 的杯高；粒子数量随指定填充比例变化，而体素大小和粒子间距保持固定。 "
+"``env.pour_target_frac`` 独立控制当前粒子总量中必须到达接收容器的比例。"
+
+#: source/concepts/using_mpm.rst:111
+msgid ""
+"Play a checkpoint in Kit with the canonical task configuration; no external "
+"callback or particle override is required:"
+msgstr "使用标准任务配置，在 Kit 中运行检查点；无需外部回调或粒子覆盖配置："
+
+#: source/concepts/using_mpm.rst:121
 msgid "Coupling with rigid bodies"
 msgstr "与刚体耦合"
 
-#: source/concepts/using_mpm.rst:40
+#: source/concepts/using_mpm.rst:123
 msgid ""
 "On its own, the MPM solver advances only particles. Rigid bodies act as "
 "colliders whose motion comes from elsewhere, such as kinematic pose writes, "
 "and the material does not push back on them."
 msgstr "单独使用时，MPM 求解器只推进粒子。刚体充当碰撞体，其运动由其他机制提供，例如写入运动学位姿；材料不会对这些刚体施加反作用力。"
 
-#: source/concepts/using_mpm.rst:44
+#: source/concepts/using_mpm.rst:127
 msgid ""
 "Two-way interaction uses the experimental coupler in "
 ":mod:`isaaclab_contrib.coupling`. A "
@@ -102,23 +138,23 @@ msgstr ""
 "中的实验性耦合器。:class:`~isaaclab_contrib.coupling.CouplerProxyCfg` 将同一个 Newton "
 "模型划分为若干命名条目："
 
-#: source/concepts/using_mpm.rst:49
+#: source/concepts/using_mpm.rst:132
 msgid ""
 "a rigid entry, for example MJWarp, that owns the robot or object bodies;"
 msgstr "刚体条目，例如 MJWarp，负责机器人或物体的刚体；"
 
-#: source/concepts/using_mpm.rst:50
+#: source/concepts/using_mpm.rst:133
 msgid ""
 "an MPM entry that owns the particles and must set ``in_place=True``; and"
 msgstr "MPM 条目负责粒子，必须设置 ``in_place=True``；"
 
-#: source/concepts/using_mpm.rst:51
+#: source/concepts/using_mpm.rst:134
 msgid ""
 "a proxy mapping that exposes selected rigid bodies as colliders in the MPM "
 "entry and feeds the resulting impulses back to the rigid entry."
 msgstr "代理映射将选定的刚体作为碰撞体提供给 MPM 条目，并将产生的冲量反馈给刚体条目。"
 
-#: source/concepts/using_mpm.rst:54
+#: source/concepts/using_mpm.rst:137
 msgid ""
 "The ``mpm-two-way-coupling`` example, the ``snowball-smash`` demo, and the "
 "Franka Pour task all use this pattern. See :ref:`newton-coupled-solvers` for"
@@ -127,15 +163,15 @@ msgstr ""
 "``mpm-two-way-coupling`` 示例、``snowball-smash`` 演示和 Franka Pour "
 "任务均使用这一方式。代理耦合、ADMM 耦合、数据交换模式及调优见 :ref:`newton-coupled-solvers` 。"
 
-#: source/concepts/using_mpm.rst:60
+#: source/concepts/using_mpm.rst:143
 msgid "Data model"
 msgstr "数据模型"
 
-#: source/concepts/using_mpm.rst:63
+#: source/concepts/using_mpm.rst:146
 msgid "Configuration and USD"
 msgstr "配置与 USD"
 
-#: source/concepts/using_mpm.rst:65
+#: source/concepts/using_mpm.rst:148
 msgid ""
 "An MPM material is a scene asset. "
 ":class:`~isaaclab_newton.assets.MPMObjectCfg` extends the deformable-object "
@@ -144,7 +180,7 @@ msgstr ""
 "MPM 材料是一种场景资产。:class:`~isaaclab_newton.assets.MPMObjectCfg` "
 "扩展了可变形对象配置，并使用粒子生成器："
 
-#: source/concepts/using_mpm.rst:68
+#: source/concepts/using_mpm.rst:151
 msgid ""
 ":class:`~isaaclab_newton.sim.spawners.mpm.MPMGridCfg` fills an axis-aligned "
 "local box with a particle lattice whose resolution follows ``voxel_size`` "
@@ -153,7 +189,7 @@ msgstr ""
 ":class:`~isaaclab_newton.sim.spawners.mpm.MPMGridCfg` "
 "在局部坐标系中轴对齐的盒体内填充粒子点阵，分辨率由 ``voxel_size`` 和 ``particles_per_cell`` 决定。"
 
-#: source/concepts/using_mpm.rst:71
+#: source/concepts/using_mpm.rst:154
 msgid ""
 ":class:`~isaaclab_newton.sim.spawners.mpm.MPMPointsCfg` places particles at "
 "explicit local positions, with optional velocities, masses, and radii."
@@ -161,7 +197,7 @@ msgstr ""
 ":class:`~isaaclab_newton.sim.spawners.mpm.MPMPointsCfg` "
 "将粒子放置在明确指定的局部位置，可选配速度、质量和半径。"
 
-#: source/concepts/using_mpm.rst:74
+#: source/concepts/using_mpm.rst:157
 msgid ""
 "Both spawners author schema-valid ``UsdGeom.Points`` simulation geometry. "
 "Grid configurations still generate the lattice in Isaac Lab before authoring"
@@ -180,7 +216,7 @@ msgstr ""
 "young_modulus``，单位为 [Pa·s]。``critical_fraction`` 等求解器全局设置位于 ``MPMSolverCfg``"
 " 中；其中可用 schema 表达的设置通过 ``NewtonMPMSceneAPI`` 写入物理场景 prim。"
 
-#: source/concepts/using_mpm.rst:83
+#: source/concepts/using_mpm.rst:166
 msgid ""
 "MPM objects are cloned through Newton replication. Grid jitter is generated "
 "once in asset-local coordinates with a fixed seed, so USD clones share the "
@@ -190,7 +226,7 @@ msgstr ""
 "MPM 对象通过 Newton 的复制机制克隆。网格随机扰动在资产局部坐标系中使用固定种子生成一次，因此 USD "
 "克隆共享相同的局部粒子分布。每个环境需要独立分布时，应使用重置事件或域随机化。"
 
-#: source/concepts/using_mpm.rst:88
+#: source/concepts/using_mpm.rst:171
 msgid ""
 "Use the same voxel size for the solver grid and particle generator. Add the "
 "generated object to an :class:`~isaaclab.scene.InteractiveSceneCfg` like any"
@@ -199,11 +235,11 @@ msgstr ""
 "求解器网格与粒子生成器应使用相同的体素尺寸。和其他声明式资产一样，将生成的对象加入 "
 ":class:`~isaaclab.scene.InteractiveSceneCfg` ："
 
-#: source/concepts/using_mpm.rst:125
+#: source/concepts/using_mpm.rst:208
 msgid "Runtime asset"
 msgstr "运行时资产"
 
-#: source/concepts/using_mpm.rst:127
+#: source/concepts/using_mpm.rst:210
 msgid ""
 ":class:`~isaaclab_newton.assets.MPMObject` implements Isaac Lab's "
 "deformable-object interface, so scene reset, update, and state workflows "
@@ -224,48 +260,48 @@ msgstr ""
 "提供仿真世界坐标系中的粒子位置、速度和组合状态，可变形体的 ``nodal_*`` 属性是这些属性的别名。``root_pos_w`` 和 "
 "``root_vel_w`` 分别是每个实例内所有粒子位置和速度的平均值。位置、速度和状态的写入会立即生效，不支持可变形体运动学目标。"
 
-#: source/concepts/using_mpm.rst:141
+#: source/concepts/using_mpm.rst:224
 msgid "Configuration reference"
 msgstr "配置参考"
 
-#: source/concepts/using_mpm.rst:143
+#: source/concepts/using_mpm.rst:226
 msgid ""
 "The generated :class:`~isaaclab_newton.physics.MPMSolverCfg` reference is "
 "the source of truth for fields and defaults. The fields group as follows:"
 msgstr ""
 "字段及默认值以自动生成的 :class:`~isaaclab_newton.physics.MPMSolverCfg` 参考为准。各字段可分为以下几组："
 
-#: source/concepts/using_mpm.rst:150
+#: source/concepts/using_mpm.rst:233
 msgid "Group"
 msgstr "类别"
 
-#: source/concepts/using_mpm.rst:151
+#: source/concepts/using_mpm.rst:234
 msgid "Fields"
 msgstr "字段"
 
-#: source/concepts/using_mpm.rst:152
+#: source/concepts/using_mpm.rst:235
 msgid "Effect"
 msgstr "作用"
 
-#: source/concepts/using_mpm.rst:153
+#: source/concepts/using_mpm.rst:236
 msgid "Resolution"
 msgstr "分辨率"
 
-#: source/concepts/using_mpm.rst:154
+#: source/concepts/using_mpm.rst:237
 msgid "``voxel_size``, and ``particles_per_cell`` on the spawner"
 msgstr "``voxel_size``，以及生成器中的 ``particles_per_cell``"
 
-#: source/concepts/using_mpm.rst:155
+#: source/concepts/using_mpm.rst:238
 msgid ""
 "Background-grid and particle resolution, which set accuracy, active cells, "
 "and memory use."
 msgstr "背景网格和粒子的分辨率，决定精度、活跃网格单元数量和内存占用。"
 
-#: source/concepts/using_mpm.rst:157
+#: source/concepts/using_mpm.rst:240
 msgid "Grid storage"
 msgstr "网格存储"
 
-#: source/concepts/using_mpm.rst:158
+#: source/concepts/using_mpm.rst:241
 msgid ""
 "``grid_type``, ``grid_padding``, ``max_active_cell_count``, the "
 "``max_*_node_count`` limits, and ``separate_worlds``"
@@ -273,31 +309,31 @@ msgstr ""
 "``grid_type``、``grid_padding``、``max_active_cell_count``、``max_*_node_count``"
 " 容量限制，以及 ``separate_worlds``"
 
-#: source/concepts/using_mpm.rst:160
+#: source/concepts/using_mpm.rst:243
 msgid ""
 "Sparse, dense, or fixed grid allocation, reserved capacity, and whether each"
 " world uses its own local grid."
 msgstr "稀疏、稠密或固定网格的分配方式、预留容量，以及是否为每个仿真世界分配独立的局部网格。"
 
-#: source/concepts/using_mpm.rst:162
+#: source/concepts/using_mpm.rst:245
 msgid "Rheology solve"
 msgstr "流变求解"
 
-#: source/concepts/using_mpm.rst:163
+#: source/concepts/using_mpm.rst:246
 msgid "``max_iterations``, ``tolerance``, ``solver``, and ``warmstart_mode``"
 msgstr "``max_iterations``、``tolerance``、``solver`` 和 ``warmstart_mode``"
 
-#: source/concepts/using_mpm.rst:164
+#: source/concepts/using_mpm.rst:247
 msgid ""
 "Iteration cap, convergence tolerance, the solver or warm-start sequence, and"
 " warm-start source."
 msgstr "迭代上限、收敛容差、求解器或热启动流程，以及热启动数据来源。"
 
-#: source/concepts/using_mpm.rst:166
+#: source/concepts/using_mpm.rst:249
 msgid "Discretization"
 msgstr "离散化"
 
-#: source/concepts/using_mpm.rst:167
+#: source/concepts/using_mpm.rst:250
 msgid ""
 "``transfer_scheme``, ``integration_scheme``, ``velocity_basis``, "
 "``strain_basis``, and ``collider_basis``"
@@ -305,30 +341,30 @@ msgstr ""
 "``transfer_scheme``、``integration_scheme``、``velocity_basis``、``strain_basis``"
 " 和 ``collider_basis``"
 
-#: source/concepts/using_mpm.rst:169
+#: source/concepts/using_mpm.rst:252
 msgid ""
 "Particle-grid transfer, shape-function support, and the basis functions for "
 "each field."
 msgstr "粒子与网格之间的数据传递、形函数支撑域，以及各场使用的基函数。"
 
-#: source/concepts/using_mpm.rst:171
+#: source/concepts/using_mpm.rst:254
 msgid "Material and background"
 msgstr "材料与背景"
 
-#: source/concepts/using_mpm.rst:172
+#: source/concepts/using_mpm.rst:255
 msgid "``critical_fraction`` and ``air_drag``"
 msgstr "``critical_fraction`` 和 ``air_drag``"
 
-#: source/concepts/using_mpm.rst:173
+#: source/concepts/using_mpm.rst:256
 msgid ""
 "Solver-global yield-surface collapse and numerical drag for empty space."
 msgstr "求解器全局的屈服面坍缩参数，以及空区域的数值阻力。"
 
-#: source/concepts/using_mpm.rst:175
+#: source/concepts/using_mpm.rst:258
 msgid "Colliders"
 msgstr "碰撞体"
 
-#: source/concepts/using_mpm.rst:176
+#: source/concepts/using_mpm.rst:259
 msgid ""
 "``collider_velocity_mode``, ``collider_normal_from_sdf_gradient``, and "
 "``project_outside_colliders``"
@@ -336,13 +372,13 @@ msgstr ""
 "``collider_velocity_mode``、``collider_normal_from_sdf_gradient`` 和 "
 "``project_outside_colliders``"
 
-#: source/concepts/using_mpm.rst:178
+#: source/concepts/using_mpm.rst:261
 msgid ""
 "Collider velocity and normal computation, and an optional post-substep "
 "projection of particles out of colliders."
 msgstr "碰撞体速度和法线的计算方式，以及每个子步结束后将粒子投影到碰撞体外部的可选操作。"
 
-#: source/concepts/using_mpm.rst:181
+#: source/concepts/using_mpm.rst:264
 msgid ""
 "The implicit solve already resolves collider contact. "
 "``project_outside_colliders`` adds a hard post-step correction for particles"
@@ -353,42 +389,42 @@ msgstr ""
 "隐式求解已负责处理碰撞体接触。``project_outside_colliders`` "
 "额外在步进后强制校正仍处于碰撞体内部的粒子。仅在确实需要这种几何校正时使用它，不能用它替代正确的初始状态、碰撞几何体或稳定的时间步长。"
 
-#: source/concepts/using_mpm.rst:187
+#: source/concepts/using_mpm.rst:270
 msgid "CUDA graph capture"
 msgstr "CUDA 图捕获"
 
-#: source/concepts/using_mpm.rst:189
+#: source/concepts/using_mpm.rst:272
 msgid ""
 "CUDA graph capture of the MPM step is available only when the grid has "
 "capture-stable storage:"
 msgstr "仅当网格存储满足图捕获的稳定性要求时，MPM 步进才支持 CUDA 图捕获："
 
-#: source/concepts/using_mpm.rst:192
+#: source/concepts/using_mpm.rst:275
 msgid "a ``\"fixed\"`` grid with a positive ``max_active_cell_count``; or"
 msgstr "使用 ``\"fixed\"`` 网格，且 ``max_active_cell_count`` 为正值；或者"
 
-#: source/concepts/using_mpm.rst:193
+#: source/concepts/using_mpm.rst:276
 msgid ""
 "a ``\"sparse\"`` grid with a positive ``max_active_cell_count``, "
-"``grid_padding=0``, and the ``\"Q1\"`` velocity basis. The strain basis must"
-" start with ``\"pic\"`` or be one of ``\"P0\"``, ``\"P1d\"``, ``\"Q1d\"``, "
-"or ``\"Q1\"``. The collider basis must start with ``\"pic\"`` or be one of "
-"``\"Q1\"``, ``\"S2\"``, or ``\"S3\"``."
+"``grid_padding=0``, and a ``\"Q1\"`` or ``\"B2\"`` velocity basis. The "
+"strain basis must start with ``\"pic\"`` or be one of ``\"P0\"``, "
+"``\"P1d\"``, ``\"Q1d\"``, or ``\"Q1\"``. The collider basis must start with "
+"``\"pic\"`` or be one of ``\"Q1\"``, ``\"S2\"``, or ``\"S3\"``."
 msgstr ""
-"使用 ``\"sparse\"`` 网格，``max_active_cell_count`` 为正值，设置 ``grid_padding=0``，并使用"
-" ``\"Q1\"`` 速度基函数。应变基函数名称必须以 ``\"pic\"`` 开头，或为 "
-"``\"P0\"``、``\"P1d\"``、``\"Q1d\"``、``\"Q1\"`` 之一。碰撞体基函数名称必须以 ``\"pic\"`` "
-"开头，或为 ``\"Q1\"``、``\"S2\"``、``\"S3\"`` 之一。"
+"使用 ``\"sparse\"`` 网格，``max_active_cell_count`` "
+"必须为正，``grid_padding=0``，速度基函数为 ``\"Q1\"`` 或 ``\"B2\"``。应变基函数必须以 ``\"pic\"`` "
+"开头，或为 ``\"P0\"``、``\"P1d\"``、``\"Q1d\"``、``\"Q1\"`` 之一；碰撞体基函数必须以 ``\"pic\"``"
+" 开头，或为 ``\"Q1\"``、``\"S2\"``、``\"S3\"`` 之一。"
 
-#: source/concepts/using_mpm.rst:199
+#: source/concepts/using_mpm.rst:282
 msgid "Dense grids and unbounded grids run without capture."
 msgstr "稠密网格和未设置容量上限的网格不使用图捕获。"
 
-#: source/concepts/using_mpm.rst:202
+#: source/concepts/using_mpm.rst:285
 msgid "Resets"
 msgstr "重置"
 
-#: source/concepts/using_mpm.rst:204
+#: source/concepts/using_mpm.rst:287
 msgid ""
 "With the MPM solver alone, automatic asset resets leave solver history "
 "untouched, because worlds that share one grid cannot have their history "
@@ -407,7 +443,7 @@ msgstr ""
 ":meth:`~isaaclab_newton.physics.NewtonMPMManager.reset_solver_state` "
 "。在耦合运行中，这也会重置耦合求解器的历史。"
 
-#: source/concepts/using_mpm.rst:214
+#: source/concepts/using_mpm.rst:297
 msgid ""
 "Try the :ref:`interactive MPM demo <interactive-demo-mpm>` to compare "
 "material references and adjust stiffness, cohesion, friction, and hardening "
@@ -416,11 +452,11 @@ msgstr ""
 "可以先试试 :ref:`交互式 MPM 演示 <interactive-demo-mpm>` "
 "：反复进行相同的粒子下落实验，对比参考材料，并调整刚度、内聚力、摩擦和硬化参数。"
 
-#: source/concepts/using_mpm.rst:220
+#: source/concepts/using_mpm.rst:303
 msgid "Rendering a particle surface"
 msgstr "渲染粒子表面"
 
-#: source/concepts/using_mpm.rst:222
+#: source/concepts/using_mpm.rst:305
 msgid ""
 "MPM simulation state remains a set of particles. Surface reconstruction is "
 "an optional visualization pass: it does not change particle motion, "
@@ -428,27 +464,28 @@ msgid ""
 "available modes:"
 msgstr "MPM 仿真状态始终是一组粒子。表面重建是可选的可视化步骤，不会改变粒子运动、碰撞或材质行为。运行茶壶演示可对比可用模式："
 
-#: source/concepts/using_mpm.rst:238
+#: source/concepts/using_mpm.rst:324
 msgid ""
 "The teapot demo defaults to the reconstructed surface. Select ``particles`` "
-"or ``both`` to inspect the source MPM state in Newton GL or Newton RTX."
+"or ``both`` to inspect the source MPM state in Kit, Newton GL, or Newton "
+"RTX."
 msgstr ""
-"茶壶演示默认显示重建表面。选择 ``particles`` 或 ``both`` ，可在 Newton GL 或 Newton RTX 中查看原始 "
-"MPM 状态。"
+"茶壶演示默认显示重建表面。选择 ``particles`` 或 ``both``，可在 Kit、Newton GL 或 Newton RTX 中查看原始"
+" MPM 状态。"
 
-#: source/concepts/using_mpm.rst:241
+#: source/concepts/using_mpm.rst:327
 msgid ""
-"Surface rendering is available in the Newton GL and Newton RTX visualizers. "
-"The Kit visualizer continues to render the MPM particles directly."
-msgstr "Newton GL 和 Newton RTX 可视化器支持表面渲染，Kit 可视化器仍直接渲染 MPM 粒子。"
+"Surface rendering is available in the Kit, Newton GL, and Newton RTX "
+"visualizers."
+msgstr "Kit、Newton GL 和 Newton RTX 可视化器均支持表面渲染。"
 
-#: source/concepts/using_mpm.rst:250
+#: source/concepts/using_mpm.rst:335
 msgid ""
 "This recording demonstrates rendering appearance, not a different "
 "constitutive model."
 msgstr "这段录制展示的是渲染外观，并非另一种本构模型。"
 
-#: source/concepts/using_mpm.rst:253
+#: source/concepts/using_mpm.rst:338
 msgid ""
 "The teapot demo configures ``newton.geometry.ParticleSurface`` after "
 "``sim.reset()`` and updates the mesh before ``sim.render()``. Its renderer "
@@ -458,35 +495,35 @@ msgstr ""
 "茶壶演示在 ``sim.reset()`` 后配置 ``newton.geometry.ParticleSurface`` ，并在 "
 "``sim.render()`` 前更新网格。启用 CUDA 捕获时，其渲染器会捕获表面提取操作，并在查看器的帧生命周期内暂存动态网格。"
 
-#: source/concepts/using_mpm.rst:258
+#: source/concepts/using_mpm.rst:343
 msgid "Tune reconstruction independently from the simulation:"
 msgstr "重建参数应独立于仿真调节："
 
-#: source/concepts/using_mpm.rst:260
+#: source/concepts/using_mpm.rst:345
 msgid ""
 "``voxel_size`` controls surface detail and memory use. It can be smaller "
 "than the MPM solver voxel size."
 msgstr "``voxel_size`` 控制表面细节和内存用量，可以小于 MPM 求解器的体素大小。"
 
-#: source/concepts/using_mpm.rst:262
+#: source/concepts/using_mpm.rst:347
 msgid ""
 "``kernel_radius`` controls how far each particle contributes to the surface."
 " Start near three times the particle spacing."
 msgstr "``kernel_radius`` 控制每个粒子对表面的影响范围。建议从粒子间距的三倍左右开始。"
 
-#: source/concepts/using_mpm.rst:264
+#: source/concepts/using_mpm.rst:349
 msgid ""
 "``max_grid_cells`` provides fixed-capacity storage for CUDA graph capture. "
 "Increase it if the reconstructed domain outgrows the reserved grid."
 msgstr "``max_grid_cells`` 为 CUDA 图捕获提供固定容量的存储。如果重建区域超出预留网格，请增大该值。"
 
-#: source/concepts/using_mpm.rst:266
+#: source/concepts/using_mpm.rst:351
 msgid ""
 "Anisotropic kernels preserve sheets and stretched fluid features better, but"
 " cost more than isotropic kernels."
 msgstr "各向异性核能更好地保留薄片和拉长的流体特征，但开销高于各向同性核。"
 
-#: source/concepts/using_mpm.rst:269
+#: source/concepts/using_mpm.rst:354
 msgid ""
 "To render a surface in your own scene, pass the configured "
 "``newton.geometry.ParticleSurface`` to ``ParticleSurfaceRenderer`` after "
@@ -502,90 +539,52 @@ msgstr ""
 msgid "``ParticleSurfaceRenderer`` implementation"
 msgstr "``ParticleSurfaceRenderer`` 的实现"
 
-#: source/concepts/using_mpm.rst:284
-msgid "Examples and tasks"
-msgstr "示例与任务"
+#: source/concepts/using_mpm.rst:369
+msgid "How MPM fits into the Newton backend"
+msgstr "MPM 如何接入 Newton 后端"
 
-#: source/concepts/using_mpm.rst:286
+#: source/concepts/using_mpm.rst:371
 msgid ""
-"These examples and demos introduce MPM construction and interaction. They "
-"default to Newton GL for interactive viewing. The launcher uses ``cuda:0`` "
-"by default. Pass ``--device cuda:N`` to select a different GPU."
+"Selecting :class:`~isaaclab_newton.physics.MPMSolverCfg` as the "
+"``solver_cfg`` of :class:`~isaaclab_newton.physics.NewtonCfg` installs "
+":class:`~isaaclab_newton.physics.NewtonMPMManager`, a specialization of the "
+"Newton manager that constructs Newton's ``SolverImplicitMPM``. The solver "
+"represents material as particles and solves its rheology implicitly on a "
+"background voxel grid. The MPM manager configures the Newton manager as "
+"follows:"
 msgstr ""
-"这些示例和演示介绍 MPM 的构建与交互，默认使用 Newton GL 进行交互式查看。启动器默认使用 ``cuda:0``；可通过 "
-"``--device cuda:N`` 选择其他 GPU。"
-
-#: source/concepts/using_mpm.rst:293
-msgid "Granular drop"
-msgstr "颗粒下落"
-
-#: source/concepts/using_mpm.rst:305
-msgid "Two-way sphere pit"
-msgstr "双向耦合球坑"
-
-#: source/concepts/using_mpm.rst:317
-msgid "Snowball smash"
-msgstr "雪球撞击"
-
-#: source/concepts/using_mpm.rst:329
-msgid "Teapot fill"
-msgstr "填充茶壶"
-
-#: source/concepts/using_mpm.rst:344
-msgid "Franka Pour"
-msgstr "Franka 倒料任务"
-
-#: source/concepts/using_mpm.rst:346
-msgid ""
-"The ``IsaacContrib-Franka-Pour`` task restores episodes from a reset "
-"artifact containing the connected 14-phase reset distribution. The canonical"
-" 20,000-row artifact downloads from the standard Isaac Lab asset root on "
-"first use, so training needs no artifact setup:"
-msgstr ""
-"``IsaacContrib-Franka-Pour`` 任务从重置数据文件恢复回合，该文件包含相互衔接的 14 阶段重置分布。首次使用时，会从标准 "
-"Isaac Lab 资产根目录下载含 20,000 行的标准数据文件，因此训练无需另行准备该文件："
-
-#: source/concepts/using_mpm.rst:356
-msgid ""
-"The checked-in generator remains the executable reference for reproducing or"
-" customizing the distribution. It takes about two minutes on an L40S-class "
-"GPU and writes a local artifact that can be selected explicitly:"
-msgstr "仓库中的生成器是复现或自定义该分布的可执行参考。在 L40S 级别的 GPU 上约需两分钟，它会写入一个可显式选择的本地数据文件："
-
-#: source/concepts/using_mpm.rst:367
-msgid ""
-"The task validates the payload's stored content digest automatically. "
-"Setting ``ISAACSIM_ASSET_ROOT`` redirects the canonical artifact to a "
-"compatible local or self-hosted asset tree. Digest pinning remains available"
-" for custom reproducible experiments."
-msgstr ""
-"任务会自动验证数据中保存的内容摘要。设置 ``ISAACSIM_ASSET_ROOT`` "
-"可将标准数据文件的查找位置改为兼容的本地或自托管资产目录树。自定义的可复现实验仍可固定摘要。"
-
-#: source/concepts/using_mpm.rst:372
-msgid ""
-"The source uses a non-colliding analytic fill volume whose height is "
-"controlled by ``env.source_fill_level`` in ``(0, 1]``. The default ``0.70`` "
-"fills roughly 70% of the cup height; the particle count follows the "
-"requested fill level while voxel size and particle spacing stay fixed. "
-"``env.pour_target_frac`` independently controls the fraction of that live "
-"payload that must reach the receiver."
-msgstr ""
-"源容器使用不参与碰撞的解析填充体积，其高度由 ``env.source_fill_level`` 控制，取值范围为 ``(0, 1]`` 。默认 "
-"``0.70`` 表示填充至约 70% 的杯高；粒子数量随指定填充比例变化，而体素大小和粒子间距保持固定。 "
-"``env.pour_target_frac`` 独立控制当前粒子总量中必须到达接收容器的比例。"
+"将 :class:`~isaaclab_newton.physics.NewtonCfg` 的 ``solver_cfg`` 设为 "
+":class:`~isaaclab_newton.physics.MPMSolverCfg` ，会启用 "
+":class:`~isaaclab_newton.physics.NewtonMPMManager` 。这是 Newton 管理器的专用实现，负责构建 "
+"Newton 的 ``SolverImplicitMPM``。求解器将材料表示为粒子，并在背景体素网格上隐式求解其流变行为。MPM 管理器会对 "
+"Newton 管理器作如下配置："
 
 #: source/concepts/using_mpm.rst:379
 msgid ""
-"Play a checkpoint in Kit with the canonical task configuration; no external "
-"callback or particle override is required:"
-msgstr "使用标准任务配置，在 Kit 中运行检查点；无需外部回调或粒子覆盖配置："
+"It advances particles in place on a single Newton state rather than double "
+"buffering state."
+msgstr "在同一个 Newton 状态对象中原地更新粒子，而不对状态使用双缓冲。"
 
-#: source/concepts/using_mpm.rst:389
+#: source/concepts/using_mpm.rst:381
+msgid ""
+"It resolves collider contact inside the implicit solve. It does not use "
+"Newton's collision pipeline."
+msgstr "在隐式求解过程中处理碰撞体接触，不使用 Newton 的碰撞处理管线。"
+
+#: source/concepts/using_mpm.rst:383
+msgid ""
+"It treats rigid geometry as colliders. It is not a rigid-body or "
+"articulation dynamics solver, and it does not accept external rigid-body "
+"forces. Kinematic bodies are given zero mass before the model is finalized, "
+"and convex meshes are passed to the solver as triangle meshes."
+msgstr ""
+"将刚体几何体视为碰撞体。它不是刚体或关节系统的动力学求解器，也不接受外部刚体力。模型构建完成前，运动学刚体的质量会被设为零，凸网格则以三角网格形式传入求解器。"
+
+#: source/concepts/using_mpm.rst:390
 msgid "Limitations"
 msgstr "限制"
 
-#: source/concepts/using_mpm.rst:391
+#: source/concepts/using_mpm.rst:392
 msgid ""
 "Coupled MPM entries must step in place and do not support "
 "``project_outside_colliders``."

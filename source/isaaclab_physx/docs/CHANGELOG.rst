@@ -3,7 +3,60 @@ Changelog
 
 .. towncrier release notes start
 
-7.3.4 (2026-10-13)
+9.0.0 (2026-10-19)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Derived Kit viewport and streaming requirements from composed visualizer configs. Honored
+  windowed or headless viewer configuration uniformly, including with XR, and retained
+  ``--viz`` / ``--visualizer`` as preset-selection aliases.
+* **Breaking:** :class:`~isaaclab_physx.physics.PhysxManager` is used as an instance (``sim.backend_manager``). The
+  PhysX asset data classes take the manager as a keyword-only ``backend_manager`` argument.
+
+Deprecated
+^^^^^^^^^^
+
+* Deprecated constructing PhysX asset data classes without ``backend_manager``; the active simulation's manager is
+  used with a :class:`DeprecationWarning`.
+
+
+8.0.1 (2026-10-18)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Moved PPISP discovery and RTX exposure authoring to camera construction, before scene import.
+  Authored PPISP camera attributes must be present before constructing the sensor; renderer initialization
+  continued to create render products and the image-processing pipeline.
+* Removed validation of ``replicate_physics=False`` from visual color and texture randomization events
+  after scene physics replication became unconditional.
+
+Fixed
+^^^^^
+
+* Fixed :class:`~isaaclab_physx.sensors.ContactSensor` returning pre-reset contact points and, with Isaac Sim 6.1,
+  pre-reset filtered friction forces and friction history when its data was read after
+  :meth:`~isaaclab.scene.InteractiveScene.reset` and before the next physics step. Like the net forces, these
+  buffers now keep their reset values until the sensor's next update.
+
+
+8.0.0 (2026-10-17)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* **Breaking:** Changed ``joint_ordering="physx"`` or ``body_ordering="physx"`` on Isaac Sim PhysX to mean the
+  OVPhysX order, mapped from Isaac Sim PhysX's authored order. Resolving it imports the asset with Newton and raises
+  where that fails or the order is ambiguous, for example for Humanoid-AMP, UR10e with the Robotiq 2F-85 gripper and
+  the gravity-compensated Rizon 4s. Checkpoints trained on Isaac Sim PhysX with ``"physx"`` used the authored order;
+  replay them with explicit name lists recorded without an ordering.
+
+
+7.5.2 (2026-10-13)
 ~~~~~~~~~~~~~~~~~~
 
 Fixed
@@ -20,8 +73,51 @@ Fixed
 * Preserved compliant-contact stiffness while randomizing friction and non-compliant restitution.
 
 
-7.3.3 (2026-10-10)
+7.5.1 (2026-10-12)
 ~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Defaulted the launcher's parsed ``visualizer`` selection to an empty list instead of ``None``.
+  Omission of ``--viz`` continued to select no display; code inspecting the parsed arguments could iterate
+  the selection directly.
+
+Fixed
+^^^^^
+
+* Fixed the first camera observation after :meth:`~isaaclab.envs.ManagerBasedEnv.reset` showing rigid bodies at
+  their spawn pose on GPU simulation. The Fabric re-synchronization in :meth:`~isaaclab_physx.physics.PhysxManager.play`
+  now runs only when the timeline resumes from pause.
+
+
+7.5.0 (2026-10-10)
+~~~~~~~~~~~~~~~~~~
+
+Added
+^^^^^
+
+* Added ``ArticulationData.body_joint_wrench`` in public body order,
+  using the child-side joint frame and joint anchor for force and torque.
+
+Deprecated
+^^^^^^^^^^
+
+* Deprecated the PhysX deformable-body cfg classes in favor of the deformable-body schema
+  fragments. Each class now raises a ``DeprecationWarning`` on instantiation and will be removed in
+  3.2. The warning names every fragment the class's fields need and the spawner slot to put them
+  in. Replace :class:`~isaaclab_physx.sim.schemas.OmniPhysicsDeformableBodyPropertiesCfg` with
+  :class:`~isaaclab.sim.schemas.OmniPhysicsDeformableBodyCfg`;
+  ``PhysXDeformableBodyPropertiesCfg`` with :class:`~isaaclab_physx.sim.schemas.PhysxDeformableBodyCfg`
+  plus, for surface deformables, :class:`~isaaclab_physx.sim.schemas.PhysxSurfaceDeformableBodyCfg`;
+  and :class:`~isaaclab_physx.sim.schemas.PhysxDeformableBodyPropertiesCfg` and the
+  :class:`~isaaclab_physx.sim.schemas.DeformableBodyPropertiesCfg` alias with all three. Put them in
+  ``surface_deformable_props`` when the spawner's ``physics_material`` is a surface deformable
+  material and in ``volume_deformable_props`` otherwise, which is the type the legacy
+  ``deformable_props`` field derived. The legacy cfgs author ``kinematic_enabled=False`` and
+  ``solver_position_iteration_count=16`` by default. The fragments leave both unset, which
+  simulates the same through the schema fallbacks. Set them explicitly to keep the authored USD
+  identical.
 
 Fixed
 ^^^^^
@@ -35,10 +131,64 @@ Fixed
 * Fixed :attr:`~isaaclab_physx.assets.ArticulationData.gravity_compensation_forces` having the wrong sign on
   reversed joints (``physics:body0`` is the child link), because the PhysX values, already in the authored joint
   direction, were flipped a second time.
+* Fixed the air and contact times of :class:`~isaaclab_physx.sensors.ContactSensor` drifting with the age of the
+  sensor clock. Each refresh added the difference of two growing float32 timestamps, which was off by up to 8e-5 s
+  after 40 s of simulated time. It now adds the float64 time since the last refresh kept by the sensor base class.
 
 
-7.3.2 (2026-10-02)
+7.4.4 (2026-10-06)
 ~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Changed the ``--device`` default to ``cpu`` on macOS, which has no CUDA, so commands run without passing
+  ``--device cpu``. Other platforms still default to ``cuda:0``.
+
+
+7.4.3 (2026-10-03)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Changed the contact sensor debug-visualization notice and the surface gripper stage-attribute fallbacks
+  to use ``logger.warning`` instead of ``warnings.warn``, since they report runtime conditions that the
+  caller cannot fix.
+* Changed :class:`~isaaclab_physx.app.KitLauncher` to reuse the console logging handlers from
+  ``isaaclab.app.logging_utils``, removing the stderr warning handler once Kit's log bridge is active.
+* Missing-runtime diagnostics direct users to uv installation and source-build launch commands.
+
+Fixed
+^^^^^
+
+* Fixed :meth:`~isaaclab_physx.assets.RigidObjectCollection.set_coms_index` and
+  :meth:`~isaaclab_physx.assets.RigidObjectCollection.set_coms_mask` raising a ``KeyError`` because the
+  center-of-mass poses were passed to the PhysX tensor API as ``wp.transformf`` instead of ``float32``.
+* Fixed :meth:`~isaaclab_physx.assets.RigidObjectCollection.set_coms_index` and
+  :meth:`~isaaclab_physx.assets.RigidObjectCollection.set_coms_mask` leaving the unselected entries of
+  :attr:`~isaaclab_physx.assets.RigidObjectCollectionData.body_com_pose_b` zeroed when they were called for a
+  subset of bodies or environments before the property was first read.
+* Fixed :meth:`~isaaclab_physx.assets.RigidObjectCollection.set_inertias_index` and
+  :meth:`~isaaclab_physx.assets.RigidObjectCollection.set_inertias_mask` failing in the PhysX backend because the
+  inertias were passed to the PhysX tensor API with the wrong layout.
+* Fixed inertia writes leaving cached center-of-mass poses and their derived states stale when PhysX
+  recomputed the principal-axis rotation.
+* Report the source-build launch hint without requiring the ``ISAACLAB_PATH`` environment variable.
+
+
+7.4.2 (2026-10-02)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* :class:`~isaaclab_physx.app.KitLauncher` reads whether the run has the Kit visualizer from the ``visualizer``
+  selection (``--visualizer kit``) instead of the removed ``kit_visualizer`` launcher argument.
+* **Breaking:** :class:`~isaaclab_physx.app.KitLauncher` no longer reads a ``headless`` launcher argument: it opens
+  a window exactly when ``--visualizer`` selects ``kit`` and neither ``HEADLESS=1`` nor livestreaming is set, so a
+  Kit visualizer only a video records from (``--video viz:kit``) runs headless. XR auto-starts under the same
+  rule, when ``--visualizer`` does not select ``kit``.
 
 Fixed
 ^^^^^
@@ -49,12 +199,15 @@ Fixed
   partition aliasing issue, and pointed users to ``PhysxCfg(gpu_max_num_partitions=1)`` as the workaround.
 
 
-7.3.1 (2026-10-01)
+7.4.1 (2026-10-01)
 ~~~~~~~~~~~~~~~~~~
 
 Changed
 ^^^^^^^
 
+* :class:`~isaaclab_physx.app.KitLauncher` auto-starts XR only when the run has no Kit visualizer, whether it comes
+  from the config or ``--visualizer``, so a Kit visualizer declared in the config keeps its window with ``--xr``
+  instead of being forced headless.
 * Removed the per-frame channel-compacting copies for normals, motion vectors, HDR color, and
   simple-shading outputs in :class:`~isaaclab_physx.renderers.IsaacRtxRenderer`.
 * Changed PhysX contact, PVA, and frame-transformer debug visualization to refresh outdated
@@ -69,7 +222,7 @@ Fixed
 * Used resolved callable defaults when constructing manager terms instead of duplicating defaults in constructors.
 
 
-7.3.0 (2026-09-29)
+7.4.0 (2026-09-29)
 ~~~~~~~~~~~~~~~~~~
 
 Added
@@ -110,7 +263,7 @@ Fixed
   handler when shutdown returned.
 
 
-7.2.0 (2026-09-28)
+7.3.0 (2026-09-28)
 ~~~~~~~~~~~~~~~~~~
 
 Added
@@ -142,8 +295,6 @@ Changed
 Fixed
 ^^^^^
 
-* Fixed PVA and contact-sensor diagnostic timings to measure device-synchronized update durations.
-  Contact-sensor samples were recorded after synchronization rather than while GPU work could still be pending.
 * Published canonical articulation-link paths for SDP and moved foreign-physics Fabric prim
   preparation into the shared rendering resource.
 * Avoided reloading GPU PhysX scenes after explicit attachment while preserving CPU initialization
@@ -152,7 +303,7 @@ Fixed
   updates, preventing stale pinned-memory reads.
 
 
-7.1.4 (2026-09-27)
+7.2.5 (2026-09-27)
 ~~~~~~~~~~~~~~~~~~
 
 Changed
@@ -172,9 +323,11 @@ Fixed
   indices, without creating or uploading host index lists.
 * Shared pending kinematic refresh between articulation and scene-data reads so one state write
   did not trigger redundant FK for separate consumers.
+* Fixed PVA and contact-sensor diagnostic timings to measure device-synchronized update durations.
+  Contact-sensor samples were recorded after synchronization rather than while GPU work could still be pending.
 
 
-7.1.3 (2026-09-26)
+7.2.4 (2026-09-26)
 ~~~~~~~~~~~~~~~~~~
 
 Fixed
@@ -194,17 +347,8 @@ Fixed
 * Corrected tendon configuration documentation that incorrectly described tendons as a PhysX-only feature.
 
 
-7.1.2 (2026-09-25)
+7.2.3 (2026-09-25)
 ~~~~~~~~~~~~~~~~~~
-
-Changed
-^^^^^^^
-
-* Published PhysX rigid transforms and their producer-owned version through SDP, and routed Isaac RTX
-  transform updates through one simulation-owned ``FabricBackend`` shared with Kit while preserving
-  native PhysX Fabric updates. Stage/device identified the resource; transforms remained binding state,
-  with SDP passed explicitly to updates. Fabric selection and hierarchy state moved out of core ``RenderContext``.
-  Kit app updates requested current SDP transforms without an additional physics ``forward()`` call.
 
 Deprecated
 ^^^^^^^^^^
@@ -216,21 +360,16 @@ Deprecated
 Fixed
 ^^^^^
 
-* Fixed joint-wrench sensors applying an extra frame transformation to PhysX readings, which already used
-  the child-side joint frame and anchor. Removed the redundant USD frame buffers. Force and torque values
-  changed for joints with non-identity child frames; the sensor's documented frame convention was preserved.
-* Replaced circular frame-conversion checks with a shared Newton/PhysX integration test using a known mass,
-  gravity, and lever arm to calculate the expected nonzero wrench independently.
+* Avoided repeated Isaac RTX render-update checks by checking once per camera batch before
+  extracting each camera's annotator outputs.
 * Fixed :meth:`~isaaclab_physx.assets.RigidObjectCollection.write_body_link_pose_to_sim_mask`,
   :meth:`~isaaclab_physx.assets.RigidObjectCollection.write_body_com_pose_to_sim_mask`,
   :meth:`~isaaclab_physx.assets.RigidObjectCollection.write_body_com_velocity_to_sim_mask`, and
   :meth:`~isaaclab_physx.assets.RigidObjectCollection.write_body_link_velocity_to_sim_mask` not accepting the
   ``body_mask`` argument that the base class and the other backends declare.
-* Avoided repeated Isaac RTX render-update checks by checking once per camera batch before
-  extracting each camera's annotator outputs.
 
 
-7.1.1 (2026-09-24)
+7.2.2 (2026-09-24)
 ~~~~~~~~~~~~~~~~~~
 
 Changed
@@ -240,23 +379,28 @@ Changed
   :meth:`~isaaclab.utils.wrench_composer.WrenchComposer.get_forces_and_torques`, so a wrench that is
   already local-frame, or already global-frame at the center of mass, is sent to PhysX without
   reading the body transforms.
+* Published PhysX rigid transforms and their producer-owned version through SDP, and routed Isaac RTX
+  transform updates through one simulation-owned ``FabricBackend`` shared with Kit while preserving
+  native PhysX Fabric updates. Stage/device identified the resource; transforms remained binding state,
+  with SDP passed explicitly to updates. Fabric selection and hierarchy state moved out of core ``RenderContext``.
+  Kit app updates requested current SDP transforms without an additional physics ``forward()`` call.
 
-
-7.1.0 (2026-09-22)
-~~~~~~~~~~~~~~~~~~
-
-Added
+Fixed
 ^^^^^
 
-* Added ``PhysxBackendCfg`` to share a native simulation view by its stage identifier through
-  ``SimulationContext.get_or_create_backend(cfg)``.
-* Exposed the registry-owned resource as ``PhysxManager.backend`` and ``PhysxSceneDataBackend.backend``.
+* Fixed joint-wrench sensors applying an extra frame transformation to PhysX readings, which already used
+  the child-side joint frame and anchor. Removed the redundant USD frame buffers. Force and torque values
+  changed for joints with non-identity child frames; the sensor's documented frame convention was preserved.
+* Replaced circular frame-conversion checks with a shared Newton/PhysX integration test using a known mass,
+  gravity, and lever arm to calculate the expected nonzero wrench independently.
+
+
+7.2.1 (2026-09-22)
+~~~~~~~~~~~~~~~~~~
 
 Changed
 ^^^^^^^
 
-* Shared one registry-owned native simulation view between physics and scene data, removing an
-  unused duplicate Warp view. Existing physics-view access remained unchanged.
 * Applied runtime camera calibration directly to Fabric columns with Warp, removing per-camera USD
   writes and matrix-batch host transfers. Cached camera selections were released with render data.
   Compiled the write kernel on first use, avoiding its compilation during camera initialization.
@@ -271,7 +415,24 @@ Fixed
   share the same implicit frame name.
 
 
-7.0.1 (2026-09-20)
+7.2.0 (2026-09-21)
+~~~~~~~~~~~~~~~~~~
+
+Added
+^^^^^
+
+* Added ``PhysxBackendCfg`` to share a native simulation view by its stage identifier through
+  ``SimulationContext.get_or_create_backend(cfg)``.
+* Exposed the registry-owned resource as ``PhysxManager.backend`` and ``PhysxSceneDataBackend.backend``.
+
+Changed
+^^^^^^^
+
+* Shared one registry-owned native simulation view between physics and scene data, removing an
+  unused duplicate Warp view. Existing physics-view access remained unchanged.
+
+
+7.1.4 (2026-09-20)
 ~~~~~~~~~~~~~~~~~~
 
 Changed
@@ -312,16 +473,8 @@ Deprecated
   are unaffected.
 
 
-7.0.0 (2026-09-18)
+7.1.3 (2026-09-12)
 ~~~~~~~~~~~~~~~~~~
-
-Changed
-^^^^^^^
-
-* **Breaking:** Routed production PhysX cloning through the simulation-owned
-  ``PhysxReplicateContext.replicate(plan)`` contract and removed ``PHYSICS_CONTEXT``, ``queue(...)``,
-  and ``queue_mapping(...)``. Standalone tooling may continue to use ``physx_replicate(...)`` with
-  NumPy arrays; its unused ``device`` argument was removed.
 
 Fixed
 ^^^^^
@@ -335,26 +488,105 @@ Fixed
   fetched buffers stay lazy. As a consequence, :meth:`~isaaclab_physx.sensors.ContactSensor.update` now
   raises a ``RuntimeError`` for such sensors when called inside an outer CUDA graph capture, as it already
   did for history-bearing sensors: update the sensor outside the capture.
-* Fixed :class:`~isaaclab_physx.renderers.IsaacRtxRenderer` rendering ``simple_shading_*``
-  camera outputs through the full path-tracing pipeline. The renderer selected only the
-  Minimal shading level, through the process-wide ``/rtx/minimal/mode`` carb setting, while
-  leaving the render mode at ``RealTimePathTracing``. It now authors
-  ``omni:rtx:rendermode = "Minimal"`` and ``omni:rtx:minimal:mode`` on the requesting render
-  product, matching the OVRTX renderer. Cameras requesting different shading levels no longer
-  overwrite each other, and color cameras, the Kit viewport, and deterministic rendering keep
-  path tracing.
 
 
-6.0.0 (2026-09-10)
+7.1.2 (2026-09-10)
+~~~~~~~~~~~~~~~~~~
+
+Fixed
+^^^^^
+
+* Fixed a SIGSEGV crash when calling ``SimulationContext.play()`` a second time after
+  ``SimulationContext.stop()`` without an intervening ``reset()``, e.g. registering a raw
+  ``omni.timeline`` event subscription and cycling play/stop twice on the GPU PhysX pipeline.
+  ``PhysxManager`` now detaches the PhysX stage on ``stop()`` so the next play's automatic
+  re-warmup reattaches cleanly instead of calling ``attach_stage`` on a stage that PhysX still
+  considered attached, which corrupted its internal view registry.
+
+
+7.1.1 (2026-09-09)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Changed ``IsaacRtxRenderer.render()`` to pass the tiled annotator buffer to
+  ``reshape_tiled_image`` as a 3D array instead of flattening it to 1D. Large environment counts
+  and camera resolutions no longer overflow the maximum size of a single Warp array dimension.
+
+
+7.1.0 (2026-09-08)
+~~~~~~~~~~~~~~~~~~
+
+Fixed
+^^^^^
+
+* Handled empty Isaac RTX annotator warm-up frames without invalid Warp slicing.
+* Fixed :meth:`compute_first_contact` and :meth:`compute_first_air` on the contact sensor silently
+  missing touchdowns and lift-offs once the simulation had run for a few seconds (issue #7283).
+  Their ``abs_tol`` argument now defaults to ``None``, which resolves to half the sensor update
+  interval instead of a fixed ``1e-8``. The old value was around 100x smaller than the float32
+  rounding error of the sensor clock, so most transitions were dropped. Callers that relied on the
+  previous behavior can pass ``abs_tol=1e-8`` explicitly.
+  Both methods now also refresh outdated sensor buffers before comparing, so a sensor with
+  ``history_length=0`` no longer reports the previous step's transitions when it is queried before
+  its data is read.
+
+
+7.0.1 (2026-09-06)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* Changed fixed tendons to be named after their ``PhysxTendonAxisRootAPI`` instance rather than the
+  joint prim carrying it, matching OVPhysX and Newton. Code that looked a tendon up by its joint
+  name, through ``find_fixed_tendons`` or ``SceneEntityCfg.fixed_tendon_names``, must use the
+  instance name.
+
+
+7.0.0 (2026-09-05)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* **Breaking:** Routed production PhysX cloning through the simulation-owned
+  ``PhysxReplicateContext.replicate(plan)`` contract and removed ``PHYSICS_CONTEXT``, ``queue(...)``,
+  and ``queue_mapping(...)``. Standalone tooling may continue to use ``physx_replicate(...)`` with
+  NumPy arrays; its unused ``device`` argument was removed.
+* Changed the IMU and PVA sensors to read linear and angular accelerations from the PhysX solver
+  (:meth:`RigidBodyView.get_accelerations`) instead of finite-differencing the body velocity
+  between updates. The reported acceleration now includes the rigid-body transport terms for the
+  sensor offset from the center of mass and no longer produces spurious spikes when velocities are
+  written directly (for example on environment resets or teleports). The reading is available from
+  the first sensor update and is independent of the sensor update period. The PVA sensor keeps
+  reporting a kinematic acceleration (no gravity bias), so a body in free fall now reads ``-g``
+  instead of a finite-difference estimate.
+
+* Changed the PVA sensor's world-frame gravity direction from a public per-instance
+  ``GRAVITY_VEC_W`` proxy array to the internal ``_gravity_vec_w`` scene-wide vector, matching the
+  OvPhysX sensor. Gravity is scene-wide on this backend, so the per-instance buffer held one
+  broadcast value. Code reading ``pva_sensor.GRAVITY_VEC_W`` should read
+  ``pva_sensor.data.projected_gravity_b`` instead; the identically-named attribute on the asset
+  data classes is unaffected.
+
+Fixed
+^^^^^
+
+* Fixed :class:`~isaaclab_physx.sensors.Imu` and :class:`~isaaclab_physx.sensors.Pva` reporting
+  gravity captured at sensor initialization. Both sensors now re-read the scene gravity on every
+  update, so runtime randomization through
+  :func:`~isaaclab.envs.mdp.events.randomize_physics_scene_gravity` is reflected in the
+  accelerometer bias and the projected gravity direction.
+
+
+6.0.0 (2026-09-04)
 ~~~~~~~~~~~~~~~~~~
 
 Added
 ^^^^^
 
-* Added batched GPU material-channel writes through Fabric for Isaac RTX rendering.
-* Added config-owned construction to ``IsaacRtxRendererCfg`` through its ``class_type`` field.
-* Added translation of :attr:`~isaaclab.physics.PhysicsCfg.deterministic` in ``PhysxManager``, which
-  enables :attr:`~isaaclab_physx.physics.PhysxCfg.enable_enhanced_determinism`.
 * Added :class:`~isaaclab_physx.sim.schemas.PhysxTendonAxisCfg` for configuring the
   ``PhysxTendonAxisAPI`` properties of existing fixed-tendon instances.
 * Added ``lower_limit`` and ``upper_limit`` to
@@ -364,14 +596,6 @@ Added
 Changed
 ^^^^^^^
 
-* **Breaking:** The Isaac RTX renderer now raises an error for albedo and simple-shading outputs on Isaac Sim
-  versions before 6.0, rather than silently omitting them. Upgrade Isaac Sim or remove those data types.
-* Changed the tendon fragment functions (e.g. the ``func`` behind
-  :class:`~isaaclab_physx.sim.schemas.PhysxFixedTendonCfg`) to author on the given prim
-  only. Target selection, including subtree matching via prim path expressions, is now
-  owned by the core family writers such as
-  :func:`~isaaclab.sim.schemas.apply_fixed_tendon_properties`; pass
-  ``f"{prim_path}(/.*)?"`` to those writers to reach descendant tendon prims.
 * Renamed ``PhysxFixedTendonCfg`` to
   :class:`~isaaclab_physx.sim.schemas.PhysxTendonAxisRootCfg` and
   ``PhysxSpatialTendonCfg`` to
@@ -391,28 +615,6 @@ Changed
   ``friction_force_matrix_w`` and warns (known limitations planned to be fixed in a later
   release).
 * Added ``friction_force_matrix_w_history`` for filtered friction force history.
-* Changed the IMU and PVA sensors to read linear and angular accelerations from the PhysX solver
-  (:meth:`RigidBodyView.get_accelerations`) instead of finite-differencing the body velocity
-  between updates. The reported acceleration now includes the rigid-body transport terms for the
-  sensor offset from the center of mass and no longer produces spurious spikes when velocities are
-  written directly (for example on environment resets or teleports). The reading is available from
-  the first sensor update and is independent of the sensor update period. The PVA sensor keeps
-  reporting a kinematic acceleration (no gravity bias), so a body in free fall now reads ``-g``
-  instead of a finite-difference estimate.
-
-* Changed the PVA sensor's world-frame gravity direction from a public per-instance
-  ``GRAVITY_VEC_W`` proxy array to the internal ``_gravity_vec_w`` scene-wide vector, matching the
-  OvPhysX sensor. Gravity is scene-wide on this backend, so the per-instance buffer held one
-  broadcast value. Code reading ``pva_sensor.GRAVITY_VEC_W`` should read
-  ``pva_sensor.data.projected_gravity_b`` instead; the identically-named attribute on the asset
-  data classes is unaffected.
-* Changed fixed tendons to be named after their ``PhysxTendonAxisRootAPI`` instance rather than the
-  joint prim carrying it, matching OVPhysX and Newton. Code that looked a tendon up by its joint
-  name, through ``find_fixed_tendons`` or ``SceneEntityCfg.fixed_tendon_names``, must use the
-  instance name.
-* Changed ``IsaacRtxRenderer.render()`` to pass the tiled annotator buffer to
-  ``reshape_tiled_image`` as a 3D array instead of flattening it to 1D. Large environment counts
-  and camera resolutions no longer overflow the maximum size of a single Warp array dimension.
 
 Removed
 ^^^^^^^
@@ -425,29 +627,72 @@ Removed
 Fixed
 ^^^^^
 
+* Fixed :class:`~isaaclab_physx.renderers.IsaacRtxRenderer` rendering ``simple_shading_*``
+  camera outputs through the full path-tracing pipeline. The renderer selected only the
+  Minimal shading level, through the process-wide ``/rtx/minimal/mode`` carb setting, while
+  leaving the render mode at ``RealTimePathTracing``. It now authors
+  ``omni:rtx:rendermode = "Minimal"`` and ``omni:rtx:minimal:mode`` on the requesting render
+  product, matching the OVRTX renderer. Cameras requesting different shading levels no longer
+  overwrite each other, and color cameras, the Kit viewport, and deterministic rendering keep
+  path tracing.
+
+
+5.3.1 (2026-09-03)
+~~~~~~~~~~~~~~~~~~
+
+Added
+^^^^^
+
+* Added translation of :attr:`~isaaclab.physics.PhysicsCfg.deterministic` in ``PhysxManager``, which
+  enables :attr:`~isaaclab_physx.physics.PhysxCfg.enable_enhanced_determinism`.
+
+
+5.3.0 (2026-08-30)
+~~~~~~~~~~~~~~~~~~
+
+Added
+^^^^^
+
+* Added config-owned construction to ``IsaacRtxRendererCfg`` through its ``class_type`` field.
+
+Changed
+^^^^^^^
+
+* Changed the tendon fragment functions (e.g. the ``func`` behind
+  :class:`~isaaclab_physx.sim.schemas.PhysxFixedTendonCfg`) to author on the given prim
+  only. Target selection, including subtree matching via prim path expressions, is now
+  owned by the core family writers such as
+  :func:`~isaaclab.sim.schemas.apply_fixed_tendon_properties`; pass
+  ``f"{prim_path}(/.*)?"`` to those writers to reach descendant tendon prims.
+
+
+5.2.1 (2026-08-27)
+~~~~~~~~~~~~~~~~~~
+
+Fixed
+^^^^^
+
 * Fixed PhysX scene-data rigid-body views resolving same-named USD joint prims
   when synchronizing PhysX simulations with Newton visualizers.
-* Fixed :class:`~isaaclab_physx.sensors.Imu` and :class:`~isaaclab_physx.sensors.Pva` reporting
-  gravity captured at sensor initialization. Both sensors now re-read the scene gravity on every
-  update, so runtime randomization through
-  :func:`~isaaclab.envs.mdp.events.randomize_physics_scene_gravity` is reflected in the
-  accelerometer bias and the projected gravity direction.
-* Handled empty Isaac RTX annotator warm-up frames without invalid Warp slicing.
-* Fixed :meth:`compute_first_contact` and :meth:`compute_first_air` on the contact sensor silently
-  missing touchdowns and lift-offs once the simulation had run for a few seconds (issue #7283).
-  Their ``abs_tol`` argument now defaults to ``None``, which resolves to half the sensor update
-  interval instead of a fixed ``1e-8``. The old value was around 100x smaller than the float32
-  rounding error of the sensor clock, so most transitions were dropped. Callers that relied on the
-  previous behavior can pass ``abs_tol=1e-8`` explicitly.
-  Both methods now also refresh outdated sensor buffers before comparing, so a sensor with
-  ``history_length=0`` no longer reports the previous step's transitions when it is queried before
-  its data is read.
-* Fixed a SIGSEGV crash when calling ``SimulationContext.play()`` a second time after
-  ``SimulationContext.stop()`` without an intervening ``reset()``, e.g. registering a raw
-  ``omni.timeline`` event subscription and cycling play/stop twice on the GPU PhysX pipeline.
-  ``PhysxManager`` now detaches the PhysX stage on ``stop()`` so the next play's automatic
-  re-warmup reattaches cleanly instead of calling ``attach_stage`` on a stage that PhysX still
-  considered attached, which corrupted its internal view registry.
+
+
+5.2.0 (2026-08-22)
+~~~~~~~~~~~~~~~~~~
+
+Added
+^^^^^
+
+* Added batched GPU material-channel writes through Fabric for Isaac RTX rendering.
+
+
+5.1.1 (2026-08-21)
+~~~~~~~~~~~~~~~~~~
+
+Changed
+^^^^^^^
+
+* **Breaking:** The Isaac RTX renderer now raises an error for albedo and simple-shading outputs on Isaac Sim
+  versions before 6.0, rather than silently omitting them. Upgrade Isaac Sim or remove those data types.
 
 
 5.1.0 (2026-08-20)

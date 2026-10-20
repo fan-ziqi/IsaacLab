@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -22,66 +21,28 @@ msgstr "使用交互式场景"
 
 #: source/how-to/create_scene.rst:10
 msgid ""
-"So far in the tutorials, we manually spawned assets into the simulation and "
-"created object instances to interact with them. However, as the complexity "
-"of the scene increases, it becomes tedious to perform these tasks manually. "
-"In this tutorial, we will introduce the :class:`scene.InteractiveScene` "
-"class, which provides a convenient interface for spawning prims and managing"
-" them in the simulation."
+":class:`scene.InteractiveScene` spawns and manages the assets and sensors in"
+" an environment. It groups ground planes, lights, robots, rigid objects, and"
+" sensors in one configuration and handles cloning them across parallel "
+"environments."
 msgstr ""
-"到目前为止，在教程中，我们手动将资产生成到仿真中，并创建对象实例与之交互。然而，随着场景复杂度的增加，手动执行这些任务变得很繁琐。在本教程中，我们将介绍"
-" :class:`scene.InteractiveScene` 类，该类提供了一个方便的接口，用于生成 prims 并在仿真中管理它们。"
+":class:`scene.InteractiveScene` "
+"生成并管理环境中的资产和传感器，将地面、灯光、机器人、刚体和传感器放在同一配置中，并负责在并行环境间克隆。"
 
-#: source/how-to/create_scene.rst:16
+#: source/how-to/create_scene.rst:14
 msgid ""
-"At a high-level, the interactive scene is a collection of scene entities. "
-"Each entity can be either a non-interactive prim (e.g. ground plane, light "
-"source), an interactive prim (e.g. articulation, rigid object), or a sensor "
-"(e.g. camera, lidar). The interactive scene provides a convenient interface "
-"for spawning these entities and managing them in the simulation."
+"This tutorial replaces the ``design_scene`` function from :ref:`tutorial-"
+"interact-articulation` with an ``InteractiveScene``. The same pattern "
+"extends to scenes with more assets and sensors."
 msgstr ""
-"在高层次上，交互式场景是场景实体的集合。每个实体可以是不可交互的 prim（例如地面平面、光源）、可交互的 "
-"prim（例如关节、刚体物体）或传感器（例如摄像机、激光雷达）。交互式场景提供了一个便捷的接口，用于生成这些实体并在仿真中管理它们。"
+"本教程用 ``InteractiveScene`` 替换 :ref:`tutorial-interact-articulation` 中的 "
+"``design_scene`` 函数。同样的方式也适用于包含更多资产和传感器的场景。"
 
-#: source/how-to/create_scene.rst:22
-msgid "Compared the manual approach, it provides the following benefits:"
-msgstr "相比手动方法，它提供以下优点: "
-
-#: source/how-to/create_scene.rst:24
-msgid ""
-"Alleviates the user needing to spawn each asset separately as this is "
-"handled implicitly."
-msgstr "减轻了用户需要单独生成每个资产，因为这是隐含处理的。"
-
-#: source/how-to/create_scene.rst:25
-msgid ""
-"Enables user-friendly cloning of scene prims for multiple environments."
-msgstr "可便于用户友好地克隆场景 prims 以用于多个环境。"
-
-#: source/how-to/create_scene.rst:26
-msgid ""
-"Collects all the scene entities into a single object, which makes them "
-"easier to manage."
-msgstr "将所有场景实体收集到一个单一对象中，这样更易于管理。"
-
-#: source/how-to/create_scene.rst:28
-msgid ""
-"In this tutorial, we take the cartpole example from the :ref:`tutorial-"
-"interact-articulation` tutorial and replace the ``design_scene`` function "
-"with an :class:`scene.InteractiveScene` object. While it may seem like "
-"overkill to use the interactive scene for this simple example, it will "
-"become more useful in the future as more assets and sensors are added to the"
-" scene."
-msgstr ""
-"在这个教程中，我们从 :ref:`tutorial-interact-articulation` 教程中的 cartpole 示例开始，并用 "
-":class:`scene.InteractiveScene` 对象替换 ``design_scene`` "
-"函数。虽然在这个简单的例子中使用交互式场景可能看起来有点过分，但随着场景中增加更多的资产和传感器，它将在将来变得更有用。"
-
-#: source/how-to/create_scene.rst:35
+#: source/how-to/create_scene.rst:19
 msgid "The Code"
 msgstr "代码"
 
-#: source/how-to/create_scene.rst:37
+#: source/how-to/create_scene.rst:21
 msgid ""
 "This tutorial corresponds to the ``create_scene.py`` script within "
 "``scripts/tutorials/02_scene``."
@@ -91,21 +52,21 @@ msgstr "该教程对应于 ``scripts/tutorials/02_scene`` 中的 ``create_scene.
 msgid "Code for create_scene.py"
 msgstr "create_scene.py 的代码"
 
-#: source/how-to/create_scene.rst:50
+#: source/how-to/create_scene.rst:34
 msgid "The Code Explained"
 msgstr "代码解释"
 
-#: source/how-to/create_scene.rst:52
+#: source/how-to/create_scene.rst:36
 msgid ""
 "While the code is similar to the previous tutorial, there are a few key "
 "differences that we will go over in detail."
 msgstr "虽然代码与上一个教程类似，但有一些关键区别我们将详细介绍。"
 
-#: source/how-to/create_scene.rst:56
+#: source/how-to/create_scene.rst:40
 msgid "Scene configuration"
 msgstr "场景配置"
 
-#: source/how-to/create_scene.rst:58
+#: source/how-to/create_scene.rst:42
 msgid ""
 "The scene is composed of a collection of entities, each with their own "
 "configuration. These are specified in a configuration class that inherits "
@@ -116,7 +77,7 @@ msgstr ""
 "场景由一系列带有自己配置的实体组成。这些都是在继承自 :class:`scene.InteractiveSceneCfg` "
 "的配置类中指定的。然后将配置类传递给 :class:`scene.InteractiveScene` 构造函数以创建场景。"
 
-#: source/how-to/create_scene.rst:63
+#: source/how-to/create_scene.rst:47
 msgid ""
 "For the cartpole example, we specify the same scene as in the previous "
 "tutorial, but list them now in the configuration class "
@@ -125,7 +86,7 @@ msgstr ""
 "对于 cartpole 示例，我们指定与以前教程中相同的场景，但现在将它们列在配置类 :class:`CartpoleSceneCfg` "
 "中，而不是手动生成它们。"
 
-#: source/how-to/create_scene.rst:70
+#: source/how-to/create_scene.rst:54
 msgid ""
 "The variable names in the configuration class are used as keys to access the"
 " corresponding entity from the :class:`scene.InteractiveScene` object. For "
@@ -136,7 +97,7 @@ msgstr ""
 "配置类中的变量名称用作用于从 :class:`scene.InteractiveScene` 对象访问对应实体的键。例如，可以通过 "
 "``scene[\"cartpole\"]`` 来访问 cartpole。然而，我们会稍后再解释这个。首先，让我们看看如何配置单个场景实体。"
 
-#: source/how-to/create_scene.rst:75
+#: source/how-to/create_scene.rst:59
 msgid ""
 "Similar to how a rigid object and articulation were configured in the "
 "previous tutorials, the configurations are specified using a configuration "
@@ -157,25 +118,25 @@ msgstr ""
 "的实例来指定，而 cartpole 使用 :class:`assets.ArticulationCfg` "
 "的实例来进行配置。在仿真步骤期间，不处理任何不是交互式 prim（即既不是资产也不是传感器）。"
 
-#: source/how-to/create_scene.rst:86
+#: source/how-to/create_scene.rst:70
 msgid ""
 "Another key difference to note is in the specification of the prim paths for"
 " the different prims:"
 msgstr "另一个需要注意的关键区别是不同 prim 的 prim 路径的指定方法: "
 
-#: source/how-to/create_scene.rst:89
+#: source/how-to/create_scene.rst:73
 msgid "Ground plane: ``/World/defaultGroundPlane``"
 msgstr "地面平面:``/World/defaultGroundPlane``"
 
-#: source/how-to/create_scene.rst:90
+#: source/how-to/create_scene.rst:74
 msgid "Light source: ``/World/Light``"
 msgstr "光源:``/World/Light``"
 
-#: source/how-to/create_scene.rst:91
+#: source/how-to/create_scene.rst:75
 msgid "Cartpole: ``{ENV_REGEX_NS}/Robot``"
 msgstr "Cartpole:``{ENV_REGEX_NS}/Robot``"
 
-#: source/how-to/create_scene.rst:93
+#: source/how-to/create_scene.rst:77
 msgid ""
 "As we learned earlier, Omniverse creates a graph of prims in the USD stage. "
 "The prim paths are used to specify the location of the prim in the graph. "
@@ -192,11 +153,11 @@ msgstr ""
 "变量来进行指定，这是一个特殊的变量，在场景创建期间会被环境名称替换。任何带有 ``ENV_REGEX_NS`` 变量的实体的 prim "
 "路径在每个环境中都会被克隆。这个路径会被场景对象替换为 ``/World/envs/env_{i}`` ，其中 ``i`` 是环境索引。"
 
-#: source/how-to/create_scene.rst:103
+#: source/how-to/create_scene.rst:87
 msgid "Scene instantiation"
 msgstr "场景实例化"
 
-#: source/how-to/create_scene.rst:105
+#: source/how-to/create_scene.rst:89
 msgid ""
 "Unlike before where we called the ``design_scene`` function to create the "
 "scene, we now create an instance of the :class:`scene.InteractiveScene` "
@@ -212,7 +173,7 @@ msgstr ""
 ":func:`~isaaclab.utils.instantiate` 据此构建场景。创建 ``CartpoleSceneCfg`` 配置实例时，使用 "
 "``num_envs`` 参数指定环境副本数，随后据此为各环境克隆场景。"
 
-#: source/how-to/create_scene.rst:117
+#: source/how-to/create_scene.rst:101
 msgid ""
 "The configuration class ``CartpoleSceneCfg`` can be defined at the top of "
 "the script, but the :class:`scene.InteractiveScene` class works on the USD "
@@ -225,11 +186,11 @@ msgstr ""
 "类操作的是运行中仿真器的 USD 舞台。 ``class_type`` 属性延迟解析该类，因此只有运行时启动后，在 ``with "
 "launch_simulation(...)`` 块内构建场景时，才会导入场景类。"
 
-#: source/how-to/create_scene.rst:123
+#: source/how-to/create_scene.rst:107
 msgid "Accessing scene elements"
 msgstr "访问场景元素"
 
-#: source/how-to/create_scene.rst:125
+#: source/how-to/create_scene.rst:109
 msgid ""
 "Similar to how entities were accessed from a dictionary in the previous "
 "tutorials, the scene elements can be accessed from the "
@@ -243,24 +204,24 @@ msgstr ""
 "操作符。操作符接受一个字符串键，并返回相应的实体。键是通过每个实体的配置类指定的。例如，cartpole 在配置类中使用键 "
 "``\"cartpole\"`` 来指定。"
 
-#: source/how-to/create_scene.rst:137
+#: source/how-to/create_scene.rst:121
 msgid "Running the simulation loop"
 msgstr "运行仿真循环"
 
-#: source/how-to/create_scene.rst:139
+#: source/how-to/create_scene.rst:123
 msgid ""
 "The rest of the script looks similar to previous scripts that interfaced "
 "with :class:`assets.Articulation`, with a few small differences in the "
 "methods called:"
 msgstr "脚本的其余部分看起来与先前与 :class:`assets.Articulation` 接口的脚本类似，只是调用的方法有一些小的不同: "
 
-#: source/how-to/create_scene.rst:142
+#: source/how-to/create_scene.rst:126
 msgid ""
 ":meth:`assets.Articulation.reset` ⟶ :meth:`scene.InteractiveScene.reset`"
 msgstr ""
 ":meth:`assets.Articulation.reset` ⟶ :meth:`scene.InteractiveScene.reset`"
 
-#: source/how-to/create_scene.rst:143
+#: source/how-to/create_scene.rst:127
 msgid ""
 ":meth:`assets.Articulation.write_data_to_sim` ⟶ "
 ":meth:`scene.InteractiveScene.write_data_to_sim`"
@@ -268,23 +229,23 @@ msgstr ""
 ":meth:`assets.Articulation.write_data_to_sim` ⟶ "
 ":meth:`scene.InteractiveScene.write_data_to_sim`"
 
-#: source/how-to/create_scene.rst:144
+#: source/how-to/create_scene.rst:128
 msgid ""
 ":meth:`assets.Articulation.update` ⟶ :meth:`scene.InteractiveScene.update`"
 msgstr ""
 ":meth:`assets.Articulation.update` ⟶ :meth:`scene.InteractiveScene.update`"
 
-#: source/how-to/create_scene.rst:146
+#: source/how-to/create_scene.rst:130
 msgid ""
 "Under the hood, the methods of :class:`scene.InteractiveScene` call the "
 "corresponding methods of the entities in the scene."
 msgstr "在幕后， :class:`scene.InteractiveScene` 的方法调用了场景中实体的相应方法。"
 
-#: source/how-to/create_scene.rst:151
+#: source/how-to/create_scene.rst:135
 msgid "The Code Execution"
 msgstr "代码执行"
 
-#: source/how-to/create_scene.rst:155
+#: source/how-to/create_scene.rst:139
 msgid ""
 "Let's run the script to simulate 32 cartpoles in the scene. We can do this "
 "by passing the ``--num_envs`` argument to the script."
@@ -294,22 +255,18 @@ msgstr "让我们运行脚本以仿真场景中的 32 个 cartpoles。我们可�
 msgid "uv (Recommended)"
 msgstr "uv（推荐）"
 
-#: source/how-to/create_scene.rst:0
-msgid "isaaclab.sh / isaaclab.bat"
-msgstr "isaaclab.sh / isaaclab.bat"
-
-#: source/how-to/create_scene.rst:172
+#: source/how-to/create_scene.rst:150
 msgid ""
 "This should open a stage with 32 cartpoles swinging around randomly. You can"
 " use the mouse to rotate the camera and the arrow keys to move around the "
 "scene."
 msgstr "这应该会打开一个场景，上面有 32 个随机摆动的 cartpole。您可以使用鼠标旋转摄像机，使用箭头键在场景中移动。"
 
-#: source/how-to/create_scene.rst:176
+#: source/how-to/create_scene.rst:154
 msgid "result of create_scene.py"
 msgstr "create_scene.py 的结果"
 
-#: source/how-to/create_scene.rst:181
+#: source/how-to/create_scene.rst:159
 msgid ""
 "In this tutorial, we saw how to use :class:`scene.InteractiveScene` to "
 "create a scene with multiple assets. We also saw how to use the ``num_envs``"
@@ -318,7 +275,7 @@ msgstr ""
 "在本教程中，我们学习了如何使用 :class:`scene.InteractiveScene` 创建一个带有多个资产的场景。我们还学习了如何使用 "
 "``num_envs`` 参数来为多个环境克隆场景。"
 
-#: source/how-to/create_scene.rst:185
+#: source/how-to/create_scene.rst:163
 msgid ""
 "There are many more example usages of the :class:`scene.InteractiveSceneCfg`"
 " in the tasks found under the ``isaaclab_tasks`` extension. Please check out"

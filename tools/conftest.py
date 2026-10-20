@@ -27,7 +27,6 @@ import hang_dump  # isort: skip
 import ovrtx_log  # isort: skip
 import test_settings as test_settings  # isort: skip
 from crash_journal import JOURNAL_ENV_VAR, create_crash_report  # isort: skip
-from _device_split import DEVICE_SPLIT_PASSES, is_device_split_file  # isort: skip
 from _file_scheduler import JobContext, TestFileJob, run_test_files  # isort: skip
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -93,7 +92,6 @@ TIMEOUT_RETRIES = 0
 PROCESS_FAILURE_RETRIES_BY_FILE = {
     "test_visualizer_integration_physx.py": 4,
     "test_visualizer_integration_newton.py": 4,
-    "test_visualizer_tiled_integration_physx.py": 4,
 }
 """Extra fresh-process attempts for visualizer tests that can enter stale render states."""
 
@@ -1404,8 +1402,15 @@ def _run_one_pass(
 
 
 def _starts_renderer(test_content: str) -> bool:
-    """Return whether a test file's source starts an RTX renderer: Kit's, by enabling cameras, or OVRTX."""
-    return "enable_cameras=True" in test_content or "ovrtx" in test_content.lower()
+    """Return whether a test file's source starts an RTX renderer: Kit's, by enabling cameras, or OVRTX.
+
+    Files built on ``rendering_test_utils`` pick their renderer through its helpers, so they name neither.
+    """
+    return (
+        "enable_cameras=True" in test_content
+        or "ovrtx" in test_content.lower()
+        or "rendering_test_utils" in test_content
+    )
 
 
 def _test_file_job(test_file: str, max_slots: int) -> TestFileJob:
@@ -1519,13 +1524,6 @@ def _run_test_file(
 
     timeout = test_settings.PER_TEST_TIMEOUTS.get(file_name, test_settings.DEFAULT_TIMEOUT)
 
-    # Read the test file once for device-split detection.
-    try:
-        with open(test_file) as fh:
-            test_content = fh.read()
-    except OSError:
-        test_content = ""
-
     # The first renderer in a fresh container compiles shaders (~600 s).
     # Give it extra time so that doesn't look like a test timeout.
     is_cold_cache_test = context.renderer_cold
@@ -1548,18 +1546,7 @@ def _run_test_file(
         capture=_CaptureOptions(echo=echo, workers=workers, on_started=context.mark_started),
     )
 
-    # On a multi-GPU shard, test_devices() already resolves to this shard's single
-    # GPU and mgpu_shard_select drops every other variant, so the device_split
-    # CPU/GPU two-pass (which exists to dodge the process-global device lock when
-    # CPU and GPU share one container) is unnecessary here — the CPU pass would
-    # collect zero tests yet still pay full Kit-startup cost. Run once on a shard.
-    if _inject_shard_select:
-        passes = [("", None)]
-    elif is_device_split_file(test_file, source=test_content):
-        logger.info(f"⚙️  device_split detected — invoking {file_name} once per device (CPU then GPU)")
-        passes = DEVICE_SPLIT_PASSES
-    else:
-        passes = [("", None)]
+    passes = [("", None)]
 
     reports = []
     failed = False
@@ -1593,6 +1580,7 @@ def _collect_test_files(
     curobo_only,
 ):
     """Collect test files from source directories, applying all active filters."""
+    include_patterns = [pattern.strip() for pattern in filter_pattern.split(",") if pattern.strip()]
     test_files = []
     for source_dir in source_dirs:
         if not os.path.exists(source_dir):
@@ -1627,7 +1615,7 @@ def _collect_test_files(
 
                 full_path = os.path.join(root, file)
 
-                if filter_pattern and filter_pattern not in full_path:
+                if include_patterns and not any(pattern in full_path for pattern in include_patterns):
                     logger.debug(f"Skipping {full_path} (does not match include pattern: {filter_pattern})")
                     continue
                 if exclude_pattern and any(p.strip() in full_path for p in exclude_pattern.split(",")):

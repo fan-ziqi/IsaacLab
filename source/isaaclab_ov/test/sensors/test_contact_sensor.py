@@ -10,14 +10,6 @@
 
 Run via ``uv run --extra ovphysx --extra test python -m pytest`` without a Kit runtime.
 
-The OVPhysX runtime fixes device mode (CPU vs GPU) when the process creates
-its first ``ovphysx.PhysX`` instance and cannot switch it without a process
-restart. Full coverage therefore requires two separate pytest
-invocations -- once with ``-k 'cpu'`` and once with ``-k 'cuda:0'``.  The
-``_ovphysx_skip_other_device`` autouse fixture below preempts the manager's
-:exc:`RuntimeError` by ``pytest.skip``-ing on the unlocked device so
-single-device runs finish cleanly.
-
 Detailed-contact tests cover filtered positions and friction, optional tracking modes,
 force history, selective reset, multi-body indexing, and insufficient contact capacity.
 
@@ -61,37 +53,6 @@ from isaaclab.test.utils import test_devices  # noqa: E402
 from isaaclab.utils import configclass, replace  # noqa: E402
 
 wp.init()
-
-pytestmark = pytest.mark.device_split
-
-# ---------------------------------------------------------------------------
-# Device-lock autouse fixture
-# ---------------------------------------------------------------------------
-
-_LOCKED_DEVICE: list[str | None] = [None]
-"""Device the session pins to on the first parametrized test that runs."""
-
-
-@pytest.fixture(autouse=True)
-def _ovphysx_skip_other_device(request):
-    """Skip parametrized tests on the device the session is not pinned to.
-
-    See the module docstring for the wheel's process-global device-mode lock.
-    """
-    callspec = getattr(request.node, "callspec", None)
-    device = callspec.params.get("device") if callspec is not None else None
-    if device is None:
-        # Test does not parametrize on device.
-        return
-    locked = _LOCKED_DEVICE[0]
-    if locked is None:
-        _LOCKED_DEVICE[0] = device
-        return
-    if device != locked:
-        pytest.skip(
-            f"ovphysx process-global device lock is held by '{locked}'; cannot run '{device}' "
-            "tests in the same session.  Run pytest twice (once per device) for full coverage."
-        )
 
 
 # ---------------------------------------------------------------------------
@@ -857,7 +818,10 @@ def test_lazy_sensor_reports_contact_loss(device):
     ids=["no-history-truncated", "history"],
 )
 def test_friction_reporting(device, grav_dir, history_length, max_count):
-    """Sliding contact reports complete forces independently of detail capacity and tracking options."""
+    """Sliding contact reports complete forces independently of detail capacity and tracking options.
+
+    A partial reset keeps the reset values of the reset environment until its next physics step (#4970).
+    """
     num_envs = 3
     sim_cfg = SimulationCfg(physics=OvPhysxCfg(), dt=_SIM_DT, device=device, gravity=grav_dir)
     with build_simulation_context(device=device, sim_cfg=sim_cfg, add_lighting=False) as sim:
@@ -985,6 +949,9 @@ def test_friction_reporting(device, grav_dir, history_length, max_count):
         positions_before_reset = data.contact_pos_w.torch.clone()
         for current_sensor in sensors:
             current_sensor.reset(env_ids=[0])
+            # Read like the observation that follows an environment reset: no physics step has run since the
+            # reset, so the refresh must keep the reset values instead of the pre-reset contacts (#4970).
+            _ = current_sensor.data
         for force, before in zip(forces, before_reset):
             assert torch.count_nonzero(force.torch[0]) == 0
             torch.testing.assert_close(force.torch[1:], before[1:])

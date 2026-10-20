@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 06:34+0000\n"
-"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -21,19 +21,107 @@ msgstr "在可视化器中显示相机流视图"
 
 #: source/how-to/visualizer_streaming_camera_view.rst:10
 msgid ""
-"This guide shows how to show ground-truth camera frames from many "
-"environments in one live panel of a visualizer. For how the view works and "
-"which visualizers support it, see :ref:`visualization-streaming-camera-"
-"view`."
+"Display ground-truth camera frames from many environments in one live "
+"visualizer panel. For how the view works and which visualizers support it, "
+"see :ref:`visualization-streaming-camera-view`."
 msgstr ""
-"本指南介绍如何在可视化器的一个实时面板中显示多个环境的相机真值图像。该视图的工作方式和支持的可视化器见 :ref:`visualization-"
-"streaming-camera-view` 。"
+"在同一个实时可视化面板中显示多个环境的真值相机图像。视图原理及受支持的可视化器见 :ref:`visualization-streaming-"
+"camera-view`。"
 
 #: source/how-to/visualizer_streaming_camera_view.rst:15
+msgid "Sharing a view with recording"
+msgstr "与录制共享视图"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:17
+msgid ""
+"``ImageViewCfg`` selects pixels independently of their destination. A scene "
+"sensor name binds an existing camera; its renderer and capture cadence "
+"remain owned by the scene. ``WindowCfg`` controls presentation independently"
+" through ``VisualizerCfg.window``. ``VisualizerCfg.view`` and "
+"``VideoRecorderCfg.source`` can consume the same selection:"
+msgstr ""
+"``ImageViewCfg`` "
+"选择像素内容，与显示或录制目的地无关。场景传感器名称绑定已有相机，渲染器与捕获节奏仍由场景管理。``WindowCfg`` 通过 "
+"``VisualizerCfg.window`` 独立控制显示。``VisualizerCfg.view`` 与 "
+"``VideoRecorderCfg.source`` 可以使用同一选择："
+
+#: source/how-to/visualizer_streaming_camera_view.rst:32
+msgid ""
+"Use ``--viz newton_gl`` (or ``--viz newton_rtx`` for the RTX example) to "
+"display the window. Omit ``--viz`` for recording alone. The scene must "
+"declare ``front_camera`` with both requested outputs. The view preserves "
+"environment order and native tile dimensions, placing channels beside each "
+"other. ``channels`` selects existing outputs; ``depth_range`` only maps "
+"depth values to display colors. Neither changes the source camera's outputs,"
+" measurements, or clipping planes. ``CameraCfg.width`` and ``height`` set "
+"sensor resolution. ``WindowCfg.size`` sets the initial window dimensions; "
+"the window scales the composed image for display. Resizing a sensor's window"
+" leaves both sensor and composed-image storage unchanged. The recorder "
+"encodes the native composed image. Only encoding downloads pixels; display "
+"uses the device image. Invalid recording sources or channel selections raise"
+" errors when the recorder binds its source after simulation reset; they do "
+"not silently disable recording. Subsequent frames use the bound capture "
+"function without looking up the producer again."
+msgstr ""
+"使用 ``--viz newton_gl`` 显示窗口，RTX 示例则使用 ``--viz newton_rtx``；仅录制时省略 "
+"``--viz``。场景必须声明 "
+"``front_camera``，并包含所请求的两种输出。视图保留环境顺序和原生平铺尺寸，将不同通道并排排列。``channels`` "
+"选择已有输出，``depth_range`` 仅将深度值映射为显示颜色，二者都不改变源相机的输出、测量或裁剪面。``CameraCfg.width`` "
+"和 ``height`` 设置传感器分辨率，``WindowCfg.size`` "
+"设置初始窗口尺寸，窗口缩放合成图像用于显示。调整传感器窗口大小不会改变传感器及合成图像的存储。录制器编码原生合成图像，只有编码时才下载像素，显示直接使用设备图像。仿真重置后，录制器绑定来源时会检查无效的录制源或通道选择并报错，不会静默关闭录制。后续帧使用已绑定的捕获函数，不再重复查找图像生成器。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:44
+msgid ""
+"Reusing the same ``ImageViewCfg`` shares one runtime frame within a "
+"simulation, including through copies of the enclosing configuration. Use "
+"``isaaclab.utils.replace(view, ...)`` for an independent selection. Reading "
+"the shared view twice in one physics step reuses its frame and sensor "
+"acquisition. Changing the view's selection rebuilds composition state; "
+"captured composition graphs must then be recreated. This does not resize the"
+" sensor's render product."
+msgstr ""
+"在同一仿真中复用同一个 ``ImageViewCfg``，会共享同一个运行时帧，即使外层配置被复制也如此。需要独立选择时，使用 "
+"``isaaclab.utils.replace(view, "
+"...)``。同一物理步内重复读取共享视图会复用已有帧和传感器采集结果。改变视图选择会重建合成状态，已捕获的合成图也必须重建；这不会调整传感器渲染产物的大小。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:50
+msgid ""
+"For Newton RTX, a perspective declaration is expanded into an ordinary scene"
+" camera before launch:"
+msgstr "对于 Newton RTX，透视视图声明会在启动前展开为普通场景相机："
+
+#: source/how-to/visualizer_streaming_camera_view.rst:63
+msgid ""
+"Newton RTX fixes perspective render resolution at the initial "
+"``WindowCfg.size``; resizing the window scales its image. Newton GL "
+"perspective rendering follows its window framebuffer dimensions. The "
+"recorder reads the completed native render without requesting a second "
+"render for that step. Perspective views currently provide one RGB image, so "
+"keep ``envs=(0,)`` and ``channels=(\"rgb\",)``. A recorded perspective view "
+"requires exactly one configured rendering visualizer. In headless runs, the "
+"launcher retains that producer without opening a window; recording a sensor "
+"view needs no visualizer."
+msgstr ""
+"Newton RTX 将透视渲染分辨率固定为初始 ``WindowCfg.size``，窗口变化时缩放图像；Newton GL "
+"的透视渲染则跟随窗口帧缓冲区尺寸。录制器读取已完成的原生渲染，不会在同一步请求第二次渲染。目前透视视图仅提供一张 RGB 图像，因此应保留 "
+"``envs=(0,)`` 和 "
+"``channels=(\"rgb\",)``。录制透视视图时，必须且只能配置一个渲染型可视化器。无界面运行时，启动器保留该图像生成器但不打开窗口；录制传感器视图无需可视化器。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:70
+msgid ""
+"``VisualizerCfg.view`` is supported by Newton GL and RTX. Existing "
+"``cameras`` and ``streaming_*`` configurations and CLI recording source "
+"strings remain supported; they are translated at initialization. Use "
+"``view`` instead of combining it with legacy camera selection fields."
+msgstr ""
+"Newton GL 和 RTX 支持 ``VisualizerCfg.view``。现有的 ``cameras``、``streaming_*`` "
+"配置和命令行录制来源字符串仍受支持，会在初始化时转换。请使用 ``view``，不要将它与旧版相机选择字段混用。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:75
 msgid "Quick Start"
 msgstr "快速开始"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:17
+#: source/how-to/visualizer_streaming_camera_view.rst:77
 msgid ""
 "Run the ``run_tiled_camera_visualizer.py`` script in "
 "``IsaacLab/scripts/tutorials/07_visualizers``:"
@@ -53,57 +141,230 @@ msgstr ":icon:`fa-brands fa-windows` Windows"
 msgid "Code for run_tiled_camera_visualizer.py"
 msgstr "run_tiled_camera_visualizer.py 的代码"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:46
+#: source/how-to/visualizer_streaming_camera_view.rst:105
 msgid ""
 "See `Examples`_ below for the two ways to run the script. For the "
-"``VisualizerCfg`` fields that customize streaming, see `Configuration`_ and "
-"`Troubleshooting`_."
+"``VisualizerCfg`` fields that customize streaming, see `Configuration`_, "
+"`Display sources`_, and `Troubleshooting`_."
 msgstr ""
-"脚本的两种运行方式见下文的 `示例 <Examples_>`_；定制视频流的 ``VisualizerCfg`` 字段见 `配置 "
-"<Configuration_>`_ 和 `故障排查 <Troubleshooting_>`_。"
+"脚本的两种运行方式见下方 `示例 <Examples_>`_。定制流式显示的 ``VisualizerCfg`` 字段见 `配置 "
+"<Configuration_>`_、`显示源 <Display sources_>`_ 和 `故障排查 <Troubleshooting_>`_。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:57
+#: source/how-to/visualizer_streaming_camera_view.rst:116
+msgid "Choose and control displayed views"
+msgstr "选择和控制显示视图"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:118
+msgid ""
+"**Kit** launches the streaming view as a separate **Streaming View** "
+"viewport, selectable from the Viewport tabs; it can also be placed side by "
+"side with the default interactive viewport for dual monitoring."
+msgstr ""
+"**Kit** 将流式视图打开为独立的 **Streaming View** 视口，可从 Viewport "
+"标签页选择，也可与默认交互视口并排显示，便于同时监测。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:122
+msgid ""
+"**Newton GL and Newton RTX** have a **Camera View** selector in the sidebar."
+" Selecting a scene camera displays its tiled output in the main viewport "
+"instead of rendering a perspective view behind it. Selecting a perspective "
+"camera restores interactive scene rendering. Newton GL also restores "
+"picking."
+msgstr ""
+"**Newton GL 和 Newton RTX** 在侧边栏提供 **Camera View** "
+"选择器。选择场景相机后，主视口显示其平铺输出，不再在背后渲染透视视图；选择透视相机后恢复交互场景渲染，Newton GL 也恢复拾取。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:126
+msgid ""
+"Without an explicit ``cameras`` list, Newton GL starts in perspective and "
+"offers scene cameras that provide every requested ``streaming_gt_types`` "
+"channel. An explicit ``streaming_sensor_prim_path`` starts with that scene "
+"camera selected. For example, set ``streaming_gt_types=(\"depth\",)`` to "
+"offer depth-only cameras. The RGB view accepts RGB or RGBA outputs; the "
+"display uses opaque alpha. No images are captured to build the selector. "
+"Explicitly configured scene-camera choices must support the requested "
+"channels; incompatible choices raise a configuration error during "
+"initialization, including inactive choices."
+msgstr ""
+"未显式提供 ``cameras`` 列表时，Newton GL 从透视视图启动，并列出提供所有所需 ``streaming_gt_types`` "
+"通道的场景相机。显式设置 ``streaming_sensor_prim_path`` 时，以该场景相机作为初始选择。例如，设置 "
+"``streaming_gt_types=(\"depth\",)`` 可列出仅提供深度的相机。RGB 视图接受 RGB 或 RGBA "
+"输出，显示时使用不透明 alpha。构建选择器不会捕获图像。显式配置的场景相机选项必须支持所需通道，不兼容的选项会在初始化时报错，即使该选项未启用。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:134
+msgid ""
+"Newton RTX displays only the sources declared in ``view`` or ``cameras``. "
+"With neither set, launch preparation declares one perspective camera. Scene "
+"sensors are never added to its selector automatically."
+msgstr ""
+"Newton RTX 仅显示 ``view`` 或 ``cameras`` "
+"声明的来源。两者均未设置时，启动准备会声明一个透视相机，不会自动将场景传感器加入选择器。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:137
+msgid ""
+"Use ``cameras`` to declare a list of selectable views; the first starts "
+"active:"
+msgstr "使用 ``cameras`` 声明可切换视图列表，第一项初始启用："
+
+#: source/how-to/visualizer_streaming_camera_view.rst:153
+msgid ""
+"The ``cameras`` field is shared across visualizers. Kit, Rerun, and Viser "
+"use the first scene camera for their image panel; Newton GL and RTX provide "
+"the source dropdown shown above. ``SceneCameraCfg`` selects an existing "
+"sensor; ``PerspectiveCameraCfg`` configures the viewer's interactive camera."
+" For Newton RTX, ``launch_simulation(env_cfg, ...)`` adds a ``CameraCfg`` to"
+" the scene before any scene objects are constructed and selects it through "
+"``SceneCameraCfg``. Newton GL retains its native perspective camera. Newton "
+"RTX keeps its perspective render resolution fixed at the initial "
+"``WindowCfg.size``; resizing its window scales the displayed image. Sensor "
+"resolution remains controlled by ``CameraCfg``. Window resizing does not "
+"reallocate sensor or RTX perspective image buffers. Newton GL perspective "
+"images follow its framebuffer dimensions. Newton windows present at up to "
+"``WindowCfg.fps`` (30 by default), measured in wall-clock time. Changing the"
+" simulation timestep does not change that limit. Headless on-demand capture "
+"is independent of the window update rate; Kit uses its application's update "
+"cadence."
+msgstr ""
+"``cameras`` 字段由各可视化器共用。Kit、Rerun 和 Viser 在图像面板中使用第一个场景相机；Newton GL 和 RTX "
+"则提供上述来源下拉框。``SceneCameraCfg`` 选择已有传感器，``PerspectiveCameraCfg`` 配置查看器的交互相机。对于"
+" Newton RTX，``launch_simulation(env_cfg, ...)`` 在构造任何场景对象前向场景添加 "
+"``CameraCfg``，并通过 ``SceneCameraCfg`` 选择它。Newton GL 保留原生透视相机。Newton RTX "
+"的透视渲染分辨率固定为初始 ``WindowCfg.size``，窗口变化时缩放图像；传感器分辨率仍由 ``CameraCfg`` "
+"控制。调整窗口大小不会重新分配传感器或 RTX 透视图像缓冲区。Newton GL 透视图像则跟随帧缓冲区尺寸。Newton 窗口按实际时间最多以 "
+"``WindowCfg.fps`` 显示，默认为 30；改变仿真时间步不会改变此上限。无窗口按需捕获与窗口更新频率无关，Kit 使用应用自身的更新节奏。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:167
+msgid ""
+"Newton RTX displays ordinary camera output in a Newton GL window. Equal "
+"``OVRTXRendererCfg`` configurations share one renderer and its scene. "
+"``NewtonRTXVisualizerCfg.renderer_cfg`` selects the renderer for generated "
+"perspective cameras; explicitly selected scene cameras retain their own "
+"renderer. Newton's ``ViewerRTX`` and its borrowed-stage interface are not "
+"used. ``isaaclab_ov.stage.OvstageBackend`` remains available for downstream "
+"consumers that need an independent native stage. Its ``populate(stage, "
+"plan)`` method imports and clones a declared scene."
+msgstr ""
+"Newton RTX 在 Newton GL 窗口中显示普通相机输出。相等的 ``OVRTXRendererCfg`` "
+"配置共享同一个渲染器及其场景。``NewtonRTXVisualizerCfg.renderer_cfg`` "
+"为生成的透视相机选择渲染器，显式选中的场景相机则保留各自的渲染器。这里不使用 Newton 的 ``ViewerRTX`` "
+"及其借用舞台接口。``isaaclab_ov.stage.OvstageBackend`` 仍可供需要独立原生舞台的下游使用者使用，其 "
+"``populate(stage, plan)`` 方法导入并克隆已声明的场景。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:174
+msgid ""
+"The camera owns pose, calibration, image buffers, capture, and cleanup. "
+"Window navigation calls ``Camera.set_world_poses`` and "
+"``Camera.set_intrinsic_matrices``; image reads use ``Camera.data``. There is"
+" no separate perspective rendering entry point. No default lights are added:"
+" scenes without authored lights remain unlit. Closing a window leaves its "
+"scene camera and renderer alive."
+msgstr ""
+"相机负责位姿、标定、图像缓冲区、捕获和清理。窗口导航调用 ``Camera.set_world_poses`` 和 "
+"``Camera.set_intrinsic_matrices``，图像通过 ``Camera.data`` "
+"读取，不存在单独的透视渲染入口。系统不添加默认灯光，未定义灯光的场景保持无光照状态。关闭窗口后，其场景相机和渲染器继续存活。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:179
+msgid ""
+"Scripts without an ``InteractiveSceneCfg`` use ``ReplicateSession`` to "
+"declare their scene before spawning assets and cameras, including for a "
+"single environment:"
+msgstr ""
+"没有 ``InteractiveSceneCfg`` 的脚本使用 "
+"``ReplicateSession``，在生成资产和相机前声明场景，即使只有一个环境也如此："
+
+#: source/how-to/visualizer_streaming_camera_view.rst:216
+msgid ""
+"The script retains the camera and advances its sensor timing, just as it "
+"does for other directly spawned sensors. ``SceneCameraCfg`` discovers it by "
+"prim path without an ``InteractiveScene``."
+msgstr ""
+"脚本持有相机并推进其传感器计时，与其他直接生成的传感器相同。``SceneCameraCfg`` 可通过 prim 路径发现它，无需 "
+"``InteractiveScene``。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:219
+msgid ""
+"Display layout and channel mappings are compiled when the source, selection,"
+" resolution, or color settings change. Composition writes into reusable "
+"device RGBA storage. Newton GL, Newton RTX, and Kit present CUDA images "
+"without downloading pixels. Recording through ``render_tiled_rgb_array()`` "
+"and the Rerun/Viser transports explicitly read back the composed image. The "
+"GPU API, ``render_tiled_rgba_array()``, returns borrowed storage that is "
+"reused on the next composition; consumers must copy it if they need to "
+"retain a frame."
+msgstr ""
+"当来源、选择、分辨率或颜色设置改变时，会编译显示布局与通道映射。合成写入可复用的设备 RGBA 存储。Newton GL、Newton RTX 和 "
+"Kit 直接显示 CUDA 图像，不下载像素；通过 ``render_tiled_rgb_array()`` 录制，以及 Rerun/Viser "
+"传输，则会显式回读合成图像。GPU API ``render_tiled_rgba_array()`` "
+"返回借用的存储，下一次合成时会复用；如需保留帧，使用者必须复制。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:226
+msgid ""
+"Both scene cameras must already be declared as ``CameraCfg`` entries in the "
+"scene. Keyboard and mouse navigation moves the selected sensor's copies by "
+"the same camera-local translation and rotation across all environments, "
+"including copies not displayed. It does not move other camera choices. These"
+" are real sensor pose changes, so policies and other viewers using that "
+"sensor observe the new viewpoint too. Navigation reads the live sensor pose,"
+" including parent-body motion, independently of "
+"``CameraCfg.update_latest_camera_pose``. Pausing rendering freezes the "
+"displayed image and sensor navigation; pausing training alone does not."
+msgstr ""
+"两个场景相机都必须预先作为 ``CameraCfg`` "
+"条目声明在场景中。键鼠导航会对所有环境中所选传感器的副本，施加相同的相机局部平移和旋转，包括未显示的副本；不会移动其他相机选项。这会真正改变传感器位姿，因此使用该传感器的策略和其他查看器也会看到新视角。导航读取实时传感器位姿，包括父刚体运动，不受"
+" ``CameraCfg.update_latest_camera_pose`` 影响。暂停渲染会冻结图像显示和传感器导航，仅暂停训练则不会。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:234
+msgid ""
+"With ``InteractiveSceneCfg.lazy_sensor_update=True``, the viewer reads only "
+"the selected camera. Unselected cameras are still allocated and may render "
+"if another consumer reads them or the scene uses eager sensor updates. "
+"``streaming_envs`` selects displayed tiles, not capture work."
+msgstr ""
+"当 ``InteractiveSceneCfg.lazy_sensor_update=True`` "
+"时，查看器仅读取选中的相机。未选中的相机仍会分配资源，且在其他使用者读取或场景采用即时传感器更新时，仍可能渲染。``streaming_envs`` "
+"选择显示的平铺图像，不决定捕获工作量。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:240
 msgid "Examples"
 msgstr "示例"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:59
+#: source/how-to/visualizer_streaming_camera_view.rst:242
 msgid ""
 "Running ``run_tiled_camera_visualizer.py`` demonstrates two ways to use the "
 "streaming camera view:"
 msgstr "运行 ``run_tiled_camera_visualizer.py`` 可演示相机流视图的两种用法："
 
-#: source/how-to/visualizer_streaming_camera_view.rst:62
+#: source/how-to/visualizer_streaming_camera_view.rst:245
 msgid ""
-"auto-created cameras pointed at and following moving AnymalD robots, shown "
-"in the Kit visualizer"
-msgstr "自动创建相机，朝向并跟随移动的 AnymalD 机器人，在 Kit 可视化器中显示"
+"scene-declared cameras attached to AnymalD robot bases, shown in the Kit "
+"visualizer"
+msgstr "场景中声明的相机附着在 AnymalD 机器人基座上，在 Kit 可视化器中显示"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:63
+#: source/how-to/visualizer_streaming_camera_view.rst:246
 msgid ""
 "streaming from existing wrist-mounted robot cameras, shown in the Newton "
 "visualizer"
 msgstr "使用机器人已有的腕部相机传输画面，在 Newton 可视化器中显示"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:67
+#: source/how-to/visualizer_streaming_camera_view.rst:250
 msgid "Example 1: Following AnymalD Robots"
 msgstr "示例 1：跟随 AnymalD 机器人"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:88
+#: source/how-to/visualizer_streaming_camera_view.rst:271
 msgid ""
-"The script's ``KitVisualizerCfg`` creates cameras that point at and follow "
-"each robot's base prim, offset by ``streaming_cam_eye`` (here ``(3.0, 3.0, "
-"3.0)``; try ``(0, 0, 5)`` for a top-down view). Of the 256 environments, 36 "
-"are randomly sampled for the camera view."
+"The script adds a ``CameraCfg`` beneath each robot's base before "
+"constructing the environment. Its offset defines the view relative to the "
+"base, so the camera follows the robot through the normal sensor lifecycle. "
+"Of the 256 environments, 36 are sampled for display."
 msgstr ""
-"脚本中的 ``KitVisualizerCfg`` 会创建相机，朝向并跟随每个机器人的基座 prim；相机偏移量由 "
-"``streaming_cam_eye`` 指定（此处为 ``(3.0, 3.0, 3.0)`` ；可以尝试 ``(0, 0, 5)`` "
-"获取俯视画面）。相机视图从 256 个环境中随机抽取 36 个显示。"
+"脚本在构造环境前，为每个机器人的基座下添加 ``CameraCfg``。其偏移定义相对于基座的视图，因此相机通过正常传感器生命周期跟随机器人。在 256"
+" 个环境中抽取 36 个用于显示。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:105
+#: source/how-to/visualizer_streaming_camera_view.rst:288
 msgid "Example 2: Streaming from Robot-Mounted Cameras"
 msgstr "示例 2：传输机器人搭载相机的画面"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:126
+#: source/how-to/visualizer_streaming_camera_view.rst:309
 msgid ""
 "The Galbot cube-stacking environment ships with wrist-mounted cameras giving"
 " an egocentric view of the gripper, table, and cubes. The script's "
@@ -117,39 +378,40 @@ msgstr ""
 "处的已有传感器传输画面；修改 ``streaming_sensor_prim_path`` 可显示其他相机。默认显示 25 个环境中 12 "
 "个相机的画面。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:145
+#: source/how-to/visualizer_streaming_camera_view.rst:328
 msgid "Configuration"
 msgstr "配置"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:147
+#: source/how-to/visualizer_streaming_camera_view.rst:330
 msgid ""
-"To customize streaming camera behavior, edit the highlighted "
-"``VisualizerCfg`` fields in ``run_tiled_camera_visualizer.py``:"
-msgstr ""
-"要自定义相机流行为，请修改 ``run_tiled_camera_visualizer.py`` 中高亮的 ``VisualizerCfg`` 字段："
+"Declare camera resolution, pose, renderer, and output types on ``CameraCfg``"
+" in the scene. Then choose what to display in ``VisualizerCfg``:"
+msgstr "在场景的 ``CameraCfg`` 上声明分辨率、位姿、渲染器和输出类型，再在 ``VisualizerCfg`` 中选择显示内容："
 
-#: source/how-to/visualizer_streaming_camera_view.rst:150
+#: source/how-to/visualizer_streaming_camera_view.rst:333
 msgid ""
-"For auto-created cameras, ``streaming_cam_target_prim_path`` chooses the "
-"followed prim and ``streaming_cam_eye`` sets the camera offset from that "
-"prim.  Defaults to ``None``, which causes the visualizer to adopt the first "
-"scene camera it discovers at init; no explicit path is needed when a "
-"``TiledCamera`` sensor is already in the scene."
+"``cameras=[SceneCameraCfg(prim_path=...)]`` selects a scene camera; "
+"``view=ImageViewCfg(source=\"name\")`` selects a named sensor and its image "
+"layout. Newton RTX uses these explicit declarations."
 msgstr ""
-"对于自动创建的相机， ``streaming_cam_target_prim_path`` 选择跟随的 prim， "
-"``streaming_cam_eye`` 设置相机相对该 prim 的偏移量。目标路径默认为 ``None`` "
-"，此时可视化器会在初始化时采用发现的第一个场景相机；场景已有 ``TiledCamera`` 传感器时，无需显式指定路径。"
+"``cameras=[SceneCameraCfg(prim_path=...)]`` "
+"选择场景相机，``view=ImageViewCfg(source=\"name\")`` 选择具名传感器及其图像布局。Newton RTX "
+"使用这些显式声明。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:154
+#: source/how-to/visualizer_streaming_camera_view.rst:335
 msgid ""
-"For existing scene cameras, ``streaming_sensor_prim_path`` must match an "
-"Isaac Lab :class:`~isaaclab.sensors.Camera` sensor prim path in the selected"
-" task."
+"For other viewers, ``streaming_sensor_prim_path`` selects a scene "
+":class:`~isaaclab.sensors.Camera` by its configured prim path. The "
+"``{ENV_REGEX_NS}`` macro uses the scene's environment template. If omitted, "
+"Newton GL starts in perspective mode and offers compatible scene cameras in "
+"the Camera View dropdown. Kit and web viewers select the first compatible "
+"scene camera; without one, their panel stays empty."
 msgstr ""
-"对于已有的场景相机， ``streaming_sensor_prim_path`` 必须与所选任务中的 Isaac Lab "
-":class:`~isaaclab.sensors.Camera` 传感器 prim 路径匹配。"
+"对于其他查看器，``streaming_sensor_prim_path`` 按配置的 prim 路径选择场景 "
+":class:`~isaaclab.sensors.Camera`，``{ENV_REGEX_NS}`` 宏使用场景的环境模板。省略时，Newton "
+"GL 从透视模式启动，并在 Camera View 下拉框中列出兼容场景相机。Kit 和 Web 查看器选择第一个兼容场景相机，若没有则面板为空。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:156
+#: source/how-to/visualizer_streaming_camera_view.rst:340
 msgid ""
 "``streaming_envs`` controls how many environment tiles are shown. Pass an "
 "``int`` to randomly sample that many environments, or a ``list[int]`` to pin"
@@ -158,7 +420,7 @@ msgstr ""
 "``streaming_envs`` 控制显示的环境格数。传入 ``int`` 可随机抽取指定数量的环境，传入 ``list[int]`` "
 "则可固定显示指定索引的环境。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:158
+#: source/how-to/visualizer_streaming_camera_view.rst:342
 msgid ""
 "``streaming_gt_types`` selects which ground-truth types are shown, e.g. "
 "``[\"rgb\", \"depth\", \"segmentation\", \"normals\"]``."
@@ -166,38 +428,79 @@ msgstr ""
 "``streaming_gt_types`` 选择显示的真值类型，例如 ``[\"rgb\", \"depth\", \"segmentation\","
 " \"normals\"]`` 。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:160
+#: source/how-to/visualizer_streaming_camera_view.rst:344
 msgid ""
 "``streaming_depth_min`` / ``streaming_depth_max`` set the depth colormap "
 "range in metres."
 msgstr "``streaming_depth_min`` / ``streaming_depth_max`` 设置深度色图的范围，单位为米。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:163
+#: source/how-to/visualizer_streaming_camera_view.rst:346
+msgid ""
+"Image layouts and color tables are prepared when the selection or layout "
+"changes. Colorization and tiling run on the source device and reuse the "
+"output buffer. Kit presents CUDA images directly; recording and web "
+"consumers read back the composed RGB image through "
+"``render_tiled_rgb_array()``."
+msgstr ""
+"选择或布局变化时，会准备图像布局和颜色表。着色与平铺在源设备上执行，并复用输出缓冲区。Kit 直接显示 CUDA 图像，录制和 Web 使用者则通过 "
+"``render_tiled_rgb_array()`` 回读合成 RGB 图像。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:352
+msgid "Display sources"
+msgstr "显示源"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:354
+msgid ""
+"``VisualizerCfg.cameras`` accepts ``PerspectiveCameraCfg`` for the "
+"interactive view and ``SceneCameraCfg(prim_path=...)`` for a camera sensor "
+"already declared in the scene. Newton GL and RTX provide a source dropdown; "
+"Kit, Rerun, and Viser use the first scene source in their camera panel. "
+"Every explicit scene source must provide the requested "
+"``streaming_gt_types`` channels."
+msgstr ""
+"``VisualizerCfg.cameras`` 接受 ``PerspectiveCameraCfg`` 定义交互视图，接受 "
+"``SceneCameraCfg(prim_path=...)`` 选择场景中已有的相机传感器。Newton GL 和 RTX "
+"提供来源下拉框，Kit、Rerun 和 Viser 则在相机面板中使用第一个场景来源。每个显式场景来源都必须提供所请求的 "
+"``streaming_gt_types`` 通道。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:362
 msgid "Troubleshooting"
 msgstr "故障排除"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:165
+#: source/how-to/visualizer_streaming_camera_view.rst:364
 msgid ""
-"If a generated view fails with a missing prim error, verify that "
-"``streaming_cam_target_prim_path`` resolves in each selected environment; "
-"common template forms are ``/World/envs/*/...`` and "
-"``/World/envs/env_.*/...``.  In most cases you can leave it as ``None`` and "
-"let the visualizer adopt an existing scene camera automatically."
+"``--video viz:newton_gl:streaming_view`` records the selected scene-camera "
+"tiles, not a network stream. Without ``--viz``, capture runs on demand "
+"without opening a window. Adding ``--viz newton_gl`` displays the "
+"visualizer; it is not required to advance recorded frames. A new physics "
+"step refreshes the image, while repeated captures within the same step reuse"
+" it."
 msgstr ""
-"如果生成视图时提示缺少 prim，请确认 ``streaming_cam_target_prim_path`` "
-"在每个所选环境中都能解析到目标；常用路径模板为 ``/World/envs/*/...`` 和 ``/World/envs/env_.*/...`` "
-"。多数情况下，可以保留 ``None`` ，让可视化器自动采用已有的场景相机。"
+"``--video viz:newton_gl:streaming_view`` 录制选定场景相机的平铺图像，而不是网络流。未设置 ``--viz`` "
+"时，捕获按需执行，不打开窗口。添加 ``--viz newton_gl`` "
+"可显示可视化器，但推进录制帧并不需要它。新的物理步会刷新图像，同一步内重复捕获则复用图像。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:169
+#: source/how-to/visualizer_streaming_camera_view.rst:369
 msgid ""
-"If an existing-camera view reports that no Isaac Lab camera owns the prim, "
-"check that ``streaming_sensor_prim_path`` matches a "
-":class:`~isaaclab.sensors.Camera` sensor in the task."
+"If a view reports no matching camera, declare a ``CameraCfg`` in the scene "
+"and select it with ``cameras=[SceneCameraCfg(prim_path=...)]`` or "
+"``view=ImageViewCfg(source=\"name\")``."
 msgstr ""
-"如果已有相机视图提示该 prim 不属于任何 Isaac Lab 相机，请检查 ``streaming_sensor_prim_path`` "
-"是否与任务中的 :class:`~isaaclab.sensors.Camera` 传感器匹配。"
+"若视图提示没有匹配相机，请在场景中声明 ``CameraCfg``，并通过 "
+"``cameras=[SceneCameraCfg(prim_path=...)]`` 或 "
+"``view=ImageViewCfg(source=\"name\")`` 选择它。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:171
+#: source/how-to/visualizer_streaming_camera_view.rst:371
+msgid ""
+"Each ``streaming_gt_types`` entry must have a corresponding output in the "
+"selected camera's ``data_types``; ``rgba`` also satisfies an ``rgb`` "
+"request. Automatically offered cameras support every requested channel. "
+"Explicitly selecting an incompatible camera raises an error."
+msgstr ""
+"每个 ``streaming_gt_types`` 条目都必须在所选相机的 ``data_types`` 中有对应输出；``rgba`` 也满足 "
+"``rgb`` 请求。自动列出的相机支持所有所需通道，显式选择不兼容相机会报错。"
+
+#: source/how-to/visualizer_streaming_camera_view.rst:374
 msgid ""
 "If the depth panel shows a flat color, adjust ``streaming_depth_min`` and "
 "``streaming_depth_max`` to bracket the expected depth range in your scene."
@@ -205,58 +508,66 @@ msgstr ""
 "如果深度面板只显示单一颜色，请调整 ``streaming_depth_min`` 和 ``streaming_depth_max`` "
 "，使其覆盖场景中预期的深度范围。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:173
+#: source/how-to/visualizer_streaming_camera_view.rst:376
 msgid ""
 "If the view is too expensive, reduce ``streaming_envs``, ``--num_envs``, or "
 "the camera resolution."
 msgstr "如果视图开销过大，可减小 ``streaming_envs`` 、 ``--num_envs`` 或相机分辨率。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:178
-msgid ""
-"**Newton MJWarp with** ``replicate_physics=True`` **and auto-created "
-"cameras**"
-msgstr "**Newton MJWarp 在** ``replicate_physics=True`` **时使用自动创建的相机**"
+#: source/how-to/visualizer_streaming_camera_view.rst:381
+msgid "Migrating from generated cameras"
+msgstr "从自动生成相机迁移"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:180
+#: source/how-to/visualizer_streaming_camera_view.rst:383
 msgid ""
-"With ``replicate_physics=True``, only ``env_0`` has a USD prim after physics"
-" initialization. Cameras for the remaining environments (``env_1`` through "
-"``env_{N-1}``) are dropped, causing initialization to fail::"
+"Visualizers no longer create or destroy camera sensors. Replace "
+"``streaming_cam_target_prim_path``, ``streaming_cam_eye``, and "
+"``streaming_cam_renderer_cfg`` with a scene ``CameraCfg``: place its "
+"``prim_path`` under the desired parent, set its ``offset``, and supply "
+"``renderer_cfg`` there. Select that camera through "
+"``cameras=[SceneCameraCfg(...)]``. This puts the camera in the clone plan "
+"and the normal sensor initialization, update, and teardown lifecycle. The "
+"full option mapping is in the :doc:`3.0 migration guide "
+"</source/isaaclab/migrating>`."
 msgstr ""
-"设置 ``replicate_physics=True`` 后，物理初始化完成时只有 ``env_0`` 保留 USD prim。其余环境（ "
-"``env_1`` 至 ``env_{N-1}`` ）的相机会被移除，导致初始化失败::"
+"可视化器不再创建或销毁相机传感器。请用场景中的 ``CameraCfg`` 替换 "
+"``streaming_cam_target_prim_path``、``streaming_cam_eye`` 和 "
+"``streaming_cam_renderer_cfg``：将 ``prim_path`` 放在所需父节点下，在相机配置中设置 ``offset`` "
+"和 ``renderer_cfg``，再通过 ``cameras=[SceneCameraCfg(...)]`` "
+"选择它。这样，相机就纳入克隆计划及正常的传感器初始化、更新和销毁生命周期。完整选项对照见 :doc:`3.0 迁移指南 "
+"</source/isaaclab/migrating>`。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:187
+#: source/how-to/visualizer_streaming_camera_view.rst:392
 msgid ""
-"**Workaround**: set ``streaming_sensor_prim_path`` to a scene camera that "
-"was declared in the scene config before physics init (for example, a "
-"``TiledCamera`` on a vision-based task)."
+"Closing a visualizer does not affect the camera or other visualizers reading"
+" it. ``streaming_envs`` selects displayed tiles, not camera allocation or "
+"capture resolution."
 msgstr ""
-"**解决方法** ：将 ``streaming_sensor_prim_path`` 指向在物理初始化前就已声明于场景配置中的相机（例如视觉任务中的 "
-"``TiledCamera`` ）。"
+"关闭可视化器不会影响相机，也不会影响读取同一相机的其他可视化器。``streaming_envs`` "
+"选择显示的平铺图像，不决定相机资源分配或捕获分辨率。"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:193
+#: source/how-to/visualizer_streaming_camera_view.rst:397
 msgid "See also"
 msgstr "另请参阅"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:195
+#: source/how-to/visualizer_streaming_camera_view.rst:399
 msgid ""
 ":ref:`visualization-streaming-camera-view`: how the streaming view works and"
 " which visualizers support it"
 msgstr ":ref:`visualization-streaming-camera-view`：相机流视图的工作方式与支持的可视化器"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:196
+#: source/how-to/visualizer_streaming_camera_view.rst:400
 msgid ""
 ":doc:`/source/concepts/visualization`: visualizer configuration and UI "
 "controls"
 msgstr ":doc:`/source/concepts/visualization` ：可视化器配置和界面控件"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:197
+#: source/how-to/visualizer_streaming_camera_view.rst:401
 msgid ""
 ":doc:`/source/how-to/record_video`: recording the streaming view to video"
 msgstr ":doc:`/source/how-to/record_video`：将相机流视图录制为视频"
 
-#: source/how-to/visualizer_streaming_camera_view.rst:198
+#: source/how-to/visualizer_streaming_camera_view.rst:402
 msgid ""
 ":doc:`/source/how-to/configure_rendering`: customizing RTX rendering "
 "settings"

@@ -1,12 +1,11 @@
 # Chinese translation of the Isaac Lab documentation.
 # Distributed under the same license as the corresponding source documentation.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Isaac Lab 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 16:43+0000\n"
-"PO-Revision-Date: 2026-10-09 00:00+0000\n"
+"POT-Creation-Date: 2026-10-20 02:16+0000\n"
+"PO-Revision-Date: 2026-10-20 00:00+0000\n"
 "Last-Translator: Ziqi Fan <fanziqi614@gmail.com>\n"
 "Language-Team: Chinese translation contributors\n"
 "Language: zh_CN\n"
@@ -21,14 +20,10 @@ msgid "Coupled Solvers"
 msgstr "耦合求解器"
 
 #: source/concepts/coupled_solvers.rst:13
-msgid ""
-"Coupled solvers are experimental and exposed through "
-":mod:`isaaclab_contrib.coupling`. Their API, behavior, feature support, "
-"performance, and implementation may change."
-msgstr ""
-"耦合求解器是实验性功能，通过 :mod:`isaaclab_contrib.coupling` 提供。其 API、行为、功能支持、性能和实现均可能变化。"
+msgid "Coupled solvers are experimental. Their API and behavior may change."
+msgstr "耦合求解器属于实验性功能，其 API 和行为可能变化。"
 
-#: source/concepts/coupled_solvers.rst:17
+#: source/concepts/coupled_solvers.rst:15
 msgid ""
 "Newton can partition one model between multiple solvers and exchange state "
 "and forces between them during each simulation step. This lets a task "
@@ -38,26 +33,23 @@ msgstr ""
 "Newton 可以将一个模型分配给多个求解器，并在每个仿真步中交换状态和力。这样，任务就能组合处理不同物理现象的求解器，例如让 MJWarp "
 "刚性机器人与 VBD 布料或 MPM 材料交互。"
 
-#: source/concepts/coupled_solvers.rst:22
+#: source/concepts/coupled_solvers.rst:20
 msgid ""
-"Isaac Lab exposes this framework through :mod:`isaaclab_contrib.coupling`. "
-"The adapter turns configuration selectors into named Newton solver entries, "
-"constructs the selected coupling algorithm, and integrates it with "
-":class:`~isaaclab_newton.physics.NewtonCfg`. For the shared-model "
-"architecture, iteration algorithms, supported constraint rows, and solver-"
-"specific implementation details, see Newton's `Coupled Solvers concept page "
-"<https://newton-physics.github.io/newton/stable/concepts/coupling.html>`_."
+"Configure coupling through :mod:`isaaclab_contrib.coupling` and "
+":class:`~isaaclab_newton.physics.NewtonCfg`. Newton's `Coupled Solvers guide"
+" <https://newton-physics.github.io/newton/stable/concepts/coupling.html>`_ "
+"describes the algorithms, constraints, and solver internals."
 msgstr ""
-"Isaac Lab 通过 :mod:`isaaclab_contrib.coupling` 暴露这一框架。适配层将配置选择器转换为具名的 Newton "
-"求解器条目，构建选定的耦合算法，并将其集成到 :class:`~isaaclab_newton.physics.NewtonCfg` "
-"。共享模型架构、迭代算法、受支持的约束行和求解器专用实现细节，见 Newton 的 `耦合求解器概念页面 <https://newton-"
-"physics.github.io/newton/stable/concepts/coupling.html>`_ 。"
+"通过 :mod:`isaaclab_contrib.coupling` 和 "
+":class:`~isaaclab_newton.physics.NewtonCfg` 配置耦合。算法、约束及求解器内部实现见 Newton 的 "
+"`耦合求解器指南 <https://newton-"
+"physics.github.io/newton/stable/concepts/coupling.html>`_。"
 
-#: source/concepts/coupled_solvers.rst:33
+#: source/concepts/coupled_solvers.rst:27
 msgid "The coupling model"
 msgstr "耦合模型"
 
-#: source/concepts/coupled_solvers.rst:35
+#: source/concepts/coupled_solvers.rst:29
 msgid ""
 "A coupled simulation starts from one Newton model. Instead of giving the "
 "whole model to one solver, Isaac Lab partitions it into named entries. Each "
@@ -66,13 +58,13 @@ msgstr ""
 "耦合仿真从一个 Newton 模型开始。Isaac Lab "
 "不将整个模型交给单个求解器，而是将其划分为多个具名条目。每个条目选择一个求解器，并持有模型中彼此不重叠的一部分。"
 
-#: source/concepts/coupled_solvers.rst:39
+#: source/concepts/coupled_solvers.rst:33
 msgid ""
 "The animation below shows how source-owned gripper bodies interact with "
 "material owned by a destination solver through local proxies:"
 msgstr "下方动画展示了源求解器持有的夹爪刚体如何通过局部代理，与目标求解器持有的材料交互："
 
-#: source/concepts/coupled_solvers.rst:64
+#: source/concepts/coupled_solvers.rst:58
 msgid ""
 "Each solver receives a view of the shared model. Only the elements owned by "
 "its entry are reconciled into the final shared state. An element can belong "
@@ -81,7 +73,7 @@ msgid ""
 msgstr ""
 "每个求解器获得共享模型的一个视图，只有其条目持有的元素会汇总到最终共享状态中。每个元素最多属于一个条目；未分配的元素不参与嵌套求解器。一个关节体应完整地放在同一个条目中。"
 
-#: source/concepts/coupled_solvers.rst:69
+#: source/concepts/coupled_solvers.rst:63
 msgid ""
 "Isaac Lab resolves ownership selectors, constructs the Newton entry views, "
 "and runs the coupled solver through the normal Newton backend lifecycle. "
@@ -91,34 +83,34 @@ msgstr ""
 "Isaac Lab 解析所有权选择器、构建 Newton 条目视图，并通过正常的 Newton 后端生命周期运行耦合求解器。Newton "
 "负责耦合算法，以及条目之间的位姿、力和约束信息交换。"
 
-#: source/concepts/coupled_solvers.rst:76
+#: source/concepts/coupled_solvers.rst:70
 msgid "Choose Proxy or ADMM Coupling"
 msgstr "选择代理耦合或 ADMM 耦合"
 
-#: source/concepts/coupled_solvers.rst:82
+#: source/concepts/coupled_solvers.rst:76
 msgid "Approach"
 msgstr "方法"
 
-#: source/concepts/coupled_solvers.rst:83
+#: source/concepts/coupled_solvers.rst:77
 msgid "How it works"
 msgstr "它是如何工作的"
 
-#: source/concepts/coupled_solvers.rst:84
+#: source/concepts/coupled_solvers.rst:78
 msgid "When to use it"
 msgstr "适用情况"
 
-#: source/concepts/coupled_solvers.rst:85
+#: source/concepts/coupled_solvers.rst:79
 msgid "Proxy"
 msgstr "代理耦合"
 
-#: source/concepts/coupled_solvers.rst:86
+#: source/concepts/coupled_solvers.rst:80
 msgid ""
 "A source-owned body or particle appears as a virtual endpoint in a "
 "destination solver. The destination returns feedback on a later pass or "
 "iteration."
 msgstr "源条目持有的刚体或粒子作为虚拟端点出现在目标求解器中；目标求解器在后续轮次或迭代中返回反馈。"
 
-#: source/concepts/coupled_solvers.rst:89
+#: source/concepts/coupled_solvers.rst:83
 msgid ""
 "Use when the interaction is naturally directional, such as a rigid collider "
 "inside a deformable or particle solve. Proxy coupling can reuse the "
@@ -128,24 +120,24 @@ msgstr ""
 "适用于交互具有自然方向性的情况，例如可变形体或粒子求解中的刚性碰撞体。代理耦合能够复用目标求解器的接触处理路径，是 Isaac Lab 中耦合 "
 "MJWarp–VBD 和刚体–MPM 任务的既有实现方式。"
 
-#: source/concepts/coupled_solvers.rst:93
+#: source/concepts/coupled_solvers.rst:87
 msgid "ADMM"
 msgstr "ADMM"
 
-#: source/concepts/coupled_solvers.rst:94
+#: source/concepts/coupled_solvers.rst:88
 msgid ""
 "The coupler creates interface constraints between entries, iterates the sub-"
 "solvers, and applies equal and opposite interface forces."
 msgstr "耦合器在条目之间创建界面约束，迭代各子求解器，并施加大小相等、方向相反的界面力。"
 
-#: source/concepts/coupled_solvers.rst:96
+#: source/concepts/coupled_solvers.rst:90
 msgid ""
 "Use when the interface should be symmetric, especially for supported cross-"
 "entry joints, body--particle attachments, or frictional contacts. ADMM has "
 "more tuning parameters and supports a narrower set of constraint rows."
 msgstr "适用于界面应当对称的情况，尤其是受支持的跨条目关节、刚体–粒子附着或摩擦接触。ADMM 调参项较多，支持的约束行范围也更窄。"
 
-#: source/concepts/coupled_solvers.rst:101
+#: source/concepts/coupled_solvers.rst:95
 msgid ""
 "Proxy coupling is usually the simpler starting point for collider-style "
 "rigid--deformable interaction. Use ``mode=\"lagged\"`` first; the "
@@ -156,7 +148,7 @@ msgstr ""
 "对于基于碰撞体的刚体–可变形体交互，代理耦合通常是更简单的入门选择。先使用 ``mode=\"lagged\"`` ； "
 "``\"staggered\"`` 模式使用更新的源状态，但对时间步长和执行顺序更敏感。只有各条目独立运行时已经稳定，才应增加耦合迭代次数。"
 
-#: source/concepts/coupled_solvers.rst:107
+#: source/concepts/coupled_solvers.rst:101
 msgid ""
 "ADMM is a better fit when assigning a source and destination would make the "
 "physical interface artificially one-way. Its fixed iteration count and "
@@ -169,7 +161,7 @@ msgstr ""
 "更适合。固定迭代次数、罚参数、近端项和稳定化参数共同参与耦合约束求解，应结合时间步长和参与求解器一起调节。当前支持的关节、接触及限制，以 Newton "
 "概念页面为准。"
 
-#: source/concepts/coupled_solvers.rst:114
+#: source/concepts/coupled_solvers.rst:108
 msgid ""
 "Proxy coupling can have lower coupling overhead because it reuses the "
 "destination solver's contact path and may work with one pass, but its "
@@ -182,11 +174,11 @@ msgstr ""
 "代理耦合复用目标求解器的接触路径，有时只需一轮，因此耦合开销可能较低，但有方向的数据交换对时间步长和顺序敏感。ADMM "
 "表示对称界面，但每次耦合迭代都会再次推进参与求解器。增加轮次或迭代可以改善耦合响应和界面收敛，也会增加运行时间。两种方法都不总是更准确，应通过与任务相关的物理指标比较。"
 
-#: source/concepts/coupled_solvers.rst:124
+#: source/concepts/coupled_solvers.rst:118
 msgid "Configure a coupled solver"
 msgstr "配置耦合求解器"
 
-#: source/concepts/coupled_solvers.rst:126
+#: source/concepts/coupled_solvers.rst:120
 msgid ""
 "In Isaac Lab, :class:`~isaaclab_contrib.coupling.CouplerEntryCfg` defines "
 "each entry's solver and ownership. Use "
@@ -199,7 +191,7 @@ msgstr ""
 ":class:`~isaaclab_contrib.coupling.CouplerAdmmCfg` 用作 "
 ":class:`~isaaclab_newton.physics.NewtonCfg` 的求解器配置。"
 
-#: source/concepts/coupled_solvers.rst:132
+#: source/concepts/coupled_solvers.rst:126
 msgid ""
 "The following configuration mirrors the maintained Franka rigid--deformable "
 "tasks. It assigns the complete robot to MJWarp, particles and static "
@@ -209,13 +201,13 @@ msgstr ""
 "以下配置与维护中的 Franka 刚体–可变形体任务一致：完整机器人交给 MJWarp，粒子和静态碰撞几何交给 VBD，仅将手掌和手指作为 VBD "
 "的代理碰撞体："
 
-#: source/concepts/coupled_solvers.rst:178
+#: source/concepts/coupled_solvers.rst:172
 msgid ""
 "For ADMM, keep the ownership entries and replace the proxy mapping with the "
 "symmetric interfaces that should be coupled:"
 msgstr "对于 ADMM，保留所有权条目，将代理映射替换为需要耦合的对称界面："
 
-#: source/concepts/coupled_solvers.rst:195
+#: source/concepts/coupled_solvers.rst:189
 msgid ""
 "Set ``contact_pairs=None`` to generate every distinct entry pair, or use an "
 "empty list to disable ADMM contact coupling while retaining supported cross-"
@@ -224,21 +216,21 @@ msgstr ""
 "设置 ``contact_pairs=None`` 可为每对不同条目生成接触；使用空列表则禁用 ADMM "
 "接触耦合，同时保留受支持的跨条目关节和附着约束。"
 
-#: source/concepts/coupled_solvers.rst:201
+#: source/concepts/coupled_solvers.rst:195
 msgid "Tune Coupling"
 msgstr "调节耦合参数"
 
-#: source/concepts/coupled_solvers.rst:203
+#: source/concepts/coupled_solvers.rst:197
 msgid "Stabilize each entry independently before changing coupling controls."
 msgstr "修改耦合参数前，先保证各条目独立运行时稳定。"
 
-#: source/concepts/coupled_solvers.rst:205
+#: source/concepts/coupled_solvers.rst:199
 msgid ""
 "``CouplerEntryCfg.substeps`` changes the time resolution for one entry; more"
 " substeps add solver work."
 msgstr "``CouplerEntryCfg.substeps`` 改变单个条目的时间分辨率；更多子步会增加求解器工作量。"
 
-#: source/concepts/coupled_solvers.rst:207
+#: source/concepts/coupled_solvers.rst:201
 msgid ""
 "For proxy coupling, ``mode`` controls exchange ordering, ``iterations`` "
 "controls relaxation passes, ``mass_scale`` changes proxy effective inertia "
@@ -248,7 +240,7 @@ msgstr ""
 "对于代理耦合， ``mode`` 控制交换顺序， ``iterations`` 控制松弛轮次， ``mass_scale`` "
 "改变代理在目标求解器中的有效惯性， ``collide_interval`` 控制接触刷新频率。"
 
-#: source/concepts/coupled_solvers.rst:210
+#: source/concepts/coupled_solvers.rst:204
 msgid ""
 "For ADMM, ``iterations`` controls interface passes, ``rho`` sets the penalty"
 " weight, ``gamma`` adds proximal inertia and velocity weighting, and "
@@ -257,7 +249,7 @@ msgstr ""
 "对于 ADMM， ``iterations`` 控制界面迭代轮次， ``rho`` 设置罚项权重， ``gamma`` 添加近端惯性与速度权重， "
 "``baumgarte`` 添加位置误差修正。"
 
-#: source/concepts/coupled_solvers.rst:214
+#: source/concepts/coupled_solvers.rst:208
 msgid ""
 "More substeps or iterations can improve stability or convergence, but cost "
 "runtime and cannot repair an unstable entry. The generated :doc:`coupling "
@@ -269,11 +261,11 @@ msgstr ""
 "</source/api/lab_contrib/isaaclab_contrib.coupling>` 列出所有字段和默认值，Newton "
 "概念页面解释底层算法。"
 
-#: source/concepts/coupled_solvers.rst:222
+#: source/concepts/coupled_solvers.rst:216
 msgid "ADMM Contact Capacity"
 msgstr "ADMM 接触容量"
 
-#: source/concepts/coupled_solvers.rst:224
+#: source/concepts/coupled_solvers.rst:218
 msgid ""
 "ADMM's internal contact buffers are independent of "
 "``NewtonCfg.collision_cfg``. Increase "
@@ -290,7 +282,7 @@ msgstr ""
 "默认值；显式赋值要求 Newton 的 ``SolverCoupledADMM.Config`` 支持相应参数。容量覆盖一个进程中的全部环境，在多 "
 "GPU 任务中，各 rank 独立计算。"
 
-#: source/concepts/coupled_solvers.rst:231
+#: source/concepts/coupled_solvers.rst:225
 msgid ""
 "With ``rigid_contact_matching=\"latest\"`` or ``\"sticky\"``, triangle-pair "
 "capacity must be less than ``2**20``; larger values require "
@@ -300,11 +292,11 @@ msgstr ""
 "当 ``rigid_contact_matching=\"latest\"`` 或 ``\"sticky\"`` 时，三角形对容量必须小于 "
 "``2**20`` ；更大的值要求使用 ``\"disabled\"`` 。保留匹配功能时，可以单独增大哈希表："
 
-#: source/concepts/coupled_solvers.rst:246
+#: source/concepts/coupled_solvers.rst:240
 msgid "Rigid--MPM Comparison Recordings"
 msgstr "刚体–MPM 对比视频"
 
-#: source/concepts/coupled_solvers.rst:248
+#: source/concepts/coupled_solvers.rst:242
 msgid ""
 "For proxy coupling, ``mass_scale`` changes a source body's effective mass "
 "and inertia in the destination view; it does not change the authored rigid-"
@@ -315,7 +307,7 @@ msgstr ""
 "在代理耦合中， ``mass_scale`` 改变源刚体在目标视图中的有效质量和惯性，不改变写入模型的刚体质量。先使用 ``1`` ，仅在 MPM "
 "接触过程中刚体求解器对刚体施加强约束时增加该值。支撑状态和自由运动状态都应检查，因为较大的缩放可能抑制正常运动。"
 
-#: source/concepts/coupled_solvers.rst:254
+#: source/concepts/coupled_solvers.rst:248
 msgid ""
 "The G1 recordings show one policy walking across sand, snow, and clay. The "
 "one-way recording uses lower-leg proxies, while the two-way recording uses "
@@ -326,19 +318,19 @@ msgstr ""
 "G1 视频展示同一策略在沙、雪和黏土上行走。单向视频使用小腿代理，双向视频使用全身代理。它们是展示示例， **并非** "
 "控制单一变量的比较；测量耦合效果时，应保持策略、随机种子、命令和代理几何一致。"
 
-#: source/concepts/coupled_solvers.rst:263
+#: source/concepts/coupled_solvers.rst:257
 msgid "One-way, lower-leg proxies"
 msgstr "单向，小腿代理"
 
-#: source/concepts/coupled_solvers.rst:271
+#: source/concepts/coupled_solvers.rst:265
 msgid "Two-way, full-body proxies"
 msgstr "双向，全身代理"
 
-#: source/concepts/coupled_solvers.rst:281
+#: source/concepts/coupled_solvers.rst:275
 msgid "Start from a maintained task"
 msgstr "从维护中的任务开始"
 
-#: source/concepts/coupled_solvers.rst:283
+#: source/concepts/coupled_solvers.rst:277
 msgid ""
 "The :ref:`newton-vbd-proxy-coupling` guide contains the complete "
 "configuration and runnable commands for the Franka soft-body tasks. Start "
@@ -349,7 +341,7 @@ msgstr ""
 ":ref:`newton-vbd-proxy-coupling` 指南提供 Franka "
 "软体任务的完整配置和可运行命令。构建代理耦合的刚体–可变形体环境时，可从该示例开始，再将条目所有权和代理选择器缩小到实际参与交互的刚体。"
 
-#: source/concepts/coupled_solvers.rst:289
+#: source/concepts/coupled_solvers.rst:283
 msgid ""
 "Current Isaac Lab limitations include no support for nested couplers or "
 "Newton contact sensors, and proxy coupling supports at most two entries. "

@@ -58,7 +58,7 @@ class AnymalCFlatSceneCfg(InteractiveSceneCfg):
         prim_path="/World/ground",
         terrain_type="plane",
         collision_group=-1,
-        physics_material=sim_utils.RigidBodyMaterialCfg(
+        physics_material=sim_utils.PhysxRigidBodyMaterialCfg(
             friction_combine_mode="multiply",
             restitution_combine_mode="multiply",
             static_friction=1.0,
@@ -84,7 +84,7 @@ class AnymalCRoughSceneCfg(AnymalCFlatSceneCfg):
         terrain_generator=ROUGH_TERRAINS_CFG,
         max_init_terrain_level=9,
         collision_group=-1,
-        physics_material=sim_utils.RigidBodyMaterialCfg(
+        physics_material=sim_utils.PhysxRigidBodyMaterialCfg(
             friction_combine_mode="multiply",
             restitution_combine_mode="multiply",
             static_friction=1.0,
@@ -121,7 +121,7 @@ class AnymalCFlatEnvCfg(DirectRLEnvCfg):
         dt=1 / 200,
         render_interval=decimation,
         physics=PhysxCfg(gpu_max_rigid_patch_count=2**20),
-        physics_material=sim_utils.RigidBodyMaterialCfg(
+        physics_material=sim_utils.PhysxRigidBodyMaterialCfg(
             friction_combine_mode="multiply",
             restitution_combine_mode="multiply",
             static_friction=1.0,
@@ -131,7 +131,7 @@ class AnymalCFlatEnvCfg(DirectRLEnvCfg):
     )
 
     # scene
-    scene: AnymalCFlatSceneCfg = AnymalCFlatSceneCfg(num_envs=4096, env_spacing=4.0, replicate_physics=True)
+    scene: AnymalCFlatSceneCfg = AnymalCFlatSceneCfg(num_envs=4096, env_spacing=4.0)
 
     # events
     events: EventCfg = EventCfg()
@@ -163,7 +163,7 @@ class AnymalCRoughEnvCfg(AnymalCFlatEnvCfg):
     # env
     observation_space = 235
 
-    scene: AnymalCRoughSceneCfg = AnymalCRoughSceneCfg(num_envs=4096, env_spacing=4.0, replicate_physics=True)
+    scene: AnymalCRoughSceneCfg = AnymalCRoughSceneCfg(num_envs=4096, env_spacing=4.0)
 
     # reward scales (override from flat config)
     flat_orientation_reward_scale = 0.0
